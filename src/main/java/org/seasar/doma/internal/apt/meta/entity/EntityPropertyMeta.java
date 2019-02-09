@@ -89,8 +89,8 @@ public class EntityPropertyMeta {
     return ctType.getBoxedTypeName();
   }
 
-  public String getBoxedClassName() {
-    return ctType.getBoxedClassName();
+  public String getQualifiedName() {
+    return ctType.getQualifiedName();
   }
 
   public CtType getCtType() {
@@ -127,9 +127,5 @@ public class EntityPropertyMeta {
           }
         },
         null);
-  }
-
-  public String getEmbeddableMetaClassName() {
-    return ctType.getMetaClassName();
   }
 }

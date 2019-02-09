@@ -8,6 +8,7 @@ import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
@@ -21,8 +22,8 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private final DaoMeta daoMeta;
 
-  public DaoImplGenerator(Context ctx, ClassName className, Printer printer, DaoMeta daoMeta) {
-    super(ctx, className, printer);
+  public DaoImplGenerator(Context ctx, TypeName typeName, Printer printer, DaoMeta daoMeta) {
+    super(ctx, typeName, printer);
     assertNotNull(daoMeta);
     this.daoMeta = daoMeta;
   }
@@ -50,7 +51,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
     if (parentDaoMeta != null) {
       TypeElement parentDaoElement = parentDaoMeta.getDaoElement();
-      parentClassName = ctx.getClassNames().newDaoImplClassName(parentDaoElement);
+      parentClassName = ctx.getTypeNames().newDaoImplTypeName(parentDaoElement).getClassName();
     }
     iprint(
         "%4$s class %1$s extends %2$s implements %3$s {%n",
@@ -217,7 +218,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     int index = 0;
     for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
       DaoImplMethodGenerator generator =
-          new DaoImplMethodGenerator(ctx, className, printer, daoMeta, queryMeta, index);
+          new DaoImplMethodGenerator(ctx, typeName, printer, daoMeta, queryMeta, index);
       generator.generate();
       index++;
     }

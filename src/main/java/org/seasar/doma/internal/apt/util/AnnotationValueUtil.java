@@ -16,7 +16,7 @@ public final class AnnotationValueUtil {
     if (value == null) {
       return null;
     }
-    final List<String> results = new ArrayList<String>();
+    final List<String> results = new ArrayList<>();
     value.accept(
         new SimpleAnnotationValueVisitor8<Void, Void>() {
 
@@ -42,7 +42,7 @@ public final class AnnotationValueUtil {
     if (value == null) {
       return null;
     }
-    final List<TypeMirror> results = new ArrayList<TypeMirror>();
+    final List<TypeMirror> results = new ArrayList<>();
     value.accept(
         new SimpleAnnotationValueVisitor8<Void, Void>() {
 
@@ -68,7 +68,7 @@ public final class AnnotationValueUtil {
     if (value == null) {
       return null;
     }
-    final List<AnnotationMirror> results = new ArrayList<AnnotationMirror>();
+    final List<AnnotationMirror> results = new ArrayList<>();
     value.accept(
         new SimpleAnnotationValueVisitor8<Void, Void>() {
 
@@ -83,32 +83,6 @@ public final class AnnotationValueUtil {
           @Override
           public Void visitAnnotation(AnnotationMirror a, Void p) {
             results.add(a);
-            return null;
-          }
-        },
-        null);
-    return results;
-  }
-
-  public static List<VariableElement> toEnumConstantList(AnnotationValue value) {
-    if (value == null) {
-      return null;
-    }
-    final List<VariableElement> results = new ArrayList<VariableElement>();
-    value.accept(
-        new SimpleAnnotationValueVisitor8<Void, Void>() {
-
-          @Override
-          public Void visitArray(List<? extends AnnotationValue> values, Void p) {
-            for (AnnotationValue value : values) {
-              value.accept(this, p);
-            }
-            return null;
-          }
-
-          @Override
-          public Void visitEnumConstant(VariableElement c, Void p) {
-            results.add(c);
             return null;
           }
         },
@@ -191,21 +165,6 @@ public final class AnnotationValueUtil {
         null);
   }
 
-  public static AnnotationMirror toAnnotationMirror(AnnotationValue value) {
-    if (value == null) {
-      return null;
-    }
-    return value.accept(
-        new SimpleAnnotationValueVisitor8<AnnotationMirror, Void>() {
-
-          @Override
-          public AnnotationMirror visitAnnotation(AnnotationMirror a, Void p) {
-            return a;
-          }
-        },
-        null);
-  }
-
   public static VariableElement toEnumConstant(AnnotationValue value) {
     if (value == null) {
       return null;
@@ -219,13 +178,5 @@ public final class AnnotationValueUtil {
           }
         },
         null);
-  }
-
-  public static boolean isEqual(Object object, AnnotationValue value) {
-    assertNotNull(object);
-    if (value == null) {
-      return false;
-    }
-    return object.equals(value.getValue());
   }
 }

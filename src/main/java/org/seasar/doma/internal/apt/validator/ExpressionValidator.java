@@ -550,7 +550,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           });
     }
     TypeMirror type = element.asType();
-    if (!ctx.getTypes().isAssignable(type, ExpressionFunctions.class)) {
+    if (!ctx.getTypes().isAssignableWithErasure(type, ExpressionFunctions.class)) {
       ExpressionLocation location = node.getLocation();
       throw new AptException(
           Message.DOMA4190,

@@ -202,7 +202,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           continue;
         }
         TypeMirror parameterType = ctx.getTypes().erasure(parameters.get(0).asType());
-        if (ctx.getTypes().isSameType(parameterType, domainMeta.getValueType())) {
+        if (ctx.getTypes().isSameTypeWithErasure(parameterType, domainMeta.getValueType())) {
           return;
         }
       }
@@ -226,11 +226,11 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           continue;
         }
         TypeMirror parameterType = method.getParameters().get(0).asType();
-        if (!ctx.getTypes().isAssignable(domainMeta.getValueType(), parameterType)) {
+        if (!ctx.getTypes().isAssignableWithErasure(domainMeta.getValueType(), parameterType)) {
           continue;
         }
         TypeMirror returnType = ctx.getTypes().erasure(method.getReturnType());
-        if (!ctx.getTypes().isAssignable(returnType, domainMeta.getType())) {
+        if (!ctx.getTypes().isAssignableWithErasure(returnType, domainMeta.getType())) {
           continue;
         }
         List<? extends TypeParameterElement> classTypeParams = classElement.getTypeParameters();
@@ -243,7 +243,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             cit.hasNext() && mit.hasNext(); ) {
           TypeParameterElement classTypeParam = cit.next();
           TypeParameterElement methodTypeParam = mit.next();
-          if (!ctx.getTypes().isSameType(classTypeParam.asType(), methodTypeParam.asType())) {
+          if (!ctx.getTypes()
+              .isSameTypeWithErasure(classTypeParam.asType(), methodTypeParam.asType())) {
             continue outer;
           }
         }
@@ -275,14 +276,16 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           }
           TypeMirror returnType = method.getReturnType();
           if (ctx.getTypes()
-              .isAssignable(ctx.getTypes().erasure(returnType), domainMeta.getValueType())) {
+              .isAssignableWithErasure(
+                  ctx.getTypes().erasure(returnType), domainMeta.getValueType())) {
             return;
           }
           TypeVariable typeVariable = ctx.getTypes().toTypeVariable(returnType);
           if (typeVariable != null) {
             TypeMirror inferredReturnType = inferType(typeVariable, typeElement, typeMirror);
             if (inferredReturnType != null) {
-              if (ctx.getTypes().isAssignable(inferredReturnType, domainMeta.getValueType())) {
+              if (ctx.getTypes()
+                  .isAssignableWithErasure(inferredReturnType, domainMeta.getValueType())) {
                 return;
               }
             }
@@ -313,7 +316,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         if (index >= argsSize) {
           break;
         }
-        if (ctx.getTypes().isSameType(typeVariable, typeParam.asType())) {
+        if (ctx.getTypes().isSameTypeWithErasure(typeVariable, typeParam.asType())) {
           return args.get(index);
         }
         index++;
@@ -384,7 +387,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
         throw new AptException(Message.DOMA4431, classElement, new Object[] {});
       }
       VariableElement field = fields.get(0);
-      if (!ctx.getTypes().isAssignable(field.asType(), domainMeta.getValueType())) {
+      if (!ctx.getTypes().isAssignableWithErasure(field.asType(), domainMeta.getValueType())) {
         throw new AptException(
             Message.DOMA4432, field, new Object[] {field.asType(), domainMeta.getValueType()});
       }

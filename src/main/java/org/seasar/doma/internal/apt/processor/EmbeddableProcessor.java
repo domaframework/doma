@@ -7,7 +7,7 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
@@ -35,14 +35,14 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, EmbeddableMeta meta) {
+  protected TypeName createName(TypeElement typeElement, EmbeddableMeta meta) {
     assertNotNull(typeElement, meta);
-    return ctx.getClassNames().newEmbeddableMetaTypeClassName(typeElement);
+    return ctx.getTypeNames().newEmbeddableDescTypeName(typeElement);
   }
 
   @Override
-  protected Generator createGenerator(ClassName className, Printer printer, EmbeddableMeta meta) {
-    assertNotNull(className, meta, printer);
-    return new EmbeddableTypeGenerator(ctx, className, printer, meta);
+  protected Generator createGenerator(TypeName typeName, Printer printer, EmbeddableMeta meta) {
+    assertNotNull(typeName, meta, printer);
+    return new EmbeddableTypeGenerator(ctx, typeName, printer, meta);
   }
 }

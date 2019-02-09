@@ -24,7 +24,8 @@ public abstract class TestProcessor extends AbstractProcessor {
   @Override
   public synchronized void init(ProcessingEnvironment env) {
     super.init(env);
-    this.ctx = new Context(env);
+    ctx = new Context(env);
+    ctx.init();
   }
 
   @Override
@@ -44,7 +45,7 @@ public abstract class TestProcessor extends AbstractProcessor {
       return true;
     }
     run();
-    return true;
+    return false;
   }
 
   protected abstract void run();
@@ -67,7 +68,7 @@ public abstract class TestProcessor extends AbstractProcessor {
         for (VariableElement parameterElement : parameterElements) {
           TypeMirror parameterType = parameterElement.asType();
           Class<?> parameterClass = parameterClasses[i];
-          if (!ctx.getTypes().isSameType(parameterType, parameterClass)) {
+          if (!ctx.getTypes().isSameTypeWithErasure(parameterType, parameterClass)) {
             throw new AssertionError(i);
           }
           i++;

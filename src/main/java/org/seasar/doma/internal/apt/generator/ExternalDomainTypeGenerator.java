@@ -4,10 +4,10 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
-import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
 public class ExternalDomainTypeGenerator extends AbstractGenerator {
@@ -16,29 +16,18 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
   private final String domainTypeName;
 
-  private final String simpleMetaClassName;
-
   private final String typeParamDecl;
 
   private final boolean parameterized;
 
   public ExternalDomainTypeGenerator(
-      Context ctx, ClassName className, Printer printer, ExternalDomainMeta domainMeta) {
-    super(ctx, className, printer);
+      Context ctx, TypeName typeName, Printer printer, ExternalDomainMeta domainMeta) {
+    super(ctx, typeName, printer);
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;
-    this.domainTypeName = ctx.getTypes().getTypeName(domainMeta.getDomainElement().asType());
-    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(domainMeta.getDomainElement(), ctx);
-    this.typeParamDecl = makeTypeParamDecl(domainTypeName);
+    this.domainTypeName = typeName.getTypeName();
+    this.typeParamDecl = typeName.getTypeParametersDeclaration();
     this.parameterized = !domainMeta.getDomainElement().getTypeParameters().isEmpty();
-  }
-
-  private String makeTypeParamDecl(String typeName) {
-    int pos = typeName.indexOf("<");
-    if (pos == -1) {
-      return "";
-    }
-    return typeName.substring(pos);
   }
 
   @Override
@@ -67,7 +56,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     printGenerated();
     iprint(
         "public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
-        simpleMetaClassName,
+        simpleName,
         AbstractDomainType.class.getName(),
         domainMeta.getValueTypeName(),
         domainTypeName,
@@ -179,12 +168,10 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     iprint(" */%n");
     if (parameterized) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
-      iprint(
-          "public static %1$s %2$s%1$s getSingletonInternal() {%n",
-          typeParamDecl, simpleMetaClassName);
-      iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl, simpleMetaClassName);
+      iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n", typeParamDecl, simpleName);
+      iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl, simpleName);
     } else {
-      iprint("public static %1$s getSingletonInternal() {%n", simpleMetaClassName);
+      iprint("public static %1$s getSingletonInternal() {%n", simpleName);
       iprint("    return singleton;%n");
     }
     iprint("}%n");

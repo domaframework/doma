@@ -25,7 +25,8 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
-    this.ctx = new Context(processingEnv);
+    ctx = new Context(processingEnv);
+    ctx.init();
   }
 
   @Override
@@ -39,7 +40,7 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
       return;
     }
     if (ctx.getOptions().isDebugEnabled()) {
-      ctx.getNotifier()
+      ctx.getReporter()
           .debug(
               Message.DOMA4090,
               new Object[] {getClass().getName(), typeElement.getQualifiedName()});
@@ -47,23 +48,23 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
     try {
       handler.accept(typeElement);
     } catch (AptException e) {
-      ctx.getNotifier().notify(e);
+      ctx.getReporter().report(e);
     } catch (AptIllegalOptionException e) {
-      ctx.getNotifier().notify(Kind.ERROR, e.getMessage(), typeElement);
+      ctx.getReporter().report(Kind.ERROR, e.getMessage(), typeElement);
       throw e;
     } catch (AptIllegalStateException e) {
       String stackTrace = getStackTraceAsString(e);
-      ctx.getNotifier()
-          .notify(Kind.ERROR, Message.DOMA4039, typeElement, new Object[] {stackTrace});
+      ctx.getReporter()
+          .report(Kind.ERROR, Message.DOMA4039, typeElement, new Object[] {stackTrace});
       throw e;
     } catch (RuntimeException | AssertionError e) {
       String stackTrace = getStackTraceAsString(e);
-      ctx.getNotifier()
-          .notify(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {stackTrace});
+      ctx.getReporter()
+          .report(Kind.ERROR, Message.DOMA4016, typeElement, new Object[] {stackTrace});
       throw e;
     }
     if (ctx.getOptions().isDebugEnabled()) {
-      ctx.getNotifier()
+      ctx.getReporter()
           .debug(
               Message.DOMA4091,
               new Object[] {getClass().getName(), typeElement.getQualifiedName()});

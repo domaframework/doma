@@ -4,8 +4,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeParameterElement;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
-import org.seasar.doma.internal.apt.util.MetaUtil;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
@@ -15,26 +15,15 @@ public class DomainTypeGenerator extends AbstractGenerator {
 
   private final String typeName;
 
-  private final String simpleMetaClassName;
-
   private final String typeParamDecl;
 
   public DomainTypeGenerator(
-      Context ctx, ClassName className, Printer printer, DomainMeta domainMeta) {
-    super(ctx, className, printer);
+      Context ctx, TypeName typeName, Printer printer, DomainMeta domainMeta) {
+    super(ctx, typeName, printer);
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;
-    this.typeName = ctx.getTypes().getTypeName(domainMeta.getType());
-    this.simpleMetaClassName = MetaUtil.toSimpleMetaName(domainMeta.getTypeElement(), ctx);
-    this.typeParamDecl = makeTypeParamDecl(typeName);
-  }
-
-  private String makeTypeParamDecl(String typeName) {
-    int pos = typeName.indexOf("<");
-    if (pos == -1) {
-      return "";
-    }
-    return typeName.substring(pos);
+    this.typeName = typeName.getTypeName();
+    this.typeParamDecl = typeName.getTypeParametersDeclaration();
   }
 
   @Override
@@ -63,7 +52,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
     printGenerated();
     iprint(
         "public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
-        simpleMetaClassName,
+        simpleName,
         AbstractDomainType.class.getName(),
         ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
         typeName,
@@ -189,12 +178,10 @@ public class DomainTypeGenerator extends AbstractGenerator {
     iprint(" */%n");
     if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
-      iprint(
-          "public static %1$s %2$s%1$s getSingletonInternal() {%n",
-          typeParamDecl, simpleMetaClassName);
-      iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl, simpleMetaClassName);
+      iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n", typeParamDecl, simpleName);
+      iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl, simpleName);
     } else {
-      iprint("public static %1$s getSingletonInternal() {%n", simpleMetaClassName);
+      iprint("public static %1$s getSingletonInternal() {%n", simpleName);
       iprint("    return singleton;%n");
     }
     iprint("}%n");

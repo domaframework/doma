@@ -3,51 +3,47 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.MessageResource;
 
-public final class Notifier {
+public final class Reporter {
 
-  private Context ctx;
+  private Messager messager;
 
-  public Notifier(Context ctx) {
-    this.ctx = ctx;
+  Reporter(ProcessingEnvironment env) {
+    assertNotNull(env);
+    this.messager = env.getMessager();
   }
 
   public void debug(MessageResource messageResource, Object[] args) {
     assertNotNull(messageResource, args);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(Kind.OTHER, messageResource.getMessage(args));
   }
 
   public void debug(CharSequence message) {
     assertNotNull(message);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(Kind.OTHER, message);
   }
 
-  public void notify(Kind kind, MessageResource messageResource, Object[] args) {
+  public void report(Kind kind, MessageResource messageResource, Object[] args) {
     assertNotNull(messageResource, args);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, messageResource.getMessage(args));
   }
 
-  public void notify(Kind kind, MessageResource messageResource, Element element, Object[] args) {
+  public void report(Kind kind, MessageResource messageResource, Element element, Object[] args) {
     assertNotNull(kind, element, args);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, messageResource.getMessage(args), element);
   }
 
-  public void notify(Kind kind, String message, Element element) {
+  public void report(Kind kind, String message, Element element) {
     assertNotNull(kind, message, element);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(kind, message, element);
   }
 
-  public void notify(AptException e) {
+  public void report(AptException e) {
     assertNotNull(e);
-    Messager messager = ctx.getEnv().getMessager();
     messager.printMessage(
         e.getKind(),
         e.getMessage(),

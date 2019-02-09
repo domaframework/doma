@@ -50,7 +50,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validateClass(TypeElement typeElement, SingletonConfigAnnot mirror) {
-    if (!ctx.getTypes().isAssignable(typeElement.asType(), Config.class)) {
+    if (!ctx.getTypes().isAssignableWithErasure(typeElement.asType(), Config.class)) {
       throw new AptException(
           Message.DOMA4253, typeElement, mirror.getAnnotationMirror(), new Object[] {});
     }
@@ -72,7 +72,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
         ElementFilter.methodsIn(typeElement.getEnclosedElements())
             .stream()
             .filter(m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-            .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(), Config.class))
+            .filter(m -> ctx.getTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
             .filter(m -> m.getParameters().isEmpty())
             .filter(m -> m.getSimpleName().toString().equals(methodName))
             .findAny();

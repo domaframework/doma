@@ -162,7 +162,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
           }
         } catch (AptException e) {
-          ctx.getNotifier().notify(e);
+          ctx.getReporter().report(e);
           embeddableMeta.setError(true);
         }
       }
@@ -265,7 +265,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             continue outer;
           }
           TypeMirror propertyType = propertyMeta.getType();
-          if (!ctx.getTypes().isSameType(paramType, propertyType)) {
+          if (!ctx.getTypes().isSameTypeWithErasure(paramType, propertyType)) {
             continue outer;
           }
           propertyMetaList.add(propertyMeta);

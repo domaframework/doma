@@ -11,16 +11,24 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
-import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.internal.apt.util.MetaUtil;
+import org.seasar.doma.internal.Conventions;
 
 public class GeneratedClassNameParameterResolver implements ParameterResolver {
 
   private final Class<?> clazz;
 
+  private final boolean isExternalDomain;
+
   public GeneratedClassNameParameterResolver(Class<?> clazz) {
     assertNotNull(clazz);
     this.clazz = clazz;
+    this.isExternalDomain = false;
+  }
+
+  public GeneratedClassNameParameterResolver(Class<?> clazz, boolean isExternalDomain) {
+    assertNotNull(clazz);
+    this.clazz = clazz;
+    this.isExternalDomain = true;
   }
 
   @Override
@@ -34,14 +42,20 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
   public Object resolveParameter(
       ParameterContext parameterContext, ExtensionContext extensionContext)
       throws ParameterResolutionException {
+    if (isExternalDomain) {
+      return Conventions.newExternalDomainTypClassName(clazz.getName()).toString();
+    }
     if (clazz.isAnnotationPresent(Dao.class)) {
       return clazz.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
     }
-    if (clazz.isAnnotationPresent(Entity.class)
-        || clazz.isAnnotationPresent(Embeddable.class)
-        || clazz.isAnnotationPresent(Domain.class)
-        || clazz.isAnnotationPresent(ExternalDomain.class)) {
-      return MetaUtil.toFullMetaName(clazz.getName());
+    if (clazz.isAnnotationPresent(Entity.class)) {
+      return Conventions.newEntityTypeClassName(clazz.getName()).toString();
+    }
+    if (clazz.isAnnotationPresent(Embeddable.class)) {
+      return Conventions.newEmbeddableTypeClassName(clazz.getName()).toString();
+    }
+    if (clazz.isAnnotationPresent(Domain.class)) {
+      return Conventions.newDomainTypeClassName(clazz.getName()).toString();
     }
     throw new AssertionFailedError("annotation not found.");
   }

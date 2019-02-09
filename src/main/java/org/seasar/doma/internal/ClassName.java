@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.generator;
+package org.seasar.doma.internal;
 
 import org.seasar.doma.internal.util.ClassUtil;
 
@@ -6,7 +6,7 @@ public class ClassName implements CharSequence {
 
   private final String qualifiedName;
 
-  ClassName(String qualifiedName) {
+  public ClassName(String qualifiedName) {
     this.qualifiedName = qualifiedName;
   }
 

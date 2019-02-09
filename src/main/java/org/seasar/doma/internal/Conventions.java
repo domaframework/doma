@@ -14,7 +14,7 @@ public class Conventions {
     List<String> enclosingNames = ClassUtil.getEnclosingNames(binaryName);
     String simpleName = ClassUtil.getSimpleName(binaryName);
     String base = "";
-    if (packageName != null && packageName.length() > 0) {
+    if (packageName.length() > 0) {
       base = packageName + ".";
     }
     return base
@@ -22,26 +22,69 @@ public class Conventions {
         + simpleName;
   }
 
-  public static String toFullMetaName(String originalBinaryName) {
-    assertNotNull(originalBinaryName);
-    String binaryName = normalizeBinaryName(originalBinaryName);
-    String packageName = ClassUtil.getPackageName(binaryName);
-    String simpleName = ClassUtil.getSimpleName(binaryName);
-    String base = "";
-    if (packageName != null && packageName.length() > 0) {
-      base = packageName + ".";
+  public static ClassName newDomainTypeClassName(String binaryName) {
+    assertNotNull(binaryName);
+    return new MetaTypeNameBuilder(binaryName).build();
+  }
+
+  public static ClassName newEmbeddableTypeClassName(String binaryName) {
+    assertNotNull(binaryName);
+    return new MetaTypeNameBuilder(binaryName).build();
+  }
+
+  public static ClassName newEntityTypeClassName(String binaryName) {
+    assertNotNull(binaryName);
+    return new MetaTypeNameBuilder(binaryName).build();
+  }
+
+  public static ClassName newExternalDomainTypClassName(String binaryName) {
+    assertNotNull(binaryName);
+    return new ExternalDomainMetaTypeNameBuilder(binaryName).build();
+  }
+
+  private static class MetaTypeNameBuilder {
+
+    final String binaryName;
+
+    private MetaTypeNameBuilder(String binaryName) {
+      this.binaryName = binaryName;
     }
-    return base + createSimpleMetaName(simpleName);
+
+    protected String prefix() {
+      String packageName = ClassUtil.getPackageName(binaryName);
+      String prefix = "";
+      if (packageName.length() > 0) {
+        prefix = packageName + ".";
+      }
+      return prefix;
+    }
+
+    protected String infix() {
+      return Constants.METATYPE_PREFIX;
+    }
+
+    protected String suffix() {
+      String normalizeBinaryName = normalizeBinaryName(binaryName);
+      return ClassUtil.getSimpleName(normalizeBinaryName);
+    }
+
+    public ClassName build() {
+      return new ClassName(prefix() + infix() + suffix());
+    }
   }
 
-  public static String toSimpleMetaName(String originalBinaryName) {
-    assertNotNull(originalBinaryName);
-    String binaryName = normalizeBinaryName(originalBinaryName);
-    String simpleName = ClassUtil.getSimpleName(binaryName);
-    return createSimpleMetaName(simpleName);
-  }
+  private static class ExternalDomainMetaTypeNameBuilder extends MetaTypeNameBuilder {
 
-  private static String createSimpleMetaName(String originalSimpleName) {
-    return Constants.METATYPE_PREFIX + originalSimpleName;
+    private ExternalDomainMetaTypeNameBuilder(String binaryName) {
+      super(binaryName);
+    }
+
+    @Override
+    protected String prefix() {
+      return Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
+          + "."
+          + ClassUtil.getPackageName(binaryName)
+          + ".";
+    }
   }
 }

@@ -4,6 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.*;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -26,8 +27,8 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   private final EmbeddableMeta embeddableMeta;
 
   public EmbeddableTypeGenerator(
-      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
-    super(ctx, className, printer);
+      Context ctx, TypeName typeName, Printer printer, EmbeddableMeta embeddableMeta) {
+    super(ctx, typeName, printer);
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;
   }
@@ -106,7 +107,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
       String domainType = "null";
       String domainTypeName = "Object";
       if (domainCtType != null) {
-        domainType = domainCtType.getInstantiationCommand();
+        domainType = domainCtType.domainTypeSingletonCode();
         domainTypeName = domainCtType.getTypeName();
       }
       iprint(
@@ -125,7 +126,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
           /* 12 */ parentEntityPropertyType,
           /* 13 */ parentEntityBoxedTypeName,
           /* 14 */ null,
-          /* 15 */ pm.getBoxedClassName(),
+          /* 15 */ pm.getQualifiedName(),
           /* 16 */ domainTypeName,
           /* 17 */ pm.isColumnQuoteRequired());
       print(it.hasNext() ? ",%n" : "");

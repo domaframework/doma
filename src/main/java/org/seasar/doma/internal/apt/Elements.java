@@ -9,121 +9,124 @@ import java.util.function.Predicate;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ExecutableType;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.SimpleElementVisitor8;
-import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.ParameterName;
 
-public class Elements {
+public class Elements implements javax.lang.model.util.Elements {
 
   private final Context ctx;
 
-  private final ProcessingEnvironment env;
-
   private final javax.lang.model.util.Elements elementUtils;
 
-  public Elements(Context ctx) {
-    assertNotNull(ctx);
+  public Elements(Context ctx, ProcessingEnvironment env) {
+    assertNotNull(ctx, env);
     this.ctx = ctx;
-    this.env = ctx.getEnv();
     this.elementUtils = env.getElementUtils();
   }
 
   // delegate to elementUtils
+  @Override
   public PackageElement getPackageElement(CharSequence name) {
     return elementUtils.getPackageElement(name);
   }
 
   // delegate to elementUtils
+  @Override
   public TypeElement getTypeElement(CharSequence name) {
     return elementUtils.getTypeElement(name);
   }
 
   // delegate to elementUtils
+  @Override
   public Map<? extends ExecutableElement, ? extends AnnotationValue> getElementValuesWithDefaults(
       AnnotationMirror a) {
     return elementUtils.getElementValuesWithDefaults(a);
   }
 
   // delegate to elementUtils
+  @Override
   public String getDocComment(Element e) {
     return elementUtils.getDocComment(e);
   }
 
   // delegate to elementUtils
+  @Override
   public boolean isDeprecated(Element e) {
     return elementUtils.isDeprecated(e);
   }
 
   // delegate to elementUtils
+  @Override
   public Name getBinaryName(TypeElement type) {
     return elementUtils.getBinaryName(type);
   }
 
   // delegate to elementUtils
+  @Override
   public PackageElement getPackageOf(Element type) {
     return elementUtils.getPackageOf(type);
   }
 
   // delegate to elementUtils
+  @Override
   public List<? extends Element> getAllMembers(TypeElement type) {
     return elementUtils.getAllMembers(type);
   }
 
   // delegate to elementUtils
+  @Override
   public List<? extends AnnotationMirror> getAllAnnotationMirrors(Element e) {
     return elementUtils.getAllAnnotationMirrors(e);
   }
 
   // delegate to elementUtils
+  @Override
   public boolean hides(Element hider, Element hidden) {
     return elementUtils.hides(hider, hidden);
   }
 
   // delegate to elementUtils
+  @Override
   public boolean overrides(
       ExecutableElement overrider, ExecutableElement overridden, TypeElement type) {
     return elementUtils.overrides(overrider, overridden, type);
   }
 
   // delegate to elementUtils
+  @Override
   public String getConstantExpression(Object value) {
     return elementUtils.getConstantExpression(value);
   }
 
   // delegate to elementUtils
+  @Override
   public void printElements(Writer w, Element... elements) {
     elementUtils.printElements(w, elements);
   }
 
   // delegate to elementUtils
+  @Override
   public Name getName(CharSequence cs) {
     return elementUtils.getName(cs);
   }
 
   // delegate to elementUtils
+  @Override
   public boolean isFunctionalInterface(TypeElement type) {
     return elementUtils.isFunctionalInterface(type);
   }
 
   public String getBinaryNameAsString(TypeElement type) {
+    assertNotNull(type);
     Name binaryName = elementUtils.getBinaryName(type);
     return binaryName.toString();
   }
 
   public String getPackageName(Element element) {
-    PackageElement packageElement = ctx.getEnv().getElementUtils().getPackageOf(element);
+    assertNotNull(element);
+    PackageElement packageElement = elementUtils.getPackageOf(element);
     return packageElement.getQualifiedName().toString();
-  }
-
-  public String getPackageExcludedBinaryName(TypeElement typeElement) {
-    String binaryName = ctx.getEnv().getElementUtils().getBinaryName(typeElement).toString();
-    int pos = binaryName.lastIndexOf('.');
-    if (pos < 0) {
-      return binaryName;
-    }
-    return binaryName.substring(pos + 1);
   }
 
   public String getParameterName(VariableElement variableElement) {
@@ -133,34 +136,6 @@ public class Elements {
       return parameterName.value();
     }
     return variableElement.getSimpleName().toString();
-  }
-
-  public boolean isEnclosing(Element enclosingElement, Element enclosedElement) {
-    assertNotNull(enclosingElement, enclosedElement);
-    if (enclosingElement.equals(enclosedElement)) {
-      return true;
-    }
-    for (Element e = enclosedElement; e != null; e = e.getEnclosingElement()) {
-      if (enclosingElement.equals(e)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public ExecutableType toExecutableType(ExecutableElement element) {
-    assertNotNull(element);
-    return element
-        .asType()
-        .accept(
-            new SimpleTypeVisitor8<ExecutableType, Void>() {
-
-              // delegate to elementUtils
-              public ExecutableType visitExecutable(ExecutableType t, Void p) {
-                return t;
-              }
-            },
-            null);
   }
 
   public TypeElement toTypeElement(Element element) {
@@ -186,12 +161,6 @@ public class Elements {
       }
       return getEnclosedTypeElement(topElement, Arrays.asList(parts).subList(1, parts.length));
     }
-    // Class<?> clazz = null;
-    // try {
-    // clazz = Class.forName(className);
-    // return getTypeElement(clazz, env);
-    // } catch (ClassNotFoundException ignored) {
-    // }
     try {
       return elementUtils.getTypeElement(binaryName);
     } catch (NullPointerException ignored) {
@@ -201,10 +170,10 @@ public class Elements {
 
   public TypeElement getTypeElement(Class<?> clazz) {
     assertNotNull(clazz);
-    return ctx.getEnv().getElementUtils().getTypeElement(clazz.getCanonicalName());
+    return elementUtils.getTypeElement(clazz.getCanonicalName());
   }
 
-  public TypeElement getEnclosedTypeElement(TypeElement typeElement, List<String> enclosedNames) {
+  private TypeElement getEnclosedTypeElement(TypeElement typeElement, List<String> enclosedNames) {
     TypeElement enclosing = typeElement;
     for (String enclosedName : enclosedNames) {
       for (TypeElement enclosed : ElementFilter.typesIn(enclosing.getEnclosedElements())) {
@@ -219,16 +188,25 @@ public class Elements {
 
   public AnnotationMirror getAnnotationMirror(
       Element element, Class<? extends Annotation> annotationClass) {
+    assertNotNull(element, annotationClass);
     return getAnnotationMirrorInternal(
-        element, type -> ctx.getTypes().isSameType(type, annotationClass));
+        element, type -> ctx.getTypes().isSameTypeWithErasure(type, annotationClass));
   }
 
   public AnnotationMirror getAnnotationMirror(Element element, String annotationClassName) {
+    assertNotNull(element, annotationClassName);
     return getAnnotationMirrorInternal(
-        element, type -> ctx.getTypes().getClassName(type).equals(annotationClassName));
+        element,
+        type -> {
+          TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+          if (typeElement == null) {
+            return false;
+          }
+          return typeElement.getQualifiedName().contentEquals(annotationClassName);
+        });
   }
 
-  protected AnnotationMirror getAnnotationMirrorInternal(
+  private AnnotationMirror getAnnotationMirrorInternal(
       Element element, Predicate<DeclaredType> predicate) {
     for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
       DeclaredType annotationType = annotationMirror.getAnnotationType();
@@ -240,6 +218,7 @@ public class Elements {
   }
 
   public ExecutableElement getNoArgConstructor(TypeElement typeElement) {
+    assertNotNull(typeElement);
     for (ExecutableElement constructor :
         ElementFilter.constructorsIn(typeElement.getEnclosedElements())) {
       if (constructor.getParameters().isEmpty()) {
@@ -250,6 +229,7 @@ public class Elements {
   }
 
   public Map<String, AnnotationValue> getValuesWithDefaults(AnnotationMirror annotationMirror) {
+    assertNotNull(annotationMirror);
     Map<String, AnnotationValue> map = new HashMap<>();
     for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
         getElementValuesWithDefaults(annotationMirror).entrySet()) {

@@ -48,7 +48,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   protected void validateConverter(TypeElement convElement) {
-    if (!ctx.getTypes().isAssignable(convElement.asType(), DomainConverter.class)) {
+    if (!ctx.getTypes().isAssignableWithErasure(convElement.asType(), DomainConverter.class)) {
       throw new AptException(Message.DOMA4191, convElement, new Object[] {});
     }
     if (convElement.getNestingKind().isNested()) {
@@ -65,10 +65,10 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
   protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
     for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
-      if (!ctx.getTypes().isAssignable(supertype, DomainConverter.class)) {
+      if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
       }
-      if (ctx.getTypes().isSameType(supertype, DomainConverter.class)) {
+      if (ctx.getTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();

@@ -9,7 +9,7 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.generator.DaoImplGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
@@ -78,14 +78,14 @@ public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, DaoMeta meta) {
+  protected TypeName createName(TypeElement typeElement, DaoMeta meta) {
     assertNotNull(typeElement, meta);
-    return ctx.getClassNames().newDaoImplClassName(typeElement);
+    return ctx.getTypeNames().newDaoImplTypeName(typeElement);
   }
 
   @Override
-  protected Generator createGenerator(ClassName className, Printer printer, DaoMeta meta) {
-    assertNotNull(className, meta, printer);
-    return new DaoImplGenerator(ctx, className, printer, meta);
+  protected Generator createGenerator(TypeName typeName, Printer printer, DaoMeta meta) {
+    assertNotNull(typeName, meta, printer);
+    return new DaoImplGenerator(ctx, typeName, printer, meta);
   }
 }

@@ -312,7 +312,7 @@ public class EntityPropertyMetaFactory {
               @Override
               public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
                 TypeMirror boxedType = ctx.getTypes().boxIfPrimitive(ctType.getType());
-                return ctx.getTypes().isAssignable(boxedType, Number.class);
+                return ctx.getTypes().isAssignableWithErasure(boxedType, Number.class);
               }
             },
             null);

@@ -7,7 +7,7 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.generator.ExternalDomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
@@ -28,16 +28,15 @@ public class ExternalDomainProcessor extends AbstractGeneratingProcessor<Externa
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, ExternalDomainMeta meta) {
+  protected TypeName createName(TypeElement typeElement, ExternalDomainMeta meta) {
     assertNotNull(typeElement, meta);
     TypeElement domainElement = meta.getDomainElement();
-    return ctx.getClassNames().newExternalDomainMetaTypeClassName(domainElement);
+    return ctx.getTypeNames().newExternalDomainDescTypeName(domainElement);
   }
 
   @Override
-  protected Generator createGenerator(
-      ClassName className, Printer printer, ExternalDomainMeta meta) {
-    assertNotNull(className, meta, printer);
-    return new ExternalDomainTypeGenerator(ctx, className, printer, meta);
+  protected Generator createGenerator(TypeName typeName, Printer printer, ExternalDomainMeta meta) {
+    assertNotNull(typeName, meta, printer);
+    return new ExternalDomainTypeGenerator(ctx, typeName, printer, meta);
   }
 }

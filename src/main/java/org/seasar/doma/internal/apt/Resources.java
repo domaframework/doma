@@ -7,8 +7,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -16,27 +16,27 @@ import javax.tools.StandardLocation;
 
 public class Resources {
 
-  private Context ctx;
+  private Filer filer;
 
-  public Resources(Context ctx) {
-    this.ctx = ctx;
+  private String resourcesDir;
+
+  Resources(Context ctx, ProcessingEnvironment env) {
+    assertNotNull(ctx, env);
+    this.filer = env.getFiler();
+    this.resourcesDir = env.getOptions().get(Options.RESOURCES_DIR);
   }
 
   public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
       throws IOException {
-    Filer filer = ctx.getEnv().getFiler();
     return filer.createSourceFile(name, originatingElements);
   }
 
   public FileObject getResource(String relativePath) throws IOException {
     assertNotNull(relativePath);
-    Map<String, String> options = ctx.getEnv().getOptions();
-    String resourcesDir = options.get(Options.RESOURCES_DIR);
     if (resourcesDir != null) {
       Path path = Paths.get(resourcesDir, relativePath);
       return new FileObjectImpl(path);
     }
-    Filer filer = ctx.getEnv().getFiler();
     return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
   }
 
@@ -44,7 +44,7 @@ public class Resources {
 
     private final Path path;
 
-    protected FileObjectImpl(Path path) {
+    FileObjectImpl(Path path) {
       this.path = path;
     }
 
@@ -64,22 +64,22 @@ public class Resources {
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
+    public OutputStream openOutputStream() {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
+    public Reader openReader(boolean ignoreEncodingErrors) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+    public CharSequence getCharContent(boolean ignoreEncodingErrors) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public Writer openWriter() throws IOException {
+    public Writer openWriter() {
       throw new UnsupportedOperationException();
     }
 

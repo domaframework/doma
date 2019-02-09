@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.ExternalDomainProcessor;
@@ -48,25 +50,15 @@ class ExternalDomainProcessorTest extends CompilerSupport {
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
       return Stream.of(
+          invocationContext(NestingValueObjectConverter.class, NestingValueObject.class),
           invocationContext(
-              NestingValueObjectConverter.class,
-              "__.org.seasar.doma.internal.apt.processor.domain._"
-                  + (NestingValueObjectConverter.class.getSimpleName()
-                      + "__"
-                      + NestingValueObject.class.getSimpleName())),
-          invocationContext(
-              ParameterizedValueObjectConverter.class,
-              "__.org.seasar.doma.internal.apt.processor.domain._"
-                  + ParameterizedValueObject.class.getSimpleName()),
-          invocationContext(UUIDConverter.class, "__.java.util._UUID"),
-          invocationContext(
-              ValueObjectConverter.class,
-              "__.org.seasar.doma.internal.apt.processor.domain._"
-                  + ValueObject.class.getSimpleName()));
+              ParameterizedValueObjectConverter.class, ParameterizedValueObject.class),
+          invocationContext(UUIDConverter.class, UUID.class),
+          invocationContext(ValueObjectConverter.class, ValueObject.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
-        Class<?> compilationUnit, String generatedClassName) {
+        Class<?> compilationUnit, Class<?> externalDomainClass) {
       return new TestTemplateInvocationContext() {
         @Override
         public String getDisplayName(int invocationIndex) {
@@ -78,7 +70,7 @@ class ExternalDomainProcessorTest extends CompilerSupport {
           return Arrays.asList(
               new SimpleParameterResolver(compilationUnit),
               new ResourceParameterResolver(compilationUnit),
-              new SimpleParameterResolver(generatedClassName));
+              new GeneratedClassNameParameterResolver(externalDomainClass, true));
         }
       };
     }

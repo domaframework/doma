@@ -7,7 +7,7 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
+import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
@@ -37,14 +37,14 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, EntityMeta meta) {
+  protected TypeName createName(TypeElement typeElement, EntityMeta meta) {
     assertNotNull(typeElement, meta);
-    return ctx.getClassNames().newEntityMetaTypeClassName(typeElement);
+    return ctx.getTypeNames().newEntityDescTypeName(typeElement);
   }
 
   @Override
-  protected Generator createGenerator(ClassName className, Printer printer, EntityMeta meta) {
-    assertNotNull(className, meta, printer);
-    return new EntityTypeGenerator(ctx, className, printer, meta);
+  protected Generator createGenerator(TypeName typeName, Printer printer, EntityMeta meta) {
+    assertNotNull(typeName, meta, printer);
+    return new EntityTypeGenerator(ctx, typeName, printer, meta);
   }
 }
