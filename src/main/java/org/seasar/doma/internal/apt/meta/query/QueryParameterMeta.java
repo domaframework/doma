@@ -68,10 +68,6 @@ public class QueryParameterMeta {
     return ctType.getType();
   }
 
-  public String getTypeName() {
-    return ctType.getTypeName();
-  }
-
   public String getQualifiedName() {
     return ctType.getQualifiedName();
   }

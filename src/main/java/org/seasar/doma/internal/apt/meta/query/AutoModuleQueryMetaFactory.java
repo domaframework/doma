@@ -136,7 +136,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     protected CallableSqlParameterMeta defaultAction(CtType type, Boolean p)
         throws RuntimeException {
       throw new AptException(
-          Message.DOMA4186, parameterMeta.getElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4186, parameterMeta.getElement(), new Object[] {type.getType()});
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4157, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
+            Message.DOMA4157, parameterMeta.getElement(), new Object[] {ctType.getType()});
       }
       return new EntityListParameterMeta(
           parameterMeta.getName(), ctType, resultSetAnnot.getEnsureResultMappingValue());

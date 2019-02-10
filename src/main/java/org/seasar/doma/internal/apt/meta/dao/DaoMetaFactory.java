@@ -71,8 +71,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
           .report(Kind.WARNING, Message.DOMA4026, interfaceElement, new Object[] {suffix});
     }
     daoMeta.setName(name);
-    daoMeta.setDaoElement(interfaceElement);
-    daoMeta.setDaoType(interfaceElement.asType());
+    daoMeta.setTypeElement(interfaceElement);
+    daoMeta.setType(interfaceElement.asType());
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
 
@@ -93,7 +93,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
             Message.DOMA4163,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
@@ -116,7 +116,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         } else {
           throw new AptException(
               Message.DOMA4164,
-              daoMeta.getDaoElement(),
+              daoMeta.getTypeElement(),
               daoAnnot.getAnnotationMirror(),
               daoAnnot.getConfig(),
               new Object[] {configElement.getQualifiedName()});
@@ -139,7 +139,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       } else {
         throw new AptException(
             Message.DOMA4255,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName(), methodName});
@@ -163,7 +163,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   protected void doAnnotateWith(DaoMeta daoMeta) {
     AnnotateWithAnnot annotateWithAnnot =
-        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getDaoElement());
+        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getTypeElement());
     if (annotateWithAnnot != null) {
       daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
@@ -172,7 +172,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   protected void doParentDao(DaoMeta daoMeta) {
     List<TypeElement> interfaces =
         daoMeta
-            .getDaoElement()
+            .getTypeElement()
             .getInterfaces()
             .stream()
             .map(type -> ctx.getTypes().toTypeElement(type))
@@ -192,15 +192,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         }
         throw new AptException(
             Message.DOMA4440,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             new Object[] {nonDefaultMethod.getSimpleName()});
       }
       if (daoMeta.getParentDaoMeta() != null) {
-        throw new AptException(Message.DOMA4188, daoMeta.getDaoElement(), new Object[] {});
+        throw new AptException(Message.DOMA4188, daoMeta.getTypeElement(), new Object[] {});
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot);
-      parentDaoMeta.setDaoType(typeElement.asType());
-      parentDaoMeta.setDaoElement(typeElement);
+      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
       daoMeta.setParentDaoMeta(parentDaoMeta);
     }
   }

@@ -57,7 +57,7 @@ public class SqlFileSelectQueryMetaFactory
     if (selectAnnot == null) {
       return null;
     }
-    SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method, daoMeta.getDaoElement());
+    SqlFileSelectQueryMeta queryMeta = new SqlFileSelectQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setSelectAnnot(selectAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SELECT);
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
@@ -112,7 +112,7 @@ public class SqlFileSelectQueryMetaFactory
         throw new AptException(
             Message.DOMA4246,
             method,
-            new Object[] {returnMeta.getType(), returnCtType.getBoxedTypeName()});
+            new Object[] {returnMeta.getType(), returnCtType.getBoxedType()});
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
@@ -122,7 +122,7 @@ public class SqlFileSelectQueryMetaFactory
         throw new AptException(
             Message.DOMA4265,
             method,
-            new Object[] {returnMeta.getType(), returnCtType.getBoxedTypeName()});
+            new Object[] {returnMeta.getType(), returnCtType.getBoxedType()});
       }
     } else {
       returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), null);
@@ -229,7 +229,7 @@ public class SqlFileSelectQueryMetaFactory
       public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
         if (ctType.isAbstract()) {
           throw new AptException(
-              Message.DOMA4250, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
+              Message.DOMA4250, parameterMeta.getElement(), new Object[] {ctType.getType()});
         }
         queryMeta.setEntityCtType(ctType);
         return null;
@@ -324,7 +324,7 @@ public class SqlFileSelectQueryMetaFactory
     public Void visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4263, parameterMeta.getElement(), new Object[] {ctType.getTypeName()});
+            Message.DOMA4263, parameterMeta.getElement(), new Object[] {ctType.getType()});
       }
       queryMeta.setEntityCtType(ctType);
       return null;
@@ -502,7 +502,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4007, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4007, returnMeta.getMethodElement(), new Object[] {type.getType()});
     }
 
     @Override
@@ -571,7 +571,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4271, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4271, returnMeta.getMethodElement(), new Object[] {type.getType()});
     }
 
     @Override
@@ -640,7 +640,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4235, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4235, returnMeta.getMethodElement(), new Object[] {type.getType()});
     }
 
     @Override
@@ -685,7 +685,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getType()});
     }
 
     @Override
@@ -715,7 +715,7 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     protected Void defaultAction(CtType type, Void p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getTypeName()});
+          Message.DOMA4267, returnMeta.getMethodElement(), new Object[] {type.getType()});
     }
 
     @Override

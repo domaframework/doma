@@ -25,12 +25,8 @@ public class QueryReturnMeta {
     this.daoElement = daoElement;
   }
 
-  public String getTypeName() {
-    return ctType.getTypeName();
-  }
-
-  public String getBoxedTypeName() {
-    return ctType.getBoxedTypeName();
+  public TypeMirror getBoxedType() {
+    return ctType.getBoxedType();
   }
 
   public boolean isPrimitiveInt() {

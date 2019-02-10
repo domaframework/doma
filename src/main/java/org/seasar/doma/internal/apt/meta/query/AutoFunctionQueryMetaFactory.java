@@ -35,7 +35,7 @@ public class AutoFunctionQueryMetaFactory
     if (functionAnnot == null) {
       return null;
     }
-    AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method, daoMeta.getDaoElement());
+    AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
     doTypeParameters(queryMeta, method, daoMeta);
@@ -147,7 +147,7 @@ public class AutoFunctionQueryMetaFactory
     @Override
     protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
       throw new AptException(
-          Message.DOMA4065, returnMeta.getMethodElement(), new Object[] {ctType.getTypeName()});
+          Message.DOMA4065, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
     }
 
     @Override
@@ -173,7 +173,7 @@ public class AutoFunctionQueryMetaFactory
         throws RuntimeException {
       if (ctType.isAbstract()) {
         throw new AptException(
-            Message.DOMA4156, returnMeta.getMethodElement(), new Object[] {ctType.getTypeName()});
+            Message.DOMA4156, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
       }
       return new EntityResultListParameterMeta(ctType, queryMeta.getEnsureResultMapping());
     }

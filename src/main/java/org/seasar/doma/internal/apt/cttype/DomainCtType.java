@@ -58,7 +58,7 @@ public class DomainCtType extends AbstractCtType {
       return String.format("%1$s.getSingletonInternal()", domainDescClassName);
     }
     List<TypeMirror> typeMirrors = typeArgCtTypes.stream().map(CtType::getType).collect(toList());
-    String typeArgs = String.join(",", ctx.getTypes().getTypeParameterNames(typeMirrors));
+    String typeArgs = String.join(", ", ctx.getTypes().getTypeParameterNames(typeMirrors));
     return String.format("%1$s.<%2$s>getSingletonInternal()", domainDescClassName, typeArgs);
   }
 

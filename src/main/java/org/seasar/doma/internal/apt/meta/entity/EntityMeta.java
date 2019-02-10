@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
@@ -23,7 +24,9 @@ public class EntityMeta implements TypeElementMeta {
 
   private final EntityAnnot entityAnnot;
 
-  private final TypeElement entityElement;
+  private final TypeElement typeElement;
+
+  private final TypeMirror type;
 
   private boolean immutable;
 
@@ -51,10 +54,11 @@ public class EntityMeta implements TypeElementMeta {
 
   protected boolean error;
 
-  public EntityMeta(EntityAnnot entityAnnot, TypeElement entityElement) {
+  public EntityMeta(EntityAnnot entityAnnot, TypeElement typeElement) {
     assertNotNull(entityAnnot);
     this.entityAnnot = entityAnnot;
-    this.entityElement = entityElement;
+    this.typeElement = typeElement;
+    this.type = typeElement.asType();
   }
 
   public String getEntityName() {
@@ -83,10 +87,6 @@ public class EntityMeta implements TypeElementMeta {
 
   public void setImmutable(boolean immutable) {
     this.immutable = immutable;
-  }
-
-  public TypeElement getEntityElement() {
-    return entityElement;
   }
 
   public void setTableAnnot(TableAnnot tableAnnot) {
@@ -146,12 +146,8 @@ public class EntityMeta implements TypeElementMeta {
     return generatedIdPropertyMeta;
   }
 
-  public String getEntityTypeName() {
-    return entityTypeName;
-  }
-
-  public void setEntityTypeName(String entityTypeName) {
-    this.entityTypeName = entityTypeName;
+  public TypeMirror getType() {
+    return type;
   }
 
   public boolean hasOriginalStatesMeta() {
@@ -203,7 +199,7 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public boolean isAbstract() {
-    return entityElement.getModifiers().contains(Modifier.ABSTRACT);
+    return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
   public boolean hasEmbeddedProperties() {

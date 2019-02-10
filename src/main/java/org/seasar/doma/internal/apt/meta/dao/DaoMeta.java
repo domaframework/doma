@@ -17,25 +17,25 @@ import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 
 public class DaoMeta implements TypeElementMeta {
 
-  protected final List<QueryMeta> queryMetas = new ArrayList<QueryMeta>();
+  private final List<QueryMeta> queryMetas = new ArrayList<>();
 
-  protected final DaoAnnot daoAnnot;
+  private final DaoAnnot daoAnnot;
 
-  protected AnnotateWithAnnot annotateWithAnnot;
+  private AnnotateWithAnnot annotateWithAnnot;
 
-  protected TypeMirror daoType;
+  private TypeMirror type;
 
-  protected TypeElement daoElement;
+  private TypeElement typeElement;
 
-  protected String name;
+  private String name;
 
-  protected boolean error;
+  private boolean error;
 
-  protected ParentDaoMeta parentDaoMeta;
+  private ParentDaoMeta parentDaoMeta;
 
-  protected String singletonMethodName;
+  private String singletonMethodName;
 
-  protected String singletonFieldName;
+  private String singletonFieldName;
 
   public DaoMeta(DaoAnnot daoAnnot) {
     assertNotNull(daoAnnot);
@@ -50,20 +50,20 @@ public class DaoMeta implements TypeElementMeta {
     this.name = name;
   }
 
-  public TypeMirror getDaoType() {
-    return daoType;
+  public TypeMirror getType() {
+    return type;
   }
 
-  public void setDaoType(TypeMirror daoType) {
-    this.daoType = daoType;
+  public void setType(TypeMirror type) {
+    this.type = type;
   }
 
-  public TypeElement getDaoElement() {
-    return daoElement;
+  public TypeElement getTypeElement() {
+    return typeElement;
   }
 
-  public void setDaoElement(TypeElement daoElement) {
-    this.daoElement = daoElement;
+  public void setTypeElement(TypeElement typeElement) {
+    this.typeElement = typeElement;
   }
 
   public void addQueryMeta(QueryMeta queryMeta) {
@@ -103,7 +103,7 @@ public class DaoMeta implements TypeElementMeta {
     if (annotateWithAnnot == null || annotateWithAnnot.getAnnotationsValue() == null) {
       return Collections.emptyList();
     }
-    List<AnnotationAnnot> results = new ArrayList<AnnotationAnnot>();
+    List<AnnotationAnnot> results = new ArrayList<>();
     for (AnnotationAnnot annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
       if (target.name().contentEquals(annotationAnnot.getTargetValue().getSimpleName())) {
         results.add(annotationAnnot);

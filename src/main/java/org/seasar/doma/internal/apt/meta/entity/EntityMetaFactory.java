@@ -75,7 +75,6 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     boolean immutable = resolveImmutable(classElement, entityAnnot);
     entityMeta.setImmutable(immutable);
     entityMeta.setEntityName(classElement.getSimpleName().toString());
-    entityMeta.setEntityTypeName(ctx.getTypes().getTypeName(classElement.asType()));
     Strategy strategy = createStrategy(classElement, entityMeta);
     strategy.doClassElement(classElement, entityMeta);
     strategy.doFieldElements(classElement, entityMeta);

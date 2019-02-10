@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta.domain;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.DomainAnnot;
@@ -38,10 +37,6 @@ public class DomainMeta implements TypeElementMeta {
 
   public TypeElement getTypeElement() {
     return typeElement;
-  }
-
-  public Name getQualifiedName() {
-    return typeElement.getQualifiedName();
   }
 
   public void setTypeParametersDef(TypeParametersDef typeParametersDef) {

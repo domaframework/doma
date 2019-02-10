@@ -23,7 +23,7 @@ public class AutoProcedureQueryMetaFactory
     if (procedureAnnot == null) {
       return null;
     }
-    AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method, daoMeta.getDaoElement());
+    AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
     queryMeta.setProcedureAnnot(procedureAnnot);
     doTypeParameters(queryMeta, method, daoMeta);

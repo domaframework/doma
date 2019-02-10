@@ -6,9 +6,7 @@ public interface CtType {
 
   TypeMirror getType();
 
-  String getTypeName();
-
-  String getBoxedTypeName();
+  TypeMirror getBoxedType();
 
   String getQualifiedName();
 

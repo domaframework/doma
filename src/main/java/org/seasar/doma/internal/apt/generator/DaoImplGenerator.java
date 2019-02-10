@@ -56,18 +56,22 @@ public class DaoImplGenerator extends AbstractGenerator {
       iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
     printGenerated();
-    CharSequence parentClassName = AbstractDao.class.getName();
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    if (parentDaoMeta != null) {
-      TypeElement parentDaoElement = parentDaoMeta.getDaoElement();
-      parentClassName = classNameProvider.apply(parentDaoElement);
+    if (parentDaoMeta == null) {
+      iprint(
+          "%4$s class %1$s extends %2$s implements %3$s {%n",
+          /* 1 */ simpleName,
+          /* 2 */ AbstractDao.class,
+          /* 3 */ daoMeta.getType(),
+          /* 4 */ daoMeta.getAccessLevel().getModifier());
+    } else {
+      iprint(
+          "%4$s class %1$s extends %2$s implements %3$s {%n",
+          /* 1 */ simpleName,
+          /* 2 */ classNameProvider.apply(parentDaoMeta.getTypeElement()),
+          /* 3 */ daoMeta.getType(),
+          /* 4 */ daoMeta.getAccessLevel().getModifier());
     }
-    iprint(
-        "%4$s class %1$s extends %2$s implements %3$s {%n",
-        /* 1 */ simpleName,
-        /* 2 */ parentClassName,
-        /* 3 */ daoMeta.getDaoType(),
-        /* 4 */ daoMeta.getAccessLevel().getModifier());
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
@@ -79,24 +83,24 @@ public class DaoImplGenerator extends AbstractGenerator {
   }
 
   private void printStaticFields() {
-    int i = 0;
+    int index = 0;
     for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
       QueryKind kind = queryMeta.getQueryKind();
       if (kind != QueryKind.DEFAULT) {
         iprint(
             "private static final %1$s __method%2$s = %3$s.getDeclaredMethod(%4$s.class, \"%5$s\"",
-            Method.class.getName(),
-            i,
-            AbstractDao.class.getName(),
-            daoMeta.getDaoType(),
-            queryMeta.getName());
+            /* 1 */ Method.class,
+            /* 2 */ index,
+            /* 3 */ AbstractDao.class,
+            /* 4 */ daoMeta.getType(),
+            /* 5 */ queryMeta.getName());
         for (QueryParameterMeta parameterMeta : queryMeta.getParameterMetas()) {
           print(", %1$s.class", parameterMeta.getQualifiedName());
         }
         print(");%n");
         print("%n");
       }
-      i++;
+      index++;
     }
   }
 
@@ -128,7 +132,7 @@ public class DaoImplGenerator extends AbstractGenerator {
           iprint("/**%n");
           iprint(" * @param connection the connection%n");
           iprint(" */%n");
-          iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class.getName());
+          iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class);
           indent();
           if (singletonMethodName == null) {
             if (singletonFieldName == null) {
@@ -147,7 +151,7 @@ public class DaoImplGenerator extends AbstractGenerator {
           iprint("/**%n");
           iprint(" * @param dataSource the dataSource%n");
           iprint(" */%n");
-          iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class.getName());
+          iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class);
           indent();
           if (singletonMethodName == null) {
             if (singletonFieldName == null) {
@@ -167,7 +171,7 @@ public class DaoImplGenerator extends AbstractGenerator {
         iprint("/**%n");
         iprint(" * @param config the configuration%n");
         iprint(" */%n");
-        iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class.getName());
+        iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class);
         indent();
         iprint("super(config);%n");
         unindent();
@@ -180,7 +184,7 @@ public class DaoImplGenerator extends AbstractGenerator {
           iprint(" */%n");
           iprint(
               "protected %1$s(%2$s config, %3$s connection) {%n",
-              simpleName, Config.class.getName(), Connection.class.getName());
+              simpleName, Config.class, Connection.class);
           indent();
           iprint("super(config, connection);%n");
           unindent();
@@ -192,7 +196,7 @@ public class DaoImplGenerator extends AbstractGenerator {
           iprint(" */%n");
           iprint(
               "protected %1$s(%2$s config, %3$s dataSource) {%n",
-              simpleName, Config.class.getName(), DataSource.class.getName());
+              simpleName, Config.class, DataSource.class);
           indent();
           iprint("super(config, dataSource);%n");
           unindent();
@@ -214,7 +218,7 @@ public class DaoImplGenerator extends AbstractGenerator {
           daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
         print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
       }
-      print("%1$s config) {%n", Config.class.getName());
+      print("%1$s config) {%n", Config.class);
       indent();
       iprint("super(config);%n");
       unindent();

@@ -52,8 +52,8 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     iprint(
         "public final class %1$s implements %2$s<%3$s> {%n",
         /* 1 */ simpleName,
-        /* 2 */ EmbeddableType.class.getName(),
-        /* 3 */ embeddableMeta.getEmbeddableElement().getQualifiedName());
+        /* 2 */ EmbeddableType.class,
+        /* 3 */ embeddableMeta.getEmbeddableElement());
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
@@ -82,8 +82,8 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
-        List.class.getName(), EntityPropertyType.class.getName(), NamingType.class.getName());
-    iprint("    return %1$s.asList(%n", Arrays.class.getName());
+        List.class, EntityPropertyType.class, NamingType.class);
+    iprint("    return %1$s.asList(%n", Arrays.class);
     for (Iterator<EmbeddablePropertyMeta> it =
             embeddableMeta.getEmbeddablePropertyMetas().iterator();
         it.hasNext(); ) {
@@ -97,10 +97,9 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
       String newWrapperExpr;
       if (basicCtType.isEnum()) {
         newWrapperExpr =
-            String.format(
-                "new %s(%s.class)", wrapperCtType.getTypeName(), basicCtType.getBoxedTypeName());
+            String.format("new %s(%s.class)", wrapperCtType.getType(), basicCtType.getBoxedType());
       } else {
-        newWrapperExpr = String.format("new %s()", wrapperCtType.getTypeName());
+        newWrapperExpr = String.format("new %s()", wrapperCtType.getType());
       }
       String parentEntityPropertyType = "null";
       String parentEntityBoxedTypeName = Object.class.getName();
@@ -108,13 +107,14 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
       String domainTypeName = "Object";
       if (domainCtType != null) {
         domainType = domainCtType.domainDescSingletonCode();
-        domainTypeName = domainCtType.getTypeName();
+        // TODO
+        domainTypeName = ctx.getTypes().getTypeName(domainCtType.getType());
       }
       iprint(
           "        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, () -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
-          /* 1 */ DefaultPropertyType.class.getName(),
+          /* 1 */ DefaultPropertyType.class,
           /* 2 */ null,
-          /* 3 */ basicCtType.getBoxedTypeName(),
+          /* 3 */ basicCtType.getBoxedType(),
           /* 4 */ pm.getName(),
           /* 5 */ pm.getColumnName(),
           /* 6 */ pm.isColumnInsertable(),
@@ -122,7 +122,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
           /* 8 */ null,
           /* 9 */ newWrapperExpr,
           /* 10 */ domainType,
-          /* 11 */ pm.getBoxedTypeName(),
+          /* 11 */ pm.getBoxedType(),
           /* 12 */ parentEntityPropertyType,
           /* 13 */ parentEntityBoxedTypeName,
           /* 14 */ null,
@@ -140,20 +140,18 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args) {%n",
-        embeddableMeta.getEmbeddableElement().getQualifiedName(),
-        Map.class.getName(),
-        Property.class.getName());
+        embeddableMeta.getEmbeddableElement(), Map.class, Property.class);
     if (embeddableMeta.isAbstract()) {
       iprint("    return null;%n");
     } else {
-      iprint("    return new %1$s(%n", embeddableMeta.getEmbeddableElement().getQualifiedName());
+      iprint("    return new %1$s(%n", embeddableMeta.getEmbeddableElement());
       for (Iterator<EmbeddablePropertyMeta> it =
               embeddableMeta.getEmbeddablePropertyMetas().iterator();
           it.hasNext(); ) {
         EmbeddablePropertyMeta propertyMeta = it.next();
         iprint(
             "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-            ctx.getTypes().boxIfPrimitive(propertyMeta.getType()), propertyMeta.getName());
+            propertyMeta.getBoxedType(), propertyMeta.getName());
         if (it.hasNext()) {
           print(",%n");
         }

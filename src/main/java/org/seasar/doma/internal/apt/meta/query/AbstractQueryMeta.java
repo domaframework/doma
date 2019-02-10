@@ -14,6 +14,7 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -25,9 +26,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   private final TypeElement daoElement;
 
-  private List<String> typeParameterNames = new ArrayList<>();
-
-  private List<String> thrownTypeNames = new ArrayList<>();
+  private List<TypeMirror> thrownTypes = new ArrayList<>();
 
   protected QueryKind queryKind;
 
@@ -38,6 +37,8 @@ public abstract class AbstractQueryMeta implements QueryMeta {
   private List<QueryParameterMeta> parameterMetas = new ArrayList<>();
 
   private List<String> fileNames = new ArrayList<>();
+
+  private TypeParametersDef typeParametersDef;
 
   protected AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
     assertNotNull(method);
@@ -61,22 +62,22 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     return daoElement;
   }
 
-  public void addTypeParameterName(String typeParameterName) {
-    typeParameterNames.add(typeParameterName);
-  }
-
   @Override
   public List<String> getTypeParameterNames() {
-    return typeParameterNames;
+    return typeParametersDef.getTypeParameters();
   }
 
-  public void addThrownTypeName(String thrownTypeName) {
-    thrownTypeNames.add(thrownTypeName);
+  public void setTypeParametersDef(TypeParametersDef typeParametersDef) {
+    this.typeParametersDef = typeParametersDef;
   }
 
   @Override
-  public List<String> getThrownTypeNames() {
-    return thrownTypeNames;
+  public List<TypeMirror> getThrownTypes() {
+    return thrownTypes;
+  }
+
+  public void addThrownType(TypeMirror thrownType) {
+    thrownTypes.add(thrownType);
   }
 
   public Class<? extends Query> getQueryClass() {

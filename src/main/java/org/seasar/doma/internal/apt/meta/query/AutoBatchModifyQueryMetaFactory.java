@@ -44,7 +44,7 @@ public class AutoBatchModifyQueryMetaFactory
       return null;
     }
     AutoBatchModifyQueryMeta queryMeta =
-        new AutoBatchModifyQueryMeta(method, daoMeta.getDaoElement());
+        new AutoBatchModifyQueryMeta(method, daoMeta.getTypeElement());
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(method);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);

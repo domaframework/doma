@@ -256,12 +256,14 @@ public class Elements implements javax.lang.model.util.Elements {
     return Collections.unmodifiableMap(map);
   }
 
-  public TypeParametersDef getTypeParametersDef(TypeElement typeElement) {
-    assertNotNull(typeElement);
-    Iterator<? extends TypeParameterElement> keys = typeElement.getTypeParameters().iterator();
+  public TypeParametersDef getTypeParametersDef(Parameterizable element) {
+    assertNotNull(element);
 
-    List<String> typeParameterNames = getTypeParameterNames(typeElement.getTypeParameters());
+    List<? extends TypeParameterElement> typeParameters = element.getTypeParameters();
+    List<String> typeParameterNames = getTypeParameterNames(typeParameters);
     Iterator<String> values = typeParameterNames.iterator();
+
+    Iterator<? extends TypeParameterElement> keys = typeParameters.iterator();
 
     LinkedHashMap<TypeParameterElement, String> map = new LinkedHashMap<>();
     while (keys.hasNext() && values.hasNext()) {

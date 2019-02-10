@@ -27,7 +27,7 @@ public class ArrayCreateQueryMetaFactory
     if (arrayFactoryAnnot == null) {
       return null;
     }
-    ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method, daoMeta.getDaoElement());
+    ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setArrayFactoryAnnot(arrayFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);

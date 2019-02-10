@@ -45,7 +45,7 @@ public class SqlProcessorQueryMetaFactory
     if (sqlProcessorAnnot == null) {
       return null;
     }
-    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getDaoElement());
+    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
@@ -84,7 +84,7 @@ public class SqlProcessorQueryMetaFactory
       throw new AptException(
           Message.DOMA4436,
           method,
-          new Object[] {returnMeta.getType(), resultCtType.getBoxedTypeName()});
+          new Object[] {returnMeta.getType(), resultCtType.getBoxedType()});
     }
   }
 

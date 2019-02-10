@@ -5,7 +5,7 @@ package org.seasar.doma.internal.apt.processor.domain;
  * @param <U> U
  */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class _ParameterizedOfSalary<T,U> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T,U>> {
+public final class _ParameterizedOfSalary<T, U> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.math.BigDecimal, org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T, U>> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -19,12 +19,12 @@ public final class _ParameterizedOfSalary<T,U> extends org.seasar.doma.jdbc.doma
     }
 
     @Override
-    protected org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T,U> newDomain(java.math.BigDecimal value) {
+    protected org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T, U> newDomain(java.math.BigDecimal value) {
         return org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary.of(value);
     }
 
     @Override
-    protected java.math.BigDecimal getBasicValue(org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T,U> domain) {
+    protected java.math.BigDecimal getBasicValue(org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T, U> domain) {
         if (domain == null) {
             return null;
         }
@@ -38,17 +38,17 @@ public final class _ParameterizedOfSalary<T,U> extends org.seasar.doma.jdbc.doma
 
     @SuppressWarnings("unchecked")
     @Override
-    public Class<org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T,U>> getDomainClass() {
+    public Class<org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T, U>> getDomainClass() {
         Class<?> clazz = org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary.class;
-        return (Class<org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T,U>>) clazz;
+        return (Class<org.seasar.doma.internal.apt.processor.domain.ParameterizedOfSalary<T, U>>) clazz;
     }
 
     /**
      * @return the singleton
      */
     @SuppressWarnings("unchecked")
-    public static <T,U> _ParameterizedOfSalary<T,U> getSingletonInternal() {
-        return (_ParameterizedOfSalary<T,U>) singleton;
+    public static <T, U> _ParameterizedOfSalary<T, U> getSingletonInternal() {
+        return (_ParameterizedOfSalary<T, U>) singleton;
     }
 
 }

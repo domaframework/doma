@@ -52,12 +52,8 @@ public class EmbeddablePropertyMeta {
     return ctType.getType();
   }
 
-  public String getTypeName() {
-    return ctType.getTypeName();
-  }
-
-  public String getBoxedTypeName() {
-    return ctType.getBoxedTypeName();
+  public TypeMirror getBoxedType() {
+    return ctType.getBoxedType();
   }
 
   public String getQualifiedName() {

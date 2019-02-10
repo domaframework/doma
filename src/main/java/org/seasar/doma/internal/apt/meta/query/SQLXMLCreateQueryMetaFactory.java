@@ -22,7 +22,7 @@ public class SQLXMLCreateQueryMetaFactory
     if (sqlxmlFactoryAnnot == null) {
       return null;
     }
-    SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method, daoMeta.getDaoElement());
+    SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setSqlxmlFactoryAnnot(sqlxmlFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);

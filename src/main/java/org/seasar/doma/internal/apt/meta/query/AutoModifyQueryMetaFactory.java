@@ -41,7 +41,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     if (sqlAnnot != null) {
       return null;
     }
-    AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method, daoMeta.getDaoElement());
+    AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(method, daoMeta.getTypeElement());
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(method);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
       queryMeta.setModifyAnnot(modifyAnnot);

@@ -11,6 +11,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyNameCollector;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -27,9 +28,8 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
   }
 
   protected void doTypeParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    List<String> typeParameterNames =
-        ctx.getElements().getTypeParameterNames(method.getTypeParameters());
-    typeParameterNames.forEach(queryMeta::addTypeParameterName);
+    TypeParametersDef typeParametersDef = ctx.getElements().getTypeParametersDef(method);
+    queryMeta.setTypeParametersDef(typeParametersDef);
   }
 
   protected abstract void doReturnType(M queryMeta, ExecutableElement method, DaoMeta daoMeta);
@@ -37,9 +37,7 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
   protected abstract void doParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta);
 
   protected void doThrowTypes(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    for (TypeMirror thrownType : method.getThrownTypes()) {
-      queryMeta.addThrownTypeName(ctx.getTypes().getTypeName(thrownType));
-    }
+    method.getThrownTypes().forEach(queryMeta::addThrownType);
   }
 
   protected void validateEntityPropertyNames(

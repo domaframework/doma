@@ -67,7 +67,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     String filePath = queryMeta.getPath();
     File file = getFile(queryMeta, method, filePath);
     File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
-    String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString());
+    String dirPath = SqlFileUtil.buildPath(daoMeta.getTypeElement().getQualifiedName().toString());
     String methodName = queryMeta.getName();
     for (File siblingfile : siblingfiles) {
       if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
