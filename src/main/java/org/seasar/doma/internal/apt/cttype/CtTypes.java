@@ -54,7 +54,7 @@ public class CtTypes {
   }
 
   private BatchResultCtType newBatchResultCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, BatchResult.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, BatchResult.class)) {
       return null;
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
@@ -101,7 +101,7 @@ public class CtTypes {
   }
 
   private ConfigCtType newConfigCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, Config.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, Config.class)) {
       return null;
     }
     return new ConfigCtType(ctx, type);
@@ -132,7 +132,7 @@ public class CtTypes {
             .stream()
             .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
             .collect(toList());
-    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, info.external);
+    return new DomainCtType(ctx, type, typeElement, basicCtType, typeArgCtTypes, info.external);
   }
 
   private DomainInfo getDomainInfo(TypeElement typeElement) {
@@ -178,7 +178,7 @@ public class CtTypes {
             continue;
           }
           TypeMirror[] argTypes = getConverterArgTypes(converterType);
-          if (argTypes == null || !ctx.getTypes().isSameType(domainType, argTypes[0])) {
+          if (argTypes == null || !ctx.getTypes().isSameTypeWithErasure(domainType, argTypes[0])) {
             continue;
           }
           TypeMirror valueType = argTypes[1];
@@ -204,10 +204,10 @@ public class CtTypes {
 
   private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
     for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
-      if (!ctx.getTypes().isAssignable(supertype, DomainConverter.class)) {
+      if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
       }
-      if (ctx.getTypes().isSameType(supertype, DomainConverter.class)) {
+      if (ctx.getTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
@@ -243,7 +243,7 @@ public class CtTypes {
     if (embeddable == null) {
       return null;
     }
-    return new EmbeddableCtType(ctx, type);
+    return new EmbeddableCtType(ctx, type, typeElement);
   }
 
   private EntityCtType newEntityCtType(TypeMirror type) {
@@ -255,7 +255,7 @@ public class CtTypes {
     if (entity == null) {
       return null;
     }
-    return new EntityCtType(ctx, type, entity.immutable());
+    return new EntityCtType(ctx, type, typeElement, entity.immutable());
   }
 
   private FunctionCtType newFunctionCtType(TypeMirror type) {
@@ -294,7 +294,7 @@ public class CtTypes {
   }
 
   private MapCtType newMapCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, Map.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, Map.class)) {
       return null;
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
@@ -305,10 +305,10 @@ public class CtTypes {
     if (typeArgs.size() != 2) {
       return null;
     }
-    if (!ctx.getTypes().isSameType(typeArgs.get(0), String.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(typeArgs.get(0), String.class)) {
       return null;
     }
-    if (!ctx.getTypes().isSameType(typeArgs.get(1), Object.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(typeArgs.get(1), Object.class)) {
       return null;
     }
     return new MapCtType(ctx, type);
@@ -320,7 +320,7 @@ public class CtTypes {
   }
 
   private OptionalCtType newOptionalCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, Optional.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, Optional.class)) {
       return null;
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
@@ -333,21 +333,21 @@ public class CtTypes {
   }
 
   private OptionalDoubleCtType newOptionalDoubleCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, OptionalDouble.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalDouble.class)) {
       return null;
     }
     return new OptionalDoubleCtType(ctx, type);
   }
 
   private OptionalIntCtType newOptionalIntCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, OptionalInt.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalInt.class)) {
       return null;
     }
     return new OptionalIntCtType(ctx, type);
   }
 
   private OptionalLongCtType newOptionalLongCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, OptionalLong.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalLong.class)) {
       return null;
     }
     return new OptionalLongCtType(ctx, type);
@@ -355,7 +355,7 @@ public class CtTypes {
 
   private PreparedSqlCtType newPreparedSqlCtType(TypeMirror type) {
     assertNotNull(type);
-    if (!ctx.getTypes().isSameType(type, PreparedSql.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, PreparedSql.class)) {
       return null;
     }
     return new PreparedSqlCtType(ctx, type);
@@ -372,7 +372,7 @@ public class CtTypes {
   }
 
   private ResultCtType newResultCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, Result.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, Result.class)) {
       return null;
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
@@ -385,14 +385,14 @@ public class CtTypes {
   }
 
   private SelectOptionsCtType newSelectOptionsCtType(TypeMirror type) {
-    if (!ctx.getTypes().isAssignable(type, SelectOptions.class)) {
+    if (!ctx.getTypes().isAssignableWithErasure(type, SelectOptions.class)) {
       return null;
     }
     return new SelectOptionsCtType(ctx, type);
   }
 
   private StreamCtType newStreamCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameType(type, Stream.class)) {
+    if (!ctx.getTypes().isSameTypeWithErasure(type, Stream.class)) {
       return null;
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
@@ -469,11 +469,11 @@ public class CtTypes {
   }
 
   private DeclaredType getSuperDeclaredType(TypeMirror type, Class<?> superclass) {
-    if (ctx.getTypes().isSameType(type, superclass)) {
+    if (ctx.getTypes().isSameTypeWithErasure(type, superclass)) {
       return ctx.getTypes().toDeclaredType(type);
     }
     for (TypeMirror supertype : ctx.getTypes().directSupertypes(type)) {
-      if (ctx.getTypes().isSameType(supertype, superclass)) {
+      if (ctx.getTypes().isSameTypeWithErasure(supertype, superclass)) {
         return ctx.getTypes().toDeclaredType(supertype);
       }
       DeclaredType result = getSuperDeclaredType(supertype, superclass);

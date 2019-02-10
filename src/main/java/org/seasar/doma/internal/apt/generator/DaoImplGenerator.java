@@ -4,9 +4,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.util.function.Function;
 import javax.lang.model.element.TypeElement;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
@@ -21,10 +23,18 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private final DaoMeta daoMeta;
 
-  public DaoImplGenerator(Context ctx, ClassName className, Printer printer, DaoMeta daoMeta) {
+  private final Function<TypeElement, ClassName> classNameProvider;
+
+  public DaoImplGenerator(
+      Context ctx,
+      ClassName className,
+      Printer printer,
+      DaoMeta daoMeta,
+      Function<TypeElement, ClassName> classNameProvider) {
     super(ctx, className, printer);
-    assertNotNull(daoMeta);
+    assertNotNull(daoMeta, classNameProvider);
     this.daoMeta = daoMeta;
+    this.classNameProvider = classNameProvider;
   }
 
   @Override
@@ -50,7 +60,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
     if (parentDaoMeta != null) {
       TypeElement parentDaoElement = parentDaoMeta.getDaoElement();
-      parentClassName = ctx.getClassNames().newDaoImplClassName(parentDaoElement);
+      parentClassName = classNameProvider.apply(parentDaoElement);
     }
     iprint(
         "%4$s class %1$s extends %2$s implements %3$s {%n",

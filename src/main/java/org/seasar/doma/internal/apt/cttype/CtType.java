@@ -1,27 +1,16 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 public interface CtType {
 
   TypeMirror getType();
 
-  TypeElement getTypeElement();
-
   String getTypeName();
 
   String getBoxedTypeName();
 
-  String getBoxedClassName();
-
   String getQualifiedName();
-
-  String getPackageName();
-
-  String getMetaTypeName();
-
-  String getMetaClassName();
 
   boolean isPrimitive();
 

@@ -119,7 +119,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       }
       String simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-          || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+          || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4417, typeElement, new Object[] {typeElement.getQualifiedName()});
       }
@@ -162,7 +162,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
           }
         } catch (AptException e) {
-          ctx.getNotifier().notify(e);
+          ctx.getReporter().report(e);
           embeddableMeta.setError(true);
         }
       }
@@ -265,7 +265,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             continue outer;
           }
           TypeMirror propertyType = propertyMeta.getType();
-          if (!ctx.getTypes().isSameType(paramType, propertyType)) {
+          if (!ctx.getTypes().isSameTypeWithErasure(paramType, propertyType)) {
             continue outer;
           }
           propertyMetaList.add(propertyMeta);

@@ -16,46 +16,28 @@
 package org.seasar.aptina.unit;
 
 import static org.seasar.aptina.unit.AssertionUtils.assertNotNull;
-import static org.seasar.aptina.unit.CollectionUtils.newArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-/**
- * {@link Diagnostic} を扱うユーティリティです．
- *
- * @author koichik
- */
+/** @author koichik */
 class DiagnosticUtils {
 
   private DiagnosticUtils() {}
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する {@link Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param clazz 取得するクラス
-   * @return 指定されたクラスに対する {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final Class<?> clazz) {
     assertNotNull("clazz", clazz);
     return getDiagnostics(diagnostics, clazz.getName());
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する {@link Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param className 取得するクラス名
-   * @return 指定されたクラスに対する {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics, final String className) {
     assertNotNull("className", className);
     final String name = className.replace('.', '/') + ".java";
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       final JavaFileObject source = diagnositc.getSource();
       if (source != null && source.toUri().toString().endsWith(name)) {
@@ -65,19 +47,11 @@ class DiagnosticUtils {
     return result;
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic}
-   * のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定された{@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final javax.tools.Diagnostic.Kind kind) {
     assertNotNull("kind", kind);
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       if (diagnositc.getKind().equals(kind)) {
         result.add(diagnositc);
@@ -86,15 +60,6 @@ class DiagnosticUtils {
     return result;
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link
-   * Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param clazz 取得するクラス
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final Class<?> clazz,
@@ -104,15 +69,6 @@ class DiagnosticUtils {
     return getDiagnostics(diagnostics, clazz.getName(), kind);
   }
 
-  /**
-   * {@link Diagnostic} のリストから， 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link
-   * Diagnostic} のリストを返します．
-   *
-   * @param diagnostics {@link Diagnostic} のリスト
-   * @param className 取得するクラス名
-   * @param kind 取得する {@link javax.tools.Diagnostic.Kind}
-   * @return 指定されたクラスに対する指定された {@link javax.tools.Diagnostic.Kind} を持つ {@link Diagnostic} のリスト
-   */
   public static List<Diagnostic<? extends JavaFileObject>> getDiagnostics(
       final List<Diagnostic<? extends JavaFileObject>> diagnostics,
       final String className,
@@ -120,7 +76,7 @@ class DiagnosticUtils {
     assertNotNull("className", className);
     assertNotNull("kind", kind);
     final String name = className.replace('.', '/') + ".java";
-    final List<Diagnostic<? extends JavaFileObject>> result = newArrayList();
+    final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
     for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
       final JavaFileObject source = diagnositc.getSource();
       if (source != null

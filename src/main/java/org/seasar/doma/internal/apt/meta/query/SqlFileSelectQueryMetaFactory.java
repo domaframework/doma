@@ -108,7 +108,7 @@ public class SqlFileSelectQueryMetaFactory
       FunctionCtType functionCtType = queryMeta.getFunctionCtType();
       CtType returnCtType = functionCtType.getReturnCtType();
       if (returnCtType == null
-          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
+          || !ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4246,
             method,
@@ -118,7 +118,7 @@ public class SqlFileSelectQueryMetaFactory
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
       CtType returnCtType = collectorCtType.getReturnCtType();
       if (returnCtType == null
-          || !ctx.getTypes().isSameType(returnMeta.getType(), returnCtType.getType())) {
+          || !ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4265,
             method,
@@ -440,8 +440,8 @@ public class SqlFileSelectQueryMetaFactory
     @Override
     public Void visitStreamCtType(StreamCtType ctType, Void p) throws RuntimeException {
       if (!isSuppressed(Message.DOMA4274)) {
-        ctx.getNotifier()
-            .notify(Kind.WARNING, Message.DOMA4274, returnMeta.getMethodElement(), new Object[] {});
+        ctx.getReporter()
+            .report(Kind.WARNING, Message.DOMA4274, returnMeta.getMethodElement(), new Object[] {});
       }
       queryMeta.setResultStream(true);
       ctType

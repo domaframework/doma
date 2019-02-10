@@ -4,11 +4,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Entity;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
-import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
+import org.seasar.doma.internal.apt.generator.EntityDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
@@ -37,14 +39,15 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, EntityMeta meta) {
+  protected ClassName createClassName(TypeElement typeElement, EntityMeta meta) {
     assertNotNull(typeElement, meta);
-    return ctx.getClassNames().newEntityMetaTypeClassName(typeElement);
+    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    return ClassNames.newEntityDescClassName(binaryName);
   }
 
   @Override
   protected Generator createGenerator(ClassName className, Printer printer, EntityMeta meta) {
     assertNotNull(className, meta, printer);
-    return new EntityTypeGenerator(ctx, className, printer, meta);
+    return new EntityDescGenerator(ctx, className, printer, meta);
   }
 }

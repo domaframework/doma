@@ -83,8 +83,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
         if (!validatedParameterNames.contains(parameterName)) {
           for (VariableElement parameterElement : methodElement.getParameters()) {
             if (parameterElement.getSimpleName().contentEquals(parameterName)) {
-              ctx.getNotifier()
-                  .notify(
+              ctx.getReporter()
+                  .report(
                       Kind.ERROR,
                       Message.DOMA4122,
                       parameterElement,
@@ -96,7 +96,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     } catch (AptIllegalStateException e) {
       throw e;
     } catch (AptException e) {
-      ctx.getNotifier().notify(e);
+      ctx.getReporter().report(e);
     }
   }
 
@@ -270,7 +270,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
     TypeMirror typeMirror = typeDeclaration.getType();
     List<? extends TypeMirror> typeArgs;
-    if (ctx.getTypes().isAssignable(typeMirror, Iterable.class)) {
+    if (ctx.getTypes().isAssignableWithErasure(typeMirror, Iterable.class)) {
       DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
       typeArgs = declaredType.getTypeArguments();
     } else if (ctx.getTypes().isArray(typeMirror)) {

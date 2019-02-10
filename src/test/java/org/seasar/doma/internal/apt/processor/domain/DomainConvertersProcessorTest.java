@@ -9,15 +9,15 @@ import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.processor.DomainConvertersProcessor;
 import org.seasar.doma.message.Message;
 
-public class DomainConvertersProcessorTest extends CompilerSupport {
+class DomainConvertersProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     addOption("-Adoma.test=true");
   }
 
   @Test
-  public void testDay() throws Exception {
+  void testDay() throws Exception {
     DomainConvertersProcessor processor = new DomainConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(DayConvertersProvider.class);
@@ -26,7 +26,7 @@ public class DomainConvertersProcessorTest extends CompilerSupport {
   }
 
   @Test
-  public void testEmpty() throws Exception {
+  void testEmpty() throws Exception {
     DomainConvertersProcessor processor = new DomainConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(EmptyConvertersProvider.class);
@@ -35,7 +35,7 @@ public class DomainConvertersProcessorTest extends CompilerSupport {
   }
 
   @Test
-  public void testExternalDomainNotSpecified() throws Exception {
+  void testExternalDomainNotSpecified() throws Exception {
     DomainConvertersProcessor processor = new DomainConvertersProcessor();
     addProcessor(processor);
     addCompilationUnit(ExternalDomainNotSpecifiedProvider.class);

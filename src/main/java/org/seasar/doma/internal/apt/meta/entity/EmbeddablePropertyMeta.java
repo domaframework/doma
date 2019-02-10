@@ -60,7 +60,7 @@ public class EmbeddablePropertyMeta {
     return ctType.getBoxedTypeName();
   }
 
-  public String getBoxedClassName() {
-    return ctType.getBoxedClassName();
+  public String getQualifiedName() {
+    return ctType.getQualifiedName();
   }
 }

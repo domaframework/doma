@@ -10,8 +10,8 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.JavaFileObject;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.generator.ClassName;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
@@ -50,7 +50,7 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
   protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory();
 
   protected void generate(TypeElement typeElement, M meta) {
-    ClassName className = createNameSpec(typeElement, meta);
+    ClassName className = createClassName(typeElement, meta);
     Formatter formatter = null;
     try {
       JavaFileObject file = ctx.getResources().createSourceFile(className, typeElement);
@@ -65,7 +65,7 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     }
   }
 
-  protected abstract ClassName createNameSpec(TypeElement typeElement, M meta);
+  protected abstract ClassName createClassName(TypeElement typeElement, M meta);
 
   protected abstract Generator createGenerator(ClassName className, Printer printer, M meta);
 }

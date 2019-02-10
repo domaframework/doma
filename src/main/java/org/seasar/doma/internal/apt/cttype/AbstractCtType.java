@@ -7,7 +7,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.util.MetaUtil;
 
 public abstract class AbstractCtType implements CtType {
 
@@ -17,21 +16,11 @@ public abstract class AbstractCtType implements CtType {
 
   protected final TypeElement typeElement;
 
-  private final String typeName;
-
-  private final String packageName;
+  protected final String typeName;
 
   private final String qualifiedName;
 
   private final String boxedTypeName;
-
-  private final String boxedClassName;
-
-  protected final String metaTypeName;
-
-  protected final String metaClassName;
-
-  protected final String typeParametersDeclaration;
 
   protected AbstractCtType(Context ctx, TypeMirror type) {
     assertNotNull(ctx, type);
@@ -39,37 +28,17 @@ public abstract class AbstractCtType implements CtType {
     this.type = type;
     this.typeName = ctx.getTypes().getTypeName(type);
     this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
-    this.boxedClassName = ctx.getTypes().getBoxedClassName(type);
     this.typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement != null) {
-      packageName = ctx.getElements().getPackageName(typeElement);
       qualifiedName = typeElement.getQualifiedName().toString();
-      metaClassName = MetaUtil.toFullMetaName(typeElement, ctx);
     } else {
-      packageName = "";
       qualifiedName = typeName;
-      metaClassName = typeName;
     }
-    this.typeParametersDeclaration = makeTypeParametersDeclaration(typeName);
-    this.metaTypeName = metaClassName + typeParametersDeclaration;
-  }
-
-  private static String makeTypeParametersDeclaration(String typeName) {
-    int pos = typeName.indexOf("<");
-    if (pos == -1) {
-      return "";
-    }
-    return typeName.substring(pos);
   }
 
   @Override
   public TypeMirror getType() {
     return type;
-  }
-
-  @Override
-  public TypeElement getTypeElement() {
-    return typeElement;
   }
 
   @Override
@@ -83,28 +52,8 @@ public abstract class AbstractCtType implements CtType {
   }
 
   @Override
-  public String getMetaTypeName() {
-    return metaTypeName;
-  }
-
-  @Override
-  public String getMetaClassName() {
-    return metaClassName;
-  }
-
-  @Override
   public String getQualifiedName() {
     return qualifiedName;
-  }
-
-  @Override
-  public String getPackageName() {
-    return packageName;
-  }
-
-  @Override
-  public String getBoxedClassName() {
-    return boxedClassName;
   }
 
   @Override
@@ -139,6 +88,6 @@ public abstract class AbstractCtType implements CtType {
 
   @Override
   public boolean isSameType(CtType other) {
-    return ctx.getTypes().isSameType(type, other.getType());
+    return ctx.getTypes().isSameTypeWithErasure(type, other.getType());
   }
 }

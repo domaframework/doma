@@ -67,8 +67,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     String name = interfaceElement.getSimpleName().toString();
     String suffix = ctx.getOptions().getDaoSuffix();
     if (name.endsWith(suffix)) {
-      ctx.getNotifier()
-          .notify(Kind.WARNING, Message.DOMA4026, interfaceElement, new Object[] {suffix});
+      ctx.getReporter()
+          .report(Kind.WARNING, Message.DOMA4026, interfaceElement, new Object[] {suffix});
     }
     daoMeta.setName(name);
     daoMeta.setDaoElement(interfaceElement);
@@ -109,7 +109,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                         e.getModifiers()
                             .containsAll(
                                 EnumSet.of(Modifier.STATIC, Modifier.PUBLIC, Modifier.FINAL)))
-                .filter(e -> ctx.getTypes().isAssignable(e.asType(), Config.class))
+                .filter(e -> ctx.getTypes().isAssignableWithErasure(e.asType(), Config.class))
                 .findFirst();
         if (field.isPresent()) {
           daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
@@ -129,7 +129,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
               .stream()
               .filter(
                   m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-              .filter(m -> ctx.getTypes().isAssignable(m.getReturnType(), Config.class))
+              .filter(m -> ctx.getTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
               .filter(m -> m.getParameters().isEmpty())
               .filter(m -> m.getSimpleName().toString().equals(methodName))
               .findAny()
@@ -233,7 +233,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       try {
         doMethodElement(methodElement, daoMeta);
       } catch (AptException e) {
-        ctx.getNotifier().notify(e);
+        ctx.getReporter().report(e);
         daoMeta.setError(true);
       }
     }
@@ -308,8 +308,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     Message message = Message.DOMA4220;
     if (!isSuppressed(suppress, message)) {
       for (String fileName : fileNames) {
-        ctx.getNotifier()
-            .notify(
+        ctx.getReporter()
+            .report(
                 Kind.WARNING, message, interfaceElement, new Object[] {dirPath + "/" + fileName});
       }
     }

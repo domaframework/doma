@@ -20,6 +20,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
@@ -34,41 +35,41 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   @Override
-  public ExternalDomainMeta createTypeElementMeta(TypeElement convElement) {
-    validateConverter(convElement);
-    TypeMirror[] argTypes = getConverterArgTypes(convElement.asType());
+  public ExternalDomainMeta createTypeElementMeta(TypeElement converterElement) {
+    validateConverter(converterElement);
+    TypeMirror[] argTypes = getConverterArgTypes(converterElement.asType());
     if (argTypes == null) {
       throw new AptIllegalStateException(
-          "converter doesn't have type args: " + convElement.getQualifiedName());
+          "converter doesn't have type args: " + converterElement.getQualifiedName());
     }
-    ExternalDomainMeta meta = new ExternalDomainMeta(convElement);
-    doDomainType(convElement, argTypes[0], meta);
-    doValueType(convElement, argTypes[1], meta);
+    ExternalDomainMeta meta = new ExternalDomainMeta(converterElement);
+    doDomainType(converterElement, argTypes[0], meta);
+    doValueType(converterElement, argTypes[1], meta);
     return meta;
   }
 
-  protected void validateConverter(TypeElement convElement) {
-    if (!ctx.getTypes().isAssignable(convElement.asType(), DomainConverter.class)) {
-      throw new AptException(Message.DOMA4191, convElement, new Object[] {});
+  protected void validateConverter(TypeElement converterElement) {
+    if (!ctx.getTypes().isAssignableWithErasure(converterElement.asType(), DomainConverter.class)) {
+      throw new AptException(Message.DOMA4191, converterElement, new Object[] {});
     }
-    if (convElement.getNestingKind().isNested()) {
-      throw new AptException(Message.DOMA4198, convElement, new Object[] {});
+    if (converterElement.getNestingKind().isNested()) {
+      throw new AptException(Message.DOMA4198, converterElement, new Object[] {});
     }
-    if (convElement.getModifiers().contains(Modifier.ABSTRACT)) {
-      throw new AptException(Message.DOMA4192, convElement, new Object[] {});
+    if (converterElement.getModifiers().contains(Modifier.ABSTRACT)) {
+      throw new AptException(Message.DOMA4192, converterElement, new Object[] {});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(convElement);
+    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(converterElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-      throw new AptException(Message.DOMA4193, convElement, new Object[] {});
+      throw new AptException(Message.DOMA4193, converterElement, new Object[] {});
     }
   }
 
   protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
     for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
-      if (!ctx.getTypes().isAssignable(supertype, DomainConverter.class)) {
+      if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
       }
-      if (ctx.getTypes().isSameType(supertype, DomainConverter.class)) {
+      if (ctx.getTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
         DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
@@ -84,7 +85,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   protected void doDomainType(
-      TypeElement convElement, TypeMirror domainType, ExternalDomainMeta meta) {
+      TypeElement converterElement, TypeMirror domainType, ExternalDomainMeta meta) {
     TypeElement domainElement = ctx.getTypes().toTypeElement(domainType);
     if (domainElement == null) {
       throw new AptIllegalStateException(domainType.toString());
@@ -95,7 +96,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     PackageElement pkgElement = ctx.getElements().getPackageOf(domainElement);
     if (pkgElement.isUnnamed()) {
       throw new AptException(
-          Message.DOMA4197, convElement, new Object[] {domainElement.getQualifiedName()});
+          Message.DOMA4197, converterElement, new Object[] {domainElement.getQualifiedName()});
     }
     DeclaredType declaredType = ctx.getTypes().toDeclaredType(domainType);
     if (declaredType == null) {
@@ -104,10 +105,12 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     for (TypeMirror typeArg : declaredType.getTypeArguments()) {
       if (typeArg.getKind() != TypeKind.WILDCARD) {
         throw new AptException(
-            Message.DOMA4203, convElement, new Object[] {domainElement.getQualifiedName()});
+            Message.DOMA4203, converterElement, new Object[] {domainElement.getQualifiedName()});
       }
     }
-    meta.setDomainElement(domainElement);
+    meta.setTypeElement(domainElement);
+    TypeParametersDef typeParametersDef = ctx.getElements().getTypeParametersDef(domainElement);
+    meta.setTypeParametersDef(typeParametersDef);
   }
 
   protected void validateEnclosingElement(Element element) {
@@ -117,7 +120,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     }
     String simpleName = typeElement.getSimpleName().toString();
     if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-        || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+        || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
       throw new AptException(
           Message.DOMA4280, typeElement, new Object[] {typeElement.getQualifiedName()});
     }
@@ -139,13 +142,12 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   protected void doValueType(
-      TypeElement convElement, TypeMirror valueType, ExternalDomainMeta meta) {
-    String valueTypeName = ctx.getTypes().getTypeName(valueType);
-    meta.setValueTypeName(valueTypeName);
+      TypeElement converterElement, TypeMirror valueType, ExternalDomainMeta meta) {
+    meta.setValueType(valueType);
 
     BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(valueType);
     if (basicCtType == null) {
-      throw new AptException(Message.DOMA4194, convElement, new Object[] {valueTypeName});
+      throw new AptException(Message.DOMA4194, converterElement, new Object[] {valueType});
     }
     meta.setBasicCtType(basicCtType);
   }

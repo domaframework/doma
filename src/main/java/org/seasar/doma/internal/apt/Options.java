@@ -1,14 +1,18 @@
 package org.seasar.doma.internal.apt;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import org.seasar.doma.internal.Artifact;
 
@@ -44,13 +48,17 @@ public final class Options {
 
   private final Context ctx;
 
-  public Options(Context ctx) {
+  private final Map<String, String> options;
+
+  Options(Context ctx, ProcessingEnvironment env) {
+    assertNotNull(ctx, env);
     this.ctx = ctx;
+    this.options = env.getOptions();
   }
 
   public boolean isTestEnabled() {
     String test = getOption(TEST);
-    return Boolean.valueOf(test).booleanValue();
+    return Boolean.valueOf(test);
   }
 
   public String getVersion() {
@@ -69,17 +77,15 @@ public final class Options {
 
   public boolean isDebugEnabled() {
     String debug = getOption(DEBUG);
-    return Boolean.valueOf(debug).booleanValue();
+    return Boolean.valueOf(debug);
   }
 
   public String getDaoPackage() {
-    String pkg = getOption(DAO_PACKAGE);
-    return pkg != null ? pkg : null;
+    return getOption(DAO_PACKAGE);
   }
 
   public String getDaoSubpackage() {
-    String subpackage = getOption(DAO_SUBPACKAGE);
-    return subpackage != null ? subpackage : null;
+    return getOption(DAO_SUBPACKAGE);
   }
 
   public String getDaoSuffix() {
@@ -96,27 +102,25 @@ public final class Options {
   }
 
   public String getExprFunctions() {
-    String name = getOption(EXPR_FUNCTIONS);
-    return name != null ? name : null;
+    return getOption(EXPR_FUNCTIONS);
   }
 
   public String getDomainConverters() {
-    String converters = getOption(DOMAIN_CONVERTERS);
-    return converters != null ? converters : null;
+    return getOption(DOMAIN_CONVERTERS);
   }
 
   public boolean getSqlValidation() {
     String v = getOption(SQL_VALIDATION);
-    return v != null ? Boolean.valueOf(v).booleanValue() : true;
+    return v != null ? Boolean.valueOf(v) : true;
   }
 
   public boolean getVersionValidation() {
     String v = getOption(VERSION_VALIDATION);
-    return v != null ? Boolean.valueOf(v).booleanValue() : true;
+    return v != null ? Boolean.valueOf(v) : true;
   }
 
   public String getConfigPath() {
-    String configPath = ctx.getEnv().getOptions().get(CONFIG_PATH);
+    String configPath = options.get(CONFIG_PATH);
     return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
   }
 
@@ -131,7 +135,7 @@ public final class Options {
   }
 
   private String getOption(String key) {
-    String v = ctx.getEnv().getOptions().get(key);
+    String v = options.get(key);
     if (v != null) {
       return v;
     }
@@ -139,7 +143,7 @@ public final class Options {
     return getConfig().get(key);
   }
 
-  private Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
+  private final Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
 
   private Map<String, String> getConfig() {
     FileObject config = getFileObject(getConfigPath());
@@ -168,14 +172,14 @@ public final class Options {
   @SuppressWarnings("unchecked")
   private Map<String, String> loadProperties(FileObject config) throws IOException {
     try (InputStream is = config.openInputStream();
-        InputStreamReader isr = new InputStreamReader(is, "UTF-8")) {
+        InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
       Properties props = new Properties();
       props.load(isr);
       return (Map<String, String>) new HashMap(props);
     }
   }
 
-  protected static class Constants {
+  public static class Constants {
 
     public static final String DEFAULT_DAO_SUFFIX = "Impl";
 

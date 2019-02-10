@@ -3,459 +3,194 @@ package org.seasar.doma.internal.apt.processor.domain;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
+import org.seasar.doma.internal.apt.ResourceParameterResolver;
+import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.internal.apt.processor.DomainProcessor;
 import org.seasar.doma.message.Message;
 
-public class DomainProcessorTest extends CompilerSupport {
+class DomainProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  void beforeEach() {
     addOption("-Adoma.test=true");
   }
 
-  @Test
-  public void testSalary() throws Exception {
-    Class<?> target = Salary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
+  @TestTemplate
+  @ExtendWith(SuccessInvocationContextProvider.class)
+  void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+      throws Exception {
+    addOption(options);
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(clazz);
     compile();
-    assertGeneratedSource(target);
+    assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
     assertTrue(getCompiledResult());
   }
 
-  @Test
-  public void testPrimitiveValue() throws Exception {
-    Class<?> target = PrimitiveValueDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
+  static class SuccessInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
+    }
+
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(
+          invocationContext(IntersectionParameterizedDomain.class),
+          invocationContext(UpperBoundParameterizedDomain.class),
+          invocationContext(Salary.class),
+          invocationContext(InterfaceDomain.class),
+          invocationContext(ObjectDomain.class),
+          invocationContext(NullRejectionDomain.class),
+          invocationContext(ParameterizedSalary.class),
+          invocationContext(ParameterizedOfSalary.class),
+          invocationContext(SpecificDomain.class),
+          invocationContext(OfAbstractDomain.class),
+          invocationContext(OfPrimitiveValueType.class),
+          invocationContext(OfSalary.class),
+          invocationContext(OfEnumDomain.class),
+          invocationContext(OfJobType.class),
+          invocationContext(OfPrimitiveValueDomain.class),
+          invocationContext(EnumDomain.class),
+          invocationContext(PackagePrivateDomain.class),
+          invocationContext(Outer.class, Outer.Inner.class),
+          invocationContext(Outer_deepInner.class, Outer_deepInner.Middle.Inner.class),
+          invocationContext(InterfaceOuter.class, InterfaceOuter.Inner.class),
+          invocationContext(VersionCheckSuppressedDomain.class, "-Adoma.version.validation=false"),
+          invocationContext(LombokValue.class, "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(PrimitiveValueDomain.class));
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> compilationUnit, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return compilationUnit.getSimpleName();
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(compilationUnit),
+              new ResourceParameterResolver(compilationUnit),
+              new GeneratedClassNameParameterResolver(compilationUnit),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> compilationUnit, Class<?> annotatedClass, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return compilationUnit.getSimpleName();
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(compilationUnit),
+              new ResourceParameterResolver(compilationUnit),
+              new GeneratedClassNameParameterResolver(annotatedClass),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
   }
 
-  @Test
-  public void testEnum() throws Exception {
-    Class<?> target = EnumDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testUnsupportedValueType() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(UnsupportedValueTypeDomain.class);
+  @TestTemplate
+  @ExtendWith(ErrorInvocationContextProvider.class)
+  void error(Class clazz, Message message, String... options) throws Exception {
+    addOption(options);
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4102);
+    assertMessage(message);
   }
 
-  @Test
-  public void testConstrutorNotFound() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(ConstrutorNotFoundDomain.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4103);
-  }
+  static class ErrorInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
+    }
 
-  @Test
-  public void testAccessorNotFound() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(AccessorNotFoundDomain.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4104);
-  }
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(
+          invocationContext(UnsupportedValueTypeDomain.class, Message.DOMA4102),
+          invocationContext(AnnotationDomain.class, Message.DOMA4105),
+          invocationContext(InterfaceNew.class, Message.DOMA4268),
+          invocationContext(IllegalAcceptNullDomain.class, Message.DOMA4251),
+          invocationContext(IllegalTypeParameterizedOfSalary.class, Message.DOMA4106),
+          invocationContext(AbstractDomain.class, Message.DOMA4132),
+          invocationContext(JobType.class, Message.DOMA4184),
+          invocationContext(AccessorNotFoundDomain.class, Message.DOMA4104),
+          invocationContext(Outer_nonStaticInner.class, Message.DOMA4275),
+          invocationContext(Outer_nonPublicInner.class, Message.DOMA4275),
+          invocationContext(Outer_nonPublicMiddle.class, Message.DOMA4275),
+          invocationContext(Outer__illegalName.class, Message.DOMA4277),
+          invocationContext(
+              LombokValueStaticConstructor.class,
+              Message.DOMA4428,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokValueNoField.class,
+              Message.DOMA4430,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokValueTwoFields.class,
+              Message.DOMA4431,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokValueTypeNotAssignable.class,
+              Message.DOMA4432,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokValueAccessorMethod.class,
+              Message.DOMA4429,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokValueAccessorMethod_boolean.class,
+              Message.DOMA4429,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(ConstrutorNotFoundDomain.class, Message.DOMA4103));
+    }
 
-  @Test
-  public void testInner() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer.class);
-    compile();
-    assertGeneratedSource(Outer.Inner.class);
-    assertTrue(getCompiledResult());
-  }
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> clazz, Message message, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return clazz.getSimpleName();
+        }
 
-  @Test
-  public void testInner_deep() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_deepInner.class);
-    compile();
-    assertGeneratedSource(Outer_deepInner.Middle.Inner.class);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testInner_nonStatic() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonStaticInner.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4275);
-  }
-
-  @Test
-  public void testInner_nonPublic() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonPublicInner.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4275);
-  }
-
-  @Test
-  public void testInner_illegalName() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer__illegalName.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4277);
-  }
-
-  @Test
-  public void testMiddle_nonPublic() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonPublicMiddle.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4275);
-  }
-
-  @Test
-  public void testPackagePrivate() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(PackagePrivateDomain.class);
-    compile();
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testJobType() throws Exception {
-    Class<?> target = JobType.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4184);
-  }
-
-  @Test
-  public void testAbstractDomain() throws Exception {
-    Class<?> target = AbstractDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4132);
-  }
-
-  @Test
-  public void testOfSalary() throws Exception {
-    Class<?> target = OfSalary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOfPrimitiveValue() throws Exception {
-    Class<?> target = OfPrimitiveValueDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOfEnum() throws Exception {
-    Class<?> target = OfEnumDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOfJobType() throws Exception {
-    Class<?> target = OfJobType.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOfPrimitiveValueType() throws Exception {
-    Class<?> target = OfPrimitiveValueType.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOfAbstractDomain() throws Exception {
-    Class<?> target = OfAbstractDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testGenericDomain() throws Exception {
-    Class<?> target = SpecificDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testVersionCheckSuppressed() throws Exception {
-    addOption("-Adoma.version.validation=false");
-    Class<?> target = VersionCheckSuppressedDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testParametarizedSalary() throws Exception {
-    Class<?> target = ParametarizedSalary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testParametarizedOfSalary() throws Exception {
-    Class<?> target = ParametarizedOfSalary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testIllegalSizeParametarizedOfSalary() throws Exception {
-    Class<?> target = IllegalSizeParametarizedOfSalary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertMessage(Message.DOMA4106);
-  }
-
-  @Test
-  public void testIllegalTypeParametarizedOfSalary() throws Exception {
-    Class<?> target = IllegalTypeParametarizedOfSalary.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertMessage(Message.DOMA4106);
-  }
-
-  @Test
-  public void testNullRejection() throws Exception {
-    Class<?> target = NullRejectionDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testIllegalAcceptNullDomain() throws Exception {
-    Class<?> target = IllegalAcceptNullDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertMessage(Message.DOMA4251);
-  }
-
-  @Test
-  public void testObjectDomain() throws Exception {
-    Class<?> target = ObjectDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testInterface() throws Exception {
-    Class<?> target = InterfaceDomain.class;
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testInterfaceFactoryOfAttributeMustNotBeNew() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(InterfaceNew.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4268);
-  }
-
-  @Test
-  public void testInterfaceInner() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(InterfaceOuter.class);
-    compile();
-    assertGeneratedSource(InterfaceOuter.Inner.class);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testAnnotationMustNotBeDomainClass() throws Exception {
-    DomainProcessor processor = new DomainProcessor();
-    addProcessor(processor);
-    addCompilationUnit(AnnotationDomain.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4105);
-  }
-
-  @Test
-  public void testLombokValue() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValue.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testLombokValueStaticConstructor() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueStaticConstructor.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4428);
-  }
-
-  @Test
-  public void testLombokValueNoField() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueNoField.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4430);
-  }
-
-  @Test
-  public void testLombokValueTwoFields() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueTwoFields.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4431);
-  }
-
-  @Test
-  public void testLombokValueTypeNotAssignable() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueTypeNotAssignable.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4432);
-  }
-
-  @Test
-  public void testLombokValueAccessorMethod() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueAccessorMethod.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4429);
-  }
-
-  @Test
-  public void testLombokValueAccessorMethod_boolean() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    DomainProcessor processor = new DomainProcessor();
-    Class<?> target = LombokValueAccessorMethod_boolean.class;
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4429);
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(clazz),
+              new SimpleParameterResolver(message),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
   }
 }

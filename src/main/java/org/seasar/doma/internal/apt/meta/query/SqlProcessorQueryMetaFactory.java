@@ -89,11 +89,11 @@ public class SqlProcessorQueryMetaFactory
   }
 
   protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta, CtType resultCtType) {
-    if (ctx.getTypes().isSameType(returnMeta.getType(), resultCtType.getType())) {
+    if (ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), resultCtType.getType())) {
       return true;
     }
     if (returnMeta.getType().getKind() == TypeKind.VOID) {
-      return ctx.getTypes().isSameType(resultCtType.getType(), Void.class);
+      return ctx.getTypes().isSameTypeWithErasure(resultCtType.getType(), Void.class);
     }
     return false;
   }

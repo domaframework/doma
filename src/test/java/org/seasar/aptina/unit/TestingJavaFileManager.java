@@ -15,42 +15,27 @@
  */
 package org.seasar.aptina.unit;
 
-import static org.seasar.aptina.unit.CollectionUtils.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.processing.Processor;
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
-/**
- * {@link Processor}をテストする環境用の{@link JavaFileManager}の実装です。
- *
- * @author koichik
- */
+/** @author koichik */
 class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
-  final Map<String, InMemoryJavaFileObject> fileObjects = newHashMap();
-
-  final Map<String, InMemoryJavaFileObject> javaFileObjects = newHashMap();
+  final Map<String, InMemoryJavaFileObject> fileObjects = new HashMap<>();
 
   final Charset charset;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param fileManager 移譲先となる{@link StandardJavaFileManager}
-   * @param charset 文字セット
-   */
   public TestingJavaFileManager(final StandardJavaFileManager fileManager, final Charset charset) {
     super(fileManager);
     this.charset = charset;
@@ -164,15 +149,6 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     return super.isSameFile(lhs, rhs);
   }
 
-  /**
-   * 生成された {@link JavaFileObject} を返します．
-   *
-   * @param location ロケーション
-   * @param className クラスの完全限定名
-   * @param kind ファイルの種類
-   * @return 生成された {@link JavaFileObject}
-   * @throws IOException 入出力例外が発生した場合
-   */
   public JavaFileObject getGeneratedJavaFile(
       final Location location, final String className, final Kind kind) throws IOException {
     final String key = kind.name() + "::" + className;

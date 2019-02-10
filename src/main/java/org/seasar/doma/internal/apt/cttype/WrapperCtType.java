@@ -114,46 +114,46 @@ public class WrapperCtType extends AbstractCtType {
       if (Object.class.getName().equals(name)) {
         return ObjectWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, BigDecimal.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, BigDecimal.class)) {
         return BigDecimalWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, BigInteger.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, BigInteger.class)) {
         return BigIntegerWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Time.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Time.class)) {
         return TimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Timestamp.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Timestamp.class)) {
         return TimestampWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Date.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Date.class)) {
         return DateWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, java.util.Date.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, java.util.Date.class)) {
         return UtilDateWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, LocalTime.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalTime.class)) {
         return LocalTimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, LocalDateTime.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalDateTime.class)) {
         return LocalDateTimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, LocalDate.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalDate.class)) {
         return LocalDateWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Array.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Array.class)) {
         return ArrayWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Blob.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Blob.class)) {
         return BlobWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, NClob.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, NClob.class)) {
         return NClobWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, Clob.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, Clob.class)) {
         return ClobWrapper.class;
       }
-      if (ctx.getTypes().isAssignable(t, SQLXML.class)) {
+      if (ctx.getTypes().isAssignableWithErasure(t, SQLXML.class)) {
         return SQLXMLWrapper.class;
       }
       return null;

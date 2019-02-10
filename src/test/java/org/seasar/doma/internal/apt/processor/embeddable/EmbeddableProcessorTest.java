@@ -3,174 +3,163 @@ package org.seasar.doma.internal.apt.processor.embeddable;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
+import org.seasar.doma.internal.apt.ResourceParameterResolver;
+import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
 import org.seasar.doma.internal.apt.lombok.Value;
 import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.message.Message;
 
-public class EmbeddableProcessorTest extends CompilerSupport {
+class EmbeddableProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  protected void setUp() throws Exception {
-    addSourcePath("src/test/java");
+  void setUp() {
     addOption("-Adoma.test=true");
   }
 
-  @Test
-  public void testSimple() throws Exception {
-    Class<?> target = Address.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
+  @TestTemplate
+  @ExtendWith(SuccessInvocationContextProvider.class)
+  void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+      throws Exception {
+    addOption(options);
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(clazz);
     compile();
-    assertGeneratedSource(target);
+    assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
     assertTrue(getCompiledResult());
   }
 
-  @Test
-  public void testInheritance() throws Exception {
-    Class<?> target = Derived.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
+  static class SuccessInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
+    }
+
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(
+          invocationContext(Address.class),
+          invocationContext(NotTopLevel.class, NotTopLevel.Address.class),
+          invocationContext(AbstractEmbeddable.class),
+          invocationContext(LombokValue.class, "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokAllArgsConstructor.class,
+              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
+          invocationContext(Derived.class));
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> compilationUnit, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return compilationUnit.getSimpleName();
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(compilationUnit),
+              new ResourceParameterResolver(compilationUnit),
+              new GeneratedClassNameParameterResolver(compilationUnit),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> compilationUnit, Class<?> annotatedClass, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return compilationUnit.getSimpleName();
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(compilationUnit),
+              new ResourceParameterResolver(compilationUnit),
+              new GeneratedClassNameParameterResolver(annotatedClass),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
   }
 
-  @Test
-  public void testAbstract() throws Exception {
-    Class<?> target = AbstractEmbeddable.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testNotTopLevel() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(NotTopLevel.class);
-    compile();
-    assertGeneratedSource(NotTopLevel.Address.class);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testOuter_nonStatic() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonStaticInner.class);
+  @TestTemplate
+  @ExtendWith(ErrorInvocationContextProvider.class)
+  void error(Class clazz, Message message, String... options) throws Exception {
+    addOption(options);
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4415);
+    assertMessage(message);
   }
 
-  @Test
-  public void testOuter_nonPublic() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonPublicInner.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4415);
-  }
+  static class ErrorInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
+    }
 
-  @Test
-  public void testOuter_nonPublicMiddle() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer_nonPublicMiddle.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4415);
-  }
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(
+          invocationContext(Outer_nonStaticInner.class, Message.DOMA4415),
+          invocationContext(Outer_nonPublicInner.class, Message.DOMA4415),
+          invocationContext(Outer_nonPublicMiddle.class, Message.DOMA4415),
+          invocationContext(
+              LombokValueStaticConstructor.class,
+              Message.DOMA4423,
+              "-Adoma.lombok.Value=" + Value.class.getName()),
+          invocationContext(
+              LombokAllArgsConstructorStaticName.class,
+              Message.DOMA4424,
+              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
+          invocationContext(
+              LombokAllArgsConstructorAccess_private.class,
+              Message.DOMA4425,
+              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
+          invocationContext(
+              LombokAllArgsConstructorAccess_none.class,
+              Message.DOMA4427,
+              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
+          invocationContext(Outer__illegalName.class, Message.DOMA4417));
+    }
 
-  @Test
-  public void testOuter__illegalName() throws Exception {
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(Outer__illegalName.class);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4417);
-  }
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> clazz, Message message, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return clazz.getSimpleName();
+        }
 
-  @Test
-  public void testLombokValue() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    Class<?> target = LombokValue.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testLombokValueStaticConstructor() throws Exception {
-    addOption("-Adoma.lombok.Value=" + Value.class.getName());
-    Class<?> target = LombokValueStaticConstructor.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4423);
-  }
-
-  @Test
-  public void testLombokAllArgsConstructor() throws Exception {
-    addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
-    Class<?> target = LombokAllArgsConstructor.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertGeneratedSource(target);
-    assertTrue(getCompiledResult());
-  }
-
-  @Test
-  public void testLombokAllArgsConstructorStaticName() throws Exception {
-    addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
-    Class<?> target = LombokAllArgsConstructorStaticName.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4424);
-  }
-
-  @Test
-  public void testLombokAllArgsConstructorAccess_private() throws Exception {
-    addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
-    Class<?> target = LombokAllArgsConstructorAccess_private.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4425);
-  }
-
-  @Test
-  public void testLombokAllArgsConstructorAccess_none() throws Exception {
-    addOption("-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName());
-    Class<?> target = LombokAllArgsConstructorAccess_none.class;
-    EmbeddableProcessor processor = new EmbeddableProcessor();
-    addProcessor(processor);
-    addCompilationUnit(target);
-    compile();
-    assertFalse(getCompiledResult());
-    assertMessage(Message.DOMA4427);
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(clazz),
+              new SimpleParameterResolver(message),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
   }
 }

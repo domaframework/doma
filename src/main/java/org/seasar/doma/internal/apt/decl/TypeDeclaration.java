@@ -83,13 +83,14 @@ public class TypeDeclaration {
   }
 
   public boolean isBooleanType() {
-    return type.getKind() == TypeKind.BOOLEAN || ctx.getTypes().isSameType(type, Boolean.class);
+    return type.getKind() == TypeKind.BOOLEAN
+        || ctx.getTypes().isSameTypeWithErasure(type, Boolean.class);
   }
 
   public boolean isTextType() {
     return type.getKind() == TypeKind.CHAR
-        || ctx.getTypes().isSameType(type, String.class)
-        || ctx.getTypes().isSameType(type, Character.class);
+        || ctx.getTypes().isSameTypeWithErasure(type, String.class)
+        || ctx.getTypes().isSameTypeWithErasure(type, Character.class);
   }
 
   public boolean isNumberType() {
@@ -112,7 +113,7 @@ public class TypeDeclaration {
   }
 
   public boolean is(Class<?> clazz) {
-    return ctx.getTypes().isSameType(type, clazz);
+    return ctx.getTypes().isSameTypeWithErasure(type, clazz);
   }
 
   public List<TypeParameterDeclaration> getTypeParameterDeclarations() {
@@ -160,7 +161,7 @@ public class TypeDeclaration {
         while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
           TypeMirror t1 = ctx.getTypes().boxIfPrimitive(typeDeclIterator.next().getType());
           TypeMirror t2 = ctx.getTypes().boxIfPrimitive(valueElementIterator.next().asType());
-          if (!ctx.getTypes().isAssignable(t1, t2)) {
+          if (!ctx.getTypes().isAssignableWithErasure(t1, t2)) {
             continue outer;
           }
         }
@@ -182,7 +183,7 @@ public class TypeDeclaration {
       while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
         TypeMirror t1 = ctx.getTypes().boxIfPrimitive(typeDeclIterator.next().getType());
         TypeMirror t2 = ctx.getTypes().boxIfPrimitive(valueElementIterator.next().asType());
-        if (!ctx.getTypes().isSameType(t1, t2)) {
+        if (!ctx.getTypes().isSameTypeWithErasure(t1, t2)) {
           continue outer;
         }
       }
@@ -309,7 +310,7 @@ public class TypeDeclaration {
         while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
           TypeMirror t1 = ctx.getTypes().boxIfPrimitive(typeDeclIterator.next().getType());
           TypeMirror t2 = ctx.getTypes().boxIfPrimitive(valueElementIterator.next().asType());
-          if (!ctx.getTypes().isAssignable(t1, t2)) {
+          if (!ctx.getTypes().isAssignableWithErasure(t1, t2)) {
             continue outer;
           }
         }
@@ -347,7 +348,7 @@ public class TypeDeclaration {
       for (MethodDeclaration hider : hiders) {
         TypeMirror subtype = hider.getElement().getEnclosingElement().asType();
         TypeMirror supertype = hidden.getElement().getEnclosingElement().asType();
-        if (ctx.getTypes().isAssignable(subtype, supertype)) {
+        if (ctx.getTypes().isAssignableWithErasure(subtype, supertype)) {
           if (ctx.getElements().hides(hider.getElement(), hidden.getElement())) {
             it.remove();
             break;
@@ -367,7 +368,7 @@ public class TypeDeclaration {
       while (typeDeclIterator.hasNext() && valueElementIterator.hasNext()) {
         TypeMirror t1 = ctx.getTypes().boxIfPrimitive(typeDeclIterator.next().getType());
         TypeMirror t2 = ctx.getTypes().boxIfPrimitive(valueElementIterator.next().asType());
-        if (!ctx.getTypes().isAssignable(t1, t2)) {
+        if (!ctx.getTypes().isAssignableWithErasure(t1, t2)) {
           continue outer;
         }
       }
@@ -393,7 +394,7 @@ public class TypeDeclaration {
   }
 
   public boolean isSameType(TypeDeclaration other) {
-    if (ctx.getTypes().isSameType(this.type, other.type)) {
+    if (ctx.getTypes().isSameTypeWithErasure(this.type, other.type)) {
       return true;
     }
     if (this.isNumberType()) {

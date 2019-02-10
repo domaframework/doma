@@ -4,11 +4,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Domain;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.ClassName;
-import org.seasar.doma.internal.apt.generator.DomainTypeGenerator;
+import org.seasar.doma.internal.apt.generator.DomainDescGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
@@ -34,14 +36,15 @@ public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
   }
 
   @Override
-  protected ClassName createNameSpec(TypeElement typeElement, DomainMeta meta) {
+  protected ClassName createClassName(TypeElement typeElement, DomainMeta meta) {
     assertNotNull(typeElement, meta);
-    return ctx.getClassNames().newDomainMetaTypeClassName(typeElement);
+    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    return ClassNames.newDomainDescClassName(binaryName);
   }
 
   @Override
   protected Generator createGenerator(ClassName className, Printer printer, DomainMeta meta) {
     assertNotNull(className, meta, printer);
-    return new DomainTypeGenerator(ctx, className, printer, meta);
+    return new DomainDescGenerator(ctx, className, printer, meta);
   }
 }

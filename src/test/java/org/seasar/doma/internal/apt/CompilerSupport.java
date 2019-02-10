@@ -1,12 +1,12 @@
 package org.seasar.doma.internal.apt;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.seasar.aptina.unit.SourceNotGeneratedException;
 import org.seasar.doma.message.Message;
 
 public abstract class CompilerSupport {
@@ -26,6 +26,9 @@ public abstract class CompilerSupport {
   }
 
   protected void addOption(final String... options) {
+    if (options.length == 0) {
+      return;
+    }
     compiler.addOption(options);
   }
 
@@ -45,12 +48,18 @@ public abstract class CompilerSupport {
     return compiler.getCompiledResult();
   }
 
-  protected void assertGeneratedSource(Class<?> originalClass) throws Exception {
-    compiler.assertGeneratedSource(originalClass);
+  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
+    return compiler.getDiagnostics();
   }
 
-  protected String getExpectedContent() throws Exception {
-    return compiler.getExpectedContent();
+  protected void assertEqualsGeneratedSourceWithResource(
+      final URL expectedResourceUrl, final String className) throws Exception {
+    try {
+      compiler.assertEqualsGeneratedSourceWithResource(expectedResourceUrl, className);
+    } catch (AssertionError error) {
+      System.out.println(compiler.getGeneratedSource(className));
+      throw error;
+    }
   }
 
   protected void assertMessage(Message message) {
@@ -59,19 +68,5 @@ public abstract class CompilerSupport {
 
   protected void assertNoMessage() {
     compiler.assertNoMessage();
-  }
-
-  protected List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
-    return compiler.getDiagnostics();
-  }
-
-  protected void assertEqualsGeneratedSource(final CharSequence expected, final String className)
-      throws IOException {
-    compiler.assertEqualsGeneratedSource(expected, className);
-  }
-
-  protected String getGeneratedSource(final String className)
-      throws IllegalStateException, IOException, SourceNotGeneratedException {
-    return compiler.getGeneratedSource(className);
   }
 }

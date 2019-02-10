@@ -1,10 +1,13 @@
 package org.seasar.doma.internal.apt.cttype;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.Constants;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
 
 public class DomainCtType extends AbstractCtType {
@@ -13,19 +16,25 @@ public class DomainCtType extends AbstractCtType {
 
   private final List<CtType> typeArgCtTypes;
 
-  private final boolean external;
+  private final ClassName domainDescClassName;
 
   DomainCtType(
       Context ctx,
-      TypeMirror domainType,
+      TypeMirror type,
+      TypeElement typeElement,
       BasicCtType basicCtType,
       List<CtType> typeArgCtTypes,
       boolean external) {
-    super(ctx, domainType);
+    super(ctx, type);
     assertNotNull(basicCtType, typeArgCtTypes);
     this.basicCtType = basicCtType;
     this.typeArgCtTypes = typeArgCtTypes;
-    this.external = external;
+    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
+    if (external) {
+      this.domainDescClassName = ClassNames.newExternalDomainDescClassName(binaryName);
+    } else {
+      this.domainDescClassName = ClassNames.newDomainDescClassName(binaryName);
+    }
   }
 
   public BasicCtType getBasicCtType() {
@@ -44,20 +53,13 @@ public class DomainCtType extends AbstractCtType {
     return typeArgCtTypes.stream().anyMatch(CtType::isTypevar);
   }
 
-  public String getInstantiationCommand() {
-    return normalize(metaClassName) + "." + typeParametersDeclaration + "getSingletonInternal()";
-  }
-
-  @Override
-  public String getMetaTypeName() {
-    return normalize(metaTypeName);
-  }
-
-  protected String normalize(String name) {
-    if (external) {
-      return Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE + "." + name;
+  public String domainDescSingletonCode() {
+    if (typeArgCtTypes.isEmpty()) {
+      return String.format("%1$s.getSingletonInternal()", domainDescClassName);
     }
-    return name;
+    List<TypeMirror> typeMirrors = typeArgCtTypes.stream().map(CtType::getType).collect(toList());
+    String typeArgs = String.join(",", ctx.getTypes().getTypeParameterNames(typeMirrors));
+    return String.format("%1$s.<%2$s>getSingletonInternal()", domainDescClassName, typeArgs);
   }
 
   @Override
