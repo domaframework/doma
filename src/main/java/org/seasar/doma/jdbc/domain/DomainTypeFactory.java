@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
-import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
@@ -54,7 +54,7 @@ public final class DomainTypeFactory {
           "domainClass", Message.DOMA2205.getMessage(domainClass.getName()));
     }
     String domainTypeClassName =
-        Conventions.newDomainTypeClassName(domainClass.getName()).toString();
+        ClassNames.newDomainDescClassName(domainClass.getName()).toString();
     try {
       Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
@@ -104,7 +104,7 @@ public final class DomainTypeFactory {
             domainClass,
             c -> {
               String domainTypeClassName =
-                  Conventions.newExternalDomainTypClassName(c.getName()).toString();
+                  ClassNames.newExternalDomainDescClassName(c.getName()).toString();
               try {
                 return classHelper.forName(domainTypeClassName);
               } catch (WrapException e) {

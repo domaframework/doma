@@ -2,32 +2,22 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.TypeParameterElement;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class ExternalDomainTypeGenerator extends AbstractGenerator {
+public class ExternalDomainDescGenerator extends AbstractGenerator {
 
   private final ExternalDomainMeta domainMeta;
 
-  private final String domainTypeName;
-
-  private final String typeParamDecl;
-
-  private final boolean parameterized;
-
-  public ExternalDomainTypeGenerator(
-      Context ctx, TypeName typeName, Printer printer, ExternalDomainMeta domainMeta) {
-    super(ctx, typeName, printer);
+  public ExternalDomainDescGenerator(
+      Context ctx, ClassName className, Printer printer, ExternalDomainMeta domainMeta) {
+    super(ctx, className, printer);
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;
-    this.domainTypeName = typeName.getTypeName();
-    this.typeParamDecl = typeName.getTypeParametersDeclaration();
-    this.parameterized = !domainMeta.getDomainElement().getTypeParameters().isEmpty();
   }
 
   @Override
@@ -44,23 +34,32 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   }
 
   private void printClass() {
-    if (domainMeta.getDomainElement().getTypeParameters().isEmpty()) {
-      iprint("/** */%n");
-    } else {
+    if (domainMeta.isParameterized()) {
       iprint("/**%n");
-      for (TypeParameterElement typeParam : domainMeta.getDomainElement().getTypeParameters()) {
-        iprint(" * @param <%1$s> %1$s%n", typeParam.getSimpleName());
+      for (String typeVariable : domainMeta.getTypeVariables()) {
+        iprint(" * @param <%1$s> %1$s%n", typeVariable);
       }
       iprint(" */%n");
+    } else {
+      iprint("/** */%n");
     }
     printGenerated();
-    iprint(
-        "public final class %1$s%5$s extends %2$s<%3$s, %4$s> {%n",
-        simpleName,
-        AbstractDomainType.class.getName(),
-        domainMeta.getValueTypeName(),
-        domainTypeName,
-        typeParamDecl);
+    if (domainMeta.isParameterized()) {
+      iprint(
+          "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
+          /* 1 */ simpleName,
+          /* 2 */ AbstractDomainType.class.getName(),
+          /* 3 */ domainMeta.getValueType(),
+          /* 4 */ domainMeta.getType(),
+          /* 5 */ domainMeta.getTypeParameters());
+    } else {
+      iprint(
+          "public final class %1$s extends %2$s<%3$s, %4$s> {%n",
+          /* 1 */ simpleName,
+          /* 2 */ AbstractDomainType.class.getName(),
+          /* 3 */ domainMeta.getValueType(),
+          /* 4 */ domainMeta.getType());
+    }
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
@@ -73,14 +72,14 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   }
 
   private void printFields() {
-    if (parameterized) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"rawtypes\")%n");
     }
     iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
     print("%n");
     iprint(
         "private static final %1$s converter = new %1$s();%n",
-        domainMeta.getTypeElement().getQualifiedName());
+        domainMeta.getConverterElement().getQualifiedName());
     print("%n");
   }
 
@@ -91,10 +90,10 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     if (basicCtType.isEnum()) {
       iprint(
           "    super(() -> new %1$s(%2$s.class));%n",
-          wrapperCtType.getTypeName(), domainMeta.getValueTypeName());
+          wrapperCtType.getType(), domainMeta.getValueType());
       iprint("}%n");
     } else {
-      iprint("    super(() -> new %1$s());%n", wrapperCtType.getTypeName());
+      iprint("    super(() -> new %1$s());%n", wrapperCtType.getType());
       iprint("}%n");
     }
     print("%n");
@@ -109,14 +108,15 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   }
 
   private void printNewDomainMethod() {
-    if (parameterized) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
     iprint("@Override%n");
     iprint(
-        "protected %1$s newDomain(%2$s value) {%n", domainTypeName, domainMeta.getValueTypeName());
-    if (parameterized) {
-      iprint("    return (%1$s) converter.fromValueToDomain(value);%n", domainTypeName);
+        "protected %1$s newDomain(%2$s value) {%n",
+        domainMeta.getType(), domainMeta.getValueType());
+    if (domainMeta.isParameterized()) {
+      iprint("    return (%1$s) converter.fromValueToDomain(value);%n", domainMeta.getType());
     } else {
       iprint("    return converter.fromValueToDomain(value);%n");
     }
@@ -128,7 +128,7 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s getBasicValue(%2$s domain) {%n",
-        domainMeta.getValueTypeName(), domainTypeName);
+        domainMeta.getValueType(), domainMeta.getType());
     iprint("    if (domain == null) {%n");
     iprint("        return null;%n");
     iprint("    }%n");
@@ -140,23 +140,22 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   private void printGetBasicClassMethod() {
     iprint("@Override%n");
     iprint("public Class<?> getBasicClass() {%n");
-    iprint("    return %1$s.class;%n", domainMeta.getValueTypeName());
+    iprint("    return %1$s.class;%n", domainMeta.getValueType());
     iprint("}%n");
     print("%n");
   }
 
   private void printGetDomainClassMethod() {
-    if (parameterized) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
     iprint("@Override%n");
-    iprint("public Class<%1$s> getDomainClass() {%n", domainTypeName);
-    if (parameterized) {
-      iprint(
-          "    Class<?> clazz = %1$s.class;%n", domainMeta.getDomainElement().getQualifiedName());
-      iprint("    return (Class<%1$s>) clazz;%n", domainTypeName);
+    iprint("public Class<%1$s> getDomainClass() {%n", domainMeta.getType());
+    if (domainMeta.isParameterized()) {
+      iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getQualifiedName());
+      iprint("    return (Class<%1$s>) clazz;%n", domainMeta.getType());
     } else {
-      iprint("    return %1$s.class;%n", domainMeta.getDomainElement().getQualifiedName());
+      iprint("    return %1$s.class;%n", domainMeta.getQualifiedName());
     }
     iprint("}%n");
     print("%n");
@@ -166,10 +165,14 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
     iprint("/**%n");
     iprint(" * @return the singleton%n");
     iprint(" */%n");
-    if (parameterized) {
+    if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
-      iprint("public static %1$s %2$s%1$s getSingletonInternal() {%n", typeParamDecl, simpleName);
-      iprint("    return (%2$s%1$s) singleton;%n", typeParamDecl, simpleName);
+      iprint(
+          "public static <%1$s> %2$s<%3$s> getSingletonInternal() {%n",
+          /* 1 */ domainMeta.getTypeParameters(),
+          /* 2 */ simpleName,
+          /* 3 */ domainMeta.getTypeVariables());
+      iprint("    return (%1$s<%2$s>) singleton;%n", simpleName, domainMeta.getTypeVariables());
     } else {
       iprint("public static %1$s getSingletonInternal() {%n", simpleName);
       iprint("    return singleton;%n");

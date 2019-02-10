@@ -2,7 +2,10 @@ package org.seasar.doma.internal.apt;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.ParameterName;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
 class ElementsTest extends CompilerSupport {
 
@@ -31,6 +35,18 @@ class ElementsTest extends CompilerSupport {
 
   @MyAnnotation(key1 = "aaa", key3 = 2)
   private class Inner {}
+
+  @SuppressWarnings("unused")
+  private class ParameterizedClass<T, U extends Number> {}
+
+  @SuppressWarnings("unused")
+  private class BoundType<T extends Number> {}
+
+  @SuppressWarnings("unused")
+  private class IntersectionType<T extends Number & Runnable> {}
+
+  @SuppressWarnings("unused")
+  private class ReferredTypeVar<T extends Number, S extends List<T>> {}
 
   @BeforeEach
   void beforeEach() {
@@ -184,6 +200,75 @@ class ElementsTest extends CompilerSupport {
             assertEquals("aaa", map.get("key1").getValue());
             assertEquals("bbb", map.get("key2").getValue());
             assertEquals(2, map.get("key3").getValue());
+          }
+        });
+  }
+
+  @Test
+  void getTypeParametersDef() {
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(ParameterizedClass.class);
+            TypeParametersDef def = ctx.getElements().getTypeParametersDef(typeElement);
+            assertIterableEquals(Arrays.asList("T", "U"), def.getTypeVariables());
+            assertEquals("T,U", def.getTypeVariables().toString());
+            assertIterableEquals(
+                Arrays.asList("T", "U extends java.lang.Number"), def.getTypeParameters());
+            assertEquals("T,U extends java.lang.Number", def.getTypeParameters().toString());
+          }
+        });
+  }
+
+  @Test
+  void getTypeParameterName() {
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(List.class);
+            List<String> names =
+                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+            assertIterableEquals(Collections.singletonList("E"), names);
+          }
+        },
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(BoundType.class);
+            List<String> names =
+                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+            assertIterableEquals(Collections.singletonList("T extends java.lang.Number"), names);
+          }
+        },
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(IntersectionType.class);
+            List<String> names =
+                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+            assertIterableEquals(
+                Collections.singletonList("T extends java.lang.Number&java.lang.Runnable"), names);
+          }
+        },
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(Enum.class);
+            List<String> names =
+                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+            assertIterableEquals(Collections.singletonList("E extends java.lang.Enum<E>"), names);
+          }
+        },
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getElements().getTypeElement(ReferredTypeVar.class);
+            List<String> names =
+                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+            assertIterableEquals(
+                Arrays.asList("T extends java.lang.Number", "S extends java.util.List<T>"), names);
           }
         });
   }

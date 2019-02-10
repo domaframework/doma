@@ -27,6 +27,7 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.message.Message;
@@ -50,6 +51,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     DomainMeta domainMeta = new DomainMeta(classElement, classElement.asType());
     domainMeta.setDomainAnnot(domainAnnot);
     Strategy strategy = createStrategy(classElement, domainMeta);
+    strategy.doTypeParameters(classElement, domainMeta);
     strategy.doWrapperCtType(classElement, domainMeta);
     strategy.validateAcceptNull(classElement, domainMeta);
     strategy.validateClass(classElement, domainMeta);
@@ -67,6 +69,8 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
   }
 
   protected interface Strategy {
+
+    void doTypeParameters(TypeElement classElement, DomainMeta domainMeta);
 
     void doWrapperCtType(TypeElement classElement, DomainMeta domainMeta);
 
@@ -86,6 +90,12 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     public DefaultStrategy(Context ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
+    }
+
+    @Override
+    public void doTypeParameters(TypeElement classElement, DomainMeta domainMeta) {
+      TypeParametersDef typeParametersDef = ctx.getElements().getTypeParametersDef(classElement);
+      domainMeta.setTypeParametersDef(typeParametersDef);
     }
 
     @Override
@@ -161,7 +171,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       }
       String simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-          || simpleName.contains(Constants.METATYPE_NAME_DELIMITER)) {
+          || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4277, typeElement, new Object[] {typeElement.getQualifiedName()});
       }

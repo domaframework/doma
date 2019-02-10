@@ -4,19 +4,20 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 
 public class EntityCtType extends AbstractCtType {
 
   private final boolean immutable;
 
-  private final TypeName entityDescTypeName;
+  private final ClassName entityDescClassName;
 
   EntityCtType(Context ctx, TypeMirror type, TypeElement typeElement, boolean immutable) {
     super(ctx, type);
     this.immutable = immutable;
-    this.entityDescTypeName = ctx.getTypeNames().newEntityDescTypeName(typeElement, type);
+    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
+    this.entityDescClassName = ClassNames.newEntityDescClassName(binaryName);
   }
 
   public boolean isImmutable() {
@@ -27,9 +28,8 @@ public class EntityCtType extends AbstractCtType {
     return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
-  public String entityTypeSingletonCode() {
-    ClassName className = entityDescTypeName.getClassName();
-    return className + ".getSingletonInternal()";
+  public String entityDescSingletonCode() {
+    return entityDescClassName + ".getSingletonInternal()";
   }
 
   @Override

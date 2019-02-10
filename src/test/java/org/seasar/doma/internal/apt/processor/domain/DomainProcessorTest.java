@@ -51,6 +51,8 @@ class DomainProcessorTest extends CompilerSupport {
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
       return Stream.of(
+          invocationContext(IntersectionParameterizedDomain.class),
+          invocationContext(UpperBoundParameterizedDomain.class),
           invocationContext(Salary.class),
           invocationContext(InterfaceDomain.class),
           invocationContext(ObjectDomain.class),

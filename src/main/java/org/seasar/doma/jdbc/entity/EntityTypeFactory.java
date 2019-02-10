@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
-import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
@@ -38,7 +38,7 @@ public final class EntityTypeFactory {
           "entityClass", Message.DOMA2206.getMessage("entityClass"));
     }
     String entityTypeClassName =
-        Conventions.newEntityTypeClassName(entityClass.getName()).toString();
+        ClassNames.newEntityDescClassName(entityClass.getName()).toString();
     try {
       Class<E> clazz = classHelper.forName(entityTypeClassName);
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");

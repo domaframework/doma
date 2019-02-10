@@ -1,0 +1,56 @@
+package org.seasar.doma.internal.apt.processor.domain;
+
+/**
+ * @param <T> T
+ */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _UpperBoundParameterizedDomain<T extends java.lang.Number> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T>> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static final _UpperBoundParameterizedDomain singleton = new _UpperBoundParameterizedDomain();
+
+    private _UpperBoundParameterizedDomain() {
+        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    }
+
+    @Override
+    protected org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T> newDomain(java.lang.Integer value) {
+        if (value == null) {
+            return null;
+        }
+        return new org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T>(value);
+    }
+
+    @Override
+    protected java.lang.Integer getBasicValue(org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T> domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return java.lang.Integer.class;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T>> getDomainClass() {
+        Class<?> clazz = org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain.class;
+        return (Class<org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T>>) clazz;
+    }
+
+    /**
+     * @return the singleton
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends java.lang.Number> _UpperBoundParameterizedDomain<T> getSingletonInternal() {
+        return (_UpperBoundParameterizedDomain<T>) singleton;
+    }
+
+}

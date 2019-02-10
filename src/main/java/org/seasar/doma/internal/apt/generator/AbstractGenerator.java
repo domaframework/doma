@@ -7,13 +7,10 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 
 public abstract class AbstractGenerator implements Generator {
 
   protected final Context ctx;
-
-  protected final TypeName typeName;
 
   protected final ClassName className;
 
@@ -23,11 +20,10 @@ public abstract class AbstractGenerator implements Generator {
 
   protected final Printer printer;
 
-  protected AbstractGenerator(Context ctx, TypeName typeName, Printer printer) {
-    assertNotNull(ctx, typeName, printer);
+  protected AbstractGenerator(Context ctx, ClassName className, Printer printer) {
+    assertNotNull(ctx, className, printer);
     this.ctx = ctx;
-    this.typeName = typeName;
-    this.className = typeName.getClassName();
+    this.className = className;
     this.packageName = className.getPackageName();
     this.simpleName = className.getSimpleName();
     this.printer = printer;

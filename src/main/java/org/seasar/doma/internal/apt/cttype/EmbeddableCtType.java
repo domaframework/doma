@@ -3,21 +3,21 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 
 public class EmbeddableCtType extends AbstractCtType {
 
-  private final TypeName embeddableDescTypeName;
+  private final ClassName embeddableDescClassName;
 
   EmbeddableCtType(Context ctx, TypeMirror type, TypeElement typeElement) {
     super(ctx, type);
-    this.embeddableDescTypeName = ctx.getTypeNames().newEmbeddableDescTypeName(typeElement, type);
+    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
+    this.embeddableDescClassName = ClassNames.newEmbeddableDescClassName(binaryName);
   }
 
-  public String embeddableTypeSingletonCode() {
-    ClassName className = embeddableDescTypeName.getClassName();
-    return className + ".getSingletonInternal()";
+  public String embeddableDescSingletonCode() {
+    return embeddableDescClassName + ".getSingletonInternal()";
   }
 
   @Override

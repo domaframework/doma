@@ -1,13 +1,14 @@
 package org.seasar.doma.internal.apt.cttype;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 
 public class DomainCtType extends AbstractCtType {
 
@@ -15,7 +16,7 @@ public class DomainCtType extends AbstractCtType {
 
   private final List<CtType> typeArgCtTypes;
 
-  private final TypeName domainDescTypeName;
+  private final ClassName domainDescClassName;
 
   DomainCtType(
       Context ctx,
@@ -28,10 +29,11 @@ public class DomainCtType extends AbstractCtType {
     assertNotNull(basicCtType, typeArgCtTypes);
     this.basicCtType = basicCtType;
     this.typeArgCtTypes = typeArgCtTypes;
+    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
     if (external) {
-      this.domainDescTypeName = ctx.getTypeNames().newExternalDomainDescTypeName(typeElement, type);
+      this.domainDescClassName = ClassNames.newExternalDomainDescClassName(binaryName);
     } else {
-      this.domainDescTypeName = ctx.getTypeNames().newDomainDescTypeName(typeElement, type);
+      this.domainDescClassName = ClassNames.newDomainDescClassName(binaryName);
     }
   }
 
@@ -51,10 +53,13 @@ public class DomainCtType extends AbstractCtType {
     return typeArgCtTypes.stream().anyMatch(CtType::isTypevar);
   }
 
-  public String domainTypeSingletonCode() {
-    ClassName className = domainDescTypeName.getClassName();
-    String typeParametersDeclaration = domainDescTypeName.getTypeParametersDeclaration();
-    return className + "." + typeParametersDeclaration + "getSingletonInternal()";
+  public String domainDescSingletonCode() {
+    if (typeArgCtTypes.isEmpty()) {
+      return String.format("%1$s.getSingletonInternal()", domainDescClassName);
+    }
+    List<TypeMirror> typeMirrors = typeArgCtTypes.stream().map(CtType::getType).collect(toList());
+    String typeArgs = String.join(",", ctx.getTypes().getTypeParameterNames(typeMirrors));
+    return String.format("%1$s.<%2$s>getSingletonInternal()", domainDescClassName, typeArgs);
   }
 
   @Override

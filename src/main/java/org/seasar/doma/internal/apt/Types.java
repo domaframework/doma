@@ -2,13 +2,19 @@ package org.seasar.doma.internal.apt;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.IntersectionType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
@@ -308,11 +314,16 @@ public class Types implements javax.lang.model.util.Types {
     }
   }
 
-  public String getTypeParameterName(TypeMirror typeMirror) {
-    assertNotNull(typeMirror);
-    StringBuilder p = new StringBuilder();
-    typeMirror.accept(new TypeParameterNameBuilder(), p);
-    return p.toString();
+  public List<String> getTypeParameterNames(List<TypeMirror> typeMirrors) {
+    assertNotNull(typeMirrors);
+    TypeParameterNameBuilder builder = new TypeParameterNameBuilder();
+    List<String> names = new ArrayList<>();
+    for (TypeMirror t : typeMirrors) {
+      StringBuilder p = new StringBuilder();
+      t.accept(builder, p);
+      names.add(p.toString());
+    }
+    return names;
   }
 
   public TypeMirror boxIfPrimitive(TypeMirror typeMirror) {
@@ -435,6 +446,8 @@ public class Types implements javax.lang.model.util.Types {
 
   private class TypeParameterNameBuilder extends TypeNameBuilder {
 
+    private Set<TypeVariable> processedVariables = new HashSet<>();
+
     @Override
     public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
       if (p.length() == 0) {
@@ -449,16 +462,43 @@ public class Types implements javax.lang.model.util.Types {
     @Override
     public Void visitTypeVariable(TypeVariable t, StringBuilder p) {
       p.append(t);
-      TypeMirror upperBound = t.getUpperBound();
-      String upperBoundName = getTypeName(upperBound);
-      if (!Object.class.getName().equals(upperBoundName)) {
-        p.append(" extends ");
-        upperBound.accept(this, p);
-      } else {
-        TypeMirror lowerBound = t.getLowerBound();
-        if (lowerBound.getKind() != TypeKind.NULL) {
-          p.append(" super ");
-          lowerBound.accept(this, p);
+      if (processedVariables.contains(t)) {
+        return null;
+      }
+      processedVariables.add(t);
+      TypeParameterElement typeParameterElement =
+          ctx.getElements().toTypeParameterElement(t.asElement());
+      if (typeParameterElement == null) {
+        return null;
+      }
+      // We use typeParameterElement.getBounds() instead of t.getUpperBound()
+      // because t.getUpperBound() returns an invalid value in Eclipse.
+      List<? extends TypeMirror> bounds = typeParameterElement.getBounds();
+      if (bounds.isEmpty()) {
+        return null;
+      }
+      Iterator<? extends TypeMirror> it = bounds.iterator();
+      TypeMirror first = it.next();
+      if (bounds.size() == 1 && ctx.getTypes().isSameTypeWithErasure(first, Object.class)) {
+        return null;
+      }
+      p.append(" extends ");
+      first.accept(this, p);
+      for (; it.hasNext(); ) {
+        p.append("&");
+        TypeMirror bound = it.next();
+        bound.accept(this, p);
+      }
+      return null;
+    }
+
+    @Override
+    public Void visitIntersection(IntersectionType t, StringBuilder p) {
+      for (Iterator<? extends TypeMirror> it = t.getBounds().iterator(); it.hasNext(); ) {
+        TypeMirror bound = it.next();
+        bound.accept(this, p);
+        if (it.hasNext()) {
+          p.append("&");
         }
       }
       return null;

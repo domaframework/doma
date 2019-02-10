@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
@@ -28,10 +27,9 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
   }
 
   protected void doTypeParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    for (TypeParameterElement element : method.getTypeParameters()) {
-      String name = ctx.getTypes().getTypeParameterName(element.asType());
-      queryMeta.addTypeParameterName(name);
-    }
+    List<String> typeParameterNames =
+        ctx.getElements().getTypeParameterNames(method.getTypeParameters());
+    typeParameterNames.forEach(queryMeta::addTypeParameterName);
   }
 
   protected abstract void doReturnType(M queryMeta, ExecutableElement method, DaoMeta daoMeta);

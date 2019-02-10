@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.Writer;
@@ -9,9 +10,11 @@ import java.util.function.Predicate;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.SimpleElementVisitor8;
 import org.seasar.doma.ParameterName;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
 public class Elements implements javax.lang.model.util.Elements {
 
@@ -151,6 +154,19 @@ public class Elements implements javax.lang.model.util.Elements {
         null);
   }
 
+  public TypeParameterElement toTypeParameterElement(Element element) {
+    assertNotNull(element);
+    return element.accept(
+        new SimpleElementVisitor8<TypeParameterElement, Void>() {
+
+          @Override
+          public TypeParameterElement visitTypeParameter(TypeParameterElement e, Void aVoid) {
+            return e;
+          }
+        },
+        null);
+  }
+
   public TypeElement getTypeElement(String binaryName) {
     assertNotNull(binaryName);
     String[] parts = binaryName.split("\\$");
@@ -238,5 +254,27 @@ public class Elements implements javax.lang.model.util.Elements {
       map.put(key, value);
     }
     return Collections.unmodifiableMap(map);
+  }
+
+  public TypeParametersDef getTypeParametersDef(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    Iterator<? extends TypeParameterElement> keys = typeElement.getTypeParameters().iterator();
+
+    List<String> typeParameterNames = getTypeParameterNames(typeElement.getTypeParameters());
+    Iterator<String> values = typeParameterNames.iterator();
+
+    LinkedHashMap<TypeParameterElement, String> map = new LinkedHashMap<>();
+    while (keys.hasNext() && values.hasNext()) {
+      map.put(keys.next(), values.next());
+    }
+    return new TypeParametersDef(map);
+  }
+
+  public List<String> getTypeParameterNames(
+      List<? extends TypeParameterElement> typeParameterElements) {
+    assertNotNull(typeParameterElements);
+    List<TypeMirror> typeMirrors =
+        typeParameterElements.stream().map(TypeParameterElement::asType).collect(toList());
+    return ctx.getTypes().getTypeParameterNames(typeMirrors);
   }
 }

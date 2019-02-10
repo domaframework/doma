@@ -3,8 +3,8 @@ package org.seasar.doma.internal.apt.generator;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.*;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -22,13 +22,13 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 
-public class EmbeddableTypeGenerator extends AbstractGenerator {
+public class EmbeddableDescGenerator extends AbstractGenerator {
 
   private final EmbeddableMeta embeddableMeta;
 
-  public EmbeddableTypeGenerator(
-      Context ctx, TypeName typeName, Printer printer, EmbeddableMeta embeddableMeta) {
-    super(ctx, typeName, printer);
+  public EmbeddableDescGenerator(
+      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
+    super(ctx, className, printer);
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;
   }
@@ -107,7 +107,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
       String domainType = "null";
       String domainTypeName = "Object";
       if (domainCtType != null) {
-        domainType = domainCtType.domainTypeSingletonCode();
+        domainType = domainCtType.domainDescSingletonCode();
         domainTypeName = domainCtType.getTypeName();
       }
       iprint(

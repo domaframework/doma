@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.TypeName;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
@@ -45,15 +45,15 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class EntityTypeGenerator extends AbstractGenerator {
+public class EntityDescGenerator extends AbstractGenerator {
 
   private static final String NULL = "null";
 
   private final EntityMeta entityMeta;
 
-  public EntityTypeGenerator(
-      Context ctx, TypeName typeName, Printer printer, EntityMeta entityMeta) {
-    super(ctx, typeName, printer);
+  public EntityDescGenerator(
+      Context ctx, ClassName className, Printer printer, EntityMeta entityMeta) {
+    super(ctx, className, printer);
     assertNotNull(entityMeta);
     this.entityMeta = entityMeta;
   }
@@ -148,7 +148,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
             /* 3 */ pm.getTypeName(),
             /* 4 */ pm.getFieldName(),
             /* 5 */ pm.getName(),
-            /* 6 */ embeddableCtType.embeddableTypeSingletonCode(),
+            /* 6 */ embeddableCtType.embeddableDescSingletonCode(),
             /* 7 */ pm.getName());
       } else {
         EntityPropertyCtTypeVisitor visitor = new EntityPropertyCtTypeVisitor();
@@ -168,7 +168,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
         String domainType = "null";
         String domainTypeName = "Object";
         if (domainCtType != null) {
-          domainType = domainCtType.domainTypeSingletonCode();
+          domainType = domainCtType.domainDescSingletonCode();
           domainTypeName = domainCtType.getTypeName();
         }
         if (pm.isId()) {
@@ -660,7 +660,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         throws RuntimeException {
                       iprint(
                           "        %1$s.newEmbeddable(\"%2$s\", __args)",
-                          ctType.embeddableTypeSingletonCode(), propertyMeta.getName());
+                          ctType.embeddableDescSingletonCode(), propertyMeta.getName());
                       return null;
                     }
 
@@ -693,7 +693,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                       iprint(
                           "    %1$s.save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
                           propertyMeta.getFieldName(),
-                          ctType.embeddableTypeSingletonCode(),
+                          ctType.embeddableDescSingletonCode(),
                           propertyMeta.getName());
                       return null;
                     }

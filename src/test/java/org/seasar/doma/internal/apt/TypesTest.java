@@ -152,22 +152,6 @@ class TypesTest extends CompilerSupport {
   }
 
   @Test
-  void getTypeParameterName() {
-    addProcessor(
-        new TestProcessor() {
-          @Override
-          protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(NumberList.class);
-            TypeParameterElement typeParameterElement =
-                typeElement.getTypeParameters().iterator().next();
-            assertEquals(
-                "E extends java.lang.Number",
-                ctx.getTypes().getTypeParameterName(typeParameterElement.asType()));
-          }
-        });
-  }
-
-  @Test
   void boxIfPrimitive() {
     addProcessor(
         new TestProcessor() {

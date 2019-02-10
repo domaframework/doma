@@ -27,8 +27,6 @@ public class Context {
 
   private CtTypes ctTypes;
 
-  private TypeNames typeNames;
-
   public Context(ProcessingEnvironment env) {
     this.env = env;
   }
@@ -45,7 +43,6 @@ public class Context {
     annotations = new Annotations(this);
     declarations = new Declarations(this);
     ctTypes = new CtTypes(this);
-    typeNames = new TypeNames(this);
     initialized = true;
   }
 
@@ -87,11 +84,6 @@ public class Context {
   public CtTypes getCtTypes() {
     assertInitialized();
     return ctTypes;
-  }
-
-  public TypeNames getTypeNames() {
-    assertInitialized();
-    return typeNames;
   }
 
   private void assertInitialized() {

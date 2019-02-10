@@ -6,7 +6,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.List;
 import org.seasar.doma.internal.util.ClassUtil;
 
-public class Conventions {
+public class ClassNames {
 
   public static String normalizeBinaryName(String binaryName) {
     assertNotNull(binaryName);
@@ -18,36 +18,36 @@ public class Conventions {
       base = packageName + ".";
     }
     return base
-        + enclosingNames.stream().map(n -> n + Constants.METATYPE_NAME_DELIMITER).collect(joining())
+        + enclosingNames.stream().map(n -> n + Constants.DESC_NAME_DELIMITER).collect(joining())
         + simpleName;
   }
 
-  public static ClassName newDomainTypeClassName(String binaryName) {
-    assertNotNull(binaryName);
-    return new MetaTypeNameBuilder(binaryName).build();
+  public static ClassName newEntityDescClassName(CharSequence entityClassName) {
+    assertNotNull(entityClassName);
+    return new ClassNameBuilder(entityClassName).build();
   }
 
-  public static ClassName newEmbeddableTypeClassName(String binaryName) {
-    assertNotNull(binaryName);
-    return new MetaTypeNameBuilder(binaryName).build();
+  public static ClassName newEmbeddableDescClassName(CharSequence embeddedClassName) {
+    assertNotNull(embeddedClassName);
+    return new ClassNameBuilder(embeddedClassName).build();
   }
 
-  public static ClassName newEntityTypeClassName(String binaryName) {
-    assertNotNull(binaryName);
-    return new MetaTypeNameBuilder(binaryName).build();
+  public static ClassName newDomainDescClassName(CharSequence domainClassName) {
+    assertNotNull(domainClassName);
+    return new ClassNameBuilder(domainClassName).build();
   }
 
-  public static ClassName newExternalDomainTypClassName(String binaryName) {
-    assertNotNull(binaryName);
-    return new ExternalDomainMetaTypeNameBuilder(binaryName).build();
+  public static ClassName newExternalDomainDescClassName(CharSequence externalDomainClassName) {
+    assertNotNull(externalDomainClassName);
+    return new ExternalDomainClassNameBuilder(externalDomainClassName).build();
   }
 
-  private static class MetaTypeNameBuilder {
+  private static class ClassNameBuilder {
 
     final String binaryName;
 
-    private MetaTypeNameBuilder(String binaryName) {
-      this.binaryName = binaryName;
+    private ClassNameBuilder(CharSequence binaryName) {
+      this.binaryName = binaryName.toString();
     }
 
     protected String prefix() {
@@ -60,7 +60,7 @@ public class Conventions {
     }
 
     protected String infix() {
-      return Constants.METATYPE_PREFIX;
+      return Constants.DESC_PREFIX;
     }
 
     protected String suffix() {
@@ -73,15 +73,15 @@ public class Conventions {
     }
   }
 
-  private static class ExternalDomainMetaTypeNameBuilder extends MetaTypeNameBuilder {
+  private static class ExternalDomainClassNameBuilder extends ClassNameBuilder {
 
-    private ExternalDomainMetaTypeNameBuilder(String binaryName) {
+    private ExternalDomainClassNameBuilder(CharSequence binaryName) {
       super(binaryName);
     }
 
     @Override
     protected String prefix() {
-      return Constants.EXTERNAL_DOMAIN_METATYPE_ROOT_PACKAGE
+      return Constants.EXTERNAL_DOMAIN_DESC_ROOT_PACKAGE
           + "."
           + ClassUtil.getPackageName(binaryName)
           + ".";

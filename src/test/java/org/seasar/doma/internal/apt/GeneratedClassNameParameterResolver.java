@@ -11,7 +11,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
-import org.seasar.doma.internal.Conventions;
+import org.seasar.doma.internal.ClassNames;
 
 public class GeneratedClassNameParameterResolver implements ParameterResolver {
 
@@ -43,19 +43,19 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
       ParameterContext parameterContext, ExtensionContext extensionContext)
       throws ParameterResolutionException {
     if (isExternalDomain) {
-      return Conventions.newExternalDomainTypClassName(clazz.getName()).toString();
+      return ClassNames.newExternalDomainDescClassName(clazz.getName()).toString();
     }
     if (clazz.isAnnotationPresent(Dao.class)) {
       return clazz.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
     }
     if (clazz.isAnnotationPresent(Entity.class)) {
-      return Conventions.newEntityTypeClassName(clazz.getName()).toString();
+      return ClassNames.newEntityDescClassName(clazz.getName()).toString();
     }
     if (clazz.isAnnotationPresent(Embeddable.class)) {
-      return Conventions.newEmbeddableTypeClassName(clazz.getName()).toString();
+      return ClassNames.newEmbeddableDescClassName(clazz.getName()).toString();
     }
     if (clazz.isAnnotationPresent(Domain.class)) {
-      return Conventions.newDomainTypeClassName(clazz.getName()).toString();
+      return ClassNames.newDomainDescClassName(clazz.getName()).toString();
     }
     throw new AssertionFailedError("annotation not found.");
   }

@@ -2,11 +2,14 @@ package org.seasar.doma.internal.apt.meta.domain;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.List;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.DomainAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.WrapperCtType;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public class DomainMeta implements TypeElementMeta {
@@ -14,6 +17,8 @@ public class DomainMeta implements TypeElementMeta {
   private final TypeElement typeElement;
 
   private final TypeMirror type;
+
+  private TypeParametersDef typeParametersDef;
 
   private BasicCtType basicCtType;
 
@@ -33,6 +38,22 @@ public class DomainMeta implements TypeElementMeta {
 
   public TypeElement getTypeElement() {
     return typeElement;
+  }
+
+  public Name getQualifiedName() {
+    return typeElement.getQualifiedName();
+  }
+
+  public void setTypeParametersDef(TypeParametersDef typeParametersDef) {
+    this.typeParametersDef = typeParametersDef;
+  }
+
+  public List<String> getTypeVariables() {
+    return typeParametersDef.getTypeVariables();
+  }
+
+  public List<String> getTypeParameters() {
+    return typeParametersDef.getTypeParameters();
   }
 
   public BasicCtType getBasicCtType() {
