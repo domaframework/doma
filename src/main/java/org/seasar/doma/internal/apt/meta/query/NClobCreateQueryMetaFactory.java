@@ -22,7 +22,7 @@ public class NClobCreateQueryMetaFactory
     if (nClobFactoryAnnot == null) {
       return null;
     }
-    NClobCreateQueryMeta queryMeta = new NClobCreateQueryMeta(method, daoMeta.getDaoElement());
+    NClobCreateQueryMeta queryMeta = new NClobCreateQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setNClobFactoryMirror(nClobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.NCLOB_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);

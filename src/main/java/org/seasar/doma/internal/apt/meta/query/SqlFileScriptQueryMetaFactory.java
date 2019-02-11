@@ -34,9 +34,9 @@ public class SqlFileScriptQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
+  private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
-    SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method, daoMeta.getDaoElement());
+    SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method, daoMeta.getTypeElement());
     ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(method);
     if (scriptAnnot == null) {
       return null;
@@ -67,7 +67,7 @@ public class SqlFileScriptQueryMetaFactory
   }
 
   @Override
-  protected void doSqlTemplate(
+  void doSqlTemplate(
       SqlFileScriptQueryMeta queryMeta,
       ExecutableElement method,
       DaoMeta daoMeta,

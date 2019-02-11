@@ -25,12 +25,20 @@ public class QueryReturnMeta {
     this.daoElement = daoElement;
   }
 
-  public String getTypeName() {
-    return ctType.getTypeName();
-  }
+  public TypeMirror getBoxedType() {
+    return ctType.accept(
+        new SimpleCtTypeVisitor<TypeMirror, Void, RuntimeException>() {
+          @Override
+          public TypeMirror visitBasicCtType(BasicCtType ctType, Void o) {
+            return ctType.getBoxedType();
+          }
 
-  public String getBoxedTypeName() {
-    return ctType.getBoxedTypeName();
+          @Override
+          protected TypeMirror defaultAction(CtType ctType, Void o) {
+            return ctType.getType();
+          }
+        },
+        null);
   }
 
   public boolean isPrimitiveInt() {

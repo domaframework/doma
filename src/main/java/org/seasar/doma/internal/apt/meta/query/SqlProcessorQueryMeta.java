@@ -13,7 +13,7 @@ public class SqlProcessorQueryMeta extends AbstractSqlFileQueryMeta {
 
   private BiFunctionCtType biFunctionCtType;
 
-  protected SqlProcessorQueryMeta(ExecutableElement method, TypeElement dao) {
+  SqlProcessorQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);
   }
 

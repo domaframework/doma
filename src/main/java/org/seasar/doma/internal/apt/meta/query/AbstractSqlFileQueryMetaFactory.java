@@ -24,14 +24,14 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
+abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
-  protected AbstractSqlFileQueryMetaFactory(Context ctx) {
+  AbstractSqlFileQueryMetaFactory(Context ctx) {
     super(ctx);
   }
 
-  protected void doSqlTemplate(
+  void doSqlTemplate(
       M queryMeta,
       ExecutableElement method,
       DaoMeta daoMeta,
@@ -67,7 +67,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     String filePath = queryMeta.getPath();
     File file = getFile(queryMeta, method, filePath);
     File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
-    String dirPath = SqlFileUtil.buildPath(daoMeta.getDaoElement().getQualifiedName().toString());
+    String dirPath = SqlFileUtil.buildPath(daoMeta.getTypeElement().getQualifiedName().toString());
     String methodName = queryMeta.getName();
     for (File siblingfile : siblingfiles) {
       if (SqlFileUtil.isSqlFile(siblingfile, methodName)) {
@@ -91,7 +91,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
   }
 
-  protected File getFile(M queryMeta, ExecutableElement method, String filePath) {
+  File getFile(M queryMeta, ExecutableElement method, String filePath) {
     FileObject fileObject = getFileObject(filePath, method);
     URI uri = fileObject.toUri();
     if (!uri.isAbsolute()) {
@@ -113,7 +113,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     return file;
   }
 
-  protected File getCanonicalFile(File file) {
+  private File getCanonicalFile(File file) {
     try {
       return file.getCanonicalFile();
     } catch (IOException e) {
@@ -121,7 +121,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
   }
 
-  protected File[] getSiblingFiles(M queryMeta, ExecutableElement method, File file) {
+  File[] getSiblingFiles(M queryMeta, ExecutableElement method, File file) {
     File dir = getDir(file);
     File[] files = dir.listFiles();
     if (files == null) {
@@ -130,7 +130,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     return files;
   }
 
-  protected File getDir(File sqlFile) {
+  private File getDir(File sqlFile) {
     File dir = sqlFile.getParentFile();
     if (dir == null) {
       assertUnreachable();
@@ -138,7 +138,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     return dir;
   }
 
-  protected FileObject getFileObject(String path, ExecutableElement method) {
+  private FileObject getFileObject(String path, ExecutableElement method) {
     try {
       return ctx.getResources().getResource(path);
     } catch (IOException e) {
@@ -146,7 +146,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
   }
 
-  protected String getSql(ExecutableElement method, File file, String filePath) {
+  private String getSql(ExecutableElement method, File file, String filePath) {
     try {
       return IOUtil.readAsString(file);
     } catch (WrapException e) {
@@ -155,7 +155,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
   }
 
-  protected SqlNode createSqlNode(
+  private SqlNode createSqlNode(
       M queryMeta, ExecutableElement method, DaoMeta daoMeta, String path, String sql) {
     try {
       SqlParser sqlParser = new SqlParser(sql);
@@ -165,7 +165,7 @@ public abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQ
     }
   }
 
-  protected SqlValidator createSqlValidator(
+  SqlValidator createSqlValidator(
       ExecutableElement method,
       LinkedHashMap<String, TypeMirror> parameterTypeMap,
       String sqlFilePath,

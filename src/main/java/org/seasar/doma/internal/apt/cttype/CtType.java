@@ -6,10 +6,6 @@ public interface CtType {
 
   TypeMirror getType();
 
-  String getTypeName();
-
-  String getBoxedTypeName();
-
   String getQualifiedName();
 
   boolean isPrimitive();

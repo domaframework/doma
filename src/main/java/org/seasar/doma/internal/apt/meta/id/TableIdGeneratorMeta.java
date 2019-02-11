@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.TableGeneratorAnnot;
 
 public class TableIdGeneratorMeta implements IdGeneratorMeta {
 
-  protected final TableGeneratorAnnot tableGeneratorAnnot;
+  private final TableGeneratorAnnot tableGeneratorAnnot;
 
   public TableIdGeneratorMeta(TableGeneratorAnnot tableGeneratorAnnot) {
     assertNotNull(tableGeneratorAnnot);

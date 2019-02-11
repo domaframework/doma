@@ -50,6 +50,7 @@ class DaoProcessorTest extends CompilerSupport {
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
       return Stream.of(
+          invocationContext(VarArgsDao.class),
           invocationContext(NameUnsafeDaoImpl.class),
           invocationContext(MethodAccessSqlValidationDao.class),
           invocationContext(MultiParamMethodAccessSqlValidationDao.class),

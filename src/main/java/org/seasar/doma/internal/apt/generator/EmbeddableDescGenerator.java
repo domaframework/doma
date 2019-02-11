@@ -5,15 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.*;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -23,6 +14,8 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 
 public class EmbeddableDescGenerator extends AbstractGenerator {
+
+  private static final String NULL = "null";
 
   private final EmbeddableMeta embeddableMeta;
 
@@ -51,9 +44,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     printGenerated();
     iprint(
         "public final class %1$s implements %2$s<%3$s> {%n",
-        /* 1 */ simpleName,
-        /* 2 */ EmbeddableType.class.getName(),
-        /* 3 */ embeddableMeta.getEmbeddableElement().getQualifiedName());
+        /* 1 */ simpleName, /* 2 */ EmbeddableType.class, /* 3 */ embeddableMeta.getType());
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
@@ -81,53 +72,35 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
   private void printGetEmbeddablePropertyTypesMethod() {
     iprint("@Override%n");
     iprint(
-        "public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
-        List.class.getName(), EntityPropertyType.class.getName(), NamingType.class.getName());
-    iprint("    return %1$s.asList(%n", Arrays.class.getName());
+        "public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes"
+            + "(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
+        List.class, EntityPropertyType.class, NamingType.class);
+    iprint("    return %1$s.asList(%n", Arrays.class);
     for (Iterator<EmbeddablePropertyMeta> it =
             embeddableMeta.getEmbeddablePropertyMetas().iterator();
         it.hasNext(); ) {
       EmbeddablePropertyMeta pm = it.next();
-      EmbeddablePropertyCtTypeVisitor visitor = new EmbeddablePropertyCtTypeVisitor();
+      PropertyCtTypeVisitor visitor = new PropertyCtTypeVisitor();
       pm.getCtType().accept(visitor, null);
-      BasicCtType basicCtType = visitor.basicCtType;
-      WrapperCtType wrapperCtType = visitor.wrapperCtType;
-      DomainCtType domainCtType = visitor.domainCtType;
-
-      String newWrapperExpr;
-      if (basicCtType.isEnum()) {
-        newWrapperExpr =
-            String.format(
-                "new %s(%s.class)", wrapperCtType.getTypeName(), basicCtType.getBoxedTypeName());
-      } else {
-        newWrapperExpr = String.format("new %s()", wrapperCtType.getTypeName());
-      }
-      String parentEntityPropertyType = "null";
-      String parentEntityBoxedTypeName = Object.class.getName();
-      String domainType = "null";
-      String domainTypeName = "Object";
-      if (domainCtType != null) {
-        domainType = domainCtType.domainDescSingletonCode();
-        domainTypeName = domainCtType.getTypeName();
-      }
       iprint(
-          "        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, () -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
-          /* 1 */ DefaultPropertyType.class.getName(),
+          "        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, "
+              + "() -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
+          /* 1 */ DefaultPropertyType.class,
           /* 2 */ null,
-          /* 3 */ basicCtType.getBoxedTypeName(),
+          /* 3 */ visitor.getBasicCtType().getBoxedType(),
           /* 4 */ pm.getName(),
           /* 5 */ pm.getColumnName(),
           /* 6 */ pm.isColumnInsertable(),
           /* 7 */ pm.isColumnUpdatable(),
           /* 8 */ null,
-          /* 9 */ newWrapperExpr,
-          /* 10 */ domainType,
-          /* 11 */ pm.getBoxedTypeName(),
-          /* 12 */ parentEntityPropertyType,
-          /* 13 */ parentEntityBoxedTypeName,
+          /* 9 */ visitor.getWrapperCode(),
+          /* 10 */ visitor.getDomainDescCode(),
+          /* 11 */ NULL,
+          /* 12 */ NULL,
+          /* 13 */ Object.class.getName(),
           /* 14 */ null,
           /* 15 */ pm.getQualifiedName(),
-          /* 16 */ domainTypeName,
+          /* 16 */ visitor.getDomainTypeCode(),
           /* 17 */ pm.isColumnQuoteRequired());
       print(it.hasNext() ? ",%n" : "");
     }
@@ -140,20 +113,19 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args) {%n",
-        embeddableMeta.getEmbeddableElement().getQualifiedName(),
-        Map.class.getName(),
-        Property.class.getName());
+        embeddableMeta.getType(), Map.class, Property.class);
     if (embeddableMeta.isAbstract()) {
       iprint("    return null;%n");
     } else {
-      iprint("    return new %1$s(%n", embeddableMeta.getEmbeddableElement().getQualifiedName());
+      iprint("    return new %1$s(%n", embeddableMeta.getType());
       for (Iterator<EmbeddablePropertyMeta> it =
               embeddableMeta.getEmbeddablePropertyMetas().iterator();
           it.hasNext(); ) {
         EmbeddablePropertyMeta propertyMeta = it.next();
         iprint(
-            "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") != null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-            ctx.getTypes().boxIfPrimitive(propertyMeta.getType()), propertyMeta.getName());
+            "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") "
+                + "!= null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
+            propertyMeta.getBoxedType(), propertyMeta.getName());
         if (it.hasNext()) {
           print(",%n");
         }
@@ -172,56 +144,5 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     iprint("    return __singleton;%n");
     iprint("}%n");
     print("%n");
-  }
-
-  protected class EmbeddablePropertyCtTypeVisitor
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
-
-    private BasicCtType basicCtType;
-
-    private WrapperCtType wrapperCtType;
-
-    private DomainCtType domainCtType;
-
-    @Override
-    protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
-      assertNotNull(basicCtType);
-      assertNotNull(wrapperCtType);
-      return null;
-    }
-
-    @Override
-    public Void visitOptionalCtType(OptionalCtType ctType, Void p) throws RuntimeException {
-      return ctType.getElementCtType().accept(this, p);
-    }
-
-    @Override
-    public Void visitOptionalIntCtType(OptionalIntCtType ctType, Void p) throws RuntimeException {
-      return ctType.getElementCtType().accept(this, p);
-    }
-
-    @Override
-    public Void visitOptionalLongCtType(OptionalLongCtType ctType, Void p) throws RuntimeException {
-      return ctType.getElementCtType().accept(this, p);
-    }
-
-    @Override
-    public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Void p)
-        throws RuntimeException {
-      return ctType.getElementCtType().accept(this, p);
-    }
-
-    @Override
-    public Void visitBasicCtType(BasicCtType basicCtType, Void p) throws RuntimeException {
-      this.basicCtType = basicCtType;
-      this.wrapperCtType = basicCtType.getWrapperCtType();
-      return defaultAction(basicCtType, p);
-    }
-
-    @Override
-    public Void visitDomainCtType(DomainCtType domainCtType, Void p) throws RuntimeException {
-      this.domainCtType = domainCtType;
-      return visitBasicCtType(domainCtType.getBasicCtType(), p);
-    }
   }
 }

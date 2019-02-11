@@ -8,7 +8,7 @@ public class OptionalBasicOutParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;
 
-  protected final BasicCtType basicCtType;
+  private final BasicCtType basicCtType;
 
   public OptionalBasicOutParameterMeta(String name, BasicCtType basicCtType) {
     assertNotNull(name, basicCtType);

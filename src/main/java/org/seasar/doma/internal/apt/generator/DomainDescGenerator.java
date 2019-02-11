@@ -47,7 +47,7 @@ public class DomainDescGenerator extends AbstractGenerator {
       iprint(
           "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
-          /* 2 */ AbstractDomainType.class.getName(),
+          /* 2 */ AbstractDomainType.class,
           /* 3 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
           /* 4 */ domainMeta.getType(),
           /* 5 */ domainMeta.getTypeParameters());
@@ -55,7 +55,7 @@ public class DomainDescGenerator extends AbstractGenerator {
       iprint(
           "public final class %1$s extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
-          /* 2 */ AbstractDomainType.class.getName(),
+          /* 2 */ AbstractDomainType.class,
           /* 3 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
           /* 4 */ domainMeta.getType());
     }
@@ -116,7 +116,7 @@ public class DomainDescGenerator extends AbstractGenerator {
       if (primitive) {
         iprint(
             "    return new %1$s(%2$s.unbox(value));%n",
-            /* 1 */ domainMeta.getType(), BoxedPrimitiveUtil.class.getName());
+            /* 1 */ domainMeta.getType(), BoxedPrimitiveUtil.class);
       } else {
         iprint("    return new %1$s(value);%n", /* 1 */ domainMeta.getType());
       }
@@ -124,13 +124,13 @@ public class DomainDescGenerator extends AbstractGenerator {
       if (primitive) {
         iprint(
             "    return %1$s.%2$s(%3$s.unbox(value));%n",
-            /* 1 */ domainMeta.getQualifiedName(),
+            /* 1 */ domainMeta.getTypeElement(),
             /* 2 */ domainMeta.getFactoryMethod(),
-            /* 3 */ BoxedPrimitiveUtil.class.getName());
+            /* 3 */ BoxedPrimitiveUtil.class);
       } else {
         iprint(
             "    return %1$s.%2$s(value);%n",
-            /* 1 */ domainMeta.getQualifiedName(), /* 2 */ domainMeta.getFactoryMethod());
+            /* 1 */ domainMeta.getTypeElement(), /* 2 */ domainMeta.getFactoryMethod());
       }
     }
     iprint("}%n");
@@ -166,10 +166,10 @@ public class DomainDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint("public Class<%1$s> getDomainClass() {%n", domainMeta.getType());
     if (domainMeta.isParameterized()) {
-      iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getQualifiedName());
+      iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getTypeElement());
       iprint("    return (Class<%1$s>) clazz;%n", domainMeta.getType());
     } else {
-      iprint("    return %1$s.class;%n", domainMeta.getQualifiedName());
+      iprint("    return %1$s.class;%n", domainMeta.getTypeElement());
     }
     iprint("}%n");
     print("%n");

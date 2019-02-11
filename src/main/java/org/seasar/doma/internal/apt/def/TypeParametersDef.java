@@ -1,11 +1,9 @@
 package org.seasar.doma.internal.apt.def;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,34 +21,17 @@ public class TypeParametersDef {
   }
 
   public List<String> getTypeVariables() {
-    CsvFormatList csvFormatList =
+    List<String> csvFormatList =
         typeParameterNameMap
             .keySet()
             .stream()
             .map(Element::getSimpleName)
             .map(Name::toString)
-            .collect(toCollection(CsvFormatList::new));
+            .collect(toList());
     return Collections.unmodifiableList(csvFormatList);
   }
 
   public List<String> getTypeParameters() {
-    CsvFormatList csvFormatList = new CsvFormatList(typeParameterNameMap.values());
-    return Collections.unmodifiableList(csvFormatList);
-  }
-
-  private class CsvFormatList extends ArrayList<String> {
-
-    private CsvFormatList() {
-      super();
-    }
-
-    private CsvFormatList(Collection<? extends String> collection) {
-      super(collection);
-    }
-
-    @Override
-    public String toString() {
-      return this.stream().collect(joining(","));
-    }
+    return Collections.unmodifiableList(new ArrayList<>(typeParameterNameMap.values()));
   }
 }

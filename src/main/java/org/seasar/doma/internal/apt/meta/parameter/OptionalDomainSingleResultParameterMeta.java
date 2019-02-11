@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
 public class OptionalDomainSingleResultParameterMeta implements SingleResultParameterMeta {
 
-  protected final DomainCtType domainCtType;
+  private final DomainCtType domainCtType;
 
   public OptionalDomainSingleResultParameterMeta(DomainCtType domainCtType) {
     assertNotNull(domainCtType);

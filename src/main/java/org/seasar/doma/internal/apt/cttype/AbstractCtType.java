@@ -16,39 +16,23 @@ public abstract class AbstractCtType implements CtType {
 
   protected final TypeElement typeElement;
 
-  protected final String typeName;
-
   private final String qualifiedName;
-
-  private final String boxedTypeName;
 
   protected AbstractCtType(Context ctx, TypeMirror type) {
     assertNotNull(ctx, type);
     this.ctx = ctx;
     this.type = type;
-    this.typeName = ctx.getTypes().getTypeName(type);
-    this.boxedTypeName = ctx.getTypes().getBoxedTypeName(type);
     this.typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement != null) {
       qualifiedName = typeElement.getQualifiedName().toString();
     } else {
-      qualifiedName = typeName;
+      qualifiedName = ctx.getTypes().getTypeName(type);
     }
   }
 
   @Override
   public TypeMirror getType() {
     return type;
-  }
-
-  @Override
-  public String getTypeName() {
-    return typeName;
-  }
-
-  @Override
-  public String getBoxedTypeName() {
-    return boxedTypeName;
   }
 
   @Override

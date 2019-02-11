@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,11 +34,11 @@ import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
-  protected static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";
+  private static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";
 
-  protected final Context ctx;
+  private final Context ctx;
 
-  protected final List<QueryMetaFactory> queryMetaFactories = new ArrayList<QueryMetaFactory>();
+  private final List<QueryMetaFactory> queryMetaFactories = new ArrayList<>();
 
   public DaoMetaFactory(Context ctx, List<QueryMetaFactory> commandMetaFactories) {
     assertNotNull(ctx, commandMetaFactories);
@@ -61,7 +60,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     return daoMeta;
   }
 
-  protected void doDaoElement(TypeElement interfaceElement, DaoMeta daoMeta) {
+  private void doDaoElement(TypeElement interfaceElement, DaoMeta daoMeta) {
     validateInterface(interfaceElement, daoMeta);
 
     String name = interfaceElement.getSimpleName().toString();
@@ -71,8 +70,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
           .report(Kind.WARNING, Message.DOMA4026, interfaceElement, new Object[] {suffix});
     }
     daoMeta.setName(name);
-    daoMeta.setDaoElement(interfaceElement);
-    daoMeta.setDaoType(interfaceElement.asType());
+    daoMeta.setTypeElement(interfaceElement);
+    daoMeta.setType(interfaceElement.asType());
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
 
@@ -86,14 +85,14 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected void validateUserDefinedConfig(
+  private void validateUserDefinedConfig(
       TypeElement configElement, DaoMeta daoMeta, DaoAnnot daoAnnot) {
     SingletonConfig singletonConfig = configElement.getAnnotation(SingletonConfig.class);
     if (singletonConfig == null) {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
             Message.DOMA4163,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
@@ -116,7 +115,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         } else {
           throw new AptException(
               Message.DOMA4164,
-              daoMeta.getDaoElement(),
+              daoMeta.getTypeElement(),
               daoAnnot.getAnnotationMirror(),
               daoAnnot.getConfig(),
               new Object[] {configElement.getQualifiedName()});
@@ -131,15 +130,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                   m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
               .filter(m -> ctx.getTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
               .filter(m -> m.getParameters().isEmpty())
-              .filter(m -> m.getSimpleName().toString().equals(methodName))
-              .findAny()
-              .isPresent();
+              .anyMatch(m -> m.getSimpleName().toString().equals(methodName));
       if (present) {
         daoMeta.setSingletonMethodName(methodName);
       } else {
         throw new AptException(
             Message.DOMA4255,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName(), methodName});
@@ -147,7 +144,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected void validateInterface(TypeElement interfaceElement, DaoMeta daoMeta) {
+  private void validateInterface(TypeElement interfaceElement, DaoMeta daoMeta) {
     if (!interfaceElement.getKind().isInterface()) {
       DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
       throw new AptException(
@@ -161,18 +158,18 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected void doAnnotateWith(DaoMeta daoMeta) {
+  private void doAnnotateWith(DaoMeta daoMeta) {
     AnnotateWithAnnot annotateWithAnnot =
-        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getDaoElement());
+        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getTypeElement());
     if (annotateWithAnnot != null) {
       daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
     }
   }
 
-  protected void doParentDao(DaoMeta daoMeta) {
+  private void doParentDao(DaoMeta daoMeta) {
     List<TypeElement> interfaces =
         daoMeta
-            .getDaoElement()
+            .getTypeElement()
             .getInterfaces()
             .stream()
             .map(type -> ctx.getTypes().toTypeElement(type))
@@ -192,20 +189,18 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         }
         throw new AptException(
             Message.DOMA4440,
-            daoMeta.getDaoElement(),
+            daoMeta.getTypeElement(),
             new Object[] {nonDefaultMethod.getSimpleName()});
       }
       if (daoMeta.getParentDaoMeta() != null) {
-        throw new AptException(Message.DOMA4188, daoMeta.getDaoElement(), new Object[] {});
+        throw new AptException(Message.DOMA4188, daoMeta.getTypeElement(), new Object[] {});
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot);
-      parentDaoMeta.setDaoType(typeElement.asType());
-      parentDaoMeta.setDaoElement(typeElement);
+      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
       daoMeta.setParentDaoMeta(parentDaoMeta);
     }
   }
 
-  protected ExecutableElement findNonDefaultMethod(TypeElement interfaceElement) {
+  private ExecutableElement findNonDefaultMethod(TypeElement interfaceElement) {
     Optional<ExecutableElement> method =
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements())
             .stream()
@@ -227,7 +222,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     return null;
   }
 
-  protected void doMethodElements(TypeElement interfaceElement, DaoMeta daoMeta) {
+  private void doMethodElements(TypeElement interfaceElement, DaoMeta daoMeta) {
     for (ExecutableElement methodElement :
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements())) {
       try {
@@ -239,7 +234,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected void doMethodElement(ExecutableElement methodElement, DaoMeta daoMeta) {
+  private void doMethodElement(ExecutableElement methodElement, DaoMeta daoMeta) {
     Set<Modifier> modifiers = methodElement.getModifiers();
     if (modifiers.contains(Modifier.STATIC) || modifiers.contains(Modifier.PRIVATE)) {
       return;
@@ -250,7 +245,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     daoMeta.addQueryMeta(queryMeta);
   }
 
-  protected void validateMethod(ExecutableElement methodElement, DaoMeta daoMeta) {
+  private void validateMethod(ExecutableElement methodElement, DaoMeta daoMeta) {
     TypeElement foundAnnotationTypeElement = null;
     for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
       DeclaredType declaredType = annotation.getAnnotationType();
@@ -273,7 +268,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
+  private QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     for (QueryMetaFactory factory : queryMetaFactories) {
       QueryMeta queryMeta = factory.createQueryMeta(method, daoMeta);
       if (queryMeta != null) {
@@ -283,14 +278,14 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     throw new AptException(Message.DOMA4005, method, new Object[] {});
   }
 
-  protected void validateQueryMeta(QueryMeta queryMeta, ExecutableElement method) {
+  private void validateQueryMeta(QueryMeta queryMeta, ExecutableElement method) {
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
     if (sqlAnnot != null) {
       queryMeta.accept(new SqlAnnotationCombinationValidator(method, sqlAnnot));
     }
   }
 
-  protected void validateFiles(TypeElement interfaceElement, DaoMeta daoMeta) {
+  private void validateFiles(TypeElement interfaceElement, DaoMeta daoMeta) {
     if (daoMeta.isError()) {
       return;
     }
@@ -315,25 +310,23 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected Set<String> getFileNames(String dirPath) {
+  private Set<String> getFileNames(String dirPath) {
     File dir = getDir(dirPath);
     if (dir == null) {
       return Collections.emptySet();
     }
     String[] fileNames =
         dir.list(
-            new FilenameFilter() {
-
-              @Override
-              public boolean accept(File dir, String name) {
-                return name.endsWith(Constants.SQL_PATH_SUFFIX)
-                    || name.endsWith(Constants.SCRIPT_PATH_SUFFIX);
-              }
-            });
-    return new HashSet<String>(Arrays.asList(fileNames));
+            (dir1, name) ->
+                name.endsWith(Constants.SQL_PATH_SUFFIX)
+                    || name.endsWith(Constants.SCRIPT_PATH_SUFFIX));
+    if (fileNames == null) {
+      return Collections.emptySet();
+    }
+    return new HashSet<>(Arrays.asList(fileNames));
   }
 
-  protected File getDir(String dirPath) {
+  private File getDir(String dirPath) {
     FileObject fileObject = getFileObject(dirPath);
     if (fileObject == null) {
       return null;
@@ -349,7 +342,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     return null;
   }
 
-  protected FileObject getFileObject(String path) {
+  private FileObject getFileObject(String path) {
     try {
       return ctx.getResources().getResource(path);
     } catch (Exception ignored) {
@@ -359,7 +352,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  protected boolean isSuppressed(Suppress suppress, Message message) {
+  private boolean isSuppressed(Suppress suppress, Message message) {
     if (suppress != null) {
       for (Message suppressMessage : suppress.messages()) {
         if (suppressMessage == message) {

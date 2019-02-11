@@ -213,10 +213,8 @@ class ElementsTest extends CompilerSupport {
             TypeElement typeElement = ctx.getElements().getTypeElement(ParameterizedClass.class);
             TypeParametersDef def = ctx.getElements().getTypeParametersDef(typeElement);
             assertIterableEquals(Arrays.asList("T", "U"), def.getTypeVariables());
-            assertEquals("T,U", def.getTypeVariables().toString());
             assertIterableEquals(
                 Arrays.asList("T", "U extends java.lang.Number"), def.getTypeParameters());
-            assertEquals("T,U extends java.lang.Number", def.getTypeParameters().toString());
           }
         });
   }

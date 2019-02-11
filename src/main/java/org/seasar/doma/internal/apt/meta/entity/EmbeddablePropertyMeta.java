@@ -2,7 +2,9 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 
 public class EmbeddablePropertyMeta {
 
@@ -52,12 +54,20 @@ public class EmbeddablePropertyMeta {
     return ctType.getType();
   }
 
-  public String getTypeName() {
-    return ctType.getTypeName();
-  }
+  public TypeMirror getBoxedType() {
+    return ctType.accept(
+        new SimpleCtTypeVisitor<TypeMirror, Void, RuntimeException>() {
+          @Override
+          public TypeMirror visitBasicCtType(BasicCtType ctType, Void o) {
+            return ctType.getBoxedType();
+          }
 
-  public String getBoxedTypeName() {
-    return ctType.getBoxedTypeName();
+          @Override
+          protected TypeMirror defaultAction(CtType ctType, Void o) {
+            return ctType.getType();
+          }
+        },
+        null);
   }
 
   public String getQualifiedName() {

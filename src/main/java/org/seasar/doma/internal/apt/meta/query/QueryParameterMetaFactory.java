@@ -6,13 +6,28 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.*;
-import org.seasar.doma.internal.apt.meta.MetaConstants;
+import org.seasar.doma.internal.apt.cttype.BasicCtType;
+import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
+import org.seasar.doma.internal.apt.cttype.CollectorCtType;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.DomainCtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import org.seasar.doma.internal.apt.cttype.FunctionCtType;
+import org.seasar.doma.internal.apt.cttype.IterableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
+import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
+import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
+import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.message.Message;
 
-public class QueryParameterMetaFactory {
+class QueryParameterMetaFactory {
 
   private final Context ctx;
 
@@ -33,9 +48,9 @@ public class QueryParameterMetaFactory {
 
   public QueryParameterMeta createQueryParameterMeta() {
     String name = ctx.getElements().getParameterName(parameterElement);
-    if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+    if (name.startsWith(Constants.RESERVED_IDENTIFIER_PREFIX)) {
       throw new AptException(
-          Message.DOMA4025, parameterElement, new Object[] {MetaConstants.RESERVED_NAME_PREFIX});
+          Message.DOMA4025, parameterElement, new Object[] {Constants.RESERVED_IDENTIFIER_PREFIX});
     }
     TypeMirror type = parameterElement.asType();
     CtType ctType = ctx.getCtTypes().newCtType(type, new CtTypeValidator());
@@ -195,8 +210,7 @@ public class QueryParameterMetaFactory {
     }
   }
 
-  protected class OptionalElementCtTypeValidator
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class OptionalElementCtTypeValidator extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     @Override
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
@@ -216,8 +230,7 @@ public class QueryParameterMetaFactory {
     }
   }
 
-  protected class FunctionTargetCtTypeValidator
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class FunctionTargetCtTypeValidator extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     @Override
     public Void visitStreamCtType(StreamCtType ctType, Void p) throws RuntimeException {
@@ -225,8 +238,7 @@ public class QueryParameterMetaFactory {
       return null;
     }
 
-    protected class StreamElementCtTypeVisitor
-        extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    class StreamElementCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
       @Override
       public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {
@@ -243,8 +255,7 @@ public class QueryParameterMetaFactory {
     }
   }
 
-  protected class CollectorTargetCtTypeValidator
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class CollectorTargetCtTypeValidator extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     @Override
     public Void visitDomainCtType(DomainCtType ctType, Void p) throws RuntimeException {
@@ -260,8 +271,7 @@ public class QueryParameterMetaFactory {
     }
   }
 
-  protected class ReferenceReferentCtTypeValidator
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ReferenceReferentCtTypeValidator extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     @Override
     public Void visitDomainCtType(final DomainCtType ctType, Void p) throws RuntimeException {

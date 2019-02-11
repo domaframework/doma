@@ -8,7 +8,7 @@ public class DomainInParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;
 
-  protected final DomainCtType domainCtType;
+  private final DomainCtType domainCtType;
 
   public DomainInParameterMeta(String name, DomainCtType domainCtType) {
     assertNotNull(name, domainCtType);

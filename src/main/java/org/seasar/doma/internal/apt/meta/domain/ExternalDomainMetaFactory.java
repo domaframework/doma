@@ -48,7 +48,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     return meta;
   }
 
-  protected void validateConverter(TypeElement converterElement) {
+  private void validateConverter(TypeElement converterElement) {
     if (!ctx.getTypes().isAssignableWithErasure(converterElement.asType(), DomainConverter.class)) {
       throw new AptException(Message.DOMA4191, converterElement, new Object[] {});
     }
@@ -64,7 +64,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     }
   }
 
-  protected TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
+  private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
     for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
       if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
@@ -84,7 +84,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     return null;
   }
 
-  protected void doDomainType(
+  private void doDomainType(
       TypeElement converterElement, TypeMirror domainType, ExternalDomainMeta meta) {
     TypeElement domainElement = ctx.getTypes().toTypeElement(domainType);
     if (domainElement == null) {
@@ -113,7 +113,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     meta.setTypeParametersDef(typeParametersDef);
   }
 
-  protected void validateEnclosingElement(Element element) {
+  private void validateEnclosingElement(Element element) {
     TypeElement typeElement = ctx.getElements().toTypeElement(element);
     if (typeElement == null) {
       return;
@@ -141,7 +141,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     }
   }
 
-  protected void doValueType(
+  private void doValueType(
       TypeElement converterElement, TypeMirror valueType, ExternalDomainMeta meta) {
     meta.setValueType(valueType);
 

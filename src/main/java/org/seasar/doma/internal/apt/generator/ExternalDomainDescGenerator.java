@@ -48,7 +48,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
       iprint(
           "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
-          /* 2 */ AbstractDomainType.class.getName(),
+          /* 2 */ AbstractDomainType.class,
           /* 3 */ domainMeta.getValueType(),
           /* 4 */ domainMeta.getType(),
           /* 5 */ domainMeta.getTypeParameters());
@@ -56,7 +56,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
       iprint(
           "public final class %1$s extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
-          /* 2 */ AbstractDomainType.class.getName(),
+          /* 2 */ AbstractDomainType.class,
           /* 3 */ domainMeta.getValueType(),
           /* 4 */ domainMeta.getType());
     }
@@ -77,9 +77,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
     }
     iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
     print("%n");
-    iprint(
-        "private static final %1$s converter = new %1$s();%n",
-        domainMeta.getConverterElement().getQualifiedName());
+    iprint("private static final %1$s converter = new %1$s();%n", domainMeta.getConverterElement());
     print("%n");
   }
 
@@ -152,10 +150,10 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint("public Class<%1$s> getDomainClass() {%n", domainMeta.getType());
     if (domainMeta.isParameterized()) {
-      iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getQualifiedName());
+      iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getTypeElement());
       iprint("    return (Class<%1$s>) clazz;%n", domainMeta.getType());
     } else {
-      iprint("    return %1$s.class;%n", domainMeta.getQualifiedName());
+      iprint("    return %1$s.class;%n", domainMeta.getTypeElement());
     }
     iprint("}%n");
     print("%n");

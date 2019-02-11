@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 
 public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
 
-  protected final SequenceGeneratorAnnot sequenceGeneratorAnnot;
+  private final SequenceGeneratorAnnot sequenceGeneratorAnnot;
 
   public SequenceIdGeneratorMeta(SequenceGeneratorAnnot sequenceGeneratorAnnot) {
     assertNotNull(sequenceGeneratorAnnot);

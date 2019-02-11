@@ -22,7 +22,7 @@ public class ClobCreateQueryMetaFactory
     if (clobFactoryAnnot == null) {
       return null;
     }
-    ClobCreateQueryMeta queryMeta = new ClobCreateQueryMeta(method, daoMeta.getDaoElement());
+    ClobCreateQueryMeta queryMeta = new ClobCreateQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setClobFactoryAnnot(clobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.CLOB_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);

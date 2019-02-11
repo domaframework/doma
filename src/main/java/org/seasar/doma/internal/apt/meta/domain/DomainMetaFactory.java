@@ -60,15 +60,15 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     return domainMeta;
   }
 
-  protected Strategy createStrategy(TypeElement classElement, DomainMeta domainMeta) {
+  private Strategy createStrategy(TypeElement classElement, DomainMeta domainMeta) {
     ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(classElement);
     if (valueAnnot != null) {
-      return new ValueStragety(ctx, valueAnnot);
+      return new ValueStrategy(ctx, valueAnnot);
     }
     return new DefaultStrategy(ctx);
   }
 
-  protected interface Strategy {
+  interface Strategy {
 
     void doTypeParameters(TypeElement classElement, DomainMeta domainMeta);
 
@@ -85,9 +85,9 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
   protected static class DefaultStrategy implements Strategy {
 
-    protected final Context ctx;
+    final Context ctx;
 
-    public DefaultStrategy(Context ctx) {
+    DefaultStrategy(Context ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
     }
@@ -164,7 +164,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       }
     }
 
-    protected void validateEnclosingElement(Element element) {
+    void validateEnclosingElement(Element element) {
       TypeElement typeElement = ctx.getElements().toTypeElement(element);
       if (typeElement == null) {
         return;
@@ -201,7 +201,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       }
     }
 
-    protected void validateConstructor(TypeElement classElement, DomainMeta domainMeta) {
+    void validateConstructor(TypeElement classElement, DomainMeta domainMeta) {
       for (ExecutableElement constructor :
           ElementFilter.constructorsIn(classElement.getEnclosedElements())) {
         if (constructor.getModifiers().contains(Modifier.PRIVATE)) {
@@ -220,7 +220,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           Message.DOMA4103, classElement, new Object[] {domainMeta.getValueType()});
     }
 
-    protected void validateFactoryMethod(TypeElement classElement, DomainMeta domainMeta) {
+    void validateFactoryMethod(TypeElement classElement, DomainMeta domainMeta) {
       outer:
       for (ExecutableElement method : ElementFilter.methodsIn(classElement.getEnclosedElements())) {
         if (!method.getSimpleName().contentEquals(domainMeta.getFactoryMethod())) {
@@ -310,7 +310,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
           new Object[] {domainMeta.getAccessorMethod(), domainMeta.getValueType()});
     }
 
-    protected TypeMirror inferType(
+    TypeMirror inferType(
         TypeVariable typeVariable, TypeElement classElement, TypeMirror classMirror) {
       DeclaredType declaredType = ctx.getTypes().toDeclaredType(classMirror);
       if (declaredType == null) {
@@ -335,11 +335,11 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
   }
 
-  protected static class ValueStragety extends DefaultStrategy {
+  protected static class ValueStrategy extends DefaultStrategy {
 
-    protected final ValueAnnot valueAnnot;
+    final ValueAnnot valueAnnot;
 
-    public ValueStragety(Context ctx, ValueAnnot valueAnnot) {
+    ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
       super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;
@@ -372,7 +372,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       }
     }
 
-    protected String inferAccessorMethod(VariableElement field) {
+    String inferAccessorMethod(VariableElement field) {
       String name = field.getSimpleName().toString();
       String capitalizedName = StringUtil.capitalize(name);
       if (field.asType().getKind() == TypeKind.BOOLEAN) {
@@ -384,7 +384,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
       return "get" + capitalizedName;
     }
 
-    protected VariableElement findSingleField(TypeElement classElement, DomainMeta domainMeta) {
+    VariableElement findSingleField(TypeElement classElement, DomainMeta domainMeta) {
       List<VariableElement> fields =
           ElementFilter.fieldsIn(classElement.getEnclosedElements())
               .stream()

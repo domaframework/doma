@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.cttype.MapCtType;
 
 public class MapResultListParameterMeta implements ResultListParameterMeta {
 
-  protected final MapCtType mapCtType;
+  private final MapCtType mapCtType;
 
   public MapResultListParameterMeta(MapCtType mapCtType) {
     assertNotNull(mapCtType);

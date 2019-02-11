@@ -6,9 +6,9 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
 public class EntityResultListParameterMeta implements ResultListParameterMeta {
 
-  protected final EntityCtType entityCtType;
+  private final EntityCtType entityCtType;
 
-  protected final boolean ensureResultMapping;
+  private final boolean ensureResultMapping;
 
   public EntityResultListParameterMeta(EntityCtType entityCtType, boolean ensureResultMapping) {
     assertNotNull(entityCtType);

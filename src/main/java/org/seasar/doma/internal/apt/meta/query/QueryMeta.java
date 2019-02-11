@@ -18,7 +18,7 @@ public interface QueryMeta {
 
   Map<String, TypeMirror> getBindableParameterTypeMap();
 
-  List<String> getThrownTypeNames();
+  List<TypeMirror> getThrownTypes();
 
   ExecutableElement getMethodElement();
 

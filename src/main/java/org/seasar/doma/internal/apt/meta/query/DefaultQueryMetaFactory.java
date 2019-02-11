@@ -19,7 +19,7 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
     if (!method.isDefault()) {
       return null;
     }
-    DefaultQueryMeta queryMeta = new DefaultQueryMeta(method, daoMeta.getDaoElement());
+    DefaultQueryMeta queryMeta = new DefaultQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setQueryKind(QueryKind.DEFAULT);
     doTypeParameters(queryMeta, method, daoMeta);
     doParameters(queryMeta, method, daoMeta);

@@ -39,13 +39,13 @@ public class SqlProcessorQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlProcessorQueryMeta createSqlContentQueryMeta(
+  private SqlProcessorQueryMeta createSqlContentQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(method);
     if (sqlProcessorAnnot == null) {
       return null;
     }
-    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getDaoElement());
+    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
@@ -80,15 +80,13 @@ public class SqlProcessorQueryMetaFactory
 
     BiFunctionCtType biFunctionCtType = queryMeta.getBiFunctionCtType();
     CtType resultCtType = biFunctionCtType.getResultCtType();
-    if (resultCtType == null || !isConvertibleReturnType(returnMeta, resultCtType)) {
+    if (!isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(
-          Message.DOMA4436,
-          method,
-          new Object[] {returnMeta.getType(), resultCtType.getBoxedTypeName()});
+          Message.DOMA4436, method, new Object[] {returnMeta.getType(), resultCtType.getType()});
     }
   }
 
-  protected boolean isConvertibleReturnType(QueryReturnMeta returnMeta, CtType resultCtType) {
+  private boolean isConvertibleReturnType(QueryReturnMeta returnMeta, CtType resultCtType) {
     if (ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), resultCtType.getType())) {
       return true;
     }
@@ -98,14 +96,13 @@ public class SqlProcessorQueryMetaFactory
     return false;
   }
 
-  protected class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlProcessorQueryMeta queryMeta;
+    final SqlProcessorQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamCtTypeVisitor(
-        SqlProcessorQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
+    ParamCtTypeVisitor(SqlProcessorQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;
     }
@@ -133,14 +130,14 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  protected class ParamBiFunctionFirstArgCtTypeVisitor
+  class ParamBiFunctionFirstArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlProcessorQueryMeta queryMeta;
+    final SqlProcessorQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamBiFunctionFirstArgCtTypeVisitor(
+    ParamBiFunctionFirstArgCtTypeVisitor(
         SqlProcessorQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;
@@ -157,14 +154,14 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  protected class ParamBiFunctionSecondArgCtTypeVisitor
+  class ParamBiFunctionSecondArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlProcessorQueryMeta queryMeta;
+    final SqlProcessorQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamBiFunctionSecondArgCtTypeVisitor(
+    ParamBiFunctionSecondArgCtTypeVisitor(
         SqlProcessorQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;

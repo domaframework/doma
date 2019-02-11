@@ -10,13 +10,13 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
-public class QueryReturnMetaFactory {
+class QueryReturnMetaFactory {
 
-  protected final Context ctx;
+  private final Context ctx;
 
-  protected final ExecutableElement methodElement;
+  private final ExecutableElement methodElement;
 
-  protected final TypeElement daoElement;
+  private final TypeElement daoElement;
 
   public QueryReturnMetaFactory(Context ctx, QueryMeta queryMeta) {
     assertNotNull(ctx, queryMeta);

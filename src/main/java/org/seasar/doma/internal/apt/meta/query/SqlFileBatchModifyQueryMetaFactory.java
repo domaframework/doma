@@ -42,10 +42,10 @@ public class SqlFileBatchModifyQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
+  private SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileBatchModifyQueryMeta queryMeta =
-        new SqlFileBatchModifyQueryMeta(method, daoMeta.getDaoElement());
+        new SqlFileBatchModifyQueryMeta(method, daoMeta.getTypeElement());
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
     queryMeta.setSqlAnnot(sqlAnnot);
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(method);

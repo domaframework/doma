@@ -22,7 +22,7 @@ public class BlobCreateQueryMetaFactory
     if (blobFactoryAnnot == null) {
       return null;
     }
-    BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(method, daoMeta.getDaoElement());
+    BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(method, daoMeta.getTypeElement());
     queryMeta.setBlobFactoryAnnot(blobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);
     doTypeParameters(queryMeta, method, daoMeta);

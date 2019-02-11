@@ -14,7 +14,7 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.jdbc.query.Query;
 
 public abstract class AbstractQueryMeta implements QueryMeta {
@@ -25,21 +25,21 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   private final TypeElement daoElement;
 
-  private List<String> typeParameterNames = new ArrayList<>();
+  private final List<TypeMirror> thrownTypes = new ArrayList<>();
 
-  private List<String> thrownTypeNames = new ArrayList<>();
+  QueryKind queryKind;
 
-  protected QueryKind queryKind;
-
-  private LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<>();
+  private final LinkedHashMap<String, TypeMirror> bindableParameterTypeMap = new LinkedHashMap<>();
 
   private QueryReturnMeta returnMeta;
 
-  private List<QueryParameterMeta> parameterMetas = new ArrayList<>();
+  private final List<QueryParameterMeta> parameterMetas = new ArrayList<>();
 
-  private List<String> fileNames = new ArrayList<>();
+  private final List<String> fileNames = new ArrayList<>();
 
-  protected AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
+  private TypeParametersDef typeParametersDef;
+
+  AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
     assertNotNull(method);
     this.name = method.getSimpleName().toString();
     this.executableElement = method;
@@ -61,22 +61,22 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     return daoElement;
   }
 
-  public void addTypeParameterName(String typeParameterName) {
-    typeParameterNames.add(typeParameterName);
-  }
-
   @Override
   public List<String> getTypeParameterNames() {
-    return typeParameterNames;
+    return typeParametersDef.getTypeParameters();
   }
 
-  public void addThrownTypeName(String thrownTypeName) {
-    thrownTypeNames.add(thrownTypeName);
+  public void setTypeParametersDef(TypeParametersDef typeParametersDef) {
+    this.typeParametersDef = typeParametersDef;
   }
 
   @Override
-  public List<String> getThrownTypeNames() {
-    return thrownTypeNames;
+  public List<TypeMirror> getThrownTypes() {
+    return thrownTypes;
+  }
+
+  public void addThrownType(TypeMirror thrownType) {
+    thrownTypes.add(thrownType);
   }
 
   public Class<? extends Query> getQueryClass() {
@@ -86,12 +86,11 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     return queryKind.getQueryClass();
   }
 
-  @SuppressWarnings("rawtypes")
   public Class<?> getCommandClass() {
     if (queryKind == null) {
       return null;
     }
-    return (Class<? extends Command>) queryKind.getCommandClass();
+    return queryKind.getCommandClass();
   }
 
   @Override
@@ -145,12 +144,11 @@ public abstract class AbstractQueryMeta implements QueryMeta {
     return this.executableElement.isVarArgs();
   }
 
-  protected class BindableParameterCtTypeVisitor
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class BindableParameterCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected final String parameterName;
+    final String parameterName;
 
-    protected BindableParameterCtTypeVisitor(String parameterName) {
+    BindableParameterCtTypeVisitor(String parameterName) {
       this.parameterName = parameterName;
     }
 

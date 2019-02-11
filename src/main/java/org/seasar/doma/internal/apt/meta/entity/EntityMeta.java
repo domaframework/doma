@@ -3,11 +3,10 @@ package org.seasar.doma.internal.apt.meta.entity;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
@@ -17,13 +16,13 @@ public class EntityMeta implements TypeElementMeta {
 
   private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
-  private final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
-
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
   private final EntityAnnot entityAnnot;
 
-  private final TypeElement entityElement;
+  private final TypeElement typeElement;
+
+  private final TypeMirror type;
 
   private boolean immutable;
 
@@ -43,18 +42,17 @@ public class EntityMeta implements TypeElementMeta {
 
   private String entityName;
 
-  private String entityTypeName;
-
   private OriginalStatesMeta originalStatesMeta;
 
   private EntityConstructorMeta constructorMeta;
 
-  protected boolean error;
+  private boolean error;
 
-  public EntityMeta(EntityAnnot entityAnnot, TypeElement entityElement) {
+  public EntityMeta(EntityAnnot entityAnnot, TypeElement typeElement) {
     assertNotNull(entityAnnot);
     this.entityAnnot = entityAnnot;
-    this.entityElement = entityElement;
+    this.typeElement = typeElement;
+    this.type = typeElement.asType();
   }
 
   public String getEntityName() {
@@ -85,10 +83,6 @@ public class EntityMeta implements TypeElementMeta {
     this.immutable = immutable;
   }
 
-  public TypeElement getEntityElement() {
-    return entityElement;
-  }
-
   public void setTableAnnot(TableAnnot tableAnnot) {
     this.tableAnnot = tableAnnot;
   }
@@ -96,7 +90,6 @@ public class EntityMeta implements TypeElementMeta {
   public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
     assertNotNull(propertyMeta);
     allPropertyMetas.add(propertyMeta);
-    allPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
     if (propertyMeta.isId()) {
       idPropertyMetas.add(propertyMeta);
       if (propertyMeta.getIdGeneratorMeta() != null) {
@@ -146,12 +139,8 @@ public class EntityMeta implements TypeElementMeta {
     return generatedIdPropertyMeta;
   }
 
-  public String getEntityTypeName() {
-    return entityTypeName;
-  }
-
-  public void setEntityTypeName(String entityTypeName) {
-    this.entityTypeName = entityTypeName;
+  public TypeMirror getType() {
+    return type;
   }
 
   public boolean hasOriginalStatesMeta() {
@@ -199,11 +188,11 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public boolean isQuoteRequired() {
-    return tableAnnot != null ? tableAnnot.getQuoteValue() : false;
+    return tableAnnot != null && tableAnnot.getQuoteValue();
   }
 
   public boolean isAbstract() {
-    return entityElement.getModifiers().contains(Modifier.ABSTRACT);
+    return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
   public boolean hasEmbeddedProperties() {

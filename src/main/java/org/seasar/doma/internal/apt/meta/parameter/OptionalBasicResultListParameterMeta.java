@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 public class OptionalBasicResultListParameterMeta implements ResultListParameterMeta {
 
-  protected final BasicCtType basicCtType;
+  private final BasicCtType basicCtType;
 
   public OptionalBasicResultListParameterMeta(BasicCtType basicCtType) {
     assertNotNull(basicCtType);
