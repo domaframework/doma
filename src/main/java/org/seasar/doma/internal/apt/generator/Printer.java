@@ -59,6 +59,8 @@ public class Printer {
       return ((Element) arg).getSimpleName();
     } else if (arg instanceof Collection) {
       return ((Collection<?>) arg).stream().map(this::toCharSequence).collect(joining(", "));
+    } else if (arg instanceof LazyFormatter) {
+      return ((LazyFormatter) arg).run(this::toCharSequence);
     }
     if (arg != null) {
       return arg.toString();
