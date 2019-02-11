@@ -15,7 +15,7 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
 
   private final Class<?> returnClass;
 
-  protected AbstractCreateQueryMetaFactory(Context ctx, Class<?> returnClass) {
+  AbstractCreateQueryMetaFactory(Context ctx, Class<?> returnClass) {
     super(ctx);
     assertNotNull(returnClass);
     this.returnClass = returnClass;

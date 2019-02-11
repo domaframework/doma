@@ -27,7 +27,7 @@ import org.seasar.doma.message.Message;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
-  protected AutoModuleQueryMetaFactory(Context ctx) {
+  AutoModuleQueryMetaFactory(Context ctx) {
     super(ctx);
   }
 
@@ -46,7 +46,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
+  private CallableSqlParameterMeta createParameterMeta(final QueryParameterMeta parameterMeta) {
     ResultSetAnnot resultSetAnnot =
         ctx.getAnnotations().newResultSetAnnot(parameterMeta.getElement());
     if (resultSetAnnot != null) {
@@ -64,7 +64,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     throw new AptException(Message.DOMA4066, parameterMeta.getElement(), new Object[] {});
   }
 
-  protected CallableSqlParameterMeta createResultSetParameterMeta(
+  private CallableSqlParameterMeta createResultSetParameterMeta(
       final QueryParameterMeta parameterMeta, final ResultSetAnnot resultSetAnnot) {
     IterableCtType iterableCtType =
         parameterMeta.getCtType().accept(new ResultSetCtTypeVisitor(parameterMeta), null);
@@ -73,12 +73,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         .accept(new ResultSetElementCtTypeVisitor(parameterMeta, resultSetAnnot), false);
   }
 
-  protected CallableSqlParameterMeta createInParameterMeta(final QueryParameterMeta parameterMeta) {
+  private CallableSqlParameterMeta createInParameterMeta(final QueryParameterMeta parameterMeta) {
     return parameterMeta.getCtType().accept(new InCtTypeVisitor(parameterMeta), false);
   }
 
-  protected CallableSqlParameterMeta createOutParameterMeta(
-      final QueryParameterMeta parameterMeta) {
+  private CallableSqlParameterMeta createOutParameterMeta(final QueryParameterMeta parameterMeta) {
     final ReferenceCtType referenceCtType =
         parameterMeta.getCtType().accept(new OutCtTypeVisitor(parameterMeta), null);
     return referenceCtType
@@ -86,7 +85,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         .accept(new OutReferentCtTypeVisitor(parameterMeta, referenceCtType), false);
   }
 
-  protected CallableSqlParameterMeta createInOutParameterMeta(
+  private CallableSqlParameterMeta createInOutParameterMeta(
       final QueryParameterMeta parameterMeta) {
     final ReferenceCtType referenceCtType =
         parameterMeta.getCtType().accept(new InOutCtTypeVisitor(parameterMeta), null);
@@ -95,12 +94,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         .accept(new InOutReferentCtTypeVisitor(parameterMeta, referenceCtType), false);
   }
 
-  protected class ResultSetCtTypeVisitor
-      extends SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException> {
+  class ResultSetCtTypeVisitor extends SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ResultSetCtTypeVisitor(QueryParameterMeta parameterMeta) {
+    ResultSetCtTypeVisitor(QueryParameterMeta parameterMeta) {
       this.parameterMeta = parameterMeta;
     }
 
@@ -119,15 +117,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class ResultSetElementCtTypeVisitor
+  class ResultSetElementCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected final ResultSetAnnot resultSetAnnot;
+    final ResultSetAnnot resultSetAnnot;
 
-    public ResultSetElementCtTypeVisitor(
-        QueryParameterMeta parameterMeta, ResultSetAnnot resultSetAnnot) {
+    ResultSetElementCtTypeVisitor(QueryParameterMeta parameterMeta, ResultSetAnnot resultSetAnnot) {
       this.parameterMeta = parameterMeta;
       this.resultSetAnnot = resultSetAnnot;
     }
@@ -199,12 +196,12 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class InCtTypeVisitor
+  class InCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    public InCtTypeVisitor(QueryParameterMeta parameterMeta) {
+    InCtTypeVisitor(QueryParameterMeta parameterMeta) {
       this.parameterMeta = parameterMeta;
     }
 
@@ -258,12 +255,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class OutCtTypeVisitor
-      extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
+  class OutCtTypeVisitor extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    public OutCtTypeVisitor(QueryParameterMeta parameterMeta) {
+    OutCtTypeVisitor(QueryParameterMeta parameterMeta) {
       this.parameterMeta = parameterMeta;
     }
 
@@ -279,15 +275,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class OutReferentCtTypeVisitor
+  class OutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected final ReferenceCtType referenceCtType;
+    final ReferenceCtType referenceCtType;
 
-    public OutReferentCtTypeVisitor(
-        QueryParameterMeta parameterMeta, ReferenceCtType referenceCtType) {
+    OutReferentCtTypeVisitor(QueryParameterMeta parameterMeta, ReferenceCtType referenceCtType) {
       this.parameterMeta = parameterMeta;
       this.referenceCtType = referenceCtType;
     }
@@ -344,12 +339,11 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class InOutCtTypeVisitor
-      extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
+  class InOutCtTypeVisitor extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    public InOutCtTypeVisitor(QueryParameterMeta parameterMeta) {
+    InOutCtTypeVisitor(QueryParameterMeta parameterMeta) {
       this.parameterMeta = parameterMeta;
     }
 
@@ -365,15 +359,14 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  protected class InOutReferentCtTypeVisitor
+  class InOutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
-    protected final QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected final ReferenceCtType referenceCtType;
+    final ReferenceCtType referenceCtType;
 
-    public InOutReferentCtTypeVisitor(
-        QueryParameterMeta parameterMeta, ReferenceCtType referenceCtType) {
+    InOutReferentCtTypeVisitor(QueryParameterMeta parameterMeta, ReferenceCtType referenceCtType) {
       this.parameterMeta = parameterMeta;
       this.referenceCtType = referenceCtType;
     }

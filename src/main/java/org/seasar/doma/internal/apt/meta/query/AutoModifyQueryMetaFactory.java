@@ -35,8 +35,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     return queryMeta;
   }
 
-  protected AutoModifyQueryMeta createAutoModifyQueryMeta(
-      ExecutableElement method, DaoMeta daoMeta) {
+  private AutoModifyQueryMeta createAutoModifyQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
     if (sqlAnnot != null) {
       return null;

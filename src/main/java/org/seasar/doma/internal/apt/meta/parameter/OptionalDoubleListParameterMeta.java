@@ -4,7 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class OptionalDoubleListParameterMeta implements CallableSqlParameterMeta {
 
-  protected final String name;
+  private final String name;
 
   public OptionalDoubleListParameterMeta(String name) {
     assertNotNull(name);

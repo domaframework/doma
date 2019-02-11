@@ -54,19 +54,19 @@ public class AutoFunctionQueryMetaFactory
     queryMeta.setResultParameterMeta(resultParameterMeta);
   }
 
-  protected ResultParameterMeta createResultParameterMeta(
+  private ResultParameterMeta createResultParameterMeta(
       final AutoFunctionQueryMeta queryMeta, final QueryReturnMeta returnMeta) {
     return returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), false);
   }
 
-  protected class ReturnCtTypeVisitor
+  class ReturnCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
-    protected final AutoFunctionQueryMeta queryMeta;
+    final AutoFunctionQueryMeta queryMeta;
 
-    protected final QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    public ReturnCtTypeVisitor(AutoFunctionQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+    ReturnCtTypeVisitor(AutoFunctionQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
     }
@@ -131,15 +131,14 @@ public class AutoFunctionQueryMetaFactory
     }
   }
 
-  protected class IterableElementCtTypeVisitor
+  class IterableElementCtTypeVisitor
       extends SimpleCtTypeVisitor<ResultParameterMeta, Boolean, RuntimeException> {
 
-    protected final AutoFunctionQueryMeta queryMeta;
+    final AutoFunctionQueryMeta queryMeta;
 
-    protected final QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    public IterableElementCtTypeVisitor(
-        AutoFunctionQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+    IterableElementCtTypeVisitor(AutoFunctionQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
     }

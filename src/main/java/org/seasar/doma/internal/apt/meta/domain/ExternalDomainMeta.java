@@ -11,7 +11,7 @@ import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public class ExternalDomainMeta implements TypeElementMeta {
 
-  protected final TypeElement converterElement;
+  private final TypeElement converterElement;
 
   private BasicCtType basicCtType;
 

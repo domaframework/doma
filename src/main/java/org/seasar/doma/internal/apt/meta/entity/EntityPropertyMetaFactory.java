@@ -14,6 +14,7 @@ import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.TenantId;
 import org.seasar.doma.Version;
+import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
@@ -29,13 +30,12 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.MetaConstants;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
 import org.seasar.doma.message.Message;
 
-public class EntityPropertyMetaFactory {
+class EntityPropertyMetaFactory {
 
   private final Context ctx;
 
@@ -70,9 +70,9 @@ public class EntityPropertyMetaFactory {
 
   private void doName(EntityPropertyMeta propertyMeta) {
     String name = fieldElement.getSimpleName().toString();
-    if (name.startsWith(MetaConstants.RESERVED_NAME_PREFIX)) {
+    if (name.startsWith(Constants.RESERVED_IDENTIFIER_PREFIX)) {
       throw new AptException(
-          Message.DOMA4025, fieldElement, new Object[] {MetaConstants.RESERVED_NAME_PREFIX});
+          Message.DOMA4025, fieldElement, new Object[] {Constants.RESERVED_IDENTIFIER_PREFIX});
     }
     propertyMeta.setName(name);
   }

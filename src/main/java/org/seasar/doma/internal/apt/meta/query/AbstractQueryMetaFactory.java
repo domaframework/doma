@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import javax.lang.model.element.AnnotationMirror;
@@ -17,17 +18,16 @@ import org.seasar.doma.internal.apt.meta.entity.EntityPropertyNameCollector;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.message.Message;
 
-public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
-    implements QueryMetaFactory {
+abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta> implements QueryMetaFactory {
 
-  protected final Context ctx;
+  final Context ctx;
 
-  protected AbstractQueryMetaFactory(Context ctx) {
+  AbstractQueryMetaFactory(Context ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }
 
-  protected void doTypeParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+  void doTypeParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
     TypeParametersDef typeParametersDef = ctx.getElements().getTypeParametersDef(method);
     queryMeta.setTypeParametersDef(typeParametersDef);
   }
@@ -36,20 +36,25 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
 
   protected abstract void doParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta);
 
-  protected void doThrowTypes(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+  void doThrowTypes(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
     method.getThrownTypes().forEach(queryMeta::addThrownType);
   }
 
-  protected void validateEntityPropertyNames(
+  void validateEntityPropertyNames(
       TypeMirror entityType,
       ExecutableElement method,
       AnnotationMirror annotationMirror,
       AnnotationValue includeValue,
       AnnotationValue excludeValue) {
     List<String> includedPropertyNames = AnnotationValueUtil.toStringList(includeValue);
+    if (includedPropertyNames == null) {
+      includedPropertyNames = Collections.emptyList();
+    }
     List<String> excludedPropertyNames = AnnotationValueUtil.toStringList(excludeValue);
-    if (includedPropertyNames != null && !includedPropertyNames.isEmpty()
-        || excludedPropertyNames != null && !excludedPropertyNames.isEmpty()) {
+    if (excludedPropertyNames == null) {
+      excludedPropertyNames = Collections.emptyList();
+    }
+    if (!includedPropertyNames.isEmpty() || !excludedPropertyNames.isEmpty()) {
       EntityPropertyNameCollector collector = new EntityPropertyNameCollector(ctx);
       Set<String> names = collector.collect(entityType);
       for (String included : includedPropertyNames) {
@@ -75,12 +80,12 @@ public abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta>
     }
   }
 
-  protected QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
+  QueryReturnMeta createReturnMeta(QueryMeta queryMeta) {
     QueryReturnMetaFactory factory = new QueryReturnMetaFactory(ctx, queryMeta);
     return factory.createQueryReturnMeta();
   }
 
-  protected QueryParameterMeta createParameterMeta(VariableElement parameter, QueryMeta queryMeta) {
+  QueryParameterMeta createParameterMeta(VariableElement parameter, QueryMeta queryMeta) {
     QueryParameterMetaFactory factory = new QueryParameterMetaFactory(ctx, parameter, queryMeta);
     return factory.createQueryParameterMeta();
   }

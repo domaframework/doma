@@ -9,19 +9,15 @@ import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
-public class EmbeddablePropertyMetaFactory {
+class EmbeddablePropertyMetaFactory {
 
-  protected final Context ctx;
+  private final Context ctx;
 
-  protected EmbeddableMeta embeddableMeta;
+  private final VariableElement fieldElement;
 
-  protected VariableElement fieldElement;
-
-  public EmbeddablePropertyMetaFactory(
-      Context ctx, EmbeddableMeta embeddableMeta, VariableElement fieldElement) {
-    assertNotNull(ctx, embeddableMeta, fieldElement);
+  public EmbeddablePropertyMetaFactory(Context ctx, VariableElement fieldElement) {
+    assertNotNull(ctx, fieldElement);
     this.ctx = ctx;
-    this.embeddableMeta = embeddableMeta;
     this.fieldElement = fieldElement;
   }
 

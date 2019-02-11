@@ -15,7 +15,7 @@ import org.seasar.doma.internal.apt.Context;
 
 public class EntityPropertyNameCollector {
 
-  protected final Context ctx;
+  private final Context ctx;
 
   public EntityPropertyNameCollector(Context ctx) {
     assertNotNull(ctx);
@@ -28,7 +28,7 @@ public class EntityPropertyNameCollector {
     return names;
   }
 
-  protected void collectNames(TypeMirror type, Set<String> names) {
+  private void collectNames(TypeMirror type, Set<String> names) {
     for (TypeElement t = ctx.getTypes().toTypeElement(type);
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
@@ -40,7 +40,7 @@ public class EntityPropertyNameCollector {
     }
   }
 
-  protected boolean isPersistent(VariableElement field) {
+  private boolean isPersistent(VariableElement field) {
     return field.getAnnotation(Transient.class) == null
         && !field.getModifiers().contains(Modifier.STATIC);
   }

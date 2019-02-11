@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 
-public class EntityConstructorMeta {
+class EntityConstructorMeta {
 
   private final ExecutableElement constructorElement;
   private final List<EntityPropertyMeta> entityPropertyMetas;

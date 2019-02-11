@@ -48,7 +48,7 @@ import org.seasar.doma.message.Message;
 
 public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
-  protected final Context ctx;
+  private final Context ctx;
 
   public EntityMetaFactory(Context ctx) {
     assertNotNull(ctx);
@@ -84,7 +84,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return entityMeta;
   }
 
-  protected Strategy createStrategy(TypeElement classElement, EntityMeta entityMeta) {
+  private Strategy createStrategy(TypeElement classElement, EntityMeta entityMeta) {
     ValueAnnot valueAnnot = ctx.getAnnotations().newValueAnnot(classElement);
     if (valueAnnot != null) {
       return new ValueStrategy(ctx, valueAnnot);
@@ -97,7 +97,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return new DefaultStrategy(ctx);
   }
 
-  protected TypeMirror resolveEntityListener(TypeElement classElement) {
+  private TypeMirror resolveEntityListener(TypeElement classElement) {
     TypeMirror result = ctx.getTypes().getTypeMirror(NullEntityListener.class);
     for (AnnotationValue value : getEntityElementValueList(classElement, "listener")) {
       if (value != null) {
@@ -111,7 +111,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return result;
   }
 
-  protected NamingType resolveNamingType(TypeElement classElement) {
+  private NamingType resolveNamingType(TypeElement classElement) {
     NamingType result = null;
     for (AnnotationValue value : getEntityElementValueList(classElement, "naming")) {
       if (value != null) {
@@ -125,16 +125,16 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return result;
   }
 
-  protected boolean resolveImmutable(TypeElement classElement, EntityAnnot entityAnnot) {
+  private boolean resolveImmutable(TypeElement classElement, EntityAnnot entityAnnot) {
     boolean result = false;
-    List<Boolean> resolvedList = new ArrayList<Boolean>();
+    List<Boolean> resolvedList = new ArrayList<>();
     for (AnnotationValue value : getEntityElementValueList(classElement, "immutable")) {
       if (value != null) {
         Boolean immutable = AnnotationValueUtil.toBoolean(value);
         if (immutable == null) {
           throw new AptIllegalStateException("immutable");
         }
-        result = immutable.booleanValue();
+        result = immutable;
         resolvedList.add(immutable);
       }
     }
@@ -149,9 +149,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return result;
   }
 
-  protected List<AnnotationValue> getEntityElementValueList(
+  private List<AnnotationValue> getEntityElementValueList(
       TypeElement classElement, String entityElementName) {
-    List<AnnotationValue> list = new LinkedList<AnnotationValue>();
+    List<AnnotationValue> list = new LinkedList<>();
     for (TypeElement t = classElement;
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
@@ -174,7 +174,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     return list;
   }
 
-  protected interface Strategy {
+  interface Strategy {
 
     void doClassElement(TypeElement classElement, EntityMeta entityMeta);
 
@@ -189,9 +189,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   protected static class DefaultStrategy implements Strategy {
 
-    protected final Context ctx;
+    final Context ctx;
 
-    public DefaultStrategy(Context ctx) {
+    DefaultStrategy(Context ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
     }
@@ -203,7 +203,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       doTable(classElement, entityMeta);
     }
 
-    protected void validateClass(TypeElement classElement, EntityMeta entityMeta) {
+    void validateClass(TypeElement classElement, EntityMeta entityMeta) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       if (classElement.getKind() != ElementKind.CLASS) {
         throw new AptException(
@@ -215,7 +215,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       validateEnclosingElement(classElement);
     }
 
-    protected void validateEnclosingElement(Element element) {
+    void validateEnclosingElement(Element element) {
       TypeElement typeElement = ctx.getElements().toTypeElement(element);
       if (typeElement == null) {
         return;
@@ -243,7 +243,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected void validateEntityListener(TypeElement classElement, EntityMeta entityMeta) {
+    void validateEntityListener(TypeElement classElement, EntityMeta entityMeta) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       TypeMirror listenerType = entityAnnot.getListenerValue();
       TypeElement listenerElement = ctx.getTypes().toTypeElement(listenerType);
@@ -281,7 +281,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected void validateGenericEntityListener(
+    void validateGenericEntityListener(
         TypeElement classElement, EntityMeta entityMeta, TypeElement listenerElement) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       List<? extends TypeParameterElement> typeParams = listenerElement.getTypeParameters();
@@ -317,8 +317,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected TypeParameterElement findListenerTypeParam(
-        TypeElement listenerElement, int typeParamIndex) {
+    TypeParameterElement findListenerTypeParam(TypeElement listenerElement, int typeParamIndex) {
       TypeParameterElement typeParam = listenerElement.getTypeParameters().get(typeParamIndex);
 
       for (TypeMirror interfase : listenerElement.getInterfaces()) {
@@ -379,7 +378,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       return null;
     }
 
-    protected void validateNonGenericEntityListener(
+    void validateNonGenericEntityListener(
         TypeElement classElement, EntityMeta entityMeta, TypeMirror listenerType) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       TypeMirror argumentType = getListenerArgumentType(listenerType);
@@ -401,7 +400,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected void validateInheritedEntityListener(
+    void validateInheritedEntityListener(
         TypeElement classElement, EntityMeta entityMeta, TypeElement inheritedListenerElement) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       List<? extends TypeParameterElement> typeParams =
@@ -432,7 +431,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
+    TypeMirror getListenerArgumentType(TypeMirror typeMirror) {
       for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
         if (!ctx.getTypes().isAssignableWithErasure(supertype, EntityListener.class)) {
           continue;
@@ -456,7 +455,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       return null;
     }
 
-    protected void doTable(TypeElement classElement, EntityMeta entityMeta) {
+    void doTable(TypeElement classElement, EntityMeta entityMeta) {
       TableAnnot tableAnnot = ctx.getAnnotations().newTableAnnot(classElement);
       if (tableAnnot == null) {
         return;
@@ -483,24 +482,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected List<VariableElement> getFieldElements(TypeElement classElement) {
-      List<VariableElement> results = new LinkedList<VariableElement>();
+    List<VariableElement> getFieldElements(TypeElement classElement) {
+      List<VariableElement> results = new LinkedList<>();
       for (TypeElement t = classElement;
           t != null && t.asType().getKind() != TypeKind.NONE;
           t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
         if (t.getAnnotation(Entity.class) == null) {
           continue;
         }
-        List<VariableElement> fields = new LinkedList<VariableElement>();
-        for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
-          fields.add(field);
-        }
+        List<VariableElement> fields =
+            new LinkedList<>(ElementFilter.fieldsIn(t.getEnclosedElements()));
         Collections.reverse(fields);
         results.addAll(fields);
       }
       Collections.reverse(results);
 
-      List<VariableElement> hiderFields = new LinkedList<VariableElement>(results);
+      List<VariableElement> hiderFields = new LinkedList<>(results);
       for (Iterator<VariableElement> it = results.iterator(); it.hasNext(); ) {
         VariableElement hidden = it.next();
         for (VariableElement hider : hiderFields) {
@@ -512,7 +509,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       return results;
     }
 
-    protected void doOriginalStatesField(
+    void doOriginalStatesField(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
       if (entityMeta.hasOriginalStatesMeta()) {
         throw new AptException(Message.DOMA4125, fieldElement, new Object[] {});
@@ -535,7 +532,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       entityMeta.setOriginalStatesMeta(originalStatesMeta);
     }
 
-    protected void doEntityPropertyMeta(
+    void doEntityPropertyMeta(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
       validateFieldAnnotation(fieldElement, entityMeta);
       EntityPropertyMetaFactory propertyMetaFactory =
@@ -545,7 +542,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       validateField(classElement, fieldElement, entityMeta);
     }
 
-    protected void validateFieldAnnotation(VariableElement fieldElement, EntityMeta entityMeta) {
+    void validateFieldAnnotation(VariableElement fieldElement, EntityMeta entityMeta) {
       TypeElement foundAnnotationTypeElement = null;
       for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
         DeclaredType declaredType = annotation.getAnnotationType();
@@ -564,7 +561,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected void validateField(
+    void validateField(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
       if (entityMeta.isImmutable() && !fieldElement.getModifiers().contains(Modifier.FINAL)) {
         throw new AptException(Message.DOMA4225, fieldElement, new Object[] {});
@@ -604,10 +601,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
     }
 
-    protected EntityConstructorMeta getConstructorMeta(
-        TypeElement classElement, EntityMeta entityMeta) {
-      Map<String, EntityPropertyMeta> entityPropertyMetaMap =
-          new HashMap<String, EntityPropertyMeta>();
+    EntityConstructorMeta getConstructorMeta(TypeElement classElement, EntityMeta entityMeta) {
+      Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<>();
       for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
         entityPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
       }
@@ -642,10 +637,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   protected static class AllArgsConstructorStrategy extends DefaultStrategy {
 
-    protected final AllArgsConstructorAnnot allArgsConstructorAnnot;
+    final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
-    public AllArgsConstructorStrategy(
-        Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
+    AllArgsConstructorStrategy(Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
       super(ctx);
       assertNotNull(allArgsConstructorAnnot);
       this.allArgsConstructorAnnot = allArgsConstructorAnnot;
@@ -700,9 +694,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   protected static class ValueStrategy extends DefaultStrategy {
 
-    protected final ValueAnnot valueAnnot;
+    final ValueAnnot valueAnnot;
 
-    public ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+    ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
       super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;

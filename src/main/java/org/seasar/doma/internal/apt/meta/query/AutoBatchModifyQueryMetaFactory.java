@@ -37,7 +37,7 @@ public class AutoBatchModifyQueryMetaFactory
     return queryMeta;
   }
 
-  protected AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta(
+  private AutoBatchModifyQueryMeta createAutoBatchModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
     if (sqlAnnot != null) {

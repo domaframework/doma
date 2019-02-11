@@ -6,9 +6,9 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 public class BasicListParameterMeta implements CallableSqlParameterMeta {
 
-  protected final String name;
+  private final String name;
 
-  protected final BasicCtType basicCtType;
+  private final BasicCtType basicCtType;
 
   public BasicListParameterMeta(String name, BasicCtType basicCtType) {
     assertNotNull(name, basicCtType);

@@ -6,9 +6,9 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
 public class OptionalDomainListParameterMeta implements CallableSqlParameterMeta {
 
-  protected final String name;
+  private final String name;
 
-  protected final DomainCtType domainCtType;
+  private final DomainCtType domainCtType;
 
   public OptionalDomainListParameterMeta(String name, DomainCtType domainCtType) {
     assertNotNull(name, domainCtType);

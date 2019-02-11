@@ -77,22 +77,21 @@ public class QueryParameterMeta {
   }
 
   public boolean isNullable() {
-    return ctType.accept(new NullableCtTypeVisitor(false), null);
+    return ctType.accept(new NullableCtTypeVisitor(), null);
   }
 
   public boolean isBindable() {
-    return ctType.accept(new BindableCtTypeVisitor(false), null);
+    return ctType.accept(new BindableCtTypeVisitor(), null);
   }
 
   public boolean isAnnotated(Class<? extends Annotation> annotationType) {
     return element.getAnnotation(annotationType) != null;
   }
 
-  protected class NullableCtTypeVisitor
-      extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+  class NullableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
-    public NullableCtTypeVisitor(boolean nullable) {
-      super(nullable);
+    NullableCtTypeVisitor() {
+      super(false);
     }
 
     @Override
@@ -106,11 +105,10 @@ public class QueryParameterMeta {
     }
   }
 
-  protected class BindableCtTypeVisitor
-      extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+  class BindableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
-    public BindableCtTypeVisitor(boolean bindable) {
-      super(bindable);
+    BindableCtTypeVisitor() {
+      super(false);
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 
 public class BasicSingleResultParameterMeta implements SingleResultParameterMeta {
 
-  protected final BasicCtType basicCtType;
+  private final BasicCtType basicCtType;
 
   public BasicSingleResultParameterMeta(BasicCtType basicCtType) {
     assertNotNull(basicCtType);

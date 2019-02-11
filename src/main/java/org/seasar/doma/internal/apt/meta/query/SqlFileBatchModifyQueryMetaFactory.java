@@ -42,7 +42,7 @@ public class SqlFileBatchModifyQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
+  private SqlFileBatchModifyQueryMeta createSqlFileBatchModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileBatchModifyQueryMeta queryMeta =
         new SqlFileBatchModifyQueryMeta(method, daoMeta.getTypeElement());

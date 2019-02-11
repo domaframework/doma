@@ -6,7 +6,7 @@ import org.seasar.doma.internal.apt.cttype.DomainCtType;
 
 public class DomainResultListParameterMeta implements ResultListParameterMeta {
 
-  protected final DomainCtType domainCtType;
+  private final DomainCtType domainCtType;
 
   public DomainResultListParameterMeta(DomainCtType domainCtType) {
     assertNotNull(domainCtType);

@@ -35,7 +35,7 @@ public class SqlFileModifyQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
+  private SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(method, daoMeta.getTypeElement());
     SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);

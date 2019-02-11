@@ -23,4 +23,6 @@ public final class Constants {
   public static final String DESC_NAME_DELIMITER = "__";
 
   public static final String BINARY_NAME_DELIMITER = "$";
+
+  public static final String RESERVED_IDENTIFIER_PREFIX = "__";
 }

@@ -3,9 +3,7 @@ package org.seasar.doma.internal.apt.meta.entity;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
@@ -17,8 +15,6 @@ import org.seasar.doma.jdbc.entity.NamingType;
 public class EntityMeta implements TypeElementMeta {
 
   private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
-
-  private final Map<String, EntityPropertyMeta> allPropertyMetaMap = new HashMap<>();
 
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
@@ -46,13 +42,11 @@ public class EntityMeta implements TypeElementMeta {
 
   private String entityName;
 
-  private String entityTypeName;
-
   private OriginalStatesMeta originalStatesMeta;
 
   private EntityConstructorMeta constructorMeta;
 
-  protected boolean error;
+  private boolean error;
 
   public EntityMeta(EntityAnnot entityAnnot, TypeElement typeElement) {
     assertNotNull(entityAnnot);
@@ -96,7 +90,6 @@ public class EntityMeta implements TypeElementMeta {
   public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
     assertNotNull(propertyMeta);
     allPropertyMetas.add(propertyMeta);
-    allPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
     if (propertyMeta.isId()) {
       idPropertyMetas.add(propertyMeta);
       if (propertyMeta.getIdGeneratorMeta() != null) {
@@ -195,7 +188,7 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public boolean isQuoteRequired() {
-    return tableAnnot != null ? tableAnnot.getQuoteValue() : false;
+    return tableAnnot != null && tableAnnot.getQuoteValue();
   }
 
   public boolean isAbstract() {

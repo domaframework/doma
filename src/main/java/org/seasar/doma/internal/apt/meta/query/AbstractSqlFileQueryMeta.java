@@ -5,11 +5,11 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 
-public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
+abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
 
-  protected SqlAnnot sqlAnnot;
+  SqlAnnot sqlAnnot;
 
-  protected AbstractSqlFileQueryMeta(ExecutableElement method, TypeElement dao) {
+  AbstractSqlFileQueryMeta(ExecutableElement method, TypeElement dao) {
     super(method, dao);
   }
 
@@ -29,7 +29,7 @@ public abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
     return buildQualifiedMethodName();
   }
 
-  protected String buildQualifiedMethodName() {
+  String buildQualifiedMethodName() {
     return String.format("%s#%s", getDaoElement().getQualifiedName(), getName());
   }
 }

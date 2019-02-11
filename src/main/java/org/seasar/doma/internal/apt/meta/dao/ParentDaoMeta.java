@@ -9,9 +9,9 @@ public class ParentDaoMeta {
 
   private final DaoAnnot daoAnnot;
 
-  private TypeElement typeElement;
+  private final TypeElement typeElement;
 
-  public ParentDaoMeta(DaoAnnot daoAnnot, TypeElement typeElement) {
+  ParentDaoMeta(DaoAnnot daoAnnot, TypeElement typeElement) {
     assertNotNull(daoAnnot, typeElement);
     this.daoAnnot = daoAnnot;
     this.typeElement = typeElement;

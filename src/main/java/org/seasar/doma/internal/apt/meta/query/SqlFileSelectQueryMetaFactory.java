@@ -51,7 +51,7 @@ public class SqlFileSelectQueryMetaFactory
     return queryMeta;
   }
 
-  protected SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
+  private SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(
       ExecutableElement method, DaoMeta daoMeta) {
     SelectAnnot selectAnnot = ctx.getAnnotations().newSelectAnnot(method);
     if (selectAnnot == null) {
@@ -107,8 +107,7 @@ public class SqlFileSelectQueryMetaFactory
     if (queryMeta.getSelectStrategyType() == SelectType.STREAM) {
       FunctionCtType functionCtType = queryMeta.getFunctionCtType();
       CtType returnCtType = functionCtType.getReturnCtType();
-      if (returnCtType == null
-          || !ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
+      if (!ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4246,
             method,
@@ -117,8 +116,7 @@ public class SqlFileSelectQueryMetaFactory
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
       CtType returnCtType = collectorCtType.getReturnCtType();
-      if (returnCtType == null
-          || !ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
+      if (!ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
             Message.DOMA4265,
             method,
@@ -129,14 +127,13 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamCtTypeVisitor(
-        SqlFileSelectQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
+    ParamCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;
     }
@@ -179,14 +176,13 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ParamFunctionTargetCtTypeVisitor
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ParamFunctionTargetCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamFunctionTargetCtTypeVisitor(
+    ParamFunctionTargetCtTypeVisitor(
         SqlFileSelectQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;
@@ -202,8 +198,7 @@ public class SqlFileSelectQueryMetaFactory
       return ctType.getElementCtType().accept(new StreamElementCtTypeVisitor(), null);
     }
 
-    protected class StreamElementCtTypeVisitor
-        extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+    class StreamElementCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
       @Override
       protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
@@ -287,14 +282,14 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ParamCollectorTargetCtTypeVisitor
+  class ParamCollectorTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryParameterMeta parameterMeta;
+    final QueryParameterMeta parameterMeta;
 
-    protected ParamCollectorTargetCtTypeVisitor(
+    ParamCollectorTargetCtTypeVisitor(
         SqlFileSelectQueryMeta queryMeta, QueryParameterMeta parameterMeta) {
       this.queryMeta = queryMeta;
       this.parameterMeta = parameterMeta;
@@ -379,15 +374,15 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ReturnCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected Suppress suppress;
+    final Suppress suppress;
 
-    protected ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+    ReturnCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
       this.suppress = queryMeta.getMethodElement().getAnnotation(Suppress.class);
@@ -474,7 +469,7 @@ public class SqlFileSelectQueryMetaFactory
       return null;
     }
 
-    protected boolean isSuppressed(Message message) {
+    boolean isSuppressed(Message message) {
       if (suppress != null) {
         for (Message suppressMessage : suppress.messages()) {
           if (suppressMessage == message) {
@@ -486,15 +481,13 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnListElementCtTypeVisitor
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ReturnListElementCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected ReturnListElementCtTypeVisitor(
-        SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+    ReturnListElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
     }
@@ -555,15 +548,13 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnStreamElementCtTypeVisitor
-      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  class ReturnStreamElementCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected ReturnStreamElementCtTypeVisitor(
-        SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
+    ReturnStreamElementCtTypeVisitor(SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
     }
@@ -624,14 +615,14 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnOptionalElementCtTypeVisitor
+  class ReturnOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected ReturnOptionalElementCtTypeVisitor(
+    ReturnOptionalElementCtTypeVisitor(
         SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
@@ -669,14 +660,14 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnListOptionalElementCtTypeVisitor
+  class ReturnListOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected ReturnListOptionalElementCtTypeVisitor(
+    ReturnListOptionalElementCtTypeVisitor(
         SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;
@@ -699,14 +690,14 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  protected class ReturnStreamOptionalElementCtTypeVisitor
+  class ReturnStreamOptionalElementCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-    protected SqlFileSelectQueryMeta queryMeta;
+    final SqlFileSelectQueryMeta queryMeta;
 
-    protected QueryReturnMeta returnMeta;
+    final QueryReturnMeta returnMeta;
 
-    protected ReturnStreamOptionalElementCtTypeVisitor(
+    ReturnStreamOptionalElementCtTypeVisitor(
         SqlFileSelectQueryMeta queryMeta, QueryReturnMeta returnMeta) {
       this.queryMeta = queryMeta;
       this.returnMeta = returnMeta;

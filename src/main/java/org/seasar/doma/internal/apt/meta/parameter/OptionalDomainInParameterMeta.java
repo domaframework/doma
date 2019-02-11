@@ -8,7 +8,7 @@ public class OptionalDomainInParameterMeta implements CallableSqlParameterMeta {
 
   private final String name;
 
-  protected final DomainCtType domainCtType;
+  private final DomainCtType domainCtType;
 
   public OptionalDomainInParameterMeta(String name, DomainCtType domainCtType) {
     assertNotNull(name, domainCtType);
