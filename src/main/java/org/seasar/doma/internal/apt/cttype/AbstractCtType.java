@@ -14,8 +14,6 @@ public abstract class AbstractCtType implements CtType {
 
   protected final TypeMirror type;
 
-  protected final TypeMirror boxedType;
-
   protected final TypeElement typeElement;
 
   private final String qualifiedName;
@@ -24,7 +22,6 @@ public abstract class AbstractCtType implements CtType {
     assertNotNull(ctx, type);
     this.ctx = ctx;
     this.type = type;
-    this.boxedType = ctx.getTypes().boxIfPrimitive(type);
     this.typeElement = ctx.getTypes().toTypeElement(type);
     if (typeElement != null) {
       qualifiedName = typeElement.getQualifiedName().toString();
@@ -36,11 +33,6 @@ public abstract class AbstractCtType implements CtType {
   @Override
   public TypeMirror getType() {
     return type;
-  }
-
-  @Override
-  public TypeMirror getBoxedType() {
-    return boxedType;
   }
 
   @Override

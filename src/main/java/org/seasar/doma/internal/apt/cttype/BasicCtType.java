@@ -5,11 +5,18 @@ import org.seasar.doma.internal.apt.Context;
 
 public class BasicCtType extends AbstractCtType {
 
+  private final TypeMirror boxedType;
+
   private final WrapperCtType wrapperCtType;
 
   BasicCtType(Context ctx, TypeMirror type, WrapperCtType wrapperCtType) {
     super(ctx, type);
+    this.boxedType = ctx.getTypes().boxIfPrimitive(type);
     this.wrapperCtType = wrapperCtType;
+  }
+
+  public TypeMirror getBoxedType() {
+    return boxedType;
   }
 
   public WrapperCtType getWrapperCtType() {

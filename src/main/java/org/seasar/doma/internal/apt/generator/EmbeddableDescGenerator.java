@@ -95,7 +95,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
           /* 8 */ null,
           /* 9 */ visitor.getWrapperCode(),
           /* 10 */ visitor.getDomainDescCode(),
-          /* 11 */ pm.getBoxedType(),
+          /* 11 */ NULL,
           /* 12 */ NULL,
           /* 13 */ Object.class.getName(),
           /* 14 */ null,

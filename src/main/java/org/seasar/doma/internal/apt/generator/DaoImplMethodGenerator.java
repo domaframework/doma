@@ -330,7 +330,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint("__query.complete();%n");
       iprint(
           "%1$s __result = new %1$s(__count, __query.getEntity(%2$s.class));%n",
-          m.getReturnMeta().getType(), entityCtType.getBoxedType());
+          m.getReturnMeta().getType(), entityCtType.getQualifiedName());
     } else {
       iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getType());
       iprint("__query.complete();%n");
@@ -419,7 +419,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint(
         "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
         /* 1 */ m.getQueryClass().getName(),
-        /* 2 */ m.getElementCtType().getBoxedType(),
+        /* 2 */ m.getElementCtType().getType(),
         /* 3 */ m.getElementCtType().getQualifiedName(),
         /* 4 */ m.getQueryClass().getSimpleName(),
         /* 5 */ methodName);
@@ -700,7 +700,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint(
         "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query, %5$s);%n",
         /* 1 */ m.getCommandClass().getName(),
-        /* 2 */ m.getBiFunctionCtType().getResultCtType().getBoxedType(),
+        /* 2 */ m.getBiFunctionCtType().getResultCtType().getType(),
         /* 3 */ m.getCommandClass().getSimpleName(),
         /* 4 */ methodName, /* 5 */
         m.getBiFunctionParameterName());
@@ -881,7 +881,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
           /* 1 */ DomainListParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1009,7 +1009,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
           /* 1 */ DomainOutParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1060,7 +1060,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
           /* 1 */ DomainInParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1111,7 +1111,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
           /* 1 */ DomainResultListParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode());
       return null;
@@ -1187,7 +1187,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
           /* 1 */ DomainSingleResultParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode());
       return null;
@@ -1427,7 +1427,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
           /* 1 */ OptionalDomainInParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1442,7 +1442,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s));%n",
           /* 1 */ OptionalDomainOutParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1472,7 +1472,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.addParameter(new %1$s<%2$s, %3$s>(%4$s, %5$s, \"%5$s\"));%n",
           /* 1 */ OptionalDomainListParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode(),
           /* 5 */ m.getName());
@@ -1487,7 +1487,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
           /* 1 */ OptionalDomainSingleResultParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode());
       return null;
@@ -1501,7 +1501,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint(
           "__query.setResultParameter(new %1$s<%2$s, %3$s>(%4$s));%n",
           /* 1 */ OptionalDomainResultListParameter.class,
-          /* 2 */ basicCtType.getType(),
+          /* 2 */ basicCtType.getBoxedType(),
           /* 3 */ domainCtType.getType(),
           /* 4 */ domainCtType.domainDescSingletonCode());
       return null;
@@ -1780,7 +1780,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getDomainStreamHandlerName(optional),
-          /* 4 */ ctType.getBoxedType(),
+          /* 4 */ ctType.getType(),
           /* 5 */ ctType.domainDescSingletonCode(),
           /* 6 */ functionParamName,
           /* 7 */ commandName,
@@ -1965,7 +1965,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ getDomainCollectorHandlerName(optional),
-          /* 4 */ ctType.getBoxedType(),
+          /* 4 */ ctType.getType(),
           /* 5 */ ctType.domainDescSingletonCode(),
           /* 6 */ collectorParamName,
           /* 7 */ commandName,
@@ -2148,7 +2148,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
           /* 2 */ resultBoxedType,
           /* 3 */ getDomainSingleResultHandlerName(optional),
           /* 4 */ ctType.domainDescSingletonCode(),
-          /* 5 */ ctType.getBoxedType(),
+          /* 5 */ ctType.getType(),
           /* 6 */ commandName,
           /* 7 */ methodName,
           /* 8 */ ctType.getBasicCtType().getBoxedType());
@@ -2289,7 +2289,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ getDomainResultListHandlerName(optional),
-                      /* 4 */ ctType.getBoxedType(),
+                      /* 4 */ ctType.getType(),
                       /* 5 */ ctType.domainDescSingletonCode(),
                       /* 6 */ commandName,
                       /* 7 */ methodName,

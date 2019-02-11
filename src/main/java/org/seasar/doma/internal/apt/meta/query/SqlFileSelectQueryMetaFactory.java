@@ -109,18 +109,14 @@ public class SqlFileSelectQueryMetaFactory
       CtType returnCtType = functionCtType.getReturnCtType();
       if (!ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
-            Message.DOMA4246,
-            method,
-            new Object[] {returnMeta.getType(), returnCtType.getBoxedType()});
+            Message.DOMA4246, method, new Object[] {returnMeta.getType(), returnCtType.getType()});
       }
     } else if (queryMeta.getSelectStrategyType() == SelectType.COLLECT) {
       CollectorCtType collectorCtType = queryMeta.getCollectorCtType();
       CtType returnCtType = collectorCtType.getReturnCtType();
       if (!ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), returnCtType.getType())) {
         throw new AptException(
-            Message.DOMA4265,
-            method,
-            new Object[] {returnMeta.getType(), returnCtType.getBoxedType()});
+            Message.DOMA4265, method, new Object[] {returnMeta.getType(), returnCtType.getType()});
       }
     } else {
       returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta, returnMeta), null);

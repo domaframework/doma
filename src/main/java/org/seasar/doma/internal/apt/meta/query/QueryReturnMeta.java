@@ -26,7 +26,19 @@ public class QueryReturnMeta {
   }
 
   public TypeMirror getBoxedType() {
-    return ctType.getBoxedType();
+    return ctType.accept(
+        new SimpleCtTypeVisitor<TypeMirror, Void, RuntimeException>() {
+          @Override
+          public TypeMirror visitBasicCtType(BasicCtType ctType, Void o) {
+            return ctType.getBoxedType();
+          }
+
+          @Override
+          protected TypeMirror defaultAction(CtType ctType, Void o) {
+            return ctType.getType();
+          }
+        },
+        null);
   }
 
   public boolean isPrimitiveInt() {
