@@ -155,17 +155,17 @@ public final class _CommonChild extends org.seasar.doma.jdbc.entity.AbstractEnti
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getVersionPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getTenantIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.CommonChild, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

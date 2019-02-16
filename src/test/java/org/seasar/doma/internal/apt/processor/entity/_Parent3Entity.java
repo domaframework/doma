@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -17,19 +18,16 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $aaa =
+  public DefaultPropertyType<Parent3Entity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           Parent3Entity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "aaa",
           "AAA",
           __namingType,
@@ -37,14 +35,10 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
           true,
           false);
 
-  public DefaultPropertyType<Object, Parent3Entity, Integer, Integer> $bbb =
+  public DefaultPropertyType<Parent3Entity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           Parent3Entity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "bbb",
           "BBB",
           __namingType,
@@ -82,7 +76,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, Parent3Entity, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<Parent3Entity, ?, ?> getGeneratedIdPropertyType() {
 
     return null;
   }
@@ -118,13 +112,13 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
   }
 
   @Override
-  public VersionPropertyType<Object, Parent3Entity, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<Parent3Entity, ?, ?> getVersionPropertyType() {
 
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, Parent3Entity, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<Parent3Entity, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

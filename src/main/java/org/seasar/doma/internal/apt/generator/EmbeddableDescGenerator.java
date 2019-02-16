@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.*;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -77,23 +78,20 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     for (Iterator<EmbeddablePropertyMeta> it =
             embeddableMeta.getEmbeddablePropertyMetas().iterator();
         it.hasNext(); ) {
-      EmbeddablePropertyMeta pm = it.next();
-      PropertyCtTypeVisitor visitor = new PropertyCtTypeVisitor();
-      pm.getCtType().accept(visitor, null);
+      EmbeddablePropertyMeta propertyMeta = it.next();
+      ScalarMeta scalarMeta = propertyMeta.getCtType().accept(new ScalarMetaFactory(), false);
       iprint(
-          "        new %1$s<Object, ENTITY, %2$s, %10$s>(entityClass, %9$s.class, %2$s.class, "
-              + "%7$s, null, %8$s, embeddedPropertyName + \".%3$s\", \"%4$s\", namingType, %5$s, %6$s, %11$s)",
+          "        new %1$s<ENTITY, %2$s, %3$s>("
+              + "entityClass, %4$s, embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s)",
           /* 1 */ DefaultPropertyType.class,
-          /* 2 */ visitor.getBasicCtType().getBoxedType(),
-          /* 3 */ pm.getName(),
-          /* 4 */ pm.getColumnName(),
-          /* 5 */ pm.isColumnInsertable(),
-          /* 6 */ pm.isColumnUpdatable(),
-          /* 7 */ visitor.getWrapperSupplierCode(),
-          /* 8 */ visitor.getDomainDescCode(),
-          /* 9 */ pm.getQualifiedName(),
-          /* 10 */ visitor.getDomainTypeCode(),
-          /* 11 */ pm.isColumnQuoteRequired());
+          /* 2 */ scalarMeta.getBasicType(),
+          /* 3 */ scalarMeta.getContainerType(),
+          /* 4 */ scalarMeta.getSupplier(),
+          /* 5 */ propertyMeta.getName(),
+          /* 6 */ propertyMeta.getColumnName(),
+          /* 7 */ propertyMeta.isColumnInsertable(),
+          /* 8 */ propertyMeta.isColumnUpdatable(),
+          /* 9 */ propertyMeta.isColumnQuoteRequired());
       print(it.hasNext() ? ",%n" : "");
     }
     print(");%n");

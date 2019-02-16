@@ -397,16 +397,16 @@ public class SqlFileUpdateQueryTest {
       return emp.getOriginalStates(entity);
     }
 
-    public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+    public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
       return emp.getGeneratedIdPropertyType();
     }
 
-    public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
+    public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
       return emp.getVersionPropertyType();
     }
 
     @Override
-    public TenantIdPropertyType<Object, Emp, ?, ?> getTenantIdPropertyType() {
+    public TenantIdPropertyType<Emp, ?, ?> getTenantIdPropertyType() {
       return emp.getTenantIdPropertyType();
     }
 

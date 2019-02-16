@@ -44,7 +44,7 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, Emp, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
 
     return null;
   }
@@ -86,13 +86,13 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
-  public VersionPropertyType<Object, Emp, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
 
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, Emp, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<Emp, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

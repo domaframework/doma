@@ -4,47 +4,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
 /**
  * A description for a default property.
  *
- * @param <PARENT> the parent entity type
  * @param <ENTITY> the entity type
  * @param <BASIC> the property basic type
- * @param <DOMAIN> the property domain type
+ * @param <CONTAINER> the property container type
  */
-public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
+public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     implements EntityPropertyType<ENTITY, BASIC> {
 
   protected final Class<ENTITY> entityClass;
 
-  protected final Class<?> entityPropertyClass;
-
-  protected final Class<BASIC> basicClass;
-
-  protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
-
-  protected final DomainType<BASIC, DOMAIN> domainType;
+  protected final Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier;
 
   protected final String name;
 
@@ -62,15 +46,9 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
 
   protected final PropertyField<ENTITY> field;
 
-  protected final Supplier<Property<ENTITY, BASIC>> propertySupplier;
-
   public DefaultPropertyType(
       Class<ENTITY> entityClass,
-      Class<?> entityPropertyClass,
-      Class<BASIC> basicClass,
-      Supplier<Wrapper<BASIC>> wrapperSupplier,
-      EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-      DomainType<BASIC, DOMAIN> domainType,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
       String name,
       String columnName,
       NamingType namingType,
@@ -80,14 +58,8 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     if (entityClass == null) {
       throw new DomaNullPointerException("entityClass");
     }
-    if (entityPropertyClass == null) {
-      throw new DomaNullPointerException("entityPropertyClass");
-    }
-    if (basicClass == null) {
-      throw new DomaNullPointerException("basicClass");
-    }
-    if (wrapperSupplier == null) {
-      throw new DomaNullPointerException("wrapperSupplier");
+    if (scalarSupplier == null) {
+      throw new DomaNullPointerException("scalarSupplier");
     }
     if (name == null) {
       throw new DomaNullPointerException("name");
@@ -96,10 +68,7 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
       throw new DomaNullPointerException("columnName");
     }
     this.entityClass = entityClass;
-    this.entityPropertyClass = entityPropertyClass;
-    this.basicClass = basicClass;
-    this.wrapperSupplier = wrapperSupplier;
-    this.domainType = domainType;
+    this.scalarSupplier = scalarSupplier;
     this.name = name;
     int pos = name.lastIndexOf('.');
     this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
@@ -109,39 +78,11 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     this.updatable = updatable;
     this.quoteRequired = quoteRequired;
     this.field = new PropertyField<>(name, entityClass);
-    this.propertySupplier = createPropertySupplier();
-  }
-
-  @SuppressWarnings("unchecked")
-  private Supplier<Property<ENTITY, BASIC>> createPropertySupplier() {
-    if (domainType != null) {
-      if (entityPropertyClass == Optional.class) {
-        return () -> new DefaultProperty<Optional<DOMAIN>>(domainType.createOptionalScalar());
-      } else {
-        return () -> new DefaultProperty<DOMAIN>(domainType.createScalar());
-      }
-    }
-    if (entityPropertyClass == Optional.class) {
-      return () -> new DefaultProperty<Optional<BASIC>>(new OptionalBasicScalar<>(wrapperSupplier));
-    } else if (entityPropertyClass == OptionalInt.class) {
-      return () ->
-          new DefaultProperty<OptionalInt>((Scalar<BASIC, OptionalInt>) new OptionalIntScalar());
-    } else if (entityPropertyClass == OptionalLong.class) {
-      return () ->
-          new DefaultProperty<OptionalLong>((Scalar<BASIC, OptionalLong>) new OptionalLongScalar());
-    } else if (entityPropertyClass == OptionalDouble.class) {
-      return () ->
-          new DefaultProperty<OptionalDouble>(
-              (Scalar<BASIC, OptionalDouble>) new OptionalDoubleScalar());
-    } else {
-      return () ->
-          new DefaultProperty<BASIC>(new BasicScalar<>(wrapperSupplier, field.isPrimitive()));
-    }
   }
 
   @Override
   public Property<ENTITY, BASIC> createProperty() {
-    return propertySupplier.get();
+    return new DefaultProperty();
   }
 
   @Override
@@ -246,12 +187,12 @@ public class DefaultPropertyType<PARENT, ENTITY extends PARENT, BASIC, DOMAIN>
     }
   }
 
-  protected class DefaultProperty<CONTAINER> implements Property<ENTITY, BASIC> {
+  protected class DefaultProperty implements Property<ENTITY, BASIC> {
 
     protected final Scalar<BASIC, CONTAINER> scalar;
 
-    protected DefaultProperty(Scalar<BASIC, CONTAINER> scalar) {
-      this.scalar = scalar;
+    protected DefaultProperty() {
+      this.scalar = scalarSupplier.get();
     }
 
     @Override

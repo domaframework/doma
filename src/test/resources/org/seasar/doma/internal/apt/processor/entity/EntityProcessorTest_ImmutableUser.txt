@@ -13,7 +13,7 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.ImmutableUser, java.lang.Integer, Object> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, java.lang.Integer.class, java.lang.Integer.class, org.seasar.doma.wrapper.IntegerWrapper::new, null, null, "id", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new, false), "id", "", __namingType, false);
 
     /** the address */
     public final org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, org.seasar.doma.internal.apt.processor.entity.UserAddress> $address = new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<>("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().getEmbeddablePropertyTypes("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, __namingType));
@@ -166,17 +166,17 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getVersionPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getTenantIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

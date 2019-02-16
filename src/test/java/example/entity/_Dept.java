@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.annotation.Generated;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -22,6 +23,8 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _Dept extends AbstractEntityType<Dept> {
@@ -30,27 +33,19 @@ public class _Dept extends AbstractEntityType<Dept> {
 
   private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
-  public final AssignedIdPropertyType<Object, Dept, Integer, Object> id =
+  public final AssignedIdPropertyType<Dept, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           Dept.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "id",
           "ID",
           __namingType,
           false);
 
-  public final DefaultPropertyType<Object, Dept, String, Object> name =
+  public final DefaultPropertyType<Dept, String, String> name =
       new DefaultPropertyType<>(
           Dept.class,
-          String.class,
-          String.class,
-          () -> new org.seasar.doma.wrapper.StringWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(StringWrapper::new, false),
           "name",
           "NAME",
           __namingType,
@@ -127,17 +122,17 @@ public class _Dept extends AbstractEntityType<Dept> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, Dept, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<Dept, ?, ?> getGeneratedIdPropertyType() {
     return null;
   }
 
   @Override
-  public VersionPropertyType<Object, Dept, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<Dept, ?, ?> getVersionPropertyType() {
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, Dept, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<Dept, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

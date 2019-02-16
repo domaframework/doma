@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.annotation.Generated;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -23,6 +24,9 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
@@ -31,27 +35,19 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public final AssignedIdPropertyType<Object, ImmutableEmp, Integer, Object> id =
+  public final AssignedIdPropertyType<ImmutableEmp, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           ImmutableEmp.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "id",
           "ID",
           __namingType,
           false);
 
-  public final DefaultPropertyType<Object, ImmutableEmp, String, Object> name =
+  public final DefaultPropertyType<ImmutableEmp, String, String> name =
       new DefaultPropertyType<>(
           ImmutableEmp.class,
-          String.class,
-          String.class,
-          () -> new org.seasar.doma.wrapper.StringWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(StringWrapper::new, false),
           "name",
           "NAME",
           __namingType,
@@ -59,14 +55,10 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
           true,
           false);
 
-  public final DefaultPropertyType<Object, ImmutableEmp, BigDecimal, BigDecimal> salary =
+  public final DefaultPropertyType<ImmutableEmp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           ImmutableEmp.class,
-          BigDecimal.class,
-          BigDecimal.class,
-          () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
           "salary",
           "SALARY",
           __namingType,
@@ -74,14 +66,10 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
           true,
           false);
 
-  public final VersionPropertyType<Object, ImmutableEmp, Integer, Integer> version =
+  public final VersionPropertyType<ImmutableEmp, Integer, Integer> version =
       new VersionPropertyType<>(
           ImmutableEmp.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "version",
           "VERSION",
           __namingType,
@@ -162,17 +150,17 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<ImmutableEmp, ?, ?> getGeneratedIdPropertyType() {
     return null;
   }
 
   @Override
-  public VersionPropertyType<Object, ImmutableEmp, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<ImmutableEmp, ?, ?> getVersionPropertyType() {
     return version;
   }
 
   @Override
-  public TenantIdPropertyType<Object, ImmutableEmp, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<ImmutableEmp, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

@@ -1,46 +1,28 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.util.function.Supplier;
-import org.seasar.doma.jdbc.domain.DomainType;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.NumberWrapperVisitor;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * A description for a version property.
  *
- * @param <PARENT> the parent entity type
  * @param <ENTITY> the entity type
  * @param <BASIC> the property basic type
- * @param <DOMAIN> the property domain type
+ * @param <CONTAINER> the property container type
  */
-public class VersionPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
-    extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
+public class VersionPropertyType<ENTITY, BASIC extends Number, CONTAINER>
+    extends DefaultPropertyType<ENTITY, BASIC, CONTAINER> {
 
   public VersionPropertyType(
       Class<ENTITY> entityClass,
-      Class<?> entityPropertyClass,
-      Class<BASIC> basicClass,
-      Supplier<Wrapper<BASIC>> wrapperSupplier,
-      EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-      DomainType<BASIC, DOMAIN> domainType,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
       String name,
       String columnName,
       NamingType namingType,
       boolean quoteRequired) {
-    super(
-        entityClass,
-        entityPropertyClass,
-        basicClass,
-        wrapperSupplier,
-        parentEntityPropertyType,
-        domainType,
-        name,
-        columnName,
-        namingType,
-        true,
-        true,
-        quoteRequired);
+    super(entityClass, scalarSupplier, name, columnName, namingType, true, true, quoteRequired);
   }
 
   @Override

@@ -449,8 +449,8 @@ public class EntityDescGenerator extends AbstractGenerator {
     }
     iprint("@Override%n");
     iprint(
-        "public %1$s<%3$s, %2$s, ?, ?> getGeneratedIdPropertyType() {%n",
-        GeneratedIdPropertyType.class, entityMeta.getType(), Object.class);
+        "public %1$s<%2$s, ?, ?> getGeneratedIdPropertyType() {%n",
+        GeneratedIdPropertyType.class, entityMeta.getType());
     iprint("    return %1$s;%n", idName);
     iprint("}%n");
     print("%n");
@@ -464,8 +464,8 @@ public class EntityDescGenerator extends AbstractGenerator {
     }
     iprint("@Override%n");
     iprint(
-        "public %1$s<%3$s, %2$s, ?, ?> getVersionPropertyType() {%n",
-        VersionPropertyType.class, entityMeta.getType(), Object.class);
+        "public %1$s<%2$s, ?, ?> getVersionPropertyType() {%n",
+        VersionPropertyType.class, entityMeta.getType());
     iprint("    return %1$s;%n", versionName);
     iprint("}%n");
     print("%n");
@@ -479,8 +479,8 @@ public class EntityDescGenerator extends AbstractGenerator {
     }
     iprint("@Override%n");
     iprint(
-        "public %1$s<%3$s, %2$s, ?, ?> getTenantIdPropertyType() {%n",
-        TenantIdPropertyType.class, entityMeta.getType(), Object.class);
+        "public %1$s<%2$s, ?, ?> getTenantIdPropertyType() {%n",
+        TenantIdPropertyType.class, entityMeta.getType());
     iprint("    return %1$s;%n", tenantIdName);
     iprint("}%n");
     print("%n");

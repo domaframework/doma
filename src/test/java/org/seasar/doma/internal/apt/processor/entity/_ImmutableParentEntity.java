@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -17,19 +18,16 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEntity> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $aaa =
+  public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           ImmutableParentEntity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "aaa",
           "AAA",
           __namingType,
@@ -37,14 +35,10 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
           true,
           false);
 
-  public DefaultPropertyType<Object, ImmutableParentEntity, Integer, Integer> $bbb =
+  public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           ImmutableParentEntity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "bbb",
           "BBB",
           __namingType,
@@ -82,7 +76,7 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, ImmutableParentEntity, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<ImmutableParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
     return null;
   }
@@ -118,13 +112,13 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
   }
 
   @Override
-  public VersionPropertyType<Object, ImmutableParentEntity, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<ImmutableParentEntity, ?, ?> getVersionPropertyType() {
 
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, ImmutableParentEntity, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<ImmutableParentEntity, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 
