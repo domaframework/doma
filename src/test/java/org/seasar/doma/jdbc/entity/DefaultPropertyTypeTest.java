@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.IntegerWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
@@ -24,14 +25,10 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testIsQuoteRequired_true() throws Exception {
     boolean isQuoteRequired = true;
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "hoge",
             NamingType.NONE,
@@ -45,14 +42,10 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testIsQuoteRequired_false() throws Exception {
     boolean isQuoteRequired = false;
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "hoge",
             NamingType.NONE,
@@ -65,14 +58,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_naming_columnNameDefined() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "foo",
             NamingType.UPPER_CASE,
@@ -84,14 +73,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_columnDefined() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "foo",
             NamingType.UPPER_CASE,
@@ -103,14 +88,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_columnNotDefined() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -122,14 +103,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_columnNotDefined_embeddableProeprty() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "foo.hoge",
             "",
             NamingType.UPPER_CASE,
@@ -141,14 +118,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_quote_quoteRequired() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -160,14 +133,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_quote_quoteNotRequired() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -179,14 +148,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_naiming_columnNotDefined() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -198,14 +163,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -220,14 +181,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, String, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            String.class,
-            String.class,
-            () -> new StringWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(StringWrapper::new, false),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -242,14 +199,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testPrimitivePropertyDefaultValue() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            Integer.class,
-            Integer.class,
-            () -> new IntegerWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(IntegerWrapper::new, true),
             "primitiveInt",
             "primitiveInt",
             NamingType.NONE,
@@ -262,14 +215,10 @@ public class DefaultPropertyTypeTest {
 
   @Test
   public void testWrapperPropertyDefaultValue() throws Exception {
-    DefaultPropertyType<Object, DefaultPropertyTypeTest, Integer, Object> propertyType =
+    DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            Integer.class,
-            Integer.class,
-            () -> new IntegerWrapper(),
-            null,
-            null,
+            () -> new BasicScalar<>(IntegerWrapper::new, false),
             "integer",
             "integer",
             NamingType.NONE,

@@ -24,7 +24,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected boolean nullExcluded;
 
-  protected GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> generatedIdPropertyType;
+  protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
   protected IdGenerationConfig idGenerationConfig;
 

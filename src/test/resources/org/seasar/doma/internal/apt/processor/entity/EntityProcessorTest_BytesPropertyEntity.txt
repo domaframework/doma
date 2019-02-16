@@ -13,7 +13,7 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the bytes */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, byte[], Object> $bytes = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity.class, byte[].class, byte[].class, org.seasar.doma.wrapper.BytesWrapper::new, null, null, "bytes", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, byte[], byte[]> $bytes = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.BytesWrapper::new, false), "bytes", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity>> __listenerSupplier;
 
@@ -160,17 +160,17 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.VersionPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getVersionPropertyType() {
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getVersionPropertyType() {
         return null;
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<java.lang.Object, org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getTenantIdPropertyType() {
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getTenantIdPropertyType() {
         return null;
     }
 

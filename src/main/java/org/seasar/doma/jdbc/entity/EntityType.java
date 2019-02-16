@@ -104,21 +104,21 @@ public interface EntityType<ENTITY> {
    *
    * @return the identity property description
    */
-  GeneratedIdPropertyType<? super ENTITY, ENTITY, ?, ?> getGeneratedIdPropertyType();
+  GeneratedIdPropertyType<ENTITY, ?, ?> getGeneratedIdPropertyType();
 
   /**
    * Returns the version property description
    *
    * @return the version property description
    */
-  VersionPropertyType<? super ENTITY, ENTITY, ?, ?> getVersionPropertyType();
+  VersionPropertyType<ENTITY, ?, ?> getVersionPropertyType();
 
   /**
    * Returns the tenant id property description
    *
    * @return the tenant id property description
    */
-  TenantIdPropertyType<? super ENTITY, ENTITY, ?, ?> getTenantIdPropertyType();
+  TenantIdPropertyType<ENTITY, ?, ?> getTenantIdPropertyType();
 
   /**
    * Returns the identity property descriptions

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.annotation.Generated;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -23,6 +24,9 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
@@ -36,28 +40,20 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public final GeneratedIdPropertyType<Object, IdGeneratedEmp, Integer, Object> id =
+  public final GeneratedIdPropertyType<IdGeneratedEmp, Integer, Integer> id =
       new GeneratedIdPropertyType<>(
           IdGeneratedEmp.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "id",
           "ID",
           __namingType,
           false,
           new BuiltinIdentityIdGenerator());
 
-  public final DefaultPropertyType<Object, IdGeneratedEmp, String, Object> name =
+  public final DefaultPropertyType<IdGeneratedEmp, String, String> name =
       new DefaultPropertyType<>(
           IdGeneratedEmp.class,
-          String.class,
-          String.class,
-          () -> new org.seasar.doma.wrapper.StringWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(StringWrapper::new, false),
           "name",
           "NAME",
           __namingType,
@@ -65,14 +61,10 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
           true,
           false);
 
-  public final DefaultPropertyType<Object, IdGeneratedEmp, BigDecimal, BigDecimal> salary =
+  public final DefaultPropertyType<IdGeneratedEmp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           IdGeneratedEmp.class,
-          BigDecimal.class,
-          BigDecimal.class,
-          () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
           "salary",
           "SALARY",
           __namingType,
@@ -80,14 +72,10 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
           true,
           false);
 
-  public final VersionPropertyType<Object, IdGeneratedEmp, Integer, Integer> version =
+  public final VersionPropertyType<IdGeneratedEmp, Integer, Integer> version =
       new VersionPropertyType<>(
           IdGeneratedEmp.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "version",
           "VERSION",
           __namingType,
@@ -177,17 +165,17 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, IdGeneratedEmp, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<IdGeneratedEmp, ?, ?> getGeneratedIdPropertyType() {
     return id;
   }
 
   @Override
-  public VersionPropertyType<Object, IdGeneratedEmp, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<IdGeneratedEmp, ?, ?> getVersionPropertyType() {
     return version;
   }
 
   @Override
-  public TenantIdPropertyType<Object, IdGeneratedEmp, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<IdGeneratedEmp, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

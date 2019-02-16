@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.entity;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -17,19 +18,16 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStatesParentEntity> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $aaa =
+  public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           OriginalStatesParentEntity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "aaa",
           "AAA",
           __namingType,
@@ -37,14 +35,10 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
           true,
           false);
 
-  public DefaultPropertyType<Object, OriginalStatesParentEntity, Integer, Integer> $bbb =
+  public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           OriginalStatesParentEntity.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "bbb",
           "BBB",
           __namingType,
@@ -82,8 +76,7 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, OriginalStatesParentEntity, ?, ?>
-      getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<OriginalStatesParentEntity, ?, ?> getGeneratedIdPropertyType() {
 
     return null;
   }
@@ -119,13 +112,13 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
   }
 
   @Override
-  public VersionPropertyType<Object, OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<OriginalStatesParentEntity, ?, ?> getVersionPropertyType() {
 
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, OriginalStatesParentEntity, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<OriginalStatesParentEntity, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 

@@ -30,9 +30,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   protected final EntityType<ENTITY> entityType;
 
-  protected VersionPropertyType<? super ENTITY, ENTITY, ?, ?> versionPropertyType;
+  protected VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
 
-  protected TenantIdPropertyType<? super ENTITY, ENTITY, ?, ?> tenantIdPropertyType;
+  protected TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType;
 
   protected boolean optimisticLockCheckRequired;
 

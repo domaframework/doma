@@ -4,54 +4,36 @@ import java.sql.Statement;
 import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.GenerationType;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.jdbc.id.IdGenerator;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.NumberWrapper;
 import org.seasar.doma.wrapper.NumberWrapperVisitor;
-import org.seasar.doma.wrapper.Wrapper;
 
 /**
  * A description for an identity property whose value is generated.
  *
- * @param <PARENT> the parent entity type
  * @param <ENTITY> the entity type
  * @param <BASIC> the property basic type
- * @param <DOMAIN> the property domain type
+ * @param <CONTAINER> the property container type
  */
-public class GeneratedIdPropertyType<PARENT, ENTITY extends PARENT, BASIC extends Number, DOMAIN>
-    extends DefaultPropertyType<PARENT, ENTITY, BASIC, DOMAIN> {
+public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
+    extends DefaultPropertyType<ENTITY, BASIC, CONTAINER> {
 
   protected final IdGenerator idGenerator;
 
   public GeneratedIdPropertyType(
       Class<ENTITY> entityClass,
-      Class<?> entityPropertyClass,
-      Class<BASIC> basicClass,
-      Supplier<Wrapper<BASIC>> wrapperSupplier,
-      EntityPropertyType<PARENT, BASIC> parentEntityPropertyType,
-      DomainType<BASIC, DOMAIN> domainType,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
       String name,
       String columnName,
       NamingType namingType,
       boolean quoteRequired,
       IdGenerator idGenerator) {
-    super(
-        entityClass,
-        entityPropertyClass,
-        basicClass,
-        wrapperSupplier,
-        parentEntityPropertyType,
-        domainType,
-        name,
-        columnName,
-        namingType,
-        true,
-        true,
-        quoteRequired);
+    super(entityClass, scalarSupplier, name, columnName, namingType, true, true, quoteRequired);
     if (idGenerator == null) {
       throw new DomaNullPointerException("idGenerator");
     }

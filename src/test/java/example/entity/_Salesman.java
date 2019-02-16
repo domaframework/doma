@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.annotation.Generated;
+import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -23,6 +24,9 @@ import org.seasar.doma.jdbc.entity.PreUpdateContext;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
 public class _Salesman extends AbstractEntityType<Salesman> {
@@ -31,27 +35,19 @@ public class _Salesman extends AbstractEntityType<Salesman> {
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public final AssignedIdPropertyType<Object, Salesman, Integer, Object> id =
+  public final AssignedIdPropertyType<Salesman, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           Salesman.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "id",
           "ID",
           __namingType,
           false);
 
-  public final DefaultPropertyType<Object, Salesman, String, Object> name =
+  public final DefaultPropertyType<Salesman, String, String> name =
       new DefaultPropertyType<>(
           Salesman.class,
-          String.class,
-          String.class,
-          () -> new org.seasar.doma.wrapper.StringWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(StringWrapper::new, false),
           "name",
           "NAME",
           __namingType,
@@ -59,14 +55,10 @@ public class _Salesman extends AbstractEntityType<Salesman> {
           true,
           false);
 
-  public final DefaultPropertyType<Object, Salesman, BigDecimal, BigDecimal> salary =
+  public final DefaultPropertyType<Salesman, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           Salesman.class,
-          BigDecimal.class,
-          BigDecimal.class,
-          () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
           "salary",
           "SALARY",
           __namingType,
@@ -74,27 +66,19 @@ public class _Salesman extends AbstractEntityType<Salesman> {
           true,
           false);
 
-  public final TenantIdPropertyType<Object, Salesman, String, String> tenantId =
+  public final TenantIdPropertyType<Salesman, String, String> tenantId =
       new TenantIdPropertyType<>(
           Salesman.class,
-          String.class,
-          String.class,
-          () -> new org.seasar.doma.wrapper.StringWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(StringWrapper::new, false),
           "tenantId",
           "TENANT_ID",
           __namingType,
           false);
 
-  public final VersionPropertyType<Object, Salesman, Integer, Integer> version =
+  public final VersionPropertyType<Salesman, Integer, Integer> version =
       new VersionPropertyType<>(
           Salesman.class,
-          Integer.class,
-          Integer.class,
-          () -> new org.seasar.doma.wrapper.IntegerWrapper(),
-          null,
-          null,
+          () -> new BasicScalar<>(IntegerWrapper::new, false),
           "version",
           "VERSION",
           __namingType,
@@ -175,17 +159,17 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, Salesman, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<Salesman, ?, ?> getGeneratedIdPropertyType() {
     return null;
   }
 
   @Override
-  public VersionPropertyType<Object, Salesman, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<Salesman, ?, ?> getVersionPropertyType() {
     return version;
   }
 
   @Override
-  public TenantIdPropertyType<Object, Salesman, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<Salesman, ?, ?> getTenantIdPropertyType() {
     return tenantId;
   }
 

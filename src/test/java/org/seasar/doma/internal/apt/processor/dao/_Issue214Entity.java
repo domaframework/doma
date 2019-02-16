@@ -44,7 +44,7 @@ public class _Issue214Entity extends AbstractEntityType<Issue214Entity> {
   }
 
   @Override
-  public GeneratedIdPropertyType<Object, Issue214Entity, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<Issue214Entity, ?, ?> getGeneratedIdPropertyType() {
 
     return null;
   }
@@ -86,13 +86,13 @@ public class _Issue214Entity extends AbstractEntityType<Issue214Entity> {
   }
 
   @Override
-  public VersionPropertyType<Object, Issue214Entity, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<Issue214Entity, ?, ?> getVersionPropertyType() {
 
     return null;
   }
 
   @Override
-  public TenantIdPropertyType<Object, Issue214Entity, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<Issue214Entity, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 
