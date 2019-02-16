@@ -19,7 +19,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
 @SupportedAnnotationTypes({"org.seasar.doma.SingletonConfig"})
-@SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG})
+@SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG, Options.CONFIG_PATH})
 public class SingletonConfigProcessor extends AbstractProcessor {
 
   public SingletonConfigProcessor() {
