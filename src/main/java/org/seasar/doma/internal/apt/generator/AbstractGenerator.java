@@ -45,8 +45,7 @@ public abstract class AbstractGenerator implements Generator {
     if (ctx.getOptions().getVersionValidation()) {
       iprint("static {%n");
       iprint(
-          "    %1$s.validateVersion(\"%2$s\");%n",
-          Artifact.class.getName(), ctx.getOptions().getVersion());
+          "    %1$s.validateVersion(\"%2$s\");%n", Artifact.class, ctx.getOptions().getVersion());
       iprint("}%n");
       print("%n");
     }

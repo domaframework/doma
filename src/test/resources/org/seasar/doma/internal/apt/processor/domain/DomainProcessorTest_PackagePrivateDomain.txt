@@ -11,7 +11,7 @@ public final class _PackagePrivateDomain extends org.seasar.doma.jdbc.domain.Abs
     private static final _PackagePrivateDomain singleton = new _PackagePrivateDomain();
 
     private _PackagePrivateDomain() {
-        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
     }
 
     @Override

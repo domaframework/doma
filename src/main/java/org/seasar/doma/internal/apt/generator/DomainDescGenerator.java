@@ -80,14 +80,7 @@ public class DomainDescGenerator extends AbstractGenerator {
 
   private void printConstructors() {
     iprint("private %1$s() {%n", simpleName);
-    if (domainMeta.getBasicCtType().isEnum()) {
-      iprint(
-          "    super(() -> new %1$s(%2$s.class));%n",
-          /* 1 */ domainMeta.getWrapperCtType().getType(),
-          /* 2 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()));
-    } else {
-      iprint("    super(() -> new %1$s());%n", domainMeta.getWrapperCtType().getType());
-    }
+    iprint("    super(%1$s);%n", domainMeta.getBasicCtType().getWrapperSupplierCode());
     iprint("}%n");
     print("%n");
   }

@@ -10,22 +10,18 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 
 class PropertyCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
-  private static final String NULL = "null";
+  private static final Code NULL = new Code(p -> p.print("null"));
 
   private BasicCtType basicCtType;
-
-  private WrapperCtType wrapperCtType;
 
   private DomainCtType domainCtType;
 
   @Override
   protected Void defaultAction(CtType ctType, Void p) throws RuntimeException {
     assertNotNull(basicCtType);
-    assertNotNull(wrapperCtType);
     return null;
   }
 
@@ -53,7 +49,6 @@ class PropertyCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeExcep
   @Override
   public Void visitBasicCtType(BasicCtType basicCtType, Void p) throws RuntimeException {
     this.basicCtType = basicCtType;
-    this.wrapperCtType = basicCtType.getWrapperCtType();
     return defaultAction(basicCtType, p);
   }
 
@@ -67,25 +62,15 @@ class PropertyCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeExcep
     return basicCtType;
   }
 
-  LazyFormatter getWrapperCode() {
-    return new LazyFormatter(
-        c -> {
-          if (basicCtType.isEnum()) {
-            return String.format(
-                "new %s(%s.class)",
-                c.apply(wrapperCtType.getType()), c.apply(basicCtType.getBoxedType()));
-          }
-          return String.format("new %s()", c.apply(wrapperCtType.getType()));
-        });
+  Code getWrapperSupplierCode() {
+    return new Code(p -> p.print("%1$s", basicCtType.getWrapperSupplierCode()));
   }
 
-  LazyFormatter getDomainDescCode() {
-    return new LazyFormatter(
-        __ -> domainCtType == null ? NULL : domainCtType.domainDescSingletonCode());
+  Code getDomainDescCode() {
+    return domainCtType == null ? NULL : domainCtType.getDescCode();
   }
 
-  LazyFormatter getDomainTypeCode() {
-    return new LazyFormatter(
-        c -> domainCtType == null ? "Object" : c.apply(domainCtType.getType()));
+  Code getDomainTypeCode() {
+    return new Code(p -> p.print("%1$s", domainCtType == null ? "Object" : domainCtType.getType()));
   }
 }

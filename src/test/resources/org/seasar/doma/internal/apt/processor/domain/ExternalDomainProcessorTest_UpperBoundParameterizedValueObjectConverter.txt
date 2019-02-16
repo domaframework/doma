@@ -16,7 +16,7 @@ public final class _UpperBoundParameterizedValueObject<T extends java.lang.Integ
     private static final org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter();
 
     private _UpperBoundParameterizedValueObject() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @SuppressWarnings("unchecked")

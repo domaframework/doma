@@ -15,8 +15,6 @@ import org.seasar.doma.jdbc.entity.Property;
 
 public class EmbeddableDescGenerator extends AbstractGenerator {
 
-  private static final String NULL = "null";
-
   private final EmbeddableMeta embeddableMeta;
 
   public EmbeddableDescGenerator(
@@ -83,25 +81,19 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
       PropertyCtTypeVisitor visitor = new PropertyCtTypeVisitor();
       pm.getCtType().accept(visitor, null);
       iprint(
-          "        new %1$s<Object, ENTITY, %3$s, %16$s>(entityClass, %15$s.class, %3$s.class, "
-              + "() -> %9$s, null, %10$s, embeddedPropertyName + \".%4$s\", \"%5$s\", namingType, %6$s, %7$s, %17$s)",
+          "        new %1$s<Object, ENTITY, %2$s, %10$s>(entityClass, %9$s.class, %2$s.class, "
+              + "%7$s, null, %8$s, embeddedPropertyName + \".%3$s\", \"%4$s\", namingType, %5$s, %6$s, %11$s)",
           /* 1 */ DefaultPropertyType.class,
-          /* 2 */ null,
-          /* 3 */ visitor.getBasicCtType().getBoxedType(),
-          /* 4 */ pm.getName(),
-          /* 5 */ pm.getColumnName(),
-          /* 6 */ pm.isColumnInsertable(),
-          /* 7 */ pm.isColumnUpdatable(),
-          /* 8 */ null,
-          /* 9 */ visitor.getWrapperCode(),
-          /* 10 */ visitor.getDomainDescCode(),
-          /* 11 */ NULL,
-          /* 12 */ NULL,
-          /* 13 */ Object.class.getName(),
-          /* 14 */ null,
-          /* 15 */ pm.getQualifiedName(),
-          /* 16 */ visitor.getDomainTypeCode(),
-          /* 17 */ pm.isColumnQuoteRequired());
+          /* 2 */ visitor.getBasicCtType().getBoxedType(),
+          /* 3 */ pm.getName(),
+          /* 4 */ pm.getColumnName(),
+          /* 5 */ pm.isColumnInsertable(),
+          /* 6 */ pm.isColumnUpdatable(),
+          /* 7 */ visitor.getWrapperSupplierCode(),
+          /* 8 */ visitor.getDomainDescCode(),
+          /* 9 */ pm.getQualifiedName(),
+          /* 10 */ visitor.getDomainTypeCode(),
+          /* 11 */ pm.isColumnQuoteRequired());
       print(it.hasNext() ? ",%n" : "");
     }
     print(");%n");

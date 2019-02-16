@@ -1,23 +1,24 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.element.TypeElement;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.Code;
 
 public class EmbeddableCtType extends AbstractCtType {
 
-  private final ClassName embeddableDescClassName;
+  private final ClassName descClassName;
 
-  EmbeddableCtType(Context ctx, TypeMirror type, TypeElement typeElement) {
+  EmbeddableCtType(Context ctx, TypeMirror type, ClassName descClassName) {
     super(ctx, type);
-    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-    this.embeddableDescClassName = ClassNames.newEmbeddableDescClassName(binaryName);
+    assertNotNull(descClassName);
+    this.descClassName = descClassName;
   }
 
-  public String embeddableDescSingletonCode() {
-    return embeddableDescClassName + ".getSingletonInternal()";
+  public Code getDescCode() {
+    return new Code(p -> p.print("%1$s.getSingletonInternal()", descClassName));
   }
 
   @Override

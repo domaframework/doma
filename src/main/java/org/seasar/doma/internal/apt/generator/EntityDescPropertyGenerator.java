@@ -18,8 +18,6 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class EntityDescPropertyGenerator extends AbstractGenerator {
 
-  private static final String NULL = "null";
-
   private final EntityMeta entityMeta;
 
   private final EntityPropertyMeta pm;
@@ -51,23 +49,26 @@ public class EntityDescPropertyGenerator extends AbstractGenerator {
       PropertyCtTypeVisitor visitor = new PropertyCtTypeVisitor();
       pm.getCtType().accept(visitor, null);
       BasicCtType basicCtType = visitor.getBasicCtType();
-      LazyFormatter wrapperCode = visitor.getWrapperCode();
-      LazyFormatter domainDescCode = visitor.getDomainDescCode();
-      LazyFormatter domainTypeCode = visitor.getDomainTypeCode();
+      Code wrapperSupplierCode = visitor.getWrapperSupplierCode();
+      Code domainDescCode = visitor.getDomainDescCode();
+      Code domainTypeCode = visitor.getDomainTypeCode();
       if (pm.isId()) {
         if (pm.getIdGeneratorMeta() != null) {
           printGeneratedIdPropertyTypeField(
-              basicCtType, wrapperCode, domainDescCode, domainTypeCode);
+              basicCtType, wrapperSupplierCode, domainDescCode, domainTypeCode);
         } else {
           printAssignedIdPropertyTypeField(
-              basicCtType, wrapperCode, domainDescCode, domainTypeCode);
+              basicCtType, wrapperSupplierCode, domainDescCode, domainTypeCode);
         }
       } else if (pm.isVersion()) {
-        printVersionPropertyTypeField(basicCtType, wrapperCode, domainDescCode, domainTypeCode);
+        printVersionPropertyTypeField(
+            basicCtType, wrapperSupplierCode, domainDescCode, domainTypeCode);
       } else if (pm.isTenantId()) {
-        printTenantIdPropertyTypeField(basicCtType, wrapperCode, domainDescCode, domainTypeCode);
+        printTenantIdPropertyTypeField(
+            basicCtType, wrapperSupplierCode, domainDescCode, domainTypeCode);
       } else {
-        printDefaultPropertyTypeField(basicCtType, wrapperCode, domainDescCode, domainTypeCode);
+        printDefaultPropertyTypeField(
+            basicCtType, wrapperSupplierCode, domainDescCode, domainTypeCode);
       }
     }
   }
@@ -81,134 +82,104 @@ public class EntityDescPropertyGenerator extends AbstractGenerator {
         /* 3 */ pm.getType(),
         /* 4 */ pm.getFieldName(),
         /* 5 */ pm.getName(),
-        /* 6 */ embeddableCtType.embeddableDescSingletonCode());
+        /* 6 */ embeddableCtType.getDescCode());
   }
 
   private void printGeneratedIdPropertyTypeField(
-      BasicCtType basicCtType,
-      LazyFormatter wrapperCode,
-      LazyFormatter domainDescCode,
-      LazyFormatter domainTypeCode) {
+      BasicCtType basicCtType, Code wrapperSupplierCode, Code domainDescCode, Code domainTypeCode) {
     iprint(
-        "public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = "
-            + "new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s, __idGenerator);%n",
+        "public final %1$s<java.lang.Object, %2$s, %3$s, %4$s> %5$s = "
+            + "new %1$s<>(%6$s.class, %7$s.class, %3$s.class, %8$s, null, %9$s, \"%10$s\", \"%11$s\", __namingType, %12$s, __idGenerator);%n",
         /* 1 */ GeneratedIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ basicCtType.getBoxedType(),
-        /* 4 */ pm.getName(),
-        /* 5 */ pm.getColumnName(),
+        /* 4 */ domainTypeCode,
+        /* 5 */ pm.getFieldName(),
         /* 6 */ entityMeta.getType(),
-        /* 7 */ wrapperCode,
-        /* 8 */ domainDescCode,
-        /* 9 */ NULL,
-        /* 10 */ NULL,
-        /* 11 */ Object.class,
-        /* 12 */ pm.getFieldName(),
-        /* 13 */ pm.getQualifiedName(),
-        /* 14 */ domainTypeCode,
-        /* 15 */ pm.isColumnQuoteRequired());
+        /* 7 */ pm.getQualifiedName(),
+        /* 8 */ wrapperSupplierCode,
+        /* 9 */ domainDescCode,
+        /* 10 */ pm.getName(),
+        /* 11 */ pm.getColumnName(),
+        /* 12 */ pm.isColumnQuoteRequired());
   }
 
   private void printAssignedIdPropertyTypeField(
-      BasicCtType basicCtType,
-      LazyFormatter wrapperCode,
-      LazyFormatter domainDescCode,
-      LazyFormatter domainTypeCode) {
+      BasicCtType basicCtType, Code wrapperSupplierCode, Code domainDescCode, Code domainTypeCode) {
     iprint(
-        "public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = "
-            + "new %1$s<>(%6$s.class, %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+        "public final %1$s<java.lang.Object, %2$s, %3$s, %4$s> %5$s = "
+            + "new %1$s<>(%6$s.class, %7$s.class, %3$s.class, %8$s, null, %9$s, \"%10$s\", \"%11$s\", __namingType, %12$s);%n",
         /* 1 */ AssignedIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ basicCtType.getBoxedType(),
-        /* 4 */ pm.getName(),
-        /* 5 */ pm.getColumnName(),
+        /* 4 */ domainTypeCode,
+        /* 5 */ pm.getFieldName(),
         /* 6 */ entityMeta.getType(),
-        /* 7 */ wrapperCode,
-        /* 8 */ domainDescCode,
-        /* 9 */ NULL,
-        /* 10 */ NULL,
-        /* 11 */ Object.class,
-        /* 12 */ pm.getFieldName(),
-        /* 13 */ pm.getQualifiedName(),
-        /* 14 */ domainTypeCode,
-        /* 15 */ pm.isColumnQuoteRequired());
+        /* 7 */ pm.getQualifiedName(),
+        /* 8 */ wrapperSupplierCode,
+        /* 9 */ domainDescCode,
+        /* 10 */ pm.getName(),
+        /* 11 */ pm.getColumnName(),
+        /* 12 */ pm.isColumnQuoteRequired());
   }
 
   private void printVersionPropertyTypeField(
-      BasicCtType basicCtType,
-      LazyFormatter wrapperCode,
-      LazyFormatter domainDescCode,
-      LazyFormatter domainTypeCode) {
+      BasicCtType basicCtType, Code wrapperSupplierCode, Code domainDescCode, Code domainTypeCode) {
     iprint(
-        "public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = "
-            + "new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+        "public final %1$s<java.lang.Object, %2$s, %3$s, %4$s> %5$s = "
+            + "new %1$s<>(%6$s.class,  %7$s.class, %3$s.class, %8$s, null, %9$s, \"%10$s\", \"%11$s\", __namingType, %12$s);%n",
         /* 1 */ VersionPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ basicCtType.getBoxedType(),
-        /* 4 */ pm.getName(),
-        /* 5 */ pm.getColumnName(),
+        /* 4 */ domainTypeCode,
+        /* 5 */ pm.getFieldName(),
         /* 6 */ entityMeta.getType(),
-        /* 7 */ wrapperCode,
-        /* 8 */ domainDescCode,
-        /* 9 */ NULL,
-        /* 10 */ NULL,
-        /* 11 */ Object.class,
-        /* 12 */ pm.getFieldName(),
-        /* 13 */ pm.getQualifiedName(),
-        /* 14 */ domainTypeCode,
-        /* 15 */ pm.isColumnQuoteRequired());
+        /* 7 */ pm.getQualifiedName(),
+        /* 8 */ wrapperSupplierCode,
+        /* 9 */ domainDescCode,
+        /* 10 */ pm.getName(),
+        /* 11 */ pm.getColumnName(),
+        /* 12 */ pm.isColumnQuoteRequired());
   }
 
   private void printTenantIdPropertyTypeField(
-      BasicCtType basicCtType,
-      LazyFormatter wrapperCode,
-      LazyFormatter domainDescCode,
-      LazyFormatter domainTypeCode) {
+      BasicCtType basicCtType, Code wrapperSupplierCode, Code domainDescCode, Code domainTypeCode) {
     iprint(
-        "public final %1$s<%11$s, %2$s, %3$s, %14$s> %12$s = "
-            + "new %1$s<>(%6$s.class,  %13$s.class, %3$s.class, () -> %7$s, %10$s, %8$s, \"%4$s\", \"%5$s\", __namingType, %15$s);%n",
+        "public final %1$s<java.lang.Object, %2$s, %3$s, %4$s> %5$s = "
+            + "new %1$s<>(%6$s.class,  %7$s.class, %3$s.class, %8$s, null, %9$s, \"%10$s\", \"%11$s\", __namingType, %12$s);%n",
         /* 1 */ TenantIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ basicCtType.getBoxedType(),
-        /* 4 */ pm.getName(),
-        /* 5 */ pm.getColumnName(),
+        /* 4 */ domainTypeCode,
+        /* 5 */ pm.getFieldName(),
         /* 6 */ entityMeta.getType(),
-        /* 7 */ wrapperCode,
-        /* 8 */ domainDescCode,
-        /* 9 */ NULL,
-        /* 10 */ NULL,
-        /* 11 */ Object.class,
-        /* 12 */ pm.getFieldName(),
-        /* 13 */ pm.getQualifiedName(),
-        /* 14 */ domainTypeCode,
-        /* 15 */ pm.isColumnQuoteRequired());
+        /* 7 */ pm.getQualifiedName(),
+        /* 8 */ wrapperSupplierCode,
+        /* 9 */ domainDescCode,
+        /* 10 */ pm.getName(),
+        /* 11 */ pm.getColumnName(),
+        /* 12 */ pm.isColumnQuoteRequired());
   }
 
   private void printDefaultPropertyTypeField(
-      BasicCtType basicCtType,
-      LazyFormatter wrapperCode,
-      LazyFormatter domainDescCode,
-      LazyFormatter domainTypeCode) {
+      BasicCtType basicCtType, Code wrapperSupplierCode, Code domainDescCode, Code domainTypeCode) {
     iprint(
-        "public final %1$s<%13$s, %2$s, %3$s, %16$s> %14$s = "
-            + "new %1$s<>(%8$s.class, %15$s.class, %3$s.class, () -> %9$s, %12$s, %10$s, \"%4$s\", \"%5$s\", __namingType, %6$s, %7$s, %17$s);%n",
+        "public final %1$s<java.lang.Object, %2$s, %3$s, %4$s> %5$s = "
+            + "new %1$s<>(%6$s.class, %7$s.class, %3$s.class, %8$s, null, %9$s, \"%10$s\", \"%11$s\", __namingType, %12$s, %13$s, %14$s);%n",
         /* 1 */ DefaultPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ basicCtType.getBoxedType(),
-        /* 4 */ pm.getName(),
-        /* 5 */ pm.getColumnName(),
-        /* 6 */ pm.isColumnInsertable(),
-        /* 7 */ pm.isColumnUpdatable(),
-        /* 8 */ entityMeta.getType(),
-        /* 9 */ wrapperCode,
-        /* 10 */ domainDescCode,
-        /* 11 */ NULL,
-        /* 12 */ NULL,
-        /* 13 */ Object.class,
-        /* 14 */ pm.getFieldName(),
-        /* 15 */ pm.getQualifiedName(),
-        /* 16 */ domainTypeCode,
-        /* 17 */ pm.isColumnQuoteRequired());
+        /* 4 */ domainTypeCode,
+        /* 5 */ pm.getFieldName(),
+        /* 6 */ entityMeta.getType(),
+        /* 7 */ pm.getQualifiedName(),
+        /* 8 */ wrapperSupplierCode,
+        /* 9 */ domainDescCode,
+        /* 10 */ pm.getName(),
+        /* 11 */ pm.getColumnName(),
+        /* 12 */ pm.isColumnInsertable(),
+        /* 13 */ pm.isColumnUpdatable(),
+        /* 14 */ pm.isColumnQuoteRequired());
   }
 
   private class EmbeddableCtTypeVisitor

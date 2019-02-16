@@ -14,7 +14,7 @@ public final class _UpperBoundParameterizedDomain<T extends java.lang.Number> ex
     private static final _UpperBoundParameterizedDomain singleton = new _UpperBoundParameterizedDomain();
 
     private _UpperBoundParameterizedDomain() {
-        super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
     }
 
     @Override

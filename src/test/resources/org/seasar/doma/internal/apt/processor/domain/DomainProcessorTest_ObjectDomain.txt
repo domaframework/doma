@@ -11,7 +11,7 @@ public final class _ObjectDomain extends org.seasar.doma.jdbc.domain.AbstractDom
     private static final _ObjectDomain singleton = new _ObjectDomain();
 
     private _ObjectDomain() {
-        super(() -> new org.seasar.doma.wrapper.ObjectWrapper());
+        super(org.seasar.doma.wrapper.ObjectWrapper::new);
     }
 
     @Override

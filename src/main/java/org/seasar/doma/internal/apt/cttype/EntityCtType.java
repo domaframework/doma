@@ -1,23 +1,24 @@
 package org.seasar.doma.internal.apt.cttype;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.Code;
 
 public class EntityCtType extends AbstractCtType {
 
   private final boolean immutable;
 
-  private final ClassName entityDescClassName;
+  private final ClassName descClassName;
 
-  EntityCtType(Context ctx, TypeMirror type, TypeElement typeElement, boolean immutable) {
+  EntityCtType(Context ctx, TypeMirror type, boolean immutable, ClassName descClassName) {
     super(ctx, type);
+    assertNotNull(descClassName);
     this.immutable = immutable;
-    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-    this.entityDescClassName = ClassNames.newEntityDescClassName(binaryName);
+    this.descClassName = descClassName;
   }
 
   public boolean isImmutable() {
@@ -28,8 +29,8 @@ public class EntityCtType extends AbstractCtType {
     return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
-  public String entityDescSingletonCode() {
-    return entityDescClassName + ".getSingletonInternal()";
+  public Code getDescCode() {
+    return new Code(p -> p.print("%1$s.getSingletonInternal()", descClassName));
   }
 
   @Override

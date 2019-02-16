@@ -111,7 +111,6 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
             new Object[] {domainAnnot.getValueTypeValue()});
       }
       domainMeta.setBasicCtType(basicCtType);
-      domainMeta.setWrapperCtType(basicCtType.getWrapperCtType());
     }
 
     @Override

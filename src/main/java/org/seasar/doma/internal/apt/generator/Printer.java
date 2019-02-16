@@ -49,7 +49,9 @@ public class Printer {
   }
 
   private CharSequence toCharSequence(Object arg) {
-    if (arg instanceof Class) {
+    if (arg instanceof CharSequence) {
+      return (CharSequence) arg;
+    } else if (arg instanceof Class) {
       return ((Class) arg).getName();
     } else if (arg instanceof TypeMirror) {
       return ctx.getTypes().getTypeName((TypeMirror) arg);
@@ -59,8 +61,11 @@ public class Printer {
       return ((Element) arg).getSimpleName();
     } else if (arg instanceof Collection) {
       return ((Collection<?>) arg).stream().map(this::toCharSequence).collect(joining(", "));
-    } else if (arg instanceof LazyFormatter) {
-      return ((LazyFormatter) arg).run(this::toCharSequence);
+    } else if (arg instanceof Code) {
+      Formatter f = new Formatter();
+      Printer p = new Printer(ctx, f);
+      ((Code) arg).print(p);
+      return f.toString();
     }
     if (arg != null) {
       return arg.toString();

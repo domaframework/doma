@@ -7,7 +7,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.DomainAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
@@ -20,8 +19,6 @@ public class DomainMeta implements TypeElementMeta {
   private TypeParametersDef typeParametersDef;
 
   private BasicCtType basicCtType;
-
-  private WrapperCtType wrapperCtType;
 
   private DomainAnnot domainAnnot;
 
@@ -57,14 +54,6 @@ public class DomainMeta implements TypeElementMeta {
 
   public void setBasicCtType(BasicCtType basicCtType) {
     this.basicCtType = basicCtType;
-  }
-
-  public WrapperCtType getWrapperCtType() {
-    return wrapperCtType;
-  }
-
-  public void setWrapperCtType(WrapperCtType wrapperCtType) {
-    this.wrapperCtType = wrapperCtType;
   }
 
   public TypeMirror getValueType() {

@@ -11,7 +11,7 @@ public final class _OfJobType extends org.seasar.doma.jdbc.domain.AbstractDomain
     private static final _OfJobType singleton = new _OfJobType();
 
     private _OfJobType() {
-        super(() -> new org.seasar.doma.wrapper.StringWrapper());
+        super(org.seasar.doma.wrapper.StringWrapper::new);
     }
 
     @Override
