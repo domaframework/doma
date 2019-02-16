@@ -8,11 +8,6 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- * @param <ENTITY>
- */
 public class EntityStreamHandler<ENTITY, RESULT> extends AbstractStreamHandler<ENTITY, RESULT> {
 
   protected final EntityType<ENTITY> entityType;

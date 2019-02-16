@@ -8,12 +8,6 @@ import java.util.stream.Stream;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author nakamura-to
- * @param <BASIC> 基本型
- * @param <CONTAINER> 基本型のコンテナ
- * @param <RESULT> 結果
- */
 public class ScalarStreamHandler<BASIC, CONTAINER, RESULT>
     extends AbstractStreamHandler<CONTAINER, RESULT> {
 

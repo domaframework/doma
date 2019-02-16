@@ -23,10 +23,6 @@ public class ScalarProvider<BASIC, CONTAINER> extends AbstractObjectProvider<CON
 
   protected boolean columnCountValidated;
 
-  /**
-   * @param supplier
-   * @param query
-   */
   public ScalarProvider(Supplier<Scalar<BASIC, CONTAINER>> supplier, Query query) {
     assertNotNull(supplier, query);
     this.supplier = supplier;

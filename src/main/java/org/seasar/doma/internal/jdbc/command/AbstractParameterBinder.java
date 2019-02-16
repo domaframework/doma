@@ -7,11 +7,6 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <STATEMENT> 文
- * @param <PARAMETER> パラメータ
- */
 public abstract class AbstractParameterBinder<
         STATEMENT extends PreparedStatement, PARAMETER extends SqlParameter>
     implements ParameterBinder<STATEMENT, PARAMETER> {

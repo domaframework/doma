@@ -24,14 +24,8 @@ import java.util.concurrent.Executor;
 
 class NeverClosedConnection implements Connection {
 
-  /** コネクション */
   protected final Connection connection;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param connection コネクション
-   */
   public NeverClosedConnection(Connection connection) {
     assertNotNull(connection);
     assertTrue(!(connection instanceof NeverClosedConnection));

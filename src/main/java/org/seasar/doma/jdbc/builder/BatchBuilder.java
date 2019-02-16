@@ -229,19 +229,16 @@ public abstract class BatchBuilder {
         throw new JdbcException(Message.DOMA2230);
       }
       if (paramClass != batchParam.paramClass) {
-        // BatchParamの初期値が型:Object、値:nullの場合に限り型を上書き
         if (batchParam.paramClass == Object.class) {
           final BatchParam<P> newBatchParam = new BatchParam<P>(batchParam, paramClass);
           newBatchParam.add(param);
           helper.modifyParam(newBatchParam);
         } else if (param == null && paramClass == Object.class) {
-          // 型違いは型:Object、値:nullの場合のみ許可
           batchParam.add(null);
         } else {
           throw new JdbcException(Message.DOMA2229);
         }
       } else {
-        // paramClass == batchParam.paramClass であるため下記キャストは常に安全
         @SuppressWarnings("unchecked")
         final BatchParam<P> castedBatchParam = (BatchParam<P>) batchParam;
         castedBatchParam.add(param);

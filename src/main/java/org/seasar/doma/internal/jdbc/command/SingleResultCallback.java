@@ -6,10 +6,6 @@ import java.util.function.Supplier;
 import org.seasar.doma.jdbc.IterationCallback;
 import org.seasar.doma.jdbc.IterationContext;
 
-/**
- * @author nakamura-to
- * @param <TARGET> 処理対象
- */
 public class SingleResultCallback<TARGET> implements IterationCallback<TARGET, TARGET> {
 
   protected final Supplier<TARGET> supplier;

@@ -4,10 +4,6 @@ import java.util.OptionalInt;
 import java.util.stream.Collector;
 import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- */
 public class OptionalIntCollectorHandler<RESULT>
     extends ScalarCollectorHandler<Integer, OptionalInt, RESULT> {
 

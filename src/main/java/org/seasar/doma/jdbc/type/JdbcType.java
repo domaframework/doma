@@ -36,7 +36,7 @@ public interface JdbcType<T> extends SqlLogFormatter<T> {
    *
    * @param preparedStatement the prepared statement
    * @param index the parameter index
-   * @param value 値
+   * @param value the value
    * @throws DomaNullPointerException if {@code preparedStatement} is {@code null}
    * @throws DomaIllegalArgumentException {@code index} is {@literal 1} and below
    * @throws SQLException if {@code preparedStatement} throws {@link SQLException}

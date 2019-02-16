@@ -3,20 +3,8 @@ package org.seasar.doma.internal.util;
 import java.nio.CharBuffer;
 import java.util.function.Function;
 
-/**
- * {@link String} のユーティリティクラスです。
- *
- * @author taedium
- */
 public final class StringUtil {
 
-  /**
-   * 先頭の文字を大文字に変換します。
-   *
-   * @param text 文字列
-   * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、 {@code text}
-   *     が空文字の場合は空文字を返します。
-   */
   public static String capitalize(String text) {
     if (isNullOrEmpty(text)) {
       return text;
@@ -26,13 +14,6 @@ public final class StringUtil {
     return new String(chars);
   }
 
-  /**
-   * 先頭の文字を小文字に変換します。
-   *
-   * @param text 文字列
-   * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、 {@code text}
-   *     が空文字の場合は空文字を返します。
-   */
   public static String decapitalize(String text) {
     if (isNullOrEmpty(text)) {
       return text;
@@ -42,13 +23,6 @@ public final class StringUtil {
     return new String(chars);
   }
 
-  /**
-   * アンダースコア区切りの文字列をキャメルケースの文字列に変換します。
-   *
-   * @param text 文字列
-   * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、 {@code text}
-   *     が空文字の場合は空文字を返します。
-   */
   public static String fromSnakeCaseToCamelCase(String text) {
     if (isNullOrEmpty(text)) {
       return text;
@@ -66,28 +40,10 @@ public final class StringUtil {
     return result.toString();
   }
 
-  /**
-   * キャメルケースをアンダースコア区切りに変換します。
-   *
-   * <p>数字の直後に大文字が続く場合、アンダースコア区切りの対象となります。
-   *
-   * @param text 文字列
-   * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、 {@code text}
-   *     が空文字の場合は空文字を返します。
-   */
   public static String fromCamelCaseToSnakeCase(String text) {
     return fromCamelCaseToSnakeCaseInternal(text, false);
   }
 
-  /**
-   * キャメルケースをアンダースコア区切りに変換します。
-   *
-   * <p>数字の直後に大文字が続く場合、アンダースコア区切りの対象となりません。
-   *
-   * @param text 文字列
-   * @return 変換された文字列。 ただし、{@code text} が {@code null} の場合は {@code null}、 {@code text}
-   *     が空文字の場合は空文字を返します。
-   */
   public static String fromCamelCaseToSnakeCaseWithLenient(String text) {
     return fromCamelCaseToSnakeCaseInternal(text, true);
   }
@@ -119,12 +75,6 @@ public final class StringUtil {
     return result.toString();
   }
 
-  /**
-   * 文字列が空白文字だけからなるかどうかを返します。
-   *
-   * @param text 文字列
-   * @return 文字列が空白文字のみを含む場合 {@code true}
-   */
   public static boolean isWhitespace(String text) {
     if (isNullOrEmpty(text)) {
       return false;

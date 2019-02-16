@@ -3,52 +3,29 @@ package org.seasar.doma.internal.jdbc.command;
 import static org.seasar.doma.internal.jdbc.command.ScriptTokenType.*;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
-/**
- * SQLスクリプト内のトークンを認識するクラスです。
- *
- * @author taedium
- */
 public class ScriptTokenizer {
 
-  /** SQLブロックの区切り文字 */
   protected String blockDelimiter;
 
-  /** SQLの行 */
   protected String line;
 
-  /** 現在の位置 */
   protected int pos;
 
-  /** 次の位置 */
   protected int nextPos;
 
-  /** {@code #line}の長さ */
   protected int length;
 
-  /** トークン */
   protected String token;
 
-  /** トークンのタイプ */
   protected ScriptTokenType type;
 
-  /** ブロックコメントが開始されている場合{@code true} */
   protected boolean blockCommentStarted;
 
-  /**
-   * インスタンスを構築します。
-   *
-   * @param blockDelimiter スクリプトブロックの区切り文字
-   */
   public ScriptTokenizer(String blockDelimiter) {
     this.blockDelimiter = blockDelimiter;
     type = END_OF_LINE;
   }
 
-  /**
-   * 1行の文字列を追加します。
-   *
-   * @param line 1行の文字列
-   */
   public void addLine(String line) {
     if (line == null) {
       type = END_OF_FILE;
@@ -69,11 +46,6 @@ public class ScriptTokenizer {
     }
   }
 
-  /**
-   * 次のトークンを前もって調べます。
-   *
-   * @param index 開始インデックス
-   */
   protected void peek(int index) {
     if (index < length) {
       char c = line.charAt(index);
@@ -107,12 +79,6 @@ public class ScriptTokenizer {
     }
   }
 
-  /**
-   * 文字について次のトークンを前もって調べます。
-   *
-   * @param index 開始インデックス
-   * @param c 文字
-   */
   protected void peekChar(int index, char c) {
     if (c == ';') {
       type = STATEMENT_DELIMITER;
@@ -125,11 +91,6 @@ public class ScriptTokenizer {
     nextPos = index + 1;
   }
 
-  /**
-   * 次のトークンタイプを返します。
-   *
-   * @return 次のトークンタイプ
-   */
   public ScriptTokenType nextToken() {
     switch (type) {
       case END_OF_FILE:
@@ -217,12 +178,6 @@ public class ScriptTokenizer {
     }
   }
 
-  /**
-   * コメントや単語以外の場合{@code true}を返します。
-   *
-   * @param c 文字
-   * @return コメントや単語以外の場合{@code true}
-   */
   protected static boolean isOther(char c) {
     return Character.isWhitespace(c)
         || c == '='
@@ -237,11 +192,6 @@ public class ScriptTokenizer {
         || c == ',';
   }
 
-  /**
-   * トークンを返します。
-   *
-   * @return トークン
-   */
   public String getToken() {
     return token;
   }

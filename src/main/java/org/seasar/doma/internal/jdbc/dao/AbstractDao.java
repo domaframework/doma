@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.dao;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import javax.sql.DataSource;
-import org.seasar.doma.Dao;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.RuntimeConfig;
 import org.seasar.doma.internal.WrapException;
@@ -16,25 +15,10 @@ import org.seasar.doma.jdbc.ConfigProvider;
 import org.seasar.doma.jdbc.DaoMethodNotFoundException;
 import org.seasar.doma.jdbc.QueryImplementors;
 
-/**
- * {@link Dao} が注釈されたインタフェースの実装クラスのための骨格実装です。
- *
- * <p>
- *
- * @author taedium
- */
 public abstract class AbstractDao implements ConfigProvider {
 
-  /** 実行時用の設定です。 */
   protected final Config __config;
 
-  /**
-   * 実行時用の設定を作成します。
-   *
-   * @param config JDBCの設定
-   * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
-   */
   protected AbstractDao(Config config) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -43,13 +27,6 @@ public abstract class AbstractDao implements ConfigProvider {
     this.__config = new RuntimeConfig(config, config.getDataSource());
   }
 
-  /**
-   * 実行時用の設定を作成します。
-   *
-   * @param config JDBCの設定
-   * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
-   */
   protected AbstractDao(Config config, Connection connection) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -67,14 +44,6 @@ public abstract class AbstractDao implements ConfigProvider {
     this.__config = new RuntimeConfig(config, dataSource);
   }
 
-  /**
-   * 実行時用の設定を作成します。
-   *
-   * @param config JDBCの設定
-   * @param dataSource データソース
-   * @throws DomaNullPointerException {@code config} が {@code null} の場合
-   * @throws ConfigException {@code config} の メソッドのどれかが {@code null} を返す場合
-   */
   protected AbstractDao(Config config, DataSource dataSource) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -135,11 +104,6 @@ public abstract class AbstractDao implements ConfigProvider {
     return __config;
   }
 
-  /**
-   * データソースを返します。
-   *
-   * @return データソース
-   */
   protected DataSource getDataSource() {
     return __config.getDataSource();
   }
@@ -152,35 +116,14 @@ public abstract class AbstractDao implements ConfigProvider {
     return __config.getQueryImplementors();
   }
 
-  /**
-   * このDaoの {@literal public} なメソッドの実行開始を記録します。
-   *
-   * @param callerClassName クラス名前
-   * @param callerMethodName メソッド名
-   * @param args 引数
-   */
   protected void entering(String callerClassName, String callerMethodName, Object... args) {
     __config.getJdbcLogger().logDaoMethodEntering(callerClassName, callerMethodName, args);
   }
 
-  /**
-   * このDaoなメソッドの実行終了を記録します。
-   *
-   * @param callerClassName クラス名
-   * @param callerMethodName メソッド名
-   * @param result 結果の値
-   */
   protected void exiting(String callerClassName, String callerMethodName, Object result) {
     __config.getJdbcLogger().logDaoMethodExiting(callerClassName, callerMethodName, result);
   }
 
-  /**
-   * このDaoなメソッドの 実行時例外による 実行終了を記録します。
-   *
-   * @param callerClassName クラス名
-   * @param callerMethodName メソッド名
-   * @param e 実行時例外
-   */
   protected void throwing(String callerClassName, String callerMethodName, RuntimeException e) {
     __config.getJdbcLogger().logDaoMethodThrowing(callerClassName, callerMethodName, e);
   }

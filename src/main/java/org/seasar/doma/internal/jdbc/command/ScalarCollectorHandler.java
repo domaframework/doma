@@ -4,12 +4,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
-/**
- * @author nakamura-to
- * @param <BASIC> 基本型
- * @param <CONTAINER> 基本型のコンテナ
- * @param <RESULT> 結果
- */
 public class ScalarCollectorHandler<BASIC, CONTAINER, RESULT>
     extends AbstractCollectorHandler<CONTAINER, RESULT> {
 

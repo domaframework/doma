@@ -9,11 +9,6 @@ import java.util.ResourceBundle;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.message.MessageResource;
 
-/**
- * {@link Enum} で表現されたメッセージコードを扱うリソースバンドルです。
- *
- * @author taedium
- */
 public abstract class AbstractMessageResourceBundle<M extends Enum<M> & MessageResource>
     extends ResourceBundle {
 

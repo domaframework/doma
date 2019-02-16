@@ -3,11 +3,6 @@ package org.seasar.doma.internal.jdbc.command;
 import java.util.stream.Collector;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- * @param <ENTITY>
- */
 public class EntityCollectorHandler<ENTITY, RESULT>
     extends AbstractCollectorHandler<ENTITY, RESULT> {
 

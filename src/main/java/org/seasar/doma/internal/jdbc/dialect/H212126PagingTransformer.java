@@ -5,11 +5,6 @@ import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-/**
- * H2の古いバージョン1.2.126で稼動実績があるトランスフォーマーです。
- *
- * @author taedium
- */
 public class H212126PagingTransformer extends StandardPagingTransformer {
 
   public H212126PagingTransformer(long offset, long limit) {

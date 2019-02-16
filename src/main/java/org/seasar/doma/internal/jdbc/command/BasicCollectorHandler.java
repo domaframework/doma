@@ -5,11 +5,6 @@ import java.util.stream.Collector;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- * @param <BASIC>
- */
 public class BasicCollectorHandler<BASIC, RESULT>
     extends ScalarCollectorHandler<BASIC, BASIC, RESULT> {
 

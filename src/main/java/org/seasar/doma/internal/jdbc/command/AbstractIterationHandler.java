@@ -16,11 +16,6 @@ import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author nakamura-to
- * @param <RESULT> 結果
- * @param <TARGET> 反復処理対象
- */
 public abstract class AbstractIterationHandler<TARGET, RESULT> implements ResultSetHandler<RESULT> {
 
   protected final IterationCallback<TARGET, RESULT> iterationCallback;

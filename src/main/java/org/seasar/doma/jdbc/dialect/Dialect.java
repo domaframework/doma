@@ -130,7 +130,7 @@ public interface Dialect {
    * @param catalogName the catalog name
    * @param schemaName the schema name
    * @param tableName the table name
-   * @param columnName the IDENTITY column name IDENTITYカラムの名前
+   * @param columnName the IDENTITY column name
    * @param isQuoteRequired whether the quotation marks are required
    * @param isIdColumnQuoteRequired whether the quotation marks are required for the IDENTITY column
    * @return the SQL object
