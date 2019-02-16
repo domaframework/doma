@@ -13,7 +13,7 @@ public final class _UUID extends org.seasar.doma.jdbc.domain.AbstractDomainType<
     private static final org.seasar.doma.internal.apt.processor.domain.UUIDConverter converter = new org.seasar.doma.internal.apt.processor.domain.UUIDConverter();
 
     private _UUID() {
-        super(() -> new org.seasar.doma.wrapper.BytesWrapper());
+        super(org.seasar.doma.wrapper.BytesWrapper::new);
     }
 
     @Override

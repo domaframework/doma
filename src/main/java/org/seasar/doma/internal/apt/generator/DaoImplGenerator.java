@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.function.Function;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.internal.ClassName;
@@ -56,22 +57,12 @@ public class DaoImplGenerator extends AbstractGenerator {
       iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
     printGenerated();
-    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    if (parentDaoMeta == null) {
-      iprint(
-          "%4$s class %1$s extends %2$s implements %3$s {%n",
-          /* 1 */ simpleName,
-          /* 2 */ AbstractDao.class,
-          /* 3 */ daoMeta.getType(),
-          /* 4 */ daoMeta.getAccessLevel().getModifier());
-    } else {
-      iprint(
-          "%4$s class %1$s extends %2$s implements %3$s {%n",
-          /* 1 */ simpleName,
-          /* 2 */ classNameProvider.apply(parentDaoMeta.getTypeElement()),
-          /* 3 */ daoMeta.getType(),
-          /* 4 */ daoMeta.getAccessLevel().getModifier());
-    }
+    iprint(
+        "%4$s class %1$s extends %2$s implements %3$s {%n",
+        /* 1 */ simpleName,
+        /* 2 */ getParentClassName(),
+        /* 3 */ daoMeta.getType(),
+        /* 4 */ daoMeta.getAccessLevel().getModifier());
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
@@ -80,6 +71,13 @@ public class DaoImplGenerator extends AbstractGenerator {
     printMethods();
     unindent();
     print("}%n");
+  }
+
+  private CharSequence getParentClassName() {
+    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+    return parentDaoMeta == null
+        ? AbstractDao.class.getName()
+        : classNameProvider.apply(parentDaoMeta.getTypeElement());
   }
 
   private void printStaticFields() {
@@ -92,7 +90,7 @@ public class DaoImplGenerator extends AbstractGenerator {
             /* 1 */ Method.class,
             /* 2 */ index,
             /* 3 */ AbstractDao.class,
-            /* 4 */ daoMeta.getType(),
+            /* 4 */ daoMeta.getTypeElement(),
             /* 5 */ queryMeta.getName());
         for (QueryParameterMeta parameterMeta : queryMeta.getParameterMetas()) {
           print(", %1$s.class", parameterMeta.getQualifiedName());
@@ -106,125 +104,136 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private void printConstructors() {
     if (daoMeta.hasUserDefinedConfig()) {
-      String singletonMethodName = daoMeta.getSingletonMethodName();
-      String singletonFieldName = daoMeta.getSingletonFieldName();
-
-      iprint("/** */%n");
-      iprint("public %1$s() {%n", simpleName);
-      indent();
-      if (singletonMethodName == null) {
-        if (singletonFieldName == null) {
-          iprint("super(new %1$s());%n", daoMeta.getConfigType());
-        } else {
-          iprint("super(%1$s.%2$s);%n", daoMeta.getConfigType(), singletonFieldName);
+      Code configCode = createConfigCode();
+      printNoArgConstructor(configCode);
+      if (daoMeta.getAnnotateWithAnnot() == null) {
+        boolean required = areJdbcConstructorsRequired();
+        if (required) {
+          printConnectionArgConstructor(configCode);
+          printDataSourceArgConstructor(configCode);
+        }
+        printConfigArgConstructor();
+        if (required) {
+          printConfigAndConnectionArgsConstructor();
+          printConfigAndDataSourceArgsConstructor();
         }
       } else {
-        iprint("super(%1$s.%2$s());%n", daoMeta.getConfigType(), singletonMethodName);
+        printAnnotatedConstructor();
       }
-      unindent();
-      iprint("}%n");
-      print("%n");
-      if (daoMeta.getAnnotateWithAnnot() == null) {
-        ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-        boolean jdbcConstructorsNecessary =
-            parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
-        if (jdbcConstructorsNecessary) {
-          iprint("/**%n");
-          iprint(" * @param connection the connection%n");
-          iprint(" */%n");
-          iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class);
-          indent();
-          if (singletonMethodName == null) {
-            if (singletonFieldName == null) {
-              iprint("super(new %1$s(), connection);%n", daoMeta.getConfigType());
+    } else {
+      printAnnotatedConstructor();
+    }
+  }
+
+  private boolean areJdbcConstructorsRequired() {
+    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+    return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
+  }
+
+  private Code createConfigCode() {
+    TypeMirror type = daoMeta.getConfigType();
+    String method = daoMeta.getSingletonMethodName();
+    String field = daoMeta.getSingletonFieldName();
+    return new Code(
+        p -> {
+          if (method == null) {
+            if (field == null) {
+              p.print("new %1$s()", type);
             } else {
-              iprint(
-                  "super(%1$s.%2$s, connection);%n", daoMeta.getConfigType(), singletonFieldName);
+              p.print("%1$s.%2$s", type, field);
             }
           } else {
-            iprint(
-                "super(%1$s.%2$s(), connection);%n", daoMeta.getConfigType(), singletonMethodName);
+            p.print("%1$s.%2$s()", type, method);
           }
-          unindent();
-          iprint("}%n");
-          print("%n");
-          iprint("/**%n");
-          iprint(" * @param dataSource the dataSource%n");
-          iprint(" */%n");
-          iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class);
-          indent();
-          if (singletonMethodName == null) {
-            if (singletonFieldName == null) {
-              iprint("super(new %1$s(), dataSource);%n", daoMeta.getConfigType());
-            } else {
-              iprint(
-                  "super(%1$s.%2$s, dataSource);%n", daoMeta.getConfigType(), singletonFieldName);
-            }
-          } else {
-            iprint(
-                "super(%1$s.%2$s(), dataSource);%n", daoMeta.getConfigType(), singletonMethodName);
-          }
-          unindent();
-          iprint("}%n");
-          print("%n");
-        }
-        iprint("/**%n");
-        iprint(" * @param config the configuration%n");
-        iprint(" */%n");
-        iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class);
-        indent();
-        iprint("super(config);%n");
-        unindent();
-        iprint("}%n");
-        print("%n");
-        if (jdbcConstructorsNecessary) {
-          iprint("/**%n");
-          iprint(" * @param config the configuration%n");
-          iprint(" * @param connection the connection%n");
-          iprint(" */%n");
-          iprint(
-              "protected %1$s(%2$s config, %3$s connection) {%n",
-              simpleName, Config.class, Connection.class);
-          indent();
-          iprint("super(config, connection);%n");
-          unindent();
-          iprint("}%n");
-          print("%n");
-          iprint("/**%n");
-          iprint(" * @param config the configuration%n");
-          iprint(" * @param dataSource the dataSource%n");
-          iprint(" */%n");
-          iprint(
-              "protected %1$s(%2$s config, %3$s dataSource) {%n",
-              simpleName, Config.class, DataSource.class);
-          indent();
-          iprint("super(config, dataSource);%n");
-          unindent();
-          iprint("}%n");
-          print("%n");
-        }
-      }
+        });
+  }
+
+  private void printNoArgConstructor(Code configCode) {
+    iprint("/** */%n");
+    iprint("public %1$s() {%n", simpleName);
+    iprint("    super(%1$s);%n", configCode);
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printConnectionArgConstructor(Code configCode) {
+    iprint("/**%n");
+    iprint(" * @param connection the connection%n");
+    iprint(" */%n");
+    iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class);
+    iprint("    super(%1$s, connection);%n", configCode);
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printDataSourceArgConstructor(Code configCode) {
+    iprint("/**%n");
+    iprint(" * @param dataSource the dataSource%n");
+    iprint(" */%n");
+    iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class);
+    iprint("    super(%1$s, dataSource);%n", configCode);
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printConfigArgConstructor() {
+    iprint("/**%n");
+    iprint(" * @param config the configuration%n");
+    iprint(" */%n");
+    iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class);
+    iprint("    super(config);%n");
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printConfigAndConnectionArgsConstructor() {
+    iprint("/**%n");
+    iprint(" * @param config the configuration%n");
+    iprint(" * @param connection the connection%n");
+    iprint(" */%n");
+    iprint(
+        "protected %1$s(%2$s config, %3$s connection) {%n",
+        simpleName, Config.class, Connection.class);
+    indent();
+    iprint("super(config, connection);%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printConfigAndDataSourceArgsConstructor() {
+    iprint("/**%n");
+    iprint(" * @param config the configuration%n");
+    iprint(" * @param dataSource the dataSource%n");
+    iprint(" */%n");
+    iprint(
+        "protected %1$s(%2$s config, %3$s dataSource) {%n",
+        simpleName, Config.class, DataSource.class);
+    indent();
+    iprint("super(config, dataSource);%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printAnnotatedConstructor() {
+    iprint("/**%n");
+    iprint(" * @param config the config%n");
+    iprint(" */%n");
+    for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
+      iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
-    if (!daoMeta.hasUserDefinedConfig() || daoMeta.getAnnotateWithAnnot() != null) {
-      iprint("/**%n");
-      iprint(" * @param config the config%n");
-      iprint(" */%n");
-      for (AnnotationAnnot annotation :
-          daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR)) {
-        iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
-      }
-      iprint("public %1$s(", simpleName);
-      for (AnnotationAnnot annotation :
-          daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
-        print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
-      }
-      print("%1$s config) {%n", Config.class);
-      indent();
-      iprint("super(config);%n");
-      unindent();
-      iprint("}%n");
-      print("%n");
+    iprint("public %1$s(", simpleName);
+    for (AnnotationAnnot annotation :
+        daoMeta.getAnnotationMirrors(AnnotationTarget.CONSTRUCTOR_PARAMETER)) {
+      print("@%1$s(%2$s) ", annotation.getTypeValue(), annotation.getElementsValue());
     }
+    print("%1$s config) {%n", Config.class);
+    indent();
+    iprint("super(config);%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
   }
 
   private void printMethods() {

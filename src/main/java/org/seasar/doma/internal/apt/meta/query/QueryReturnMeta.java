@@ -93,10 +93,6 @@ public class QueryReturnMeta {
     return methodElement;
   }
 
-  public TypeElement getDaoElement() {
-    return daoElement;
-  }
-
   public TypeMirror getType() {
     return ctType.getType();
   }

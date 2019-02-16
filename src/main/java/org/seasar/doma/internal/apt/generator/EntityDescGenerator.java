@@ -511,7 +511,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                         throws RuntimeException {
                       iprint(
                           "        %1$s.newEmbeddable(\"%2$s\", __args)",
-                          ctType.embeddableDescSingletonCode(), propertyMeta.getName());
+                          ctType.getDescCode(), propertyMeta.getName());
                       return null;
                     }
 
@@ -543,7 +543,7 @@ public class EntityDescGenerator extends AbstractGenerator {
                       iprint(
                           "    %1$s.save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
                           propertyMeta.getFieldName(),
-                          ctType.embeddableDescSingletonCode(),
+                          ctType.getDescCode(),
                           propertyMeta.getName());
                       return null;
                     }

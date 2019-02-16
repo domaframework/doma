@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.WrapperCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
@@ -82,18 +81,10 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
   }
 
   private void printConstructors() {
-    iprint("private %1$s() {%n", simpleName);
     BasicCtType basicCtType = domainMeta.getBasicCtType();
-    WrapperCtType wrapperCtType = basicCtType.getWrapperCtType();
-    if (basicCtType.isEnum()) {
-      iprint(
-          "    super(() -> new %1$s(%2$s.class));%n",
-          wrapperCtType.getType(), domainMeta.getValueType());
-      iprint("}%n");
-    } else {
-      iprint("    super(() -> new %1$s());%n", wrapperCtType.getType());
-      iprint("}%n");
-    }
+    iprint("private %1$s() {%n", simpleName);
+    iprint("    super(%1$s);%n", basicCtType.getWrapperSupplierCode());
+    iprint("}%n");
     print("%n");
   }
 

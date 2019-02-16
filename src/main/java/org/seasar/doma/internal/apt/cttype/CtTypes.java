@@ -3,7 +3,21 @@ package org.seasar.doma.internal.apt.cttype;
 import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -17,15 +31,21 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -39,7 +59,31 @@ import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.message.Message;
+import org.seasar.doma.wrapper.ArrayWrapper;
+import org.seasar.doma.wrapper.BigDecimalWrapper;
+import org.seasar.doma.wrapper.BigIntegerWrapper;
+import org.seasar.doma.wrapper.BlobWrapper;
+import org.seasar.doma.wrapper.BooleanWrapper;
+import org.seasar.doma.wrapper.ByteWrapper;
+import org.seasar.doma.wrapper.BytesWrapper;
+import org.seasar.doma.wrapper.ClobWrapper;
+import org.seasar.doma.wrapper.DateWrapper;
+import org.seasar.doma.wrapper.DoubleWrapper;
 import org.seasar.doma.wrapper.EnumWrapper;
+import org.seasar.doma.wrapper.FloatWrapper;
+import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.LocalDateTimeWrapper;
+import org.seasar.doma.wrapper.LocalDateWrapper;
+import org.seasar.doma.wrapper.LocalTimeWrapper;
+import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.NClobWrapper;
+import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.SQLXMLWrapper;
+import org.seasar.doma.wrapper.ShortWrapper;
+import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.TimeWrapper;
+import org.seasar.doma.wrapper.TimestampWrapper;
+import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class CtTypes {
 
@@ -49,7 +93,7 @@ public class CtTypes {
     this.ctx = ctx;
   }
 
-  public AnyCtType newAnyCtType(TypeMirror type) {
+  private AnyCtType newAnyCtType(TypeMirror type) {
     return new AnyCtType(ctx, type);
   }
 
@@ -68,11 +112,26 @@ public class CtTypes {
 
   public BasicCtType newBasicCtType(TypeMirror type) {
     assertNotNull(type);
-    WrapperCtType wrapperCtType = newWrapperCtType(type);
-    if (wrapperCtType == null) {
+    TypeMirror wrapperType = getWrapperType(type);
+    if (wrapperType == null) {
       return null;
     }
-    return new BasicCtType(ctx, type, wrapperCtType);
+    return new BasicCtType(ctx, type, wrapperType);
+  }
+
+  private TypeMirror getWrapperType(TypeMirror type) {
+    Class<?> wrapperClass = type.accept(new WrapperClassResolver(), null);
+    if (wrapperClass == null) {
+      return null;
+    }
+    TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
+    if (wrapperTypeElement == null) {
+      return null;
+    }
+    if (wrapperClass == EnumWrapper.class) {
+      return ctx.getTypes().getDeclaredType(wrapperTypeElement, type);
+    }
+    return wrapperTypeElement.asType();
   }
 
   private BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
@@ -132,18 +191,25 @@ public class CtTypes {
             .stream()
             .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
             .collect(toList());
-    return new DomainCtType(ctx, type, typeElement, basicCtType, typeArgCtTypes, info.external);
+    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    ClassName descClassName;
+    if (info.external) {
+      descClassName = ClassNames.newExternalDomainDescClassName(binaryName);
+    } else {
+      descClassName = ClassNames.newDomainDescClassName(binaryName);
+    }
+    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, descClassName);
   }
 
   private DomainInfo getDomainInfo(TypeElement typeElement) {
     Domain domain = typeElement.getAnnotation(Domain.class);
     if (domain != null) {
-      return getDomainInfo(typeElement, domain);
+      return getDomainInfo(domain);
     }
     return getExternalDomainInfo(typeElement);
   }
 
-  private DomainInfo getDomainInfo(TypeElement typeElement, Domain domain) {
+  private DomainInfo getDomainInfo(Domain domain) {
     try {
       domain.valueType();
     } catch (MirroredTypeException e) {
@@ -227,7 +293,7 @@ public class CtTypes {
 
     private final boolean external;
 
-    public DomainInfo(TypeMirror valueType, boolean external) {
+    DomainInfo(TypeMirror valueType, boolean external) {
       assertNotNull(valueType);
       this.valueType = valueType;
       this.external = external;
@@ -243,7 +309,9 @@ public class CtTypes {
     if (embeddable == null) {
       return null;
     }
-    return new EmbeddableCtType(ctx, type, typeElement);
+    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    ClassName descClassName = ClassNames.newEmbeddableDescClassName(binaryName);
+    return new EmbeddableCtType(ctx, type, descClassName);
   }
 
   private EntityCtType newEntityCtType(TypeMirror type) {
@@ -255,7 +323,9 @@ public class CtTypes {
     if (entity == null) {
       return null;
     }
-    return new EntityCtType(ctx, type, typeElement, entity.immutable());
+    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    ClassName descClassName = ClassNames.newEntityDescClassName(binaryName);
+    return new EntityCtType(ctx, type, entity.immutable(), descClassName);
   }
 
   private FunctionCtType newFunctionCtType(TypeMirror type) {
@@ -336,21 +406,27 @@ public class CtTypes {
     if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalDouble.class)) {
       return null;
     }
-    return new OptionalDoubleCtType(ctx, type);
+    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
+    BasicCtType elementCtType = newBasicCtType(primitiveType);
+    return new OptionalDoubleCtType(ctx, type, elementCtType);
   }
 
   private OptionalIntCtType newOptionalIntCtType(TypeMirror type) {
     if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalInt.class)) {
       return null;
     }
-    return new OptionalIntCtType(ctx, type);
+    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.INT);
+    BasicCtType elementCtType = newBasicCtType(primitiveType);
+    return new OptionalIntCtType(ctx, type, elementCtType);
   }
 
   private OptionalLongCtType newOptionalLongCtType(TypeMirror type) {
     if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalLong.class)) {
       return null;
     }
-    return new OptionalLongCtType(ctx, type);
+    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.LONG);
+    BasicCtType elementCtType = newBasicCtType(primitiveType);
+    return new OptionalLongCtType(ctx, type, elementCtType);
   }
 
   private PreparedSqlCtType newPreparedSqlCtType(TypeMirror type) {
@@ -402,25 +478,6 @@ public class CtTypes {
     Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
     CtType elementCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
     return new StreamCtType(ctx, type, elementCtType);
-  }
-
-  private WrapperCtType newWrapperCtType(TypeMirror type) {
-    Class<?> wrapperClass = type.accept(new WrapperCtType.WrapperTypeMappingVisitor(ctx), null);
-    if (wrapperClass == null) {
-      return null;
-    }
-    TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
-    if (wrapperTypeElement == null) {
-      return null;
-    }
-    WrapperCtType wrapperCtType;
-    if (wrapperClass == EnumWrapper.class) {
-      DeclaredType declaredType = ctx.getTypes().getDeclaredType(wrapperTypeElement, type);
-      wrapperCtType = new EnumWrapperCtType(ctx, declaredType);
-    } else {
-      wrapperCtType = new WrapperCtType(ctx, wrapperTypeElement.asType());
-    }
-    return wrapperCtType;
   }
 
   public CtType newCtType(TypeMirror type, CtTypeVisitor<Void, Void, AptException> validator) {
@@ -482,5 +539,122 @@ public class CtTypes {
       }
     }
     return null;
+  }
+
+  private class WrapperClassResolver extends SimpleTypeVisitor8<Class<?>, Void> {
+
+    @Override
+    public Class<?> visitArray(ArrayType t, Void p) {
+      if (t.getComponentType().getKind() == TypeKind.BYTE) {
+        return BytesWrapper.class;
+      }
+      return null;
+    }
+
+    @Override
+    public Class<?> visitDeclared(DeclaredType t, Void p) {
+      TypeElement typeElement = ctx.getTypes().toTypeElement(t);
+      if (typeElement == null) {
+        return null;
+      }
+      if (typeElement.getKind() == ElementKind.ENUM) {
+        return EnumWrapper.class;
+      }
+      String name = typeElement.getQualifiedName().toString();
+      if (String.class.getName().equals(name)) {
+        return StringWrapper.class;
+      }
+      if (Boolean.class.getName().equals(name)) {
+        return BooleanWrapper.class;
+      }
+      if (Byte.class.getName().equals(name)) {
+        return ByteWrapper.class;
+      }
+      if (Short.class.getName().equals(name)) {
+        return ShortWrapper.class;
+      }
+      if (Integer.class.getName().equals(name)) {
+        return IntegerWrapper.class;
+      }
+      if (Long.class.getName().equals(name)) {
+        return LongWrapper.class;
+      }
+      if (Float.class.getName().equals(name)) {
+        return FloatWrapper.class;
+      }
+      if (Double.class.getName().equals(name)) {
+        return DoubleWrapper.class;
+      }
+      if (Object.class.getName().equals(name)) {
+        return ObjectWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, BigDecimal.class)) {
+        return BigDecimalWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, BigInteger.class)) {
+        return BigIntegerWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Time.class)) {
+        return TimeWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Timestamp.class)) {
+        return TimestampWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Date.class)) {
+        return DateWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, java.util.Date.class)) {
+        return UtilDateWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalTime.class)) {
+        return LocalTimeWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalDateTime.class)) {
+        return LocalDateTimeWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, LocalDate.class)) {
+        return LocalDateWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Array.class)) {
+        return ArrayWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Blob.class)) {
+        return BlobWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, NClob.class)) {
+        return NClobWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, Clob.class)) {
+        return ClobWrapper.class;
+      }
+      if (ctx.getTypes().isAssignableWithErasure(t, SQLXML.class)) {
+        return SQLXMLWrapper.class;
+      }
+      return null;
+    }
+
+    @Override
+    public Class<?> visitPrimitive(PrimitiveType t, Void p) {
+      switch (t.getKind()) {
+        case BOOLEAN:
+          return BooleanWrapper.class;
+        case BYTE:
+          return ByteWrapper.class;
+        case SHORT:
+          return ShortWrapper.class;
+        case INT:
+          return IntegerWrapper.class;
+        case LONG:
+          return LongWrapper.class;
+        case FLOAT:
+          return FloatWrapper.class;
+        case DOUBLE:
+          return DoubleWrapper.class;
+        case CHAR:
+          return null;
+        default:
+          return assertUnreachable();
+      }
+    }
   }
 }

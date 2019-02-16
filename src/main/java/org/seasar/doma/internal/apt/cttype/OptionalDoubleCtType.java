@@ -1,21 +1,21 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeKind;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 
 public class OptionalDoubleCtType extends AbstractCtType {
 
-  private final CtType elementCtType;
+  private final BasicCtType elementCtType;
 
-  OptionalDoubleCtType(Context ctx, TypeMirror typeMirror) {
+  OptionalDoubleCtType(Context ctx, TypeMirror typeMirror, BasicCtType elementCtType) {
     super(ctx, typeMirror);
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
-    this.elementCtType = ctx.getCtTypes().newBasicCtType(primitiveType);
+    assertNotNull(elementCtType);
+    this.elementCtType = elementCtType;
   }
 
-  public CtType getElementCtType() {
+  public BasicCtType getElementCtType() {
     return elementCtType;
   }
 

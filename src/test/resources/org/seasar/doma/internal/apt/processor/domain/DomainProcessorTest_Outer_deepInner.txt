@@ -11,7 +11,7 @@ public final class _Outer_deepInner__Middle__Inner extends org.seasar.doma.jdbc.
     private static final _Outer_deepInner__Middle__Inner singleton = new _Outer_deepInner__Middle__Inner();
 
     private _Outer_deepInner__Middle__Inner() {
-        super(() -> new org.seasar.doma.wrapper.BigDecimalWrapper());
+        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
     }
 
     @Override

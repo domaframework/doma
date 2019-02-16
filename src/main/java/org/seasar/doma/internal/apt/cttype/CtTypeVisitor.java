@@ -26,10 +26,6 @@ public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
   R visitSelectOptionsCtType(SelectOptionsCtType ctType, P p) throws TH;
 
-  R visitWrapperCtType(WrapperCtType ctType, P p) throws TH;
-
-  R visitEnumWrapperCtType(EnumWrapperCtType ctType, P p) throws TH;
-
   R visitMapCtType(MapCtType ctType, P p) throws TH;
 
   R visitNoneCtType(NoneCtType ctType, P p) throws TH;

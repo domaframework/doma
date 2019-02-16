@@ -75,16 +75,6 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
   }
 
   @Override
-  public R visitWrapperCtType(WrapperCtType ctType, P p) throws TH {
-    return defaultAction(ctType, p);
-  }
-
-  @Override
-  public R visitEnumWrapperCtType(EnumWrapperCtType dataType, P p) throws TH {
-    return visitWrapperCtType(dataType, p);
-  }
-
-  @Override
   public R visitMapCtType(MapCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }
