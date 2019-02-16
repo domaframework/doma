@@ -47,7 +47,8 @@ import org.seasar.doma.internal.util.ClassUtil;
   Options.EXPR_FUNCTIONS,
   Options.SQL_VALIDATION,
   Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR
+  Options.RESOURCES_DIR,
+  Options.CONFIG_PATH
 })
 public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
 

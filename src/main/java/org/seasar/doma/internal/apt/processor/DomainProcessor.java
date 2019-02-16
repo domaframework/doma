@@ -22,7 +22,8 @@ import org.seasar.doma.internal.apt.meta.domain.DomainMetaFactory;
   Options.RESOURCES_DIR,
   Options.LOMBOK_VALUE,
   Options.TEST,
-  Options.DEBUG
+  Options.DEBUG,
+  Options.CONFIG_PATH
 })
 public class DomainProcessor extends AbstractGeneratingProcessor<DomainMeta> {
 

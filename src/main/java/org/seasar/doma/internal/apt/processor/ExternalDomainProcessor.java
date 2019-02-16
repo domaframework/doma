@@ -17,7 +17,13 @@ import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.ExternalDomain"})
-@SupportedOptions({Options.VERSION_VALIDATION, Options.RESOURCES_DIR, Options.TEST, Options.DEBUG})
+@SupportedOptions({
+  Options.VERSION_VALIDATION,
+  Options.RESOURCES_DIR,
+  Options.TEST,
+  Options.DEBUG,
+  Options.CONFIG_PATH
+})
 public class ExternalDomainProcessor extends AbstractGeneratingProcessor<ExternalDomainMeta> {
 
   public ExternalDomainProcessor() {
