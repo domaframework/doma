@@ -10,8 +10,8 @@ public class ArrayCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private ArrayFactoryAnnot arrayFactoryAnnot;
 
-  public ArrayCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public ArrayCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public String getParameterName() {

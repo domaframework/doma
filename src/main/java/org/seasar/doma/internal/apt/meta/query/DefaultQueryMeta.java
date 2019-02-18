@@ -5,8 +5,8 @@ import javax.lang.model.element.TypeElement;
 
 public class DefaultQueryMeta extends AbstractQueryMeta {
 
-  public DefaultQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public DefaultQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   @Override

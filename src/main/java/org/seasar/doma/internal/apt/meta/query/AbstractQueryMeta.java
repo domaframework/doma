@@ -21,7 +21,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   private final String name;
 
-  private final ExecutableElement executableElement;
+  private final ExecutableElement methodElement;
 
   private final TypeElement daoElement;
 
@@ -39,11 +39,11 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   private TypeParametersDef typeParametersDef;
 
-  AbstractQueryMeta(ExecutableElement method, TypeElement dao) {
-    assertNotNull(method);
-    this.name = method.getSimpleName().toString();
-    this.executableElement = method;
-    this.daoElement = dao;
+  AbstractQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    assertNotNull(daoElement, methodElement);
+    this.daoElement = daoElement;
+    this.methodElement = methodElement;
+    this.name = methodElement.getSimpleName().toString();
   }
 
   @Override
@@ -53,7 +53,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   @Override
   public ExecutableElement getMethodElement() {
-    return executableElement;
+    return methodElement;
   }
 
   @Override
@@ -141,7 +141,7 @@ public abstract class AbstractQueryMeta implements QueryMeta {
 
   @Override
   public boolean isVarArgs() {
-    return this.executableElement.isVarArgs();
+    return this.methodElement.isVarArgs();
   }
 
   class BindableParameterCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {

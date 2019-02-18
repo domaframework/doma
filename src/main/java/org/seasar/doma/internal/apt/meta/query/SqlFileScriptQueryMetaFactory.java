@@ -1,85 +1,75 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.io.File;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.ScriptAnnot;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
-import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
 import org.seasar.doma.message.Message;
 
 public class SqlFileScriptQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileScriptQueryMeta> {
 
-  public SqlFileScriptQueryMetaFactory(Context ctx) {
-    super(ctx);
+  public SqlFileScriptQueryMetaFactory(
+      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    super(ctx, daoElement, methodElement);
   }
 
   @Override
-  public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-    assertNotNull(method, daoMeta);
-    SqlFileScriptQueryMeta queryMeta = createSqlFileScriptQueryMeta(method, daoMeta);
+  public QueryMeta createQueryMeta() {
+    SqlFileScriptQueryMeta queryMeta = createSqlFileScriptQueryMeta();
     if (queryMeta == null) {
       return null;
     }
-    doTypeParameters(queryMeta, method, daoMeta);
-    doReturnType(queryMeta, method, daoMeta);
-    doParameters(queryMeta, method, daoMeta);
-    doThrowTypes(queryMeta, method, daoMeta);
-    doSqlTemplate(queryMeta, method, daoMeta, false, false);
+    doTypeParameters(queryMeta);
+    doReturnType(queryMeta);
+    doParameters(queryMeta);
+    doThrowTypes(queryMeta);
+    doSqlTemplate(queryMeta, false, false);
     return queryMeta;
   }
 
-  private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(
-      ExecutableElement method, DaoMeta daoMeta) {
-    SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(method, daoMeta.getTypeElement());
-    ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(method);
+  private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta() {
+    SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(daoElement, methodElement);
+    ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(methodElement);
     if (scriptAnnot == null) {
       return null;
     }
     queryMeta.setScriptAnnot(scriptAnnot);
     queryMeta.setQueryKind(QueryKind.SQLFILE_SCRIPT);
-    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
     queryMeta.setSqlAnnot(sqlAnnot);
     return queryMeta;
   }
 
   @Override
-  protected void doReturnType(
-      SqlFileScriptQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+  protected void doReturnType(SqlFileScriptQueryMeta queryMeta) {
     QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
     if (!returnMeta.isPrimitiveVoid()) {
-      throw new AptException(Message.DOMA4172, returnMeta.getMethodElement(), new Object[] {});
+      throw new AptException(Message.DOMA4172, methodElement, new Object[] {});
     }
     queryMeta.setReturnMeta(returnMeta);
   }
 
   @Override
-  protected void doParameters(
-      SqlFileScriptQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    if (!method.getParameters().isEmpty()) {
-      throw new AptException(Message.DOMA4173, method, new Object[] {});
+  protected void doParameters(SqlFileScriptQueryMeta queryMeta) {
+    if (!methodElement.getParameters().isEmpty()) {
+      throw new AptException(Message.DOMA4173, methodElement, new Object[] {});
     }
   }
 
   @Override
-  void doSqlTemplate(
-      SqlFileScriptQueryMeta queryMeta,
-      ExecutableElement method,
-      DaoMeta daoMeta,
-      boolean expandable,
-      boolean populatable) {
+  void doSqlTemplate(SqlFileScriptQueryMeta queryMeta, boolean expandable, boolean populatable) {
     SqlAnnot sqlAnnot = queryMeta.getSqlAnnot();
     if (sqlAnnot != null) {
       return;
     }
     String filePath = queryMeta.getPath();
-    File file = getFile(queryMeta, method, filePath);
-    File[] siblingfiles = getSiblingFiles(queryMeta, method, file);
+    File file = getFile(filePath);
+    File[] siblingfiles = getSiblingFiles(file);
     String methodName = queryMeta.getName();
     for (File siblingfile : siblingfiles) {
       if (ScriptFileUtil.isScriptFile(siblingfile, methodName)) {

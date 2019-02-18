@@ -9,8 +9,8 @@ abstract class AbstractSqlFileQueryMeta extends AbstractQueryMeta {
 
   SqlAnnot sqlAnnot;
 
-  AbstractSqlFileQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  AbstractSqlFileQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public SqlAnnot getSqlAnnot() {

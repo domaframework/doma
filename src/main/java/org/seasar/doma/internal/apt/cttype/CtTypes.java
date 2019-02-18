@@ -98,10 +98,10 @@ public class CtTypes {
   }
 
   private BatchResultCtType newBatchResultCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, BatchResult.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, BatchResult.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -124,12 +124,12 @@ public class CtTypes {
     if (wrapperClass == null) {
       return null;
     }
-    TypeElement wrapperTypeElement = ctx.getElements().getTypeElement(wrapperClass);
+    TypeElement wrapperTypeElement = ctx.getMoreElements().getTypeElement(wrapperClass);
     if (wrapperTypeElement == null) {
       return null;
     }
     if (wrapperClass == EnumWrapper.class) {
-      return ctx.getTypes().getDeclaredType(wrapperTypeElement, type);
+      return ctx.getMoreTypes().getDeclaredType(wrapperTypeElement, type);
     }
     return wrapperTypeElement.asType();
   }
@@ -160,7 +160,7 @@ public class CtTypes {
   }
 
   private ConfigCtType newConfigCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, Config.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Config.class)) {
       return null;
     }
     return new ConfigCtType(ctx, type);
@@ -168,7 +168,7 @@ public class CtTypes {
 
   public DomainCtType newDomainCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
@@ -180,7 +180,7 @@ public class CtTypes {
     if (basicCtType == null) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -191,7 +191,7 @@ public class CtTypes {
             .stream()
             .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
             .collect(toList());
-    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName descClassName;
     if (info.external) {
       descClassName = ClassNames.newExternalDomainDescClassName(binaryName);
@@ -227,7 +227,8 @@ public class CtTypes {
         if (className.isEmpty()) {
           continue;
         }
-        TypeElement convertersProviderElement = ctx.getElements().getTypeElement(className);
+        TypeElement convertersProviderElement =
+            ctx.getMoreElements().getTypeElementFromBinaryName(className);
         if (convertersProviderElement == null) {
           throw new AptIllegalOptionException(Message.DOMA4200.getMessage(className));
         }
@@ -244,7 +245,8 @@ public class CtTypes {
             continue;
           }
           TypeMirror[] argTypes = getConverterArgTypes(converterType);
-          if (argTypes == null || !ctx.getTypes().isSameTypeWithErasure(domainType, argTypes[0])) {
+          if (argTypes == null
+              || !ctx.getMoreTypes().isSameTypeWithErasure(domainType, argTypes[0])) {
             continue;
           }
           TypeMirror valueType = argTypes[1];
@@ -256,12 +258,11 @@ public class CtTypes {
   }
 
   private TypeMirror reloadTypeMirror(TypeMirror typeMirror) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(typeMirror);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(typeMirror);
     if (typeElement == null) {
       return null;
     }
-    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-    typeElement = ctx.getElements().getTypeElement(binaryName);
+    typeElement = ctx.getMoreElements().getTypeElement(typeElement.getQualifiedName());
     if (typeElement == null) {
       return null;
     }
@@ -269,12 +270,12 @@ public class CtTypes {
   }
 
   private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
-    for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
-      if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
+    for (TypeMirror supertype : ctx.getMoreTypes().directSupertypes(typeMirror)) {
+      if (!ctx.getMoreTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
       }
-      if (ctx.getTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
-        DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
+      if (ctx.getMoreTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
+        DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
         assertEquals(2, args.size());
@@ -301,7 +302,7 @@ public class CtTypes {
   }
 
   private EmbeddableCtType newEmbeddableCtType(TypeMirror type) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
@@ -309,13 +310,13 @@ public class CtTypes {
     if (embeddable == null) {
       return null;
     }
-    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName descClassName = ClassNames.newEmbeddableDescClassName(binaryName);
     return new EmbeddableCtType(ctx, type, descClassName);
   }
 
   private EntityCtType newEntityCtType(TypeMirror type) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
     }
@@ -323,7 +324,7 @@ public class CtTypes {
     if (entity == null) {
       return null;
     }
-    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName descClassName = ClassNames.newEntityDescClassName(binaryName);
     return new EntityCtType(ctx, type, entity.immutable(), descClassName);
   }
@@ -364,10 +365,10 @@ public class CtTypes {
   }
 
   private MapCtType newMapCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, Map.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Map.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -375,25 +376,25 @@ public class CtTypes {
     if (typeArgs.size() != 2) {
       return null;
     }
-    if (!ctx.getTypes().isSameTypeWithErasure(typeArgs.get(0), String.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(typeArgs.get(0), String.class)) {
       return null;
     }
-    if (!ctx.getTypes().isSameTypeWithErasure(typeArgs.get(1), Object.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(typeArgs.get(1), Object.class)) {
       return null;
     }
     return new MapCtType(ctx, type);
   }
 
   private NoneCtType newNoneCtType() {
-    TypeMirror type = ctx.getTypes().getNoType(TypeKind.NONE);
+    TypeMirror type = ctx.getMoreTypes().getNoType(TypeKind.NONE);
     return new NoneCtType(ctx, type);
   }
 
   private OptionalCtType newOptionalCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, Optional.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Optional.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -403,35 +404,35 @@ public class CtTypes {
   }
 
   private OptionalDoubleCtType newOptionalDoubleCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalDouble.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, OptionalDouble.class)) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.DOUBLE);
+    PrimitiveType primitiveType = ctx.getMoreTypes().getPrimitiveType(TypeKind.DOUBLE);
     BasicCtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalDoubleCtType(ctx, type, elementCtType);
   }
 
   private OptionalIntCtType newOptionalIntCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalInt.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, OptionalInt.class)) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.INT);
+    PrimitiveType primitiveType = ctx.getMoreTypes().getPrimitiveType(TypeKind.INT);
     BasicCtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalIntCtType(ctx, type, elementCtType);
   }
 
   private OptionalLongCtType newOptionalLongCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, OptionalLong.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, OptionalLong.class)) {
       return null;
     }
-    PrimitiveType primitiveType = ctx.getTypes().getPrimitiveType(TypeKind.LONG);
+    PrimitiveType primitiveType = ctx.getMoreTypes().getPrimitiveType(TypeKind.LONG);
     BasicCtType elementCtType = newBasicCtType(primitiveType);
     return new OptionalLongCtType(ctx, type, elementCtType);
   }
 
   private PreparedSqlCtType newPreparedSqlCtType(TypeMirror type) {
     assertNotNull(type);
-    if (!ctx.getTypes().isSameTypeWithErasure(type, PreparedSql.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, PreparedSql.class)) {
       return null;
     }
     return new PreparedSqlCtType(ctx, type);
@@ -448,10 +449,10 @@ public class CtTypes {
   }
 
   private ResultCtType newResultCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, Result.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Result.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -461,17 +462,17 @@ public class CtTypes {
   }
 
   private SelectOptionsCtType newSelectOptionsCtType(TypeMirror type) {
-    if (!ctx.getTypes().isAssignableWithErasure(type, SelectOptions.class)) {
+    if (!ctx.getMoreTypes().isAssignableWithErasure(type, SelectOptions.class)) {
       return null;
     }
     return new SelectOptionsCtType(ctx, type);
   }
 
   private StreamCtType newStreamCtType(TypeMirror type) {
-    if (!ctx.getTypes().isSameTypeWithErasure(type, Stream.class)) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Stream.class)) {
       return null;
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
     if (declaredType == null) {
       return null;
     }
@@ -485,7 +486,7 @@ public class CtTypes {
     return newCtTypeInternal(type, validator);
   }
 
-  private CtType newCtType(TypeMirror type) {
+  public CtType newCtType(TypeMirror type) {
     return newCtTypeInternal(type, new SimpleCtTypeVisitor<>());
   }
 
@@ -526,12 +527,12 @@ public class CtTypes {
   }
 
   private DeclaredType getSuperDeclaredType(TypeMirror type, Class<?> superclass) {
-    if (ctx.getTypes().isSameTypeWithErasure(type, superclass)) {
-      return ctx.getTypes().toDeclaredType(type);
+    if (ctx.getMoreTypes().isSameTypeWithErasure(type, superclass)) {
+      return ctx.getMoreTypes().toDeclaredType(type);
     }
-    for (TypeMirror supertype : ctx.getTypes().directSupertypes(type)) {
-      if (ctx.getTypes().isSameTypeWithErasure(supertype, superclass)) {
-        return ctx.getTypes().toDeclaredType(supertype);
+    for (TypeMirror supertype : ctx.getMoreTypes().directSupertypes(type)) {
+      if (ctx.getMoreTypes().isSameTypeWithErasure(supertype, superclass)) {
+        return ctx.getMoreTypes().toDeclaredType(supertype);
       }
       DeclaredType result = getSuperDeclaredType(supertype, superclass);
       if (result != null) {
@@ -553,7 +554,7 @@ public class CtTypes {
 
     @Override
     public Class<?> visitDeclared(DeclaredType t, Void p) {
-      TypeElement typeElement = ctx.getTypes().toTypeElement(t);
+      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(t);
       if (typeElement == null) {
         return null;
       }
@@ -588,46 +589,46 @@ public class CtTypes {
       if (Object.class.getName().equals(name)) {
         return ObjectWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, BigDecimal.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, BigDecimal.class)) {
         return BigDecimalWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, BigInteger.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, BigInteger.class)) {
         return BigIntegerWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Time.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Time.class)) {
         return TimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Timestamp.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Timestamp.class)) {
         return TimestampWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Date.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Date.class)) {
         return DateWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, java.util.Date.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, java.util.Date.class)) {
         return UtilDateWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, LocalTime.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalTime.class)) {
         return LocalTimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, LocalDateTime.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalDateTime.class)) {
         return LocalDateTimeWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, LocalDate.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalDate.class)) {
         return LocalDateWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Array.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Array.class)) {
         return ArrayWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Blob.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Blob.class)) {
         return BlobWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, NClob.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, NClob.class)) {
         return NClobWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, Clob.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, Clob.class)) {
         return ClobWrapper.class;
       }
-      if (ctx.getTypes().isAssignableWithErasure(t, SQLXML.class)) {
+      if (ctx.getMoreTypes().isAssignableWithErasure(t, SQLXML.class)) {
         return SQLXMLWrapper.class;
       }
       return null;

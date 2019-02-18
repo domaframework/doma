@@ -1,6 +1,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.In;
 import org.seasar.doma.InOut;
@@ -20,21 +21,20 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.ReferenceCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.message.Message;
 
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
-  AutoModuleQueryMetaFactory(Context ctx) {
-    super(ctx);
+  AutoModuleQueryMetaFactory(Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    super(ctx, daoElement, methodElement);
   }
 
   @Override
-  protected void doParameters(M queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    for (VariableElement parameter : method.getParameters()) {
-      QueryParameterMeta parameterMeta = createParameterMeta(parameter, queryMeta);
+  protected void doParameters(M queryMeta) {
+    for (VariableElement parameter : methodElement.getParameters()) {
+      QueryParameterMeta parameterMeta = createParameterMeta(parameter);
       queryMeta.addParameterMeta(parameterMeta);
 
       CallableSqlParameterMeta callableSqlParameterMeta = createParameterMeta(parameterMeta);

@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
@@ -16,19 +15,16 @@ class QueryReturnMetaFactory {
 
   private final ExecutableElement methodElement;
 
-  private final TypeElement daoElement;
-
   public QueryReturnMetaFactory(Context ctx, QueryMeta queryMeta) {
     assertNotNull(ctx, queryMeta);
     this.ctx = ctx;
     methodElement = queryMeta.getMethodElement();
-    daoElement = queryMeta.getDaoElement();
   }
 
   public QueryReturnMeta createQueryReturnMeta() {
     TypeMirror type = methodElement.getReturnType();
     CtType ctType = ctx.getCtTypes().newCtType(type, new CtTypeValidator());
-    return new QueryReturnMeta(ctType, methodElement, daoElement);
+    return new QueryReturnMeta(ctType);
   }
 
   private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {

@@ -29,15 +29,15 @@ public class Annotations {
   public AnnotateWithAnnot newAnnotateWithAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     AnnotationMirror annotateWith =
-        ctx.getElements().getAnnotationMirror(typeElement, AnnotateWith.class);
+        ctx.getMoreElements().getAnnotationMirror(typeElement, AnnotateWith.class);
     if (annotateWith == null) {
       for (AnnotationMirror annotationMirror : typeElement.getAnnotationMirrors()) {
         TypeElement ownerElement =
-            ctx.getElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
+            ctx.getMoreElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
         if (ownerElement == null) {
           continue;
         }
-        annotateWith = ctx.getElements().getAnnotationMirror(ownerElement, AnnotateWith.class);
+        annotateWith = ctx.getMoreElements().getAnnotationMirror(ownerElement, AnnotateWith.class);
         if (annotateWith != null) {
           break;
         }
@@ -46,7 +46,7 @@ public class Annotations {
         return null;
       }
     }
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotateWith);
+    Map<String, AnnotationValue> values = ctx.getMoreElements().getValuesWithDefaults(annotateWith);
     AnnotationValue annotations = values.get(AnnotateWithAnnot.ANNOTATIONS);
     ArrayList<AnnotationAnnot> annotationsValue = new ArrayList<>();
     for (AnnotationMirror annotationMirror : AnnotationValueUtil.toAnnotationList(annotations)) {
@@ -226,7 +226,7 @@ public class Annotations {
       Class<? extends java.lang.annotation.Annotation> annotationClass,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
     AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(element, annotationClass);
+        ctx.getMoreElements().getAnnotationMirror(element, annotationClass);
     return newInstance(annotationMirror, biFunction);
   }
 
@@ -235,7 +235,7 @@ public class Annotations {
       String annotationClassName,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
     AnnotationMirror annotationMirror =
-        ctx.getElements().getAnnotationMirror(element, annotationClassName);
+        ctx.getMoreElements().getAnnotationMirror(element, annotationClassName);
     return newInstance(annotationMirror, biFunction);
   }
 
@@ -245,7 +245,8 @@ public class Annotations {
     if (annotationMirror == null) {
       return null;
     }
-    Map<String, AnnotationValue> values = ctx.getElements().getValuesWithDefaults(annotationMirror);
+    Map<String, AnnotationValue> values =
+        ctx.getMoreElements().getValuesWithDefaults(annotationMirror);
     return biFunction.apply(annotationMirror, values);
   }
 }

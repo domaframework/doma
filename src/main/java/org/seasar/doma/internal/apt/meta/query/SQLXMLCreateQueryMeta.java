@@ -8,8 +8,8 @@ public class SQLXMLCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private SQLXMLFactoryAnnot sqlxmlFactoryAnnot;
 
-  public SQLXMLCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public SQLXMLCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public SQLXMLFactoryAnnot getSqlxmlFactoryAnnot() {

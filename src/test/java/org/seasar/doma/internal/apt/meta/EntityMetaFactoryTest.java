@@ -22,7 +22,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(target);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);
             assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
@@ -40,7 +40,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(target);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);
             assertEquals(NamingType.UPPER_CASE, entityMeta.getNamingType());
@@ -58,7 +58,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(target);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);
             assertEquals(NamingType.NONE, entityMeta.getNamingType());

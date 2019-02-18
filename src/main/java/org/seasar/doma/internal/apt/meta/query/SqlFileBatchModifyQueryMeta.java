@@ -19,8 +19,8 @@ public class SqlFileBatchModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private BatchModifyAnnot batchModifyAnnot;
 
-  public SqlFileBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public SqlFileBatchModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public EntityCtType getEntityType() {

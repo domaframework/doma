@@ -13,13 +13,13 @@ import org.seasar.doma.message.Message;
 
 public class BatchSqlValidator extends SqlValidator {
 
-  protected boolean embeddedVariableWarningNotified;
+  private boolean embeddedVariableWarningNotified;
 
-  protected boolean ifWarningNotified;
+  private boolean ifWarningNotified;
 
-  protected boolean forWarningNotified;
+  private boolean forWarningNotified;
 
-  protected Suppress suppress;
+  private Suppress suppress;
 
   public BatchSqlValidator(
       Context ctx,
@@ -59,7 +59,7 @@ public class BatchSqlValidator extends SqlValidator {
     return super.visitForNode(node, p);
   }
 
-  protected boolean isSuppressed(Message message) {
+  private boolean isSuppressed(Message message) {
     if (suppress != null) {
       for (Message suppressMessage : suppress.messages()) {
         if (suppressMessage == message) {

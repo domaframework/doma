@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.validator;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,13 +15,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.cttype.ArrayCtType;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
@@ -42,21 +37,21 @@ import org.seasar.doma.message.Message;
 
 public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
-  protected static final int SQL_MAX_LENGTH = 5000;
+  private static final int SQL_MAX_LENGTH = 5000;
 
   protected final Context ctx;
 
   protected final ExecutableElement methodElement;
 
-  protected final LinkedHashMap<String, TypeMirror> parameterTypeMap;
+  private final LinkedHashMap<String, TypeMirror> parameterTypeMap;
 
   protected final String path;
 
-  protected final boolean expandable;
+  private final boolean expandable;
 
-  protected final boolean populatable;
+  private final boolean populatable;
 
-  protected final ExpressionValidator expressionValidator;
+  private final ExpressionValidator expressionValidator;
 
   public SqlValidator(
       Context ctx,
@@ -78,26 +73,21 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   public void validate(SqlNode sqlNode) {
     try {
       sqlNode.accept(this, null);
-      Set<String> validatedParameterNames = expressionValidator.getValidatedParameterNames();
-      for (String parameterName : parameterTypeMap.keySet()) {
-        if (!validatedParameterNames.contains(parameterName)) {
-          for (VariableElement parameterElement : methodElement.getParameters()) {
-            if (parameterElement.getSimpleName().contentEquals(parameterName)) {
-              ctx.getReporter()
-                  .report(
-                      Kind.ERROR,
-                      Message.DOMA4122,
-                      parameterElement,
-                      new Object[] {path, parameterName});
-            }
-          }
-        }
-      }
-    } catch (AptIllegalStateException e) {
-      throw e;
+      Set<String> unreferredName = new HashSet<>(parameterTypeMap.keySet());
+      unreferredName.removeAll(expressionValidator.getValidatedParameterNames());
+      methodElement
+          .getParameters()
+          .stream()
+          .filter(e -> unreferredName.contains(e.getSimpleName().toString()))
+          .forEach(this::reportUnreferredParameter);
     } catch (AptException e) {
       ctx.getReporter().report(e);
     }
+  }
+
+  private void reportUnreferredParameter(VariableElement e) {
+    ctx.getReporter()
+        .report(Kind.ERROR, Message.DOMA4122, e, new Object[] {path, e.getSimpleName()});
   }
 
   @Override
@@ -110,12 +100,12 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     return visitValueNode(node, p);
   }
 
-  protected Void visitValueNode(ValueNode node, Void p) {
+  private Void visitValueNode(ValueNode node, Void p) {
     SqlLocation location = node.getLocation();
     String variableName = node.getVariableName();
     TypeDeclaration typeDeclaration = validateExpressionVariable(location, variableName);
     if (node.getWordNode() != null) {
-      if (!isScalar(typeDeclaration)) {
+      if (!typeDeclaration.isScalarType()) {
         String sql = getSql(location);
         throw new AptException(
             Message.DOMA4153,
@@ -130,7 +120,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
             });
       }
     } else {
-      if (!isScalarIterable(typeDeclaration) && !isScalarArray(typeDeclaration)) {
+      if (!typeDeclaration.isScalarIterableType() && !typeDeclaration.isScalarArrayType()) {
         String sql = getSql(location);
         throw new AptException(
             Message.DOMA4161,
@@ -147,64 +137,6 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     }
     visitNode(node, p);
     return null;
-  }
-
-  protected boolean isScalar(TypeDeclaration typeDeclaration) {
-    TypeMirror typeMirror = typeDeclaration.getType();
-    return ctx.getCtTypes().newBasicCtType(typeMirror) != null
-        || ctx.getCtTypes().newDomainCtType(typeMirror) != null;
-  }
-
-  protected boolean isScalarIterable(TypeDeclaration typeDeclaration) {
-    TypeMirror typeMirror = typeDeclaration.getType();
-    IterableCtType iterableCtType = ctx.getCtTypes().newIterableCtType(typeMirror);
-    if (iterableCtType != null) {
-      return iterableCtType
-          .getElementCtType()
-          .accept(
-              new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
-
-                @Override
-                public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                    throws RuntimeException {
-                  return true;
-                }
-
-                @Override
-                public Boolean visitDomainCtType(DomainCtType ctType, Void p)
-                    throws RuntimeException {
-                  return true;
-                }
-              },
-              null);
-    }
-    return false;
-  }
-
-  protected boolean isScalarArray(TypeDeclaration typeDeclaration) {
-    TypeMirror typeMirror = typeDeclaration.getType();
-    ArrayCtType arrayCtType = ctx.getCtTypes().newArrayCtType(typeMirror);
-    if (arrayCtType != null) {
-      return arrayCtType
-          .getElementCtType()
-          .accept(
-              new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
-
-                @Override
-                public Boolean visitBasicCtType(BasicCtType ctType, Void p)
-                    throws RuntimeException {
-                  return true;
-                }
-
-                @Override
-                public Boolean visitDomainCtType(DomainCtType ctType, Void p)
-                    throws RuntimeException {
-                  return true;
-                }
-              },
-              null);
-    }
-    return false;
   }
 
   @Override
@@ -270,11 +202,11 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     TypeDeclaration typeDeclaration = validateExpressionVariable(location, expression);
     TypeMirror typeMirror = typeDeclaration.getType();
     List<? extends TypeMirror> typeArgs;
-    if (ctx.getTypes().isAssignableWithErasure(typeMirror, Iterable.class)) {
-      DeclaredType declaredType = ctx.getTypes().toDeclaredType(typeMirror);
+    if (ctx.getMoreTypes().isAssignableWithErasure(typeMirror, Iterable.class)) {
+      DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(typeMirror);
       typeArgs = declaredType.getTypeArguments();
-    } else if (ctx.getTypes().isArray(typeMirror)) {
-      ArrayType arrayType = ctx.getTypes().toArrayType(typeMirror);
+    } else if (ctx.getMoreTypes().isArray(typeMirror)) {
+      ArrayType arrayType = ctx.getMoreTypes().toArrayType(typeMirror);
       typeArgs = Collections.singletonList(arrayType.getComponentType());
     } else {
       String sql = getSql(location);
@@ -310,10 +242,11 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     String hasNextVariable = identifier + ForBlockNode.HAS_NEXT_SUFFIX;
     TypeMirror originalHasNextType = expressionValidator.removeParameterType(hasNextVariable);
     expressionValidator.putParameterType(
-        hasNextVariable, ctx.getTypes().getTypeMirror(boolean.class));
+        hasNextVariable, ctx.getMoreTypes().getTypeMirror(boolean.class));
     String indexVariable = identifier + ForBlockNode.INDEX_SUFFIX;
     TypeMirror originalIndexType = expressionValidator.removeParameterType(indexVariable);
-    expressionValidator.putParameterType(indexVariable, ctx.getTypes().getTypeMirror(int.class));
+    expressionValidator.putParameterType(
+        indexVariable, ctx.getMoreTypes().getTypeMirror(int.class));
     visitNode(node, p);
     if (originalIdentifierType == null) {
       expressionValidator.removeParameterType(identifier);
@@ -368,19 +301,17 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     return visitNode(node, p);
   }
 
-  protected Void visitNode(SqlNode node, Void p) {
+  private Void visitNode(SqlNode node, Void p) {
     for (SqlNode child : node.getChildren()) {
       child.accept(this, p);
     }
     return null;
   }
 
-  protected TypeDeclaration validateExpressionVariable(SqlLocation location, String expression) {
+  private TypeDeclaration validateExpressionVariable(SqlLocation location, String expression) {
     ExpressionNode expressionNode = parseExpression(location, expression);
     try {
       return expressionValidator.validate(expressionNode);
-    } catch (AptIllegalStateException e) {
-      throw e;
     } catch (AptException e) {
       String sql = getSql(location);
       throw new AptException(
@@ -392,7 +323,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     }
   }
 
-  protected ExpressionNode parseExpression(SqlLocation location, String expression) {
+  private ExpressionNode parseExpression(SqlLocation location, String expression) {
     try {
       ExpressionParser parser = new ExpressionParser(expression);
       return parser.parse();
@@ -407,7 +338,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
     }
   }
 
-  protected String getSql(SqlLocation location) {
+  private String getSql(SqlLocation location) {
     String sql = location.getSql();
     if (sql != null && sql.length() > SQL_MAX_LENGTH) {
       sql = sql.substring(0, SQL_MAX_LENGTH);

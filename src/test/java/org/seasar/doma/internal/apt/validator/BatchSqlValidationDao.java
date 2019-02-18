@@ -1,8 +1,9 @@
-package org.seasar.doma.internal.apt.processor.dao;
+package org.seasar.doma.internal.apt.validator;
 
 import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Suppress;
+import org.seasar.doma.internal.apt.processor.dao.MyConfig;
 import org.seasar.doma.message.Message;
 
 @Dao(config = MyConfig.class)

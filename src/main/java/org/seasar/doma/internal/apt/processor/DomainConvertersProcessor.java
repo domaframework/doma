@@ -43,7 +43,7 @@ public class DomainConvertersProcessor extends AbstractProcessor {
     DomainConvertersAnnot convertersMirror =
         ctx.getAnnotations().newDomainConvertersAnnot(typeElement);
     for (TypeMirror convType : convertersMirror.getValueValue()) {
-      TypeElement convElement = ctx.getTypes().toTypeElement(convType);
+      TypeElement convElement = ctx.getMoreTypes().toTypeElement(convType);
       if (convElement == null) {
         continue;
       }

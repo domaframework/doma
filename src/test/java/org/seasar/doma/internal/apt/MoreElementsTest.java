@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
-class ElementsTest extends CompilerSupport {
+class MoreElementsTest extends CompilerSupport {
 
   @SuppressWarnings("unused")
   private void test(String arg1, @ParameterName("aaa") String arg2) {}
@@ -60,32 +60,6 @@ class ElementsTest extends CompilerSupport {
   }
 
   @Test
-  void getBinaryNameAsString() {
-    addProcessor(
-        new TestProcessor() {
-          @Override
-          protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
-            String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-            assertEquals("java.lang.String", binaryName);
-          }
-        });
-  }
-
-  @Test
-  void getPackageName() {
-    addProcessor(
-        new TestProcessor() {
-          @Override
-          protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
-            String packageName = ctx.getElements().getPackageName(typeElement);
-            assertEquals("java.lang", packageName);
-          }
-        });
-  }
-
-  @Test
   void getParameterName() {
     Class<?> testClass = getClass();
     addProcessor(
@@ -97,8 +71,8 @@ class ElementsTest extends CompilerSupport {
             Iterator<? extends VariableElement> parameters = method.getParameters().iterator();
             VariableElement p1 = parameters.next();
             VariableElement p2 = parameters.next();
-            assertEquals("arg1", ctx.getElements().getParameterName(p1));
-            assertEquals("aaa", ctx.getElements().getParameterName(p2));
+            assertEquals("arg1", ctx.getMoreElements().getParameterName(p1));
+            assertEquals("aaa", ctx.getMoreElements().getParameterName(p2));
           }
         });
   }
@@ -109,8 +83,8 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            Element element = ctx.getElements().getTypeElement(String.class);
-            TypeElement typeElement = ctx.getElements().toTypeElement(element);
+            Element element = ctx.getMoreElements().getTypeElement(String.class);
+            TypeElement typeElement = ctx.getMoreElements().toTypeElement(element);
             assertNotNull(typeElement);
           }
         });
@@ -123,19 +97,23 @@ class ElementsTest extends CompilerSupport {
           @Override
           protected void run() {
             TypeElement outerTypeElement =
-                ctx.getElements().getTypeElement("org.seasar.doma.internal.apt.ElementsTest");
+                ctx.getMoreElements()
+                    .getTypeElementFromBinaryName("org.seasar.doma.internal.apt.MoreElementsTest");
             assertNotNull(outerTypeElement);
             TypeElement innerTypeElement =
-                ctx.getElements().getTypeElement("org.seasar.doma.internal.apt.ElementsTest$Inner");
+                ctx.getMoreElements()
+                    .getTypeElementFromBinaryName(
+                        "org.seasar.doma.internal.apt.MoreElementsTest$Inner");
             assertNotNull(innerTypeElement);
           }
         },
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement outerTypeElement = ctx.getElements().getTypeElement(ElementsTest.class);
+            TypeElement outerTypeElement =
+                ctx.getMoreElements().getTypeElement(MoreElementsTest.class);
             assertNotNull(outerTypeElement);
-            TypeElement innerTypeElement = ctx.getElements().getTypeElement(Inner.class);
+            TypeElement innerTypeElement = ctx.getMoreElements().getTypeElement(Inner.class);
             assertNotNull(innerTypeElement);
           }
         });
@@ -150,7 +128,7 @@ class ElementsTest extends CompilerSupport {
           protected void run() {
             ExecutableElement method = createMethodElement(testClass, "beforeEach");
             AnnotationMirror annotationMirror =
-                ctx.getElements().getAnnotationMirror(method, BeforeEach.class);
+                ctx.getMoreElements().getAnnotationMirror(method, BeforeEach.class);
             assertNotNull(annotationMirror);
             assertEquals(
                 "org.junit.jupiter.api.BeforeEach",
@@ -162,7 +140,8 @@ class ElementsTest extends CompilerSupport {
           protected void run() {
             ExecutableElement method = createMethodElement(testClass, "beforeEach");
             AnnotationMirror annotationMirror =
-                ctx.getElements().getAnnotationMirror(method, "org.junit.jupiter.api.BeforeEach");
+                ctx.getMoreElements()
+                    .getAnnotationMirror(method, "org.junit.jupiter.api.BeforeEach");
             assertNotNull(annotationMirror);
             assertEquals(
                 "org.junit.jupiter.api.BeforeEach",
@@ -177,8 +156,8 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
-            ExecutableElement constructor = ctx.getElements().getNoArgConstructor(typeElement);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
+            ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(typeElement);
             assertNotNull(constructor);
             assertTrue(constructor.getParameters().isEmpty());
           }
@@ -191,11 +170,11 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(Inner.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(Inner.class);
             AnnotationMirror annotationMirror =
-                ctx.getElements().getAnnotationMirror(typeElement, MyAnnotation.class);
+                ctx.getMoreElements().getAnnotationMirror(typeElement, MyAnnotation.class);
             Map<String, AnnotationValue> map =
-                ctx.getElements().getValuesWithDefaults(annotationMirror);
+                ctx.getMoreElements().getValuesWithDefaults(annotationMirror);
             assertEquals(3, map.size());
             assertEquals("aaa", map.get("key1").getValue());
             assertEquals("bbb", map.get("key2").getValue());
@@ -210,8 +189,9 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(ParameterizedClass.class);
-            TypeParametersDef def = ctx.getElements().getTypeParametersDef(typeElement);
+            TypeElement typeElement =
+                ctx.getMoreElements().getTypeElement(ParameterizedClass.class);
+            TypeParametersDef def = ctx.getMoreElements().getTypeParametersDef(typeElement);
             assertIterableEquals(Arrays.asList("T", "U"), def.getTypeVariables());
             assertIterableEquals(
                 Arrays.asList("T", "U extends java.lang.Number"), def.getTypeParameters());
@@ -225,27 +205,27 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(List.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(List.class);
             List<String> names =
-                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+                ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(Collections.singletonList("E"), names);
           }
         },
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(BoundType.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(BoundType.class);
             List<String> names =
-                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+                ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(Collections.singletonList("T extends java.lang.Number"), names);
           }
         },
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(IntersectionType.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(IntersectionType.class);
             List<String> names =
-                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+                ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(
                 Collections.singletonList("T extends java.lang.Number&java.lang.Runnable"), names);
           }
@@ -253,18 +233,18 @@ class ElementsTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(Enum.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(Enum.class);
             List<String> names =
-                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+                ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(Collections.singletonList("E extends java.lang.Enum<E>"), names);
           }
         },
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(ReferredTypeVar.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(ReferredTypeVar.class);
             List<String> names =
-                ctx.getElements().getTypeParameterNames(typeElement.getTypeParameters());
+                ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(
                 Arrays.asList("T extends java.lang.Number", "S extends java.util.List<T>"), names);
           }

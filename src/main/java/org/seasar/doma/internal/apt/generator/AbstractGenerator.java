@@ -69,12 +69,13 @@ public abstract class AbstractGenerator implements Generator {
 
   private TypeMirror getGeneratedTypeMirror() {
     TypeElement java8 =
-        ctx.getElements().getTypeElement((CharSequence) "javax.annotation.Generated");
+        ctx.getMoreElements().getTypeElement((CharSequence) "javax.annotation.Generated");
     if (java8 != null) {
       return java8.asType();
     }
     TypeElement java9 =
-        ctx.getElements().getTypeElement((CharSequence) "javax.annotation.processing.Generated");
+        ctx.getMoreElements()
+            .getTypeElement((CharSequence) "javax.annotation.processing.Generated");
     if (java9 != null) {
       return java9.asType();
     }

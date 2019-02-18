@@ -2,8 +2,6 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -14,15 +12,9 @@ public class QueryReturnMeta {
 
   private final CtType ctType;
 
-  private final ExecutableElement methodElement;
-
-  private final TypeElement daoElement;
-
-  public QueryReturnMeta(CtType ctType, ExecutableElement methodElement, TypeElement daoElement) {
-    assertNotNull(ctType, methodElement, daoElement);
+  public QueryReturnMeta(CtType ctType) {
+    assertNotNull(ctType);
     this.ctType = ctType;
-    this.methodElement = methodElement;
-    this.daoElement = daoElement;
   }
 
   public TypeMirror getBoxedType() {
@@ -87,10 +79,6 @@ public class QueryReturnMeta {
           }
         },
         null);
-  }
-
-  public ExecutableElement getMethodElement() {
-    return methodElement;
   }
 
   public TypeMirror getType() {

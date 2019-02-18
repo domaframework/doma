@@ -10,16 +10,12 @@ public class SqlFileScriptQueryMeta extends AbstractSqlFileQueryMeta {
 
   private ScriptAnnot scriptAnnot;
 
-  public SqlFileScriptQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public SqlFileScriptQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   void setScriptAnnot(ScriptAnnot scriptAnnot) {
     this.scriptAnnot = scriptAnnot;
-  }
-
-  public ScriptAnnot getScriptAnnot() {
-    return scriptAnnot;
   }
 
   public boolean getHaltOnError() {

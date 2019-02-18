@@ -11,9 +11,9 @@ public class Context {
 
   private boolean initialized;
 
-  private Elements elements;
+  private MoreElements moreElements;
 
-  private Types types;
+  private MoreTypes moreTypes;
 
   private Options options;
 
@@ -35,8 +35,8 @@ public class Context {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
-    elements = new Elements(this, env);
-    types = new Types(this, env);
+    moreElements = new MoreElements(this, env);
+    moreTypes = new MoreTypes(this, env);
     options = new Options(this, env);
     reporter = new Reporter(env);
     resources = new Resources(this, env);
@@ -46,14 +46,14 @@ public class Context {
     initialized = true;
   }
 
-  public Elements getElements() {
+  public MoreElements getMoreElements() {
     assertInitialized();
-    return elements;
+    return moreElements;
   }
 
-  public Types getTypes() {
+  public MoreTypes getMoreTypes() {
     assertInitialized();
-    return types;
+    return moreTypes;
   }
 
   public Options getOptions() {

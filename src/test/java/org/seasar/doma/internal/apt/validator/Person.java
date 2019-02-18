@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.validator;
 
 import java.util.Optional;
 import java.util.OptionalDouble;

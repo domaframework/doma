@@ -48,7 +48,7 @@ public class DomainDescGenerator extends AbstractGenerator {
           "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
           /* 2 */ AbstractDomainType.class,
-          /* 3 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
+          /* 3 */ ctx.getMoreTypes().boxIfPrimitive(domainMeta.getValueType()),
           /* 4 */ domainMeta.getType(),
           /* 5 */ domainMeta.getTypeParameters());
     } else {
@@ -56,7 +56,7 @@ public class DomainDescGenerator extends AbstractGenerator {
           "public final class %1$s extends %2$s<%3$s, %4$s> {%n",
           /* 1 */ simpleName,
           /* 2 */ AbstractDomainType.class,
-          /* 3 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
+          /* 3 */ ctx.getMoreTypes().boxIfPrimitive(domainMeta.getValueType()),
           /* 4 */ domainMeta.getType());
     }
     print("%n");
@@ -99,7 +99,7 @@ public class DomainDescGenerator extends AbstractGenerator {
     iprint(
         "protected %1$s newDomain(%2$s value) {%n",
         /* 1 */ domainMeta.getType(),
-        /* 2 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()));
+        /* 2 */ ctx.getMoreTypes().boxIfPrimitive(domainMeta.getValueType()));
     if (!primitive && !domainMeta.getAcceptNull()) {
       iprint("    if (value == null) {%n");
       iprint("        return null;%n");
@@ -134,7 +134,7 @@ public class DomainDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s getBasicValue(%2$s domain) {%n",
-        /* 1 */ ctx.getTypes().boxIfPrimitive(domainMeta.getValueType()),
+        /* 1 */ ctx.getMoreTypes().boxIfPrimitive(domainMeta.getValueType()),
         /* 2 */ domainMeta.getType());
     iprint("    if (domain == null) {%n");
     iprint("        return null;%n");

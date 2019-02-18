@@ -15,8 +15,8 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
   private ModifyAnnot modifyAnnot;
 
-  public AutoModifyQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public AutoModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public EntityCtType getEntityCtType() {

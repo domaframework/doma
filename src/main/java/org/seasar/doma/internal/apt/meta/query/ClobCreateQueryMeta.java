@@ -8,8 +8,8 @@ public class ClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private ClobFactoryAnnot clobFactoryAnnot;
 
-  public ClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public ClobCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public ClobFactoryAnnot getClobFactoryAnnot() {

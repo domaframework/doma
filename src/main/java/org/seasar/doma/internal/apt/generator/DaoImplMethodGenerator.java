@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.generator;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     for (Iterator<QueryParameterMeta> it = queryMeta.getParameterMetas().iterator();
         it.hasNext(); ) {
       QueryParameterMeta parameterMeta = it.next();
-      String parameterTypeName = ctx.getTypes().getTypeName(parameterMeta.getType());
+      String parameterTypeName = ctx.getMoreTypes().getTypeName(parameterMeta.getType());
       if (!it.hasNext() && queryMeta.isVarArgs()) {
         parameterTypeName = parameterTypeName.replace("[]", "...");
       }
@@ -215,12 +216,12 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     List<String> include = m.getInclude();
     if (include != null) {
-      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toConstants(include));
     }
 
     List<String> exclude = m.getExclude();
     if (exclude != null) {
-      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
     Boolean includeUnchanged = m.getIncludeUnchanged();
@@ -298,12 +299,12 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     List<String> include = m.getInclude();
     if (include != null) {
-      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toConstants(include));
     }
 
     List<String> exclude = m.getExclude();
     if (exclude != null) {
-      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(m.getExclude()));
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
     Boolean includeUnchanged = m.getIncludeUnchanged();
@@ -371,12 +372,12 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     List<String> include = m.getInclude();
     if (include != null) {
-      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toConstants(include));
     }
 
     List<String> exclude = m.getExclude();
     if (exclude != null) {
-      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
     Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
@@ -445,12 +446,12 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     List<String> include = m.getInclude();
     if (include != null) {
-      iprint("__query.setIncludedPropertyNames(%1$s);%n", toCSVFormat(include));
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toConstants(include));
     }
 
     List<String> exclude = m.getExclude();
     if (exclude != null) {
-      iprint("__query.setExcludedPropertyNames(%1$s);%n", toCSVFormat(exclude));
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
     Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();
@@ -817,17 +818,8 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     }
   }
 
-  private String toCSVFormat(List<String> values) {
-    final StringBuilder buf = new StringBuilder();
-    if (values.size() > 0) {
-      for (String value : values) {
-        buf.append("\"");
-        buf.append(value);
-        buf.append("\", ");
-      }
-      buf.setLength(buf.length() - 2);
-    }
-    return buf.toString();
+  private List<String> toConstants(List<String> values) {
+    return values.stream().map(ctx.getMoreElements()::getConstantExpression).collect(toList());
   }
 
   private class CallableSqlParameterStatementGenerator

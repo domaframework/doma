@@ -1,8 +1,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.FunctionAnnot;
@@ -17,37 +16,35 @@ import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.message.Message;
 
 public class AutoFunctionQueryMetaFactory
     extends AutoModuleQueryMetaFactory<AutoFunctionQueryMeta> {
 
-  public AutoFunctionQueryMetaFactory(Context ctx) {
-    super(ctx);
+  public AutoFunctionQueryMetaFactory(
+      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    super(ctx, daoElement, methodElement);
   }
 
   @Override
-  public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-    assertNotNull(method, daoMeta);
-    FunctionAnnot functionAnnot = ctx.getAnnotations().newFunctionAnnot(method);
+  public QueryMeta createQueryMeta() {
+    FunctionAnnot functionAnnot = ctx.getAnnotations().newFunctionAnnot(methodElement);
     if (functionAnnot == null) {
       return null;
     }
-    AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(method, daoMeta.getTypeElement());
+    AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(daoElement, methodElement);
     queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
-    doTypeParameters(queryMeta, method, daoMeta);
-    doReturnType(queryMeta, method, daoMeta);
-    doParameters(queryMeta, method, daoMeta);
-    doThrowTypes(queryMeta, method, daoMeta);
+    doTypeParameters(queryMeta);
+    doReturnType(queryMeta);
+    doParameters(queryMeta);
+    doThrowTypes(queryMeta);
     return queryMeta;
   }
 
   @Override
-  protected void doReturnType(
-      AutoFunctionQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+  protected void doReturnType(AutoFunctionQueryMeta queryMeta) {
     QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
     queryMeta.setReturnMeta(returnMeta);
     ResultParameterMeta resultParameterMeta = createResultParameterMeta(queryMeta, returnMeta);
@@ -72,9 +69,8 @@ public class AutoFunctionQueryMetaFactory
     }
 
     @Override
-    protected ResultParameterMeta defaultAction(CtType type, Boolean p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4063, returnMeta.getMethodElement(), new Object[] {returnMeta.getType()});
+    protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
+      throw new AptException(Message.DOMA4063, methodElement, new Object[] {ctType.getType()});
     }
 
     @Override
@@ -145,8 +141,7 @@ public class AutoFunctionQueryMetaFactory
 
     @Override
     protected ResultParameterMeta defaultAction(CtType ctType, Boolean p) throws RuntimeException {
-      throw new AptException(
-          Message.DOMA4065, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
+      throw new AptException(Message.DOMA4065, methodElement, new Object[] {ctType.getType()});
     }
 
     @Override
@@ -171,8 +166,7 @@ public class AutoFunctionQueryMetaFactory
     public ResultParameterMeta visitEntityCtType(EntityCtType ctType, Boolean p)
         throws RuntimeException {
       if (ctType.isAbstract()) {
-        throw new AptException(
-            Message.DOMA4156, returnMeta.getMethodElement(), new Object[] {ctType.getType()});
+        throw new AptException(Message.DOMA4156, methodElement, new Object[] {ctType.getType()});
       }
       return new EntityResultListParameterMeta(ctType, queryMeta.getEnsureResultMapping());
     }

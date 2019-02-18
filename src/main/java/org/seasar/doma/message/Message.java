@@ -431,10 +431,6 @@ public enum Message implements MessageResource {
       "The variable \"{2}\" in the expression \"{0}\" at column {1} does not have a public and non-void method \"{4}\". "
           + "The variable type is \"{3}\"."),
   DOMA4072("The function \"{2}\" in the expression \"{0}\" at column {1} is not found."),
-  DOMA4073(
-      "The public and non-void method \"{4}\" cannot be identified "
-          + "from the variable \"{2}\" in the expression \"{0}\" at column {1}. "
-          + "The variable type is \"{3}\"."),
   DOMA4076("The parameter type must be an array type."),
   DOMA4078("The number of parameters must be 0."),
   DOMA4084("The property \"{0}\" is not found in the entity class \"{1}\"."),
@@ -517,7 +513,6 @@ public enum Message implements MessageResource {
       "To execute concatenation, the type \"{4}\" of the right operand \"{3}\" in the expression \"{0}\" "
           + "at column {1} must be either String, Character or char. "
           + "To execute addition, both of the operands must be numeric."),
-  DOMA4127("The constructor \"{2}\" in the expression \"{0}\" at column {1} cannot be identified."),
   DOMA4132(
       "If the factoryMethod element of @Domain is specified with \"new\", the class must not be abstract."),
   DOMA4135(
@@ -539,9 +534,6 @@ public enum Message implements MessageResource {
   DOMA4146(
       "The class \"{2}\" in the expression \"{0}\" at column {1} does not have "
           + "the method \"{3}\" that returns non-void type and is public and static."),
-  DOMA4147(
-      "The class \"{2}\" in the expression \"{0}\" at column {1} have "
-          + "multiple methods \"{3}\" that returns non-void type and is public and static."),
   DOMA4148(
       "The class \"{2}\" in the expression \"{0}\" at column {1} does not have the static field \"{3}\"."),
   DOMA4149(

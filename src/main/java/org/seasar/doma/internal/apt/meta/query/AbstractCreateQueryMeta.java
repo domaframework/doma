@@ -5,7 +5,7 @@ import javax.lang.model.element.TypeElement;
 
 public abstract class AbstractCreateQueryMeta extends AbstractQueryMeta {
 
-  AbstractCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  AbstractCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 }
