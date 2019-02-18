@@ -16,11 +16,6 @@ import org.seasar.doma.jdbc.MapKeyNaming;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.ObjectWrapper;
 
-/**
- * *
- *
- * @author nakamura-to
- */
 public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
   protected final Query query;
@@ -31,10 +26,6 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
   protected Map<Integer, String> indexMap;
 
-  /**
-   * @param query
-   * @param mapKeyNamingType
-   */
   public MapProvider(Query query, MapKeyNamingType mapKeyNamingType) {
     assertNotNull(query, mapKeyNamingType);
     this.query = query;

@@ -37,10 +37,6 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
-  /**
-   * @param entityType
-   * @param query
-   */
   public EntityProvider(EntityType<ENTITY> entityType, Query query, boolean resultMappingEnsured) {
     assertNotNull(entityType, query);
     this.entityType = entityType;

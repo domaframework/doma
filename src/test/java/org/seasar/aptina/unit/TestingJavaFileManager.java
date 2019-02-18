@@ -81,8 +81,9 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
     try {
       FileObject originalFileObject = null;
       if (location == StandardLocation.CLASS_OUTPUT) {
-        // 通常はコンパイル時にCLASS_OUTPUTへコピーされるリソースがAptina Unit環境ではコピーされないため，
-        // まずはSOURCE_PATHから読み込む
+        // Because resources are not copied to the CLASS_OUTPUT in the Aptina Unit environment, we
+        // read
+        // them from SOURCE_PATH first
         originalFileObject =
             super.getFileForInput(StandardLocation.SOURCE_PATH, packageName, relativeName);
       }

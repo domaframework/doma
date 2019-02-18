@@ -133,8 +133,6 @@ public class MapBatchInsertBuilder {
                 if (value == null) {
                   builder.param(Object.class, null).sql(", ");
                 } else {
-                  // 静的な型指定が行えないためObjectにキャストしている
-                  // BatchBuilder内で下記clazzを利用した型チェックが行われているため安全である
                   Class<Object> clazz = (Class<Object>) value.getClass();
                   builder.param(clazz, value).sql(", ");
                 }

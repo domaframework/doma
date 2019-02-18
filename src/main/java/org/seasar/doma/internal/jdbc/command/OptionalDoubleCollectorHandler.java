@@ -4,10 +4,6 @@ import java.util.OptionalDouble;
 import java.util.stream.Collector;
 import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- */
 public class OptionalDoubleCollectorHandler<RESULT>
     extends ScalarCollectorHandler<Double, OptionalDouble, RESULT> {
 

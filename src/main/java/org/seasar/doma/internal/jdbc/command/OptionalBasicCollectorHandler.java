@@ -6,11 +6,6 @@ import java.util.stream.Collector;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- * @param <BASIC>
- */
 public class OptionalBasicCollectorHandler<BASIC, RESULT>
     extends ScalarCollectorHandler<BASIC, Optional<BASIC>, RESULT> {
 

@@ -7,10 +7,6 @@ import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <TARGET> 提供する型
- */
 public abstract class AbstractObjectProvider<TARGET> implements ObjectProvider<TARGET> {
 
   protected <BASIC> void fetch(

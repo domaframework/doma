@@ -5,11 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Optional;
 import org.seasar.doma.jdbc.domain.DomainType;
 
-/**
- * @author nakamura-to
- * @param <BASIC>
- * @param <DOMAIN>
- */
 public class OptionalDomainSingleResultHandler<BASIC, DOMAIN>
     extends ScalarSingleResultHandler<BASIC, Optional<DOMAIN>> {
 

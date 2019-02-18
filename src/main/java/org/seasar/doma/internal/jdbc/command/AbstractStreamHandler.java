@@ -20,11 +20,6 @@ import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ResultSetRowIndexConsumer;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-/**
- * @author nakamura-to
- * @param <TARGET> 処理対象
- * @param <RESULT> 結果
- */
 public abstract class AbstractStreamHandler<TARGET, RESULT> implements ResultSetHandler<RESULT> {
 
   protected final Function<Stream<TARGET>, RESULT> mapper;

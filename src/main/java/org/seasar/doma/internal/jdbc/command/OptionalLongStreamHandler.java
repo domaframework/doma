@@ -5,10 +5,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- */
 public class OptionalLongStreamHandler<RESULT>
     extends ScalarStreamHandler<Long, OptionalLong, RESULT> {
 

@@ -9,11 +9,6 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <BASIC> 基本型
- * @param <CONTAINER> 基本型のコンテナとなる型
- */
 public class ScalarOutParameter<BASIC, CONTAINER> implements OutParameter<BASIC> {
 
   protected final Scalar<BASIC, CONTAINER> scalar;

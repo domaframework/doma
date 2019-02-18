@@ -4,10 +4,6 @@ import java.util.Map;
 import java.util.stream.Collector;
 import org.seasar.doma.MapKeyNamingType;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- */
 public class MapCollectorHandler<RESULT>
     extends AbstractCollectorHandler<Map<String, Object>, RESULT> {
 

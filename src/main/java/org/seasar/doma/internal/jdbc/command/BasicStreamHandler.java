@@ -6,11 +6,6 @@ import java.util.stream.Stream;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- * @param <BASIC>
- */
 public class BasicStreamHandler<BASIC, RESULT> extends ScalarStreamHandler<BASIC, BASIC, RESULT> {
 
   public BasicStreamHandler(
