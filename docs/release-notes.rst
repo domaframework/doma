@@ -2,6 +2,30 @@
 Release notes
 =============
 
+v2.24.0: 2019-02-23
+======================
+
+* `GH308 <https://github.com/domaframework/doma/pull/308>`_
+  Implement toString methods to make debug easy
+* `GH307 <https://github.com/domaframework/doma/pull/307>`_
+  Polish the org.seasar.doma.internal package
+* `GH306 <https://github.com/domaframework/doma/pull/306>`_
+  Remove Japanese comments 
+* `GH305 <https://github.com/domaframework/doma/pull/305>`_
+  Register the option "doma.config.path" to suppress a warning message
+* `GH304 <https://github.com/domaframework/doma/pull/304>`_
+  Simplify the DefaultPropertyType class
+* `GH303 <https://github.com/domaframework/doma/pull/303>`_
+  Simplify generators
+* `GH301 <https://github.com/domaframework/doma/pull/301>`_
+  Fix compile error in procedure and function methods
+* `GH300 <https://github.com/domaframework/doma/pull/300>`_
+  Support bound type parameters in domain classes
+* `GH299 <https://github.com/domaframework/doma/pull/299>`_
+  Migrate from JUnit 3 to JUnit 5
+* `GH298 <https://github.com/domaframework/doma/pull/398>`_
+  Polish build script 
+
 v2.23.0: 2019-02-03
 ======================
 
