@@ -22,11 +22,11 @@ public abstract class AbstractCtType implements CtType {
     assertNotNull(ctx, type);
     this.ctx = ctx;
     this.type = type;
-    this.typeElement = ctx.getTypes().toTypeElement(type);
+    this.typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement != null) {
       qualifiedName = typeElement.getQualifiedName().toString();
     } else {
-      qualifiedName = ctx.getTypes().getTypeName(type);
+      qualifiedName = ctx.getMoreTypes().getTypeName(type);
     }
   }
 
@@ -72,6 +72,6 @@ public abstract class AbstractCtType implements CtType {
 
   @Override
   public boolean isSameType(CtType other) {
-    return ctx.getTypes().isSameTypeWithErasure(type, other.getType());
+    return ctx.getMoreTypes().isSameTypeWithErasure(type, other.getType());
   }
 }

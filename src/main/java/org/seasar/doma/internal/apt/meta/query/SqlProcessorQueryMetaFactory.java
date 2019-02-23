@@ -1,8 +1,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
@@ -14,50 +13,47 @@ import org.seasar.doma.internal.apt.cttype.ConfigCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.PreparedSqlCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.message.Message;
 
 public class SqlProcessorQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
 
-  public SqlProcessorQueryMetaFactory(Context ctx) {
-    super(ctx);
+  public SqlProcessorQueryMetaFactory(
+      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    super(ctx, daoElement, methodElement);
   }
 
   @Override
-  public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-    assertNotNull(method, daoMeta);
-    SqlProcessorQueryMeta queryMeta = createSqlContentQueryMeta(method, daoMeta);
+  public QueryMeta createQueryMeta() {
+    SqlProcessorQueryMeta queryMeta = createSqlContentQueryMeta();
     if (queryMeta == null) {
       return null;
     }
-    doTypeParameters(queryMeta, method, daoMeta);
-    doParameters(queryMeta, method, daoMeta);
-    doReturnType(queryMeta, method, daoMeta);
-    doThrowTypes(queryMeta, method, daoMeta);
-    doSqlTemplate(queryMeta, method, daoMeta, false, false);
+    doTypeParameters(queryMeta);
+    doParameters(queryMeta);
+    doReturnType(queryMeta);
+    doThrowTypes(queryMeta);
+    doSqlTemplate(queryMeta, false, false);
     return queryMeta;
   }
 
-  private SqlProcessorQueryMeta createSqlContentQueryMeta(
-      ExecutableElement method, DaoMeta daoMeta) {
-    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(method);
+  private SqlProcessorQueryMeta createSqlContentQueryMeta() {
+    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(methodElement);
     if (sqlProcessorAnnot == null) {
       return null;
     }
-    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(method, daoMeta.getTypeElement());
+    SqlProcessorQueryMeta queryMeta = new SqlProcessorQueryMeta(daoElement, methodElement);
     queryMeta.setSqlProcessorAnnot(sqlProcessorAnnot);
     queryMeta.setQueryKind(QueryKind.SQL_PROCESSOR);
-    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
     queryMeta.setSqlAnnot(sqlAnnot);
     return queryMeta;
   }
 
   @Override
-  protected void doParameters(
-      SqlProcessorQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
-    for (VariableElement parameter : method.getParameters()) {
-      final QueryParameterMeta parameterMeta = createParameterMeta(parameter, queryMeta);
+  protected void doParameters(SqlProcessorQueryMeta queryMeta) {
+    for (VariableElement parameter : methodElement.getParameters()) {
+      final QueryParameterMeta parameterMeta = createParameterMeta(parameter);
       parameterMeta.getCtType().accept(new ParamCtTypeVisitor(queryMeta, parameterMeta), null);
       queryMeta.addParameterMeta(parameterMeta);
       if (parameterMeta.isBindable()) {
@@ -68,13 +64,15 @@ public class SqlProcessorQueryMetaFactory
     if (queryMeta.getBiFunctionCtType() == null) {
       SqlProcessorAnnot sqlProcessorAnnot = queryMeta.getSqlProcessorAnnot();
       throw new AptException(
-          Message.DOMA4433, method, sqlProcessorAnnot.getAnnotationMirror(), new Object[] {});
+          Message.DOMA4433,
+          methodElement,
+          sqlProcessorAnnot.getAnnotationMirror(),
+          new Object[] {});
     }
   }
 
   @Override
-  protected void doReturnType(
-      SqlProcessorQueryMeta queryMeta, ExecutableElement method, DaoMeta daoMeta) {
+  protected void doReturnType(SqlProcessorQueryMeta queryMeta) {
     final QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
     queryMeta.setReturnMeta(returnMeta);
 
@@ -82,16 +80,18 @@ public class SqlProcessorQueryMetaFactory
     CtType resultCtType = biFunctionCtType.getResultCtType();
     if (!isConvertibleReturnType(returnMeta, resultCtType)) {
       throw new AptException(
-          Message.DOMA4436, method, new Object[] {returnMeta.getType(), resultCtType.getType()});
+          Message.DOMA4436,
+          methodElement,
+          new Object[] {returnMeta.getType(), resultCtType.getType()});
     }
   }
 
   private boolean isConvertibleReturnType(QueryReturnMeta returnMeta, CtType resultCtType) {
-    if (ctx.getTypes().isSameTypeWithErasure(returnMeta.getType(), resultCtType.getType())) {
+    if (ctx.getMoreTypes().isSameTypeWithErasure(returnMeta.getType(), resultCtType.getType())) {
       return true;
     }
     if (returnMeta.getType().getKind() == TypeKind.VOID) {
-      return ctx.getTypes().isSameTypeWithErasure(resultCtType.getType(), Void.class);
+      return ctx.getMoreTypes().isSameTypeWithErasure(resultCtType.getType(), Void.class);
     }
     return false;
   }
@@ -110,13 +110,7 @@ public class SqlProcessorQueryMetaFactory
     @Override
     public Void visitBiFunctionCtType(BiFunctionCtType ctType, Void p) throws RuntimeException {
       if (queryMeta.getBiFunctionCtType() != null) {
-        throw new AptException(
-            Message.DOMA4434,
-            parameterMeta.getElement(),
-            new Object[] {
-              parameterMeta.getDaoElement().getQualifiedName(),
-              parameterMeta.getMethodElement().getSimpleName()
-            });
+        throw new AptException(Message.DOMA4434, parameterMeta.getElement(), new Object[] {});
       }
       ctType
           .getFirstArgCtType()

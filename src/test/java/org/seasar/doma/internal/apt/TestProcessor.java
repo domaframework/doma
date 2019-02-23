@@ -52,10 +52,10 @@ public abstract class TestProcessor extends AbstractProcessor {
 
   protected ExecutableElement createMethodElement(
       Class<?> clazz, String methodName, Class<?>... parameterClasses) {
-    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
+    TypeElement typeElement = ctx.getMoreElements().getTypeElement(clazz);
     for (TypeElement t = typeElement;
         t != null && t.asType().getKind() != TypeKind.NONE;
-        t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
+        t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
       for (ExecutableElement methodElement : ElementFilter.methodsIn(t.getEnclosedElements())) {
         if (!methodElement.getSimpleName().contentEquals(methodName)) {
           continue;
@@ -68,7 +68,7 @@ public abstract class TestProcessor extends AbstractProcessor {
         for (VariableElement parameterElement : parameterElements) {
           TypeMirror parameterType = parameterElement.asType();
           Class<?> parameterClass = parameterClasses[i];
-          if (!ctx.getTypes().isSameTypeWithErasure(parameterType, parameterClass)) {
+          if (!ctx.getMoreTypes().isSameTypeWithErasure(parameterType, parameterClass)) {
             throw new AssertionError(i);
           }
           i++;

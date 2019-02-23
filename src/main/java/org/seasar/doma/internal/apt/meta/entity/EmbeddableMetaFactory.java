@@ -113,7 +113,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
     }
 
     void validateEnclosingElement(Element element) {
-      TypeElement typeElement = ctx.getElements().toTypeElement(element);
+      TypeElement typeElement = ctx.getMoreElements().toTypeElement(element);
       if (typeElement == null) {
         return;
       }
@@ -180,7 +180,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       List<VariableElement> results = new LinkedList<>();
       for (TypeElement t = embeddableElement;
           t != null && t.asType().getKind() != TypeKind.NONE;
-          t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
+          t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
         if (t.getAnnotation(Embeddable.class) == null) {
           continue;
         }
@@ -195,7 +195,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       for (Iterator<VariableElement> it = results.iterator(); it.hasNext(); ) {
         VariableElement hidden = it.next();
         for (VariableElement hider : hiderFields) {
-          if (ctx.getElements().hides(hider, hidden)) {
+          if (ctx.getMoreElements().hides(hider, hidden)) {
             it.remove();
           }
         }
@@ -207,7 +207,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       TypeElement foundAnnotationTypeElement = null;
       for (AnnotationMirror annotation : fieldElement.getAnnotationMirrors()) {
         DeclaredType declaredType = annotation.getAnnotationType();
-        TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+        TypeElement typeElement = ctx.getMoreTypes().toTypeElement(declaredType);
         if (typeElement.getAnnotation(EntityField.class) != null) {
           if (foundAnnotationTypeElement != null) {
             throw new AptException(
@@ -260,7 +260,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             continue outer;
           }
           TypeMirror propertyType = propertyMeta.getType();
-          if (!ctx.getTypes().isSameTypeWithErasure(paramType, propertyType)) {
+          if (!ctx.getMoreTypes().isSameTypeWithErasure(paramType, propertyType)) {
             continue outer;
           }
           propertyMetaList.add(propertyMeta);

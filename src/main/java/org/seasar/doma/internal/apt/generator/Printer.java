@@ -54,7 +54,7 @@ public class Printer {
     } else if (arg instanceof Class) {
       return ((Class) arg).getName();
     } else if (arg instanceof TypeMirror) {
-      return ctx.getTypes().getTypeName((TypeMirror) arg);
+      return ctx.getMoreTypes().getTypeName((TypeMirror) arg);
     } else if (arg instanceof TypeElement) {
       return ((TypeElement) arg).getQualifiedName();
     } else if (arg instanceof Element) {

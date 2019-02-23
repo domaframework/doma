@@ -10,8 +10,8 @@ public class AutoProcedureQueryMeta extends AutoModuleQueryMeta {
 
   private ProcedureAnnot procedureAnnot;
 
-  public AutoProcedureQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public AutoProcedureQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public ProcedureAnnot getProcedureAnnot() {

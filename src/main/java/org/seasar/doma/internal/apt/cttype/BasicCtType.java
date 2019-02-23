@@ -15,7 +15,7 @@ public class BasicCtType extends AbstractCtType {
   BasicCtType(Context ctx, TypeMirror type, TypeMirror wrapperType) {
     super(ctx, type);
     assertNotNull(wrapperType);
-    this.boxedType = ctx.getTypes().boxIfPrimitive(type);
+    this.boxedType = ctx.getMoreTypes().boxIfPrimitive(type);
     this.wrapperType = wrapperType;
   }
 

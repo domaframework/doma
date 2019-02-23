@@ -8,8 +8,8 @@ public class BlobCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private BlobFactoryAnnot blobFactoryAnnot;
 
-  public BlobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public BlobCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public BlobFactoryAnnot getBlobFactoryAnnot() {

@@ -15,8 +15,8 @@ public class SqlFileModifyQueryMeta extends AbstractSqlFileQueryMeta {
 
   private ModifyAnnot modifyAnnot;
 
-  public SqlFileModifyQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public SqlFileModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public EntityCtType getEntityCtType() {

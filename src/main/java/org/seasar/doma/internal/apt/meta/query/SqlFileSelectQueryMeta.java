@@ -32,8 +32,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   private boolean resultStream;
 
-  public SqlFileSelectQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public SqlFileSelectQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public String getFunctionParameterName() {

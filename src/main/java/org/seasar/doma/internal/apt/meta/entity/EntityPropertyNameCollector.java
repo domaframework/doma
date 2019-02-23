@@ -29,9 +29,9 @@ public class EntityPropertyNameCollector {
   }
 
   private void collectNames(TypeMirror type, Set<String> names) {
-    for (TypeElement t = ctx.getTypes().toTypeElement(type);
+    for (TypeElement t = ctx.getMoreTypes().toTypeElement(type);
         t != null && t.asType().getKind() != TypeKind.NONE;
-        t = ctx.getTypes().toTypeElement(t.getSuperclass())) {
+        t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
       for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
         if (isPersistent(field)) {
           names.add(field.getSimpleName().toString());

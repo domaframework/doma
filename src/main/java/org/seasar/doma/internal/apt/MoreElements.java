@@ -12,17 +12,18 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor8;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
-public class Elements implements javax.lang.model.util.Elements {
+public class MoreElements implements Elements {
 
   private final Context ctx;
 
-  private final javax.lang.model.util.Elements elementUtils;
+  private final Elements elementUtils;
 
-  public Elements(Context ctx, ProcessingEnvironment env) {
+  public MoreElements(Context ctx, ProcessingEnvironment env) {
     assertNotNull(ctx, env);
     this.ctx = ctx;
     this.elementUtils = env.getElementUtils();
@@ -36,8 +37,8 @@ public class Elements implements javax.lang.model.util.Elements {
 
   // delegate to elementUtils
   @Override
-  public TypeElement getTypeElement(CharSequence name) {
-    return elementUtils.getTypeElement(name);
+  public TypeElement getTypeElement(CharSequence canonicalName) {
+    return elementUtils.getTypeElement(canonicalName);
   }
 
   // delegate to elementUtils
@@ -120,18 +121,6 @@ public class Elements implements javax.lang.model.util.Elements {
     return elementUtils.isFunctionalInterface(type);
   }
 
-  public String getBinaryNameAsString(TypeElement type) {
-    assertNotNull(type);
-    Name binaryName = elementUtils.getBinaryName(type);
-    return binaryName.toString();
-  }
-
-  public String getPackageName(Element element) {
-    assertNotNull(element);
-    PackageElement packageElement = elementUtils.getPackageOf(element);
-    return packageElement.getQualifiedName().toString();
-  }
-
   public String getParameterName(VariableElement variableElement) {
     assertNotNull(variableElement);
     ParameterName parameterName = variableElement.getAnnotation(ParameterName.class);
@@ -167,11 +156,11 @@ public class Elements implements javax.lang.model.util.Elements {
         null);
   }
 
-  public TypeElement getTypeElement(String binaryName) {
+  public TypeElement getTypeElementFromBinaryName(String binaryName) {
     assertNotNull(binaryName);
     String[] parts = binaryName.split("\\$");
     if (parts.length > 1) {
-      TypeElement topElement = getTypeElement(parts[0]);
+      TypeElement topElement = getTypeElementFromBinaryName(parts[0]);
       if (topElement == null) {
         return null;
       }
@@ -206,7 +195,7 @@ public class Elements implements javax.lang.model.util.Elements {
       Element element, Class<? extends Annotation> annotationClass) {
     assertNotNull(element, annotationClass);
     return getAnnotationMirrorInternal(
-        element, type -> ctx.getTypes().isSameTypeWithErasure(type, annotationClass));
+        element, type -> ctx.getMoreTypes().isSameTypeWithErasure(type, annotationClass));
   }
 
   public AnnotationMirror getAnnotationMirror(Element element, String annotationClassName) {
@@ -214,7 +203,7 @@ public class Elements implements javax.lang.model.util.Elements {
     return getAnnotationMirrorInternal(
         element,
         type -> {
-          TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+          TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
           if (typeElement == null) {
             return false;
           }
@@ -272,11 +261,10 @@ public class Elements implements javax.lang.model.util.Elements {
     return new TypeParametersDef(map);
   }
 
-  public List<String> getTypeParameterNames(
-      List<? extends TypeParameterElement> typeParameterElements) {
+  List<String> getTypeParameterNames(List<? extends TypeParameterElement> typeParameterElements) {
     assertNotNull(typeParameterElements);
     List<TypeMirror> typeMirrors =
         typeParameterElements.stream().map(TypeParameterElement::asType).collect(toList());
-    return ctx.getTypes().getTypeParameterNames(typeMirrors);
+    return ctx.getMoreTypes().getTypeParameterNames(typeMirrors);
   }
 }

@@ -15,8 +15,8 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
   private BatchModifyAnnot batchModifyAnnot;
 
-  public AutoBatchModifyQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public AutoBatchModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public EntityCtType getEntityCtType() {

@@ -13,8 +13,8 @@ public class AutoFunctionQueryMeta extends AutoModuleQueryMeta {
 
   private FunctionAnnot functionAnnot;
 
-  public AutoFunctionQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public AutoFunctionQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public ResultParameterMeta getResultParameterMeta() {

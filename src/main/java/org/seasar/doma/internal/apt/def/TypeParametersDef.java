@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.def;
 
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -21,14 +22,12 @@ public class TypeParametersDef {
   }
 
   public List<String> getTypeVariables() {
-    List<String> csvFormatList =
-        typeParameterNameMap
-            .keySet()
-            .stream()
-            .map(Element::getSimpleName)
-            .map(Name::toString)
-            .collect(toList());
-    return Collections.unmodifiableList(csvFormatList);
+    return typeParameterNameMap
+        .keySet()
+        .stream()
+        .map(Element::getSimpleName)
+        .map(Name::toString)
+        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
   }
 
   public List<String> getTypeParameters() {

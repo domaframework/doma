@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -24,10 +25,49 @@ import org.seasar.doma.DaoMethod;
 import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
-import org.seasar.doma.internal.apt.*;
-import org.seasar.doma.internal.apt.annot.*;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.Annot;
+import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
+import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
+import org.seasar.doma.internal.apt.annot.DaoAnnot;
+import org.seasar.doma.internal.apt.annot.ModifyAnnot;
+import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.meta.query.*;
+import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoBatchModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.BlobCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.BlobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.ClobCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.ClobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.DefaultQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.DefaultQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.QueryMeta;
+import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
+import org.seasar.doma.internal.apt.meta.query.SQLXMLCreateQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SQLXMLCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileBatchModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileScriptQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMetaFactory;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
@@ -38,12 +78,27 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private final Context ctx;
 
-  private final List<QueryMetaFactory> queryMetaFactories = new ArrayList<>();
+  private final List<BiFunction<TypeElement, ExecutableElement, QueryMetaFactory>> providers =
+      new ArrayList<>(15);
 
-  public DaoMetaFactory(Context ctx, List<QueryMetaFactory> commandMetaFactories) {
-    assertNotNull(ctx, commandMetaFactories);
+  public DaoMetaFactory(Context ctx) {
+    assertNotNull(ctx);
     this.ctx = ctx;
-    this.queryMetaFactories.addAll(commandMetaFactories);
+    providers.add((dao, method) -> new SqlFileSelectQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new AutoModifyQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new AutoBatchModifyQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new AutoFunctionQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new AutoProcedureQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new SqlFileModifyQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new SqlFileBatchModifyQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new SqlFileScriptQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new DefaultQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new ArrayCreateQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new BlobCreateQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new ClobCreateQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new NClobCreateQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new SQLXMLCreateQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new SqlProcessorQueryMetaFactory(ctx, dao, method));
   }
 
   @Override
@@ -77,7 +132,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
     DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
     if (daoAnnot.hasUserDefinedConfig()) {
-      TypeElement configElement = ctx.getTypes().toTypeElement(daoAnnot.getConfigValue());
+      TypeElement configElement = ctx.getMoreTypes().toTypeElement(daoAnnot.getConfigValue());
       if (configElement == null) {
         throw new AptIllegalStateException("failed to convert to TypeElement.");
       }
@@ -97,7 +152,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
       }
-      ExecutableElement constructor = ctx.getElements().getNoArgConstructor(configElement);
+      ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(configElement);
       if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
         Optional<VariableElement> field =
             ElementFilter.fieldsIn(configElement.getEnclosedElements())
@@ -108,7 +163,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                         e.getModifiers()
                             .containsAll(
                                 EnumSet.of(Modifier.STATIC, Modifier.PUBLIC, Modifier.FINAL)))
-                .filter(e -> ctx.getTypes().isAssignableWithErasure(e.asType(), Config.class))
+                .filter(e -> ctx.getMoreTypes().isAssignableWithErasure(e.asType(), Config.class))
                 .findFirst();
         if (field.isPresent()) {
           daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
@@ -128,7 +183,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
               .stream()
               .filter(
                   m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-              .filter(m -> ctx.getTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
+              .filter(
+                  m -> ctx.getMoreTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
               .filter(m -> m.getParameters().isEmpty())
               .anyMatch(m -> m.getSimpleName().toString().equals(methodName));
       if (present) {
@@ -172,7 +228,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
             .getTypeElement()
             .getInterfaces()
             .stream()
-            .map(type -> ctx.getTypes().toTypeElement(type))
+            .map(type -> ctx.getMoreTypes().toTypeElement(type))
             .peek(
                 element -> {
                   if (element == null) {
@@ -210,7 +266,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       return method.get();
     }
     for (TypeMirror typeMirror : interfaceElement.getInterfaces()) {
-      TypeElement i = ctx.getTypes().toTypeElement(typeMirror);
+      TypeElement i = ctx.getMoreTypes().toTypeElement(typeMirror);
       if (i == null) {
         throw new AptIllegalStateException("failed to convert to TypeElement.");
       }
@@ -226,7 +282,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     for (ExecutableElement methodElement :
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements())) {
       try {
-        doMethodElement(methodElement, daoMeta);
+        doMethodElement(daoMeta, methodElement);
       } catch (AptException e) {
         ctx.getReporter().report(e);
         daoMeta.setError(true);
@@ -234,22 +290,22 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  private void doMethodElement(ExecutableElement methodElement, DaoMeta daoMeta) {
+  private void doMethodElement(DaoMeta daoMeta, ExecutableElement methodElement) {
     Set<Modifier> modifiers = methodElement.getModifiers();
     if (modifiers.contains(Modifier.STATIC) || modifiers.contains(Modifier.PRIVATE)) {
       return;
     }
-    validateMethod(methodElement, daoMeta);
-    QueryMeta queryMeta = createQueryMeta(methodElement, daoMeta);
+    validateMethod(methodElement);
+    QueryMeta queryMeta = createQueryMeta(daoMeta, methodElement);
     validateQueryMeta(queryMeta, methodElement);
     daoMeta.addQueryMeta(queryMeta);
   }
 
-  private void validateMethod(ExecutableElement methodElement, DaoMeta daoMeta) {
+  private void validateMethod(ExecutableElement methodElement) {
     TypeElement foundAnnotationTypeElement = null;
     for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
       DeclaredType declaredType = annotation.getAnnotationType();
-      TypeElement typeElement = ctx.getTypes().toTypeElement(declaredType);
+      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(declaredType);
       if (typeElement.getAnnotation(DaoMethod.class) != null) {
         if (foundAnnotationTypeElement != null) {
           throw new AptException(
@@ -268,20 +324,21 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  private QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-    for (QueryMetaFactory factory : queryMetaFactories) {
-      QueryMeta queryMeta = factory.createQueryMeta(method, daoMeta);
+  private QueryMeta createQueryMeta(DaoMeta daoMeta, ExecutableElement methodElement) {
+    for (BiFunction<TypeElement, ExecutableElement, QueryMetaFactory> provider : providers) {
+      QueryMetaFactory factory = provider.apply(daoMeta.getTypeElement(), methodElement);
+      QueryMeta queryMeta = factory.createQueryMeta();
       if (queryMeta != null) {
         return queryMeta;
       }
     }
-    throw new AptException(Message.DOMA4005, method, new Object[] {});
+    throw new AptException(Message.DOMA4005, methodElement, new Object[] {});
   }
 
-  private void validateQueryMeta(QueryMeta queryMeta, ExecutableElement method) {
-    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(method);
+  private void validateQueryMeta(QueryMeta queryMeta, ExecutableElement methodElement) {
+    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
     if (sqlAnnot != null) {
-      queryMeta.accept(new SqlAnnotationCombinationValidator(method, sqlAnnot));
+      queryMeta.accept(new SqlAnnotationCombinationValidator(methodElement, sqlAnnot));
     }
   }
 
@@ -365,13 +422,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private static class SqlAnnotationCombinationValidator implements QueryMetaVisitor<Void> {
 
-    private final ExecutableElement method;
+    private final ExecutableElement methodElement;
 
     private final SqlAnnot sqlAnnot;
 
-    private SqlAnnotationCombinationValidator(ExecutableElement method, SqlAnnot sqlAnnot) {
-      assertNotNull(method, sqlAnnot);
-      this.method = method;
+    private SqlAnnotationCombinationValidator(ExecutableElement methodElement, SqlAnnot sqlAnnot) {
+      assertNotNull(methodElement, sqlAnnot);
+      this.methodElement = methodElement;
       this.sqlAnnot = sqlAnnot;
     }
 
@@ -432,7 +489,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       assertNotNull(annot);
       throw new AptException(
           Message.DOMA4444,
-          method,
+          methodElement,
           sqlAnnot.getAnnotationMirror(),
           new Object[] {annot.getAnnotationMirror()});
     }
@@ -459,13 +516,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         AnnotationMirror annotationMirror, AnnotationValue annotationValue) {
       assertNotNull(annotationMirror, annotationValue);
       throw new AptException(
-          Message.DOMA4445, method, annotationMirror, annotationValue, new Object[] {});
+          Message.DOMA4445, methodElement, annotationMirror, annotationValue, new Object[] {});
     }
 
     @Override
     public Void visitDefaultQueryMeta(DefaultQueryMeta m) {
       throw new AptException(
-          Message.DOMA4446, method, sqlAnnot.getAnnotationMirror(), new Object[] {});
+          Message.DOMA4446, methodElement, sqlAnnot.getAnnotationMirror(), new Object[] {});
     }
 
     @Override

@@ -53,7 +53,8 @@ class EntityPropertyMetaFactory {
 
   public EntityPropertyMeta createEntityPropertyMeta() {
     assertNotNull(fieldElement, entityMeta);
-    TypeElement entityElement = ctx.getElements().toTypeElement(fieldElement.getEnclosingElement());
+    TypeElement entityElement =
+        ctx.getMoreElements().toTypeElement(fieldElement.getEnclosingElement());
     if (entityElement == null) {
       throw new AptIllegalStateException(fieldElement.toString());
     }
@@ -155,7 +156,7 @@ class EntityPropertyMetaFactory {
   private void validateSequenceIdGenerator(
       EntityPropertyMeta propertyMeta, SequenceGeneratorAnnot sequenceGeneratorAnnot) {
     TypeElement typeElement =
-        ctx.getTypes().toTypeElement(sequenceGeneratorAnnot.getImplementerValue());
+        ctx.getMoreTypes().toTypeElement(sequenceGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -167,7 +168,7 @@ class EntityPropertyMetaFactory {
           sequenceGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(typeElement);
+    ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(typeElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4171,
@@ -192,7 +193,7 @@ class EntityPropertyMetaFactory {
   private void validateTableIdGenerator(
       EntityPropertyMeta propertyMeta, TableGeneratorAnnot tableGeneratorAnnot) {
     TypeElement typeElement =
-        ctx.getTypes().toTypeElement(tableGeneratorAnnot.getImplementerValue());
+        ctx.getMoreTypes().toTypeElement(tableGeneratorAnnot.getImplementerValue());
     if (typeElement == null) {
       throw new AptIllegalStateException("failed to convert to TypeElement");
     }
@@ -204,7 +205,7 @@ class EntityPropertyMetaFactory {
           tableGeneratorAnnot.getImplementer(),
           new Object[] {typeElement.getQualifiedName()});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(typeElement);
+    ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(typeElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(
           Message.DOMA4169,
@@ -311,8 +312,8 @@ class EntityPropertyMetaFactory {
 
               @Override
               public Boolean visitBasicCtType(BasicCtType ctType, Void p) throws RuntimeException {
-                TypeMirror boxedType = ctx.getTypes().boxIfPrimitive(ctType.getType());
-                return ctx.getTypes().isAssignableWithErasure(boxedType, Number.class);
+                TypeMirror boxedType = ctx.getMoreTypes().boxIfPrimitive(ctType.getType());
+                return ctx.getMoreTypes().isAssignableWithErasure(boxedType, Number.class);
               }
             },
             null);

@@ -2,8 +2,6 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Constants;
@@ -33,28 +31,21 @@ class QueryParameterMetaFactory {
 
   private final VariableElement parameterElement;
 
-  private final ExecutableElement methodElement;
-
-  private final TypeElement daoElement;
-
-  public QueryParameterMetaFactory(
-      Context ctx, VariableElement parameterElement, QueryMeta queryMeta) {
-    assertNotNull(ctx, parameterElement, queryMeta);
+  public QueryParameterMetaFactory(Context ctx, VariableElement parameterElement) {
+    assertNotNull(ctx, parameterElement);
     this.ctx = ctx;
     this.parameterElement = parameterElement;
-    this.methodElement = queryMeta.getMethodElement();
-    this.daoElement = queryMeta.getDaoElement();
   }
 
   public QueryParameterMeta createQueryParameterMeta() {
-    String name = ctx.getElements().getParameterName(parameterElement);
+    String name = ctx.getMoreElements().getParameterName(parameterElement);
     if (name.startsWith(Constants.RESERVED_IDENTIFIER_PREFIX)) {
       throw new AptException(
           Message.DOMA4025, parameterElement, new Object[] {Constants.RESERVED_IDENTIFIER_PREFIX});
     }
     TypeMirror type = parameterElement.asType();
     CtType ctType = ctx.getCtTypes().newCtType(type, new CtTypeValidator());
-    return new QueryParameterMeta(name, ctType, parameterElement, methodElement, daoElement);
+    return new QueryParameterMeta(name, ctType, parameterElement);
   }
 
   private class CtTypeValidator extends SimpleCtTypeVisitor<Void, Void, AptException> {

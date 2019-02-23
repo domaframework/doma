@@ -51,7 +51,7 @@ class PrinterTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             TypeMirror typeMirror = typeElement.asType();
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
@@ -67,7 +67,7 @@ class PrinterTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
             printer.print("%1$s", typeElement);
@@ -83,7 +83,7 @@ class PrinterTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(testClass);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(testClass);
             VariableElement field =
                 ElementFilter.fieldsIn(typeElement.getEnclosedElements())
                     .stream()
@@ -104,7 +104,7 @@ class PrinterTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            TypeElement typeElement = ctx.getElements().getTypeElement(String.class);
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             TypeMirror typeMirror = typeElement.asType();
             List<Object> list =
                 Arrays.asList(String.class, typeElement, typeMirror, Arrays.asList(Integer.class));

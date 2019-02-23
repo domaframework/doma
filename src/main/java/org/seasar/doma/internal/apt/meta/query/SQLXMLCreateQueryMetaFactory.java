@@ -1,34 +1,33 @@
 package org.seasar.doma.internal.apt.meta.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.sql.SQLXML;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SQLXMLFactoryAnnot;
-import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 
 public class SQLXMLCreateQueryMetaFactory
     extends AbstractCreateQueryMetaFactory<SQLXMLCreateQueryMeta> {
 
-  public SQLXMLCreateQueryMetaFactory(Context ctx) {
-    super(ctx, SQLXML.class);
+  public SQLXMLCreateQueryMetaFactory(
+      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    super(ctx, daoElement, methodElement, SQLXML.class);
   }
 
   @Override
-  public QueryMeta createQueryMeta(ExecutableElement method, DaoMeta daoMeta) {
-    assertNotNull(method, daoMeta);
-    SQLXMLFactoryAnnot sqlxmlFactoryAnnot = ctx.getAnnotations().newSQLXMLFactoryAnnot(method);
+  public QueryMeta createQueryMeta() {
+    SQLXMLFactoryAnnot sqlxmlFactoryAnnot =
+        ctx.getAnnotations().newSQLXMLFactoryAnnot(methodElement);
     if (sqlxmlFactoryAnnot == null) {
       return null;
     }
-    SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(method, daoMeta.getTypeElement());
+    SQLXMLCreateQueryMeta queryMeta = new SQLXMLCreateQueryMeta(daoElement, methodElement);
     queryMeta.setSqlxmlFactoryAnnot(sqlxmlFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.SQLXML_FACTORY);
-    doTypeParameters(queryMeta, method, daoMeta);
-    doReturnType(queryMeta, method, daoMeta);
-    doParameters(queryMeta, method, daoMeta);
-    doThrowTypes(queryMeta, method, daoMeta);
+    doTypeParameters(queryMeta);
+    doReturnType(queryMeta);
+    doParameters(queryMeta);
+    doThrowTypes(queryMeta);
     return queryMeta;
   }
 }

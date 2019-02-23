@@ -39,7 +39,7 @@ public class ExternalDomainProcessor extends AbstractGeneratingProcessor<Externa
   protected ClassName createClassName(TypeElement typeElement, ExternalDomainMeta meta) {
     assertNotNull(typeElement, meta);
     TypeElement domainElement = meta.getTypeElement();
-    Name binaryName = ctx.getElements().getBinaryName(domainElement);
+    Name binaryName = ctx.getMoreElements().getBinaryName(domainElement);
     return ClassNames.newExternalDomainDescClassName(binaryName);
   }
 

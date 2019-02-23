@@ -25,14 +25,15 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
+import javax.lang.model.util.Types;
 
-public class Types implements javax.lang.model.util.Types {
+public class MoreTypes implements Types {
 
   private final Context ctx;
 
-  private final javax.lang.model.util.Types typeUtils;
+  private final Types typeUtils;
 
-  public Types(Context ctx, ProcessingEnvironment env) {
+  public MoreTypes(Context ctx, ProcessingEnvironment env) {
     assertNotNull(ctx, env);
     this.ctx = ctx;
     this.typeUtils = env.getTypeUtils();
@@ -141,11 +142,13 @@ public class Types implements javax.lang.model.util.Types {
     return typeUtils.asMemberOf(containing, element);
   }
 
+  // delegate to typeUtils
   @Override
   public boolean isAssignable(TypeMirror t1, TypeMirror t2) {
     return typeUtils.isAssignable(t1, t2);
   }
 
+  // delegate to typeUtils
   @Override
   public boolean isSameType(TypeMirror t1, TypeMirror t2) {
     return typeUtils.isSameType(t1, t2);
@@ -157,7 +160,7 @@ public class Types implements javax.lang.model.util.Types {
     if (element == null) {
       return null;
     }
-    return ctx.getElements().toTypeElement(element);
+    return ctx.getMoreElements().toTypeElement(element);
   }
 
   public DeclaredType toDeclaredType(TypeMirror typeMirror) {
@@ -198,7 +201,7 @@ public class Types implements javax.lang.model.util.Types {
 
   public boolean isAssignableWithErasure(TypeMirror lhs, Class<?> rhs) {
     assertNotNull(lhs, rhs);
-    TypeElement typeElement = ctx.getElements().getTypeElement(rhs);
+    TypeElement typeElement = ctx.getMoreElements().getTypeElement(rhs);
     if (typeElement == null) {
       return false;
     }
@@ -237,19 +240,10 @@ public class Types implements javax.lang.model.util.Types {
 
   public boolean isSameTypeWithErasure(TypeMirror typeMirror, Class<?> clazz) {
     assertNotNull(typeMirror, clazz);
-    if (typeMirror.getKind() == TypeKind.VOID) {
-      return clazz == void.class;
+    if (clazz.isPrimitive() || clazz.isArray()) {
+      return typeUtils.isSameType(typeMirror, getTypeMirror(clazz));
     }
-    if (clazz.isArray()) {
-      TypeElement componentType = ctx.getElements().getTypeElement(clazz.getComponentType());
-      ArrayType arrayType = ctx.getTypes().getArrayType(componentType.asType());
-      if (arrayType == null) {
-        return false;
-      }
-      return isSameTypeWithErasure(typeMirror, arrayType);
-    }
-
-    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
+    TypeElement typeElement = ctx.getMoreElements().getTypeElement(clazz);
     if (typeElement == null) {
       return false;
     }
@@ -290,31 +284,7 @@ public class Types implements javax.lang.model.util.Types {
     return p.toString();
   }
 
-  public String getBoxedTypeName(TypeMirror typeMirror) {
-    assertNotNull(typeMirror);
-    switch (typeMirror.getKind()) {
-      case BOOLEAN:
-        return Boolean.class.getName();
-      case BYTE:
-        return Byte.class.getName();
-      case SHORT:
-        return Short.class.getName();
-      case INT:
-        return Integer.class.getName();
-      case LONG:
-        return Long.class.getName();
-      case FLOAT:
-        return Float.class.getName();
-      case DOUBLE:
-        return Double.class.getName();
-      case CHAR:
-        return Character.class.getName();
-      default:
-        return getTypeName(typeMirror);
-    }
-  }
-
-  public List<String> getTypeParameterNames(List<TypeMirror> typeMirrors) {
+  List<String> getTypeParameterNames(List<TypeMirror> typeMirrors) {
     assertNotNull(typeMirrors);
     TypeParameterNameBuilder builder = new TypeParameterNameBuilder();
     List<String> names = new ArrayList<>();
@@ -371,7 +341,11 @@ public class Types implements javax.lang.model.util.Types {
     if (clazz == double.class) {
       return typeUtils.getPrimitiveType(TypeKind.DOUBLE);
     }
-    TypeElement typeElement = ctx.getElements().getTypeElement(clazz);
+    if (clazz.isArray()) {
+      TypeMirror componentType = getTypeMirror(clazz.getComponentType());
+      return typeUtils.getArrayType(componentType);
+    }
+    TypeElement typeElement = ctx.getMoreElements().getTypeElement(clazz);
     if (typeElement == null) {
       throw new AptIllegalStateException(clazz.getName());
     }
@@ -440,7 +414,7 @@ public class Types implements javax.lang.model.util.Types {
 
     protected Void defaultAction(TypeMirror e, StringBuilder p) {
       p.append(e);
-      throw new IllegalArgumentException(p.toString());
+      return null;
     }
   }
 
@@ -467,7 +441,7 @@ public class Types implements javax.lang.model.util.Types {
       }
       processedVariables.add(t);
       TypeParameterElement typeParameterElement =
-          ctx.getElements().toTypeParameterElement(t.asElement());
+          ctx.getMoreElements().toTypeParameterElement(t.asElement());
       if (typeParameterElement == null) {
         return null;
       }
@@ -479,7 +453,7 @@ public class Types implements javax.lang.model.util.Types {
       }
       Iterator<? extends TypeMirror> it = bounds.iterator();
       TypeMirror first = it.next();
-      if (bounds.size() == 1 && ctx.getTypes().isSameTypeWithErasure(first, Object.class)) {
+      if (bounds.size() == 1 && ctx.getMoreTypes().isSameTypeWithErasure(first, Object.class)) {
         return null;
       }
       p.append(" extends ");

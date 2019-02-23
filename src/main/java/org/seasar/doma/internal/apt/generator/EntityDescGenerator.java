@@ -569,7 +569,7 @@ public class EntityDescGenerator extends AbstractGenerator {
   private boolean hasGenericTypeProperty() {
     if (entityMeta.isImmutable()) {
       for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
-        TypeElement element = ctx.getTypes().toTypeElement(propertyMeta.getType());
+        TypeElement element = ctx.getMoreTypes().toTypeElement(propertyMeta.getType());
         if (element != null) {
           if (!element.getTypeParameters().isEmpty()) {
             return true;

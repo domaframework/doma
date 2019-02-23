@@ -29,7 +29,7 @@ public class IterableCtType extends AbstractCtType {
   }
 
   public boolean isList() {
-    return ctx.getTypes().isSameTypeWithErasure(type, List.class);
+    return ctx.getMoreTypes().isSameTypeWithErasure(type, List.class);
   }
 
   @Override

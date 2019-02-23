@@ -8,11 +8,12 @@ import org.seasar.doma.internal.util.ClassUtil;
 
 public class ClassNames {
 
-  public static String normalizeBinaryName(String binaryName) {
+  public static String normalizeBinaryName(CharSequence binaryName) {
     assertNotNull(binaryName);
-    String packageName = ClassUtil.getPackageName(binaryName);
-    List<String> enclosingNames = ClassUtil.getEnclosingNames(binaryName);
-    String simpleName = ClassUtil.getSimpleName(binaryName);
+    String name = binaryName.toString();
+    String packageName = ClassUtil.getPackageName(name);
+    List<String> enclosingNames = ClassUtil.getEnclosingNames(name);
+    String simpleName = ClassUtil.getSimpleName(name);
     String base = "";
     if (packageName.length() > 0) {
       base = packageName + ".";

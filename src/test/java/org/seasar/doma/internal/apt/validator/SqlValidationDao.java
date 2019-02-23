@@ -1,8 +1,9 @@
-package org.seasar.doma.internal.apt.processor.dao;
+package org.seasar.doma.internal.apt.validator;
 
 import java.util.Iterator;
 import java.util.List;
 import org.seasar.doma.Dao;
+import org.seasar.doma.internal.apt.processor.dao.MyConfig;
 
 @Dao(config = MyConfig.class)
 public interface SqlValidationDao {

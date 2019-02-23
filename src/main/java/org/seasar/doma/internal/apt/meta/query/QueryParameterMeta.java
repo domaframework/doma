@@ -3,8 +3,6 @@ package org.seasar.doma.internal.apt.meta.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.annotation.Annotation;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.cttype.AnyCtType;
@@ -30,34 +28,15 @@ public class QueryParameterMeta {
 
   private final VariableElement element;
 
-  private final ExecutableElement methodElement;
-
-  private final TypeElement daoElement;
-
-  public QueryParameterMeta(
-      String name,
-      CtType ctType,
-      VariableElement parameterElement,
-      ExecutableElement methodElement,
-      TypeElement daoElement) {
-    assertNotNull(name, ctType, parameterElement, methodElement, daoElement);
+  public QueryParameterMeta(String name, CtType ctType, VariableElement parameterElement) {
+    assertNotNull(name, ctType, parameterElement);
     this.name = name;
     this.ctType = ctType;
     this.element = parameterElement;
-    this.methodElement = methodElement;
-    this.daoElement = daoElement;
   }
 
   public VariableElement getElement() {
     return element;
-  }
-
-  public ExecutableElement getMethodElement() {
-    return methodElement;
-  }
-
-  public TypeElement getDaoElement() {
-    return daoElement;
   }
 
   public String getName() {

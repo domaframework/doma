@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.dao;
+package org.seasar.doma.internal.apt.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,9 +15,6 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
-import org.seasar.doma.internal.apt.processor.entity.Emp;
-import org.seasar.doma.internal.apt.processor.entity.Person;
-import org.seasar.doma.internal.apt.validator.ExpressionValidator;
 import org.seasar.doma.internal.expr.ExpressionParser;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
@@ -852,6 +849,29 @@ class ExpressionValidatorTest extends CompilerSupport {
                 new ExpressionParser("emp.id == new java.lang.Integer(1)").parse();
             TypeDeclaration result = validator.validate(node);
             assertFalse(result.isUnknownType());
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  @Test
+  void testConstructorAccess_multiCandidates() throws Exception {
+    Class<?> target = ExpressionValidationDao.class;
+    addCompilationUnit(target);
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
+            Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
+            ExpressionValidator validator =
+                new ExpressionValidator(ctx, methodElement, parameterTypeMap);
+
+            String expression = String.format("new %s(\"test\")", Job.class.getName());
+            ExpressionNode node = new ExpressionParser(expression).parse();
+            TypeDeclaration result = validator.validate(node);
+            assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(result.getType(), Job.class));
           }
         });
     compile();

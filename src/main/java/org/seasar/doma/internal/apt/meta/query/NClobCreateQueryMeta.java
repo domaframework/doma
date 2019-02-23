@@ -8,8 +8,8 @@ public class NClobCreateQueryMeta extends AbstractCreateQueryMeta {
 
   private NClobFactoryAnnot nClobFactoryAnnot;
 
-  public NClobCreateQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  public NClobCreateQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public NClobFactoryAnnot getNClobFactoryAnnot() {

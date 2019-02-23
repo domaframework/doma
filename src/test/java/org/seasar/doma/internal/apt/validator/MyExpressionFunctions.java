@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.dao;
+package org.seasar.doma.internal.apt.validator;
 
 import org.seasar.doma.jdbc.dialect.H2Dialect.H2ExpressionFunctions;
 

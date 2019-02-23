@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.dao;
+package org.seasar.doma.internal.apt.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
-import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;

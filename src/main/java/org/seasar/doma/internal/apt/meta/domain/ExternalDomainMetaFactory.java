@@ -49,7 +49,8 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
   }
 
   private void validateConverter(TypeElement converterElement) {
-    if (!ctx.getTypes().isAssignableWithErasure(converterElement.asType(), DomainConverter.class)) {
+    if (!ctx.getMoreTypes()
+        .isAssignableWithErasure(converterElement.asType(), DomainConverter.class)) {
       throw new AptException(Message.DOMA4191, converterElement, new Object[] {});
     }
     if (converterElement.getNestingKind().isNested()) {
@@ -58,19 +59,19 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     if (converterElement.getModifiers().contains(Modifier.ABSTRACT)) {
       throw new AptException(Message.DOMA4192, converterElement, new Object[] {});
     }
-    ExecutableElement constructor = ctx.getElements().getNoArgConstructor(converterElement);
+    ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(converterElement);
     if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
       throw new AptException(Message.DOMA4193, converterElement, new Object[] {});
     }
   }
 
   private TypeMirror[] getConverterArgTypes(TypeMirror typeMirror) {
-    for (TypeMirror supertype : ctx.getTypes().directSupertypes(typeMirror)) {
-      if (!ctx.getTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
+    for (TypeMirror supertype : ctx.getMoreTypes().directSupertypes(typeMirror)) {
+      if (!ctx.getMoreTypes().isAssignableWithErasure(supertype, DomainConverter.class)) {
         continue;
       }
-      if (ctx.getTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
-        DeclaredType declaredType = ctx.getTypes().toDeclaredType(supertype);
+      if (ctx.getMoreTypes().isSameTypeWithErasure(supertype, DomainConverter.class)) {
+        DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(supertype);
         assertNotNull(declaredType);
         List<? extends TypeMirror> args = declaredType.getTypeArguments();
         assertEquals(2, args.size());
@@ -86,19 +87,19 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
   private void doDomainType(
       TypeElement converterElement, TypeMirror domainType, ExternalDomainMeta meta) {
-    TypeElement domainElement = ctx.getTypes().toTypeElement(domainType);
+    TypeElement domainElement = ctx.getMoreTypes().toTypeElement(domainType);
     if (domainElement == null) {
       throw new AptIllegalStateException(domainType.toString());
     }
     if (domainElement.getNestingKind().isNested()) {
       validateEnclosingElement(domainElement);
     }
-    PackageElement pkgElement = ctx.getElements().getPackageOf(domainElement);
+    PackageElement pkgElement = ctx.getMoreElements().getPackageOf(domainElement);
     if (pkgElement.isUnnamed()) {
       throw new AptException(
           Message.DOMA4197, converterElement, new Object[] {domainElement.getQualifiedName()});
     }
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(domainType);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(domainType);
     if (declaredType == null) {
       throw new AptIllegalStateException(domainType.toString());
     }
@@ -109,12 +110,12 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
       }
     }
     meta.setTypeElement(domainElement);
-    TypeParametersDef typeParametersDef = ctx.getElements().getTypeParametersDef(domainElement);
+    TypeParametersDef typeParametersDef = ctx.getMoreElements().getTypeParametersDef(domainElement);
     meta.setTypeParametersDef(typeParametersDef);
   }
 
   private void validateEnclosingElement(Element element) {
-    TypeElement typeElement = ctx.getElements().toTypeElement(element);
+    TypeElement typeElement = ctx.getMoreElements().toTypeElement(element);
     if (typeElement == null) {
       return;
     }

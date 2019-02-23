@@ -1,5 +1,7 @@
 package org.seasar.doma.internal.apt.decl;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
@@ -9,6 +11,8 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.util.Zip;
 
 public class Declarations {
 
@@ -20,69 +24,70 @@ public class Declarations {
   }
 
   public TypeDeclaration newUnknownTypeDeclaration() {
-    TypeMirror type = ctx.getTypes().getNoType(TypeKind.NONE);
-    return newTypeDeclaration(type);
+    TypeMirror type = ctx.getMoreTypes().getNoType(TypeKind.NONE);
+    return newTypeDeclaration(type, null);
   }
 
-  public TypeDeclaration newBooleanTypeDeclaration() {
-    TypeMirror type = ctx.getTypes().getTypeMirror(boolean.class);
-    return newTypeDeclaration(type);
+  public TypeDeclaration newPrimitiveBooleanTypeDeclaration() {
+    TypeMirror type = ctx.getMoreTypes().getTypeMirror(boolean.class);
+    return newTypeDeclaration(type, null);
   }
 
   public TypeDeclaration newTypeDeclaration(Class<?> clazz) {
     assertNotNull(clazz);
-    TypeMirror type = ctx.getTypes().getTypeMirror(clazz);
+    TypeMirror type = ctx.getMoreTypes().getTypeMirror(clazz);
     return newTypeDeclaration(type);
   }
 
   public TypeDeclaration newTypeDeclaration(TypeMirror type) {
     assertNotNull(type);
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
-    Map<String, List<TypeParameterDeclaration>> map = new LinkedHashMap<>();
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
+    return newTypeDeclaration(type, typeElement);
+  }
+
+  public TypeDeclaration newTypeDeclaration(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newTypeDeclaration(typeElement.asType(), typeElement);
+  }
+
+  private TypeDeclaration newTypeDeclaration(TypeMirror type, TypeElement typeElement) {
+    assertNotNull(type);
+    CtType ctType = ctx.getCtTypes().newCtType(type);
+    Map<Name, List<TypeParameterDeclaration>> map = new LinkedHashMap<>();
     gatherTypeParameterDeclarations(type, map);
-    return new TypeDeclaration(ctx, type, typeElement, map);
+    return new TypeDeclaration(ctx, type, ctType, typeElement, map);
   }
 
   private void gatherTypeParameterDeclarations(
-      TypeMirror type, Map<String, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
-    TypeElement typeElement = ctx.getTypes().toTypeElement(type);
+      TypeMirror type, Map<Name, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return;
     }
-    String binaryName = ctx.getElements().getBinaryNameAsString(typeElement);
-    typeParameterDeclarationsMap.put(
-        binaryName, createTypeParameterDeclarations(typeElement, type));
-    for (TypeMirror superType : ctx.getTypes().directSupertypes(type)) {
-      TypeElement superElement = ctx.getTypes().toTypeElement(superType);
+    Name canonicalName = typeElement.getQualifiedName();
+    typeParameterDeclarationsMap.put(canonicalName, newTypeParameterDeclaration(typeElement, type));
+    for (TypeMirror superType : ctx.getMoreTypes().directSupertypes(type)) {
+      TypeElement superElement = ctx.getMoreTypes().toTypeElement(superType);
       if (superElement == null) {
         continue;
       }
-      String superBinaryName = ctx.getElements().getBinaryNameAsString(superElement);
-      if (typeParameterDeclarationsMap.containsKey(superBinaryName)) {
+      Name superCanonicalName = superElement.getQualifiedName();
+      if (typeParameterDeclarationsMap.containsKey(superCanonicalName)) {
         continue;
       }
       typeParameterDeclarationsMap.put(
-          superBinaryName, createTypeParameterDeclarations(superElement, superType));
+          superCanonicalName, newTypeParameterDeclaration(superElement, superType));
       gatherTypeParameterDeclarations(superType, typeParameterDeclarationsMap);
     }
   }
 
-  private List<TypeParameterDeclaration> createTypeParameterDeclarations(
+  private List<TypeParameterDeclaration> newTypeParameterDeclaration(
       TypeElement typeElement, TypeMirror type) {
     assertNotNull(typeElement, type);
-    List<TypeParameterDeclaration> list = new ArrayList<>();
-    Iterator<? extends TypeParameterElement> formalParams =
-        typeElement.getTypeParameters().iterator();
-    DeclaredType declaredType = ctx.getTypes().toDeclaredType(type);
-    Iterator<? extends TypeMirror> actualParams = declaredType.getTypeArguments().iterator();
-    for (; formalParams.hasNext() && actualParams.hasNext(); ) {
-      TypeMirror formalType = formalParams.next().asType();
-      TypeMirror actualType = actualParams.next();
-      TypeParameterDeclaration typeParameterDeclaration =
-          ctx.getDeclarations().newTypeParameterDeclaration(formalType, actualType);
-      list.add(typeParameterDeclaration);
-    }
-    return Collections.unmodifiableList(list);
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
+    return Zip.stream(typeElement.getTypeParameters(), declaredType.getTypeArguments())
+        .map(p -> new TypeParameterDeclaration(p.fst.asType(), p.snd))
+        .collect(collectingAndThen(toList(), Collections::unmodifiableList));
   }
 
   FieldDeclaration newFieldDeclaration(
@@ -97,13 +102,10 @@ public class Declarations {
     return new FieldDeclaration(fieldElement, typeDeclaration);
   }
 
-  ConstructorDeclaration newConstructorDeclaration(
-      ExecutableElement constructorElement,
-      List<TypeParameterDeclaration> typeParameterDeclarations) {
-    assertNotNull(constructorElement, typeParameterDeclarations);
+  ConstructorDeclaration newConstructorDeclaration(ExecutableElement constructorElement) {
+    assertNotNull(constructorElement);
     assertTrue(constructorElement.getKind() == ElementKind.CONSTRUCTOR);
-    ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(constructorElement);
-    return constructorDeclaration;
+    return new ConstructorDeclaration(constructorElement);
   }
 
   MethodDeclaration newMethodDeclaration(
@@ -114,14 +116,6 @@ public class Declarations {
         resolveTypeParameter(methodElement.getReturnType(), typeParameterDeclarations);
     TypeDeclaration returnTypeDeclaration = newTypeDeclaration(returnTypeMirror);
     return new MethodDeclaration(methodElement, returnTypeDeclaration);
-  }
-
-  private TypeParameterDeclaration newTypeParameterDeclaration(
-      TypeMirror formalType, TypeMirror actualType) {
-    assertNotNull(formalType, actualType);
-    TypeParameterDeclaration typeParameterDeclaration =
-        new TypeParameterDeclaration(formalType, actualType);
-    return typeParameterDeclaration;
   }
 
   private TypeMirror resolveTypeParameter(

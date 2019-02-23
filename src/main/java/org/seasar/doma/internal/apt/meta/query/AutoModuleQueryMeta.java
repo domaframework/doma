@@ -11,8 +11,8 @@ public abstract class AutoModuleQueryMeta extends AbstractQueryMeta {
 
   private final List<CallableSqlParameterMeta> sqlParameterMetas = new ArrayList<>();
 
-  AutoModuleQueryMeta(ExecutableElement method, TypeElement dao) {
-    super(method, dao);
+  AutoModuleQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+    super(daoElement, methodElement);
   }
 
   public void addCallableSqlParameterMeta(CallableSqlParameterMeta sqlParameterMeta) {

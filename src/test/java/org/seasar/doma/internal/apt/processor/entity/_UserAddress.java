@@ -17,7 +17,7 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
   public <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
       String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType) {
     return java.util.Arrays.asList(
-        new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(
+        new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
             entityClass,
             () -> new BasicScalar<>(StringWrapper::new, false),
             embeddedPropertyName + ".city",
@@ -26,7 +26,7 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
             true,
             true,
             false),
-        new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(
+        new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
             entityClass,
             () -> new BasicScalar<>(StringWrapper::new, false),
             embeddedPropertyName + ".street",

@@ -40,7 +40,7 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
   @Override
   protected ClassName createClassName(TypeElement typeElement, EmbeddableMeta meta) {
     assertNotNull(typeElement, meta);
-    Name binaryName = ctx.getElements().getBinaryName(typeElement);
+    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     return ClassNames.newEmbeddableDescClassName(binaryName);
   }
 
