@@ -47,4 +47,9 @@ public class OptionalIntScalar implements Scalar<Integer, OptionalInt> {
   public Wrapper<Integer> getWrapper() {
     return wrapper;
   }
+
+  @Override
+  public String toString() {
+    return wrapper.toString();
+  }
 }

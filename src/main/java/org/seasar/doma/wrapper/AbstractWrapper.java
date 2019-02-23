@@ -69,4 +69,9 @@ public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
   public Class<BASIC> getBasicClass() {
     return basicClass;
   }
+
+  @Override
+  public String toString() {
+    return value == null ? "null" : value.toString();
+  }
 }
