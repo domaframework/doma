@@ -47,4 +47,9 @@ public class OptionalDoubleScalar implements Scalar<Double, OptionalDouble> {
   public Wrapper<Double> getWrapper() {
     return wrapper;
   }
+
+  @Override
+  public String toString() {
+    return wrapper.toString();
+  }
 }

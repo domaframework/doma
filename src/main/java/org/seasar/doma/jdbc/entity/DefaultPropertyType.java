@@ -227,5 +227,10 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     public Optional<Class<?>> getDomainClass() {
       return scalar.getDomainClass();
     }
+
+    @Override
+    public String toString() {
+      return scalar.toString();
+    }
   }
 }

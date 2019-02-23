@@ -62,4 +62,9 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
   public Wrapper<BASIC> getWrapper() {
     return wrapper;
   }
+
+  @Override
+  public String toString() {
+    return wrapper.toString();
+  }
 }

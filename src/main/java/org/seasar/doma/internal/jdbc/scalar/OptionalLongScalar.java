@@ -47,4 +47,9 @@ public class OptionalLongScalar implements Scalar<Long, OptionalLong> {
   public Wrapper<Long> getWrapper() {
     return wrapper;
   }
+
+  @Override
+  public String toString() {
+    return wrapper.toString();
+  }
 }

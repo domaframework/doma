@@ -49,4 +49,9 @@ public class OptionalBasicScalar<BASIC> implements Scalar<BASIC, Optional<BASIC>
   public Wrapper<BASIC> getWrapper() {
     return wrapper;
   }
+
+  @Override
+  public String toString() {
+    return wrapper.toString();
+  }
 }

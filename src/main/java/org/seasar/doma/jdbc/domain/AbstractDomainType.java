@@ -82,6 +82,11 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     public Wrapper<BASIC> getWrapper() {
       return wrapper;
     }
+
+    @Override
+    public String toString() {
+      return wrapper.toString();
+    }
   }
 
   protected class OptionalDomainScalar implements Scalar<BASIC, Optional<DOMAIN>> {
@@ -134,6 +139,11 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     @Override
     public Wrapper<BASIC> getWrapper() {
       return wrapper;
+    }
+
+    @Override
+    public String toString() {
+      return wrapper.toString();
     }
   }
 }
