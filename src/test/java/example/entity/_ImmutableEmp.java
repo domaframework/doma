@@ -38,7 +38,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   public final AssignedIdPropertyType<ImmutableEmp, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           ImmutableEmp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "id",
           "ID",
           __namingType,
@@ -47,7 +47,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   public final DefaultPropertyType<ImmutableEmp, String, String> name =
       new DefaultPropertyType<>(
           ImmutableEmp.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
           __namingType,
@@ -58,7 +58,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   public final DefaultPropertyType<ImmutableEmp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           ImmutableEmp.class,
-          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
+          () -> new BasicScalar<>(BigDecimalWrapper::new),
           "salary",
           "SALARY",
           __namingType,
@@ -69,7 +69,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   public final VersionPropertyType<ImmutableEmp, Integer, Integer> version =
       new VersionPropertyType<>(
           ImmutableEmp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "version",
           "VERSION",
           __namingType,

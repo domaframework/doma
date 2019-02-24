@@ -58,6 +58,15 @@ public interface Wrapper<BASIC> {
   Class<BASIC> getBasicClass();
 
   /**
+   * Whether this object is a wrapper for a primitive type.
+   *
+   * @return {@code true} if this object is a wrapper for a primitive type.
+   */
+  default boolean isPrimitiveWrapper() {
+    return false;
+  }
+
+  /**
    * Accept a visitor.
    *
    * @param <R> The result

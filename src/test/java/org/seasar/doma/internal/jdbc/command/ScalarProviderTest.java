@@ -36,7 +36,7 @@ public class ScalarProviderTest {
         new ScalarProvider<>(
             () ->
                 new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
-                    () -> new org.seasar.doma.wrapper.StringWrapper(), false),
+                    () -> new org.seasar.doma.wrapper.StringWrapper()),
             new MySelectQuery());
     String result = provider.get(resultSet);
 

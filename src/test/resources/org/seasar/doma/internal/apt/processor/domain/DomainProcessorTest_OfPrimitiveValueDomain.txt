@@ -11,7 +11,7 @@ public final class _OfPrimitiveValueDomain extends org.seasar.doma.jdbc.domain.A
     private static final _OfPrimitiveValueDomain singleton = new _OfPrimitiveValueDomain();
 
     private _OfPrimitiveValueDomain() {
-        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+        super(org.seasar.doma.wrapper.PrimitiveIntWrapper::new);
     }
 
     @Override

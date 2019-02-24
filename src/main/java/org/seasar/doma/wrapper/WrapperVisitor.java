@@ -86,6 +86,34 @@ public interface WrapperVisitor<R, P, Q, TH extends Throwable> {
     return null;
   }
 
+  default R visitPrimitiveBooleanWrapper(PrimitiveBooleanWrapper wrapper, P p, Q q) throws TH {
+    return visitBooleanWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveByteWrapper(PrimitiveByteWrapper wrapper, P p, Q q) throws TH {
+    return visitByteWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveDoubleWrapper(PrimitiveDoubleWrapper wrapper, P p, Q q) throws TH {
+    return visitDoubleWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveFloatWrapper(PrimitiveFloatWrapper wrapper, P p, Q q) throws TH {
+    return visitFloatWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveIntWrapper(PrimitiveIntWrapper wrapper, P p, Q q) throws TH {
+    return visitIntegerWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveLongWrapper(PrimitiveLongWrapper wrapper, P p, Q q) throws TH {
+    return visitLongWrapper(wrapper, p, q);
+  }
+
+  default R visitPrimitiveShortWrapper(PrimitiveShortWrapper wrapper, P p, Q q) throws TH {
+    return visitShortWrapper(wrapper, p, q);
+  }
+
   default R visitShortWrapper(ShortWrapper wrapper, P p, Q q) throws TH {
     return null;
   }

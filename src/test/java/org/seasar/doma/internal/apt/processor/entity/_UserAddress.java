@@ -19,7 +19,7 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
     return java.util.Arrays.asList(
         new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
             entityClass,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             embeddedPropertyName + ".city",
             "",
             namingType,
@@ -28,7 +28,7 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
             false),
         new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
             entityClass,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             embeddedPropertyName + ".street",
             "",
             namingType,

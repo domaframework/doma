@@ -13,8 +13,8 @@ public final class _LombokValue implements org.seasar.doma.jdbc.entity.Embeddabl
     @Override
     public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
         return java.util.Arrays.asList(
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new, false), embeddedPropertyName + ".street", "", namingType, true, true, false),
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new, false), embeddedPropertyName + ".city", "", namingType, true, true, false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), embeddedPropertyName + ".street", "", namingType, true, true, false),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), embeddedPropertyName + ".city", "", namingType, true, true, false));
     }
 
     @Override

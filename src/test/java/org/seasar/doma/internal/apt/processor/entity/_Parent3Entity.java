@@ -27,7 +27,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
   public DefaultPropertyType<Parent3Entity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           Parent3Entity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "aaa",
           "AAA",
           __namingType,
@@ -38,7 +38,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
   public DefaultPropertyType<Parent3Entity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           Parent3Entity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "bbb",
           "BBB",
           __namingType,

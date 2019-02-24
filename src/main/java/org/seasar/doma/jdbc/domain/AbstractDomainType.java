@@ -112,7 +112,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     @Override
     public Optional<DOMAIN> get() {
       BASIC value = wrapper.get();
-      if (value == null && !AbstractDomainType.this.getBasicClass().isPrimitive()) {
+      if (value == null) {
         return getDefaultInternal();
       }
       return Optional.of(newDomain(value));

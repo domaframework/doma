@@ -27,7 +27,7 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
   public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           ImmutableParentEntity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "aaa",
           "AAA",
           __namingType,
@@ -38,7 +38,7 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
   public DefaultPropertyType<ImmutableParentEntity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           ImmutableParentEntity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "bbb",
           "BBB",
           __namingType,

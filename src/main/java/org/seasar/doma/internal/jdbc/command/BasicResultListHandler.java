@@ -9,7 +9,7 @@ import org.seasar.doma.wrapper.Wrapper;
 public class BasicResultListHandler<BASIC> extends ScalarResultListHandler<BASIC, BASIC> {
 
   public BasicResultListHandler(Supplier<Wrapper<BASIC>> supplier) {
-    super(() -> new BasicScalar<>(supplier, false));
+    super(() -> new BasicScalar<>(supplier));
     assertNotNull(supplier);
   }
 }

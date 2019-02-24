@@ -7,6 +7,6 @@ import org.seasar.doma.wrapper.Wrapper;
 public class BasicResultListParameter<BASIC> extends ScalarResultListParameter<BASIC, BASIC> {
 
   public BasicResultListParameter(Supplier<Wrapper<BASIC>> supplier) {
-    super(() -> new BasicScalar<>(supplier, false));
+    super(() -> new BasicScalar<>(supplier));
   }
 }

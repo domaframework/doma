@@ -46,8 +46,7 @@ public class BasicSingleResultHandlerTest {
     query.prepare();
 
     BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(
-            () -> new org.seasar.doma.wrapper.StringWrapper(), false);
+        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
     String result = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals("aaa", result);
   }
@@ -70,8 +69,7 @@ public class BasicSingleResultHandlerTest {
     query.prepare();
 
     BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(
-            () -> new org.seasar.doma.wrapper.StringWrapper(), false);
+        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();
@@ -97,8 +95,7 @@ public class BasicSingleResultHandlerTest {
     query.prepare();
 
     BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(
-            () -> new org.seasar.doma.wrapper.StringWrapper(), false);
+        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

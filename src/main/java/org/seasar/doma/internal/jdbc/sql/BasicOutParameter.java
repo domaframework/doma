@@ -8,6 +8,6 @@ import org.seasar.doma.wrapper.Wrapper;
 public class BasicOutParameter<BASIC> extends ScalarOutParameter<BASIC, BASIC> {
 
   public BasicOutParameter(Supplier<Wrapper<BASIC>> supplier, Reference<BASIC> reference) {
-    super(new BasicScalar<BASIC>(supplier, false), reference);
+    super(new BasicScalar<BASIC>(supplier), reference);
   }
 }

@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.LongWrapper;
+import org.seasar.doma.wrapper.PrimitiveLongWrapper;
 
 public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
@@ -115,7 +115,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     query.prepare();
     SelectCommand<Long> command =
         new SelectCommand<Long>(
-            query, new BasicSingleResultHandler<Long>(() -> new LongWrapper(), true));
+            query, new BasicSingleResultHandler<Long>(() -> new PrimitiveLongWrapper()));
     long count = command.execute();
     query.complete();
     SelectOptionsAccessor.setCountSize(options, count);

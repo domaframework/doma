@@ -19,11 +19,6 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
   }
 
   @Override
-  public Double getDefault() {
-    return 0d;
-  }
-
-  @Override
   public void increment() {
     Double value = doGet();
     if (value != null) {

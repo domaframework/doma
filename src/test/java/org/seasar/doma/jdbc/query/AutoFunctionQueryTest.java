@@ -18,7 +18,7 @@ public class AutoFunctionQueryTest {
     query.setFunctionName("aaa");
     query.setResultParameter(
         new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
+            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);

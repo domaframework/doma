@@ -86,10 +86,8 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
                     OptionalBasicScalar.class, basicCtType.getWrapperSupplierCode());
               } else {
                 p.print(
-                    "() -> new %1$s<>(%2$s, %3$s)",
-                    BasicScalar.class,
-                    basicCtType.getWrapperSupplierCode(),
-                    basicCtType.isPrimitive());
+                    "() -> new %1$s<>(%2$s)",
+                    BasicScalar.class, basicCtType.getWrapperSupplierCode());
               }
             });
     return defaultAction(basicCtType, optional);

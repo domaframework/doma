@@ -78,6 +78,13 @@ import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.NClobWrapper;
 import org.seasar.doma.wrapper.ObjectWrapper;
+import org.seasar.doma.wrapper.PrimitiveBooleanWrapper;
+import org.seasar.doma.wrapper.PrimitiveByteWrapper;
+import org.seasar.doma.wrapper.PrimitiveDoubleWrapper;
+import org.seasar.doma.wrapper.PrimitiveFloatWrapper;
+import org.seasar.doma.wrapper.PrimitiveIntWrapper;
+import org.seasar.doma.wrapper.PrimitiveLongWrapper;
+import org.seasar.doma.wrapper.PrimitiveShortWrapper;
 import org.seasar.doma.wrapper.SQLXMLWrapper;
 import org.seasar.doma.wrapper.ShortWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -638,19 +645,19 @@ public class CtTypes {
     public Class<?> visitPrimitive(PrimitiveType t, Void p) {
       switch (t.getKind()) {
         case BOOLEAN:
-          return BooleanWrapper.class;
+          return PrimitiveBooleanWrapper.class;
         case BYTE:
-          return ByteWrapper.class;
+          return PrimitiveByteWrapper.class;
         case SHORT:
-          return ShortWrapper.class;
+          return PrimitiveShortWrapper.class;
         case INT:
-          return IntegerWrapper.class;
+          return PrimitiveIntWrapper.class;
         case LONG:
-          return LongWrapper.class;
+          return PrimitiveLongWrapper.class;
         case FLOAT:
-          return FloatWrapper.class;
+          return PrimitiveFloatWrapper.class;
         case DOUBLE:
-          return DoubleWrapper.class;
+          return PrimitiveDoubleWrapper.class;
         case CHAR:
           return null;
         default:

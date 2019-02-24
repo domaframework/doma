@@ -27,7 +27,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
   public DefaultPropertyType<Parent2Entity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           Parent2Entity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "aaa",
           "AAA",
           __namingType,
@@ -38,7 +38,7 @@ public class _Parent2Entity extends AbstractEntityType<Parent2Entity> {
   public DefaultPropertyType<Parent2Entity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           Parent2Entity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "bbb",
           "BBB",
           __namingType,

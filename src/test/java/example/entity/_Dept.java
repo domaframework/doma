@@ -36,7 +36,7 @@ public class _Dept extends AbstractEntityType<Dept> {
   public final AssignedIdPropertyType<Dept, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           Dept.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "id",
           "ID",
           __namingType,
@@ -45,7 +45,7 @@ public class _Dept extends AbstractEntityType<Dept> {
   public final DefaultPropertyType<Dept, String, String> name =
       new DefaultPropertyType<>(
           Dept.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
           __namingType,

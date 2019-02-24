@@ -8,6 +8,6 @@ import org.seasar.doma.wrapper.Wrapper;
 public class BasicListParameter<BASIC> extends ScalarListParameter<BASIC, BASIC> {
 
   public BasicListParameter(Supplier<Wrapper<BASIC>> supplier, List<BASIC> list, String name) {
-    super(() -> new BasicScalar<>(supplier, false), list, name);
+    super(() -> new BasicScalar<>(supplier), list, name);
   }
 }

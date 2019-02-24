@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.PrimitiveIntWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
 public class DefaultPropertyTypeTest {
@@ -28,7 +29,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "hoge",
             NamingType.NONE,
@@ -45,7 +46,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "hoge",
             NamingType.NONE,
@@ -61,7 +62,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "foo",
             NamingType.UPPER_CASE,
@@ -76,7 +77,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "foo",
             NamingType.UPPER_CASE,
@@ -91,7 +92,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -106,7 +107,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "foo.hoge",
             "",
             NamingType.UPPER_CASE,
@@ -121,7 +122,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -136,7 +137,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -151,7 +152,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -166,7 +167,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -184,7 +185,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(StringWrapper::new, false),
+            () -> new BasicScalar<>(StringWrapper::new),
             "hoge",
             "",
             NamingType.UPPER_CASE,
@@ -202,7 +203,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(IntegerWrapper::new, true),
+            () -> new BasicScalar<>(PrimitiveIntWrapper::new),
             "primitiveInt",
             "primitiveInt",
             NamingType.NONE,
@@ -218,7 +219,7 @@ public class DefaultPropertyTypeTest {
     DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
-            () -> new BasicScalar<>(IntegerWrapper::new, false),
+            () -> new BasicScalar<>(IntegerWrapper::new),
             "integer",
             "integer",
             NamingType.NONE,
