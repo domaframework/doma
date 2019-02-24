@@ -19,11 +19,6 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
   }
 
   @Override
-  public Float getDefault() {
-    return 0f;
-  }
-
-  @Override
   public void increment() {
     Float value = doGet();
     if (value != null) {

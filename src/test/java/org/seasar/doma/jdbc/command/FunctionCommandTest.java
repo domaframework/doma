@@ -39,7 +39,7 @@ public class FunctionCommandTest {
     query.setFunctionName("aaa");
     query.setResultParameter(
         new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
+            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
     query.addParameter(new BasicInParameter<Integer>(() -> aaa));
     query.addParameter(new BasicOutParameter<Integer>(() -> bbb, new Reference<Integer>()));
     query.addParameter(new BasicInOutParameter<Integer>(() -> ccc, new Reference<Integer>()));

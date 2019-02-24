@@ -10,6 +10,6 @@ public class BasicCollectorHandler<BASIC, RESULT>
 
   public BasicCollectorHandler(
       Supplier<Wrapper<BASIC>> supplier, Collector<BASIC, ?, RESULT> collector) {
-    super(() -> new BasicScalar<>(supplier, false), collector);
+    super(() -> new BasicScalar<>(supplier), collector);
   }
 }

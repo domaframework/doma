@@ -10,6 +10,6 @@ public class BasicStreamHandler<BASIC, RESULT> extends ScalarStreamHandler<BASIC
 
   public BasicStreamHandler(
       Supplier<Wrapper<BASIC>> supplier, Function<Stream<BASIC>, RESULT> mapper) {
-    super(() -> new BasicScalar<>(supplier, false), mapper);
+    super(() -> new BasicScalar<>(supplier), mapper);
   }
 }

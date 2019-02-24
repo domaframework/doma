@@ -32,7 +32,7 @@ public class CallableSqlParameterBinderTest {
     List<SqlParameter> parameters = new ArrayList<>();
     parameters.add(
         new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper(), false));
+            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
     parameters.add(
         new BasicInParameter<String>(() -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
     parameters.add(

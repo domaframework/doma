@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.wrapper.EnumWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
+import org.seasar.doma.wrapper.PrimitiveIntWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
@@ -38,17 +39,17 @@ public class ScalarsTest {
     assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap((byte) 1, byte.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Byte((byte) 1), Byte.class, false, classHelper));
+    assertNotNull(Scalars.wrap((byte) 1, Byte.class, false, classHelper));
     assertNotNull(Scalars.wrap((short) 1, short.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Short((short) 1), Short.class, false, classHelper));
+    assertNotNull(Scalars.wrap((short) 1, Short.class, false, classHelper));
     assertNotNull(Scalars.wrap(1, int.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Integer(1), Integer.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1, Integer.class, false, classHelper));
     assertNotNull(Scalars.wrap(1L, long.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Long(1), Long.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1L, Long.class, false, classHelper));
     assertNotNull(Scalars.wrap(1f, float.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Float(1), Float.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1f, Float.class, false, classHelper));
     assertNotNull(Scalars.wrap(1d, double.class, false, classHelper));
-    assertNotNull(Scalars.wrap(new Double(1), Double.class, false, classHelper));
+    assertNotNull(Scalars.wrap(1d, Double.class, false, classHelper));
     assertNotNull(Scalars.wrap(new byte[] {1}, byte[].class, false, classHelper));
     assertNotNull(Scalars.wrap("", String.class, false, classHelper));
     assertNotNull(Scalars.wrap(new BigDecimal("1"), BigDecimal.class, false, classHelper));
@@ -72,15 +73,15 @@ public class ScalarsTest {
 
   @Test
   public void testWrapBasic_primitiveType() throws Exception {
-    Supplier<Scalar<?, ?>> supplier = Scalars.wrap(new Integer(10), int.class, false, classHelper);
+    Supplier<Scalar<?, ?>> supplier = Scalars.wrap(10, int.class, false, classHelper);
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertEquals(new Integer(10), scalar.get());
+    assertEquals(10, scalar.get());
 
     Wrapper<?> wrapper = scalar.getWrapper();
-    assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertEquals(new Integer(10), wrapper.get());
+    assertEquals(PrimitiveIntWrapper.class, wrapper.getClass());
+    assertEquals(10, wrapper.get());
   }
 
   @Test

@@ -43,7 +43,7 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   public final GeneratedIdPropertyType<IdGeneratedEmp, Integer, Integer> id =
       new GeneratedIdPropertyType<>(
           IdGeneratedEmp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "id",
           "ID",
           __namingType,
@@ -53,7 +53,7 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   public final DefaultPropertyType<IdGeneratedEmp, String, String> name =
       new DefaultPropertyType<>(
           IdGeneratedEmp.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
           __namingType,
@@ -64,7 +64,7 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   public final DefaultPropertyType<IdGeneratedEmp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           IdGeneratedEmp.class,
-          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
+          () -> new BasicScalar<>(BigDecimalWrapper::new),
           "salary",
           "SALARY",
           __namingType,
@@ -75,7 +75,7 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   public final VersionPropertyType<IdGeneratedEmp, Integer, Integer> version =
       new VersionPropertyType<>(
           IdGeneratedEmp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "version",
           "VERSION",
           __namingType,

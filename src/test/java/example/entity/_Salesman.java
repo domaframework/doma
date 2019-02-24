@@ -38,7 +38,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   public final AssignedIdPropertyType<Salesman, Integer, Integer> id =
       new AssignedIdPropertyType<>(
           Salesman.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "id",
           "ID",
           __namingType,
@@ -47,7 +47,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   public final DefaultPropertyType<Salesman, String, String> name =
       new DefaultPropertyType<>(
           Salesman.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
           __namingType,
@@ -58,7 +58,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   public final DefaultPropertyType<Salesman, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           Salesman.class,
-          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
+          () -> new BasicScalar<>(BigDecimalWrapper::new),
           "salary",
           "SALARY",
           __namingType,
@@ -69,7 +69,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   public final TenantIdPropertyType<Salesman, String, String> tenantId =
       new TenantIdPropertyType<>(
           Salesman.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "tenantId",
           "TENANT_ID",
           __namingType,
@@ -78,7 +78,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   public final VersionPropertyType<Salesman, Integer, Integer> version =
       new VersionPropertyType<>(
           Salesman.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "version",
           "VERSION",
           __namingType,

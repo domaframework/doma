@@ -71,7 +71,7 @@ public class ParameterizedParamDaoImpl extends org.seasar.doma.internal.jdbc.dao
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(org.seasar.doma.wrapper.IntegerWrapper::new, true));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.Integer> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.Integer>(org.seasar.doma.wrapper.PrimitiveIntWrapper::new));
             int __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ParameterizedParamDaoImpl", "select", __result);

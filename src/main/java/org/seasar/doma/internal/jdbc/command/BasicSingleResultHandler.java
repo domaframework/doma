@@ -6,7 +6,7 @@ import org.seasar.doma.wrapper.Wrapper;
 
 public class BasicSingleResultHandler<BASIC> extends ScalarSingleResultHandler<BASIC, BASIC> {
 
-  public BasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
-    super(() -> new BasicScalar<>(supplier, primitive));
+  public BasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier) {
+    super(() -> new BasicScalar<>(supplier));
   }
 }

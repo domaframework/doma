@@ -1011,11 +1011,10 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
         BasicSingleResultParameterMeta m, AutoModuleQueryMeta p) {
       final BasicCtType basicCtType = m.getBasicCtType();
       iprint(
-          "__query.setResultParameter(new %1$s<%2$s>(%3$s, %4$s));%n",
+          "__query.setResultParameter(new %1$s<%2$s>(%3$s));%n",
           /* 1 */ BasicSingleResultParameter.class,
           /* 2 */ basicCtType.getBoxedType(),
-          /* 3 */ basicCtType.getWrapperSupplierCode(),
-          /* 4 */ basicCtType.isPrimitive());
+          /* 3 */ basicCtType.getWrapperSupplierCode());
       return null;
     }
 
@@ -1701,15 +1700,14 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitBasicCtType(final BasicCtType basicCtType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%6$s>(%4$s, %5$s));%n",
+          "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getBasicSingleResultHandler(optional),
           /* 4 */ basicCtType.getWrapperSupplierCode(),
-          /* 5 */ basicCtType.isPrimitive(),
-          /* 6 */ basicCtType.getBoxedType(),
-          /* 7 */ commandName,
-          /* 8 */ methodName);
+          /* 5 */ basicCtType.getBoxedType(),
+          /* 6 */ commandName,
+          /* 7 */ methodName);
       return null;
     }
 

@@ -9,13 +9,10 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
 
   protected final Wrapper<BASIC> wrapper;
 
-  protected final boolean primitive;
-
-  public BasicScalar(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
+  public BasicScalar(Supplier<Wrapper<BASIC>> supplier) {
     AssertionUtil.assertNotNull(supplier);
     this.wrapper = supplier.get();
     AssertionUtil.assertNotNull(this.wrapper);
-    this.primitive = primitive;
   }
 
   @Override
@@ -30,32 +27,17 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
 
   @Override
   public BASIC get() {
-    BASIC value = wrapper.get();
-    if (value == null) {
-      return getDefaultInternal();
-    }
-    return value;
+    return wrapper.get();
   }
 
   @Override
   public BASIC getDefault() {
-    return getDefaultInternal();
-  }
-
-  protected BASIC getDefaultInternal() {
-    if (primitive) {
-      return wrapper.getDefault();
-    }
-    return null;
+    return wrapper.getDefault();
   }
 
   @Override
   public void set(BASIC value) {
-    if (value == null && primitive) {
-      wrapper.set(wrapper.getDefault());
-    } else {
-      wrapper.set(value);
-    }
+    wrapper.set(value);
   }
 
   @Override

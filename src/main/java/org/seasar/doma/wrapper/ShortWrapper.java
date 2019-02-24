@@ -19,11 +19,6 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
   }
 
   @Override
-  public Short getDefault() {
-    return (short) 0;
-  }
-
-  @Override
   public void increment() {
     Short value = doGet();
     if (value != null) {

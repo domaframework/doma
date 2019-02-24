@@ -14,11 +14,6 @@ public class BooleanWrapper extends AbstractWrapper<Boolean> {
   }
 
   @Override
-  public Boolean getDefault() {
-    return Boolean.FALSE;
-  }
-
-  @Override
   public <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
       throws TH {
     if (visitor == null) {

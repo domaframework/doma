@@ -10,7 +10,7 @@ import org.seasar.doma.wrapper.Wrapper;
 public class OptionalBasicSingleResultHandler<BASIC>
     extends ScalarSingleResultHandler<BASIC, Optional<BASIC>> {
 
-  public OptionalBasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier, boolean primitive) {
+  public OptionalBasicSingleResultHandler(Supplier<Wrapper<BASIC>> supplier) {
     super(() -> new OptionalBasicScalar<>(supplier));
     assertNotNull(supplier);
   }

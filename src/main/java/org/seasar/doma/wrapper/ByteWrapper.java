@@ -19,11 +19,6 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
   }
 
   @Override
-  public Byte getDefault() {
-    return Byte.valueOf((byte) 0);
-  }
-
-  @Override
   public void increment() {
     Byte value = doGet();
     if (value != null) {

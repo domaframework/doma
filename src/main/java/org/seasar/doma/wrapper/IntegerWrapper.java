@@ -19,11 +19,6 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
   }
 
   @Override
-  public Integer getDefault() {
-    return Integer.valueOf(0);
-  }
-
-  @Override
   public void increment() {
     Integer value = doGet();
     if (value != null) {

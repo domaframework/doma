@@ -27,7 +27,7 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
   public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $aaa =
       new DefaultPropertyType<>(
           OriginalStatesParentEntity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "aaa",
           "AAA",
           __namingType,
@@ -38,7 +38,7 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
   public DefaultPropertyType<OriginalStatesParentEntity, Integer, Integer> $bbb =
       new DefaultPropertyType<>(
           OriginalStatesParentEntity.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "bbb",
           "BBB",
           __namingType,

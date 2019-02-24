@@ -19,11 +19,6 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
   }
 
   @Override
-  public Long getDefault() {
-    return 0L;
-  }
-
-  @Override
   public void increment() {
     Long value = doGet();
     if (value != null) {

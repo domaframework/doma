@@ -41,17 +41,12 @@ public class _Emp extends AbstractEntityType<Emp> {
 
   public final AssignedIdPropertyType<Emp, Integer, Integer> id =
       new AssignedIdPropertyType<>(
-          Emp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
-          "id",
-          "ID",
-          __namingType,
-          false);
+          Emp.class, () -> new BasicScalar<>(IntegerWrapper::new), "id", "ID", __namingType, false);
 
   public final DefaultPropertyType<Emp, String, String> name =
       new DefaultPropertyType<>(
           Emp.class,
-          () -> new BasicScalar<>(StringWrapper::new, false),
+          () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
           __namingType,
@@ -62,7 +57,7 @@ public class _Emp extends AbstractEntityType<Emp> {
   public final DefaultPropertyType<Emp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
           Emp.class,
-          () -> new BasicScalar<>(BigDecimalWrapper::new, false),
+          () -> new BasicScalar<>(BigDecimalWrapper::new),
           "salary",
           "SALARY",
           __namingType,
@@ -73,7 +68,7 @@ public class _Emp extends AbstractEntityType<Emp> {
   public final VersionPropertyType<Emp, Integer, Integer> version =
       new VersionPropertyType<>(
           Emp.class,
-          () -> new BasicScalar<>(IntegerWrapper::new, false),
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "version",
           "VERSION",
           __namingType,

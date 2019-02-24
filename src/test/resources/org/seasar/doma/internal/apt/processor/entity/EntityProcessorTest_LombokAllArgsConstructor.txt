@@ -13,10 +13,10 @@ public final class _LombokAllArgsConstructor extends org.seasar.doma.jdbc.entity
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new, true), "id", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.PrimitiveIntWrapper::new), "id", "", __namingType, true, true, false);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new, false), "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), "name", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor>> __listenerSupplier;
 

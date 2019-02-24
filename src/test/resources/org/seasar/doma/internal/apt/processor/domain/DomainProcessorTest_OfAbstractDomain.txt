@@ -11,7 +11,7 @@ public final class _OfAbstractDomain extends org.seasar.doma.jdbc.domain.Abstrac
     private static final _OfAbstractDomain singleton = new _OfAbstractDomain();
 
     private _OfAbstractDomain() {
-        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+        super(org.seasar.doma.wrapper.PrimitiveIntWrapper::new);
     }
 
     @Override

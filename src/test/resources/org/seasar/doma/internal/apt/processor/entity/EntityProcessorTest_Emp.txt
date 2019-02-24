@@ -23,19 +23,19 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     /** the id */
-    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new, false), "id", "", __namingType, false, __idGenerator);
+    public final org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new), "id", "", __namingType, false, __idGenerator);
 
     /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new, false), "name", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), "name", "", __namingType, true, true, false);
 
     /** the salary */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.math.BigDecimal, java.math.BigDecimal> $salary = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.BigDecimalWrapper::new, false), "salary", "SALARY", __namingType, false, false, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.math.BigDecimal, java.math.BigDecimal> $salary = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.BigDecimalWrapper::new), "salary", "SALARY", __namingType, false, false, false);
 
     /** the version */
-    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Integer, java.lang.Integer> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new, false), "version", "", __namingType, false);
+    public final org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Integer, java.lang.Integer> $version = new org.seasar.doma.jdbc.entity.VersionPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new), "version", "", __namingType, false);
 
     /** the object */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Object, java.lang.Object> $object = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.ObjectWrapper::new, false), "object", "", __namingType, true, true, false);
+    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, java.lang.Object, java.lang.Object> $object = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.Emp.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.ObjectWrapper::new), "object", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.internal.apt.processor.entity.EmpListener> __listenerSupplier;
 
