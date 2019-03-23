@@ -22,9 +22,7 @@ public class TypeParametersDef {
   }
 
   public List<String> getTypeVariables() {
-    return typeParameterNameMap
-        .keySet()
-        .stream()
+    return typeParameterNameMap.keySet().stream()
         .map(Element::getSimpleName)
         .map(Name::toString)
         .collect(collectingAndThen(toList(), Collections::unmodifiableList));

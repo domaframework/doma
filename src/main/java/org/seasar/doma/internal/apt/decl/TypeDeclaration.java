@@ -177,8 +177,7 @@ public class TypeDeclaration {
     if (typeElement == null) {
       return Optional.empty();
     }
-    return constructorsIn(typeElement.getEnclosedElements())
-        .stream()
+    return constructorsIn(typeElement.getEnclosedElements()).stream()
         .filter(c -> c.getModifiers().contains(Modifier.PUBLIC))
         .filter(c -> c.getParameters().size() == parameterTypeDeclarations.size())
         .filter(c -> isAssignable(parameterTypeDeclarations, c.getParameters()))
@@ -201,16 +200,13 @@ public class TypeDeclaration {
   }
 
   private List<FieldDeclaration> getCandidateFieldDeclarations(String name, boolean statik) {
-    return typeParameterDeclarationsMap
-        .entrySet()
-        .stream()
+    return typeParameterDeclarationsMap.entrySet().stream()
         .map(e -> new Pair<>(e.getKey(), e.getValue()))
         .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
         .filter(p -> Objects.nonNull(p.fst))
         .flatMap(
             p ->
-                fieldsIn(p.fst.getEnclosedElements())
-                    .stream()
+                fieldsIn(p.fst.getEnclosedElements()).stream()
                     .filter(f -> !statik || f.getModifiers().contains(Modifier.STATIC))
                     .filter(f -> f.getSimpleName().contentEquals(name))
                     .map(f -> ctx.getDeclarations().newFieldDeclaration(f, p.snd)))
@@ -251,16 +247,13 @@ public class TypeDeclaration {
 
   private List<MethodDeclaration> getCandidateMethodDeclarations(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
-    return typeParameterDeclarationsMap
-        .entrySet()
-        .stream()
+    return typeParameterDeclarationsMap.entrySet().stream()
         .map(e -> new Pair<>(e.getKey(), e.getValue()))
         .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
         .filter(p -> Objects.nonNull(p.fst))
         .flatMap(
             p ->
-                methodsIn(p.fst.getEnclosedElements())
-                    .stream()
+                methodsIn(p.fst.getEnclosedElements()).stream()
                     .filter(m -> !statik || m.getModifiers().contains(Modifier.STATIC))
                     .filter(m -> m.getModifiers().contains(Modifier.PUBLIC))
                     .filter(m -> m.getSimpleName().contentEquals(name))

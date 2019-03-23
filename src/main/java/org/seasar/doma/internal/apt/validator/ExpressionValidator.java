@@ -598,9 +598,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
   private TypeDeclaration convertIfOptional(TypeDeclaration typeDeclaration) {
     if (typeDeclaration.is(Optional.class)) {
       TypeParameterDeclaration typeParameterDeclaration =
-          typeDeclaration
-              .getTypeParameterDeclarations()
-              .stream()
+          typeDeclaration.getTypeParameterDeclarations().stream()
               .findFirst()
               .orElseThrow(() -> new AptIllegalStateException(typeDeclaration.toString()));
       return ctx.getDeclarations().newTypeDeclaration(typeParameterDeclaration.getActualType());
