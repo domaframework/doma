@@ -91,9 +91,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     }
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
-    return entityType
-        .getEntityPropertyTypes()
-        .stream()
+    return entityType.getEntityPropertyTypes().stream()
         .map(p -> p.getColumnName(naming::apply, dialect::applyQuote))
         .collect(Collectors.toList());
   }

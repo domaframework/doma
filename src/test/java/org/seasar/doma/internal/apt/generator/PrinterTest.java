@@ -85,8 +85,7 @@ class PrinterTest extends CompilerSupport {
           protected void run() {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(testClass);
             VariableElement field =
-                ElementFilter.fieldsIn(typeElement.getEnclosedElements())
-                    .stream()
+                ElementFilter.fieldsIn(typeElement.getEnclosedElements()).stream()
                     .filter(f -> f.getSimpleName().contentEquals("field"))
                     .findFirst()
                     .orElseThrow(AssertionError::new);

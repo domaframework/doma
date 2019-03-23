@@ -193,9 +193,7 @@ public class CtTypes {
     }
     Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
     List<CtType> typeArgCtTypes =
-        typeElement
-            .getTypeParameters()
-            .stream()
+        typeElement.getTypeParameters().stream()
             .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
             .collect(toList());
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
@@ -523,8 +521,7 @@ public class CtTypes {
             this::newResultCtType,
             this::newBatchResultCtType);
     CtType ctType =
-        functions
-            .stream()
+        functions.stream()
             .map(f -> f.apply(type))
             .filter(Objects::nonNull)
             .findFirst()

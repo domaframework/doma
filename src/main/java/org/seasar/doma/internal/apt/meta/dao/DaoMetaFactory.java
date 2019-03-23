@@ -155,8 +155,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(configElement);
       if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
         Optional<VariableElement> field =
-            ElementFilter.fieldsIn(configElement.getEnclosedElements())
-                .stream()
+            ElementFilter.fieldsIn(configElement.getEnclosedElements()).stream()
                 .filter(e -> e.getSimpleName().contentEquals(SINGLETON_CONFIG_FIELD_NAME))
                 .filter(
                     e ->
@@ -179,8 +178,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     } else {
       String methodName = singletonConfig.method();
       boolean present =
-          ElementFilter.methodsIn(configElement.getEnclosedElements())
-              .stream()
+          ElementFilter.methodsIn(configElement.getEnclosedElements()).stream()
               .filter(
                   m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
               .filter(
@@ -224,10 +222,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private void doParentDao(DaoMeta daoMeta) {
     List<TypeElement> interfaces =
-        daoMeta
-            .getTypeElement()
-            .getInterfaces()
-            .stream()
+        daoMeta.getTypeElement().getInterfaces().stream()
             .map(type -> ctx.getMoreTypes().toTypeElement(type))
             .peek(
                 element -> {
@@ -258,8 +253,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private ExecutableElement findNonDefaultMethod(TypeElement interfaceElement) {
     Optional<ExecutableElement> method =
-        ElementFilter.methodsIn(interfaceElement.getEnclosedElements())
-            .stream()
+        ElementFilter.methodsIn(interfaceElement.getEnclosedElements()).stream()
             .filter(m -> !m.isDefault())
             .findAny();
     if (method.isPresent()) {

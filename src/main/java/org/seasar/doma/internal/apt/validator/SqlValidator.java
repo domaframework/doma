@@ -75,9 +75,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
       sqlNode.accept(this, null);
       Set<String> unreferredName = new HashSet<>(parameterTypeMap.keySet());
       unreferredName.removeAll(expressionValidator.getValidatedParameterNames());
-      methodElement
-          .getParameters()
-          .stream()
+      methodElement.getParameters().stream()
           .filter(e -> unreferredName.contains(e.getSimpleName().toString()))
           .forEach(this::reportUnreferredParameter);
     } catch (AptException e) {

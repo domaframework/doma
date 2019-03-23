@@ -28,10 +28,7 @@ public class DaoAnnot extends AbstractAnnot {
     this.config = assertNonNullValue(values, CONFIG);
     this.accessLevel = assertNonNullValue(values, ACCESS_LEVEL);
     this.hasUserDefinedConfig =
-        annotationMirror
-            .getElementValues()
-            .keySet()
-            .stream()
+        annotationMirror.getElementValues().keySet().stream()
             .anyMatch(e -> e.getSimpleName().contentEquals(CONFIG));
   }
 

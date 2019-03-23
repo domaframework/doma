@@ -386,8 +386,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
     VariableElement findSingleField(TypeElement classElement, DomainMeta domainMeta) {
       List<VariableElement> fields =
-          ElementFilter.fieldsIn(classElement.getEnclosedElements())
-              .stream()
+          ElementFilter.fieldsIn(classElement.getEnclosedElements()).stream()
               .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
               .collect(Collectors.toList());
       if (fields.size() == 0) {

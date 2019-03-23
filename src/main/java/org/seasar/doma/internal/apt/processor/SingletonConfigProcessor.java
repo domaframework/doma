@@ -57,8 +57,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
   }
 
   protected void validateConstructors(TypeElement typeElement) {
-    ElementFilter.constructorsIn(typeElement.getEnclosedElements())
-        .stream()
+    ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
         .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
         .findAny()
         .ifPresent(
@@ -69,8 +68,7 @@ public class SingletonConfigProcessor extends AbstractProcessor {
 
   protected void validateMethod(TypeElement typeElement, String methodName) {
     Optional<ExecutableElement> method =
-        ElementFilter.methodsIn(typeElement.getEnclosedElements())
-            .stream()
+        ElementFilter.methodsIn(typeElement.getEnclosedElements()).stream()
             .filter(m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
             .filter(
                 m -> ctx.getMoreTypes().isAssignableWithErasure(m.getReturnType(), Config.class))

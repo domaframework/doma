@@ -34,8 +34,7 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
     this.name = name;
     this.embeddablePropertyTypes = embeddablePropertyType;
     this.embeddablePropertyTypeMap =
-        this.embeddablePropertyTypes
-            .stream()
+        this.embeddablePropertyTypes.stream()
             .collect(toMap(EntityPropertyType::getName, Function.identity()));
     this.field = new PropertyField<>(name, entityClass);
   }
