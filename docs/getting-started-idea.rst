@@ -19,7 +19,8 @@ You install `JDK 8`_ .
 
 .. note::
 
-  Doma support JDK 9 and JDK 10, 11.
+  Doma supports JDK 8 and later.
+  See also :ref:`Which version of JDK does Doma support?<which-version-of-jdk-does-doma-support>`.
 
 Install IntelliJ IDEA
 ======================
