@@ -19,7 +19,8 @@ You install `JDK 8`_ .
 
 .. note::
 
-  Doma also supports JDK 9, 10 and 11.
+  Doma supports JDK 8 and later.
+  See also :ref:`Which version of JDK does Doma support?<which-version-of-jdk-does-doma-support>`.
 
 Install Eclipse
 ===============

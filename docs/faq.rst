@@ -31,7 +31,7 @@ Runtime environment
 Which version of JRE does Doma support?
 ---------------------------------------
 
-JRE 8, 9, 10 and 11.
+JRE 8, 9, 10, 11 and 12.
 
 Which libraries are required for Doma to work?
 ----------------------------------------------
@@ -43,10 +43,12 @@ Doma has no dependencies on other libraries.
 Development environment
 =======================
 
+.. _which-version-of-jdk-does-doma-support:
+
 Which version of JDK does Doma support?
 ---------------------------------------
 
-JDK 8, 9, 10 and 11.
+JDK 8, 9, 10, 11 and 12.
 
 Which IDE do you recommend?
 ---------------------------
