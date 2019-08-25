@@ -2,6 +2,12 @@
 Release notes
 =============
 
+v2.25.1: 2019-08-25
+======================
+
+* `GH324 <https://github.com/domaframework/doma/pull/324>`_
+  Fix null dereference
+
 v2.25.0: 2019-08-25
 ======================
 
