@@ -2,6 +2,24 @@
 Release notes
 =============
 
+v2.25.0: 2019-08-25
+======================
+
+* `GH322 <https://github.com/domaframework/doma/pull/322>`_
+  Describe settings for IntelliJ IDEA Community Edition 2019.2.1
+* `GH321 <https://github.com/domaframework/doma/pull/321>`_
+  Support domain mapping using ExternalDomain of Java Array
+* `GH314 <https://github.com/domaframework/doma/pull/314>`_
+  Upgrade google-java-format to 1.7
+* `GH313 <https://github.com/domaframework/doma/pull/313>`_
+  Upgrade spotless-plugin-gradle to 3.20.0
+* `GH312 <https://github.com/domaframework/doma/pull/312>`_
+  Clarify support for Java 12
+* `GH311 <https://github.com/domaframework/doma/pull/311>`_
+  Introduce wrapper classes dedicated to primitive types
+* `GH310 <https://github.com/domaframework/doma/pull/310>`_
+  Upgrade JUnit to 5.4.0
+
 v2.24.0: 2019-02-23
 ======================
 
