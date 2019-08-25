@@ -50,6 +50,7 @@ class ExternalDomainProcessorTest extends CompilerSupport {
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
       return Stream.of(
+          invocationContext(StringArrayConverter.class, String[].class),
           invocationContext(
               UpperBoundParameterizedValueObjectConverter.class,
               UpperBoundParameterizedValueObject.class),
@@ -104,7 +105,9 @@ class ExternalDomainProcessorTest extends CompilerSupport {
           invocationContext(IllegalParameterizedValueObjectConverter.class, Message.DOMA4203),
           invocationContext(NotPersistentValueObjectConverter.class, Message.DOMA4194),
           invocationContext(ConstrutorNotFoundDomainConverter.class, Message.DOMA4193),
-          invocationContext(AbstractDomainConverter.class, Message.DOMA4192));
+          invocationContext(AbstractDomainConverter.class, Message.DOMA4192),
+          invocationContext(MultidimensionalArrayConverter.class, Message.DOMA4447),
+          invocationContext(ListArrayConverter.class, Message.DOMA4448));
     }
 
     private TestTemplateInvocationContext invocationContext(

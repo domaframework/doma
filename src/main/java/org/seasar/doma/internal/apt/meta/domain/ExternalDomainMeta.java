@@ -19,6 +19,8 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
   private TypeElement typeElement;
 
+  private TypeMirror type;
+
   private TypeParametersDef typeParametersDef;
 
   public ExternalDomainMeta(TypeElement converterElement) {
@@ -66,12 +68,16 @@ public class ExternalDomainMeta implements TypeElementMeta {
     return typeParametersDef.getTypeParameters();
   }
 
-  public TypeMirror getType() {
-    return typeElement.asType();
+  public void setType(TypeMirror type) {
+    this.type = type;
+  }
+
+  public TypeMirror asType() {
+    return typeElement != null ? typeElement.asType() : type;
   }
 
   public boolean isParameterized() {
-    return !typeElement.getTypeParameters().isEmpty();
+    return typeElement != null && !typeElement.getTypeParameters().isEmpty();
   }
 
   @Override

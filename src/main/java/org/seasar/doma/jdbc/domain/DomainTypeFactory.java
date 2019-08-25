@@ -1,5 +1,7 @@
 package org.seasar.doma.jdbc.domain;
 
+import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+
 import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
@@ -99,20 +101,14 @@ public final class DomainTypeFactory {
     if (classHelper == null) {
       throw new DomaNullPointerException("classHelper");
     }
-    Class<?> clazz =
-        ClassUtil.traverse(
-            domainClass,
-            c -> {
-              String domainTypeClassName =
-                  ClassNames.newExternalDomainDescClassName(c.getName()).toString();
-              try {
-                return classHelper.forName(domainTypeClassName);
-              } catch (WrapException e) {
-                return null;
-              } catch (Exception e) {
-                return null;
-              }
-            });
+    Class<?> clazz;
+    if (domainClass.isArray()) {
+      String domainName =
+          domainClass.getComponentType().getName() + EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+      clazz = loadExternalDomainDescClass(domainName, classHelper);
+    } else {
+      clazz = loadExternalDomainDescClassWithTraversal(domainClass, classHelper);
+    }
     if (clazz == null) {
       return null;
     }
@@ -124,5 +120,26 @@ public final class DomainTypeFactory {
     } catch (Exception e) {
       return null;
     }
+  }
+
+  private static Class<?> loadExternalDomainDescClass(String domainName, ClassHelper classHelper) {
+    String domainTypeClassName = ClassNames.newExternalDomainDescClassName(domainName).toString();
+    try {
+      return classHelper.forName(domainTypeClassName);
+    } catch (WrapException e) {
+      return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  private static Class<?> loadExternalDomainDescClassWithTraversal(
+      Class<?> domainClass, ClassHelper classHelper) {
+    return ClassUtil.traverse(
+        domainClass,
+        c -> {
+          String domainName = c.getName();
+          return loadExternalDomainDescClass(domainName, classHelper);
+        });
   }
 }

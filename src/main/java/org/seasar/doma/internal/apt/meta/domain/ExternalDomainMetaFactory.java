@@ -12,6 +12,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -87,6 +88,24 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
 
   private void doDomainType(
       TypeElement converterElement, TypeMirror domainType, ExternalDomainMeta meta) {
+    meta.setType(domainType);
+
+    ArrayType arrayType = ctx.getMoreTypes().toArrayType(domainType);
+    if (arrayType != null) {
+      TypeMirror componentType = arrayType.getComponentType();
+      if (componentType.getKind() == TypeKind.ARRAY) {
+        throw new AptException(Message.DOMA4447, converterElement, new Object[] {});
+      }
+      TypeElement componentElement = ctx.getMoreTypes().toTypeElement(componentType);
+      if (componentElement == null) {
+        throw new AptIllegalStateException(componentType.toString());
+      }
+      if (!componentElement.getTypeParameters().isEmpty()) {
+        throw new AptException(Message.DOMA4448, converterElement, new Object[] {});
+      }
+      return;
+    }
+
     TypeElement domainElement = ctx.getMoreTypes().toTypeElement(domainType);
     if (domainElement == null) {
       throw new AptIllegalStateException(domainType.toString());

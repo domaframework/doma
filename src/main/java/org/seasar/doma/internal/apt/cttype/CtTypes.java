@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -175,6 +176,21 @@ public class CtTypes {
 
   public DomainCtType newDomainCtType(TypeMirror type) {
     assertNotNull(type);
+
+    if (type.getKind() == TypeKind.ARRAY) {
+      DomainInfo info = getExternalDomainInfo(type);
+      if (info == null) {
+        return null;
+      }
+      BasicCtType basicCtType = newBasicCtType(info.valueType);
+      if (basicCtType == null) {
+        return null;
+      }
+      Name name = ctx.getNames().createExternalDomainName(type);
+      ClassName descClassName = ClassNames.newExternalDomainDescClassName(name);
+      return new DomainCtType(ctx, type, basicCtType, Collections.emptyList(), descClassName);
+    }
+
     TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
@@ -199,7 +215,8 @@ public class CtTypes {
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName descClassName;
     if (info.external) {
-      descClassName = ClassNames.newExternalDomainDescClassName(binaryName);
+      Name name = ctx.getNames().createExternalDomainName(type);
+      descClassName = ClassNames.newExternalDomainDescClassName(name);
     } else {
       descClassName = ClassNames.newDomainDescClassName(binaryName);
     }
@@ -211,7 +228,7 @@ public class CtTypes {
     if (domain != null) {
       return getDomainInfo(domain);
     }
-    return getExternalDomainInfo(typeElement);
+    return getExternalDomainInfo(typeElement.asType());
   }
 
   private DomainInfo getDomainInfo(Domain domain) {
@@ -223,10 +240,9 @@ public class CtTypes {
     throw new AptIllegalStateException("unreachable.");
   }
 
-  private DomainInfo getExternalDomainInfo(TypeElement typeElement) {
+  private DomainInfo getExternalDomainInfo(TypeMirror domainType) {
     String csv = ctx.getOptions().getDomainConverters();
     if (csv != null) {
-      TypeMirror domainType = typeElement.asType();
       for (String value : csv.split(",")) {
         String className = value.trim();
         if (className.isEmpty()) {
@@ -497,10 +513,10 @@ public class CtTypes {
 
   private CtType newCtTypeInternal(
       TypeMirror type, CtTypeVisitor<Void, Void, AptException> validator) {
+    // The newArrayCtType function must be after the newDomainCtType function
     List<Function<TypeMirror, CtType>> functions =
         Arrays.asList(
             this::newIterableCtType,
-            this::newArrayCtType,
             this::newStreamCtType,
             this::newEntityCtType,
             this::newOptionalCtType,
@@ -519,7 +535,8 @@ public class CtTypes {
             this::newPreparedSqlCtType,
             this::newConfigCtType,
             this::newResultCtType,
-            this::newBatchResultCtType);
+            this::newBatchResultCtType,
+            this::newArrayCtType);
     CtType ctType =
         functions.stream()
             .map(f -> f.apply(type))

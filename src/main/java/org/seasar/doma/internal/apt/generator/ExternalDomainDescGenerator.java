@@ -49,7 +49,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
           /* 1 */ simpleName,
           /* 2 */ AbstractDomainType.class,
           /* 3 */ domainMeta.getValueType(),
-          /* 4 */ domainMeta.getType(),
+          /* 4 */ domainMeta.asType(),
           /* 5 */ domainMeta.getTypeParameters());
     } else {
       iprint(
@@ -57,7 +57,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
           /* 1 */ simpleName,
           /* 2 */ AbstractDomainType.class,
           /* 3 */ domainMeta.getValueType(),
-          /* 4 */ domainMeta.getType());
+          /* 4 */ domainMeta.asType());
     }
     print("%n");
     indent();
@@ -102,10 +102,9 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
     }
     iprint("@Override%n");
     iprint(
-        "protected %1$s newDomain(%2$s value) {%n",
-        domainMeta.getType(), domainMeta.getValueType());
+        "protected %1$s newDomain(%2$s value) {%n", domainMeta.asType(), domainMeta.getValueType());
     if (domainMeta.isParameterized()) {
-      iprint("    return (%1$s) converter.fromValueToDomain(value);%n", domainMeta.getType());
+      iprint("    return (%1$s) converter.fromValueToDomain(value);%n", domainMeta.asType());
     } else {
       iprint("    return converter.fromValueToDomain(value);%n");
     }
@@ -117,7 +116,7 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "protected %1$s getBasicValue(%2$s domain) {%n",
-        domainMeta.getValueType(), domainMeta.getType());
+        domainMeta.getValueType(), domainMeta.asType());
     iprint("    if (domain == null) {%n");
     iprint("        return null;%n");
     iprint("    }%n");
@@ -139,12 +138,16 @@ public class ExternalDomainDescGenerator extends AbstractGenerator {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
     iprint("@Override%n");
-    iprint("public Class<%1$s> getDomainClass() {%n", domainMeta.getType());
+    iprint("public Class<%1$s> getDomainClass() {%n", domainMeta.asType());
     if (domainMeta.isParameterized()) {
       iprint("    Class<?> clazz = %1$s.class;%n", domainMeta.getTypeElement());
-      iprint("    return (Class<%1$s>) clazz;%n", domainMeta.getType());
+      iprint("    return (Class<%1$s>) clazz;%n", domainMeta.asType());
     } else {
-      iprint("    return %1$s.class;%n", domainMeta.getTypeElement());
+      if (domainMeta.getTypeElement() != null) {
+        iprint("    return %1$s.class;%n", domainMeta.getTypeElement());
+      } else {
+        iprint("    return %1$s.class;%n", domainMeta.asType());
+      }
     }
     iprint("}%n");
     print("%n");

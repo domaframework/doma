@@ -1,6 +1,7 @@
 package org.seasar.doma.internal.apt;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -43,7 +44,11 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
       ParameterContext parameterContext, ExtensionContext extensionContext)
       throws ParameterResolutionException {
     if (isExternalDomain) {
-      return ClassNames.newExternalDomainDescClassName(clazz.getName()).toString();
+      String name =
+          clazz.isArray()
+              ? clazz.getComponentType().getName() + EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX
+              : clazz.getName();
+      return ClassNames.newExternalDomainDescClassName(name).toString();
     }
     if (clazz.isAnnotationPresent(Dao.class)) {
       return clazz.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
