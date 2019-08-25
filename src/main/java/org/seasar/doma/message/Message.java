@@ -901,6 +901,8 @@ public enum Message implements MessageResource {
   DOMA4444("cannot combine with the annotation \"{0}\"."),
   DOMA4445("When the method is annotated with @Sql, the sqlFile element must be \"false\"."),
   DOMA4446("cannot annotate the default method."),
+  DOMA4447("The multidimensional array is not supported as a domain class."),
+  DOMA4448("The component type of the array must not have any type parameter."),
 
   // other
   DOMA5001(

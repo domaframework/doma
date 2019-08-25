@@ -38,4 +38,17 @@ public class DomainTypeFactoryTest {
       System.out.println(e.getMessage());
     }
   }
+
+  @Test
+  public void testGetExternalDomainType() throws Exception {
+    DomainType<String, Job> type = DomainTypeFactory.getExternalDomainType(Job.class, classHelper);
+    assertNotNull(type);
+  }
+
+  @Test
+  public void testGetExternalDomainType_array() throws Exception {
+    DomainType<Object, String[]> type =
+        DomainTypeFactory.getExternalDomainType(String[].class, classHelper);
+    assertNotNull(type);
+  }
 }

@@ -57,6 +57,7 @@ class EntityProcessorTest extends CompilerSupport {
           invocationContext(Emp.class),
           invocationContext(Dept.class),
           invocationContext(User.class),
+          invocationContext(Room.class),
           invocationContext(ImmutableUser.class),
           invocationContext(CommonChild.class),
           invocationContext(PackagePrivateEntity.class),

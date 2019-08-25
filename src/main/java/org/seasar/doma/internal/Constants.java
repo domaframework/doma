@@ -20,6 +20,8 @@ public final class Constants {
 
   public static final String EXTERNAL_DOMAIN_DESC_ROOT_PACKAGE = "__";
 
+  public static final String EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX = "__ARRAY__";
+
   public static final String DESC_NAME_DELIMITER = "__";
 
   public static final String BINARY_NAME_DELIMITER = "$";
