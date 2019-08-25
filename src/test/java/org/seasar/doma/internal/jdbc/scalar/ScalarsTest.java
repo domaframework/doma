@@ -85,6 +85,19 @@ public class ScalarsTest {
   }
 
   @Test
+  public void testWrapBasic_primitiveType_null() throws Exception {
+    Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, int.class, false, classHelper);
+    assertNotNull(supplier);
+
+    Scalar<?, ?> scalar = supplier.get();
+    assertEquals(0, scalar.get());
+
+    Wrapper<?> wrapper = scalar.getWrapper();
+    assertEquals(PrimitiveIntWrapper.class, wrapper.getClass());
+    assertEquals(0, wrapper.get());
+  }
+
+  @Test
   public void testWrapBasic_null() throws Exception {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, false, classHelper);
     assertNotNull(supplier);

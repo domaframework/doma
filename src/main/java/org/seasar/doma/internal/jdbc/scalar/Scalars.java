@@ -85,31 +85,50 @@ public final class Scalars {
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == boolean.class) {
-      Supplier<Wrapper<Boolean>> supplier = () -> new PrimitiveBooleanWrapper((boolean) value);
+      Supplier<Wrapper<Boolean>> supplier =
+          () ->
+              value == null
+                  ? new PrimitiveBooleanWrapper()
+                  : new PrimitiveBooleanWrapper((boolean) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == byte.class) {
-      Supplier<Wrapper<Byte>> supplier = () -> new PrimitiveByteWrapper((byte) value);
+      Supplier<Wrapper<Byte>> supplier =
+          () -> value == null ? new PrimitiveByteWrapper() : new PrimitiveByteWrapper((byte) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == double.class) {
-      Supplier<Wrapper<Double>> supplier = () -> new PrimitiveDoubleWrapper((double) value);
+      Supplier<Wrapper<Double>> supplier =
+          () ->
+              value == null
+                  ? new PrimitiveDoubleWrapper()
+                  : new PrimitiveDoubleWrapper((double) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == float.class) {
-      Supplier<Wrapper<Float>> supplier = () -> new PrimitiveFloatWrapper((float) value);
+      Supplier<Wrapper<Float>> supplier =
+          () ->
+              value == null
+                  ? new PrimitiveFloatWrapper()
+                  : new PrimitiveFloatWrapper((float) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == int.class) {
-      Supplier<Wrapper<Integer>> supplier = () -> new PrimitiveIntWrapper((int) value);
+      Supplier<Wrapper<Integer>> supplier =
+          () -> value == null ? new PrimitiveIntWrapper() : new PrimitiveIntWrapper((int) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == long.class) {
-      Supplier<Wrapper<Long>> supplier = () -> new PrimitiveLongWrapper((long) value);
+      Supplier<Wrapper<Long>> supplier =
+          () -> value == null ? new PrimitiveLongWrapper() : new PrimitiveLongWrapper((long) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == short.class) {
-      Supplier<Wrapper<Short>> supplier = () -> new PrimitiveShortWrapper((short) value);
+      Supplier<Wrapper<Short>> supplier =
+          () ->
+              value == null
+                  ? new PrimitiveShortWrapper()
+                  : new PrimitiveShortWrapper((short) value);
       return createBasicScalarSupplier(supplier, optional);
     }
     if (valueClass == Integer.class) {
