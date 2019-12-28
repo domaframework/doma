@@ -28,6 +28,10 @@ public class IfNode extends AbstractSqlNode implements SpaceStrippingNode {
     return expression;
   }
 
+  public String getText() {
+    return text;
+  }
+
   @Override
   public void clearChildren() {
     children.clear();
