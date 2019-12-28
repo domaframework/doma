@@ -35,6 +35,10 @@ public class ForNode extends AbstractSqlNode implements SpaceStrippingNode {
     return expression;
   }
 
+  public String getText() {
+    return text;
+  }
+
   @Override
   public void clearChildren() {
     children.clear();

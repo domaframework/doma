@@ -14,6 +14,10 @@ public class ElseNode extends AbstractSqlNode implements SpaceStrippingNode {
     this.text = text;
   }
 
+  public String getText() {
+    return text;
+  }
+
   @Override
   public void clearChildren() {
     children.clear();

@@ -3,20 +3,16 @@ package org.seasar.doma.internal.jdbc.dialect;
 import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
+import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
-import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
-import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
-import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.OrderByClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
-import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
-import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.jdbc.sql.node.*;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
 public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
+
+  private final AliasReplacer replacer = new AliasReplacer();
 
   protected final long offset;
 
@@ -58,18 +54,8 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
 
     OrderByClauseNode orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
     for (SqlNode child : originalOrderBy.getChildren()) {
-      if (child instanceof WordNode) {
-        WordNode wordNode = (WordNode) child;
-        String word = wordNode.getWord();
-        String[] names = word.split("\\.");
-        if (names.length == 2) {
-          orderBy.appendNode(new WordNode("temp_." + names[1]));
-        } else {
-          orderBy.appendNode(child);
-        }
-      } else {
-        orderBy.appendNode(child);
-      }
+      SqlNode newChild = child.accept(replacer, null);
+      orderBy.appendNode(newChild);
     }
 
     SelectClauseNode select = new SelectClauseNode("select");
@@ -107,5 +93,78 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
   @Override
   protected SqlNode defaultAction(SqlNode node, Void p) {
     return node;
+  }
+
+  protected static class AliasReplacer extends SimpleSqlNodeVisitor<SqlNode, Void> {
+
+    @Override
+    public SqlNode visitWordNode(WordNode node, Void aVoid) {
+      String word = node.getWord();
+      String[] names = word.split("\\.");
+      if (names.length == 2) {
+        return new WordNode("temp_." + names[1]);
+      }
+      return node;
+    }
+
+    @Override
+    public SqlNode visitIfBlockNode(IfBlockNode node, Void aVoid) {
+      IfBlockNode ifBlockNode = new IfBlockNode();
+      IfNode originalIfNode = node.getIfNode();
+      IfNode ifNode =
+          buildNode(
+              originalIfNode, o -> new IfNode(o.getLocation(), o.getExpression(), o.getText()));
+      ifBlockNode.setIfNode(ifNode);
+      for (ElseifNode originalElseifNode : node.getElseifNodes()) {
+        ElseifNode elseifNode =
+            buildNode(
+                originalElseifNode,
+                o -> new ElseifNode(o.getLocation(), o.getExpression(), o.getText()));
+        ifBlockNode.addElseifNode(elseifNode);
+      }
+      ElseNode originalElseNode = node.getElseNode();
+      if (originalElseNode != null) {
+        ElseNode elseNode = buildNode(originalElseNode, o -> new ElseNode(o.getText()));
+        ifBlockNode.setElseNode(elseNode);
+      }
+      EndNode originalEndNode = node.getEndNode();
+      if (originalEndNode != null) {
+        EndNode endNode = buildNode(originalEndNode, o -> new EndNode(o.getText()));
+        ifBlockNode.setEndNode(endNode);
+      }
+      return ifBlockNode;
+    }
+
+    @Override
+    public SqlNode visitForBlockNode(ForBlockNode node, Void aVoid) {
+      ForBlockNode forBlockNode = new ForBlockNode();
+      ForNode originalForNode = node.getForNode();
+      ForNode forNode =
+          buildNode(
+              originalForNode,
+              o -> new ForNode(o.getLocation(), o.getIdentifier(), o.getExpression(), o.getText()));
+      forBlockNode.setForNode(forNode);
+      EndNode originalEndNode = node.getEndNode();
+      if (originalEndNode != null) {
+        EndNode endNode = buildNode(originalEndNode, o -> new EndNode(o.getText()));
+        forBlockNode.setEndNode(endNode);
+      }
+      return forBlockNode;
+    }
+
+    private <NODE extends AppendableSqlNode> NODE buildNode(
+        NODE originalNode, Function<NODE, NODE> factory) {
+      NODE newNode = factory.apply(originalNode);
+      for (SqlNode child : originalNode.getChildren()) {
+        SqlNode newChild = child.accept(this, null);
+        newNode.appendNode(newChild);
+      }
+      return newNode;
+    }
+
+    @Override
+    protected SqlNode defaultAction(SqlNode node, Void p) {
+      return node;
+    }
   }
 }
