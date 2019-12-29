@@ -77,6 +77,7 @@ Major versions
 | Java 10 |        |   v    |
 | Java 11 |        |   v    |
 | Java 12 |        |   v    |
+| Java 13 |        |   v    |
 
 License
 -------
