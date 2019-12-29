@@ -2,6 +2,14 @@
 Release notes
 =============
 
+v2.26.0: 2019-12-29
+======================
+
+* `GH330 <https://github.com/domaframework/doma/pull/330>`_
+  Clarify support for Java 13
+* `GH329 <https://github.com/domaframework/doma/pull/329>`_
+  Replace table aliases in the ORDER BY clause
+
 v2.25.1: 2019-08-25
 ======================
 
