@@ -121,7 +121,9 @@ public class DaoImplGenerator extends AbstractGenerator {
         printAnnotatedConstructor();
       }
     } else {
-      printNoArgConstructor();
+      if (ctx.getOptions().isDaoDefaultConstructorRequired()) {
+        printNoArgConstructor();
+      }
       printAnnotatedConstructor();
     }
   }

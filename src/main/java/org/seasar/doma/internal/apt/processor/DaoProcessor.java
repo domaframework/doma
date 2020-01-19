@@ -28,6 +28,7 @@ import org.seasar.doma.internal.util.ClassUtil;
   Options.DAO_PACKAGE,
   Options.DAO_SUBPACKAGE,
   Options.DAO_SUFFIX,
+  Options.DAO_DEFAULT_CONSTRUCTOR,
   Options.EXPR_FUNCTIONS,
   Options.SQL_VALIDATION,
   Options.VERSION_VALIDATION,
