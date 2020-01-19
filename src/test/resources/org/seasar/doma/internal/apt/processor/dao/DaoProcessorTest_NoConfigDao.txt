@@ -10,6 +10,11 @@ public class NoConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
 
+    /** Dummy constructor for CDI */
+    public NoConfigDaoImpl() {
+        super();
+    }
+
     /**
      * @param config the config
      */

@@ -19,6 +19,11 @@ public abstract class AbstractDao implements ConfigProvider {
 
   protected final Config __config;
 
+  // Dummy constructor for CDI
+  protected AbstractDao() {
+    this.__config = null;
+  }
+
   protected AbstractDao(Config config) {
     if (config == null) {
       throw new DomaNullPointerException("config");
