@@ -26,8 +26,6 @@ public final class Options {
 
   public static final String DAO_SUBPACKAGE = "doma.dao.subpackage";
 
-  public static final String DAO_DEFAULT_CONSTRUCTOR = "doma.dao.defaultConstructor";
-
   public static final String DAO_SUFFIX = "doma.dao.suffix";
 
   public static final String ENTITY_FIELD_PREFIX = "doma.entity.field.prefix";
@@ -88,11 +86,6 @@ public final class Options {
 
   public String getDaoSubpackage() {
     return getOption(DAO_SUBPACKAGE);
-  }
-
-  public boolean isDaoDefaultConstructorRequired() {
-    String required = getOption(DAO_DEFAULT_CONSTRUCTOR);
-    return required == null ? true : Boolean.valueOf(required);
   }
 
   public String getDaoSuffix() {

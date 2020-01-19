@@ -124,8 +124,7 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(ResultStreamDao.class),
           invocationContext(PlainSingletonConfigDao.class),
           invocationContext(SqlProcessorDao.class),
-          invocationContext(OnlyDefaultMethodsExtendsDao.class),
-          invocationContext(NoDefaultConstructorDao.class, "-Adoma.dao.defaultConstructor=false"));
+          invocationContext(OnlyDefaultMethodsExtendsDao.class));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {
