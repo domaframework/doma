@@ -121,6 +121,7 @@ public class DaoImplGenerator extends AbstractGenerator {
         printAnnotatedConstructor();
       }
     } else {
+      printNoArgConstructor();
       printAnnotatedConstructor();
     }
   }
@@ -146,6 +147,13 @@ public class DaoImplGenerator extends AbstractGenerator {
             p.print("%1$s.%2$s()", type, method);
           }
         });
+  }
+
+  private void printNoArgConstructor() {
+    iprint("/** */%n");
+    iprint("%1$s() {%n", simpleName);
+    iprint("}%n");
+    print("%n");
   }
 
   private void printNoArgConstructor(Code configCode) {
