@@ -60,6 +60,12 @@ public class Annotations {
     return newInstance(annotationMirror, AnnotationAnnot::new);
   }
 
+  public ApplicationScopedAnnot newApplicationScopedAnnot(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newInstance(
+        typeElement, ctx.getOptions().getCdiApplicationScoped(), ApplicationScopedAnnot::new);
+  }
+
   public ArrayFactoryAnnot newArrayFactoryAnnot(ExecutableElement method) {
     assertNotNull(method);
     return newInstance(method, ArrayFactory.class, ArrayFactoryAnnot::new);

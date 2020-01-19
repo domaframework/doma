@@ -46,6 +46,9 @@ public final class Options {
 
   public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
+  public static final String CDI_APPLICATION_SCOPED =
+      "doma.javax.enterprise.context.ApplicationScoped";
+
   private final Context ctx;
 
   private final Map<String, String> options;
@@ -134,6 +137,11 @@ public final class Options {
     return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
   }
 
+  public String getCdiApplicationScoped() {
+    String name = getOption(CDI_APPLICATION_SCOPED);
+    return name != null ? name : Constants.DEFAULT_CDI_APPLICATION_SCOPED;
+  }
+
   private String getOption(String key) {
     String v = options.get(key);
     if (v != null) {
@@ -190,5 +198,8 @@ public final class Options {
     public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
 
     public static final String DEFAULT_LOMBOK_VALUE = "lombok.Value";
+
+    public static final String DEFAULT_CDI_APPLICATION_SCOPED =
+        "javax.enterprise.context.ApplicationScoped";
   }
 }

@@ -18,6 +18,7 @@ import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
+import org.seasar.doma.internal.apt.javax.enterprise.context.ApplicationScoped;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.message.Message;
 
@@ -124,7 +125,11 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(ResultStreamDao.class),
           invocationContext(PlainSingletonConfigDao.class),
           invocationContext(SqlProcessorDao.class),
-          invocationContext(OnlyDefaultMethodsExtendsDao.class));
+          invocationContext(OnlyDefaultMethodsExtendsDao.class),
+          invocationContext(
+              ApplicationScopedDao.class,
+              "-Adoma.javax.enterprise.context.ApplicationScoped="
+                  + ApplicationScoped.class.getName()));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {

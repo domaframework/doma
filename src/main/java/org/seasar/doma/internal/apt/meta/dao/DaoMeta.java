@@ -11,6 +11,7 @@ import org.seasar.doma.AccessLevel;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
+import org.seasar.doma.internal.apt.annot.ApplicationScopedAnnot;
 import org.seasar.doma.internal.apt.annot.DaoAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
@@ -22,6 +23,8 @@ public class DaoMeta implements TypeElementMeta {
   private final DaoAnnot daoAnnot;
 
   private AnnotateWithAnnot annotateWithAnnot;
+
+  private ApplicationScopedAnnot applicationScopedAnnot;
 
   private TypeMirror type;
 
@@ -96,6 +99,14 @@ public class DaoMeta implements TypeElementMeta {
 
   public void setAnnotateWithAnnot(AnnotateWithAnnot annotateWithAnnot) {
     this.annotateWithAnnot = annotateWithAnnot;
+  }
+
+  public ApplicationScopedAnnot getApplicationScopedAnnot() {
+    return applicationScopedAnnot;
+  }
+
+  public void setApplicationScopedAnnot(ApplicationScopedAnnot applicationScopedAnnot) {
+    this.applicationScopedAnnot = applicationScopedAnnot;
   }
 
   public List<AnnotationAnnot> getAnnotationMirrors(AnnotationTarget target) {

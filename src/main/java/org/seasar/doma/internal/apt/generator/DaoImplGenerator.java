@@ -17,6 +17,7 @@ import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryKind;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
+import org.seasar.doma.internal.jdbc.dao.AbstractAnnotationScopedDao;
 import org.seasar.doma.internal.jdbc.dao.AbstractDao;
 import org.seasar.doma.jdbc.Config;
 
@@ -75,9 +76,13 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private CharSequence getParentClassName() {
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    return parentDaoMeta == null
-        ? AbstractDao.class.getName()
-        : classNameProvider.apply(parentDaoMeta.getTypeElement());
+    if (parentDaoMeta != null) {
+      return classNameProvider.apply(parentDaoMeta.getTypeElement());
+    }
+    if (daoMeta.getApplicationScopedAnnot() != null) {
+      return AbstractAnnotationScopedDao.class.getName();
+    }
+    return AbstractDao.class.getName();
   }
 
   private void printStaticFields() {
@@ -121,6 +126,9 @@ public class DaoImplGenerator extends AbstractGenerator {
         printAnnotatedConstructor();
       }
     } else {
+      if (daoMeta.getApplicationScopedAnnot() != null) {
+        printNoArgConstructor();
+      }
       printAnnotatedConstructor();
     }
   }
@@ -146,6 +154,13 @@ public class DaoImplGenerator extends AbstractGenerator {
             p.print("%1$s.%2$s()", type, method);
           }
         });
+  }
+
+  private void printNoArgConstructor() {
+    iprint("/** */%n");
+    iprint("%1$s() {%n", simpleName);
+    iprint("}%n");
+    print("%n");
   }
 
   private void printNoArgConstructor(Code configCode) {

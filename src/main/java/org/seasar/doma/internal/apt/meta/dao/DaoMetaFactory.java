@@ -28,12 +28,7 @@ import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.Annot;
-import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
-import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
-import org.seasar.doma.internal.apt.annot.DaoAnnot;
-import org.seasar.doma.internal.apt.annot.ModifyAnnot;
-import org.seasar.doma.internal.apt.annot.SqlAnnot;
+import org.seasar.doma.internal.apt.annot.*;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.ArrayCreateQueryMetaFactory;
@@ -128,6 +123,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     daoMeta.setTypeElement(interfaceElement);
     daoMeta.setType(interfaceElement.asType());
     doAnnotateWith(daoMeta);
+    doApplicationScoped(daoMeta);
     doParentDao(daoMeta);
 
     DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
@@ -217,6 +213,14 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
         ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getTypeElement());
     if (annotateWithAnnot != null) {
       daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
+    }
+  }
+
+  private void doApplicationScoped(DaoMeta daoMeta) {
+    ApplicationScopedAnnot applicationScopedAnnot =
+        ctx.getAnnotations().newApplicationScopedAnnot(daoMeta.getTypeElement());
+    if (applicationScopedAnnot != null) {
+      daoMeta.setApplicationScopedAnnot(applicationScopedAnnot);
     }
   }
 
