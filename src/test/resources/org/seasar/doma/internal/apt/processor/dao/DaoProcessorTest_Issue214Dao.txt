@@ -10,10 +10,6 @@ public class Issue214DaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.Issue214Dao.class, "select", org.seasar.doma.internal.apt.processor.dao.Issue214Entity.class);
 
-    /** */
-    Issue214DaoImpl() {
-    }
-
     /**
      * @param config the config
      */

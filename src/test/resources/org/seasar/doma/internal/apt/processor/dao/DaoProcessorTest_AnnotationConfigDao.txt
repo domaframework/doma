@@ -12,10 +12,6 @@ public class AnnotationConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.A
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AnnotationConfigDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
 
-    /** */
-    AnnotationConfigDaoImpl() {
-    }
-
     /**
      * @param config the config
      */

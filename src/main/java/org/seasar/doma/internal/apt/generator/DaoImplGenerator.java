@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.function.Function;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.sql.DataSource;
@@ -121,7 +122,9 @@ public class DaoImplGenerator extends AbstractGenerator {
         printAnnotatedConstructor();
       }
     } else {
-      printNoArgConstructor();
+      if (isNoArgConstructorRequired()) {
+        printNoArgConstructor();
+      }
       printAnnotatedConstructor();
     }
   }
@@ -129,6 +132,21 @@ public class DaoImplGenerator extends AbstractGenerator {
   private boolean areJdbcConstructorsRequired() {
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
     return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
+  }
+
+  private boolean isNoArgConstructorRequired() {
+    String applicationScoped = ctx.getOptions().getCdiApplicationScoped();
+    String dependent = ctx.getOptions().getCdiDependent();
+    for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
+      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(annotation.getTypeValue());
+      if (typeElement != null) {
+        Name name = typeElement.getQualifiedName();
+        if (name.contentEquals(applicationScoped) || name.contentEquals(dependent)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private Code createConfigCode() {
