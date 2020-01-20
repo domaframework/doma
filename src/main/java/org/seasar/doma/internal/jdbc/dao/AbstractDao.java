@@ -19,6 +19,10 @@ public abstract class AbstractDao implements ConfigProvider {
 
   protected final Config __config;
 
+  protected AbstractDao() {
+    __config = null;
+  }
+
   protected AbstractDao(Config config) {
     if (config == null) {
       throw new DomaNullPointerException("config");
