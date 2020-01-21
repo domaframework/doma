@@ -33,8 +33,7 @@ import org.seasar.doma.internal.util.ClassUtil;
   Options.VERSION_VALIDATION,
   Options.RESOURCES_DIR,
   Options.CONFIG_PATH,
-  Options.CDI_APPLICATION_SCOPED,
-  Options.CDI_DEPENDENT
+  Options.CDI_APPLICATION_SCOPED
 })
 public class DaoProcessor extends AbstractGeneratingProcessor<DaoMeta> {
 

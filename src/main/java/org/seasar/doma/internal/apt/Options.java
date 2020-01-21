@@ -143,11 +143,6 @@ public final class Options {
     return name != null ? name : Constants.DEFAULT_CDI_APPLICATION_SCOPED;
   }
 
-  public String getCdiDependent() {
-    String name = getOption(CDI_DEPENDENT);
-    return name != null ? name : Constants.DEFAULT_CDI_DEPENDENT;
-  }
-
   private String getOption(String key) {
     String v = options.get(key);
     if (v != null) {
@@ -207,7 +202,5 @@ public final class Options {
 
     public static final String DEFAULT_CDI_APPLICATION_SCOPED =
         "javax.enterprise.context.ApplicationScoped";
-
-    public static final String DEFAULT_CDI_DEPENDENT = "javax.enterprise.context.Dependent";
   }
 }

@@ -17,7 +17,7 @@ import org.seasar.doma.jdbc.QueryImplementors;
 
 public abstract class AbstractDao implements ConfigProvider {
 
-  protected Config __config;
+  protected final Config __config;
 
   protected AbstractDao() {
     __config = null;

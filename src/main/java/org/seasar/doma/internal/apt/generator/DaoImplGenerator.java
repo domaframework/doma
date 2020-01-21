@@ -136,12 +136,11 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private boolean isNoArgConstructorRequired() {
     String applicationScoped = ctx.getOptions().getCdiApplicationScoped();
-    String dependent = ctx.getOptions().getCdiDependent();
     for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
       TypeElement typeElement = ctx.getMoreTypes().toTypeElement(annotation.getTypeValue());
       if (typeElement != null) {
         Name name = typeElement.getQualifiedName();
-        if (name.contentEquals(applicationScoped) || name.contentEquals(dependent)) {
+        if (name.contentEquals(applicationScoped)) {
           return true;
         }
       }
