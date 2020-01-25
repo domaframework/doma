@@ -51,7 +51,7 @@ public class SqlTokenizer {
 
   protected final CharBuffer buf;
 
-  protected CharBuffer duplicatedBuf;
+  protected final CharBuffer duplicatedBuf;
 
   protected SqlTokenType type;
 
@@ -96,7 +96,7 @@ public class SqlTokenizer {
     position = buf.position() - lineStartPosition;
     duplicatedBuf.limit(buf.position());
     token = duplicatedBuf.toString();
-    duplicatedBuf = buf.duplicate();
+    duplicatedBuf.position(buf.position());
   }
 
   public String getToken() {
