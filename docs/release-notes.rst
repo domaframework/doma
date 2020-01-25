@@ -2,6 +2,14 @@
 Release notes
 =============
 
+v2.27.0: 2020-01-25
+======================
+
+* `GH338 <https://github.com/domaframework/doma/pull/338>`_
+  Reuse CharBuffer instances 
+* `GH332 <https://github.com/domaframework/doma/pull/332>`_
+  Needs default constructor to AbstractDao to use quarkus
+
 v2.26.0: 2019-12-29
 ======================
 
