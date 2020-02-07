@@ -2,6 +2,14 @@
 Release notes
 =============
 
+v2.27.1: 2020-02-07
+======================
+
+* `GH341 <https://github.com/domaframework/doma/pull/341>`_
+  Fix broken link in document
+* `GH340 <https://github.com/domaframework/doma/pull/340>`_
+  Fixed that schema name was not used
+
 v2.27.0: 2020-01-25
 ======================
 
