@@ -20,7 +20,7 @@ public class SequenceIdGeneratorMeta implements IdGeneratorMeta {
       buf.append(catalogName);
       buf.append(".");
     }
-    String schemaName = sequenceGeneratorAnnot.getCatalogValue();
+    String schemaName = sequenceGeneratorAnnot.getSchemaValue();
     if (!schemaName.isEmpty()) {
       buf.append(schemaName);
       buf.append(".");
