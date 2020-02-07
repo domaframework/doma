@@ -89,7 +89,7 @@ Visit the webpage served at http://127.0.0.1:8000.
 
 
 .. _google-java-format: https://github.com/google/google-java-format
-.. _google-java-format IntelliJ plugin: https://github.com/google/google-java-format#intellij
+.. _google-java-format IntelliJ plugin: https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides
 .. _google-java-format Eclipse plugin: https://github.com/google/google-java-format#eclipse
 .. _Spotless: https://github.com/diffplug/spotless
 .. _Travis CI: http://docs.travis-ci.com/
