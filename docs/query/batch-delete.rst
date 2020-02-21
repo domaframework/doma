@@ -5,7 +5,7 @@ Batch delete
 .. contents::
    :depth: 3
 
-Annotate with ``@BatchDelete`` to Dao method for execute batch insert.
+Annotate with ``@BatchDelete`` to Dao method for execute batch delete.
 
 .. code-block:: java
 
@@ -25,7 +25,9 @@ Also the ``postDelete`` method of entity listener method is called each entity w
 Return value
 ==============
 
-Return value must be ``int[]`` that is represented each deleting process's updated count.
+Return value must be ``org.seasar.doma.jdbc.BatchResult`` that has entity class as an element if parameter ``Iterable`` subtype element is immutable entity class.
+
+Return value must be ``int[]`` that is represented each deleting process's updated count if the above conditions are not satisfied.
 
 Batch delete by auto generated SQL
 ====================================

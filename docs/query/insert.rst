@@ -27,7 +27,7 @@ Also entity listener ``postInsert`` method is called when after executing insert
 Return value
 ============
 
-Return value must be ``org.seasar.doma.jdbc.Result`` that make  the entity class an element if parameter is immutable entity class.
+Return value must be ``org.seasar.doma.jdbc.Result`` that make the entity class an element if parameter is immutable entity class.
 
 Return value must be ``int`` that is represented updated count if the above conditions are not satisfied.
 

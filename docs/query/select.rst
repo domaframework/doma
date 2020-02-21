@@ -372,9 +372,9 @@ Part or all of pessimistic concurrency control method can not used according to 
 +------------------+-----------------------------------------------------------------------------+
 | H2Dialect        |    You can use forUpdate().                                                 |
 +------------------+-----------------------------------------------------------------------------+
-| HsqldbDialect    |    You can useforUpdate().                                                  |
+| HsqldbDialect    |    You can use forUpdate().                                                 |
 +------------------+-----------------------------------------------------------------------------+
-| Mssql2008Dialect |    You can use forUpdate() and forUpdateNoWait().                           |
+| Mssql2008Dialect |    You can use forUpdate() and forUpdateNowait().                           |
 |                  |    However, FROM clauses in original SQL must consist single table.         |
 +------------------+-----------------------------------------------------------------------------+
 | MysqlDialect     |    You can use forUpdate()                                                  |
