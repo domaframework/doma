@@ -41,6 +41,7 @@ import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
@@ -126,6 +127,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   }
 
   private boolean resolveImmutable(TypeElement classElement, EntityAnnot entityAnnot) {
+    if (ElementKindUtil.isRecord(classElement.getKind())) {
+      return true;
+    }
     boolean result = false;
     List<Boolean> resolvedList = new ArrayList<>();
     for (AnnotationValue value : getEntityElementValueList(classElement, "immutable")) {
@@ -205,7 +209,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     void validateClass(TypeElement classElement, EntityMeta entityMeta) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
-      if (classElement.getKind() != ElementKind.CLASS) {
+      ElementKind kind = classElement.getKind();
+      if (kind != ElementKind.CLASS && !ElementKindUtil.isRecord(kind)) {
         throw new AptException(
             Message.DOMA4015, classElement, entityAnnot.getAnnotationMirror(), new Object[] {});
       }

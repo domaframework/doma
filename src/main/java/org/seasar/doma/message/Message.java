@@ -376,7 +376,8 @@ public enum Message implements MessageResource {
   DOMA4011(
       "The annotation processing for the class \"{0}\" is failed. The cause is as follows: {1}"),
   DOMA4014("Cannot annotate the type with @Dao because the type isn''t an interface."),
-  DOMA4015("Cannot annotate the type with @Entity because the type isn''t a class."),
+  DOMA4015(
+      "Cannot annotate the type with @Entity because the type is neither a class nor a record."),
   DOMA4016(
       "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
   DOMA4017("The DAO interface must be a top level interface."),
@@ -464,7 +465,7 @@ public enum Message implements MessageResource {
   DOMA4104(
       "The accessor method \"{0}\" is not found. "
           + "The method must have the return type \"{1}\" and must be non-private and non-args."),
-  DOMA4105("You can annotate only classes, interfaces and enums with @Domain"),
+  DOMA4105("You can annotate only classes, interfaces, enums and records with @Domain"),
   DOMA4106(
       "The factory method　\"{0}\" is not found. "
           + "The method must have the return type \"{1}\" and the parameter type \"{2}\" and must be non-private and static. "
@@ -803,7 +804,7 @@ public enum Message implements MessageResource {
   DOMA4281(
       "The number, type and name of the constructor parameters must correspond to "
           + "those of persistent fields in the immutable entity class."),
-  DOMA4283("You can annotated only classes with @Embeddable."),
+  DOMA4283("You can annotate only classes and records with @Embeddable."),
   DOMA4285("The embeddable class must not have a type parameter."),
   DOMA4286("The fields of the embeddable class cannot be annotated with @OriginalStates."),
   DOMA4288("The annotation \"{0}\" competes with the annotation \"{1}\"."),
