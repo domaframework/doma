@@ -33,23 +33,23 @@ import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.message.Message;
 
-public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
+public class InternalDomainMetaFactory implements TypeElementMetaFactory<InternalDomainMeta> {
 
   private final Context ctx;
 
-  public DomainMetaFactory(Context ctx) {
+  public InternalDomainMetaFactory(Context ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }
 
   @Override
-  public DomainMeta createTypeElementMeta(TypeElement classElement) {
+  public InternalDomainMeta createTypeElementMeta(TypeElement classElement) {
     assertNotNull(classElement);
     DomainAnnot domainAnnot = ctx.getAnnotations().newDomainAnnot(classElement);
     if (domainAnnot == null) {
       throw new AptIllegalStateException("domainAnnot");
     }
-    DomainMeta domainMeta = new DomainMeta(classElement, classElement.asType());
+    InternalDomainMeta domainMeta = new InternalDomainMeta(classElement, classElement.asType());
     domainMeta.setDomainAnnot(domainAnnot);
     Strategy strategy = createStrategy(classElement, domainMeta);
     strategy.doTypeParameters(classElement, domainMeta);
@@ -71,17 +71,17 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
 
   interface Strategy {
 
-    void doTypeParameters(TypeElement classElement, DomainMeta domainMeta);
+    void doTypeParameters(TypeElement classElement, InternalDomainMeta domainMeta);
 
-    void doWrapperCtType(TypeElement classElement, DomainMeta domainMeta);
+    void doWrapperCtType(TypeElement classElement, InternalDomainMeta domainMeta);
 
-    void validateAcceptNull(TypeElement classElement, DomainMeta domainMeta);
+    void validateAcceptNull(TypeElement classElement, InternalDomainMeta domainMeta);
 
-    void validateClass(TypeElement classElement, DomainMeta domainMeta);
+    void validateClass(TypeElement classElement, InternalDomainMeta domainMeta);
 
     void validateInitializer(TypeElement classElement, DomainMeta domainMeta);
 
-    void validateAccessorMethod(TypeElement classElement, DomainMeta domainMeta);
+    void validateAccessorMethod(TypeElement classElement, InternalDomainMeta domainMeta);
   }
 
   protected static class DefaultStrategy implements Strategy {
@@ -94,14 +94,14 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     @Override
-    public void doTypeParameters(TypeElement classElement, DomainMeta domainMeta) {
+    public void doTypeParameters(TypeElement classElement, InternalDomainMeta domainMeta) {
       TypeParametersDef typeParametersDef =
           ctx.getMoreElements().getTypeParametersDef(classElement);
       domainMeta.setTypeParametersDef(typeParametersDef);
     }
 
     @Override
-    public void doWrapperCtType(TypeElement classElement, DomainMeta domainMeta) {
+    public void doWrapperCtType(TypeElement classElement, InternalDomainMeta domainMeta) {
       BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(domainMeta.getValueType());
       if (basicCtType == null) {
         DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
@@ -116,7 +116,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     @Override
-    public void validateAcceptNull(TypeElement classElement, DomainMeta domainMeta) {
+    public void validateAcceptNull(TypeElement classElement, InternalDomainMeta domainMeta) {
       if (domainMeta.getBasicCtType().isPrimitive() && domainMeta.getAcceptNull()) {
         DomainAnnot domainAnnot = domainMeta.getDomainAnnot();
         throw new AptException(
@@ -129,7 +129,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     @Override
-    public void validateClass(TypeElement classElement, DomainMeta domainMeta) {
+    public void validateClass(TypeElement classElement, InternalDomainMeta domainMeta) {
       ElementKind kind = classElement.getKind();
       if (kind == ElementKind.CLASS || ElementKindUtil.isRecord(kind)) {
         if (domainMeta.providesConstructor()
@@ -271,7 +271,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     @Override
-    public void validateAccessorMethod(TypeElement classElement, DomainMeta domainMeta) {
+    public void validateAccessorMethod(TypeElement classElement, InternalDomainMeta domainMeta) {
       TypeElement typeElement = classElement;
       TypeMirror typeMirror = classElement.asType();
       for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE; ) {
@@ -360,7 +360,7 @@ public class DomainMetaFactory implements TypeElementMetaFactory<DomainMeta> {
     }
 
     @Override
-    public void validateAccessorMethod(TypeElement classElement, DomainMeta domainMeta) {
+    public void validateAccessorMethod(TypeElement classElement, InternalDomainMeta domainMeta) {
       VariableElement field = findSingleField(classElement, domainMeta);
       String accessorMethod = inferAccessorMethod(field);
       if (!accessorMethod.equals(domainMeta.getAccessorMethod())) {

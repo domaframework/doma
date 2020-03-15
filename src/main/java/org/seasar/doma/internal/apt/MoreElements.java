@@ -5,10 +5,26 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.Parameterizable;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -16,6 +32,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor8;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
+import org.seasar.doma.internal.apt.util.ElementKindUtil;
 
 public class MoreElements implements Elements {
 
@@ -266,5 +283,17 @@ public class MoreElements implements Elements {
     List<TypeMirror> typeMirrors =
         typeParameterElements.stream().map(TypeParameterElement::asType).collect(toList());
     return ctx.getMoreTypes().getTypeParameterNames(typeMirrors);
+  }
+
+  public VariableElement getSingleParameterOfRecordConstructor(TypeElement record) {
+    if (!ElementKindUtil.isRecord(record.getKind())) {
+      throw new AptIllegalStateException(record.getQualifiedName() + " must be a record type.");
+    }
+    return ElementFilter.constructorsIn(record.getEnclosedElements()).stream()
+        .filter(c -> c.getModifiers().contains(Modifier.PUBLIC))
+        .filter(c -> c.getParameters().size() == 1)
+        .flatMap(c -> c.getParameters().stream())
+        .findFirst()
+        .orElse(null);
   }
 }

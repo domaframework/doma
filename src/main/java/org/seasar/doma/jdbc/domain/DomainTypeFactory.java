@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
+import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
@@ -51,7 +52,8 @@ public final class DomainTypeFactory {
     if (classHelper == null) {
       throw new DomaNullPointerException("classHelper");
     }
-    if (!domainClass.isAnnotationPresent(Domain.class)) {
+    if (!domainClass.isAnnotationPresent(Domain.class)
+        && !domainClass.isAnnotationPresent(DataType.class)) {
       throw new DomaIllegalArgumentException(
           "domainClass", Message.DOMA2205.getMessage(domainClass.getName()));
     }

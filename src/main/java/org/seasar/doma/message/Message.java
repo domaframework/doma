@@ -904,6 +904,18 @@ public enum Message implements MessageResource {
   DOMA4446("cannot annotate the default method."),
   DOMA4447("The multidimensional array is not supported as a domain class."),
   DOMA4448("The component type of the array must not have any type parameter."),
+  DOMA4449("You can annotate only records with @DateType."),
+  DOMA4450(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the data type and its enclosing type must not contain them."),
+  DOMA4451(
+      "The type \"{0}\" is not public and static. "
+          + "The data type and its enclosing type must be public and static."),
+  DOMA4452(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The data type and its enclosing type must be a top level or member class."),
+  DOMA4453("The public constructor whose parameter size is one is not found."),
+  DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
 
   // other
   DOMA5001(
