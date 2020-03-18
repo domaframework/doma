@@ -1,95 +1,31 @@
 package org.seasar.doma.internal.apt.meta.domain;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.util.List;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.annot.DomainAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
-public class DomainMeta implements TypeElementMeta {
+public interface DomainMeta extends TypeElementMeta {
+  TypeMirror getType();
 
-  private final TypeElement typeElement;
+  TypeElement getTypeElement();
 
-  private final TypeMirror type;
+  List<String> getTypeVariables();
 
-  private TypeParametersDef typeParametersDef;
+  List<String> getTypeParameters();
 
-  private BasicCtType basicCtType;
+  BasicCtType getBasicCtType();
 
-  private DomainAnnot domainAnnot;
+  TypeMirror getValueType();
 
-  public DomainMeta(TypeElement typeElement, TypeMirror type) {
-    assertNotNull(typeElement, type);
-    this.typeElement = typeElement;
-    this.type = type;
-  }
+  String getFactoryMethod();
 
-  public TypeMirror getType() {
-    return type;
-  }
+  String getAccessorMethod();
 
-  public TypeElement getTypeElement() {
-    return typeElement;
-  }
+  boolean getAcceptNull();
 
-  public void setTypeParametersDef(TypeParametersDef typeParametersDef) {
-    this.typeParametersDef = typeParametersDef;
-  }
+  boolean providesConstructor();
 
-  public List<String> getTypeVariables() {
-    return typeParametersDef.getTypeVariables();
-  }
-
-  public List<String> getTypeParameters() {
-    return typeParametersDef.getTypeParameters();
-  }
-
-  public BasicCtType getBasicCtType() {
-    return basicCtType;
-  }
-
-  public void setBasicCtType(BasicCtType basicCtType) {
-    this.basicCtType = basicCtType;
-  }
-
-  public TypeMirror getValueType() {
-    return domainAnnot.getValueTypeValue();
-  }
-
-  public String getFactoryMethod() {
-    return domainAnnot.getFactoryMethodValue();
-  }
-
-  public String getAccessorMethod() {
-    return domainAnnot.getAccessorMethodValue();
-  }
-
-  public boolean getAcceptNull() {
-    return domainAnnot.getAcceptNullValue();
-  }
-
-  DomainAnnot getDomainAnnot() {
-    return domainAnnot;
-  }
-
-  void setDomainAnnot(DomainAnnot domainAnnot) {
-    this.domainAnnot = domainAnnot;
-  }
-
-  public boolean providesConstructor() {
-    return "new".equals(domainAnnot.getFactoryMethodValue());
-  }
-
-  public boolean isParameterized() {
-    return !typeElement.getTypeParameters().isEmpty();
-  }
-
-  @Override
-  public boolean isError() {
-    return false;
-  }
+  boolean isParameterized();
 }

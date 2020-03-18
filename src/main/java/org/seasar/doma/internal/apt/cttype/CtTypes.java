@@ -35,6 +35,7 @@ import java.util.stream.Stream;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
@@ -45,6 +46,7 @@ import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
+import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptException;
@@ -229,6 +231,10 @@ public class CtTypes {
     if (domain != null) {
       return getDomainInfo(domain);
     }
+    DataType dataType = typeElement.getAnnotation(DataType.class);
+    if (dataType != null) {
+      return getDomainInfo(typeElement, dataType);
+    }
     return getExternalDomainInfo(typeElement.asType());
   }
 
@@ -239,6 +245,15 @@ public class CtTypes {
       return new DomainInfo(e.getTypeMirror(), false);
     }
     throw new AptIllegalStateException("unreachable.");
+  }
+
+  private DomainInfo getDomainInfo(TypeElement typeElement, DataType dataType) {
+    VariableElement param =
+        ctx.getMoreElements().getSingleParameterOfRecordConstructor(typeElement);
+    if (param == null) {
+      throw new AptIllegalStateException(typeElement.getQualifiedName().toString());
+    }
+    return new DomainInfo(param.asType(), false);
   }
 
   private DomainInfo getExternalDomainInfo(TypeMirror domainType) {

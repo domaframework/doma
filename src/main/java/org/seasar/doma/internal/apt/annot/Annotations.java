@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.lang.model.element.*;
 import org.seasar.doma.*;
+import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.experimental.Sql;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -98,6 +99,11 @@ public class Annotations {
   public DaoAnnot newDaoAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, Dao.class, DaoAnnot::new);
+  }
+
+  public DataTypeAnnot newDataTypeAnnot(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newInstance(typeElement, DataType.class, DataTypeAnnot::new);
   }
 
   public DomainAnnot newDomainAnnot(TypeElement typeElement) {
