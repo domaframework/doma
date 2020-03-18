@@ -99,8 +99,8 @@ Add the dependencies using the `kapt` and `implementation` configuration in your
 .. code-block:: groovy
 
   dependencies {
-      kapt "org.seasar.doma:doma:2.28.0"
-      implementation "org.seasar.doma:doma:2.28.0"
+      kapt "org.seasar.doma:doma:2.28.1-SNAPSHOT"
+      implementation "org.seasar.doma:doma:2.28.1-SNAPSHOT"
   }
 
 If you use resource files such as SQL files, make the kapt find them:
