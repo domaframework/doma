@@ -2,6 +2,18 @@
 Release notes
 =============
 
+v2.28.0: 2020-03-18
+======================
+
+* `GH347 <https://github.com/domaframework/doma/pull/347>`_
+  Stored functions return null when they must return the basic type of list
+* `GH346 <https://github.com/domaframework/doma/pull/346>`_
+  Add the DataType annotation
+* `GH344 <https://github.com/domaframework/doma/pull/344>`_
+  Support records
+* `GH343 <https://github.com/domaframework/doma/pull/343>`_
+  Fix some mistakes in document
+
 v2.27.1: 2020-02-07
 ======================
 
