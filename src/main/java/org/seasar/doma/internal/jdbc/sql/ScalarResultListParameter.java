@@ -3,7 +3,6 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.command.ScalarProvider;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
@@ -24,10 +23,5 @@ public class ScalarResultListParameter<BASIC, CONTAINER>
   @Override
   public ObjectProvider<CONTAINER> createObjectProvider(Query query) {
     return new ScalarProvider<>(supplier, query);
-  }
-
-  @Override
-  public List<CONTAINER> getResult() {
-    return null;
   }
 }
