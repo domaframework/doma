@@ -60,6 +60,19 @@ The above entity definition is equivalent to following one:
       String zip;
   }
 
+.. note::
+  In Java 14 and later version, you can annotate `records`_ with ``@Embeddable``:
+
+  .. code-block:: java
+
+    @Embeddable
+    public record Address(
+      String city,
+      String street,
+      @Column(name = "ZIP_CODE")String zip) {
+    }
+
+.. _records: https://openjdk.java.net/jeps/359
 
 Naming convention
 -----------------

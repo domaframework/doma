@@ -30,6 +30,19 @@ The following code snippet shows how to inherit other entity class:
       ...
   }
 
+.. note::
+  In Java 14 and later version, you can annotate `records`_ with ``@Entity``:
+
+  .. code-block:: java
+
+    @Entity
+    public record Employee(...) {
+    }
+
+  In the case, the entity is recognize as :ref:`immutable`
+  even though the immutable property of ``@Entity`` is ``false``.
+
+.. _records: https://openjdk.java.net/jeps/359
 
 Entity listeners
 ---------------------------
@@ -76,6 +89,8 @@ When the ``name`` property within the ``@Table`` or ``@Column`` annotation is ex
 the naming convention is ignored.
 
 An entity subclass inherits parent's naming convention.
+
+.. _immutable:
 
 Immutable
 ----------------------------

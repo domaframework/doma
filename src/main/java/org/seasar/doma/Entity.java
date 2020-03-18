@@ -105,6 +105,9 @@ public @interface Entity {
    * <p>If not specified and the entity class inherits another entity class, this value is inherited
    * from the parent entity class. The values must be consistent in the hierarchy.
    *
+   * <p>If not specified and the entity class is a record, the class is recognized as immutable even
+   * though this value is {@code false}.
+   *
    * @return whether the entity class is immutable
    */
   boolean immutable() default false;

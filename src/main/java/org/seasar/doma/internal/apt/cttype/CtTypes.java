@@ -52,6 +52,7 @@ import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
+import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -347,7 +348,8 @@ public class CtTypes {
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName descClassName = ClassNames.newEntityDescClassName(binaryName);
-    return new EntityCtType(ctx, type, entity.immutable(), descClassName);
+    boolean immutable = ElementKindUtil.isRecord(typeElement.getKind()) || entity.immutable();
+    return new EntityCtType(ctx, type, immutable, descClassName);
   }
 
   private FunctionCtType newFunctionCtType(TypeMirror type) {

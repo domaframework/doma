@@ -40,6 +40,7 @@ import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
+import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.message.Message;
 
 public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableMeta> {
@@ -98,7 +99,8 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     @Override
     public void validateClass(TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
-      if (embeddableElement.getKind() != ElementKind.CLASS) {
+      ElementKind kind = embeddableElement.getKind();
+      if (kind != ElementKind.CLASS && !ElementKindUtil.isRecord(kind)) {
         EmbeddableAnnot embeddableAnnot = embeddableMeta.getEmbeddableAnnot();
         throw new AptException(
             Message.DOMA4283,
