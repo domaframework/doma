@@ -59,6 +59,23 @@ The value ``new`` means that the object of annotated class is created with a con
 
 .. _records: https://openjdk.java.net/jeps/359
 
+.. warning::
+
+  To annotate records with ``@Domain`` is a little redundant,
+  because you must specify some properties to ``@Domain`` such as ``valueType``.
+  Instead of ``@Domain``, you can annotate records with ``@DataType``:
+
+  .. code-block:: java
+
+    @DataType
+    public record PhoneNumber(String value) {
+      public String getAreaCode() {
+        ...
+      }
+    }
+
+  But note that ``@DataType`` is an experimental feature.
+
 
 Instantiation with a static factory method
 ------------------------------------------
