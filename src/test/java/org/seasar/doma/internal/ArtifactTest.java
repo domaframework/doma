@@ -1,6 +1,7 @@
 package org.seasar.doma.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -31,6 +32,7 @@ public class ArtifactTest {
       fail();
     } catch (DomaException expected) {
       System.out.println(expected.getMessage());
+      assertFalse(expected.getMessage().contains("{"));
     }
   }
 }

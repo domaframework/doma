@@ -14,7 +14,7 @@ public enum Message implements MessageResource {
   DOMA0001("The parameter \"{0}\" is null"),
   DOMA0002("The parameter \"{0}\" is illegal. The cause is as follows: {1}"),
   DOMA0003(
-      "The version of Doma's jar file is different between runtime and compile-time (runtime={0}, compile-time={1}). "
+      "The version of Doma''s jar file is different between runtime and compile-time (runtime={0}, compile-time={1}). "
           + "If you use Eclipse, check the Build path and the Factory path. "
           + "Otherwise if you use javac, check the classpath option and the processorpath option. "
           + "In the case of Web application, check whether there is no old jar file in WEB-INF/lib directory."),
