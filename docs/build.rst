@@ -68,39 +68,47 @@ build.gradle as an example:
 
 .. code-block:: groovy
 
-  apply plugin: 'java'
+  plugins {
+      id 'java'
+  }
 
-  // Copy the resources referred by the Doma annotation processors to
-  // the destinationDir of the compileJava task
-  task copyDomaResources(type: Sync)  {
+  ext.domaResources = ['doma.compile.config', 'META-INF/**/*.sql', 'META-INF/**/*.script']
+
+  task copyDomaResources(type: Sync) {
       from sourceSets.main.resources.srcDirs
       into compileJava.destinationDir
-      include 'doma.compile.config'
-      include 'META-INF/**/*.sql'
-      include 'META-INF/**/*.script'
+      include domaResources
   }
 
   compileJava {
-      // Depend on the above task
+      // copy doma related resources before compileJava
       dependsOn copyDomaResources
       options.encoding = 'UTF-8'
   }
 
-  compileTestJava {
-      options.encoding = 'UTF-8'
-      // Disable the annotation processors during the test run
-      options.compilerArgs = ['-proc:none']
+  processResources {
+      // exclude doma related resources
+      exclude domaResources
   }
 
-  dependencies {
-      annotationProcessor "org.seasar.doma:doma:2.28.1-SNAPSHOT"
-      implementation "org.seasar.doma:doma:2.28.1-SNAPSHOT"
+  compileTestJava {
+      options.encoding = 'UTF-8'
+      // disable the annotation processors during the test run
+      options.compilerArgs = ['-proc:none']
   }
 
   repositories {
       mavenCentral()
       maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
   }
+
+  dependencies {
+      annotationProcessor "org.seasar.doma:doma:2.28.1-SNAPSHOT"
+      implementation "org.seasar.doma:doma:2.28.1-SNAPSHOT"
+      runtimeOnly 'com.h2database:h2:1.3.175'
+      testImplementation 'junit:junit:4.11'
+  }
+
 
 .. note::
 
