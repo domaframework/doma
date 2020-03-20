@@ -1,4 +1,5 @@
 org.seasar.doma.internal.apt.processor.DomainProcessor,isolating
+org.seasar.doma.internal.apt.processor.DataTypeProcessor,isolating
 org.seasar.doma.internal.apt.processor.ExternalDomainProcessor,isolating
 org.seasar.doma.internal.apt.processor.DomainConvertersProcessor,isolating
 org.seasar.doma.internal.apt.processor.EmbeddableProcessor,isolating
