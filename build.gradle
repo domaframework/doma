@@ -1,8 +1,8 @@
 plugins {
-    id 'com.diffplug.gradle.spotless' version '3.20.0'
-    id 'java'
+    id 'com.diffplug.gradle.spotless' version '3.27.2'
+    id 'java-library'
     id 'signing'
-    id 'maven'
+    id 'maven-publish'
 }
 
 group = 'org.seasar.doma'
@@ -19,6 +19,11 @@ spotless {
     java {
         googleJavaFormat('1.7')
     }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 compileJava {
@@ -59,20 +64,19 @@ javadoc {
     options.encoding = encoding
     options.charSet = encoding
     options.docEncoding = encoding
-    options.links 'http://docs.oracle.com/javase/jp/8/docs/api/'
+    options.links 'https://docs.oracle.com/javase/jp/8/docs/api/'
     options.use = true
     exclude '**/internal/**'
 }
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Doma', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'Doma', 'Implementation-Version': archiveVersion
     }
 }
 
 repositories {
     mavenCentral()
-    maven {url 'http://maven.seasar.org/maven2'}
 }
 
 dependencies {
@@ -80,70 +84,54 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 }
 
-task sourcesJar (type : Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = project.name
+            version = version
+            from components.java
 
-task javadocJar (type : Jar, dependsOn : javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives jar
-    archives sourcesJar
-    archives javadocJar
-}
-
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives') }
-    sign configurations.archives
-}
-
-build.dependsOn install
-
-uploadArchives {
-    repositories.mavenDeployer {
-        beforeDeployment {MavenDeployment deployment ->
-            signing.signPom(deployment)
-        }
-        repository (url : sonatypeUrl) {
-            authentication (
-                    userName : sonatypeUsername,
-                    password : sonatypePassword)
-        }
-        snapshotRepository (url : sonatypeSnapshotUrl) {
-            authentication (
-                    userName : sonatypeUsername,
-                    password : sonatypePassword)
-        }
-        pom.project {
-            name project.name
-            packaging 'jar'
-            description 'DAO Oriented Database Mapping Framework for Java 8+'
-            url projectUrl
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    distribution 'repo'
+            pom {
+                name = project.name
+                description = 'DAO Oriented Database Mapping Framework for Java 8+'
+                url = projectUrl
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'nakamura-to'
+                        name = 'Toshihiro Nakamura'
+                        email = 'toshihiro.nakamura@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:${githubUrl}"
+                    developerConnection = "scm:git:${githubUrl}"
+                    url = projectUrl
                 }
             }
-            scm {
-                url githubUrl
-                connection "scm:git:${githubUrl}"
-                developerConnection "scm:git:${githubUrl}"
-            }
-            developers {
-                developer {
-                    id 'nakamura-to'
-                    name 'Toshihiro Nakamura'
-                    email 'toshihiro.nakamura@gmail.com'
+            repositories {
+                maven {
+                    url = isReleaseVersion ? sonatypeUrl : sonatypeSnapshotUrl
+                    credentials {
+                        username = sonatypeUsername
+                        password = sonatypePassword
+                    }
                 }
             }
         }
     }
 }
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+build.dependsOn publishToMavenLocal
 
 apply from:'eclipse.gradle'
