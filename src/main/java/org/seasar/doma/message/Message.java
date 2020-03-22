@@ -3,9 +3,6 @@ package org.seasar.doma.message;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import org.seasar.doma.internal.message.MessageResourceBundle;
 
 /** Defines messages that are sent to application developers. */
 public enum Message implements MessageResource {
@@ -252,7 +249,7 @@ public enum Message implements MessageResource {
           + "but the literal variable directive doesn''t allow it. SQL=[{0}]"),
   DOMA2228(
       "Failed to parse the SQL on line {1} at column {2}. "
-          + "While the literal directive \"{3\" is defined, the expression is none. SQL=[{0}]"),
+          + "While the literal directive \"{3}\" is defined, the expression is none. SQL=[{0}]"),
   DOMA2229("The parameter types are different between batched queries."),
   DOMA2230("The literals must be consistent between batched queries."),
   DOMA2231("The number of parameters is different between batched queries."),
@@ -956,18 +953,7 @@ public enum Message implements MessageResource {
 
   protected String getSimpleMessageInternal(Object... args) {
     try {
-      boolean fallback = false;
-      ResourceBundle bundle;
-      try {
-        bundle = ResourceBundle.getBundle(MessageResourceBundle.class.getName());
-      } catch (MissingResourceException ignored) {
-        fallback = true;
-        bundle = new MessageResourceBundle();
-      }
-      String code = name();
-      String pattern = bundle.getString(code);
-      String message = MessageFormat.format(pattern, args);
-      return fallback ? "(This is a fallback message) " + message : message;
+      return MessageFormat.format(messagePattern, args);
     } catch (Throwable throwable) {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
