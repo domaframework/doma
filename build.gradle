@@ -133,6 +133,10 @@ signing {
 
 build.dependsOn publishToMavenLocal
 
+release {
+    pushReleaseVersionBranch = true
+}
+
 eclipse {
     classpath {
         file {
