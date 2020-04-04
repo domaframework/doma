@@ -33,8 +33,11 @@ Install `IntelliJ IDEA Community Edition`_ .
 
 .. note::
 
-  In this document, we use IntelliJ IDEA Community Edition 2019.2.1 as IDE.
-  If you use IntelliJ IDEA Ultimate Edition, recommend to you concomitant use with `IntelliJ Doma support plugin`_.
+  In this document, we use IntelliJ IDEA 2019.3.4 (Community Edition).
+  We recommend you use a newer version because the integration with Gradle is much better.
+  If you use IntelliJ IDEA Ultimate Edition, consider to use `IntelliJ Doma support plugin`_.
+
+.. _idea-import-project:
 
 Import template project
 ============================
@@ -50,8 +53,6 @@ Start IntelliJ IDEA and execute Import Project, and select the cloned simple-boi
 .. image:: images/idea-welcome.png
    :width: 60 %
 
-|
-
 Check Import project from external model and select Gradle:
 
 .. image:: images/idea-import-project.png
@@ -59,28 +60,6 @@ Check Import project from external model and select Gradle:
 
 Push the Finish button.
 If the message that is synced successfully is shown at Build tool window then import is success.
-
-.. _idea-annotation-processor:
-
-Setting of Annotation Processor
-================================
-
-Open Build, Execution, Deployment > Compiler > Annotation Processors from Preferences.
-Check Enable annotation processing:
-
-.. image:: images/idea-annotation-processors.png
-   :width: 100 %
-
-Setting of Build and Run
-================================
-
-Open Build, Execution, Deployment > Build Tools > Gradle from Preferences.
-Choose IntelliJ IDEA for Run tests using:
-
-.. image:: images/run-tests-using.png
-   :width: 100 %
-
-Try to build and run test cases.
 
 Structure of template project
 ==============================

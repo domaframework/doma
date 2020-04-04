@@ -114,7 +114,7 @@ Create config file for Eclipse by next command.
 
 .. note::
 
-  Please set  JDK 8 (or JDK 9 and 10) installed directory to environment variable ``JAVA_HOME``.
+  Please set JDK 8 (or later) installed directory to environment variable ``JAVA_HOME``.
   It is needed for executing gradlew.
 
 .. note::

@@ -24,7 +24,7 @@ Doma has various strengths:
 
 This document consists of following sections:
 
-* `User Documentation`_
+* `User Documentation`_u
 * `Developer Documentation`_
 * `About Doma`_
 * `Links`_
@@ -43,8 +43,8 @@ User Documentation
 .. toctree::
    :maxdepth: 2
 
-   getting-started-eclipse
    getting-started-idea
+   getting-started-eclipse
    config
    basic
    domain
@@ -84,7 +84,9 @@ Links
 * `News and announcements <https://twitter.com/domaframework>`_
 * `GitHub repository <https://github.com/domaframework/doma>`_
 * `JavaDoc <http://www.javadoc.io/doc/org.seasar.doma/doma>`_
+* `Boilerplate <https://github.com/domaframework/simple-boilerplate>`_
 * `Examples <https://github.com/domaframework/simple-examples>`_
-* `Doma-Gen <http://doma-gen.readthedocs.org/>`_
-* `Doma 1 <http://doma.seasar.org/>`_
+* `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_
+* `Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-plugin>`_
+* `Doma version 1 <http://doma.seasar.org/>`_
 
