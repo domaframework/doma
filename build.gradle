@@ -1,14 +1,11 @@
 plugins {
     id 'com.diffplug.gradle.spotless' version '3.27.2'
+    id 'com.diffplug.eclipse.apt' version '3.22.0'
     id 'java-library'
-    id 'signing'
     id 'maven-publish'
+    id 'net.researchgate.release' version '2.6.0'
+    id 'signing'
 }
-
-group = 'org.seasar.doma'
-version = '2.28.1-SNAPSHOT'
-sourceCompatibility = jdkVersion
-targetCompatibility = jdkVersion
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -22,6 +19,8 @@ spotless {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     withJavadocJar()
     withSourcesJar()
 }
@@ -134,4 +133,20 @@ signing {
 
 build.dependsOn publishToMavenLocal
 
-apply from:'eclipse.gradle'
+eclipse {
+    classpath {
+        file {
+            whenMerged { classpath ->
+                classpath.entries.removeAll { it.path == '.apt_generated' }
+            }
+            withXml { provider ->
+                def node = provider.asNode()
+                node.appendNode( 'classpathentry', [ kind: 'src', output: 'bin/main', path: '.apt_generated'])
+            }
+        }
+    }
+    jdt {
+        javaRuntimeName = 'JavaSE-1.8'
+    }
+}
+
