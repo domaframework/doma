@@ -50,11 +50,19 @@ public class App {
 }
 ```
 
+For more complete examples, see [domaframework/simple-examples](https://github.com/domaframework/simple-examples).
 
 Documentation
 ---------------------
 
 https://doma.readthedocs.io/
+
+Related projects
+---------------------
+
+- [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) : Supports integration with Spring Boot
+- [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) : Makes compilation easy
+- [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) : Generates Java and SQL files
 
 Major versions
 ---------------------
