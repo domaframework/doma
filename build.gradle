@@ -135,6 +135,9 @@ build.dependsOn publishToMavenLocal
 
 release {
     pushReleaseVersionBranch = 'release'
+    git {
+        requireBranch = 'snapshot'
+    }
 }
 
 eclipse {
