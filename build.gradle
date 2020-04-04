@@ -134,7 +134,7 @@ signing {
 build.dependsOn publishToMavenLocal
 
 release {
-    pushReleaseVersionBranch = true
+    pushReleaseVersionBranch = 'release'
 }
 
 eclipse {
