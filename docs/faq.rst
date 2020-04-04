@@ -82,10 +82,20 @@ You may get the following message, though the file exists:
 
 When you use Eclipse, check that the location of the output folder of resources is
 same as the one for the class files in the Java Build Path dialog.
+You can avoid this trouble by generating eclipse setting files automatically.
+See also :ref:`eclipse-build`.
 
 When you use Gradle, check that the resource files are copied to ``compileJava.destinationDir``
-in advance of the compileJava task. See also :ref:`build-with-gradle`.
+in advance of the compileJava task.
+You can avoid this trouble by using the Doma Compile Plugin.
+See also :ref:`build-with-gradle`.
 
+Do you provide any code generation tools?
+-----------------------------------------
+
+Yes.
+We have the `Doma CodeGen plugin <https://github.com/domaframework/doma-codegen-plugin>`_
+that generates Java and SQL files from Database.
 
 Features as a database access library
 =====================================

@@ -2,6 +2,20 @@
 Release notes
 =============
 
+v2.29.0: 2020-04-05
+======================
+
+* `GH353 <https://github.com/domaframework/doma/pull/353>`_
+  Remove a resource bundle
+* `GH352 <https://github.com/domaframework/doma/pull/352>`_
+  Escape a single quotation to make format success
+* `GH351 <https://github.com/domaframework/doma/pull/351>`_
+  Update sample build.gradle to make it work on Gradle 6.2.2 without any warnings
+* `GH350 <https://github.com/domaframework/doma/pull/350>`_
+  Enable incremental annotation processing for the DataTypeProcessor
+* `GH349 <https://github.com/domaframework/doma/pull/349>`_
+  Upgrade to Gradle 6.2.2
+
 v2.28.0: 2020-03-18
 ======================
 

@@ -24,7 +24,7 @@ Doma has various strengths:
 
 This document consists of following sections:
 
-* `User Documentation`_u
+* `User Documentation`_
 * `Developer Documentation`_
 * `About Doma`_
 * `Links`_
