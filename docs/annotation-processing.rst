@@ -71,25 +71,6 @@ doma.config.path
   The file path of the configuration file for Doma.
   The default value is ``doma.compile.config``.
 
-Setting options in Eclipse
-==========================
-
-- Select “Project > Properties” from the menu bar and open the dialog
-- Select “Java Compiler > Annotation Processing” from the left menu of the dialog
-- Add "Processor options"
-
-Setting options in IntelliJ IDEA
-================================
-
-- Select "Preferrences" from the menu bar and open the dialog
-- Select "Build, Execution, Deployment > Compiler > Annotation Processors" from the left menu of the dialog
-- Add "Annotation Processor options"
-
-Setting options in javac
-========================
-
-- Use `the -A option <https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCDIFEE>`_
-
 Setting options in Gradle
 =========================
 
@@ -103,6 +84,18 @@ Setting options in Gradle
           compilerArgs = ['-Adoma.dao.subpackage=impl', '-Adoma.dao.suffix=Impl']
       }
   }
+
+Setting options in IntelliJ IDEA
+================================
+
+Import your project as a Gradle project.
+In the case, the options written in build.gradle are used.
+
+Setting options in Eclipse
+==========================
+
+Generate eclipse setting files
+by using the Gradle plugin `com.diffplug.eclipse.apt<https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt>`_.
 
 Setting options with configuration file
 =======================================

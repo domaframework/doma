@@ -19,106 +19,37 @@ The group id and artifact id are as follows:
 
 See also: https://search.maven.org/artifact/org.seasar.doma/doma/
 
-.. _eclipse-build:
-
-Build with Eclipse
-==================
-
-.. note::
-
-  Instead of manual settings we show you below,
-  we recommend to generate eclipse setting files automatically with
-  `the Gradle Eclipse Plugin <https://docs.gradle.org/current/userguide/eclipse_plugin.html>`_.
-  See also build.gradle and eclipse.gradle in the
-  `domaframework/simple-boilerplate <https://github.com/domaframework/simple-boilerplate>`_
-  repository.
-
-Enabling annotation processing
-------------------------------
-
-- Select "Project > Properties" from the menu bar and open the dialog
-- Select "Java Compiler > Annotation Processing" from the left menu of the dialog
-- Check as follows:
-
-.. image:: images/annotation-processing.png
-   :width: 80 %
-
-Setting factory path
---------------------
-
-- Select "Project > Properties" from the menu bar and open the dialog
-- Select "Java Compiler > Annotation Processing > Factory Path" from the left menu of the dialog
-- Add the jar file of the Doma framework whose version is same as the one in the Java Build Path
-- Check as follows:
-
-.. image:: images/factory-path.png
-   :width: 80 %
-
-Build with IntelliJ IDEA
-========================
-
-See :ref:`idea-annotation-processor`.
-
 .. _build-with-gradle:
 
 Build with Gradle
 =================
 
-build.gradle as an example:
+Write your build.gradle script, then run ``gradle build``.
 
-.. code-block:: groovy
+To simplify your build.script, we recommend you use
+the `Doma Compile Plugin`_.
 
-  plugins {
-      id 'java'
-  }
+See build.gradle in the `simple-boilerplate`_ repository as an example.
 
-  ext.domaResources = ['doma.compile.config', 'META-INF/**/*.sql', 'META-INF/**/*.script']
+Build with IntelliJ IDEA
+========================
 
-  task copyDomaResources(type: Sync) {
-      from sourceSets.main.resources.srcDirs
-      into compileJava.destinationDir
-      include domaResources
-  }
+Use a newer version of IntelliJ IDEA, and then import your project as a Gradle project.
+To know how to import project, see :ref:`idea-import-project`.
 
-  compileJava {
-      // copy doma related resources before compileJava
-      dependsOn copyDomaResources
-      options.encoding = 'UTF-8'
-  }
+.. _eclipse-build:
 
-  processResources {
-      // exclude doma related resources
-      exclude domaResources
-  }
+Build with Eclipse
+==================
 
-  compileTestJava {
-      options.encoding = 'UTF-8'
-      // disable the annotation processors during the test run
-      options.compilerArgs = ['-proc:none']
-  }
+Generate eclipse setting files with Gradle, and then import your project into Eclipse.
+To generate the setting files, run ``gradle eclipse``.
 
-  repositories {
-      mavenCentral()
-      maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
-  }
+To simplify your build.script, we recommend you use the `Doma Compile Plugin`_ and the `AptEclipsePlugin`_.
 
-  dependencies {
-      annotationProcessor "org.seasar.doma:doma:2.28.1-SNAPSHOT"
-      implementation "org.seasar.doma:doma:2.28.1-SNAPSHOT"
-      runtimeOnly 'com.h2database:h2:1.3.175'
-      testImplementation 'junit:junit:4.11'
-  }
+See build.gradle in the `simple-boilerplate`_ repository as an example.
 
 
-.. note::
-
-  The description ``maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}`` is required
-  only when you need the SNAPSHOT version of the Doma framework.
-
-.. note::
-
-  With the above build.gradle, you will benefits from
-  `Incremental annotation processing <https://gradle.org/whats-new/gradle-5/#incremental-annotation-processing>`_.
-
-See also build.gradle in the
-`domaframework/simple-boilerplate <https://github.com/domaframework/simple-boilerplate>`_ repository.
+.. _Doma Compile Plugin: https://github.com/domaframework/doma-compile-plugin
+.. _AptEclipsePlugin: https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt
+.. _simple-boilerplate: https://github.com/domaframework/simple-boilerplate

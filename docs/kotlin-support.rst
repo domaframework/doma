@@ -103,28 +103,16 @@ Add the dependencies using the `kapt` and `implementation` configuration in your
       implementation "org.seasar.doma:doma:2.28.1-SNAPSHOT"
   }
 
-If you use resource files such as SQL files, make the kapt find them:
+To simplify your build.script, we recommend you use
+the `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_:
 
 .. code-block:: groovy
 
-    kapt {
-        arguments {
-            arg("doma.resources.dir", compileKotlin.destinationDir)
-        }
-    }
+  plugins {
+    id 'org.seasar.doma.compile' version '1.0.0'
+  }
 
-    task copyDomaResources(type: Sync)  {
-        from sourceSets.main.resources.srcDirs
-        into compileKotlin.destinationDir
-        include 'doma.compile.config'
-        include 'META-INF/**/*.sql'
-        include 'META-INF/**/*.script'
-    }
-
-    compileKotlin {
-        dependsOn copyDomaResources
-    }
-
+For more details, see this `build.gradle <https://github.com/domaframework/kotlin-sample/blob/master/build.gradle>`_.
 
 .. note::
 
