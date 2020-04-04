@@ -3,7 +3,7 @@ plugins {
     id 'com.diffplug.eclipse.apt' version '3.22.0'
     id 'java-library'
     id 'maven-publish'
-    id 'net.researchgate.release' version '2.6.0'
+    id "net.researchgate.release" version '2.8.1'
     id 'signing'
 }
 
