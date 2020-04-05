@@ -6,3 +6,5 @@
 /build/
 /target/
 /.metadata
+.idea
+out

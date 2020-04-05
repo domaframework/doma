@@ -1,177 +1,165 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.query;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
-import org.seasar.doma.internal.jdbc.mock.MockConfig;
-import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SqlLogType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import example.entity.Emp;
 import example.entity.Salesman;
 import example.entity._Emp;
 import example.entity._Salesman;
-import junit.framework.TestCase;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlLogType;
 
-/**
- * @author taedium
- * 
- */
-public class AutoBatchDeleteQueryTest extends TestCase {
+public class AutoBatchDeleteQueryTest {
 
-    private final MockConfig runtimeConfig = new MockConfig();
+  private final MockConfig runtimeConfig = new MockConfig();
 
-    public void testPrepare() throws Exception {
-        Emp emp1 = new Emp();
-        emp1.setId(10);
-        emp1.setName("aaa");
+  private Method method;
 
-        Emp emp2 = new Emp();
-        emp2.setId(20);
-        emp2.setName("bbb");
+  @BeforeEach
+  protected void setUp(TestInfo testInfo) throws Exception {
+    method = testInfo.getTestMethod().get();
+  }
 
-        AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setConfig(runtimeConfig);
-        query.setEntities(Arrays.asList(emp1, emp2));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setSqlLogType(SqlLogType.FORMATTED);
-        query.prepare();
+  @Test
+  public void testPrepare() throws Exception {
+    Emp emp1 = new Emp();
+    emp1.setId(10);
+    emp1.setName("aaa");
 
-        BatchDeleteQuery batchDeleteQuery = query;
-        assertEquals(2, batchDeleteQuery.getSqls().size());
-    }
+    Emp emp2 = new Emp();
+    emp2.setId(20);
+    emp2.setName("bbb");
 
-    public void testOption_default() throws Exception {
-        Emp emp1 = new Emp();
-        emp1.setId(10);
-        emp1.setName("aaa");
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntities(Arrays.asList(emp1, emp2));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
 
-        Emp emp2 = new Emp();
-        emp2.setId(20);
-        emp2.setSalary(new BigDecimal(2000));
-        emp2.setVersion(new Integer(10));
+    BatchDeleteQuery batchDeleteQuery = query;
+    assertEquals(2, batchDeleteQuery.getSqls().size());
+  }
 
-        AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setConfig(runtimeConfig);
-        query.setEntities(Arrays.asList(emp1, emp2));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setSqlLogType(SqlLogType.FORMATTED);
-        query.prepare();
+  @Test
+  public void testOption_default() throws Exception {
+    Emp emp1 = new Emp();
+    emp1.setId(10);
+    emp1.setName("aaa");
 
-        PreparedSql sql = query.getSqls().get(0);
-        assertEquals("delete from EMP where ID = ? and VERSION = ?",
-                sql.getRawSql());
-        List<InParameter<?>> parameters = sql.getParameters();
-        assertEquals(2, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-        assertTrue(parameters.get(1).getWrapper().get() == null);
+    Emp emp2 = new Emp();
+    emp2.setId(20);
+    emp2.setSalary(new BigDecimal(2000));
+    emp2.setVersion(new Integer(10));
 
-        sql = query.getSqls().get(1);
-        assertEquals("delete from EMP where ID = ? and VERSION = ?",
-                sql.getRawSql());
-        parameters = sql.getParameters();
-        assertEquals(2, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
-    }
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntities(Arrays.asList(emp1, emp2));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
 
-    public void testOption_ignoreVersion() throws Exception {
-        Emp emp1 = new Emp();
-        emp1.setId(10);
-        emp1.setName("aaa");
+    PreparedSql sql = query.getSqls().get(0);
+    assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(2, parameters.size());
+    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertTrue(parameters.get(1).getWrapper().get() == null);
 
-        Emp emp2 = new Emp();
-        emp2.setId(20);
-        emp2.setSalary(new BigDecimal(2000));
-        emp2.setVersion(new Integer(10));
+    sql = query.getSqls().get(1);
+    assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
+    parameters = sql.getParameters();
+    assertEquals(2, parameters.size());
+    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+  }
 
-        AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(
-                _Emp.getSingletonInternal());
-        query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setConfig(runtimeConfig);
-        query.setEntities(Arrays.asList(emp1, emp2));
-        query.setVersionIgnored(true);
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setSqlLogType(SqlLogType.FORMATTED);
-        query.prepare();
+  @Test
+  public void testOption_ignoreVersion() throws Exception {
+    Emp emp1 = new Emp();
+    emp1.setId(10);
+    emp1.setName("aaa");
 
-        PreparedSql sql = query.getSqls().get(0);
-        assertEquals("delete from EMP where ID = ?", sql.getRawSql());
-        List<InParameter<?>> parameters = sql.getParameters();
-        assertEquals(1, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    Emp emp2 = new Emp();
+    emp2.setId(20);
+    emp2.setSalary(new BigDecimal(2000));
+    emp2.setVersion(new Integer(10));
 
-        sql = query.getSqls().get(1);
-        assertEquals("delete from EMP where ID = ?", sql.getRawSql());
-        parameters = sql.getParameters();
-        assertEquals(1, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-    }
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntities(Arrays.asList(emp1, emp2));
+    query.setVersionIgnored(true);
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
 
-    public void testTenantId() throws Exception {
-        Salesman emp1 = new Salesman();
-        emp1.setId(10);
-        emp1.setTenantId("bbb");
-        emp1.setVersion(1);
+    PreparedSql sql = query.getSqls().get(0);
+    assertEquals("delete from EMP where ID = ?", sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(1, parameters.size());
+    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
 
-        Salesman emp2 = new Salesman();
-        emp2.setId(20);
-        emp2.setTenantId("bbb");
-        emp2.setVersion(2);
+    sql = query.getSqls().get(1);
+    assertEquals("delete from EMP where ID = ?", sql.getRawSql());
+    parameters = sql.getParameters();
+    assertEquals(1, parameters.size());
+    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+  }
 
-        AutoBatchDeleteQuery<Salesman> query = new AutoBatchDeleteQuery<Salesman>(
-                _Salesman.getSingletonInternal());
-        query.setMethod(getClass().getDeclaredMethod(getName()));
-        query.setConfig(runtimeConfig);
-        query.setEntities(Arrays.asList(emp1, emp2));
-        query.setCallerClassName("aaa");
-        query.setCallerMethodName("bbb");
-        query.setSqlLogType(SqlLogType.FORMATTED);
-        query.prepare();
+  @Test
+  public void testTenantId() throws Exception {
+    Salesman emp1 = new Salesman();
+    emp1.setId(10);
+    emp1.setTenantId("bbb");
+    emp1.setVersion(1);
 
-        PreparedSql sql = query.getSqls().get(0);
-        assertEquals(
-                "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?",
-                sql.getRawSql());
-        List<InParameter<?>> parameters = sql.getParameters();
-        assertEquals(3, parameters.size());
-        assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(1), parameters.get(1).getWrapper().get());
-        assertEquals("bbb", parameters.get(2).getWrapper().get());
+    Salesman emp2 = new Salesman();
+    emp2.setId(20);
+    emp2.setTenantId("bbb");
+    emp2.setVersion(2);
 
-        sql = query.getSqls().get(1);
-        assertEquals(
-                "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?",
-                sql.getRawSql());
-        parameters = sql.getParameters();
-        assertEquals(3, parameters.size());
-        assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-        assertEquals(new Integer(2), parameters.get(1).getWrapper().get());
-        assertEquals("bbb", parameters.get(2).getWrapper().get());
-    }
+    AutoBatchDeleteQuery<Salesman> query =
+        new AutoBatchDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntities(Arrays.asList(emp1, emp2));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
 
+    PreparedSql sql = query.getSqls().get(0);
+    assertEquals(
+        "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(3, parameters.size());
+    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(new Integer(1), parameters.get(1).getWrapper().get());
+    assertEquals("bbb", parameters.get(2).getWrapper().get());
+
+    sql = query.getSqls().get(1);
+    assertEquals(
+        "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
+    parameters = sql.getParameters();
+    assertEquals(3, parameters.size());
+    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(new Integer(2), parameters.get(1).getWrapper().get());
+    assertEquals("bbb", parameters.get(2).getWrapper().get());
+  }
 }

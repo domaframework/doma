@@ -1,69 +1,40 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.generator.Code;
 
-import org.seasar.doma.Entity;
-import org.seasar.doma.internal.apt.util.TypeMirrorUtil;
-
-/**
- * @author taedium
- * 
- */
 public class EntityCtType extends AbstractCtType {
 
-    private final boolean immutable;
+  private final boolean immutable;
 
-    public EntityCtType(TypeMirror type, ProcessingEnvironment env,
-            boolean immutable) {
-        super(type, env);
-        this.immutable = immutable;
-    }
+  private final ClassName descClassName;
 
-    public static EntityCtType newInstance(TypeMirror type,
-            ProcessingEnvironment env) {
-        assertNotNull(type, env);
-        TypeElement typeElement = TypeMirrorUtil.toTypeElement(type, env);
-        if (typeElement == null) {
-            return null;
-        }
-        Entity entity = typeElement.getAnnotation(Entity.class);
-        if (entity == null) {
-            return null;
-        }
-        return new EntityCtType(type, env, entity.immutable());
-    }
+  EntityCtType(Context ctx, TypeMirror type, boolean immutable, ClassName descClassName) {
+    super(ctx, type);
+    assertNotNull(descClassName);
+    this.immutable = immutable;
+    this.descClassName = descClassName;
+  }
 
-    public boolean isImmutable() {
-        return immutable;
-    }
+  public boolean isImmutable() {
+    return immutable;
+  }
 
-    public boolean isAbstract() {
-        return typeElement.getModifiers().contains(Modifier.ABSTRACT);
-    }
+  public boolean isAbstract() {
+    return typeElement.getModifiers().contains(Modifier.ABSTRACT);
+  }
 
-    @Override
-    public <R, P, TH extends Throwable> R accept(
-            CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
-        return visitor.visitEntityCtType(this, p);
-    }
+  public Code getDescCode() {
+    return new Code(p -> p.print("%1$s.getSingletonInternal()", descClassName));
+  }
+
+  @Override
+  public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
+    return visitor.visitEntityCtType(this, p);
+  }
 }

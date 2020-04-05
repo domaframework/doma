@@ -1,107 +1,84 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.wrapper;
 
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * 基本型の値のラッパーです。
- * <p>
- * このインタフェースの実装はスレッドセーフであることを要求されません。
- * 
- * @author taedium
- * 
- * @param <BASIC>
- *            基本型
+ * A wrapper for a basic type.
+ *
+ * <p>The implementation instance is not required to be thread safe.
+ *
+ * @param <BASIC> The basic type
  */
 public interface Wrapper<BASIC> {
 
-    /**
-     * 値を返します。
-     * 
-     * @return 値、{@code null} でありうる
-     */
-    BASIC get();
+  /**
+   * Returns the value.
+   *
+   * <p>The value may be {@code null}.
+   *
+   * @return the value.
+   */
+  BASIC get();
 
-    /**
-     * 値を設定します。
-     * 
-     * @param value
-     *            値
-     */
-    void set(BASIC value);
+  /**
+   * Sets the value.
+   *
+   * @param value the value
+   */
+  void set(BASIC value);
 
-    /**
-     * 値のコピーを返します。
-     * 
-     * @return 値のコピー
-     */
-    BASIC getCopy();
+  /**
+   * Return a copy of the value.
+   *
+   * @return a copy of the value
+   */
+  BASIC getCopy();
 
-    /**
-     * 値の型がプリミティブ型のボックス型であればプリミティブ型のデフォルト値をボックスした値を返します。
-     * 
-     * @return 
-     *         値の型がプリミティブ型のボックス型のであればプリミティブ型のデフォルト値をボックスした値、値の型がプリミティブ型のボックス型でない場合
-     *         {@code null}
-     * @since 1.5.0
-     */
-    BASIC getDefault();
+  /**
+   * Returns the default value.
+   *
+   * @return the boxed default value of a primitive type if this is a wrapper for a boxed type, else
+   *     {@code null}
+   */
+  BASIC getDefault();
 
-    /**
-     * 等しい値を持っている場合 {@code true} を返します。
-     * 
-     * @param other
-     *            値
-     * @return 等しい値を持っている場合 {@code true}
-     */
-    boolean hasEqualValue(Object other);
+  /**
+   * Whether this object has an equal value to the other one.
+   *
+   * @param other the other object
+   * @return {@code true} if this object has an equal value to the other one.
+   */
+  boolean hasEqualValue(Object other);
 
-    /**
-     * 基本型のクラスを返します。
-     * 
-     * @return 基本型のクラス
-     * @since 2.0.0
-     */
-    Class<BASIC> getBasicClass();
+  /**
+   * Returns the class of the basic type.
+   *
+   * @return the class of the basic type
+   */
+  Class<BASIC> getBasicClass();
 
-    /**
-     * ビジターを受け入れます。
-     * 
-     * @param <R>
-     *            戻り値の型
-     * @param <P>
-     *            1番目のパラメータの型
-     * @param <Q>
-     *            2番目のパラメータの型
-     * @param <TH>
-     *            例外の型
-     * @param visitor
-     *            ビジター
-     * @param p
-     *            1番目のパラメータ
-     * @param q
-     *            2番目のパラメータ
-     * @return 戻り値
-     * @throws TH
-     *             例外
-     * @throws DomaNullPointerException
-     *             ビジターが {@code null} の場合
-     */
-    <R, P, Q, TH extends Throwable> R accept(
-            WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH;
+  /**
+   * Whether this object is a wrapper for a primitive type.
+   *
+   * @return {@code true} if this object is a wrapper for a primitive type.
+   */
+  default boolean isPrimitiveWrapper() {
+    return false;
+  }
 
+  /**
+   * Accept a visitor.
+   *
+   * @param <R> The result
+   * @param <P> The first parameter type
+   * @param <Q> The second parameter type
+   * @param <TH> The error or exception type
+   * @param visitor the visitor
+   * @param p the first parameter
+   * @param q the second parameter
+   * @return the result
+   * @throws TH the error or exception type
+   * @throws DomaNullPointerException if {@code visitor} is {@code null}
+   */
+  <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q) throws TH;
 }

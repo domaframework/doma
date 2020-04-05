@@ -1,0 +1,49 @@
+package __.java.util;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _UUID extends org.seasar.doma.jdbc.domain.AbstractDomainType<byte[], java.util.UUID> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _UUID singleton = new _UUID();
+
+    private static final org.seasar.doma.internal.apt.processor.domain.UUIDConverter converter = new org.seasar.doma.internal.apt.processor.domain.UUIDConverter();
+
+    private _UUID() {
+        super(org.seasar.doma.wrapper.BytesWrapper::new);
+    }
+
+    @Override
+    protected java.util.UUID newDomain(byte[] value) {
+        return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    protected byte[] getBasicValue(java.util.UUID domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return byte[].class;
+    }
+
+    @Override
+    public Class<java.util.UUID> getDomainClass() {
+        return java.util.UUID.class;
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _UUID getSingletonInternal() {
+        return singleton;
+    }
+
+}

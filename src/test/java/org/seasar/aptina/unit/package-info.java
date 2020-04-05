@@ -14,7 +14,6 @@
  * governing permissions and limitations under the License.
  */
 /**
- * {@link javax.annotation.processing.Processor} の単体テストを支援するクラスを提供します．
+ * Provides classes which support unit testing for {@link javax.annotation.processing.Processor}.
  */
 package org.seasar.aptina.unit;
-

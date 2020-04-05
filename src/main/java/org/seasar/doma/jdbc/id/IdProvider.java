@@ -1,43 +1,21 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.id;
 
-/**
- * 識別子プロバイダです。
- * 
- * @author nakamura-to
- * @since 2.5.0
- */
+/** An identity provider. */
 public interface IdProvider {
 
-    /**
-     * 識別子を返せるならば {@literal true}
-     * 
-     * @return 識別子を返せるかどうか
-     */
-    boolean isAvailable();
+  /**
+   * Whether this provider can return the identity value.
+   *
+   * @return {@code true} if this provider can return the identity value
+   */
+  boolean isAvailable();
 
-    /**
-     * 識別子を返します。
-     * 
-     * @return 識別子
-     * @throws IllegalStateException
-     *             不正な内部状態により識別子を返せない場合
-     * @throws UnsupportedOperationException
-     *             このメソッドの呼び出しをサポートしていない場合
-     */
-    long get();
+  /**
+   * Provides the identity value.
+   *
+   * @return the identity value
+   * @throws IllegalStateException if an illegal state is detected
+   * @throws UnsupportedOperationException if this method is not supported
+   */
+  long get();
 }

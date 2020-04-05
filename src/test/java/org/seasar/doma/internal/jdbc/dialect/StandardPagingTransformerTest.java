@@ -1,89 +1,103 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.internal.jdbc.dialect;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
-import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.*;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * 
- */
-public class StandardPagingTransformerTest extends TestCase {
+public class StandardPagingTransformerTest {
 
-    public void testOffsetLimit() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
-        StandardPagingTransformer transformer = new StandardPagingTransformer(
-                5, 10);
-        SqlParser parser = new SqlParser(
-                "select emp.id from emp order by emp.id");
-        SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
-        assertEquals(expected, sql.getRawSql());
+  @Test
+  public void testOffsetLimit() throws Exception {
+    String expected =
+        "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
+    StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
+    SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
+    SqlNode sqlNode = transformer.transform(parser.parse());
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(new MockConfig(), SqlKind.SELECT, "dummyPath");
+    PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
+    assertEquals(expected, sql.getRawSql());
+  }
+
+  @Test
+  public void testOffsetLimit_ifNode() throws Exception {
+    String expected =
+        "select * from ( select temp_.*, row_number() over( order by temp_.name desc, temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
+    StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
+    SqlParser parser =
+        new SqlParser("select emp.id from emp order by /*%if true*/emp.name desc,/*%end*/ emp.id");
+    SqlNode sqlNode = transformer.transform(parser.parse());
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(new MockConfig(), SqlKind.SELECT, "dummyPath");
+    PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
+    assertEquals(expected, sql.getRawSql());
+  }
+
+  @Test
+  public void testOffsetLimit_forNode() throws Exception {
+    String expected =
+        "select * from ( select temp_.*, row_number() over( order by temp_.name1, temp_.name2, temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
+    StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
+    SqlParser parser =
+        new SqlParser(
+            "select emp.id from emp order by /*%for e: values*/emp.name/*#e*/, /*%end*/emp.id");
+    SqlNode sqlNode = transformer.transform(parser.parse());
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("values", new Value(List.class, Arrays.asList(1, 2)));
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(
+            new MockConfig(), SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
+    PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
+    assertEquals(expected, sql.getRawSql());
+  }
+
+  @Test
+  public void testOffsetOnly() throws Exception {
+    String expected =
+        "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
+    StandardPagingTransformer transformer = new StandardPagingTransformer(5, -1);
+    SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
+    SqlNode sqlNode = transformer.transform(parser.parse());
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(new MockConfig(), SqlKind.SELECT, "dummyPath");
+    PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
+    assertEquals(expected, sql.getRawSql());
+  }
+
+  @Test
+  public void testLimitOnly() throws Exception {
+    String expected =
+        "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ <= 10";
+    StandardPagingTransformer transformer = new StandardPagingTransformer(-1, 10);
+    SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
+    SqlNode sqlNode = transformer.transform(parser.parse());
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(new MockConfig(), SqlKind.SELECT, "dummyPath");
+    PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
+    assertEquals(expected, sql.getRawSql());
+  }
+
+  @Test
+  public void testOrderByClauseUnspecified() throws Exception {
+    StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
+    SqlParser parser = new SqlParser("select * from emp");
+    try {
+      transformer.transform(parser.parse());
+      fail();
+    } catch (JdbcException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA2201, expected.getMessageResource());
     }
-
-    public void testOffsetOnly() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
-        StandardPagingTransformer transformer = new StandardPagingTransformer(
-                5, -1);
-        SqlParser parser = new SqlParser(
-                "select emp.id from emp order by emp.id");
-        SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
-        assertEquals(expected, sql.getRawSql());
-    }
-
-    public void testLimitOnly() throws Exception {
-        String expected = "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ <= 10";
-        StandardPagingTransformer transformer = new StandardPagingTransformer(
-                -1, 10);
-        SqlParser parser = new SqlParser(
-                "select emp.id from emp order by emp.id");
-        SqlNode sqlNode = transformer.transform(parser.parse());
-        NodePreparedSqlBuilder sqlBuilder = new NodePreparedSqlBuilder(
-                new MockConfig(), SqlKind.SELECT, "dummyPath");
-        PreparedSql sql = sqlBuilder.build(sqlNode, Function.identity());
-        assertEquals(expected, sql.getRawSql());
-    }
-
-    public void testOrderByClauseUnspecified() throws Exception {
-        StandardPagingTransformer transformer = new StandardPagingTransformer(
-                5, 10);
-        SqlParser parser = new SqlParser("select * from emp");
-        try {
-            transformer.transform(parser.parse());
-            fail();
-        } catch (JdbcException expected) {
-            System.out.println(expected.getMessage());
-            assertEquals(Message.DOMA2201, expected.getMessageResource());
-        }
-    }
-
+  }
 }

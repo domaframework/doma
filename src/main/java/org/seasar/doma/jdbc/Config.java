@@ -1,25 +1,8 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-
 import javax.sql.DataSource;
-
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -29,243 +12,224 @@ import org.seasar.doma.jdbc.tx.TransactionManager;
 import org.seasar.doma.message.Message;
 
 /**
- * JDBCに関する設定です。
- * <p>
- * このインタフェースの実装はスレッドセーフでなければいけません。
- * 
- * @author taedium
- * 
+ * A runtime configuration for DAOs.
+ *
+ * <p>The implementation must be thread safe.
  */
 public interface Config {
 
-    /**
-     * データソースを返します。
-     * 
-     * @return データソース
-     */
-    DataSource getDataSource();
+  /**
+   * Returns the data source.
+   *
+   * @return the data source
+   */
+  DataSource getDataSource();
 
-    /**
-     * RDBMSの方言を返します。
-     * 
-     * @return RDBMSの方言
-     */
-    Dialect getDialect();
+  /**
+   * Returns the SQL dialect.
+   *
+   * @return the SQL dialect
+   */
+  Dialect getDialect();
 
-    /**
-     * データソース名を返します。
-     * <p>
-     * データソースを複数扱う場合、データソースごとに異なる名前を返さなければいけません。この値は、シーケンスやテーブルを使用した識別子の自動生成機能で、
-     * 生成した識別子をデータソースごとに管理するために使用されます。
-     * 
-     * @return データソース名
-     */
-    default String getDataSourceName() {
-        return getClass().getName();
+  /**
+   * Returns the name of the data source.
+   *
+   * <p>Each data source must have an unique name when multiple data sources are used in an
+   * application.
+   *
+   * @return the name of the data source
+   */
+  default String getDataSourceName() {
+    return getClass().getName();
+  }
+
+  /**
+   * Returns the SQL file repository.
+   *
+   * @return the SQL file repository
+   */
+  default SqlFileRepository getSqlFileRepository() {
+    return ConfigSupport.defaultSqlFileRepository;
+  }
+
+  /**
+   * Returns the JDBC logger.
+   *
+   * @return the JDBC logger
+   */
+  default JdbcLogger getJdbcLogger() {
+    return ConfigSupport.defaultJdbcLogger;
+  }
+
+  /**
+   * Returns the transaction controller whose transaction attribute is {@code REQUIRES_NEW}.
+   *
+   * @return the transaction controller whose transaction attribute is {@code REQUIRES_NEW}
+   */
+  default RequiresNewController getRequiresNewController() {
+    return ConfigSupport.defaultRequiresNewController;
+  }
+
+  /**
+   * Returns the class helper.
+   *
+   * @return the class helper
+   */
+  default ClassHelper getClassHelper() {
+    return ConfigSupport.defaultClassHelper;
+  }
+
+  /**
+   * Returns the factory for {@link Command} implementation classes.
+   *
+   * @return the factory for {@link Command} implementation classes
+   */
+  default CommandImplementors getCommandImplementors() {
+    return ConfigSupport.defaultCommandImplementors;
+  }
+
+  /**
+   * Returns the factory for {@link Query} implementation classes.
+   *
+   * @return the factory for {@link Query} implementation classes
+   */
+  default QueryImplementors getQueryImplementors() {
+    return ConfigSupport.defaultQueryImplementors;
+  }
+
+  /**
+   * Returns the SQL log type that determines the SQL log format in exceptions.
+   *
+   * @return the SQL log type
+   */
+  default SqlLogType getExceptionSqlLogType() {
+    return SqlLogType.FORMATTED;
+  }
+
+  /**
+   * Returns the unknown column handler.
+   *
+   * @return the unknown column handler
+   */
+  default UnknownColumnHandler getUnknownColumnHandler() {
+    return ConfigSupport.defaultUnknownColumnHandler;
+  }
+
+  /**
+   * Returns the naming convention controller.
+   *
+   * @return the naming convention controller
+   */
+  default Naming getNaming() {
+    return ConfigSupport.defaultNaming;
+  }
+
+  /**
+   * Returns a naming convention controller for keys contained in a {@code Map<String, Object>}
+   * object.
+   *
+   * @return a naming convention controller for keys contained in a {@code Map<String, Object>}
+   *     object
+   */
+  default MapKeyNaming getMapKeyNaming() {
+    return ConfigSupport.defaultMapKeyNaming;
+  }
+
+  /**
+   * Returns the transaction manager.
+   *
+   * @return the transaction manager
+   * @throws UnsupportedOperationException if this configuration does not support transactions by
+   *     the transaction manager
+   */
+  default TransactionManager getTransactionManager() {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Returns the commenter for SQL strings.
+   *
+   * @return the commenter for SQL strings
+   */
+  default Commenter getCommenter() {
+    return ConfigSupport.defaultCommenter;
+  }
+
+  /**
+   * Returns the maximum number of rows for a {@code ResultSet} object.
+   *
+   * <p>If the value is greater than or equal to 1, it is passed to {@link
+   * Statement#setMaxRows(int)}.
+   *
+   * @return the maximum number of rows
+   * @see Statement#setMaxRows(int)
+   */
+  default int getMaxRows() {
+    return 0;
+  }
+
+  /**
+   * Returns the fetch size.
+   *
+   * <p>If the value is greater than or equal to 1, it is passed to {@link
+   * Statement#setFetchSize(int)}.
+   *
+   * @return the fetch size
+   * @see Statement#setFetchSize(int)
+   */
+  default int getFetchSize() {
+    return 0;
+  }
+
+  /**
+   * Returns the query timeout limit in seconds.
+   *
+   * <p>If the value is greater than or equal to 1, it is passed to {@link
+   * Statement#setQueryTimeout(int)}.
+   *
+   * @return the query timeout limit in seconds
+   * @see Statement#setQueryTimeout(int)
+   */
+  default int getQueryTimeout() {
+    return 0;
+  }
+
+  /**
+   * Returns the batch size.
+   *
+   * <p>If the value is less than 1, it is regarded as 1.
+   *
+   * @return the batch size
+   * @see PreparedStatement#executeBatch()
+   * @see PreparedStatement#addBatch()
+   */
+  default int getBatchSize() {
+    return 0;
+  }
+
+  /**
+   * Returns the provider for {@link EntityListener}.
+   *
+   * @return the provider for {@link EntityListener}
+   */
+  default EntityListenerProvider getEntityListenerProvider() {
+    return ConfigSupport.defaultEntityListenerProvider;
+  }
+
+  /**
+   * Retrieves a {@link Config} object from the {@code provider} parameter.
+   *
+   * @param provider the instance of {@link ConfigProvider}
+   * @return the configuration
+   * @throws DomaIllegalArgumentException if {@code provider} is not {@link ConfigProvider}
+   */
+  static Config get(Object provider) {
+    if (provider instanceof ConfigProvider) {
+      ConfigProvider p = (ConfigProvider) provider;
+      return p.getConfig();
     }
-
-    /**
-     * SQLファイルのリポジトリを返します。
-     * 
-     * @return SQLファイルのリポジトリ
-     */
-    default SqlFileRepository getSqlFileRepository() {
-        return ConfigSupport.defaultSqlFileRepository;
-    }
-
-    /**
-     * JDBCロガーを返します。
-     * 
-     * @return JDBCロガー
-     */
-    default JdbcLogger getJdbcLogger() {
-        return ConfigSupport.defaultJdbcLogger;
-    }
-
-    /**
-     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーを返します。
-     * <p>
-     * {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラーは、テーブルを使用した識別子の自動生成機能において、
-     * テーブルの更新処理を新しいトランザクション内で実行するために使われます。
-     * 
-     * @return {@code REQUIRES_NEW}のトランザクション属性を制御するコントローラー
-     */
-    default RequiresNewController getRequiresNewController() {
-        return ConfigSupport.defaultRequiresNewController;
-    }
-
-    /**
-     * クラスのヘルパーを返します。
-     * 
-     * @return クラスのヘルパー
-     * @since 1.27.0
-     */
-    default ClassHelper getClassHelper() {
-        return ConfigSupport.defaultClassHelper;
-    }
-
-    /**
-     * {@link Command} の実装クラスのファクトリを返します。
-     * 
-     * @return {@link Command} の実装クラスのファクトリ
-     * @since 2.0.0
-     */
-    default CommandImplementors getCommandImplementors() {
-        return ConfigSupport.defaultCommandImplementors;
-    }
-
-    /**
-     * {@link Query} の実装クラスのファクトリを返します。
-     * 
-     * @return {@link Query} の実装クラスのファクトリ
-     * @since 2.0.0
-     */
-    default QueryImplementors getQueryImplementors() {
-        return ConfigSupport.defaultQueryImplementors;
-    }
-
-    /**
-     * 例外に含めるSQLログのタイプを返します。
-     * 
-     * @return SQLログのタイプ
-     * @since 1.22.0
-     */
-    default SqlLogType getExceptionSqlLogType() {
-        return SqlLogType.FORMATTED;
-    }
-
-    /**
-     * 未知のカラムのハンドラを返します。
-     * 
-     * @return 未知のカラムのハンドラ
-     * @since 2.0.0
-     */
-    default UnknownColumnHandler getUnknownColumnHandler() {
-        return ConfigSupport.defaultUnknownColumnHandler;
-    }
-
-    /**
-     * ネーミング規約のコントローラを返します。
-     * 
-     * @return ネーミング規約のコントローラ
-     * @since 2.2.0
-     */
-    default Naming getNaming() {
-        return ConfigSupport.defaultNaming;
-    }
-
-    /**
-     * マップのキーのネーミング規約のコントローラを返します。
-     * 
-     * @return マップのキーのネーミング規約のコントローラ
-     */
-    default MapKeyNaming getMapKeyNaming() {
-        return ConfigSupport.defaultMapKeyNaming;
-    }
-
-    /**
-     * トランザクションマネジャーを返します。
-     * <p>
-     * デフォルトの実装では {@link UnsupportedOperationException} をスローします。
-     * 
-     * @return トランザクションマネジャー
-     * @throws UnsupportedOperationException
-     *             {@link TransactionManager} のインタフェースを使ったトランザクションをサポートしない場合
-     * @since 2.0.0
-     */
-    default TransactionManager getTransactionManager() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * SQLのコメンターを返します。
-     * 
-     * @return SQLのコメンター
-     * @since 2.1.0
-     */
-    default Commenter getCommenter() {
-        return ConfigSupport.defaultCommenter;
-    }
-
-    /**
-     * 最大行数の制限値を返します。
-     * <p>
-     * 0以下の値は、 {@link Statement#setMaxRows(int)}へは渡されません。
-     * 
-     * @return 最大行数の制限値
-     * @see Statement#setMaxRows(int)
-     */
-    default int getMaxRows() {
-        return 0;
-    }
-
-    /**
-     * フェッチサイズを返します。
-     * <p>
-     * 0以下の値は、 {@link Statement#setFetchSize(int)}へは渡されません。
-     * 
-     * @return フェッチサイズ
-     * @see Statement#setFetchSize(int)
-     */
-    default int getFetchSize() {
-        return 0;
-    }
-
-    /**
-     * クエリタイムアウト（秒）を返します。
-     * <p>
-     * 0以下の値は、 {@link Statement#setQueryTimeout(int)}へは渡されません。
-     * 
-     * @return クエリタイムアウト（秒）
-     * @see Statement#setQueryTimeout(int)
-     */
-    default int getQueryTimeout() {
-        return 0;
-    }
-
-    /**
-     * バッチサイズを返します。
-     * <p>
-     * {@literal 1} 以下の値は、 {@literal 1} とみなされます。
-     * 
-     * {@link PreparedStatement#executeBatch()} を実行する際のバッチサイズです。
-     * バッチ対象の数がバッチサイズを上回る場合、バッチサイズの数だけ {@link PreparedStatement#addBatch()}
-     * を呼び出し、 {@link PreparedStatement#executeBatch()} を実行するということを繰り返します。
-     * 
-     * @return バッチサイズを返します。
-     * @see PreparedStatement#addBatch()
-     */
-    default int getBatchSize() {
-        return 0;
-    }
-
-    /**
-     * {@link EntityListener} のプロバイダを返します。
-     * 
-     * @return {@link EntityListener} のプロバイダ
-     * @since 2.2.0
-     */
-    default EntityListenerProvider getEntityListenerProvider() {
-        return ConfigSupport.defaultEntityListenerProvider;
-    }
-
-    /**
-     * {@link ConfigProvider} から {@link Config} を取得します。
-     * 
-     * @param provider
-     *            {@link ConfigProvider} を実装していることを期待されるオブジェクト
-     * @return {@link ConfigProvider} が返した {@link Config}
-     * @throws DomaIllegalArgumentException
-     *             {@code provider} が {@link ConfigProvider} でない場合
-     * @since 2.0.0
-     */
-    static Config get(Object provider) {
-        if (provider instanceof ConfigProvider) {
-            ConfigProvider p = (ConfigProvider) provider;
-            return p.getConfig();
-        }
-        throw new DomaIllegalArgumentException("provider",
-                Message.DOMA2218.getMessage("provider",
-                        ConfigProvider.class.getName()));
-    }
+    throw new DomaIllegalArgumentException(
+        "provider", Message.DOMA2218.getMessage("provider", ConfigProvider.class.getName()));
+  }
 }

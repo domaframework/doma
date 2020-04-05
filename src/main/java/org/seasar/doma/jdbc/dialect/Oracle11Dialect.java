@@ -1,18 +1,3 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.dialect;
 
 import java.sql.Date;
@@ -26,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
@@ -56,490 +40,362 @@ import org.seasar.doma.wrapper.LocalTimeWrapper;
 import org.seasar.doma.wrapper.TimeWrapper;
 import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
-import org.seasar.doma.wrapper.Wrapper;
 
-/**
- * Oracle 11g以前のバージョン用の方言です。
- * 
- * @author taedium
- * 
- */
+/** A dialect for Oracle Database 11g and below. */
 public class Oracle11Dialect extends StandardDialect {
 
-    /** 一意制約違反を表すエラーコード */
-    protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
+  /** the error code that represents unique violation */
+  protected static final int UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE = 1;
 
-    /** {@link ResultSet} の JDBC型 */
-    protected static final JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
+  /** the JDBC type for {@link ResultSet} */
+  protected static final JdbcType<ResultSet> RESULT_SET = new OracleResultSetType();
 
-    /**
-     * インスタンスを構築します。
-     */
-    public Oracle11Dialect() {
-        this(new Oracle11JdbcMappingVisitor(),
-                new Oracle11SqlLogFormattingVisitor(),
-                new Oracle11ExpressionFunctions());
+  public Oracle11Dialect() {
+    this(
+        new Oracle11JdbcMappingVisitor(),
+        new Oracle11SqlLogFormattingVisitor(),
+        new Oracle11ExpressionFunctions());
+  }
+
+  public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
+    this(
+        jdbcMappingVisitor,
+        new Oracle11SqlLogFormattingVisitor(),
+        new Oracle11ExpressionFunctions());
+  }
+
+  public Oracle11Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    this(
+        new Oracle11JdbcMappingVisitor(),
+        sqlLogFormattingVisitor,
+        new Oracle11ExpressionFunctions());
+  }
+
+  public Oracle11Dialect(ExpressionFunctions expressionFunctions) {
+    this(
+        new Oracle11JdbcMappingVisitor(),
+        new Oracle11SqlLogFormattingVisitor(),
+        expressionFunctions);
+  }
+
+  public Oracle11Dialect(
+      JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
+    this(jdbcMappingVisitor, sqlLogFormattingVisitor, new Oracle11ExpressionFunctions());
+  }
+
+  public Oracle11Dialect(
+      JdbcMappingVisitor jdbcMappingVisitor,
+      SqlLogFormattingVisitor sqlLogFormattingVisitor,
+      ExpressionFunctions expressionFunctions) {
+    super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+  }
+
+  @Override
+  public String getName() {
+    return "oracle";
+  }
+
+  @Override
+  public boolean supportsBatchUpdateResults() {
+    return false;
+  }
+
+  @Override
+  protected SqlNode toForUpdateSqlNode(
+      SqlNode sqlNode, SelectForUpdateType forUpdateType, int waitSeconds, String... aliases) {
+    OracleForUpdateTransformer transformer =
+        new OracleForUpdateTransformer(forUpdateType, waitSeconds, aliases);
+    return transformer.transform(sqlNode);
+  }
+
+  @Override
+  protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
+    OraclePagingTransformer transformer = new OraclePagingTransformer(offset, limit);
+    return transformer.transform(sqlNode);
+  }
+
+  @Override
+  public boolean isUniqueConstraintViolated(SQLException sqlException) {
+    if (sqlException == null) {
+      throw new DomaNullPointerException("sqlException");
     }
+    int code = getErrorCode(sqlException);
+    return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
+  }
 
-    /**
-     * {@link JdbcMappingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     */
-    public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor) {
-        this(jdbcMappingVisitor, new Oracle11SqlLogFormattingVisitor(),
-                new Oracle11ExpressionFunctions());
+  @Override
+  public PreparedSql getSequenceNextValSql(String qualifiedSequenceName, long allocationSize) {
+    if (qualifiedSequenceName == null) {
+      throw new DomaNullPointerException("qualifiedSequenceName");
     }
+    String rawSql = "select " + qualifiedSequenceName + ".nextval from dual";
+    return new PreparedSql(
+        SqlKind.SELECT,
+        rawSql,
+        rawSql,
+        null,
+        Collections.<InParameter<?>>emptyList(),
+        SqlLogType.FORMATTED);
+  }
 
-    /**
-     * {@link SqlLogFormattingVisitor} を指定してインスタンスを構築します。
-     * 
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
-    public Oracle11Dialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(new Oracle11JdbcMappingVisitor(), sqlLogFormattingVisitor,
-                new Oracle11ExpressionFunctions());
+  @Override
+  public boolean supportsIdentity() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsSequence() {
+    return true;
+  }
+
+  @Override
+  public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
+    return true;
+  }
+
+  @Override
+  public boolean supportsResultSetReturningAsOutParameter() {
+    return true;
+  }
+
+  @Override
+  public JdbcType<ResultSet> getResultSetType() {
+    return RESULT_SET;
+  }
+
+  @Override
+  public String getScriptBlockDelimiter() {
+    return "/";
+  }
+
+  @Override
+  public ScriptBlockContext createScriptBlockContext() {
+    return new Oracle11ScriptBlockContext();
+  }
+
+  public static class OracleResultSetType extends AbstractResultSetType {
+
+    protected static int CURSOR = -10;
+
+    public OracleResultSetType() {
+      super(CURSOR);
     }
+  }
 
-    /**
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
-    public Oracle11Dialect(ExpressionFunctions expressionFunctions) {
-        this(new Oracle11JdbcMappingVisitor(),
-                new Oracle11SqlLogFormattingVisitor(), expressionFunctions);
+  public static class Oracle11JdbcMappingVisitor extends StandardJdbcMappingVisitor {
+
+    @Override
+    public Void visitBooleanWrapper(
+        BooleanWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
+      return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
     }
+  }
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor}
-     * を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     */
-    public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-        this(jdbcMappingVisitor, sqlLogFormattingVisitor,
-                new Oracle11ExpressionFunctions());
-    }
+  public static class Oracle11SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
 
-    /**
-     * {@link JdbcMappingVisitor} と {@link SqlLogFormattingVisitor} と
-     * {@link ExpressionFunctions} を指定してインスタンスを構築します。
-     * 
-     * @param jdbcMappingVisitor
-     *            {@link Wrapper} をJDBCの型とマッピングするビジター
-     * @param sqlLogFormattingVisitor
-     *            SQLのバインド変数にマッピングされる {@link Wrapper}
-     *            をログ用のフォーマットされた文字列へと変換するビジター
-     * @param expressionFunctions
-     *            SQLのコメント式で利用可能な関数群
-     */
-    public Oracle11Dialect(JdbcMappingVisitor jdbcMappingVisitor,
-            SqlLogFormattingVisitor sqlLogFormattingVisitor,
-            ExpressionFunctions expressionFunctions) {
-        super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+    /** the formatter for {@link Date} */
+    protected DateFormatter dateFormatter = new DateFormatter();
+
+    /** the formatter for {@link Time} */
+    protected TimeFormatter timeFormatter = new TimeFormatter();
+
+    /** the formatter for {@link Timestamp} */
+    protected TimestampFormatter timestampFormatter = new TimestampFormatter();
+
+    /** the formatter for {@link java.util.Date} */
+    protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
+
+    /** the formatter for {@link LocalDate} */
+    protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(dateFormatter);
+
+    /** the formatter for {@link LocalDateTime} */
+    protected LocalDateTimeFormatter localDateTimeFormatter =
+        new LocalDateTimeFormatter(timestampFormatter);
+
+    /** the formatter for {@link LocalTime} */
+    protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(timeFormatter);
+
+    @Override
+    public String visitBooleanWrapper(BooleanWrapper wrapper, SqlLogFormattingFunction p, Void q)
+        throws RuntimeException {
+      return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
     }
 
     @Override
-    public String getName() {
-        return "oracle";
+    public String visitDateWrapper(DateWrapper wrapper, SqlLogFormattingFunction p, Void q) {
+      return p.apply(wrapper, dateFormatter);
     }
 
     @Override
-    public boolean supportsBatchUpdateResults() {
-        return false;
+    public String visitLocalDateWrapper(
+        LocalDateWrapper wrapper, SqlLogFormattingFunction p, Void q) throws RuntimeException {
+      return p.apply(wrapper, localDateFormatter);
     }
 
     @Override
-    protected SqlNode toForUpdateSqlNode(SqlNode sqlNode,
-            SelectForUpdateType forUpdateType, int waitSeconds,
-            String... aliases) {
-        OracleForUpdateTransformer transformer = new OracleForUpdateTransformer(
-                forUpdateType, waitSeconds, aliases);
-        return transformer.transform(sqlNode);
+    public String visitLocalDateTimeWrapper(
+        LocalDateTimeWrapper wrapper, SqlLogFormattingFunction p, Void q) throws RuntimeException {
+      return p.apply(wrapper, localDateTimeFormatter);
     }
 
     @Override
-    protected SqlNode toPagingSqlNode(SqlNode sqlNode, long offset, long limit) {
-        OraclePagingTransformer transformer = new OraclePagingTransformer(
-                offset, limit);
-        return transformer.transform(sqlNode);
+    public String visitLocalTimeWrapper(
+        LocalTimeWrapper wrapper, SqlLogFormattingFunction p, Void q) throws RuntimeException {
+      return p.apply(wrapper, localTimeFormatter);
     }
 
     @Override
-    public boolean isUniqueConstraintViolated(SQLException sqlException) {
-        if (sqlException == null) {
-            throw new DomaNullPointerException("sqlException");
-        }
-        int code = getErrorCode(sqlException);
-        return UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODE == code;
+    public String visitTimeWrapper(TimeWrapper wrapper, SqlLogFormattingFunction p, Void q) {
+      return p.apply(wrapper, timeFormatter);
     }
 
     @Override
-    public PreparedSql getSequenceNextValSql(String qualifiedSequenceName,
-            long allocationSize) {
-        if (qualifiedSequenceName == null) {
-            throw new DomaNullPointerException("qualifiedSequenceName");
-        }
-        String rawSql = "select " + qualifiedSequenceName
-                + ".nextval from dual";
-        return new PreparedSql(SqlKind.SELECT, rawSql, rawSql, null,
-                Collections.<InParameter<?>> emptyList(), SqlLogType.FORMATTED);
+    public String visitTimestampWrapper(
+        TimestampWrapper wrapper, SqlLogFormattingFunction p, Void q) {
+      return p.apply(wrapper, timestampFormatter);
     }
 
     @Override
-    public boolean supportsIdentity() {
-        return false;
+    public String visitUtilDateWrapper(
+        UtilDateWrapper wrapper, SqlLogFormattingFunction p, Void q) {
+      return p.apply(wrapper, utilDateFormatter);
     }
 
-    @Override
-    public boolean supportsSequence() {
-        return true;
+    /** A formatter that converts a {@link Date} object to a date literal. */
+    protected static class DateFormatter implements SqlLogFormatter<Date> {
+
+      @Override
+      public String convertToLogFormat(Date value) {
+        if (value == null) {
+          return "null";
+        }
+        return "date'" + value + "'";
+      }
     }
 
-    @Override
-    public boolean supportsSelectForUpdate(SelectForUpdateType type,
-            boolean withTargets) {
-        return true;
+    /** A formatter that converts a {@link Time} object to a time literal. */
+    protected static class TimeFormatter implements SqlLogFormatter<Time> {
+
+      @Override
+      public String convertToLogFormat(Time value) {
+        if (value == null) {
+          return "null";
+        }
+        return "time'" + value + "'";
+      }
     }
 
-    @Override
-    public boolean supportsResultSetReturningAsOutParameter() {
-        return true;
+    /** A formatter that converts a {@link Timestamp} object to a timestamp literal. */
+    protected static class TimestampFormatter implements SqlLogFormatter<Timestamp> {
+
+      @Override
+      public String convertToLogFormat(Timestamp value) {
+        if (value == null) {
+          return "null";
+        }
+        return "timestamp'" + value + "'";
+      }
     }
 
-    @Override
-    public JdbcType<ResultSet> getResultSetType() {
-        return RESULT_SET;
+    /** A formatter that converts a {@link java.util.Date} object to a date literal. */
+    protected static class UtilDateFormatter implements SqlLogFormatter<java.util.Date> {
+
+      @Override
+      public String convertToLogFormat(java.util.Date value) {
+        if (value == null) {
+          return "null";
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return "timestamp'" + dateFormat.format(value) + "'";
+      }
     }
 
-    @Override
-    public String getScriptBlockDelimiter() {
-        return "/";
+    /** A formatter that converts a {@link LocalDate} object to a date literal. */
+    protected static class LocalDateFormatter implements SqlLogFormatter<LocalDate> {
+
+      protected final DateFormatter delegate;
+
+      protected LocalDateFormatter(DateFormatter delegate) {
+        AssertionUtil.assertNotNull(delegate);
+        this.delegate = delegate;
+      }
+
+      @Override
+      public String convertToLogFormat(LocalDate value) {
+        if (value == null) {
+          return "null";
+        }
+        return delegate.convertToLogFormat(Date.valueOf(value));
+      }
     }
 
-    @Override
-    public ScriptBlockContext createScriptBlockContext() {
-        return new Oracle11ScriptBlockContext();
+    /** A formatter that converts a {@link LocalDateTime} object to a timestamp literal. */
+    protected static class LocalDateTimeFormatter implements SqlLogFormatter<LocalDateTime> {
+
+      protected final TimestampFormatter delegate;
+
+      protected LocalDateTimeFormatter(TimestampFormatter delegate) {
+        AssertionUtil.assertNotNull(delegate);
+        this.delegate = delegate;
+      }
+
+      @Override
+      public String convertToLogFormat(LocalDateTime value) {
+        if (value == null) {
+          return "null";
+        }
+        return delegate.convertToLogFormat(Timestamp.valueOf(value));
+      }
     }
 
-    /**
-     * Oracle用の {@link ResultSet} の {@link JdbcType} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class OracleResultSetType extends AbstractResultSetType {
+    /** A formatter that converts a {@link LocalTime} object to a time literal. */
+    protected static class LocalTimeFormatter implements SqlLogFormatter<LocalTime> {
 
-        protected static int CURSOR = -10;
+      protected final TimeFormatter delegate;
 
-        public OracleResultSetType() {
-            super(CURSOR);
+      protected LocalTimeFormatter(TimeFormatter delegate) {
+        AssertionUtil.assertNotNull(delegate);
+        this.delegate = delegate;
+      }
+
+      @Override
+      public String convertToLogFormat(LocalTime value) {
+        if (value == null) {
+          return "null";
         }
+        return delegate.convertToLogFormat(Time.valueOf(value));
+      }
+    }
+  }
+
+  public static class Oracle11ExpressionFunctions extends StandardExpressionFunctions {
+
+    private static final char[] DEFAULT_WILDCARDS = {'%', '_', '％', '＿'};
+
+    public Oracle11ExpressionFunctions() {
+      super(DEFAULT_WILDCARDS);
     }
 
-    /**
-     * Oracle用の {@link JdbcMappingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class Oracle11JdbcMappingVisitor extends
-            StandardJdbcMappingVisitor {
-
-        @Override
-        public Void visitBooleanWrapper(BooleanWrapper wrapper,
-                JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
-            return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
-        }
+    public Oracle11ExpressionFunctions(char[] wildcards) {
+      super(wildcards);
     }
 
-    /**
-     * Oracle用の {@link SqlLogFormattingVisitor} の実装です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class Oracle11SqlLogFormattingVisitor extends
-            StandardSqlLogFormattingVisitor {
-
-        /** {@link Date}用日付フォーマッタ */
-        protected DateFormatter dateFormatter = new DateFormatter();
-
-        /** 時刻フォーマッタ */
-        protected TimeFormatter timeFormatter = new TimeFormatter();
-
-        /** タイムスタンプフォーマッタ */
-        protected TimestampFormatter timestampFormatter = new TimestampFormatter();
-
-        /** {@link java.util.Date}用日付フォーマッタ */
-        protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
-
-        /** {@link LocalDate}用日付フォーマッタ */
-        protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(
-                dateFormatter);
-
-        /** {@link LocalDateTime}用タイムスタンプフォーマッタ */
-        protected LocalDateTimeFormatter localDateTimeFormatter = new LocalDateTimeFormatter(
-                timestampFormatter);
-
-        /** {@link LocalTime}用時刻フォーマッタ */
-        protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(
-                timeFormatter);
-
-        @Override
-        public String visitBooleanWrapper(BooleanWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
-            return p.apply(wrapper, JdbcTypes.INTEGER_ADAPTIVE_BOOLEAN);
-        }
-
-        @Override
-        public String visitDateWrapper(DateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
-            return p.apply(wrapper, dateFormatter);
-        }
-
-        @Override
-        public String visitLocalDateWrapper(LocalDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
-            return p.apply(wrapper, localDateFormatter);
-        }
-
-        @Override
-        public String visitLocalDateTimeWrapper(LocalDateTimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
-            return p.apply(wrapper, localDateTimeFormatter);
-        }
-
-        @Override
-        public String visitLocalTimeWrapper(LocalTimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) throws RuntimeException {
-            return p.apply(wrapper, localTimeFormatter);
-        }
-
-        @Override
-        public String visitTimeWrapper(TimeWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
-            return p.apply(wrapper, timeFormatter);
-        }
-
-        @Override
-        public String visitTimestampWrapper(TimestampWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
-            return p.apply(wrapper, timestampFormatter);
-        }
-
-        @Override
-        public String visitUtilDateWrapper(UtilDateWrapper wrapper,
-                SqlLogFormattingFunction p, Void q) {
-            return p.apply(wrapper, utilDateFormatter);
-        }
-
-        /**
-         * {@link Date} をdateリテラルへ変換するフォーマッタです。
-         * 
-         * @author taedium
-         * 
-         */
-        protected static class DateFormatter implements SqlLogFormatter<Date> {
-
-            @Override
-            public String convertToLogFormat(Date value) {
-                if (value == null) {
-                    return "null";
-                }
-                return "date'" + value + "'";
-            }
-        }
-
-        /**
-         * timeリテラルへ変換するフォーマッタです。
-         * 
-         * @author taedium
-         * 
-         */
-        protected static class TimeFormatter implements SqlLogFormatter<Time> {
-
-            @Override
-            public String convertToLogFormat(Time value) {
-                if (value == null) {
-                    return "null";
-                }
-                return "time'" + value + "'";
-            }
-        }
-
-        /**
-         * timestampリテラルへ変換するフォーマッタです。
-         * 
-         * @author taedium
-         * 
-         */
-        protected static class TimestampFormatter implements
-                SqlLogFormatter<Timestamp> {
-
-            @Override
-            public String convertToLogFormat(Timestamp value) {
-                if (value == null) {
-                    return "null";
-                }
-                return "timestamp'" + value + "'";
-            }
-        }
-
-        /**
-         * {@link java.util.Date} をdateリテラルへ変換するフォーマッタです。
-         * 
-         * @author taedium
-         * @since 1.9.0
-         */
-        protected static class UtilDateFormatter implements
-                SqlLogFormatter<java.util.Date> {
-
-            @Override
-            public String convertToLogFormat(java.util.Date value) {
-                if (value == null) {
-                    return "null";
-                }
-                SimpleDateFormat dateFormat = new SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss.SSS");
-                return "timestamp'" + dateFormat.format(value) + "'";
-            }
-        }
-
-        /**
-         * {@link LocalDate} をdateリテラルへ変換するフォーマッタです。
-         * 
-         * @author nakamura-to
-         * @since 2.0.0
-         */
-        protected static class LocalDateFormatter implements
-                SqlLogFormatter<LocalDate> {
-
-            protected final DateFormatter delegate;
-
-            protected LocalDateFormatter(DateFormatter delegate) {
-                AssertionUtil.assertNotNull(delegate);
-                this.delegate = delegate;
-            }
-
-            @Override
-            public String convertToLogFormat(LocalDate value) {
-                if (value == null) {
-                    return "null";
-                }
-                return delegate.convertToLogFormat(Date.valueOf(value));
-            }
-        }
-
-        /**
-         * {@link LocalDateTime} をtimestampリテラルへ変換するフォーマッタです。
-         * 
-         * @author nakamura-to
-         * @since 2.0.0
-         */
-        protected static class LocalDateTimeFormatter implements
-                SqlLogFormatter<LocalDateTime> {
-
-            protected final TimestampFormatter delegate;
-
-            protected LocalDateTimeFormatter(TimestampFormatter delegate) {
-                AssertionUtil.assertNotNull(delegate);
-                this.delegate = delegate;
-            }
-
-            @Override
-            public String convertToLogFormat(LocalDateTime value) {
-                if (value == null) {
-                    return "null";
-                }
-                return delegate.convertToLogFormat(Timestamp.valueOf(value));
-            }
-        }
-
-        /**
-         * {@link LocalTime} をtimeリテラルへ変換するフォーマッタです。
-         * 
-         * @author nakamura-to
-         * @since 2.0.0
-         */
-        protected static class LocalTimeFormatter implements
-                SqlLogFormatter<LocalTime> {
-
-            protected final TimeFormatter delegate;
-
-            protected LocalTimeFormatter(TimeFormatter delegate) {
-                AssertionUtil.assertNotNull(delegate);
-                this.delegate = delegate;
-            }
-
-            @Override
-            public String convertToLogFormat(LocalTime value) {
-                if (value == null) {
-                    return "null";
-                }
-                return delegate.convertToLogFormat(Time.valueOf(value));
-            }
-        }
-
+    protected Oracle11ExpressionFunctions(char escapeChar, char[] wildcards) {
+      super(escapeChar, wildcards);
     }
+  }
 
-    /**
-     * Oracle用の {@link ExpressionFunctions} です。
-     * 
-     * @author taedium
-     * 
-     */
-    public static class Oracle11ExpressionFunctions extends
-            StandardExpressionFunctions {
+  public static class Oracle11ScriptBlockContext extends StandardScriptBlockContext {
 
-        private final static char[] DEFAULT_WILDCARDS = { '%', '_', '％', '＿' };
-
-        public Oracle11ExpressionFunctions() {
-            super(DEFAULT_WILDCARDS);
-        }
-
-        public Oracle11ExpressionFunctions(char[] wildcards) {
-            super(wildcards);
-        }
-
-        protected Oracle11ExpressionFunctions(char escapeChar, char[] wildcards) {
-            super(escapeChar, wildcards);
-        }
-
+    protected Oracle11ScriptBlockContext() {
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "procedure"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "function"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "or", "replace", "triger"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
+      sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
     }
-
-    /**
-     * Oracle用の {@link ScriptBlockContext} です。
-     * 
-     * @author taedium
-     * @since 1.7.0
-     */
-    public static class Oracle11ScriptBlockContext extends
-            StandardScriptBlockContext {
-
-        protected Oracle11ScriptBlockContext() {
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "or",
-                    "replace", "triger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "procedure"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "function"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
-            sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
-        }
-    }
-
+  }
 }

@@ -1,70 +1,59 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 /**
- * エンティティクラスを示します。エンティティクラスのインスタンスは、テーブルもしくは結果セットのレコードを表現します。
- * 
- * <h3>例: ミュータブルなエンティティ</h3>
- * 
+ * Indicates an entity class.
+ *
+ * <p>The entity class represents a database relation (table or SQL result set). An instance of the
+ * class represents a row.
+ *
+ * <p>The entity class can be defined as either mutable or immutable.
+ *
+ * <p>The mutable entity:
+ *
  * <pre>
  * &#064;Entity
  * public class Employee {
- * 
+ *
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
  *     Integer id;
- * 
+ *
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
  *     String employeeName;
- * 
+ *
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
  *     int version;
- *     
+ *
  *     ...
  * }
  * </pre>
- * 
- * <h3>例: イミュータブルなエンティティ</h3>
- * 
+ *
+ * The immutable entity:
+ *
  * <pre>
  * &#064;Entity(immutable = true)
  * public class Employee {
- * 
+ *
  *     &#064;Id
  *     &#064;Column(name = &quot;ID&quot;)
  *     final Integer id;
- * 
+ *
  *     &#064;Column(name = &quot;EMPLOYEE_NAME&quot;)
  *     final String employeeName;
- * 
+ *
  *     &#064;Version
  *     &#064;Column(name = &quot;VERSION&quot;)
  *     final int version;
- * 
+ *
  *     public Employee(Integer id, String employeeName, int version) {
  *         this.id = id;
  *         this.employeeName = employeeName;
@@ -73,11 +62,9 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
  *     ...
  * }
  * </pre>
- * <p>
- * 注釈されたインタフェースの実装はスレッドセーフであることを要求されません。
- * <p>
- * 
- * @author taedium
+ *
+ * <p>The entity instance is not required to be thread safe.
+ *
  * @see Table
  * @see Column
  * @see Id
@@ -89,48 +76,39 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 
-    /**
-     * リスナーを返します。
-     * <p>
-     * この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
-     * <ul>
-     * <li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
-     * <li>継承していない場合、デフォルトの設定を使用します</li>
-     * </ul>
-     * <p>
-     * リスナーは、エンティティクラスごとに1つだけインスタンス化されます。
-     * 
-     * @return リスナー
-     */
-    @SuppressWarnings("rawtypes")
-    Class<? extends EntityListener> listener() default NullEntityListener.class;
+  /**
+   * The entity listener class.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
+   *
+   * <p>An instance of the entity lister class is instantiated only once per entity class.
+   *
+   * @return the entity listener class
+   */
+  @SuppressWarnings("rawtypes")
+  Class<? extends EntityListener> listener() default NullEntityListener.class;
 
-    /**
-     * ネーミング規約を返します。
-     * <p>
-     * この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
-     * <ul>
-     * <li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
-     * <li>継承していない場合、デフォルトの設定を使用します</li>
-     * </ul>
-     * 
-     * @return ネーミング規約
-     */
-    NamingType naming() default NamingType.NONE;
+  /**
+   * The naming convention that maps the entity class to the database table.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class.
+   *
+   * @return the naming convention
+   */
+  NamingType naming() default NamingType.NONE;
 
-    /**
-     * イミュータブルかどうかを返します。
-     * <p>
-     * この要素に値を指定しない場合、エンティティクラスが他のエンティティクラスを継承しているかどうかで採用する設定が変わります。
-     * <ul>
-     * <li>継承している場合、親エンティティクラスの設定を引き継ぎます</li>
-     * <li>継承していない場合、デフォルトの設定を使用します</li>
-     * </ul>
-     * <p>
-     * ただし、エンティティクラスの継承階層で {@code true} と {@code false} の混在はできません。
-     * 
-     * @return イミュータブルの場合 {@code true}
-     * @since 1.34.0
-     */
-    boolean immutable() default false;
+  /**
+   * Whether the entity class is immutable.
+   *
+   * <p>If not specified and the entity class inherits another entity class, this value is inherited
+   * from the parent entity class. The values must be consistent in the hierarchy.
+   *
+   * <p>If not specified and the entity class is a record, the class is recognized as immutable even
+   * though this value is {@code false}.
+   *
+   * @return whether the entity class is immutable
+   */
+  boolean immutable() default false;
 }

@@ -1,7 +1,8 @@
-org.seasar.doma.internal.apt.DomainProcessor
-org.seasar.doma.internal.apt.ExternalDomainProcessor
-org.seasar.doma.internal.apt.DomainConvertersProcessor
-org.seasar.doma.internal.apt.EmbeddableProcessor
-org.seasar.doma.internal.apt.EntityProcessor
-org.seasar.doma.internal.apt.DaoProcessor
-org.seasar.doma.internal.apt.SingletonConfigProcessor
+org.seasar.doma.internal.apt.processor.DomainProcessor
+org.seasar.doma.internal.apt.processor.DataTypeProcessor
+org.seasar.doma.internal.apt.processor.ExternalDomainProcessor
+org.seasar.doma.internal.apt.processor.DomainConvertersProcessor
+org.seasar.doma.internal.apt.processor.EmbeddableProcessor
+org.seasar.doma.internal.apt.processor.EntityProcessor
+org.seasar.doma.internal.apt.processor.DaoProcessor
+org.seasar.doma.internal.apt.processor.SingletonConfigProcessor

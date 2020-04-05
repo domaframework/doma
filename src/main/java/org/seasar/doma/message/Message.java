@@ -1,546 +1,972 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.message;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import org.seasar.doma.internal.message.MessageResourceBundle;
-
-/**
- * デフォルトロケール用のメッセージの列挙です。
- * 
- * @author taedium
- * 
- */
+/** Defines messages that are sent to application developers. */
 public enum Message implements MessageResource {
 
-    // doma
-    DOMA0001("パラメータ[{0}]がnullです。"),
-    DOMA0002("パラメータ[{0}]が不正です。理由は次のとおりです。{1}"),
-    DOMA0003("Domaのjarファイルのバージョンが実行時と注釈処理時で異なっています（実行時={0}, 注釈処理時={1}）。Eclipseを使用している場合、ビルドパス（Build Path）とファクトリパス（Factory Path）を確認し、プロジェクトのクリーンを実行してください。javacを利用している場合、classpathとprocessorpathのオプションを確認してください。Webアプリケーションの場合、WEB-INF/libに古いjarファイルが存在しないことを確認してください。"),
+  // doma
+  DOMA0001("The parameter \"{0}\" is null"),
+  DOMA0002("The parameter \"{0}\" is illegal. The cause is as follows: {1}"),
+  DOMA0003(
+      "The version of Doma''s jar file is different between runtime and compile-time (runtime={0}, compile-time={1}). "
+          + "If you use Eclipse, check the Build path and the Factory path. "
+          + "Otherwise if you use javac, check the classpath option and the processorpath option. "
+          + "In the case of Web application, check whether there is no old jar file in WEB-INF/lib directory."),
 
-    // wrapper
-    DOMA1006("ドメインの値をラップするのに失敗しました。原因は次のものです。{0}"),
-    DOMA1007("型[{0}]の値[{1}]に対応するラッパークラスが見つかりません。"),
+  // wrapper
+  DOMA1007("The wrapper class for the type \"{0}\" is not found."),
 
-    // jdbc
-    DOMA2001("SQLの実行結果が1件ではありませんでした。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。"),
-    DOMA2002("カラム[{0}]が結果セットに含まれますが、このカラムにマッピングされたプロパティがエンティティクラス[{2}]に見つかりません。次の3つの内のいずれかの対応が必要です。1)エンティティクラスに[{1}]という名前のプロパティを定義する。2)任意の名前のプロパティに@Columnを注釈し@Columnのname要素に[{0}]を指定する。3)UnknownColumnHandlerに未知のカラムを無視するような実装をしorg.seasar.doma.jdbc.Configに設定する。\nSQLファイルパス=[{3}]。\nログ用SQL=[{4}]"),
-    DOMA2003("楽観的排他制御により更新処理が失敗しました。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。"),
-    DOMA2004("一意制約違反により更新処理が失敗しました。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。\n詳しい原因は次のものです。{2}"),
-    DOMA2005("SQLの実行結果が0件でした。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。"),
-    DOMA2006("SQLの実行結果が1列ではありませんでした。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。"),
-    DOMA2008("JDBCに関する操作に失敗しました。原因は次のものです。{1}"),
-    DOMA2009("SQLの実行に失敗しました。\nSQLファイルパス=[{0}]。\nログ用SQL=[{1}]。\n原因は次のものです。{2}。\n根本原因は次のものです。{3}"),
-    DOMA2010("SQLファイル[{0}]のデータを取得できませんでした。原因は次のものです。{1}"),
-    DOMA2011("SQLファイル[{0}]がクラスパスから見つかりませんでした。"),
-    DOMA2012("スクリプトファイル[{0}]がクラスパスから見つかりませんでした。"),
-    DOMA2015("java.sql.Connectionの取得に失敗しました。原因は次のものです。{0}"),
-    DOMA2016("java.sql.PreparedStatementの取得に失敗しました。\nSQLファイルパス=[{0}]。\n実際のSQL=[{1}]。\n原因は次のものです。{2}"),
-    DOMA2017("エンティティ[{0}]のIDプロパティの生成に失敗しました。"),
-    DOMA2018("エンティティ[{0}]のIDプロパティの生成に失敗しました。原因は次のものです。{1}"),
-    DOMA2019("Wrapperクラス[{0}]がJDBCの型にマッピングされていません。"),
-    DOMA2020("エンティティ[{0}]のIDプロパティ[{1}]に値が設定されていません。IDのプロパティに@GeneratedValueが指定されていない場合、INSERTの実行にはIDプロパティの設定が必須です。"),
-    DOMA2021("エンティティ[{0}]のIDプロパティ[{1}]に自動生成のstrategy[{2}]が指定されていますが、DBMS[{3}]ではサポートされていません。"),
-    DOMA2022("IDプロパティのないエンティティ[{0}]の更新や削除はできません。"),
-    DOMA2023("悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2024("テーブル名もしくはカラム名を指定した悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2025("java.sql.CallableStatementの取得に失敗しました。\n実際のSQL=[{0}]。\n原因は次のものです。{1}"),
-    DOMA2028("楽観的排他制御によりバッチ更新処理が失敗しました。\nSQLファイルパス=[{0}]。\n実際のSQL=[{1}]。"),
-    DOMA2029("一意制約違反によりバッチ更新処理が失敗しました。\nSQLファイルパス=[{0}]。\n実際のSQL=[{1}]。\n詳しい原因は次のものです。{2}"),
-    DOMA2030("バッチ更新処理の実行に失敗しました。\nSQLファイルパス=[{0}]。\n実際のSQL=[{1}]。\n原因は次のものです。{2}。\n根本原因は次のものです。{3}"),
-    DOMA2032("java.sql.Statementの取得に失敗しました。原因は次のものです。{0}"),
-    DOMA2033("インスタンス変数[{0}]が未設定です。"),
-    DOMA2034("クラス[{0}]のサポートされてないメソッド[{1}]が呼び出されました。"),
-    DOMA2035("org.seasar.doma.jdbc.Configの実装クラス[{0}]のメソッド[{1}]からnullが返されました。"),
-    DOMA2040("列挙型[{0}]に定数名[{1}]は存在しません。"),
-    DOMA2041("自動コミットモードの無効化に失敗しました。原因は次のものです。{0}"),
-    DOMA2042("自動コミットモードの有効化に失敗しました。原因は次のものです。{0}"),
-    DOMA2043("コミットに失敗しました。原因は次のものです。{0}"),
-    DOMA2044("ロールバックに失敗しました。原因は次のものです。{0}"),
-    DOMA2045("トランザクションを開始しようとしましたが失敗しました。トランザクション[{0}]がすでに開始されています。"),
-    DOMA2046("トランザクションをコミットしようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2048("コネクションを取得しようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2049("コネクションの遅延取得に失敗しました。原因は次のものです。{0}"),
-    DOMA2051("セーブポイント[{0}]の作成に失敗しました。原因は次のものです。{1}"),
-    DOMA2052("セーブポイント[{0}]のロールバックに失敗しました。原因は次のものです。{1}"),
-    DOMA2053("セーブポイント[{0}]を作成しようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2054("セーブポイント[{0}]が見つかりませんでした。セーブポイントをロールバックする前に[{0}]という名前のセーブポイントを作成していることを確認してください。"),
-    DOMA2055("トランザクション分離レベル[{0}]の設定に失敗しました。原因は次のものです。{1}"),
-    DOMA2056("トランザクション分離レベルの取得に失敗しました。原因は次のものです。{0}"),
-    DOMA2057("セーブポイント[{0}]の作成有無を確認しようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2059("セーブポイント[{0}]がすでに存在します。同じ名前のセーブポイントを複数作成することはできません。"),
-    DOMA2060("セーブポイント[{0}]の削除に失敗しました。原因は次のものです。{1}"),
-    DOMA2061("セーブポイント[{0}]を削除しようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2062("セーブポイント[{0}]をロールバックしようとしましたが失敗しました。トランザクションが開始されていません。"),
-    DOMA2063("ローカルトランザクション[{0}]を開始しました。"),
-    DOMA2064("ローカルトランザクション[{0}]を終了しました。"),
-    DOMA2065("ローカルトランザクション[{0}]のセーブポイント[{1}]を作成しました。"),
-    DOMA2067("ローカルトランザクション[{0}]をコミットしました。"),
-    DOMA2068("ローカルトランザクション[{0}]をロールバックしました。"),
-    DOMA2069("ローカルトランザクション[{0}]のセーブポイント[{1}]へロールバックしました。"),
-    DOMA2070("ローカルトランザクション[{0}]のロールバックに失敗しました。"),
-    DOMA2071("自動コミットモードの有効化に失敗しました。"),
-    DOMA2072("トランザクション分離レベル[{0}]の設定に失敗しました。"),
-    DOMA2073("java.sql.Connectionのクローズに失敗しました。"),
-    DOMA2074("java.sql.Statementのクローズに失敗しました。"),
-    DOMA2075("java.sql.ResultSetのクローズに失敗しました。"),
-    DOMA2076("SQLログ : SQLファイル=[{0}],\n{1}"),
-    DOMA2077("スクリプトの実行に失敗しました。\nSQLファイル=[{1}]。\n行番号=[{2}]。\n原因は次のものです。{3}。\nSQL=[{0}]。"),
-    DOMA2078("SQLファイル[{0}]の読み込みに失敗しました。\n原因は次のものです。{1}"),
-    DOMA2079("WAITオプション付きの悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2080("NOWAITオプション付きの悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2081("テーブル名もしくはカラム名を指定したWAITオプション付きの悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2082("テーブル名もしくはカラム名を指定したNOWAITオプション付きの悲観的排他制御は、DBMS[{0}]ではサポートされていません。"),
-    DOMA2083("エンティティ[{0}]のIDプロパティの予約に失敗しました。原因は次のものです。{1}"),
-    DOMA2101("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。文字列リテラルの終了を示すクォテーション['']が見つかりません。SQL[{0}]"),
-    DOMA2102("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。ブロックコメントの終了を示す文字列[*/]が見つかりません。SQL[{0}]"),
-    DOMA2104("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。/*%end*/に対応する/*%if ...*/または/*%for ...*/が見つかりません。SQL[{0}]"),
-    DOMA2109("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。閉じ括弧に対応する開き括弧が見つかりません。SQL[{0}]"),
-    DOMA2110("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。バインド変数コメントもしくはリテラル変数コメント[{3}]の直後にテスト用のリテラルもしくは括弧が見つかりません。SQL[{0}]"),
-    DOMA2111("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。原因は次のものです。{3}。SQL[{0}]"),
-    DOMA2112("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。括弧の前に位置するバインド変数コメントもしくはリテラル変数コメント[{3}]に対応するオブジェクトの型[{4}]がjava.lang.Iterableのサブタイプではありません。SQL[{0}]"),
-    DOMA2115("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。括弧の前に位置するバインド変数コメントもしくはリテラル変数コメント[{3}]に対応するjava.lang.Iterableの[{4}]番目の要素がnullです。SQL[{0}]"),
-    DOMA2116("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]にシングルクォテーションが含まれています。SQL[{0}]"),
-    DOMA2117("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]にセミコロンが含まれています。SQL[{0}]"),
-    DOMA2118("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。バインド変数コメント[{3}]を正しく扱えませんでした。原因は次のものです。{4}。SQL[{0}]"),
-    DOMA2119("SQLの組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。ブロックコメントを/*%で開始する場合、続く文字列は、if、else、elseif、for、end、expand、populate のいずれかでなければいけません。SQL[{0}]"),
-    DOMA2120("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。バインド変数コメント[{3}]が定義されていますが、バインド変数が空文字です。SQL[{0}]"),
-    DOMA2121("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]が定義されていますが、埋め込み変数が空文字です。SQL[{0}]"),
-    DOMA2122("SQLの組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]に行コメントが含まれています。SQL[{0}]"),
-    DOMA2123("SQLの組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。埋め込み変数コメント[{3}]にブロックコメントが含まれています。SQL[{0}]"),
-    DOMA2124("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。--/*%for ...*/の中にトークン[:]が見つかりません。SQL[{0}]"),
-    DOMA2125("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。--/*%for ...*/の中のトークン[:]の前に識別子が見つかりません。SQL[{0}]"),
-    DOMA2126("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。--/*%for ...*/の中のトークン[:]の後に式が見つかりません。SQL[{0}]"),
-    DOMA2129("SQLの組み立てに失敗しました（[{1}]行目[{2}]番目の文字付近）。/*%for ...*/の中のトークン[:]の後に続く式[{3}]に対応するオブジェクトの型[{4}]がjava.lang.Iterableのサブタイプではありません。SQL[{0}]"),
-    DOMA2133("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。/%if ...*/が/*%end*/で閉じられていません。/%if ...*/と/*%end*/の組は、同じ節（たとえばSELECT、FROM、WHERE節など）の中に存在しなければいけません。SQL[{0}]"),
-    DOMA2134("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。/%for ...*/が/*%end*/で閉じられていません/%for ...*/と/*%end*/の組は、同じ節（たとえばSELECT、FROM、WHERE節など）の中に存在しなければいけません。SQL[{0}]"),
-    DOMA2135("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。括弧が閉じられていません。もしくは/%if ...*/～/*%end*/や/%for ...*/～/*%end*/を使用していて、開き括弧と閉じ括弧が同じブロック内にありません。SQL[{0}]"),
-    DOMA2136("Daoメソッドのパラメータ[{0}]に対応する結果セットがストアドプロシージャもしくはストアドファンクション[{1}]から返されませんでした。"),
-    DOMA2137("[{0}]番目のパラメータ[{1}]に対応する結果セットがストアドプロシージャもしくはストアドファンクション[{2}]から返されませんでした。"),
-    DOMA2138("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。/*%elseif ...*/に対応する/*%if ...*/が見つかりません。SQL[{0}]"),
-    DOMA2139("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。/*%else*/の後ろに/*%elseif ...*/が存在します。SQL[{0}]"),
-    DOMA2140("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。/*%else*/に対応する/*%if ...*/が見つかりません。SQL[{0}]"),
-    DOMA2141("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。複数の/*%else*/が存在します。SQL[{0}]"),
-    DOMA2142("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。バインド変数コメントもしくはリテラル変数コメント[{3}]の直後の値[{4}]はテスト用のリテラルとして不正です。バインド変数コメントもしくはリテラル変数コメントの直後は、文字列、数値、日時を表すリテラル、もしくは開き括弧でなければいけません。SQL[{0}]"),
-    DOMA2143("SQLの解析に失敗しました。（[{1}]行目[{2}]番目の文字付近）。カラム展開コメント[{3}]の直後にアスタリスク(*)が見つかりません。SQL[{0}]"),
-    DOMA2144("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。カラム展開コメント[{3}]でカラムを展開できません。結果セットの1レコードがマッピングされる型を確認してください。1レコードにマッピングされる型はエンティティクラスでなければいけません。SQL[{0}]"),
-    DOMA2201("ページング用SQLに変換するには元のSQLにorder by句が指定されている必要があります。"),
-    DOMA2202("ドメインクラス[{0}]に対応するメタクラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
-    DOMA2203("エンティティクラス[{0}]に対応するメタクラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
-    DOMA2204("クラス[{0}]の型は基本型もしくはドメイン型でなければいけません。詳細な原因は次のものです。{1}"),
-    DOMA2205("クラス[{0}]は、@Domainが注釈されていなければいけません。"),
-    DOMA2206("クラス[{0}]は、@Entityが注釈されていなければいけません。"),
-    DOMA2207("エンティティプロパティ[{1}]がエンティティクラス[{0}]に定義されていません。"),
-    DOMA2208("エンティティクラス[{0}]のエンティティプロパティ[{1}]へのアクセスに失敗しました。原因は次のものです。{2}"),
-    DOMA2211("エンティティプロパティ[{1}]がエンティティクラス[{0}]で見つかりません。"),
-    DOMA2212("エンティティクラス[{0}]の@OriginalStatesが注釈されたフィールド[{1}]へのアクセスに失敗しました。原因は次のものです。{2}"),
-    DOMA2213("@OriginalStatesが注釈されたフィールド[{1}]がエンティティクラス[{0}]で見つかりません。原因は次のものです。{2}"),
-    DOMA2214("ドメインクラス[{0}]に対応するメタクラス[{1}]が見つかりませんでした。原因は次のものです。{2}"),
-    DOMA2215("クラス[{0}]のメソッド[{1}]が見つかりませんでした。原因は次のものです。{2}"),
-    DOMA2216("エンティティクラス[{0}]のプロパティ{1}に結果セットのカラムの値がマッピングされませんでした。完全なマッピングには結果セットがカラム{2}を含んでいる必要があります。SQLが正しいことを確認してください。このエラーを無視するには、@Selectや@Functionや@ResultSetのensureResultMapping要素にfalseを設定してください。\nSQLファイルパス=[{3}]。\nログ用SQL=[{4}]"),
-    DOMA2217("パラメータはクラス[{0}]のサブタイプでなければいけません。"),
-    DOMA2218("パラメータ[{0}]はインタフェース[{1}]のインスタンスでなければいけません。"),
-    DOMA2219("クラス[{0}]に@Entityが注釈されていません"),
-    DOMA2220("ENTER  : クラス=[{0}], メソッド=[{1}]"),
-    DOMA2221("EXIT   : クラス=[{0}], メソッド=[{1}]"),
-    DOMA2222("THROW  : クラス=[{0}], メソッド=[{1}], 例外=[{2}]"),
-    DOMA2223("SKIP   : クラス=[{0}], メソッド=[{1}], 理由=[{2}]"),
-    DOMA2224("SQLの組み立てに失敗しました。（[{1}]行目[{2}]番目の文字付近）。リテラル変数コメント[{3}]にシングルクォテーションが含まれています。SQL[{0}]"),
-    DOMA2228("SQLの解析に失敗しました（[{1}]行目[{2}]番目の文字付近）。リテラル変数コメント[{3}]が定義されていますが、リテラル変数が空文字です。SQL[{0}]"),
-    DOMA2229("パラメータの型が異なります。バッチ実行されるクエリは全て同一でなければいけません。"),
-    DOMA2230("パラメータなのかリテラルなのかは動的に変更できません。バッチ実行されるクエリは全て同一でなければいけません。"),
-    DOMA2231("パラメータの数が異なります。バッチ実行されるクエリは全て同一でなければいけません。"),
-    DOMA2232("パラメータの要素が空です。"),
-    DOMA2233("要素Mapのキーに[{0}]が含まれていないものがあります。"),
+  // jdbc
+  DOMA2001("The SQL result is not a single row.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2002(
+      "While the column \"{0}\" is in the result set, the corresponding property is not found in the entity class \"{2}\". "
+          + "You have to do any of the following: "
+          + "1)Define the property whose name is \"{1}\" in the entity class. "
+          + "2)Annotate a field in the entity class with @Column(name = \"{0}\"). "
+          + "3)Implement org.seasar.doma.jdbc.UnknownColumnHandler to ignore unknown columns and configure it in org.seasar.doma.jdbc.Config."
+          + "\nPATH=[{3}].\nSQL=[{4}]\""),
+  DOMA2003("The SQL execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2004(
+      "The SQL execution is failed because of unique constraint violation."
+          + "\nPATH=[{0}].\nSQL=[{1}].\nThe detailed cause is as follows: {2}"),
+  DOMA2005("The SQL result is none.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2006("The SQL result is not a single column.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2008("The JDBC operation is failed. The cause is as follows: {1}"),
+  DOMA2009(
+      "The SQL execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}\nThe root cause is as follows: {3}"),
+  DOMA2010("Cannot get content from the SQL template [{0}]. The cause is as follows: {1}"),
+  DOMA2011("The SQL file \"{0}\" is not found from classpath."),
+  DOMA2012("The script file \"{0}\" is not found from classpath."),
+  DOMA2015("Cannot get java.sql.Connection. The cause is as follows: {0}"),
+  DOMA2016(
+      "Cannot get java.sql.PreparedStatement.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}"),
+  DOMA2017("Cannot generate an identity value of the entity \"{0}\"."),
+  DOMA2018("Cannot generate an identity value of the entity \"{0}\". The cause is as follows: {1}"),
+  DOMA2020(
+      "No value is set for the ID property \"{1}\" of the entity \"{0}\". "
+          + "If the ID property is not annotated with @GeneratedValue, the ID property must have a value before the SQL INSERT execution."),
+  DOMA2021(
+      "While the ID property \"{1}\" of the entity \"{0}\" is specified with the strategy \"{2}\", "
+          + "the strategy is not supported in the RDBMS \"{3}\"."),
+  DOMA2022(
+      "The entity \"{0}\" cannot be updated or deleted because the entity has no ID property."),
+  DOMA2023("Pessimistic locking is not supported in the RDBMS \"{0}\"."),
+  DOMA2024("Pessimistic locking with aliases is not supported in the RDBMS \"{0}\"."),
+  DOMA2025("Cannot get java.sql.CallableStatement.\nSQL=[{0}].\nThe cause is as follows: {1}"),
+  DOMA2028("The batch execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2029(
+      "The batch execution is failed because of unique constraint violation.\nPATH=[{0}].\nSQL=[{1}]."
+          + "\nThe detailed cause is as follows: {2}"),
+  DOMA2030(
+      "The batch execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}."
+          + "\nThe root cause is as follows: {3}"),
+  DOMA2032("Cannot get java.sql.Statement. The cause is as follows: {0}"),
+  DOMA2033("The instance variable \"{0}\" is not set."),
+  DOMA2034("The unsupported method \"{1}\" of the class \"{0}\" is invoked."),
+  DOMA2035("The method \"{1}\" of the class \"{0}\" must not return null."),
+  DOMA2040("The constant \"{1}\" is not found in the Enum type \"{0}\"."),
+  DOMA2041("Cannot disable auto commit mode. The cause is as follows: {0}"),
+  DOMA2042("Cannot enable auto commit mode. The cause is as follows: {0}"),
+  DOMA2043("Cannot commit. The cause is as follows: {0}"),
+  DOMA2044("Cannot roll back. The cause is as follows: {0}"),
+  DOMA2045("Cannot start a transaction. The transaction \"{0}\" has been already started."),
+  DOMA2046("Cannot commit a transaction. The transaction has not been started yet."),
+  DOMA2048("Cannot get a connection. The transaction has not been started yet."),
+  DOMA2049("Cannot get a connection lazily. The cause is as follows: {0}"),
+  DOMA2051("Cannot create the savepoint \"{0}\". The cause is as follows: {1}"),
+  DOMA2052("Cannot roll back to the savepoint[{0}]. The cause is as follows: {1}"),
+  DOMA2053("Cannot create the savepoint \"{0}\". The transaction has not been started yet."),
+  DOMA2054(
+      "The savepoint \"{0}\" is not found. Before the rollback, ensure that the savepoint \"{0}\" has been created."),
+  DOMA2055("Cannot set the transaction isolation level \"{0}\". The cause is as follows: {1}"),
+  DOMA2056("Cannot get the transaction isolation level. The cause is as follows: {0}"),
+  DOMA2057(
+      "Cannot check whether that the savepoint \"{0}\" exists. The transaction has not been started yet."),
+  DOMA2059(
+      "The savepoint \"{0}\" already exists. You cannot create another savepoint with same name."),
+  DOMA2060("Cannot remove the savepoint \"{0}\". The cause is as follows: {1}"),
+  DOMA2061("Cannot remove the savepoint \"{0}\". The transaction has not been started yet."),
+  DOMA2062("Cannot roll back to the savepoint \"{0}\". The transaction has not been started yet."),
+  DOMA2063("The local transaction \"{0}\" is begun."),
+  DOMA2064("The local transaction \"{0}\" is ended."),
+  DOMA2065("The savepoint \"{1}\" of the local transaction \"{0}\" is created."),
+  DOMA2067("The local transaction \"{0}\" is committed."),
+  DOMA2068("The local transaction \"{0}\" is rolled back."),
+  DOMA2069("The local transaction \"{0}\" is rolled back to the savepoint[{1}]."),
+  DOMA2070("The rollback of the local transaction \"{0}\" is failed."),
+  DOMA2071("Cannot enable auto commit mode."),
+  DOMA2072("Cannot set the transaction isolation level \"{0}\"."),
+  DOMA2073("Cannot close java.sql.Connection."),
+  DOMA2074("Cannot close java.sql.Statement."),
+  DOMA2075("Cannot close java.sql.ResultSet."),
+  DOMA2076("SQL LOG : PATH=[{0}],\n{1}"),
+  DOMA2077(
+      "Cannot execute the script template.\nPATH=[{1}].\nLINE NUMBER=[{2}].\nThe cause is as follows: {3}.\nSQL=[{0}]."),
+  DOMA2078("Cannot get contents from the SQL template[{0}].\nThe cause is as follows: {1}"),
+  DOMA2079("Pessimistic locking with WAIT option is not supported in the RDBMS \"{0}\"."),
+  DOMA2080("Pessimistic locking with NOWAIT option is not supported in the RDBMS \"{0}\""),
+  DOMA2081(
+      "Pessimistic locking with aliases and WAIT option is not supported in the RDBMS \"{0}\"."),
+  DOMA2082(
+      "Pessimistic locking with aliases and NOWAIT option is not supported in the RDBMS \"{0}\"."),
+  DOMA2083("Cannot reserve identity values for the entity \"{0}\". The cause is as follows: {1}"),
+  DOMA2084("Cannot get the auto commit mode. The cause is as follows: {0}"),
+  DOMA2101(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The single quotation mark \"''\" for the end of the string literal is not found. SQL=[{0}]"),
+  DOMA2102(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The string \"*/\" for the end of the multi-line comment is not found. SQL=[{0}]"),
+  DOMA2104(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/*%if ...*/\" or \"/*%for ...*/\" that corresponds to \"/*%end*/\" is not found. SQL=[{0}]"),
+  DOMA2109(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The open parenthesis that corresponds to the close parenthesis is not found. SQL=[{0}]"),
+  DOMA2110(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The directive \"{3}\" must be followed immediately by either a test literal or an open parenthesis. SQL=[{0}]"),
+  DOMA2111(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The cause is as follows: {3}. SQL=[{0}]"),
+  DOMA2112(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The type of the expression \"{3}\" must be a subtype of either java.lang.Iterable or an array type, but it is [{4}]. SQL=[{0}]"),
+  DOMA2115(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The null value is found in the elements of the expression \"{3}\" at index {4}. SQL=[{0}]"),
+  DOMA2116(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "A single quotation mark \"''\" is contained in the expression \"{3}\" but the embedded variable directive doesn''t allow it. SQL=[{0}]"),
+  DOMA2117(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "A semi-colon \";\" is contained in the expression \"{3}\" but the embedded variable directive doesn''t allow it. SQL=[{0}]"),
+  DOMA2118(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The expression \"{3}\" isn''t processed. The cause is as follows: {4}. SQL=[{0}]"),
+  DOMA2119(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "When the directive starts with \"/*%\", "
+          + "the following string must be either \"if\", \"else\", \"elseif\", \"for\", \"end\", \"expand\" or \"populate\". SQL=[{0}]"),
+  DOMA2120(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "While the bind variable directive \"{3}\" is defined, the expression is none. SQL=[{0}]"),
+  DOMA2121(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "While the embedded variable comment \"{3}\" is defined, the expression is none. SQL=[{0}]"),
+  DOMA2122(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "A string \"--\" is contained in the expression \"{3}\" but the embedded variable directive doesn''t allow it. SQL=[{0}]"),
+  DOMA2123(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "A string \"/*\" is contained in the expression \"{3}\" but the embedded variable directive doesn''t allow it. SQL=[{0}]"),
+  DOMA2124(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The token \":\" is not found in \"/*%for ...*/\". SQL=[{0}]"),
+  DOMA2125(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The identifier is not found before the token \":\" in \"/*%for ...*/\". SQL=[{0}]"),
+  DOMA2126(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The sequence expression is not found after the token \":\" in \"/*%for ...*/\". SQL=[{0}]"),
+  DOMA2129(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The type of the expression \"{3}\" must be a subtype of either java.lang.Iterable or an array type, but it is [{4}]. SQL=[{0}]"),
+  DOMA2133(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/%if ...*/\" is not closed with \"/*%end*/\". "
+          + "The pair of \"/%if ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
+  DOMA2134(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/%for ...*/\" is not closed with \"/*%end*/\". "
+          + "The pair of \"/%for ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
+  DOMA2135(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The parenthesis is not closed. "
+          + "Otherwise, the open parenthesis and the close parenthesis are not in a same directive block. SQL=[{0}]"),
+  DOMA2136(
+      "The result set that is mapped to the parameter \"{0}\" of the DAO method is not returned from the stored procedure or stored function."),
+  DOMA2137(
+      "The result set that is mapped to the parameter \"{1}\" of the DAO method is not returned from the stored procedure or stored function. "
+          + "The index of callable statement parameters is {0}."),
+  DOMA2138(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/*%if ...*/\" that corresponds to \"/*%elseif ...*/\" is not found. SQL=[{0}]"),
+  DOMA2139(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/*%elseif ...*/\" is behind \"/*%else*/\". SQL=[{0}]"),
+  DOMA2140(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "\"/*%if ...*/\" that corresponds to \"/*%else ...*/\" is not found. SQL=[{0}]"),
+  DOMA2141(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "There are multiple \"/*%else*/\". SQL=[{0}]"),
+  DOMA2142(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "The value \"{4}\" is illegal as a literal format. SQL=[{0}]"),
+  DOMA2143(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "An asterisk \"*\" must follow immediately the expansion directive \"{3}\". SQL=[{0}]"),
+  DOMA2144(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "The expansion directive \"{3}\" doesn''t work. Check that the result set is mapped to an entity class. SQL=[{0}]"),
+  DOMA2201(
+      "The original SQL statement must have an \"ORDER BY\" clause to translate the statement for pagination."),
+  DOMA2202("The class \"{1}\" is not found. The cause is as follows: {2}"),
+  DOMA2203("The class \"{1}\" is not found. The cause is as follows: {2}"),
+  DOMA2204(
+      "The class \"{0}\" must be one of the basic classes and the domain classes. The detailed cause as follows: {1}"),
+  DOMA2205("The class \"{0}\" must be annotated with @Domain."),
+  DOMA2206("The class \"{0}\" must be annotated with @Entity."),
+  DOMA2207("The property \"{1}\" is not defined in the entity class \"{0}\"."),
+  DOMA2208(
+      "Failed to access to the property \"{1}\" in the entity class \"{0}\". The cause is as follows: {2}"),
+  DOMA2211("The property \"{1}\" is not found in the entity class \"{0}\"."),
+  DOMA2212(
+      "Failed to access to the field \"{1}\" that is annotated with @OriginalStates in the entity class \"{0}\". "
+          + "The cause is as follows: {2}"),
+  DOMA2213(
+      "The field \"{1}\" that is annotated with @OriginalStates is not found in the entity class \"{0}\". "
+          + "The cause is as follows: {2}"),
+  DOMA2215("The method \"{1}\" is not found in the class \"{0}\". The cause is as follows: {2}"),
+  DOMA2216(
+      "The property \"{1}\" in the entity class \"{0}\" is not mapped to the column in the result set. "
+          + "To resolve this error entirely, the result set must contain the column \"{2}\". "
+          + "To ignore this error, set \"false\" to the ensureResultMapping element of @Select, @Function or @ResultSet."
+          + "\nPATH=[{3}].\nSQL=[{4}]"),
+  DOMA2218("The parameter \"{0}\" must be instance of the interface \"{1}\"."),
+  DOMA2219("The class \"{0}\" isn''t annotated with @Entity."),
+  DOMA2220("ENTER  : CLASS={0}, METHOD={1}"),
+  DOMA2221("EXIT   : CLASS={0}, METHOD={1}"),
+  DOMA2222("THROW  : CLASS={0}, METHOD={1}, EXCEPTION={2}"),
+  DOMA2223("SKIP   : CLASS={0}, METHOD={1}, CAUSE={2}"),
+  DOMA2224(
+      "Failed to build the SQL on line {1} at column {2}. "
+          + "A single quotation mark \"''\" is contained in the expression \"{3}\" "
+          + "but the literal variable directive doesn''t allow it. SQL=[{0}]"),
+  DOMA2228(
+      "Failed to parse the SQL on line {1} at column {2}. "
+          + "While the literal directive \"{3}\" is defined, the expression is none. SQL=[{0}]"),
+  DOMA2229("The parameter types are different between batched queries."),
+  DOMA2230("The literals must be consistent between batched queries."),
+  DOMA2231("The number of parameters is different between batched queries."),
+  DOMA2232("The parameter is empty."),
+  DOMA2233("The key \"{0}\" is not found in the map that is an element of Iterable."),
 
-    // expression
-    DOMA3001("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]のメソッド[{3}]の実行に失敗しました。原因は次のものです。{4}"),
-    DOMA3002("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]のメソッド[{3}]が見つかりませんでした。メソッド名、パラメータの数、パラメータの型が正しいか確認してください。"),
-    DOMA3003("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。変数[{2}]に対応するオブジェクトを解決できませんでした。変数名が正しいか確認してください。"),
-    DOMA3004("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。文字列リテラルの終了を示すダブルクォテーション[\"]が見つかりません。"),
-    DOMA3005("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]が見つかりませんでした。クラス名が正しいか確認してください。"),
-    DOMA3006("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。コンストラクタ[{2}]が見つかりませんでした。コンストラクタのパラメータの数や型が正しいか確認してください。"),
-    DOMA3007("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。コンストラクタ[{2}]の実行に失敗しました。原因は次のものです。{3}"),
-    DOMA3008("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。比較演算子[{2}]の実行に失敗しました。被演算子のクラスがjava.lang.Comparableを実装していないか、2つの被演算子の型が比較不可能なのかもしれません。原因は次のものです。{3}"),
-    DOMA3009("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。比較演算子[{2}]の実行に失敗しました。どちらかの値がnullの場合には、比較できません。"),
-    DOMA3010("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。演算子[{2}]に対する被演算子が見つかりませんでした。"),
-    DOMA3011("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。サポートされていないトークン[{2}]が見つかりました。"),
-    DOMA3012("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。不正な数値リテラル[{2}]が見つかりました。"),
-    DOMA3013("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。算術演算子[{2}]の実行に失敗しました。被演算子[{3}]のクラス[{4}]が数値型ではありません。"),
-    DOMA3014("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。算術演算子[{2}]の実行に失敗しました。原因は次のものです。{3}"),
-    DOMA3015("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。演算子[{2}]の実行に失敗しました。被演算子の値がnullです。"),
-    DOMA3016("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。文字リテラルの終了を示すクォテーション['']が見つかりません。文字リテラルの長さは1でなければいけません。"),
-    DOMA3018("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]のフィールド[{3}]が見つかりませんでした。フィールド名が正しいか確認してください。"),
-    DOMA3019("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]のフィールド[{3}]へのアクセスに失敗しました。原因は次のものです。{4}"),
-    DOMA3020("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。演算子[{2}]の実行に失敗しました。文字の連結を行う場合、右被演算子[{3}]のクラス[{4}]はString、Character、charのいずれかでなければいけません。数値を加算する場合、両被演算子は数値型でなければいけません。"),
-    DOMA3021("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[.]の直後にはフィールド名もしくはメソッド名が続かなければいけません。"),
-    DOMA3022("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[.]の直後にはフィールド名もしくはメソッド名が続かなければいけませんが、文字[{2}]がJavaの識別子の最初の文字として不正です。"),
-    DOMA3023("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[@]の直後にはクラスの完全修飾名もしくは組み込み関数名が続かなければいけません。"),
-    DOMA3024("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[@]の直後には組み込み関数名が続かなければいけませんが、文字[{2}]がJavaの識別子の最初の文字として不正です。"),
-    DOMA3025("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。組み込み関数名の直後にトークン[(]が必要です。"),
-    DOMA3026("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。括弧が閉じられていません。"),
-    DOMA3027("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。式[{2}]がnullと評価されためメソッド[{3}]を実行できませんでした。"),
-    DOMA3028("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。関数[{2}]が見つかりませんでした。関数名、パラメータの数、パラメータの型が正しいか確認してください。"),
-    DOMA3029("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[@]の直後にはstaticなフィールド名もしくはメソッド名が続かなければいけません。"),
-    DOMA3030("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。トークン[@]の直後にはstaticなフィールド名もしくはメソッド名が続かなければいけませんが、文字[{2}]がJavaの識別子の最初の文字として不正です。"),
-    DOMA3031("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。クラス名の終了を示すトークン[@]の前に、クラス名として不正な文字[{2}]がみつかりました。"),
-    DOMA3032("式[{0}]の解析に失敗しました（[{1}]番目の文字付近）。クラス名はトークン[@]で囲まなければいけません。"),
-    DOMA3033("式[{0}]の評価に失敗しました（[{1}]番目の文字付近）。クラス[{2}]のstaticフィールド[{3}]が見つかりませんでした。フィールド名が正しいか確認してください。"),
+  // expression
+  DOMA3001(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the method \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
+  DOMA3002(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The method \"{3}\" is not found the class \"{2}\". "
+          + "Check the method name, the parameter size, the parameter type and so on."),
+  DOMA3003(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The variable \"{2}\" is not resolved. Check that the variable name is correct."),
+  DOMA3004(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The double quotation mark ''\"'' for the end of the string literal is not found."),
+  DOMA3005(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The class　\"{2}\" is not found. Check that the class name is correct."),
+  DOMA3006(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The constructor \"{2}\" is not found. Check that the number and types of its parameters are correct."),
+  DOMA3007(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the constructor \"{2}\". The cause is as follows: {3}"),
+  DOMA3008(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the comparison operator \"{2}\". "
+          + "Either of the operands may not implement java.lang.Comparable or the operands may be not comparable with each other. "
+          + "The cause is as follows: {3}"),
+  DOMA3009(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the comparison operator \"{2}\". If either of the operands is null, they are not comparable."),
+  DOMA3010(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The operand is not found for the operator \"{2}\"."),
+  DOMA3011(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The unsupported token \"{2}\" is found."),
+  DOMA3012(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The illegal number literal \"{2}\" is found."),
+  DOMA3013(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the arithmetic operator \"{2}\". The class of the operand \"{3}\" is not numeric. It is \"{4}\"."),
+  DOMA3014(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the arithmetic operator \"{2}\". The cause is as follows: {3}"),
+  DOMA3015(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the operator \"{2}\". The operand is null."),
+  DOMA3016(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The single quotation mark \"''\" fro the end of the character literal is not found."),
+  DOMA3018(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The field \"{3}\" is not found in the class \"{2}\". Check that the field name is correct."),
+  DOMA3019(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot access to the field \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
+  DOMA3020(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the operator \"{2}\". "
+          + "To execute concatenation, the class of the right operand \"{3}\" must be either String, Character or char. "
+          + "To execute addition, both of the operands must be numeric."),
+  DOMA3021(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The field name or the method name must follow immediately the token \".\"."),
+  DOMA3022(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The character \"{2}\" that follows immediately the token \".\" is illegal."),
+  DOMA3023(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The full qualified name of the class or the built-in function name must follow immediately the token \"@\"."),
+  DOMA3024(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The character \"{2}\" that follows immediately the token \"@\" is illegal."),
+  DOMA3025(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The token \"(\" must follow immediately the name of the built-in function."),
+  DOMA3026(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The parenthesis is not closed."),
+  DOMA3027(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot execute the method \"{3}\" because the expression \"{2}\" is evaluated as null."),
+  DOMA3028(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The function \"{2}\" is not found. "
+          + "Check that the following are correct: "
+          + "1)the function name. "
+          + "2)the number and types of the function parameters."),
+  DOMA3029(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The name of the static field or method must follow immediately the token \"@\"."),
+  DOMA3030(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The character \"{2}\" that follows immediately the token \"@\" is illegal."),
+  DOMA3031(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The character \"{2}\" followed by the token \"@\" is illegal as a part of the class name."),
+  DOMA3032(
+      "Failed to analyze the expression \"{0}\" at column {1}. "
+          + "The class name must be placed between two \"@\"."),
+  DOMA3033(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "The static field \"{3}\" is not found in the class \"{2}\". Check that the field name is correct."),
 
-    // apt
-    DOMA4001("戻り値の型は更新件数を示すintでなければいけません。 at {0}.{1}"),
-    DOMA4002("パラメータの数は1つでなければいけません。 at {0}.{1}"),
-    DOMA4003("パラメータはエンティティクラスでなければいけません。 at {0}.{1}"),
-    DOMA4005("@Selectや@Updateなど問い合わせの種別を表すアノテーションが必要です。 at {0}.{1}"),
-    DOMA4007("戻り値のjava.util.Listに対する実型引数の型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4008("戻り値の型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4011("クラス[{0}]のアノテーション処理に失敗しました。原因は次のものです。{1}"),
-    DOMA4014("インタフェース以外には注釈できません。 at {0}"),
-    DOMA4015("クラス以外には注釈できません。 at {0}"),
-    DOMA4016("予期しない例外が発生しました。原因の詳細についてはログ(EclipseならばError Logビュー、javacならばコンソールなど)を確認してください。"),
-    DOMA4017("Daoインタフェースはトップレベルでなければいけません。 at {0}"),
-    DOMA4018("エンティティクラスはトップレベルでなければいけません。 at {0}"),
-    DOMA4019("ファイル[{0}]がクラスパスから見つかりませんでした。ファイルの絶対パスは\"{1}\"です。"),
-    DOMA4020("SQLファイル[{0}]が空です。"),
-    DOMA4021("パス[{0}]はディレクトリです。ファイルでなければいけません。絶対パスは\"{1}\"です。"),
-    DOMA4024("@Versionが重複しています。@Versionが注釈されるフィールドはクラス階層の中で1つでなければいけません。 at {0}.{1}"),
-    DOMA4025("[{0}]で始まる名前はDomaにより予約されているため使用できません。 at {1}.{2}"),
-    DOMA4026("[{0}]で終わる名前は自動生成されるクラスの名前と重複する可能性があります。 at {1}"),
-    DOMA4030("@SequenceGeneratorを使用する場合、同じフィールドに@GeneratedValue(strategy = GenerationType.SEQUENCE)を指定しなければいけません。 at {0}.{1}"),
-    DOMA4031("@TableGeneratorを使用する場合、同じフィールドに@GeneratedValue(strategy = GenerationType.TABLE)を指定しなければいけません。 at {0}.{1}"),
-    DOMA4033("@GeneratedValueを使用する場合、同じフィールドに@Idを指定しなければいけません。 at {0}.{1}"),
-    DOMA4034("@GeneratedValueのstrategy要素にGenerationType.SEQUECNEを指定する場合、@SequenceGeneratorの指定も必要です。 at {0}.{1}"),
-    DOMA4035("@GeneratedValueのstrategy要素にGenerationType.TABLEを指定する場合、@TableGeneratorの指定も必要です。 at {0}.{1}"),
-    DOMA4036("@GeneratedValueを使用する場合、エンティティクラスの階層で@Idは１つのみでなければいけません。 at {0}"),
-    DOMA4037("複数の@GeneratedValueが見つかりました。@GeneratedValueは1つでなければいけません。 at {0}.{1}"),
-    DOMA4038("EntityListener[{0}]の実型引数の型[{1}]はエンティティクラス[{2}]のスーパータイプでなければいけません。 at {2}"),
-    DOMA4039("コンパイルが失敗している可能性があるためaptの処理を中止します。コンパイルが失敗している原因については実行環境（Eclipseやjavac）のエラーメッセージを確認してください。このメッセージが生成された箇所を知りたい場合は、ログ(EclipseならばError Logビュー、javacならばコンソールなど)を確認してください。"),
-    DOMA4040("戻り値の型は更新件数を示すintの配列でなければいけません。 at {0}.{1}"),
-    DOMA4042("パラーメータの型はjava.lang.Iterableのサブタイプでなければいけません。 at {0}.{1}"),
-    DOMA4043("java.lang.Iterableのサブタイプに対する実型引数はエンティティクラスでなければいけません。 at {0}.{1}"),
-    DOMA4051("エンティティクラスには型パラメータを定義できません。 at {0}"),
-    DOMA4053("SelectOption型のパラメータは複数指定できません。 at {0}.{1}"),
-    DOMA4059("Daoインタフェースには型パラメータを定義できません。 at {0}"),
-    DOMA4062("@ResultSetが注釈されたパラメータの型は、java.util.Listでなければいけません。 at {0}.{1}"),
-    DOMA4063("@Functionの戻り値として型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4064("@Procedureが注釈されたメソッドの戻り値の型はvoidでなければいけません。 at {0}.{1}"),
-    DOMA4065("戻り値のjava.util.Listに対する実型引数の型[{0}]は、サポートされていません。 at {1}.{2}"),
-    DOMA4066("@Functionもしくは@Procedureが注釈されたメソッドのパラメータには、@In、@InOut、@Out、@ResultSetのいずれかの注釈が必須です。 at {0}.{1}"),
-    DOMA4067("SQL内の変数[{0}]に対応するパラメータがメソッドに存在しません（[{1}]番目の文字付近）。"),
-    DOMA4068("SQLファイル[{0}]の読み込みに失敗しました。原因は次のものです。{1}"),
-    DOMA4069("SQLファイル[{0}]の解析に失敗しました。原因は次のものです。{1}"),
-    DOMA4071("式[{0}]（[{1}]番目の文字付近）に含まれる変数[{2}]（フィールドもしくはメソッドの戻り値の型が[{3}]）からpublicで戻り値を返すメソッド[{4}]が見つかりません。"),
-    DOMA4072("式[{0}]（[{1}]番目の文字付近）に含まれる関数[{2}]が見つかりません。"),
-    DOMA4073("式[{0}]（[{1}]番目の文字付近）に含まれる変数[{2}]（フィールドもしくはメソッドの戻り値の型が[{3}]）からpublicで戻り値を返すメソッド[{4}]を特定できません。"),
-    DOMA4074("メッセージコード[{0}]が次の例外により生成されます。{1}"),
-    DOMA4076("パラメータの型は配列型でなければいけません。 at {0}.{1}"),
-    DOMA4078("パラメータの数は0でなければいけません。 at {0}.{1}"),
-    DOMA4079("クラス[{0}]のソースファイルの生成に失敗しました。原因は次のものです。{1}"),
-    DOMA4084("プロパティ[{0}]が、エンティティクラス[{1}]に見つかりません。"),
-    DOMA4085("プロパティ[{0}]が、エンティティクラス[{1}]に見つかりません。"),
-    DOMA4086("アノテーション[{0}]とアノテーション[{1}]が競合しています。これらは同じフィールドに注釈できません。 at {2}.{3}"),
-    DOMA4087("アノテーション[{0}]とアノテーション[{1}]が競合しています。これらは同じメソッドに注釈できません。 at {2}.{3}"),
-    DOMA4088("@Id、@Version、@TenantIdのいずれかを注釈する場合、@Columnのinsertableにfalseを指定してはいけません。 at {0}.{1}"),
-    DOMA4089("@Id、@Version、@TenantIdのいずれかを注釈する場合、@Columnのupdatableにfalseを指定してはいけません。 at {0}.{1}"),
-    DOMA4090("注釈プロセッサ[{0}]でクラス[{1}]の処理を開始しました。"),
-    DOMA4091("注釈プロセッサ[{0}]でクラス[{1}]の処理を終了しました。"),
-    DOMA4092("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。詳細は次のものです。{4} SQL[{1}]。"),
-    DOMA4093("@Versionは数値に互換のある型のプロパティに対してのみ有効です。 at {0}.{1}"),
-    DOMA4095("@GeneratedValueは数値に互換のある型のプロパティに対してのみ有効です。 at {0}.{1}"),
-    DOMA4096("クラス[{0}]は、永続対象の型としてサポートされていません。 at {1}.{2}。@ExternalDomainでマッピングすることを意図している場合、登録や設定が不足している可能性があります。@DomainConvertersを注釈したクラスと注釈処理のオプション（doma.domain.converters）を見直してください。"),
-    DOMA4097("戻り値のクラスは、[{0}]でなければいけません。 at {1}.{2}"),
-    DOMA4098("@Outが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。 at {0}.{1}"),
-    DOMA4100("Referenceの実型引数の型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4101("@Inが注釈されるパラメータとして型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4102("型[{0}]は永続対象としてサポートされていません。 at {1}"),
-    DOMA4103("型[{0}]をパラメータにもつ非privateなコンストラクタが見つかりません。コンストラクタを定義するか、ファクトリメソッドを利用したい場合は@DomainのfactoryMethod属性にメソッド名を指定してください。 at {1}"),
-    DOMA4104("アクセッサメソッド[{0}]が見つかりません。アクセッサメソッドは、型[{1}]を戻り値とする非privateで引数なしのインスタンスメソッドでなければいけません。 at {2}"),
-    DOMA4105("クラスまたはインタフェースまたは列挙型以外には注釈できません。 at {0}"),
-    DOMA4106("ファクトリメソッド[{0}]が見つかりません。ファクトリメソッドは、型[{1}]を戻り値とし型[{2}]をパラメータにもつ、非privateなstaticメソッドでなければいけません。また、メソッドの型パラメータはクラスの型パラメータと同一でなければいけません。ファクトリメソッドを定義するか、ファクトリメソッドが不要な場合は@DomainのfactoryMethodに\"new\"と指定しコンストラクタを定義してください。 at {3}"),
-    DOMA4107("@Domainを注釈したクラスには型パラメータを定義できません。"),
-    DOMA4108("Referenceには実型引数が必須です。 at {0}.{1}"),
-    DOMA4109("戻り値であるjava.lang.Iterableのサブタイプ[{0}]には実型引数が必須です。 at {1}.{2}"),
-    DOMA4111("@InOutが注釈されたパラメータの型は、org.seasar.doma.jdbc.Referenceでなければいけません。 at {0}.{1}"),
-    DOMA4112("パラメータの型[{0}]をワイルカード型にしてはいけません。 at {1}.{2}"),
-    DOMA4113("戻り値の型[{0}]をワイルカード型にしてはいけません。 at {1}.{2}"),
-    DOMA4114("式[{0}]（[{1}]番目の文字付近）に含まれる変数[{2}]の型[{3}]にインスタンスフィールド[{4}]が見つかりません。"),
-    DOMA4115("式[{0}]（[{1}]番目の文字付近）に含まれるコンストラクタ[{2}]が見つかりません。"),
-    DOMA4116("式[{0}]（[{1}]番目の文字付近）に含まれる比較演算子[{2}]の左被演算子[{3}]の型[{4}]と右被演算子[{5}]の型[{6}]が異なっています。"),
-    DOMA4117("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の左被演算子[{3}]の型[{4}]がboolean/Boolean型ではありません。"),
-    DOMA4118("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の右被演算子[{3}]の型[{4}]がboolean/Boolean型ではありません。"),
-    DOMA4119("式[{0}]（[{1}]番目の文字付近）に含まれる論理演算子[{2}]の被演算子[{3}]の型[{4}]がboolean/Boolean型ではありません。"),
-    DOMA4120("式[{0}]（[{1}]番目の文字付近）に含まれる算術演算子[{2}]の左被演算子[{3}]の型[{4}]が数値型ではありません。"),
-    DOMA4121("式[{0}]（[{1}]番目の文字付近）に含まれる算術演算子[{2}]の右被演算子[{3}]の型[{4}]が数値型ではありません。"),
-    DOMA4122("SQLファイル[{0}]の妥当検査に失敗しました。メソッドのパラメータ[{1}]がSQLファイルで参照されていません。"),
-    DOMA4124("ミュータブルなエンティティクラスは非privateな引数なしのコンストラクタを持たねばなりません。イミュータブルにするには@Entityのimmutable要素にtrueを設定してください。 at {0}"),
-    DOMA4125("@OriginalStatesが重複しています。@OriginalStatesが注釈されたフィールドはクラス階層中に1つでなければいけません。 at {0}.{1}"),
-    DOMA4126("文字の連結を行う場合、式[{0}]（[{1}]番目の文字付近）に含まれる演算子[{2}]の右被演算子[{3}]の型[{4}]はString/Character/charのいずれかでなければいけません。数値の加算を行う場合、両被演算子は数値型でなければいけません。"),
-    DOMA4127("式[{0}]（[{1}]番目の文字付近）に含まれるコンストラクタ[{2}]を特定できません。"),
-    DOMA4132("@DomainのfactoryMethod要素の値が\"new\"の場合、クラスはabstractであってはいけません。 at {0}"),
-    DOMA4135("@OriginalStatesが注釈されたフィールドの型はエンティティのクラス[{0}]と同じでなければいけません。 at {0}"),
-    DOMA4138("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]が見つかりません。"),
-    DOMA4139("式[{0}]（[{1}]番目の文字付近）に含まれる比較演算子[{2}]の被演算子にnullリテラルは使用できません。"),
-    DOMA4140("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%if ...*/の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。SQL[{1}]"),
-    DOMA4141("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%elseif ...*/の式[{4}]が型[{5}]として評価されましたが、boolean/Boolean型でなければいけません。SQL[{1}]"),
-    DOMA4143("SQLファイル[{0}]の取得ができません。原因は次のものです。{1}"),
-    DOMA4144("ディレクトリ[{0}]の子ファイルを認識できませんでした。"),
-    DOMA4145("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]が見つかりません。"),
-    DOMA4146("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]のpublicで戻り値を返すstaticメソッド[{3}]が見つかりません。"),
-    DOMA4147("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]のpublicで戻り値を返すstaticメソッド[{3}]を特定できません。"),
-    DOMA4148("式[{0}]（[{1}]番目の文字付近）に含まれるクラス[{2}]にstaticフィールド[{3}]が見つかりません。"),
-    DOMA4149("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%for ...*/の式[{4}]が型[{5}]として評価されましたが、java.lang.Iterable型でなければいけません。SQL[{1}]"),
-    DOMA4150("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%for ...*/の式[{4}]の型[{5}]の実型引数が不明です。SQL[{1}]"),
-    DOMA4153("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。バインド変数もしくはリテラル変数[{4}]に対応するパラメータの型は基本型もしくはドメインクラスでなければいけません。しかし、実際の型は[{5}]です。型を間違えていませんか？もしくはフィールドアクセスやメソッド呼び出しの記述を忘れていませんか？SQL[{1}]"),
-    DOMA4154("戻り値のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4155("戻り値のjava.util.Listに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4156("戻り値のjava.util.Listに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4157("java.util.Listに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4159("java.lang.Iterableのサブタイプには実型引数が必須です。 at {0}.{1}"),
-    DOMA4160("java.lang.Iterableのサブタイプをワイルカード型にしてはいけません。 at {0}.{1}"),
-    DOMA4161("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。括弧の前に位置するバインド変数もしくはリテラル変数[{4}]に対応するパラメータの型は基本型もしくはドメインクラスを要素としたjava.lang.Iterableのサブタイプでなければいけません。しかし、実際の型は[{5}]です。型を間違えていませんか？もしくはフィールドアクセスやメソッド呼び出しの記述を忘れていませんか？。SQL[{1}]"),
-    DOMA4163("ユーザー定義の設定クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
-    DOMA4164("ユーザー定義の設定クラスには、引数なしのpublicなコンストラクタ、もしくはINSTANCEという名前のpublic static finalなフィールドが必要です。INSTANCEフィールドの型はorg.seasar.doma.Configのサブタイプでなければいけません。クラス[{0}]は条件を満たしていません。"),
-    DOMA4166("エンティティリスナークラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
-    DOMA4167("エンティティリスナークラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
-    DOMA4168("org.seasar.doma.jdbc.id.TableIdGeneratorの実装クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
-    DOMA4169("org.seasar.doma.jdbc.id.TableIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
-    DOMA4170("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
-    DOMA4171("org.seasar.doma.jdbc.id.SequenceIdGeneratorの実装クラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
-    DOMA4172("戻り値の型はvoidでなければいけません。 at {0}.{1}"),
-    DOMA4173("パラメータの数は0でなければいけません。 at {0}.{1}"),
-    DOMA4174("列挙型以外には注釈できません"),
-    DOMA4176("アクセッサメソッド[{0}]が見つかりません。アクセッサメソッドは、型[{1}]を戻り値とする非privateで引数なしのインスタンスメソッドでなければいけません。"),
-    DOMA4177("ファクトリメソッド[{0}]が見つかりません。ファクトリメソッドは、型[{1}]を戻り値とし型[{2}]をパラメータにもつ、非privateなstaticメソッドでなければいけません。"),
-    /** SQLファイルに埋め込み変数コメントが含まれていることを示す警告メッセージ */
-    DOMA4181("SQLファイル[{0}]に埋め込み変数コメントが含まれています。バッチの中で実行されるSQLは一定であるため、埋め込み変数コメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4181 }')と注釈してください。"),
-    /** SQLファイルに条件コメントが含まれていることを示す警告メッセージ */
-    DOMA4182("SQLファイル[{0}]に条件コメントが含まれています。バッチの中で実行されるSQLは一定であるため、条件コメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4182 }')と注釈してください。"),
-    /** SQLファイルに繰り返しコメントが含まれていることを示す警告メッセージ */
-    DOMA4183("SQLファイル[{0}]に繰り返しコメントが含まれています。バッチの中で実行されるSQLは一定であるため、繰り返しコメントにより動的なSQLを発行しようとしても意図したSQLにならない可能性があります。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4183 }')と注釈してください。"),
-    DOMA4184("列挙型に@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。 at {0}"),
-    DOMA4185(" ... /** SQLが長すぎるため最初の{0}文字のみを表示しています。 */"),
-    DOMA4186("java.util.Listに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス、java.util.Map<String, Object>。 at {1}.{2}"),
-    DOMA4188("継承先に指定できる「@Daoが注釈されたインタフェース」は1つのみです。@Daoが注釈されておらず全てのメソッドがデフォルトメソッドであるインタフェースは複数指定できます。 at {0}"),
-    DOMA4189("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションdoma.expr.functionsに指定されたクラス[{3}]が見つかりません。"),
-    DOMA4190("式[{0}]（[{1}]番目の文字付近）の関数[{2}]の解決に失敗しました。注釈処理のオプションdoma.expr.functionsに指定されたクラス[{3}]はorg.seasar.doma.expr.ExpressionFunctionsのサブタイプでなければいけません。"),
-    DOMA4191("@ExternalDomainはorg.seasar.doma.jdbc.domain.DomainConverterのサブタイプにのみ注釈できます。 at {0}"),
-    DOMA4192("@ExternalDomainを注釈したクラスは抽象型であってはいけません。クラス[{0}]は抽象型です。"),
-    DOMA4193("@ExternalDomainを注釈したクラスは引数なしのpublicなコンストラクタを持たなければいけません。クラス[{0}]には引数なしのpublicなコンストラクタが見つかりません。"),
-    DOMA4194("org.seasar.doma.jdbc.domain.DomainConverterの第2型引数に指定された型[{0}]は永続対象としてサポートされていません。 at {1}"),
-    DOMA4196("型[{0}]が@ExternalDomainで注釈されていません。"),
-    DOMA4197("org.seasar.doma.jdbc.domain.DomainConverterの第1型引数に指定された型[{0}]のパッケージがデフォルトパッケージです。サポートされていません。 at {1}"),
-    DOMA4198("@ExternalDomainが注釈されたクラスはトップレベルでなければいけません。 at {0}"),
-    DOMA4200("注釈処理のオプション domain.converters で指定されたクラス[{0}]が見つかりません。"),
-    DOMA4201("注釈処理のオプション domain.converters で指定されたクラス[{0}]に@DomainConvertersが注釈されていません。"),
-    DOMA4202("org.seasar.doma.jdbc.entity.EntityListenerの型引数が解決されていません。 at {0}"),
-    DOMA4203("org.seasar.doma.jdbc.domain.DomainConverterの第1型引数に指定された型[{0}]への型引数はすべてワイルドカードでなければいけません。 at {1}"),
-    DOMA4204("クラス[{0}]の原型はエンティティプロパティに使用できません。 at {1}.{2}"),
-    DOMA4205("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはエンティティプロパティに使用できません。 at {1}.{2}"),
-    DOMA4206("クラス[{0}]の原型はDaoメソッドの戻り値に使用できません。 at {1}.{2}"),
-    DOMA4207("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはDaoメソッドの戻り値に使用できません。 at {1}.{2}"),
-    DOMA4208("クラス[{0}]の原型はDaoメソッドのパラメータに使用できません。 at {1}.{2}"),
-    DOMA4209("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはDaoメソッドのパラメータに使用できません。 at {1}.{2}"),
-    DOMA4210("クラス[{0}]の原型はIterableのサブタイプの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4211("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはIterableの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4212("クラス[{0}]の原型はIterableのサブタイプの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4213("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはIterableの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4218("クラス[{0}]の原型はReferenceの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4219("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはReferenceの実型引数に使用できません。 at {1}.{2}"),
-    /** どのメソッドにもマッピングされないSQLファイルが存在することを示す警告メッセージ */
-    DOMA4220("どのメソッドにもマッピングされないSQLファイル[{0}]が存在します。メソッドの名前やアノテーションのsqlFile属性を確認してください。この警告を抑制するには、Daoインタフェースに@Suppress(messages = '{ Message.DOMA4220 }')と注釈してください。"),
-    DOMA4221("イミュータブルなエンティティクラスには非privateなコンストラクタが必要です。 at {0}"),
-    DOMA4222("イミュータブルなエンティティクラスを@Insertや@Updateや@Deleteが注釈されたメソッドのパラメータとする場合、戻り値はorg.seasar.doma.jdbc.Result<E>でなければいけません。型パラメータ E の実型引数にはパラメータと同じエンティティクラスを指定してください。 at {0}.{1}"),
-    DOMA4223("イミュータブルなエンティティクラスを@BatchInsertや@BatchUpdateや@BatchDeleteが注釈されたメソッドのパラメータとする場合、戻り値はorg.seasar.doma.jdbc.BatchResult<E>でなければいけません。型パラメータEの実型引数にはパラメータと同じエンティティクラスを指定してください。 at {0}.{1}"),
-    DOMA4224("イミュータブルなエンティティクラスのフィールドには@OriginalStatesを注釈できません。 at {0}.{1}"),
-    DOMA4225("イミュータブルなエンティティクラスの永続対象フィールドにはfinal修飾子が必須です。 at {0}.{1}"),
-    DOMA4226("@Entityのimmutable要素の値はエンティティクラスの継承階層で同一でなければいけません。 at {0}"),
-    DOMA4227("エンティティリスナークラスの型パラメータは1つ以下でなければいけません。 at {0}"),
-    DOMA4228("エンティティリスナークラスの型パラメータ[{0}]がクラス階層の中でorg.seasar.doma.jdbc.entity.EntityListerの型引数として渡されていません。 at {1}"),
-    DOMA4229("エンティティリスナークラスの型パラメータ[{0}]の上限境界[{1}]がエンティティクラス[{2}]と互換性がありません。 at {2}"),
-    DOMA4230("親エンティティクラスから引き継がれたエンティティリスナークラス[{0}]には、エンティティクラス[{1}]を型引数で受けるための型パラメータが1つ必要です。 at {1}"),
-    DOMA4231("親エンティティクラスから引き継がれたエンティティリスナークラス[{0}]の型パラメータ[{1}]の上限境界[{2}]がエンティティクラス[{3}]と互換性がありません。 at {3}"),
-    DOMA4232("クラス[{0}]の原型は使用できません。 at {1}.{2}"),
-    DOMA4233("クラス[{0}]の型引数にワイルドカードや型パラメータは使用できません。基本型やドメインクラスを指定できます。 at {1}.{2}"),
-    DOMA4234("java.util.Optionalに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4235("java.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス、エンティティクラス。  at {1}.{2}"),
-    DOMA4236("クラス[{0}]の原型は使用できません。 at {1}.{2}"),
-    DOMA4237("クラス[{0}]の型引数にワイルドカードや型パラメータは使用できません。基本型やドメインクラスを指定できます。 at {1}.{2}"),
-    DOMA4238("クラス[{0}]の原型はOptionalの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4239("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはOptionalの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4240("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
-    DOMA4241("パラメータの型[{0}]をワイルカード型にしてはいけません。 at {1}.{2}"),
-    DOMA4242("クラス[{0}]の原型はStreamの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4243("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはStreamの実型引数に使用できません。 at {1}.{2}"),
-    DOMA4244("Functionの1番目の実型引数の型は、java.util.stream.Streamでなければいけません。 at {0}.{1}"),
-    DOMA4245("Streamの実型引数の型がサポートされていない型です。 at {0}.{1}"),
-    DOMA4246("戻り値の型[{0}]とFunctionの2番目の実型引数の型[{1}]が一致していません。 at {2}.{3}"),
-    DOMA4247("@Selectのstrategy要素にSelectStrategyType.STREAMを設定した場合、Function型のパラメータが必要です。 at {0}.{1}"),
-    DOMA4248("Function型のパラメータを利用するには、strategy要素にSelectStrategyType.STREAMを設定しなければいけません。 at {0}.{1}"),
-    DOMA4249("Function型のパラメータは複数指定できません。 at {0}.{1}"),
-    DOMA4250("Streamの実型引数に抽象型のエンティティクラス[{0}]は指定できません。 at {1}.{2}"),
-    DOMA4251("valueType要素にプリミティブ型を指定している場合、acceptNull要素にtrueを指定できません。 at {0}"),
-    DOMA4252("defaultメソッドにアノテーション[{0}]は注釈できません。 at {1}.{2}"),
-    DOMA4253("@SingletonConfigはorg.seasar.doma.Configのサブタイプ以外には注釈できません。 at {0}"),
-    DOMA4254("メソッド[{0}]が見つかりません。メソッドの修飾子はpublic static、戻り値の型はこのクラス[{1}]、パラメータの数は0、でなければいけません。 at {1}"),
-    DOMA4255("クラス[{0}]にメソッド[{1}]が見つかりません。"),
-    DOMA4256("@SingletonConfigを注釈したクラスのコンストラクタはprivateでなければいけません。 at {0}"),
-    DOMA4257("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%expand ...*/の式が使用されていますが、カラムの自動展開ができません。メソッドに@Selectが注釈され、結果セットのレコードがエンティティクラスにマッピングされていることを確認してください。SQL[{1}]"),
-    DOMA4258("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
-    DOMA4259("パラメータの型[{0}]の1番目もしくは3番目の実型引数をワイルカード型にしてはいけません。 at {1}.{2}"),
-    DOMA4260("クラス[{0}]の原型はCollectorの1番目の実型引数に使用できません。 at {1}.{2}"),
-    DOMA4261("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものはCollectorの1番目の実型引数に使用できません。 at {1}.{2}"),
-    DOMA4262("Collectorの1番目の実型引数の型がサポートされていない型です。 at {0}.{1}"),
-    DOMA4263("Collectorの1番目の実型引数に抽象型のエンティティクラス[{0}]は指定できません。 at {1}.{2}"),
-    DOMA4264("Collector型のパラメータは複数指定できません。 at {0}.{1}"),
-    DOMA4265("戻り値の型[{0}]とCollectorの3番目の実型引数の型[{1}]が一致していません。 at {2}.{3}"),
-    DOMA4266("@Selectのstrategy要素にSelectStrategyType.COLLECTを設定した場合、Collector型のパラメータが必要です。 at {0}.{1}"),
-    DOMA4267("java.util.List内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。 at {1}.{2}"),
-    DOMA4268("インターフェースに@Domainを注釈する場合、factoryMethod属性に\"new\"は指定できません（\"new\"はコンストラクタで生成することを示します）。staticで非privateなファクトリメソッドの名前を指定してください。 at {0}"),
-    DOMA4270("SQLファイル[{0}]の妥当検査に失敗しました（[{2}]行目[{3}]番目の文字付近）。/*%populate */の式が使用されていますが、SET句の自動生成ができません。メソッドに@Updateまたは@BatchUpdateが注釈され、第一引数がエンティティクラスにマッピングされていることを確認してください。SQL[{1}]"),
-    DOMA4271("戻り値のjava.util.stream.Streamに対する実型引数の型[{0}]はサポートされていません。 at {1}.{2}"),
-    DOMA4272("戻り値のjava.util.stream.Streamに対する実型引数のエンティティクラス[{0}]は抽象型であってはいけません。 at {1}.{2}"),
-    DOMA4273("java.util.stream.Stream内のjava.util.Optionalに対する実型引数の型[{0}]はサポートされていません。サポートされている型は次のものです。基本型、ドメインクラス。"),
-    /** Streamをアプリケーションでクローズしなければいけないことを示す警告メッセージ */
-    DOMA4274("java.util.stream.StreamがDaoメソッドから返されます。アプリケーションで必ずStreamをクローズしてください。この警告を抑制するには、メソッドに@Suppress(messages = '{ Message.DOMA4274 }')と注釈してください。 at {0}.{1}"),
-    DOMA4275("型[{0}]がpublicかつstaticでありません。ドメインクラスもしくはドメインクラスを囲む型はpublicかつstaticでなければいけません。"),
-    DOMA4276("型[{0}]がローカルクラスもしくは無名クラスです。ドメインクラスもしくはドメインクラスを囲む型はトップレベルもしくはメンバでなければいけません。"),
-    DOMA4277("型[{0}]の単純名に\"$\"または\"__\"が含まれています。ドメインクラスもしくはドメインクラスを囲む型はこれらの文字列を単純名に含んではいけません。"),
-    DOMA4278("型[{0}]がpublicかつstaticでありません。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はpublicかつstaticでなければいけません。"),
-    DOMA4279("型[{0}]がローカルクラスもしくは無名クラスです。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はトップレベルもしくはメンバでなければいけません。"),
-    DOMA4280("型[{0}]の単純名に\"$\"または\"__\"が含まれています。DomainConverterの第1型引数に指定された型もしくはその型を囲む型はこれらの文字列を単純名に含んではいけません。"),
-    DOMA4281("イミュータブルなエンティティクラスではコンストラクタのパラメータの数と型と名前は永続対象フィールドに一致しなければいけません。 at {0}"),
-    DOMA4283("@Embeddableはクラス以外には注釈できません。 at {0}"),
-    DOMA4285("エンベッダブルクラスには型パラメータを定義できません。 at {0}"),
-    DOMA4286("エンベッダブルクラスのフィールドには@OriginalStatesを注釈できません。 at {0}.{1}"),
-    DOMA4288("アノテーション[{0}]とアノテーション[{1}]が競合しています。これらは同じフィールドに注釈できません。 at {2}.{3}"),
-    DOMA4289("エンベッダブルクラスのフィールドには@Idを注釈できません。 at {0}.{1}"),
-    DOMA4290("エンベッダブルクラスのフィールドには@Versionを注釈できません。 at {0}.{1}"),
-    DOMA4291("エンベッダブルクラスのフィールドには@GeneratedValueを注釈できません。 at {0}.{1}"),
-    DOMA4293("エンベッダブルクラスではコンストラクタのパラメータの数と型と名前は永続対象フィールドに一致しなければいけません。 at {0}"),
-    DOMA4294("エンベッダブルクラスには非privateなコンストラクタが必要です。 at {0}"),
-    DOMA4295("クラス[{0}]の原型は永続プロパティに使用できません。 at {1}.{2}"),
-    DOMA4296("クラス[{0}]の型引数にワイルドカードや型パラメータを含むものは永続プロパティに使用できません。 at {1}.{2}"),
-    DOMA4297("エンベッダブルクラス[{0}]は、エンベッダブルクラスの永続プロパティとして使用できません。 at {1}.{2}。"),
-    DOMA4298("クラス[{0}]は、永続対象の型としてサポートされていません。 at {1}.{2}。@ExternalDomainでマッピングすることを意図している場合、登録や設定が不足している可能性があります。@DomainConvertersを注釈したクラスと注釈処理のオプション（doma.domain.converters）を見直してください。"),
-    DOMA4299("クラス[{0}]の原型は永続プロパティとして使用できません。 at {1}.{2}"),
-    DOMA4300("型[{0}]の処理中に例外が発生しました。注釈処理とは直接関係ない場所でコンパイルエラーがありませんか？"),
-    DOMA4301("クラス[{0}]の型引数にワイルドカードや型パラメータは永続プロパティとして使用できません。基本型やドメインクラスを指定できます。 at {1}.{2}"),
-    DOMA4302("@Idは@Embeddableが注釈された型のプロパティに注釈できません。 at {0}.{1}"),
-    DOMA4303("@GeneratedValueは@Embeddableが注釈された型のプロパティに注釈できません。 at {0}.{1}"),
-    DOMA4304("@Versionは@Embeddableが注釈された型のプロパティに注釈できません。 at {0}.{1}"),
-    DOMA4305("@OriginalStatesを使用する場合、エンティティクラスのプロパティに@Embeddableが注釈された型を使うことはサポートされていません。 at {0}"),
-    DOMA4306("@Columnは@Embeddableが注釈された型のプロパティに注釈できません。 at {0}.{1}"),
-    DOMA4309("ファイルパス[{0}]の大文字小文字がファイルシステム上のパスと一致しません。ファイルシステム上のパスは\"{1}\"です。"),
-    DOMA4315("型[{0}]がpublicかつstaticでありません。エンティティクラスもしくはエンティティクラスを囲む型はpublicかつstaticでなければいけません。"),
-    DOMA4316("型[{0}]がローカルクラスもしくは無名クラスです。エンティティクラスもしくはエンティティクラスを囲む型はトップレベルもしくはメンバでなければいけません。"),
-    DOMA4317("型[{0}]の単純名に\"$\"または\"__\"が含まれています。エンティティクラスもしくはエンティティクラスを囲む型はこれらの文字列を単純名に含んではいけません。"),
-    DOMA4415("型[{0}]がpublicかつstaticでありません。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はpublicかつstaticでなければいけません。"),
-    DOMA4416("型[{0}]がローカルクラスもしくは無名クラスです。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はトップレベルもしくはメンバでなければいけません。"),
-    DOMA4417("型[{0}]の単純名に\"$\"または\"__\"が含まれています。エンベッダブルクラスもしくはエンベッダブルクラスを囲む型はこれらの文字列を単純名に含んではいけません。"),
-    DOMA4418("@lombok.Valueを注釈する場合は@Entityのimmutable要素にtrueを設定する必要があります。 at {0}"),
-    DOMA4419("@lombok.ValueのstaticConstructor要素の利用はサポートされていません。 at {0}"),
-    DOMA4420("@lombok.AllArgsConstructorを注釈する場合は@Entityのimmutable要素にtrueを設定する必要があります。 at {0}"),
-    DOMA4421("@lombok.AllArgsConstructorのstaticName要素の利用はサポートされていません。 at {0}"),
-    DOMA4422("@lombok.AllArgsConstructorのaccess要素にlombok.AccessLevel.PRIVATEを設定することはサポートされていません。 at {0}"),
-    DOMA4423(DOMA4419.getMessagePattern()),
-    DOMA4424(DOMA4421.getMessagePattern()),
-    DOMA4425(DOMA4422.getMessagePattern()),
-    DOMA4426("@lombok.AllArgsConstructorのaccess要素にlombok.AccessLevel.NONEを設定することはサポートされていません。 at {0}"),
-    DOMA4427(DOMA4426.getMessagePattern()),
-    DOMA4428(DOMA4419.getMessagePattern()),
-    DOMA4429("@lombok.Valueによって生成されるメソッド名[{0}]が@DomainのaccessorMethod要素に指定された値[{1}]と一致しません。 at {2}"),
-    DOMA4430("@lombok.Valueによって初期化されるインスタンスフィールドが存在しません。 at {0}"),
-    DOMA4431("@lombok.Valueによって初期化されるインスタンスフィールドが1つだけでなければいけませんが、2つ以上存在します。 at {0}"),
-    DOMA4432("@lombok.Valueによって初期化されるインスタンスフィールドの型[{0}]が@DomainのvalueType要素に指定された型[{1}]と一致しません。 at {2}.{3}"),
-    DOMA4433("@SqlProcessorを使う場合、BiFunction型のパラメータの利用は必須です。 at {0}.{1}"),
-    DOMA4434("BiFunction型のパラメータは複数指定できません。 at {0}.{1}"),
-    DOMA4435("BiFunctionの2番目の実型引数の型は、org.seasar.doma.jdbc.PreparedSqlでなければいけません。 at {0}.{1}"),
-    DOMA4436("戻り値の型[{0}]とBiFunctionの3番目の実型引数の型[{1}]が一致していません。 at {2}.{3}"),
-    DOMA4437("BiFunctionの1番目の実型引数の型は、org.seasar.doma.jdbc.Configでなければいけません。 at {0}.{1}"),
-    DOMA4438("パラメータの型[{0}]を原型にしてはいけません。 at {1}.{2}"),
-    DOMA4439("パラメータの型[{0}]にワイルカード型の型パラメータを含めてはいけません。 at {1}.{2}"),
-    DOMA4440("継承先のメソッド[{0}]がデフォルトメソッドではありません。@Daoが注釈されていないインタフェースをextendsする場合、そのインタフェースの継承先を含む全てのメソッドはデフォルトメソッドでなければいけません。 at {1}"),
-    DOMA4441("@TenantIdは@Embeddableが注釈された型のプロパティに注釈できません。 at {0}.{1}"),
-    DOMA4442("@TenantIdが重複しています。@TenantIdが注釈されるフィールドはクラス階層の中で1つでなければいけません。 at {0}.{1}"),
-    DOMA4443("エンベッダブルクラスのフィールドには@TenantIdを注釈できません。 at {0}.{1}"),
+  // annotation processing
+  DOMA4001("The return type must be int that indicates the affected rows count."),
+  DOMA4002("The number of parameters must be one."),
+  DOMA4003("The parameter type must be an entity class."),
+  DOMA4005("The query annotation such as @Select and @Update is required."),
+  DOMA4007(
+      "The type argument of java.util.List is {0}. Such List isn''t supported as the return type."),
+  DOMA4008("The return type \"{0}\" isn''t supported."),
+  DOMA4011(
+      "The annotation processing for the class \"{0}\" is failed. The cause is as follows: {1}"),
+  DOMA4014("Cannot annotate the type with @Dao because the type isn''t an interface."),
+  DOMA4015(
+      "Cannot annotate the type with @Entity because the type is neither a class nor a record."),
+  DOMA4016(
+      "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
+  DOMA4017("The DAO interface must be a top level interface."),
+  DOMA4019("The file \"{0}\" is not found in the classpath. The absolute path is \"{1}\"."),
+  DOMA4020("The SQL template \"{0}\" is empty."),
+  DOMA4021("The path \"{0}\" is a directory, but it must be a file. The absolute path is \"{1}\"."),
+  DOMA4024(
+      "The annotation @Version is duplicated. The filed annotated with @Version must be only one in the class hierarchy."),
+  DOMA4025("Cannot use the name stating with \"{0}\", because it is reserved for Doma."),
+  DOMA4026("The name ending with \"{0}\" may be duplicate with the auto-generated classes."),
+  DOMA4030(
+      "When you use @SequenceGenerator, "
+          + "you must annotate the same field with @GeneratedValue(strategy = GenerationType.SEQUENCE)."),
+  DOMA4031(
+      "When you use @TableGenerator, "
+          + "you must annotate the same field with @GeneratedValue(strategy = GenerationType.TABLE)."),
+  DOMA4033("When you use @GeneratedValue, " + "you must annotate the same field with @Id."),
+  DOMA4034(
+      "When you use @GeneratedValue(strategy = GenerationType.SEQUENCE), "
+          + "you must annotate the same field with @SequenceGenerator."),
+  DOMA4035(
+      "When you use @GeneratedValue(strategy = GenerationType.TABLE), "
+          + "you must annotate the same field with @TableGenerator."),
+  DOMA4036(
+      "When you use @GeneratedValue, The filed annotated with @Id must be only one in the class hierarchy."),
+  DOMA4037(
+      "Multiple @GeneratedValue are found. The filed annotated with @GeneratedValue must be one."),
+  DOMA4038("The type argument of EntityListener must be a supertype of the entity class \"{2}\"."),
+  DOMA4039(
+      "The annotation processing is stopped because of compilation error. "
+          + "Check the error message from your execution environment such as Eclipse and javac. Stacktrace: {0}"),
+  DOMA4040("The return type must be an int array that indicates the affected rows count."),
+  DOMA4042("The parameter type must be a subtype of java.lang.Iterable."),
+  DOMA4043("The type argument of the subtype of java.lang.Iterable must be an entity class."),
+  DOMA4051("The entity class cannot have type parameters."),
+  DOMA4053("Multiple SelectOption parameters arn''t allowed."),
+  DOMA4059("The DAO interface cannot have type parameters."),
+  DOMA4062("The parameter type annotated with @ResultSet must be java.util.List."),
+  DOMA4063("The return type \"{0}\" isn''t supported in the method annotated with @Function."),
+  DOMA4064("The return type must be void in the method annotated with @Procedure."),
+  DOMA4065(
+      "The type argument of java.util.List is {0}. Such List isn''t supported as the return type."),
+  DOMA4066(
+      "The parameters of the method annotated with @Function or @Procedure "
+          + "must be annotated with either of @In, @InOut, @Out or @ResultSet."),
+  DOMA4067(
+      "The parameter that corresponds to the variable \"{0}\" "
+          + "in the SQL statement at column {1} is not found in the method."),
+  DOMA4068("Failed to read the SQL template \"{0}\". The cause is as follows: {1}"),
+  DOMA4069("Failed to parse the SQL template \"{0}\". The cause is as follows: {1}"),
+  DOMA4071(
+      "The variable \"{2}\" in the expression \"{0}\" at column {1} does not have a public and non-void method \"{4}\". "
+          + "The variable type is \"{3}\"."),
+  DOMA4072("The function \"{2}\" in the expression \"{0}\" at column {1} is not found."),
+  DOMA4076("The parameter type must be an array type."),
+  DOMA4078("The number of parameters must be 0."),
+  DOMA4084("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4085("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4086("The annotation \"{0}\" competes with the annotation \"{1}\". Use either of them."),
+  DOMA4087("The annotation \"{0}\" competes with the annotation \"{1}\". Use either of them."),
+  DOMA4088(
+      "When you annotate the field with @Id or @Version, "
+          + "you must not annotate the field with @Column(insertable=false)."),
+  DOMA4089(
+      "When you annotate the field with @Id or @Version, "
+          + "you must not annotate the field with @Column(updatable=false) to the same field."),
+  DOMA4090("The annotation processor \"{0}\" starts processing for the class \"{1}\"."),
+  DOMA4091("The annotation processor \"{0}\" ends processing for the class \"{1}\"."),
+  DOMA4092(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. The cause is as follows: {4} SQL=[{1}]."),
+  DOMA4093("The field annotated with @Version must be numeric."),
+  DOMA4095("The field annotated with @GeneratedValue must be numeric."),
+  DOMA4096(
+      "The class \"{0}\" is not supported as a persistent type. "
+          + "If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. "
+          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+  DOMA4097("The return type must be {0}."),
+  DOMA4098("The type of the parameter annotated with @Out must be org.seasar.doma.jdbc.Reference."),
+  DOMA4100("{0} is illegal as the type argument of Reference."),
+  DOMA4101("{0} isn''t supported as the type of the parameter annotated with @In."),
+  DOMA4102("{0} is not supported as a persistent type."),
+  DOMA4103(
+      "The non-private constructor that has the parameter type \"{0}\" is not found. "
+          + "Define the constructor or specify the factory method name to the annotation @Domain if you use the factory method."),
+  DOMA4104(
+      "The accessor method \"{0}\" is not found. "
+          + "The method must have the return type \"{1}\" and must be non-private and non-args."),
+  DOMA4105("You can annotate only classes, interfaces, enums and records with @Domain"),
+  DOMA4106(
+      "The factory method　\"{0}\" is not found. "
+          + "The method must have the return type \"{1}\" and the parameter type \"{2}\" and must be non-private and static. "
+          + "The type parameter of the method must be same with the type parameter of the class. "
+          + "Define the factory method. "
+          + "Or if you do not use the factory method, "
+          + "do not specify the value to the factoryMethod element of @Domain and define the constructor."),
+  DOMA4108("The type argument is required for org.seasar.doma.jdbc.Reference."),
+  DOMA4109(
+      "The type argument is required for the subtype of java.lang.Iterable in the method return type."),
+  DOMA4111("The parameter type annotated with @InOut must be org.seasar.doma.jdbc.Reference."),
+  DOMA4112("The wildcard is not supported for the parameter type \"{0}\"."),
+  DOMA4113("The wildcard is not supported for the return type \"{0}\"."),
+  DOMA4114(
+      "The type \"{3}\" of the variable \"{2}\" in the expression \"{0}\" at column {1} "
+          + "does not have the instance field \"{4}\"."),
+  DOMA4115("The constructor \"{2}\" in the expression \"{0}\" at column {1} is not found."),
+  DOMA4116(
+      "The type \"{4}\" of the left operand \"{3}\" and the type \"{6}\" of the right operand \"{5}\" are "
+          + "not same for the operator \"{2}\" in the expression \"{0}\" at column {1}."),
+  DOMA4117(
+      "The type \"{4}\" of the left operand \"{3}\" for the operator \"{2}\" "
+          + "in the expression \"{0}\" at column {1} is neither boolean nor Boolean."),
+  DOMA4118(
+      "The type \"{4}\" of the right operand \"{3}\" for the operator \"{2}\" "
+          + "in the expression \"{0}\" at column {1} is neither boolean nor Boolean."),
+  DOMA4119(
+      "The type \"{4}\" of the operand \"{3}\" for the operator \"{2}\" "
+          + "in the expression \"{0}\" at column {1} is neither boolean nor Boolean."),
+  DOMA4120(
+      "The type \"{4}\" of the left operand \"{3}\" for the operator \"{2}\" "
+          + "in the expression \"{0}\" at column {1} is not numeric."),
+  DOMA4121(
+      "The type \"{4}\" of the right operand \"{3}\" for the operator \"{2}\" "
+          + "in the expression \"{0}\" at column {1} is not numeric."),
+  DOMA4122(
+      "Failed to verify the SQL template \"{0}\". "
+          + "The parameter \"{1}\" of the method is not referred in the SQL template."),
+  DOMA4124(
+      "The mutable entity class must have a non-private and no-args constructor. "
+          + "To make it immutable, specify \"true\" to the immutable element of @Entity."),
+  DOMA4125(
+      "@OriginalStates is duplicated. "
+          + "The filed annotated with @OriginalStates must be only one in the class hierarchy."),
+  DOMA4126(
+      "To execute concatenation, the type \"{4}\" of the right operand \"{3}\" in the expression \"{0}\" "
+          + "at column {1} must be either String, Character or char. "
+          + "To execute addition, both of the operands must be numeric."),
+  DOMA4132(
+      "If the factoryMethod element of @Domain is specified with \"new\", the class must not be abstract."),
+  DOMA4135(
+      "The type of the field that is annotated with @OriginalStates must be same with the type of the entity class."),
+  DOMA4138("The class \"{2}\" in the expression \"{0}\" at column {1} is not found."),
+  DOMA4139(
+      "The operator \"{2}\" cannot be applied to the null literal in the expression \"{0}\" at column {1}."),
+  DOMA4140(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the expression \"{4}\" in \"/*%if ...*/\" is evaluated as the type \"{5}\", "
+          + "the type must be either boolean or Boolean. SQL=[{1}]"),
+  DOMA4141(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the expression \"{4}\" in \"/*%elseif ...*/\" is evaluated as the type \"{5}\", "
+          + "the type must be either boolean or Boolean. SQL=[{1}]"),
+  DOMA4143("Failed to get the SQL template \"{0}\". The cause is as follows: {1}"),
+  DOMA4144("Failed to recognize the children files of the directory \"{0}\"."),
+  DOMA4145("The class \"{2}\" in the expression \"{0}\" at column {1} is not found."),
+  DOMA4146(
+      "The class \"{2}\" in the expression \"{0}\" at column {1} does not have "
+          + "the method \"{3}\" that returns non-void type and is public and static."),
+  DOMA4148(
+      "The class \"{2}\" in the expression \"{0}\" at column {1} does not have the static field \"{3}\"."),
+  DOMA4149(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the expression \"{4}\" in \"/*%for ...*/\" is evaluated as the type \"{5}\", "
+          + "the type must be a subtype of java.lang.Iterable or an array type. SQL=[{1}]"),
+  DOMA4150(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the expression \"{4}\" in \"/*%for ...*/\" is evaluated as the type \"{5}\", "
+          + "the type argument for the type is obscure. SQL=[{1}]"),
+  DOMA4153(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "The parameter type that corresponds to the expression \"{4}\" must be the basic or domain class. "
+          + "But the actual type is \"{5}\". "
+          + "You may forget to access to its field or to invoke its method. SQL=[{1}]"),
+  DOMA4154("The entity class \"{0}\" as the return type must not be abstract."),
+  DOMA4155(
+      "The entity class \"{0}\" that is the type argument of java.util.List must not be abstract."),
+  DOMA4156(
+      "The entity class \"{0}\" that is the type argument of java.util.List must not be abstract."),
+  DOMA4157(
+      "The entity class \"{0}\" that is the type argument of java.util.List must not be abstract."),
+  DOMA4159("The type argument is required for the subtype of java.lang.Iterable."),
+  DOMA4160("The type argument for the subtype of java.lang.Iterable must not be wildcard."),
+  DOMA4161(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "The parameter type that corresponds to the expression \"{4}\" must be a subtype of either java.lang.Iterable or an array type. "
+          + "But the actual type is \"{5}\". "
+          + "You may forget to access to its field or to invoke its method. SQL=[{1}]"),
+  DOMA4163(
+      "The user defined Config class must not be abstract. " + "The class \"{0}\" is abstract."),
+  DOMA4164(
+      "The user defined Config class must have a no-args and "
+          + "public constructor or have a public static final field that is named \"INSTANCE\".　"
+          + "The type of the field must a the subtype of org.seasar.doma.Config. The class \"{0}\" does not meet these requirements."),
+  DOMA4166("The entity listener class must not be abstract. The class \"{0}\" is abstract."),
+  DOMA4167(
+      "The entity listener class must have a public no-args constructor. "
+          + "The class \"{0}\" does not have such a constructor."),
+  DOMA4168(
+      "The implementation class \"{0}\" of org.seasar.doma.jdbc.id.TableIdGenerator must not be abstract."),
+  DOMA4169(
+      "The implementation class \"{0}\" of org.seasar.doma.jdbc.id.TableIdGenerator must have a public no-args constructor."),
+  DOMA4170(
+      "The implementation class \"{0}\" of org.seasar.doma.jdbc.id.SequenceIdGenerator must not be abstract."),
+  DOMA4171(
+      "The implementation class \"{0}\" of org.seasar.doma.jdbc.id.SequenceIdGenerator must have a public no-args constructor."),
+  DOMA4172("The return type must be void."),
+  DOMA4173("The number of parameters is 0."),
+  DOMA4181(
+      "The SQL template \"{0}\" contains embedded variable directives. "
+          + "Because the SQL statement in a batch is immutable, the embedded variable directives cannot change the SQL statement dynamically. "
+          + "To suppress this warning, annotate the method with @Suppress(messages = '{ Message.DOMA4181 }')."),
+  DOMA4182(
+      "The SQL template \"{0}\" contains condition directives. "
+          + "Because the SQL statement in a batch is immutable, the condition directives cannot change the SQL statement dynamically. "
+          + "To suppress this warning, annotate the method with @Suppress(messages = '{ Message.DOMA4182 }')."),
+  DOMA4183(
+      "The SQL template \"{0}\" contains loop directives. "
+          + "Because the SQL statement in a batch is immutable, the loop directives cannot change the SQL statement dynamically. "
+          + "To suppress this warning, annotate the method with @Suppress(messages = '{ Message.DOMA4183 }')."),
+  DOMA4184(
+      "When you annotate the enum type with @Domain, "
+          + "you cannot specify \"new\" to the factoryMethod element of @Domain "
+          + "because \"new\" means the usage of constructor. "
+          + "Specify the name of the factory method that is static and non-private."),
+  DOMA4185(
+      " ... /** The SQL statement is too long. The only first {0} character are displayed. */"),
+  DOMA4186(
+      "The type argument \"{0}\" is not supported for java.util.List. "
+          + "Supported types are as follows: basic classes, domain classes, entity classes and java.util.Map<String, Object>."),
+  DOMA4188("Interfaces annotated with @Dao must be only one as the parent interface."),
+  DOMA4189(
+      "Failed to resolve the function \"{2}\" in the expression \"{0}\" at column {1}. "
+          + "The class \"{3}\" that is specified for the annotation processing option \"doma.expr.functions\" is not found."),
+  DOMA4190(
+      "Failed to resolve the function \"{2}\" in the expression \"{0}\" at column {1}. "
+          + "The class \"{3}\" that is specified for the annotation processing option \"doma.expr.functions\" "
+          + "must be a subtype of org.seasar.doma.expr.ExpressionFunctions."),
+  DOMA4191(
+      "You can annotate only subtypes of org.seasar.doma.jdbc.domain.DomainConverter with @ExternalDomain."),
+  DOMA4192("The class annotated with @ExternalDomain must not be abstract."),
+  DOMA4193("The class annotated with @ExternalDomain must have a public and no-args constructor."),
+  DOMA4194(
+      "The second type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter is not supported as a persistent type."),
+  DOMA4196("The type \"{0}\" is not annotated with @ExternalDomain."),
+  DOMA4197(
+      "The package of the first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter is default package. "
+          + "It is not supported."),
+  DOMA4198("The class that is annotated with @ExternalDomain must be a top level class."),
+  DOMA4200(
+      "The class \"{0}\" that is specified for the annotation processing option \"doma.domain.converters\" is not found."),
+  DOMA4201(
+      "The class \"{0}\" that is specified for the annotation processing option \"doma.doma.converters\" "
+          + "is not annotated with @DomainConverters."),
+  DOMA4202("The type argument of org.seasar.doma.jdbc.entity.EntityListener is not resolved."),
+  DOMA4203(
+      "All type arguments of the type \"{0}\" that is first type argument of org.seasar.doma.jdbc.doma.DomainConverter "
+          + "must be wildcard."),
+  DOMA4204("The raw type of the class \"{0}\" cannot be used as an entity property."),
+  DOMA4205(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable cannot be used as an entity property."),
+  DOMA4206("The raw type of the class \"{0}\" cannot be used as a return type of the DAO method."),
+  DOMA4207(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as a return type of the DAO method."),
+  DOMA4208(
+      "The raw type of the class \"{0}\" cannot be used as a parameter type of the DAO method."),
+  DOMA4209(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as a parameter type of the DAO method."),
+  DOMA4210(
+      "The raw type of the class \"{0}\" cannot be used as a type argument of the subtype of Iterable."),
+  DOMA4211(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as a type argument of the subtype of Iterable."),
+  DOMA4212(
+      "The raw type of the class \"{0}\" cannot be used as a type argument of the subtype of Iterable."),
+  DOMA4213(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as a type argument of the subtype of Iterable."),
+  DOMA4218("The raw type of the class \"{0}\" cannot be used as a type argument of Reference"),
+  DOMA4219(
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as a type argument of Reference."),
+  DOMA4220(
+      "The SQL template \"{0}\" that is not mapped to any methods are found. "
+          + "Check the method names or the sqlFile elements of annotations. "
+          + "To suppress this warning, annotate the DAO method with @Suppress(messages = '{ Message.DOMA4220 }')."),
+  DOMA4221("A non-private constructor is required for the immutable entity class."),
+  DOMA4222(
+      "When the immutable entity class is a parameter type for the method annotated with such as @Insert, @Update and @Delete, "
+          + "the return type must be org.seasar.doma.jdbc.Result. "
+          + "The type argument of org.seasar.doma.jdbc.Result must be same entity class with the parameter type of the method."),
+  DOMA4223(
+      "When the immutable entity class is the type argument of the subtype of Iterable and "
+          + "the iterable is parameter type for the method annotated with such as @BatchInsert, @BatchUpdate and @BatchDelete, "
+          + "the return type must be org.seasar.doma.jdbc.BatchResult. "
+          + "The type argument of org.seasar.doma.jdbc.BatchResult must be same entity class with the type argument of the iterable."),
+  DOMA4224("Cannot annotate the fields of the immutable entity class with @OriginalStates."),
+  DOMA4225(
+      "The \"final\" modifier is required for all persistent fields of the immutable entity class."),
+  DOMA4226(
+      "The value of the immutable element of @Entity must be consistent in the class hierarchy."),
+  DOMA4227(
+      "The number of type parameters of the entity listener class must be less than or equal to 1."),
+  DOMA4228(
+      "The type parameter \"{0}\" of the entity listener class is not passed to "
+          + "the type argument of org.seasar.doma.jdbc.entity.EntityLister in the class hierarchy."),
+  DOMA4229(
+      "The upper bound \"{1}\" of the type parameter \"{0}\" of the entity listener class "
+          + "is not compatible with the entity class \"{2}\"."),
+  DOMA4230(
+      "The entity listener class \"{0}\" that is took over from the parent entity class "
+          + "must have the type parameter that accepts the entity class \"{1}\"."),
+  DOMA4231(
+      "The upper bound \"{2}\" of the type parameter \"{1}\" of the entity listener class \"{0}\" "
+          + "that is took over from the parent entity class is not compatible with the entity class \"{3}\"."),
+  DOMA4232("The raw type of the class \"{0}\" cannot be used."),
+  DOMA4233(
+      "The type argument of the class \"{0}\" must not be a wildcard or type variable. "
+          + "Instead specify the basic type or the domain type."),
+  DOMA4234(
+      "The entity class \"{0}\" as a type argument of java.util.Optional must not be abstract."),
+  DOMA4235(
+      "The type argument \"{0}\" is not supported for java.util.Optional. "
+          + "Supported types are as follows: basic classes, domain classes and entity classes."),
+  DOMA4236("The raw type of the class \"{0}\" cannot be used."),
+  DOMA4237(
+      "The type argument of the class \"{0}\" must not be a wildcard or type variable. "
+          + "Instead specify one of basic classes and domain classes."),
+  DOMA4238(
+      "The raw type of the class \"{0}\" cannot be used as a type argument of java.util.Optional."),
+  DOMA4239(
+      "The class\"{0}\" whose type arguments contains a wildcard or type variable "
+          + "cannot be used as a type argument of java.util.Optional."),
+  DOMA4240("The class \"{0}\" of the parameter must not be the raw type."),
+  DOMA4241("The class \"{0}\" of the parameter must not be the wildcard type."),
+  DOMA4242("The raw type of the class \"{0}\" cannot be used as a type argument of Stream."),
+  DOMA4243(
+      "The class \"{0}\" whose type arguments contains a wildcard or type variable "
+          + "cannot be used as a type argument of Stream."),
+  DOMA4244("The first type argument of Function must be java.util.stream.Stream."),
+  DOMA4245("The type argument of Stream is not supported."),
+  DOMA4246(
+      "The return type \"{0}\" and the second type argument \"{1}\" of java.util.function.Function are not same."),
+  DOMA4247(
+      "When you use the java.util.function.Function parameter, "
+          + "SelectStrategyType.STREAM must be specified for the strategy element of @Select."),
+  DOMA4248(
+      "When you specify SelectStrategyType.STREAM for the strategy element of @Select, "
+          + "the java.util.function.Function parameter is required for the method."),
+  DOMA4249("Multiple java.util.function.Function parameters are not allowed."),
+  DOMA4250("The entity class \"{0}\" as a type argument of Stream must not be abstract."),
+  DOMA4251(
+      "When the primitive type is specified for the valueType element of @Domain, "
+          + "the acceptNull element of @Domain must be \"false\"."),
+  DOMA4252("The default method must not be annotated with the annotation \"{0}\"."),
+  DOMA4253(
+      "The annotated type isn''t a subtype of org.seasar.doma.Config. "
+          + "@SingletonConfig is valid for only subtypes of org.seasar.doma.Config."),
+  DOMA4254(
+      "The method \"{0}\" is not found. "
+          + "The method must be public and static. "
+          + "The return type must be this class \"{1}\". "
+          + "The number of parameters must be 0."),
+  DOMA4255("The method \"{1}\" is not found in the class \"{0}\"."),
+  DOMA4256("The constructor of the class that is annotated with @SingletonConfig must be private."),
+  DOMA4257(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the comment \"/*%expand ...*/\" is used, it cannot expand columns. "
+          + "Check that the method is annotated with @Select and the result set is mapped to "
+          + "the entity class returned by the method. SQL=[{1}]"),
+  DOMA4258("The parameter type\"{0}\" must not be the raw type."),
+  DOMA4259(
+      "The first or third type argument of the parameter type \"{0}\" must not be a wildcard type."),
+  DOMA4260(
+      "The raw type of the class \"{0}\" cannot be used as the first type argument of Collector."),
+  DOMA4261(
+      "The class \"{0}\" whose type arguments contains a wildcard or type variable "
+          + "cannot be used as the fist type argument of Collector."),
+  DOMA4262("The first type argument of Collector is not supported."),
+  DOMA4263(
+      "The entity class \"{0}\" as the first type argument of Collector must not be abstract."),
+  DOMA4264("Multiple Collector parameters are not allowed."),
+  DOMA4265(
+      "The return type \"{0}\" and the third type argument \"{1}\" of Collector are not same."),
+  DOMA4266(
+      "When you specify SelectStrategyType.COLLECT for the strategy element of @Select, "
+          + "the java.util.stream.Collector parameter is required for the method."),
+  DOMA4267(
+      "The type argument \"{0}\" is not supported for java.util.Optional of java.util.List. "
+          + "Supported types are as follows: basic classes and domain classes."),
+  DOMA4268(
+      "When you annotate the interface with @Domain, "
+          + "you cannot specify \"new\" to the factoryMethod element of @Domain because \"new\" means the usage of constructor. "
+          + "Specify the name of the factory method that is static and non-private."),
+  DOMA4270(
+      "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
+          + "While the comment \"/*%populate */\" is used, it cannot generate the SET clause. "
+          + "Check that the method is annotated with either @Update or @BatchUpdate and "
+          + "the type of the first parameter of the method is an entity class. SQL=[{1}]"),
+  DOMA4271("\"{0}\" is not supported for the type argument of java.util.stream.Stream."),
+  DOMA4272(
+      "The abstract entity class \"{0}\" is not supported for the type argument of java.util.stream.Stream."),
+  DOMA4274(
+      "The application must close the Stream object returned from the DAO method. "
+          + "To suppress this warning, annotate the method with @Suppress(messages = '{ Message.DOMA4274 }')."),
+  DOMA4275(
+      "The type \"{0}\" is not public and static. "
+          + "The domain class and its enclosing type must be public and static."),
+  DOMA4276(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The domain class and its enclosing type must be a top level or member class."),
+  DOMA4277(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the domain class and its enclosing type must not contain them."),
+  DOMA4278(
+      "The type \"{0}\" is not public and static. "
+          + "The first type argument of DomainConverter and its enclosing type must be must be public and static."),
+  DOMA4279(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The first type argument of DomainConverter and its enclosing type  must be a top level or member class."),
+  DOMA4280(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the first type argument of DomainConverter and its enclosing type must not contain them."),
+  DOMA4281(
+      "The number, type and name of the constructor parameters must correspond to "
+          + "those of persistent fields in the immutable entity class."),
+  DOMA4283("You can annotate only classes and records with @Embeddable."),
+  DOMA4285("The embeddable class must not have a type parameter."),
+  DOMA4286("The fields of the embeddable class cannot be annotated with @OriginalStates."),
+  DOMA4288("The annotation \"{0}\" competes with the annotation \"{1}\"."),
+  DOMA4289("You cannot annotate the fields of the embeddable class with @Id."),
+  DOMA4290("You cannot annotate the fields of the embeddable class with @Version."),
+  DOMA4291("You cannot annotate the fields of the embeddable class with @GeneratedValue."),
+  DOMA4293(
+      "The number, type and name of the constructor parameters must correspond to "
+          + "those of persistent fields in the embeddable class."),
+  DOMA4294("A non-private constructor is required for the embeddable class."),
+  DOMA4295("The raw type of the class \"{0}\" cannot be used as a persistent property."),
+  DOMA4296(
+      "The class \"{0}\" whose type arguments contains a wildcard or type variable "
+          + "cannot be used as a persistent property."),
+  DOMA4297(
+      "The embeddable class \"{0}\" cannot be used as a persistent property in the embeddable class."),
+  DOMA4298(
+      "The class \"{0}\" is not supported as a persistent type. "
+          + "If you intend to map the class to the external domain class with @ExternalDomain, "
+          + "the configuration may be not enough. "
+          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+  DOMA4299("The raw type of the class \"{0}\" cannot be used as a persistent property."),
+  DOMA4301(
+      "The type argument of the class \"{0}\" that is a wildcard or type variable cannot be used as a persistent property."),
+  DOMA4302("You cannot annotate the the field with @Id, if the field type is embeddable class."),
+  DOMA4303(
+      "You cannot annotate the the field with @GeneratedValue, if the field type is embeddable class."),
+  DOMA4304(
+      "You cannot annotate the the field with @Version, if the field type is embeddable class."),
+  DOMA4305("When the entity class has embedded property, @OriginalStates cannot be used."),
+  DOMA4306(
+      "You cannot annotate the the field with @Column, if the field type is embeddable class."),
+  DOMA4309(
+      "The file path \"{0}\" is different from the path \"{1}\" in filesystem in case-sensitive."),
+  DOMA4315(
+      "The type \"{0}\" is not public and static. "
+          + "The entity class and its enclosing type must be public and static."),
+  DOMA4316(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The entity class and its enclosing type must be a top level or member class."),
+  DOMA4317(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the entity class and its enclosing type must not contain them."),
+  DOMA4415(
+      "The type \"{0}\" is not public and static. "
+          + "The embeddable class and the its enclosing type must be public and static."),
+  DOMA4416(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The embeddable class and its enclosing type must be a top level or member class."),
+  DOMA4417(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the embeddable class and its enclosing type must not contain them."),
+  DOMA4418(
+      "When you annotate the entity class with @lombok.Value, "
+          + "you must specify \"true\" to the immutable element of @Entity."),
+  DOMA4419("The usage of the staticConstructor element of @lombok.Value is not supported."),
+  DOMA4420(
+      "When you annotate the entity class with @lombok.AllArgsConstructor, "
+          + "you must specify \"true\" to the immutable element of @Entity."),
+  DOMA4421("The usage of the staticName element of @lombok.AllArgsConstructor is not supported."),
+  DOMA4422(
+      "lombok.AccessLevel.PRIVATE is not supported for the access element of @lombok.AllArgsConstructor."),
+  DOMA4423(DOMA4419.getMessagePattern()),
+  DOMA4424(DOMA4421.getMessagePattern()),
+  DOMA4425(DOMA4422.getMessagePattern()),
+  DOMA4426(
+      "lombok.AccessLevel.NONE is not supported for the access element of @lombok.AllArgsConstructor."),
+  DOMA4427(DOMA4426.getMessagePattern()),
+  DOMA4428(DOMA4419.getMessagePattern()),
+  DOMA4429(
+      "The method name that is generated by @lombok.Value is not same with the value of the accessorMethod element of @Domain."),
+  DOMA4430("There is no instance field to be initialized by @lombok.Value."),
+  DOMA4431(
+      "The number of instance fields that is initialized by @lombok.Value must be 1, "
+          + "but the actual number is greater than or equal to 2."),
+  DOMA4432(
+      "The type \"{0}\" of the instance field that is initialized by @lombok.Value "
+          + "is not same with the type \"{1}\" that is specified to the valueType element of @Domain."),
+  DOMA4433(
+      "When you annotate the method with @SqlProcessor, the BiFunction parameter is required for the method."),
+  DOMA4434("Multiple BiFunction parameters are not allowed."),
+  DOMA4435("The second type argument of BiFunction must be org.seasar.doma.jdbc.PreparedSql."),
+  DOMA4436(
+      "The return type \"{0}\" is not same with the third type argument \"{1}\" of BiFunction."),
+  DOMA4437("The first type argument of BiFunction must be org.seasar.doma.jdbc.Config."),
+  DOMA4438("The parameter type \"{0}\" must not be the raw type."),
+  DOMA4439("The parameter type \"{0}\" must not contain a wildcard as a type argument."),
+  DOMA4440(
+      "The method \"{0}\" in the parent interface is not default method. "
+          + "When the parent interface is not annotated with @Dao, the all methods in the interface must be default methods."),
+  DOMA4441("You cannot annotate the filed with @TenantId, if the field type is embeddable class."),
+  DOMA4442(
+      "The annotation @TenantId is duplicated. The filed annotated with @TenantId must be only one in the class hierarchy."),
+  DOMA4443("You cannot annotate the fields of the embeddable class with @TenantId."),
+  DOMA4444("cannot combine with the annotation \"{0}\"."),
+  DOMA4445("When the method is annotated with @Sql, the sqlFile element must be \"false\"."),
+  DOMA4446("cannot annotate the default method."),
+  DOMA4447("The multidimensional array is not supported as a domain class."),
+  DOMA4448("The component type of the array must not have any type parameter."),
+  DOMA4449("You can annotate only records with @DateType."),
+  DOMA4450(
+      "The simple name of the type \"{0}\" contains \"$\" or \"__\". "
+          + "The simple name of the data type and its enclosing type must not contain them."),
+  DOMA4451(
+      "The type \"{0}\" is not public and static. "
+          + "The data type and its enclosing type must be public and static."),
+  DOMA4452(
+      "The type \"{0}\" is a local or anonymous class. "
+          + "The data type and its enclosing type must be a top level or member class."),
+  DOMA4453("The public constructor whose parameter size is one is not found."),
+  DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
 
-    // other
-    DOMA5001("JDBCドライバがロードされていない可能性があります。まず、JDBCドライバがクラスパスにあることを確認してください。次に、JDBCドライバが自動でロードされない場合は、Class.forNameで明示的にロードしてください。 ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
-    DOMA5002("urlプロパティが設定されていません。"),;
+  // other
+  DOMA5001(
+      "The JDBC driver may not be loaded. "
+          + "Check that the JDBC driver is in the classpath. "
+          + "If the JDBC driver is not loaded automatically, load it explicitly using Class.forName. "
+          + "ex) Class.forName(\"oracle.jdbc.driver.OracleDriver\")"),
+  DOMA5002("The url property is not specified."),
+  ;
 
-    private final String messagePattern;
+  private final String messagePattern;
 
-    private Message(String messagePattern) {
-        this.messagePattern = messagePattern;
+  private Message(String messagePattern) {
+    this.messagePattern = messagePattern;
+  }
+
+  @Override
+  public String getCode() {
+    return name();
+  }
+
+  @Override
+  public String getMessagePattern() {
+    return messagePattern;
+  }
+
+  @Override
+  public String getMessage(Object... args) {
+    String simpleMessage = getSimpleMessageInternal(args);
+    String code = name();
+    return "[" + code + "] " + simpleMessage;
+  }
+
+  @Override
+  public String getSimpleMessage(Object... args) {
+    return getSimpleMessageInternal(args);
+  }
+
+  protected String getSimpleMessageInternal(Object... args) {
+    try {
+      return MessageFormat.format(messagePattern, args);
+    } catch (Throwable throwable) {
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      throwable.printStackTrace(pw);
+      StringBuilder arguments = new StringBuilder();
+      for (Object a : args) {
+        arguments.append(a);
+        arguments.append(", ");
+      }
+      return "[DOMA9001] Failed to get a message because of following error : "
+          + sw
+          + " : "
+          + arguments;
     }
-
-    @Override
-    public String getCode() {
-        return name();
-    }
-
-    @Override
-    public String getMessagePattern() {
-        return messagePattern;
-    }
-
-    @Override
-    public String getMessage(Object... args) {
-        String simpleMessage = getSimpleMessageInternal(args);
-        String code = name();
-        return "[" + code + "] " + simpleMessage;
-    }
-
-    @Override
-    public String getSimpleMessage(Object... args) {
-        return getSimpleMessageInternal(args);
-    }
-
-    protected String getSimpleMessageInternal(Object... args) {
-        try {
-            boolean fallback = false;
-            ResourceBundle bundle;
-            try {
-                bundle = ResourceBundle
-                        .getBundle(MessageResourceBundle.class.getName());
-            } catch (MissingResourceException ignored) {
-                fallback = true;
-                bundle = new MessageResourceBundle();
-            }
-            String code = name();
-            String pattern = bundle.getString(code);
-            String message = MessageFormat.format(pattern, args);
-            return fallback ? "(This is a fallback message) " + message
-                    : message;
-        } catch (Throwable throwable) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            throwable.printStackTrace(pw);
-            StringBuilder arguments = new StringBuilder();
-            for (Object a : args) {
-                arguments.append(a);
-                arguments.append(", ");
-            }
-            return "[DOMA9001] Failed to get a message because of following error : "
-                    + sw + " : " + arguments;
-        }
-    }
+  }
 }

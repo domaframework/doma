@@ -1,0 +1,56 @@
+package org.seasar.doma.internal.apt.processor.domain;
+
+/**
+ * @param <T> T
+ */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _IntersectionParameterizedDomain<T extends java.lang.Number&java.lang.Runnable> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T>> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static final _IntersectionParameterizedDomain singleton = new _IntersectionParameterizedDomain();
+
+    private _IntersectionParameterizedDomain() {
+        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+    }
+
+    @Override
+    protected org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T> newDomain(java.lang.Integer value) {
+        if (value == null) {
+            return null;
+        }
+        return new org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T>(value);
+    }
+
+    @Override
+    protected java.lang.Integer getBasicValue(org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T> domain) {
+        if (domain == null) {
+            return null;
+        }
+        return domain.getValue();
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return java.lang.Integer.class;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T>> getDomainClass() {
+        Class<?> clazz = org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain.class;
+        return (Class<org.seasar.doma.internal.apt.processor.domain.IntersectionParameterizedDomain<T>>) clazz;
+    }
+
+    /**
+     * @return the singleton
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends java.lang.Number&java.lang.Runnable> _IntersectionParameterizedDomain<T> getSingletonInternal() {
+        return (_IntersectionParameterizedDomain<T>) singleton;
+    }
+
+}

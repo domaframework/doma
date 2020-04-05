@@ -1,205 +1,206 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.internal.apt;
+
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
-
 import org.seasar.doma.internal.Artifact;
-import org.seasar.doma.internal.apt.util.ResourceUtil;
 
-/**
- * @author taedium
- * 
- */
 public final class Options {
 
-    public static final String TEST = "doma.test";
+  public static final String TEST = "doma.test";
 
-    public static final String DEBUG = "doma.debug";
+  public static final String DEBUG = "doma.debug";
 
-    public static final String DAO_PACKAGE = "doma.dao.package";
+  public static final String DAO_PACKAGE = "doma.dao.package";
 
-    public static final String DAO_SUBPACKAGE = "doma.dao.subpackage";
+  public static final String DAO_SUBPACKAGE = "doma.dao.subpackage";
 
-    public static final String DAO_SUFFIX = "doma.dao.suffix";
+  public static final String DAO_SUFFIX = "doma.dao.suffix";
 
-    public static final String ENTITY_FIELD_PREFIX = "doma.entity.field.prefix";
+  public static final String ENTITY_FIELD_PREFIX = "doma.entity.field.prefix";
 
-    public static final String EXPR_FUNCTIONS = "doma.expr.functions";
+  public static final String EXPR_FUNCTIONS = "doma.expr.functions";
 
-    public static final String DOMAIN_CONVERTERS = "doma.domain.converters";
+  public static final String DOMAIN_CONVERTERS = "doma.domain.converters";
 
-    public static final String SQL_VALIDATION = "doma.sql.validation";
+  public static final String SQL_VALIDATION = "doma.sql.validation";
 
-    public static final String VERSION_VALIDATION = "doma.version.validation";
+  public static final String VERSION_VALIDATION = "doma.version.validation";
 
-    public static final String CONFIG_PATH = "doma.config.path";
+  public static final String CONFIG_PATH = "doma.config.path";
 
-    public static final String RESOURCES_DIR = "doma.resources.dir";
+  public static final String RESOURCES_DIR = "doma.resources.dir";
 
-    public static final String LOMBOK_ALL_ARGS_CONSTRUCTOR = "doma.lombok.AllArgsConstructor";
+  public static final String LOMBOK_ALL_ARGS_CONSTRUCTOR = "doma.lombok.AllArgsConstructor";
 
-    public static final String LOMBOK_VALUE = "doma.lombok.Value";
+  public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
-    public static boolean isTestEnabled(ProcessingEnvironment env) {
-        String test = getOption(env, Options.TEST);
-        return Boolean.valueOf(test).booleanValue();
+  public static final String CDI_APPLICATION_SCOPED = "doma.cdi.ApplicationScoped";
+
+  public static final String CDI_DEPENDENT = "doma.cdi.Dependent";
+
+  private final Context ctx;
+
+  private final Map<String, String> options;
+
+  Options(Context ctx, ProcessingEnvironment env) {
+    assertNotNull(ctx, env);
+    this.ctx = ctx;
+    this.options = env.getOptions();
+  }
+
+  public boolean isTestEnabled() {
+    String test = getOption(TEST);
+    return Boolean.valueOf(test);
+  }
+
+  public String getVersion() {
+    if (isTestEnabled()) {
+      return "@VERSION@";
+    }
+    return Artifact.getVersion();
+  }
+
+  public Date getDate() {
+    if (isTestEnabled()) {
+      return new Date(0L);
+    }
+    return new Date();
+  }
+
+  public boolean isDebugEnabled() {
+    String debug = getOption(DEBUG);
+    return Boolean.valueOf(debug);
+  }
+
+  public String getDaoPackage() {
+    return getOption(DAO_PACKAGE);
+  }
+
+  public String getDaoSubpackage() {
+    return getOption(DAO_SUBPACKAGE);
+  }
+
+  public String getDaoSuffix() {
+    String suffix = getOption(DAO_SUFFIX);
+    return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
+  }
+
+  public String getEntityFieldPrefix() {
+    String prefix = getOption(ENTITY_FIELD_PREFIX);
+    if ("none".equalsIgnoreCase(prefix)) {
+      return "";
+    }
+    return prefix != null ? prefix : Constants.DEFAULT_ENTITY_FIELD_PREFIX;
+  }
+
+  public String getExprFunctions() {
+    return getOption(EXPR_FUNCTIONS);
+  }
+
+  public String getDomainConverters() {
+    return getOption(DOMAIN_CONVERTERS);
+  }
+
+  public boolean getSqlValidation() {
+    String v = getOption(SQL_VALIDATION);
+    return v != null ? Boolean.valueOf(v) : true;
+  }
+
+  public boolean getVersionValidation() {
+    String v = getOption(VERSION_VALIDATION);
+    return v != null ? Boolean.valueOf(v) : true;
+  }
+
+  public String getConfigPath() {
+    String configPath = options.get(CONFIG_PATH);
+    return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
+  }
+
+  public String getLombokAllArgsConstructor() {
+    String name = getOption(LOMBOK_ALL_ARGS_CONSTRUCTOR);
+    return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
+  }
+
+  public String getLombokValue() {
+    String name = getOption(LOMBOK_VALUE);
+    return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
+  }
+
+  public String getCdiApplicationScoped() {
+    String name = getOption(CDI_APPLICATION_SCOPED);
+    return name != null ? name : Constants.DEFAULT_CDI_APPLICATION_SCOPED;
+  }
+
+  private String getOption(String key) {
+    String v = options.get(key);
+    if (v != null) {
+      return v;
     }
 
-    public static String getVersion(ProcessingEnvironment env) {
-        if (isTestEnabled(env)) {
-            return "@VERSION@";
-        }
-        return Artifact.getVersion();
+    return getConfig().get(key);
+  }
+
+  private final Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
+
+  private Map<String, String> getConfig() {
+    FileObject config = getFileObject(getConfigPath());
+    if (config == null) {
+      return Collections.emptyMap();
     }
-
-    public static Date getDate(ProcessingEnvironment env) {
-        if (isTestEnabled(env)) {
-            return new Date(0L);
-        }
-        return new Date();
-    }
-
-    public static boolean isDebugEnabled(ProcessingEnvironment env) {
-        String debug = getOption(env, Options.DEBUG);
-        return Boolean.valueOf(debug).booleanValue();
-    }
-
-    public static String getDaoPackage(ProcessingEnvironment env) {
-        String pkg = getOption(env, Options.DAO_PACKAGE);
-        return pkg != null ? pkg : null;
-    }
-
-    public static String getDaoSubpackage(ProcessingEnvironment env) {
-        String subpackage = getOption(env, Options.DAO_SUBPACKAGE);
-        return subpackage != null ? subpackage : null;
-    }
-
-    public static String getDaoSuffix(ProcessingEnvironment env) {
-        String suffix = getOption(env, Options.DAO_SUFFIX);
-        return suffix != null ? suffix : Constants.DEFAULT_DAO_SUFFIX;
-    }
-
-    public static String getEntityFieldPrefix(ProcessingEnvironment env) {
-        String prefix = getOption(env, Options.ENTITY_FIELD_PREFIX);
-        if ("none".equalsIgnoreCase(prefix)) {
-            return "";
-        }
-        return prefix != null ? prefix : Constants.DEFAULT_ENTITY_FIELD_PREFIX;
-    }
-
-    public static String getExprFunctions(ProcessingEnvironment env) {
-        String name = getOption(env, Options.EXPR_FUNCTIONS);
-        return name != null ? name : null;
-    }
-
-    public static String getDomainConverters(ProcessingEnvironment env) {
-        String converters = getOption(env, Options.DOMAIN_CONVERTERS);
-        return converters != null ? converters : null;
-    }
-
-    public static boolean getSqlValidation(ProcessingEnvironment env) {
-        String v = getOption(env, Options.SQL_VALIDATION);
-        return v != null ? Boolean.valueOf(v).booleanValue() : true;
-    }
-
-    public static boolean getVersionValidation(ProcessingEnvironment env) {
-        String v = getOption(env, Options.VERSION_VALIDATION);
-        return v != null ? Boolean.valueOf(v).booleanValue() : true;
-    }
-
-    public static String getConfigPath(ProcessingEnvironment env) {
-        String configPath = env.getOptions().get(Options.CONFIG_PATH);
-        return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
-    }
-
-    public static String getLombokAllArgsConstructor(ProcessingEnvironment env) {
-        String name = getOption(env, Options.LOMBOK_ALL_ARGS_CONSTRUCTOR);
-        return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
-    }
-
-    public static String getLombokValue(ProcessingEnvironment env) {
-        String name = getOption(env, Options.LOMBOK_VALUE);
-        return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
-    }
-
-    private static String getOption(ProcessingEnvironment env, String key) {
-        String v = env.getOptions().get(key);
-        if (v != null) {
-            return v;
-        }
-
-        return getConfig(env).get(key);
-    }
-
-    private static Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
-    private static Map<String, String> getConfig(ProcessingEnvironment env) {
-        FileObject config = getFileObject(env, getConfigPath(env));
-        if (config == null) {
+    return configCache.computeIfAbsent(
+        config.toUri().getPath(),
+        configPath -> {
+          try {
+            return loadProperties(config);
+          } catch (IOException e) {
             return Collections.emptyMap();
-        }
-        return configCache.computeIfAbsent(config.toUri().getPath(), configPath -> {
-            try {
-                return loadProperties(config);
-            } catch (IOException e) {
-                return Collections.emptyMap();
-            }
+          }
         });
+  }
+
+  private FileObject getFileObject(String path) {
+    try {
+      return ctx.getResources().getResource(path);
+    } catch (IOException e) {
+      return null;
     }
+  }
 
-    private static FileObject getFileObject(ProcessingEnvironment env,
-            String path) {
-        try {
-            return ResourceUtil.getResource(path, env);
-        } catch (IOException e) {
-            return null;
-        }
+  @SuppressWarnings("unchecked")
+  private Map<String, String> loadProperties(FileObject config) throws IOException {
+    try (InputStream is = config.openInputStream();
+        InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+      Properties props = new Properties();
+      props.load(isr);
+      return (Map<String, String>) new HashMap(props);
     }
+  }
 
-    @SuppressWarnings("unchecked")
-    private static Map<String, String> loadProperties(FileObject config) throws IOException {
-        try (InputStream is = config.openInputStream();
-             InputStreamReader isr = new InputStreamReader(is, "UTF-8")){
-            Properties props = new Properties();
-            props.load(isr);
-            return (Map<String, String>) new HashMap(props);
-        }
-    }
+  public static class Constants {
 
-    protected static class Constants {
+    public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
-        public static final String DEFAULT_DAO_SUFFIX = "Impl";
+    public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
 
-        public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
+    public static final String DEFAULT_CONFIG_PATH = "doma.compile.config";
 
-        public static final String DEFAULT_CONFIG_PATH = "doma.compile.config";
+    public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
 
-        public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
+    public static final String DEFAULT_LOMBOK_VALUE = "lombok.Value";
 
-        public static final String DEFAULT_LOMBOK_VALUE = "lombok.Value";
-    }
+    public static final String DEFAULT_CDI_APPLICATION_SCOPED =
+        "javax.enterprise.context.ApplicationScoped";
+  }
 }

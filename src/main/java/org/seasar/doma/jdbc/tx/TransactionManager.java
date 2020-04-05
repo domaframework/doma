@@ -1,246 +1,184 @@
-/*
- * Copyright 2004-2010 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
 package org.seasar.doma.jdbc.tx;
 
 import java.util.function.Supplier;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * トランザクションのマネージャーです。
- * <p>
- * トランザクションを使った操作を簡易化するAPIを提供します。
- * <p>
- * このインタフェースの実装クラスはスレッドセーフでなければいけません。
- * 
- * @author nakamura-to
- * @since 2.0.0
+ * A transaction manager.
+ *
+ * <p>The implementation instance must be thread safe.
  */
 public interface TransactionManager {
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void required(Runnable block);
+  /**
+   * Executes the transaction whose attribute is REQUIRED.
+   *
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void required(Runnable block);
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void required(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+  /**
+   * Executes the transaction whose attribute is REQUIRED with the specified transaction isolation
+   * level.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void required(TransactionIsolationLevel isolationLevel, Runnable block);
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT required(Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is REQUIRED and returns the result.
+   *
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT required(Supplier<RESULT> supplier);
 
-    /**
-     * トランザクション属性がREQUIREDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT required(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is REQUIRED with the specified transaction isolation
+   * level and return the result.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT required(
+      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void requiresNew(Runnable block);
+  /**
+   * Executes the transaction whose attribute is REQUIRES_NEW.
+   *
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void requiresNew(Runnable block);
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     *
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void requiresNew(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+  /**
+   * Executes the transaction whose attribute is REQUIRES_NEW with the specified transaction
+   * isolation level.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void requiresNew(TransactionIsolationLevel isolationLevel, Runnable block);
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT requiresNew(Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is REQUIRES_NEW and returns the result.
+   *
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT requiresNew(Supplier<RESULT> supplier);
 
-    /**
-     * トランザクション属性がREQUIRES_NEWであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT requiresNew(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is REQUIRES_NEW with the specified transaction
+   * isolation level and return the result.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT requiresNew(
+      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void notSupported(Runnable block);
+  /**
+   * Executes the transaction whose attribute is NOT_SUPPORTED.
+   *
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void notSupported(Runnable block);
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param block
-     *            トランザクション内で実行する処理
-     */
-    public abstract void notSupported(TransactionIsolationLevel isolationLevel,
-            Runnable block);
+  /**
+   * Executes the transaction whose attribute is NOT_SUPPORTED with the specified transaction
+   * isolation level.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param block the code that is executed in the transaction
+   */
+  public abstract void notSupported(TransactionIsolationLevel isolationLevel, Runnable block);
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT notSupported(Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is NOT_SUPPORTED and returns the result.
+   *
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT notSupported(Supplier<RESULT> supplier);
 
-    /**
-     * トランザクション属性がNOT_SUPPORTEDであるトランザクションを実行します。
-     * 
-     * @param isolationLevel
-     *            トランザクション分離レベル
-     * @param supplier
-     *            トランザクション内で実行する処理
-     * @param <RESULT>
-     *            結果の型
-     * @return 処理の結果
-     */
-    public abstract <RESULT> RESULT notSupported(
-            TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  /**
+   * Executes the transaction whose attribute is NOT_SUPPORTED with the specified transaction
+   * isolation level and return the result.
+   *
+   * @param isolationLevel the transaction isolation level
+   * @param supplier the code that is executed in the transaction
+   * @param <RESULT> the result type
+   * @return the result
+   */
+  public abstract <RESULT> RESULT notSupported(
+      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
-    /**
-     * 現在のトランザクションをロールバックすることを予約します。
-     */
-    public abstract void setRollbackOnly();
+  /** Marks the current transaction to undo in the end of the transaction. */
+  public abstract void setRollbackOnly();
 
-    /**
-     * 現在のトランザクションがロールバックされるように予約されているかどうかを返します。
-     * 
-     * @return ロールバックされる場合 {@code true}
-     */
-    public abstract boolean isRollbackOnly();
+  /**
+   * Whether the current transaction is marked to be undone.
+   *
+   * @return {@code true} if the current transaction is marked.
+   */
+  public abstract boolean isRollbackOnly();
 
-    /**
-     * トランザクションのセーブポイントを作成します。
-     * <p>
-     * このメソッドを呼び出す前にトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws TransactionNotYetBegunException
-     *             トランザクションがまだ開始されていない場合
-     * @throws SavepointAlreadyExistsException
-     *             セーブポイントがすでに存在する場合
-     * @throws JdbcException
-     *             セーブポイントの作成に失敗した場合
-     */
-    public abstract void setSavepoint(String savepointName);
+  /**
+   * Creates a save point with the specified name.
+   *
+   * <p>Begin a transaction before invoking this method.
+   *
+   * @param savepointName the name of the save point
+   * @throws DomaNullPointerException if the {@code savepointName} is {@code null}
+   * @throws TransactionNotYetBegunException if the transaction is not begun
+   * @throws SavepointAlreadyExistsException if the save point already exists
+   * @throws JdbcException if a JDBC related error occurs
+   */
+  public abstract void setSavepoint(String savepointName);
 
-    /**
-     * このトランザクションでセーブポイントを保持しているかどうかを返します。
-     * <p>
-     * このメソッドを呼び出す前にトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws TransactionNotYetBegunException
-     *             トランザクションがまだ開始されていない場合
-     * @return セーブポイントを保持している場合 {@code true}
-     */
-    public abstract boolean hasSavepoint(String savepointName);
+  /**
+   * Whether the current transaction has the save point.
+   *
+   * <p>Begin a transaction before invoking this method.
+   *
+   * @param savepointName the name of the save point
+   * @throws DomaNullPointerException if the {@code savepointName} is {@code null}
+   * @throws TransactionNotYetBegunException if the transaction is not begun
+   * @return {@code true} if the transaction has the save point
+   */
+  public abstract boolean hasSavepoint(String savepointName);
 
-    /**
-     * トランザクションから指定されたセーブポイントと以降のセーブポイントを削除します。
-     * <p>
-     * このメソッドを呼び出す前にトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws TransactionNotYetBegunException
-     *             トランザクションがまだ開始されていない場合
-     * @throws JdbcException
-     *             セーブポイントの削除に失敗した場合
-     */
-    public abstract void releaseSavepoint(String savepointName);
+  /**
+   * Removes the specified save point and subsequent save points from the current transaction.
+   *
+   * <p>Begin a transaction before invoking this method.
+   *
+   * @param savepointName the name of the save point
+   * @throws DomaNullPointerException if the {@code savepointName} is {@code null}
+   * @throws TransactionNotYetBegunException if the transaction is not yet begun
+   * @throws JdbcException if a JDBC related error occurs
+   */
+  public abstract void releaseSavepoint(String savepointName);
 
-    /**
-     * 指定されたセーブポイントが設定されたあとに行われたすべての変更をロールバックします。
-     * <p>
-     * このメソッドを呼び出す前にトランザクションを開始しておく必要があります。
-     * 
-     * @param savepointName
-     *            セーブポイントの名前
-     * @throws DomaNullPointerException
-     *             引数が {@code null} の場合
-     * @throws SavepointNotFoundException
-     *             セーブポイントが見つからない場合
-     * @throws TransactionNotYetBegunException
-     *             トランザクションがまだ開始されていない場合
-     * @throws JdbcException
-     *             セーブポイントへのロールバックに失敗した場合
-     */
-    public abstract void rollback(String savepointName);
-
+  /**
+   * Undoes all changes made after the given save point.
+   *
+   * <p>Begin a transaction before invoking this method.
+   *
+   * @param savepointName the name of the save point
+   * @throws DomaNullPointerException if the {@code savepointName} is {@code null}
+   * @throws SavepointNotFoundException if the save point is not found
+   * @throws TransactionNotYetBegunException if the transaction is not begun
+   * @throws JdbcException if a JDBC related error occurs
+   */
+  public abstract void rollback(String savepointName);
 }
