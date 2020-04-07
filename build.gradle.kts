@@ -1,3 +1,5 @@
+import org.gradle.api.publish.maven.MavenPom
+
 plugins {
     id("java-library")
     id("maven-publish")
@@ -41,6 +43,22 @@ val jar by tasks.existing(Jar::class) {
     manifest {
         attributes(mapOf("Implementation-Title" to "Doma", "Implementation-Version" to archiveVersion))
     }
+    exclude("**/apt/**", "META-INF/**")
+}
+
+val processorJar by tasks.registering(Jar::class) {
+    manifest {
+        attributes(mapOf("Implementation-Title" to "Doma Processor", "Implementation-Version" to archiveVersion))
+    }
+    archiveAppendix.set("processor")
+    from(compileJava.get().destinationDirectory)
+    from(tasks.processResources.get().destinationDir)
+}
+
+val processorSourcesJar by tasks.registering(Jar::class) {
+    archiveAppendix.set("processor")
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
 }
 
 val build by tasks.existing {
@@ -66,46 +84,64 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        val main = "main"
+        val processor = "processor"
+        create<MavenPublication>(main) {
             from(components["java"])
+            pom(pomDefinition(main))
+            repositories(repositoriesDefinition())
+        }
+        create<MavenPublication>(processor) {
+            pom(pomDefinition(processor))
+            val jar = processorJar.get()
+            val sourcesJar = processorSourcesJar.get()
+            artifactId = "${jar.archiveBaseName.get()}-${jar.archiveAppendix.get()}"
+            artifact(jar)
+            artifact(sourcesJar)
+            repositories(repositoriesDefinition())
+        }
+    }
+}
 
-            pom {
-                val projectUrl: String by project
-                name.set(project.name)
-                description.set("DAO Oriented Database Mapping Framework for Java 8+")
-                url.set(projectUrl)
-                licenses {
-                    license {
-                        name.set("The Apache Software License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("nakamura-to")
-                        name.set("Toshihiro Nakamura")
-                        email.set("toshihiro.nakamura@gmail.com")
-                    }
-                }
-                scm {
-                    val githubUrl: String by project
-                    connection.set("scm:git:${githubUrl}")
-                    developerConnection.set("scm:git:${githubUrl}")
-                    url.set(projectUrl)
-                }
+fun MavenPublication.pomDefinition(publicationName: String): MavenPom.() -> Unit {
+    return {
+        val projectUrl: String by project
+        name.set(publicationName)
+        description.set("DAO Oriented Database Mapping Framework for Java 8+")
+        url.set(projectUrl)
+        licenses {
+            license {
+                name.set("The Apache Software License, Version 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
             }
-            repositories {
-                maven {
-                    val sonatypeSnapshotUrl: String by project
-                    val sonatypeUrl: String by project
-                    val sonatypeUsername: String by project
-                    val sonatypePassword: String by project
-                    url = uri(if (version.endsWith("SNAPSHOT")) sonatypeSnapshotUrl else sonatypeUrl)
-                    credentials {
-                        username = sonatypeUsername
-                        password = sonatypePassword
-                    }
-                }
+        }
+        developers {
+            developer {
+                id.set("nakamura-to")
+                name.set("Toshihiro Nakamura")
+                email.set("toshihiro.nakamura@gmail.com")
+            }
+        }
+        scm {
+            val githubUrl: String by project
+            connection.set("scm:git:${githubUrl}")
+            developerConnection.set("scm:git:${githubUrl}")
+            url.set(projectUrl)
+        }
+    }
+}
+
+fun MavenPublication.repositoriesDefinition(): RepositoryHandler.() -> Unit {
+    return {
+        maven {
+            val sonatypeSnapshotUrl: String by project
+            val sonatypeUrl: String by project
+            val sonatypeUsername: String by project
+            val sonatypePassword: String by project
+            url = uri(if (version.endsWith("SNAPSHOT")) sonatypeSnapshotUrl else sonatypeUrl)
+            credentials {
+                username = sonatypeUsername
+                password = sonatypePassword
             }
         }
     }
