@@ -12,6 +12,7 @@ plugins {
 apply("release.gradle")
 
 val encoding: String by project
+val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
 
 val compileJava by tasks.existing(JavaCompile::class) {
     dependsOn(tasks.named("replaceVersion"))
@@ -103,7 +104,7 @@ publishing {
     }
 }
 
-fun MavenPublication.pomDefinition(publicationName: String): MavenPom.() -> Unit {
+fun pomDefinition(publicationName: String): MavenPom.() -> Unit {
     return {
         val projectUrl: String by project
         name.set(publicationName)
@@ -131,14 +132,14 @@ fun MavenPublication.pomDefinition(publicationName: String): MavenPom.() -> Unit
     }
 }
 
-fun MavenPublication.repositoriesDefinition(): RepositoryHandler.() -> Unit {
+fun repositoriesDefinition(): RepositoryHandler.() -> Unit {
     return {
         maven {
             val sonatypeSnapshotUrl: String by project
             val sonatypeUrl: String by project
             val sonatypeUsername: String by project
             val sonatypePassword: String by project
-            url = uri(if (version.endsWith("SNAPSHOT")) sonatypeSnapshotUrl else sonatypeUrl)
+            url = uri(if (isSnapshot) sonatypeSnapshotUrl else sonatypeUrl)
             credentials {
                 username = sonatypeUsername
                 password = sonatypePassword
@@ -149,6 +150,7 @@ fun MavenPublication.repositoriesDefinition(): RepositoryHandler.() -> Unit {
 
 signing {
     sign(publishing.publications)
+    isRequired = !isSnapshot
 }
 
 spotless {
