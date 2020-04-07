@@ -1,9 +1,9 @@
 import org.gradle.api.publish.maven.MavenPom
 
 plugins {
-    id("java-library")
-    id("maven-publish")
-    id("signing")
+    `java-library`
+    `maven-publish`
+    signing
     id("com.diffplug.eclipse.apt") version "3.22.0"
     id("com.diffplug.gradle.spotless") version "3.27.2"
     id("net.researchgate.release") version "2.8.1"
