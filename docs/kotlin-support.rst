@@ -99,8 +99,8 @@ Add the dependencies using the `kapt` and `implementation` configuration in your
 .. code-block:: groovy
 
   dependencies {
-      kapt "org.seasar.doma:doma:2.29.0"
-      implementation "org.seasar.doma:doma:2.29.0"
+      implementation "org.seasar.doma:doma:2.29.1-SNAPSHOT"
+      kapt "org.seasar.doma:doma-processor:2.29.1-SNAPSHOT"
   }
 
 To simplify your build.script, we recommend you use

@@ -52,6 +52,18 @@ public class App {
 
 For more complete examples, see [domaframework/simple-examples](https://github.com/domaframework/simple-examples).
 
+Build with Gradle
+-----------------
+
+```groovy
+dependencies {
+    implementation "org.seasar.doma:doma:2.29.1-SNAPSHOT"
+    annotationProcessor "org.seasar.doma:doma-processor:2.29.1-SNAPSHOT"
+}
+```
+
+For Kotlin projects, use kapt in place of annotationProcessor.
+
 Documentation
 ---------------------
 
