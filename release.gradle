@@ -11,12 +11,13 @@ def replaceVersion = tasks.register("replaceVersion") {
             }
         }
         ant.replaceregexp(
-                match: /("org.seasar.doma:doma:)[^"]*(")/,
-                replace: "\\1${version}\\2",
+                match: /("org.seasar.doma:doma(-processor)?:)[^"]*(")/,
+                replace: "\\1${version}\\3",
                 encoding: encoding,
                 flags: "g") {
-            fileset(dir: "docs") {
-                include(name: "**/*.rst")
+            fileset(dir: ".") {
+                include(name: "README.md")
+                include(name: "docs/**/*.rst")
             }
         }
     }

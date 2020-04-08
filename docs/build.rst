@@ -11,23 +11,35 @@ Before You Start
 Maven Central Repository
 ------------------------
 
-You can pull the jar file of the Doma framework from the Maven central repository.
-The group id and artifact id are as follows:
+You can pull the artifacts of the Doma framework from the Maven central repository.
+We provide two artifacts, ``doma`` and ``doma-processor``.
+
+The ``doma`` artifact is required at runtime and compile-time.
+The ``doma-processor`` artifact provides annotation processors and is required at compile-time only.
+
+The group id and artifact id of those artifacts are as follows:
 
 :GroupId: org.seasar.doma
 :ArtifactId: doma
 
-See also: https://search.maven.org/artifact/org.seasar.doma/doma/
+:GroupId: org.seasar.doma
+:ArtifactId: doma-processor
 
 .. _build-with-gradle:
 
 Build with Gradle
 =================
 
-Write your build.gradle script, then run ``gradle build``.
+Write your build.gradle as follows:
 
-To simplify your build.script, we recommend you use
-the `Doma Compile Plugin`_.
+.. code-block:: groovy
+
+  dependencies {
+      implementation "org.seasar.doma:doma:2.29.1-SNAPSHOT"
+      annotationProcessor "org.seasar.doma:doma-processor:2.29.1-SNAPSHOT"
+  }
+
+To simplify your build.script, we recommend that you use the `Doma Compile Plugin`_.
 
 See build.gradle in the `simple-boilerplate`_ repository as an example.
 
@@ -45,7 +57,7 @@ Build with Eclipse
 Generate eclipse setting files with Gradle, and then import your project into Eclipse.
 To generate the setting files, run ``gradle eclipse``.
 
-To simplify your build.script, we recommend you use the `Doma Compile Plugin`_ and the `AptEclipsePlugin`_.
+To simplify your build.script, we recommend that you use the `Doma Compile Plugin`_ and the `AptEclipsePlugin`_.
 
 See build.gradle in the `simple-boilerplate`_ repository as an example.
 
