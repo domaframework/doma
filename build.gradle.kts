@@ -6,6 +6,7 @@ plugins {
     signing
     id("com.diffplug.eclipse.apt") version "3.22.0"
     id("com.diffplug.gradle.spotless") version "3.27.2"
+    id("de.marcphilipp.nexus-publish") version "0.4.0"
     id("net.researchgate.release") version "2.8.1"
 }
 
@@ -62,6 +63,13 @@ val processorSourcesJar by tasks.registering(Jar::class) {
     from(sourceSets.main.get().allSource)
 }
 
+val processorJavadocJar by tasks.registering(Jar::class) {
+    dependsOn(javadoc)
+    archiveAppendix.set("processor")
+    archiveClassifier.set("javadoc")
+    from(javadoc.get().destinationDir)
+}
+
 val build by tasks.existing {
     val publishToMavenLocal by tasks.existing
     dependsOn(publishToMavenLocal)
@@ -83,67 +91,52 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.0")
 }
 
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
 publishing {
     publications {
-        val main = "main"
-        val processor = "processor"
-        create<MavenPublication>(main) {
-            from(components["java"])
-            pom(pomDefinition(main))
-            repositories(repositoriesDefinition())
+        fun pomDefinition(publicationName: String): MavenPom.() -> Unit {
+            return {
+                val projectUrl: String by project
+                name.set(publicationName)
+                description.set("DAO Oriented Database Mapping Framework for Java 8+")
+                url.set(projectUrl)
+                licenses {
+                    license {
+                        name.set("The Apache Software License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("nakamura-to")
+                        name.set("Toshihiro Nakamura")
+                        email.set("toshihiro.nakamura@gmail.com")
+                    }
+                }
+                scm {
+                    val githubUrl: String by project
+                    connection.set("scm:git:${githubUrl}")
+                    developerConnection.set("scm:git:${githubUrl}")
+                    url.set(projectUrl)
+                }
+            }
         }
-        create<MavenPublication>(processor) {
-            pom(pomDefinition(processor))
+        create<MavenPublication>("main") {
+            from(components["java"])
+            pom(pomDefinition(name))
+        }
+        create<MavenPublication>("processor") {
+            pom(pomDefinition(name))
             val jar = processorJar.get()
-            val sourcesJar = processorSourcesJar.get()
             artifactId = "${jar.archiveBaseName.get()}-${jar.archiveAppendix.get()}"
             artifact(jar)
-            artifact(sourcesJar)
-            repositories(repositoriesDefinition())
-        }
-    }
-}
-
-fun pomDefinition(publicationName: String): MavenPom.() -> Unit {
-    return {
-        val projectUrl: String by project
-        name.set(publicationName)
-        description.set("DAO Oriented Database Mapping Framework for Java 8+")
-        url.set(projectUrl)
-        licenses {
-            license {
-                name.set("The Apache Software License, Version 2.0")
-                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-            }
-        }
-        developers {
-            developer {
-                id.set("nakamura-to")
-                name.set("Toshihiro Nakamura")
-                email.set("toshihiro.nakamura@gmail.com")
-            }
-        }
-        scm {
-            val githubUrl: String by project
-            connection.set("scm:git:${githubUrl}")
-            developerConnection.set("scm:git:${githubUrl}")
-            url.set(projectUrl)
-        }
-    }
-}
-
-fun repositoriesDefinition(): RepositoryHandler.() -> Unit {
-    return {
-        maven {
-            val sonatypeSnapshotUrl: String by project
-            val sonatypeUrl: String by project
-            val sonatypeUsername: String by project
-            val sonatypePassword: String by project
-            url = uri(if (isSnapshot) sonatypeSnapshotUrl else sonatypeUrl)
-            credentials {
-                username = sonatypeUsername
-                password = sonatypePassword
-            }
+            artifact(processorSourcesJar.get())
+            artifact(processorJavadocJar.get())
         }
     }
 }
