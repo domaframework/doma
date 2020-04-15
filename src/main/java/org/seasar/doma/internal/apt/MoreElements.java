@@ -7,12 +7,14 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -26,6 +28,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -33,6 +36,8 @@ import javax.lang.model.util.SimpleElementVisitor8;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.util.ElementKindUtil;
+import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.internal.util.Zip;
 
 public class MoreElements implements Elements {
 
@@ -173,6 +178,18 @@ public class MoreElements implements Elements {
         null);
   }
 
+  public ExecutableType toExecutableType(Element element) {
+    assertNotNull(element);
+    return element.accept(
+        new SimpleElementVisitor8<ExecutableType, Void>() {
+
+          public ExecutableType visitExecutableType(ExecutableType e, Void p) {
+            return e;
+          }
+        },
+        null);
+  }
+
   public TypeElement getTypeElementFromBinaryName(String binaryName) {
     assertNotNull(binaryName);
     String[] parts = binaryName.split("\\$");
@@ -295,5 +312,52 @@ public class MoreElements implements Elements {
         .flatMap(c -> c.getParameters().stream())
         .findFirst()
         .orElse(null);
+  }
+
+  public boolean isVirtualDefaultMethod(TypeElement typeElement, ExecutableElement methodElement) {
+    return ElementFilter.typesIn(typeElement.getEnclosedElements()).stream()
+        .filter(t -> t.getSimpleName().contentEquals("DefaultImpls"))
+        .anyMatch(
+            t ->
+                ElementFilter.methodsIn(t.getEnclosedElements()).stream()
+                    .filter(
+                        m -> {
+                          EnumSet<Modifier> set = EnumSet.of(Modifier.PUBLIC, Modifier.STATIC);
+                          return m.getModifiers().containsAll(set);
+                        })
+                    .filter(
+                        m -> {
+                          Name name1 = m.getSimpleName();
+                          Name name2 = methodElement.getSimpleName();
+                          return name1.contentEquals(name2);
+                        })
+                    .filter(
+                        m -> {
+                          TypeMirror type1 = m.getReturnType();
+                          TypeMirror type2 = methodElement.getReturnType();
+                          return ctx.getMoreTypes().isSameType(type1, type2);
+                        })
+                    .filter(
+                        m -> {
+                          int size1 = m.getParameters().size();
+                          int size2 = methodElement.getParameters().size() + 1;
+                          return size1 == size2;
+                        })
+                    .filter(
+                        m -> {
+                          TypeMirror type1 = m.getParameters().iterator().next().asType();
+                          TypeMirror type2 = typeElement.asType();
+                          return ctx.getMoreTypes().isSameTypeWithErasure(type1, type2);
+                        })
+                    .anyMatch(
+                        m -> {
+                          Stream<? extends VariableElement> parameters1 =
+                              m.getParameters().stream().skip(1);
+                          Stream<? extends VariableElement> parameters2 =
+                              methodElement.getParameters().stream();
+                          return Zip.stream(parameters1, parameters2)
+                              .map(pair -> new Pair<>(pair.fst.asType(), pair.snd.asType()))
+                              .allMatch(p -> ctx.getMoreTypes().isSameType(p.fst, p.snd));
+                        }));
   }
 }

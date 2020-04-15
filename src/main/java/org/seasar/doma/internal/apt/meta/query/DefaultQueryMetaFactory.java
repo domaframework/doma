@@ -14,10 +14,13 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
 
   @Override
   public QueryMeta createQueryMeta() {
-    if (!methodElement.isDefault()) {
+    boolean isVirtualDefaultMethod =
+        ctx.getMoreElements().isVirtualDefaultMethod(daoElement, methodElement);
+    if (!isVirtualDefaultMethod && !methodElement.isDefault()) {
       return null;
     }
-    DefaultQueryMeta queryMeta = new DefaultQueryMeta(daoElement, methodElement);
+    DefaultQueryMeta queryMeta =
+        new DefaultQueryMeta(daoElement, methodElement, isVirtualDefaultMethod);
     queryMeta.setQueryKind(QueryKind.DEFAULT);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);

@@ -5,12 +5,20 @@ import javax.lang.model.element.TypeElement;
 
 public class DefaultQueryMeta extends AbstractQueryMeta {
 
-  public DefaultQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
+  private boolean isVirtual;
+
+  public DefaultQueryMeta(
+      TypeElement daoElement, ExecutableElement methodElement, boolean isVirtual) {
     super(daoElement, methodElement);
+    this.isVirtual = isVirtual;
   }
 
   @Override
   public <R> R accept(QueryMetaVisitor<R> visitor) {
     return visitor.visitDefaultQueryMeta(this);
+  }
+
+  public boolean isVirtual() {
+    return isVirtual;
   }
 }
