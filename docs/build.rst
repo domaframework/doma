@@ -12,15 +12,15 @@ Maven Central Repository
 ------------------------
 
 You can pull the artifacts of the Doma framework from the Maven central repository.
-We provide two artifacts, ``doma`` and ``doma-processor``.
+We provide two artifacts, ``doma-core`` and ``doma-processor``.
 
-The ``doma`` artifact is required at runtime and compile-time.
+The ``doma-core`` artifact is required at runtime and compile-time.
 The ``doma-processor`` artifact provides annotation processors and is required at compile-time only.
 
 The group id and artifact id of those artifacts are as follows:
 
 :GroupId: org.seasar.doma
-:ArtifactId: doma
+:ArtifactId: doma-core
 
 :GroupId: org.seasar.doma
 :ArtifactId: doma-processor
@@ -35,7 +35,7 @@ Write your build.gradle as follows:
 .. code-block:: groovy
 
   dependencies {
-      implementation "org.seasar.doma:doma:2.30.0-SNAPSHOT"
+      implementation "org.seasar.doma:doma-core:2.30.0-SNAPSHOT"
       annotationProcessor "org.seasar.doma:doma-processor:2.30.0-SNAPSHOT"
   }
 
