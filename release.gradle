@@ -1,32 +1,3 @@
-def replaceVersion = tasks.register("replaceVersion") {
-    mustRunAfter(updateVersion)
-    doLast {
-        ant.replaceregexp(
-                match: /(private static final String VERSION = ")[^"]*(")/,
-                replace: "\\1${version}\\2",
-                encoding: encoding,
-                flags: "g") {
-            fileset(dir: ".") {
-                include(name: "**/Artifact.java")
-            }
-        }
-        ant.replaceregexp(
-                match: /("org.seasar.doma:doma(-processor)?:)[^"]*(")/,
-                replace: "\\1${version}\\3",
-                encoding: encoding,
-                flags: "g") {
-            fileset(dir: ".") {
-                include(name: "README.md")
-                include(name: "docs/**/*.rst")
-            }
-        }
-    }
-}
-
-commitNewVersion {
-    dependsOn(replaceVersion)
-}
-
 release {
     newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     pushReleaseVersionBranch = "release"
