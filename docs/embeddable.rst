@@ -129,4 +129,3 @@ Example
   Employee employee = new Employee(); // Entity
   Address address = new Address("Tokyo", "Yaesu", "103-0028"); // Embeddable
   employee.setAddress(address);
-

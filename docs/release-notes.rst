@@ -40,7 +40,7 @@ v2.27.0: 2020-01-25
 ======================
 
 * `GH338 <https://github.com/domaframework/doma/pull/338>`_
-  Reuse CharBuffer instances 
+  Reuse CharBuffer instances
 * `GH332 <https://github.com/domaframework/doma/pull/332>`_
   Needs default constructor to AbstractDao to use quarkus
 
@@ -84,7 +84,7 @@ v2.24.0: 2019-02-23
 * `GH307 <https://github.com/domaframework/doma/pull/307>`_
   Polish the org.seasar.doma.internal package
 * `GH306 <https://github.com/domaframework/doma/pull/306>`_
-  Remove Japanese comments 
+  Remove Japanese comments
 * `GH305 <https://github.com/domaframework/doma/pull/305>`_
   Register the option "doma.config.path" to suppress a warning message
 * `GH304 <https://github.com/domaframework/doma/pull/304>`_
@@ -98,7 +98,7 @@ v2.24.0: 2019-02-23
 * `GH299 <https://github.com/domaframework/doma/pull/299>`_
   Migrate from JUnit 3 to JUnit 5
 * `GH298 <https://github.com/domaframework/doma/pull/398>`_
-  Polish build script 
+  Polish build script
 
 v2.23.0: 2019-02-03
 ======================
@@ -181,7 +181,7 @@ v2.20.0: 2018-12-23
 * `GH252 <https://github.com/domaframework/doma/pull/252>`_
   Polish Gradle configuration
 * `GH251 <https://github.com/domaframework/doma/pull/251>`_
-  Use Gradle 5.0 
+  Use Gradle 5.0
 * `GH248 <https://github.com/domaframework/doma/pull/248>`_
   Fix mistake in abbreviation for JRE
 * `GH247 <https://github.com/domaframework/doma/pull/247>`_
@@ -235,7 +235,7 @@ v2.18.0: 2017-10-28
 * `GH207 <https://github.com/domaframework/doma/pull/207>`_
   If the result of the expression is `Long`, it is evaluated as `Float`.
 * `GH206 <https://github.com/domaframework/doma/pull/206>`_
-  Fix a wrong annotation parameter in a Docs example. 
+  Fix a wrong annotation parameter in a Docs example.
 * `GH205 <https://github.com/domaframework/doma/pull/205>`_
   Remove full-width `％` and `＿` from wild cards in Oracle dialect
 
@@ -259,7 +259,7 @@ v2.16.1: 2017-05-14
 * `GH195 <https://github.com/domaframework/doma/pull/195>`_
   Oracle 12c 以降でIDENTITYを使った識別子の自動生成をサポート
 * `GH194 <https://github.com/domaframework/doma/pull/194>`_
-  SelectBuilder に params メソッドと literals メソッドを追加 
+  SelectBuilder に params メソッドと literals メソッドを追加
 
 v2.16.0: 2017-02-19
 ======================

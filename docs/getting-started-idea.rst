@@ -159,7 +159,7 @@ You add next program code to ``EmployeeDao`` and execute build.
 
    @Select
    List<Employee> selectByAge(Integer age);
-   
+
 At this time, next error message is shown on Message tool window by annotation process.
 
 ::
@@ -380,5 +380,5 @@ At that time, created for the deleting SQL is next.
 .. code-block:: sql
 
   delete from Employee where id = 1 and version = 0
-  
+
 Identifier and version number is specified in search condition.

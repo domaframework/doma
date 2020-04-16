@@ -3,7 +3,7 @@ Doma [![Build Status](https://travis-ci.org/domaframework/doma.svg?branch=master
 
 [![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Doma is a database access framework for Java. 
+Doma is a database access framework for Java.
 Doma uses [Pluggable Annotation Processing API][apt] to generate source code and validate sql mappings **at compile time**.
 
 Example

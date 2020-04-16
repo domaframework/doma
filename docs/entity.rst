@@ -383,4 +383,3 @@ Instantiate the ``Employee`` entity class and use its instance:
   employee.setEmployeeId(1);
   employee.setEmployeeName("SMITH");
   employee.setSalary(new BigDecimal(1000));
-

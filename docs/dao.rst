@@ -93,4 +93,3 @@ One dao interface can handle more than one entity classes.
       @Update
       int updateAddress(Address address);
   }
-

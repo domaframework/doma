@@ -153,4 +153,3 @@ With a savepoint, you can cancel specific changes in a transaction.
       // Rollback to the savepoint (cancel the deletion above)
       tm.rollback("beforeDelete");
   });
-

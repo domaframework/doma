@@ -58,7 +58,7 @@ at the end of the literals. The suffixes must be capital letters.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeName != null && employeeName.length() > 10 */
       employee_name = /* employeeName */'smith'
   /*%end*/
@@ -90,7 +90,7 @@ The operands for ``<``, ``<=``, ``>`` and ``>=`` must not be ``null``.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeName.indexOf("s") > -1 */
       employee_name = /* employeeName */'smith'
   /*%end*/
@@ -112,7 +112,7 @@ With parentheses, you can override the precedence of operators.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if (departmentId == null || managerId == null) and employee_name != null */
       employee_name = /* employeeName */'smith'
   /*%end*/
@@ -140,7 +140,7 @@ Operands must be numeric type.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
       salary = /* salary + 1000 */0
 
 String concatenation operator
@@ -156,7 +156,7 @@ The operand must be one of the following types:
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
      employee_name like /* employeeName + "_" */'smith'
 
 Calling instance methods
@@ -167,7 +167,7 @@ The method visibility must be public.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeName.startsWith("s") */
       employee_name = /* employeeName */'smith'
   /*%end*/
@@ -176,8 +176,8 @@ If the method has no argument, specify ``()`` after the method name.
 
 .. code-block:: sql
 
-  select * from employee where 
-  /*%if employeeName.length() > 10 */ 
+  select * from employee where
+  /*%if employeeName.length() > 10 */
       employee_name = /* employeeName */'smith'
   /*%end*/
 
@@ -189,7 +189,7 @@ Even if the visibility is private, you can access it.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
       employee_name = /* employee.employeeName */'smith'
 
 Calling static methods
@@ -201,7 +201,7 @@ The method visibility must be public.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if @java.util.regex.Pattern@matches("^[a-z]*$", employeeName) */
       employee_name = /* employeeName */'smith'
   /*%end*/
@@ -215,7 +215,7 @@ Even if the visibility is private, you can access it.
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
   /*%if employeeName.length() < @java.lang.Byte@MAX_VALUE */
     employee_name = /* employeeName */'smith'
   /*%end*/
@@ -231,7 +231,7 @@ you can write like this:
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
       employee_name like /* @prefix(employee.employeeName) */'smith' escape '$'
 
 ``@prefix(employee.employeeName)`` means that we pass ``employee.employeeName``
@@ -260,7 +260,7 @@ String @prefix(CharSequence prefix, char escapeChar = '$')
   It returns ``null`` if you pass ``null`` as a parameter.
 
 String @infix(CharSequence infix, char escapeChar = '$')
-  Converts the character sequence for infix search. 
+  Converts the character sequence for infix search.
   The return value is a string which is a result of escaping the character sequence
   and adding wild card characters at the beginning and the end.
   If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence.
@@ -340,6 +340,5 @@ For example, you can call ``myfunc`` function like this:
 
 .. code-block:: sql
 
-  select * from employee where 
+  select * from employee where
       employee_name = /* @myfunc(employee.employeeName) */'smith'
-

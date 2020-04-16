@@ -89,4 +89,3 @@ Links
 * `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_
 * `Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-plugin>`_
 * `Doma version 1 <http://doma.seasar.org/>`_
-

@@ -1,7 +1,7 @@
 release {
-    newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
-    pushReleaseVersionBranch = "release"
-    git {
-        requireBranch = "working"
-    }
+	newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+	pushReleaseVersionBranch = "release"
+	git {
+		requireBranch = "working"
+	}
 }

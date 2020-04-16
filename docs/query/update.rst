@@ -77,7 +77,7 @@ suppressOptimisticLockException
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In case of ``suppressOptimisticLockException`` property within ``@Update`` is true,
-if property that annotated with ``@Version`` is exists then version number is include in update condition and be increment by 1 
+if property that annotated with ``@Version`` is exists then version number is include in update condition and be increment by 1
 but ``OptimisticLockException`` is not thrown even if update count is 0.
 However, version property value within entity is increment by 1.
 
@@ -153,9 +153,9 @@ you set ``true`` to ``sqlFile`` property within ``@Update`` annotation and prepa
 
 .. note::
 
-  In updating by SQL file, rule is different with or without use ref:`populate`. 
+  In updating by SQL file, rule is different with or without use ref:`populate`.
 
-Case of using comment that generating update column list 
+Case of using comment that generating update column list
 ---------------------------------------------------------
 
 First parameter type must be entity class.

@@ -128,10 +128,10 @@ For example, you describe SQL file like below to correspond above method.
 
 .. code-block:: sql
 
-  insert into employee (id, name, salary, version) 
-  values (/* employee.id */0, 
-          /* employee.name */'hoge', 
-          /* employee.salary */100, 
+  insert into employee (id, name, salary, version)
+  values (/* employee.id */0,
+          /* employee.name */'hoge',
+          /* employee.salary */100,
           /* employee.version */0)
 
 Identifier auto setting and version value auto setting is not done in insertion by SQL file.
