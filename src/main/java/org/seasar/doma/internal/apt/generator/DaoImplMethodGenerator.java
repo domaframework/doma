@@ -661,7 +661,11 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     } else {
       iprint("%1$s __result = ", resultMeta.getType());
     }
-    print("%1$s.super.%2$s(", daoMeta.getTypeElement(), m.getName());
+    if (m.isVirtual()) {
+      print("%1$s.DefaultImpls.%2$s(this, ", daoMeta.getTypeElement(), m.getName());
+    } else {
+      print("%1$s.super.%2$s(", daoMeta.getTypeElement(), m.getName());
+    }
     for (Iterator<QueryParameterMeta> it = m.getParameterMetas().iterator(); it.hasNext(); ) {
       QueryParameterMeta parameterMeta = it.next();
       print("%1$s", parameterMeta.getName());

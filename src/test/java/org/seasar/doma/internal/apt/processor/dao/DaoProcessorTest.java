@@ -114,6 +114,7 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(StaticMethodDao.class),
           invocationContext(PackageAccessLevelDao.class),
           invocationContext(DefaultMethodDao.class),
+          invocationContext(VirtualDefaultMethodDao.class),
           invocationContext(SingletonConfigDao.class),
           invocationContext(OptionalIntDao.class),
           invocationContext(OptionalLongDao.class),

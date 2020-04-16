@@ -1,6 +1,10 @@
 package org.seasar.doma.internal.apt;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +51,23 @@ class MoreElementsTest extends CompilerSupport {
 
   @SuppressWarnings("unused")
   private class ReferredTypeVar<T extends Number, S extends List<T>> {}
+
+  private interface MyDao {
+
+    void doIt();
+
+    Integer execute(String name);
+
+    Integer run(String name);
+
+    class DefaultImpls {
+      public static void doIt(MyDao $this) {}
+
+      public static Integer execute(MyDao $this, String name) {
+        return null;
+      }
+    }
+  }
 
   @BeforeEach
   void beforeEach() {
@@ -247,6 +268,23 @@ class MoreElementsTest extends CompilerSupport {
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
             assertIterableEquals(
                 Arrays.asList("T extends java.lang.Number", "S extends java.util.List<T>"), names);
+          }
+        });
+  }
+
+  @Test
+  void isVirtualDefaultMethod() {
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            TypeElement typeElement = ctx.getMoreElements().getTypeElement(MyDao.class);
+            ExecutableElement doIt = createMethodElement(MyDao.class, "doIt");
+            assertTrue(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, doIt));
+            ExecutableElement execute = createMethodElement(MyDao.class, "execute", String.class);
+            assertTrue(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, execute));
+            ExecutableElement run = createMethodElement(MyDao.class, "run", String.class);
+            assertFalse(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, run));
           }
         });
   }

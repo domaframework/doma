@@ -15,7 +15,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
-import javax.lang.model.element.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -255,6 +260,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     Optional<ExecutableElement> method =
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements()).stream()
             .filter(m -> !m.isDefault())
+            .filter(m -> !ctx.getMoreElements().isVirtualDefaultMethod(interfaceElement, m))
             .findAny();
     if (method.isPresent()) {
       return method.get();
@@ -276,7 +282,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     for (ExecutableElement methodElement :
         ElementFilter.methodsIn(interfaceElement.getEnclosedElements())) {
       try {
-        doMethodElement(daoMeta, methodElement);
+        doMethodElement(interfaceElement, daoMeta, methodElement);
       } catch (AptException e) {
         ctx.getReporter().report(e);
         daoMeta.setError(true);
@@ -284,18 +290,19 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     }
   }
 
-  private void doMethodElement(DaoMeta daoMeta, ExecutableElement methodElement) {
+  private void doMethodElement(
+      TypeElement interfaceElement, DaoMeta daoMeta, ExecutableElement methodElement) {
     Set<Modifier> modifiers = methodElement.getModifiers();
     if (modifiers.contains(Modifier.STATIC) || modifiers.contains(Modifier.PRIVATE)) {
       return;
     }
-    validateMethod(methodElement);
+    validateMethod(interfaceElement, methodElement);
     QueryMeta queryMeta = createQueryMeta(daoMeta, methodElement);
     validateQueryMeta(queryMeta, methodElement);
     daoMeta.addQueryMeta(queryMeta);
   }
 
-  private void validateMethod(ExecutableElement methodElement) {
+  private void validateMethod(TypeElement interfaceElement, ExecutableElement methodElement) {
     TypeElement foundAnnotationTypeElement = null;
     for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
       DeclaredType declaredType = annotation.getAnnotationType();
@@ -309,7 +316,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                 foundAnnotationTypeElement.getQualifiedName(), typeElement.getQualifiedName()
               });
         }
-        if (methodElement.isDefault()) {
+        if (methodElement.isDefault()
+            || ctx.getMoreElements().isVirtualDefaultMethod(interfaceElement, methodElement)) {
           throw new AptException(
               Message.DOMA4252, methodElement, new Object[] {typeElement.getQualifiedName()});
         }
