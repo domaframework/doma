@@ -64,7 +64,7 @@ subprojects {
         (options as StandardJavadocDocletOptions).apply {
             charSet = encoding
             docEncoding = encoding
-            links("https://docs.oracle.com/javase/jp/8/docs/api/")
+            links("https://docs.oracle.com/javase/8/docs/api/")
             use()
             exclude("**/internal/**")
         }
@@ -87,8 +87,8 @@ subprojects {
     }
 
     dependencies {
-        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.4.0")
-        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.6.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     }
 
     configure<JavaPluginExtension> {
