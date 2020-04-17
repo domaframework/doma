@@ -74,8 +74,8 @@ doma.config.path
 Setting options in Gradle
 =========================
 
-- Use `the compilerArgs property
-  <https://docs.gradle.org/5.0/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs>`_
+Use `the compilerArgs property
+<https://docs.gradle.org/5.0/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs>`_:
 
 .. code-block:: groovy
 
@@ -94,8 +94,25 @@ In the case, the options written in build.gradle are used.
 Setting options in Eclipse
 ==========================
 
-Generate eclipse setting files
-by using the Gradle plugin `com.diffplug.eclipse.apt<https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt>`_.
+Use the Gradle plugin `com.diffplug.eclipse.apt
+<https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt>`_
+and the processorArgs property:
+
+.. code-block:: groovy
+
+  plugins {
+      id 'com.diffplug.eclipse.apt' version '3.22.0'
+  }
+
+  compileJava {
+    aptOptions {
+      processorArgs = [
+        'doma.dao.subpackage' : 'impl', 'doma.dao.suffix' : 'Impl'
+      ]
+    }
+  }
+
+When you run ``gradle eclipse``, eclipse setting files are generated.
 
 Setting options with configuration file
 =======================================
