@@ -8,6 +8,14 @@ plugins {
 
 val encoding: String by project
 val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
+val secretKeyRingFile = extra["signing.secretKeyRingFile"]?.let {
+	val file = it.toString()
+	if (file.startsWith("/")) {
+		file
+	} else {
+		"${rootProject.projectDir}/$file"
+	}
+}
 
 allprojects {
 	val replaceVersionJava by tasks.registering {
@@ -37,6 +45,8 @@ subprojects {
 	apply(plugin = "com.diffplug.eclipse.apt")
 	apply(plugin = "com.diffplug.gradle.spotless")
 	apply(plugin = "de.marcphilipp.nexus-publish")
+
+	extra["signing.secretKeyRingFile"] = secretKeyRingFile
 
 	val compileJava by tasks.existing(JavaCompile::class) {
 		dependsOn(tasks.named("replaceVersionJava"))
