@@ -364,7 +364,7 @@ To avoid annotating your DAO interfaces with ``@AnnotateWith`` repeatedly,
 annotate the arbitrary annotation with it only once:
 
 .. code-block:: java
-   
+
   @AnnotateWith(annotations = {
       @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = javax.inject.Inject.class),
       @Annotation(target = AnnotationTarget.CONSTRUCTOR_PARAMETER, type = javax.inject.Named.class, elements = "\"config\"") })
@@ -392,4 +392,3 @@ Then, you can annotate your DAO interfaces with the above ``@InjectConfig`` anno
       @Select
       Department selectById(Integer id);
   }
-

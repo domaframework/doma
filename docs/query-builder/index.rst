@@ -96,4 +96,3 @@ Delete
   builder.sql("and");
   builder.sql("salary = ").param(BigDecimal.class, new BigDecimal(1000));
   builder.execute();
-

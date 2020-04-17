@@ -110,7 +110,7 @@ For example, you describe SQL like below to correspond above method.
 
 .. code-block:: sql
 
-  insert into employee (id, name, salary, version) 
+  insert into employee (id, name, salary, version)
   values (/* employees.id */0, /* employees.name */'hoge', /* employees.salary */100, /* employees.version */0)
 
 Parameter name indicate ``java.lang.Iterable`` subtype element in SQL file.

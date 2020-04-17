@@ -85,7 +85,7 @@ Execute the `sphinx-autobuild`_ command in the ``docs`` directory:
 
   $ sphinx-autobuild . _build/html
 
-Visit the webpage served at http://127.0.0.1:8000. 
+Visit the webpage served at http://127.0.0.1:8000.
 
 
 .. _google-java-format: https://github.com/google/google-java-format

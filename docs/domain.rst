@@ -115,10 +115,10 @@ With a static factory method, you can apply the ``@Domain`` annotation to enum t
 
   @Domain(valueType = String.class, factoryMethod = "of")
   public enum JobType {
-      SALESMAN("10"), 
-      MANAGER("20"), 
-      ANALYST("30"), 
-      PRESIDENT("40"), 
+      SALESMAN("10"),
+      MANAGER("20"),
+      ANALYST("30"),
+      PRESIDENT("40"),
       CLERK("50");
 
       private final String value;
@@ -346,23 +346,3 @@ The Domain classes showed above are used as follows:
       @Select
       List<JobType> selectAllJobTypes();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

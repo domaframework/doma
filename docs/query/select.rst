@@ -154,7 +154,7 @@ There are two kind in stream search such as return the return value and pass ``S
 Pass to the Function
 ---------------------------
 
-You set ``SelectType.STREAM`` to ``strategy`` property within ``@Select`` annotation and 
+You set ``SelectType.STREAM`` to ``strategy`` property within ``@Select`` annotation and
 define subtype that is ``java.util.Function<Stream<TARGET>, RESULT>`` or ``java.util.Function<Stream<TARGET>, RESULT>`` to method parameter.
 
 .. code-block:: java
@@ -241,7 +241,7 @@ Collect search
 
 You can use collect search if handle result as ``java.util.Collector``.
 
-You set ``SelectType.COLLECT`` to ``strategy`` property within ``@Select`` annotation and 
+You set ``SelectType.COLLECT`` to ``strategy`` property within ``@Select`` annotation and
 define subtype that is ``java.stream.Collector<TARGET, ACCUMULATION, RESULT>`` or ``java.stream.Collector<TARGET, ?, RESULT>`` to method parameter.
 
 .. code-block:: java
@@ -306,7 +306,7 @@ Paging
 ----------
 
 You specify start position by ``offset`` method and get count by ``limit`` method those are within ``SelectOptions``,
-and pass the ``SelectOptions`` instance to Dao method. 
+and pass the ``SelectOptions`` instance to Dao method.
 
 .. code-block:: java
 
@@ -344,7 +344,7 @@ Pessimistic concurrency control
 ---------------------------------
 
 You indicate executing pessimistic concurrency control by ``forUpdate`` within ``SelectOptions``,
-and pass the SelectOptions instance to Dao method. 
+and pass the SelectOptions instance to Dao method.
 
 .. code-block:: java
 

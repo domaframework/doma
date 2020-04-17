@@ -137,4 +137,3 @@ No.
 
 Use Doma together with
 a JDBC connection pool library such as `HikariCP <https://github.com/brettwooldridge/HikariCP>`_.
-
