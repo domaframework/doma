@@ -2,6 +2,26 @@
 Release notes
 =============
 
+v2.30.0: 2020-04-18
+======================
+
+See also `Migration Guide <https://github.com/domaframework/doma/wiki/Migration-Guide-for-Doma-2.30.0>`_.
+
+* `GH374 <https://github.com/domaframework/doma/pull/374>`_
+  Upgrade Gradle and JUnit
+* `GH371 <https://github.com/domaframework/doma/pull/371>`_
+  Set new version number to the Artifact.java file
+* `GH368 <https://github.com/domaframework/doma/pull/368>`_
+  Correct the path of secretKeyRingFile
+* `GH364 <https://github.com/domaframework/doma/pull/364>`_
+  Split a project in two
+* `GH363 <https://github.com/domaframework/doma/pull/363>`_
+  Support Kotlin's default methods
+* `GH361 <https://github.com/domaframework/doma/pull/361>`_
+  Use the nexus publish plugin
+* `GH360 <https://github.com/domaframework/doma/pull/360>`_
+  Provide a new artifact "doma-processor"
+
 v2.29.0: 2020-04-05
 ======================
 
