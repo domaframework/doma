@@ -83,7 +83,7 @@ Links
 
 * `News and announcements <https://twitter.com/domaframework>`_
 * `GitHub repository <https://github.com/domaframework/doma>`_
-* `JavaDoc <http://www.javadoc.io/doc/org.seasar.doma/doma>`_
+* `JavaDoc <https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/index.html>`_
 * `Boilerplate <https://github.com/domaframework/simple-boilerplate>`_
 * `Examples <https://github.com/domaframework/simple-examples>`_
 * `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_
