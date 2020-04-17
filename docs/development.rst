@@ -33,7 +33,7 @@ Build from the Command Line
 Format the Source Code
 ======================
 
-We use `google-java-format`_ 1.6 for code formatting.
+We use `google-java-format`_ 1.7 for code formatting.
 
 Command Line
 ------------

@@ -64,7 +64,7 @@ subprojects {
         (options as StandardJavadocDocletOptions).apply {
             charSet = encoding
             docEncoding = encoding
-            links("https://docs.oracle.com/javase/jp/8/docs/api/")
+            links("https://docs.oracle.com/javase/8/docs/api/")
             use()
             exclude("**/internal/**")
         }
