@@ -14,22 +14,20 @@ val secretKeyRingFile: String? =
 			else file(it).absolutePath
 		}
 
-allprojects {
-	val replaceVersionJava by tasks.registering {
-		doLast {
-			ant.withGroovyBuilder {
-				"replaceregexp"("match" to """(private static final String VERSION = ")[^"]*(")""",
-						"replace" to "\\1${version}\\2",
-						"encoding" to encoding,
-						"flags" to "g") {
-					"fileset"("dir" to ".") {
-						"include"("name" to "**/Artifact.java")
-					}
-				}
+fun replaceVersionArtifactClass() {
+	ant.withGroovyBuilder {
+		"replaceregexp"("match" to """(private static final String VERSION = ")[^"]*(")""",
+				"replace" to "\\1${version}\\2",
+				"encoding" to encoding,
+				"flags" to "g") {
+			"fileset"("dir" to ".") {
+				"include"("name" to "**/Artifact.java")
 			}
 		}
 	}
+}
 
+allprojects {
 	repositories {
 		mavenCentral()
 	}
@@ -44,6 +42,12 @@ subprojects {
 	apply(plugin = "de.marcphilipp.nexus-publish")
 
 	extra["signing.secretKeyRingFile"] = secretKeyRingFile
+
+	val replaceVersionJava by tasks.registering {
+		doLast {
+			replaceVersionArtifactClass()
+		}
+	}
 
 	val compileJava by tasks.existing(JavaCompile::class) {
 		dependsOn(tasks.named("replaceVersionJava"))
@@ -172,9 +176,10 @@ subprojects {
 rootProject.apply {
 	apply(from = "release.gradle")
 
-	val replaceVersionDoc by tasks.registering {
+	val replaceVersion by tasks.registering {
 		mustRunAfter(tasks.named("updateVersion"))
 		doLast {
+			replaceVersionArtifactClass()
 			ant.withGroovyBuilder {
 				"replaceregexp"("match" to """("org.seasar.doma:doma(-core|-processor)?:)[^"]*(")""",
 						"replace" to "\\1${version}\\3",
@@ -187,10 +192,6 @@ rootProject.apply {
 				}
 			}
 		}
-	}
-
-	val replaceVersion by tasks.registering {
-		dependsOn(replaceVersionDoc, tasks.named("replaceVersionJava"))
 	}
 
 	val commitNewVersion by tasks.existing {
