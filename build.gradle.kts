@@ -44,7 +44,6 @@ subprojects {
 	apply(plugin = "de.marcphilipp.nexus-publish")
 
 	extra["signing.secretKeyRingFile"] = secretKeyRingFile
-	println(property("signing.secretKeyRingFile"))
 
 	val compileJava by tasks.existing(JavaCompile::class) {
 		dependsOn(tasks.named("replaceVersionJava"))
