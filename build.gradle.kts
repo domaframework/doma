@@ -99,6 +99,7 @@ subprojects {
 				from(components["java"])
 				pom {
 					val projectUrl: String by project
+					name.set(project.name)
 					description.set("DAO Oriented Database Mapping Framework for Java 8+")
 					url.set(projectUrl)
 					licenses {
