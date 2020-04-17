@@ -8,14 +8,11 @@ plugins {
 
 val encoding: String by project
 val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
-val secretKeyRingFile: String? = findProperty("signing.secretKeyRingFile")?.let {
-	val file = it.toString()
-	if (file.startsWith("/")) {
-		file
-	} else {
-		"${projectDir}/$file"
-	}
-}
+val secretKeyRingFile: String? =
+		findProperty("signing.secretKeyRingFile")?.toString()?.let {
+			if (it.isEmpty()) null
+			else file(it).absolutePath
+		}
 
 allprojects {
 	val replaceVersionJava by tasks.registering {
@@ -46,9 +43,8 @@ subprojects {
 	apply(plugin = "com.diffplug.gradle.spotless")
 	apply(plugin = "de.marcphilipp.nexus-publish")
 
-	if (secretKeyRingFile != null) {
-		extra["signing.secretKeyRingFile"] = secretKeyRingFile
-	}
+	extra["signing.secretKeyRingFile"] = secretKeyRingFile
+	println(property("signing.secretKeyRingFile"))
 
 	val compileJava by tasks.existing(JavaCompile::class) {
 		dependsOn(tasks.named("replaceVersionJava"))
