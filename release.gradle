@@ -2,6 +2,7 @@ release {
     failOnCommitNeeded = false
     newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     pushReleaseVersionBranch = "release"
+    buildTasks = ['clean', 'build']
     git {
         requireBranch = "working"
     }

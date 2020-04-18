@@ -193,11 +193,13 @@ rootProject.apply {
     }
 
     val replaceVersion by tasks.registering {
-        replaceVersionInArtifact(releaseVersion)
-        replaceVersionInDocs(releaseVersion)
+        doLast {
+            replaceVersionInArtifact(releaseVersion)
+            replaceVersionInDocs(releaseVersion)
+        }
     }
 
-    val release by tasks.existing {
+    val beforeReleaseBuild by tasks.existing {
         dependsOn(replaceVersion)
      }
 
