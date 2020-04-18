@@ -1,4 +1,5 @@
 release {
+    failOnCommitNeeded = false
     newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     pushReleaseVersionBranch = "release"
     git {
