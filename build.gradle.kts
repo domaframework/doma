@@ -7,17 +7,19 @@ plugins {
 }
 
 val encoding: String by project
-val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
+val isSnapshot = version.toString().endsWith("SNAPSHOT")
+val releaseVersion = properties["release.releaseVersion"].toString()
+val newVersion = properties["release.newVersion"].toString()
 val secretKeyRingFile: String? =
         findProperty("signing.secretKeyRingFile")?.toString()?.let {
             if (it.isEmpty()) null
             else file(it).absolutePath
         }
 
-fun replaceVersionArtifactClass() {
+fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
         "replaceregexp"("match" to """(private static final String VERSION = ")[^"]*(")""",
-                "replace" to "\\1${version}\\2",
+                "replace" to "\\1${ver}\\2",
                 "encoding" to encoding,
                 "flags" to "g") {
             "fileset"("dir" to ".") {
@@ -43,14 +45,14 @@ subprojects {
 
     extra["signing.secretKeyRingFile"] = secretKeyRingFile
 
-    val replaceVersionJava by tasks.registering {
+    val replaceVersionInJava by tasks.registering {
         doLast {
-            replaceVersionArtifactClass()
+            replaceVersionInArtifact(version.toString())
         }
     }
 
     val compileJava by tasks.existing(JavaCompile::class) {
-        dependsOn(tasks.named("replaceVersionJava"))
+        dependsOn(replaceVersionInJava)
         options.encoding = encoding
     }
 
@@ -176,26 +178,33 @@ subprojects {
 rootProject.apply {
     apply(from = "release.gradle")
 
-    val replaceVersion by tasks.registering {
-        mustRunAfter(tasks.named("updateVersion"))
-        doLast {
-            replaceVersionArtifactClass()
-            ant.withGroovyBuilder {
-                "replaceregexp"("match" to """("org.seasar.doma:doma(-core|-processor)?:)[^"]*(")""",
-                        "replace" to "\\1${version}\\3",
-                        "encoding" to encoding,
-                        "flags" to "g") {
-                    "fileset"("dir" to ".") {
-                        "include"("name" to "README.md")
-                        "include"("name" to "docs/**/*.rst")
-                    }
+    fun replaceVersionInDocs(ver: String) {
+        ant.withGroovyBuilder {
+            "replaceregexp"("match" to """("org.seasar.doma:doma(-core|-processor)?:)[^"]*(")""",
+                    "replace" to "\\1${ver}\\3",
+                    "encoding" to encoding,
+                    "flags" to "g") {
+                "fileset"("dir" to ".") {
+                    "include"("name" to "README.md")
+                    "include"("name" to "docs/**/*.rst")
                 }
             }
         }
     }
 
-    val commitNewVersion by tasks.existing {
+    val replaceVersion by tasks.registering {
+        replaceVersionInArtifact(releaseVersion)
+        replaceVersionInDocs(releaseVersion)
+    }
+
+    val release by tasks.existing {
         dependsOn(replaceVersion)
+     }
+
+    val updateVersion by tasks.existing {
+        doLast {
+            replaceVersionInArtifact(newVersion)
+        }
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
