@@ -51,6 +51,19 @@ public class VirtualDefaultMethodDaoImpl extends org.seasar.doma.internal.jdbc.d
     }
 
     @Override
+    public void run() {
+        entering("org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDaoImpl", "run");
+        try {
+            Object __result = null;
+            org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDao.DefaultImpls.run(this);
+            exiting("org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDaoImpl", "run", __result);
+        } catch (java.lang.RuntimeException __e) {
+            throwing("org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDaoImpl", "run", __e);
+            throw __e;
+        }
+    }
+
+    @Override
     public java.math.BigDecimal execute(java.lang.String aaa, java.lang.Integer bbb) {
         entering("org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDaoImpl", "execute", aaa, bbb);
         try {
