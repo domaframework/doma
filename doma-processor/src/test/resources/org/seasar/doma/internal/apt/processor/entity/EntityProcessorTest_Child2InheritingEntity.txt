@@ -41,7 +41,7 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __entityPropertyTypeMap;
 
-    private _Child2InheritingEntity() {
+    public _Child2InheritingEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "Child2InheritingEntity";

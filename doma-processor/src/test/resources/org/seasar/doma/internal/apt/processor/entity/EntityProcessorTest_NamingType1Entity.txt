@@ -32,7 +32,7 @@ public final class _NamingType1Entity extends org.seasar.doma.jdbc.entity.Abstra
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.NamingType1Entity, ?>> __entityPropertyTypeMap;
 
-    private _NamingType1Entity() {
+    public _NamingType1Entity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "NamingType1Entity";

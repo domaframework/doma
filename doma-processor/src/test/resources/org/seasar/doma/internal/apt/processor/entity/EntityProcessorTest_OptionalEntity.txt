@@ -50,7 +50,7 @@ public final class _OptionalEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalEntity, ?>> __entityPropertyTypeMap;
 
-    private _OptionalEntity() {
+    public _OptionalEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "OptionalEntity";

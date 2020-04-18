@@ -35,7 +35,7 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?>> __entityPropertyTypeMap;
 
-    private _BytesPropertyEntity() {
+    public _BytesPropertyEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "BytesPropertyEntity";

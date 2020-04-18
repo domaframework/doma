@@ -43,7 +43,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __entityPropertyTypeMap;
 
-    private _OriginalStatesChildEntity() {
+    public _OriginalStatesChildEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "OriginalStatesChildEntity";

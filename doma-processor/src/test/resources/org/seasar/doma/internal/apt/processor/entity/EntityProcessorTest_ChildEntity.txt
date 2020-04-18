@@ -41,7 +41,7 @@ public final class _ChildEntity extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ChildEntity, ?>> __entityPropertyTypeMap;
 
-    private _ChildEntity() {
+    public _ChildEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "ChildEntity";

@@ -38,7 +38,7 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __entityPropertyTypeMap;
 
-    private _ImmutableUser() {
+    public _ImmutableUser() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
         __name = "ImmutableUser";
