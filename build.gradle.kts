@@ -1,5 +1,7 @@
 plugins {
     base
+    kotlin("jvm") version "1.3.72" apply false
+    kotlin("kapt") version "1.3.72" apply false
     id("com.diffplug.eclipse.apt") version "3.22.0" apply false
     id("com.diffplug.gradle.spotless") version "3.27.2"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
@@ -148,6 +150,11 @@ subprojects {
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         java {
             googleJavaFormat("1.7")
+        }
+        kotlin {
+            ktlint("0.36.0")
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 
