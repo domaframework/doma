@@ -6,6 +6,7 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectContext(
     val entityType: EntityType<*>,
+    var asterisk: Boolean = false,
     var distinct: Boolean = false,
     val joins: MutableList<Join> = mutableListOf(),
     val where: MutableList<Criterion> = mutableListOf(),
@@ -62,6 +63,8 @@ sealed class Criterion {
 //    data class Like(val prop: KProperty1<*, *>, val value: String?) : Criterion()
 //    data class NotLike(val prop: KProperty1<*, *>, val value: String?) : Criterion()
     data class Between(val prop: Operand.Prop, val begin: Operand.Param, val end: Operand.Param) : Criterion()
+    data class Exists(val context: SelectContext) : Criterion()
+    data class NotExists(val context: SelectContext) : Criterion()
     data class Not(val list: List<Criterion>) : Criterion()
     data class And(val list: List<Criterion>) : Criterion()
     data class Or(val list: List<Criterion>) : Criterion()

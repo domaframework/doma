@@ -3,6 +3,7 @@ package org.seasar.doma.criteria
 import java.util.function.Supplier
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter
 import org.seasar.doma.jdbc.entity.EntityPropertyType
+import org.seasar.doma.jdbc.entity.EntityType
 import org.seasar.doma.wrapper.IntegerWrapper
 import org.seasar.doma.wrapper.StringWrapper
 
@@ -18,8 +19,12 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         _eq(prop, Operand.Param(BasicInParameter<String?>(Supplier { StringWrapper(value) })))
     }
 
-    private fun _eq(prop: EntityPropertyType<*, *>, param: Operand.Param) {
-        add(Criterion.Eq(Operand.Prop(prop), param))
+    fun <BASIC> eq(left: EntityPropertyType<*, BASIC>, right: EntityPropertyType<*, BASIC>) {
+        _eq(left, Operand.Prop(right))
+    }
+
+    private fun _eq(left: EntityPropertyType<*, *>, right: Operand) {
+        add(Criterion.Eq(Operand.Prop(left), right))
     }
 
     fun ne(prop: EntityPropertyType<*, Int>, value: Int?) {
@@ -196,6 +201,36 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         add(Criterion.Between(Operand.Prop(prop),
                 Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(begin) })),
                 Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(end) }))))
+    }
+
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> exists(
+        from: () -> ENTITY_TYPE,
+        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+    ) {
+        val context = createChildContext(from, block)
+        add(Criterion.Exists(context))
+    }
+
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> notExists(
+        from: () -> ENTITY_TYPE,
+        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+    ) {
+        val context = createChildContext(from, block)
+        add(Criterion.NotExists(context))
+    }
+
+    private fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> createChildContext(
+        from: () -> ENTITY_TYPE,
+        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+    ): SelectContext {
+        val entityType = from()
+        val context = SelectContext(entityType, asterisk = true)
+        val declaration = SelectDeclaration(context)
+        declaration.block(entityType)
+        if (context.associations.isNotEmpty()) {
+            TODO()
+        }
+        return context
     }
 
     fun not(block: WhereDeclaration.() -> Unit) = runBlock(block, Criterion::Not)

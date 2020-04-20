@@ -90,6 +90,38 @@ class SelectStatementTest {
     }
 
     @Test
+    fun exists() {
+        val query = select(::_Emp) { e ->
+            where {
+                exists(::_Dept) { d ->
+                    where {
+                        eq(e.name, d.name)
+                    }
+                }
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where exists (select * from "CATA"."DEPT" t1_ where t0_.NAME = t1_.NAME)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notExists() {
+        val query = select(::_Emp) { e ->
+            where {
+                notExists(::_Dept) { d ->
+                    where {
+                        eq(e.name, d.name)
+                    }
+                }
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where not exists (select * from "CATA"."DEPT" t1_ where t0_.NAME = t1_.NAME)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun orderBy() {
         val query = select(::_Emp) { e ->
             orderBy {

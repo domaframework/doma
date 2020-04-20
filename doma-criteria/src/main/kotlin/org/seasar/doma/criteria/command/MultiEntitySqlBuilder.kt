@@ -13,35 +13,31 @@ import org.seasar.doma.jdbc.SqlLogType
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
-class MultiEntitySqlBuilder(private val config: Config, private val selectContext: SelectContext) {
-    private val naming = config.naming
-    private val dialect = config.dialect
-    private val commenter = config.commenter
-    private val buf = PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED)
-    private val entityAliasMap = mutableMapOf<EntityType<*>, String>()
-    private val propAliasMap = mutableMapOf<EntityPropertyType<*, *>, String>()
-    private val projectionTargets = selectContext.getProjectionTargets()
-
-    init {
-        val entityTypes = listOf(selectContext.entityType) + selectContext.joins.map { it.entityType }
-        entityTypes.forEachIndexed { index, entityType ->
-            val alias = "t${index}_"
-            entityAliasMap[entityType] = alias
-            entityType.entityPropertyTypes.forEach {
-                propAliasMap[it] = alias
-            }
-        }
-    }
+class MultiEntitySqlBuilder(
+    private val config: Config,
+    private val selectContext: SelectContext,
+    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED),
+    private val aliasManager: AliasManager = AliasManager(selectContext)
+) {
 
     fun build(): PreparedSql {
+        interpretContext()
+        return buf.build { it }
+    }
+
+    private fun interpretContext() {
         buf.appendSql("select ")
-        projectionTargets.forEach {
-            it.entityPropertyTypes.forEach { prop ->
-                column(prop)
-                buf.appendSql(", ")
+        if (selectContext.asterisk) {
+            buf.appendSql("*")
+        } else {
+            selectContext.getProjectionTargets().forEach {
+                it.entityPropertyTypes.forEach { prop ->
+                    column(prop)
+                    buf.appendSql(", ")
+                }
             }
+            buf.cutBackSql(2)
         }
-        buf.cutBackSql(2)
         buf.appendSql(" from ")
         table(selectContext.entityType)
         if (selectContext.joins.isNotEmpty()) {
@@ -79,19 +75,18 @@ class MultiEntitySqlBuilder(private val config: Config, private val selectContex
             }
             buf.cutBackSql(2)
         }
-        return buf.build { it }
     }
 
     private fun table(entityType: EntityType<*>) {
-        buf.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote))
+        buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
         buf.appendSql(" ")
-        buf.appendSql(entityAliasMap[entityType])
+        buf.appendSql(aliasManager[entityType])
     }
 
     private fun column(prop: EntityPropertyType<*, *>) {
-        buf.appendSql(propAliasMap[prop])
+        buf.appendSql(aliasManager[prop])
         buf.appendSql(".")
-        buf.appendSql(prop.getColumnName(naming::apply, dialect::applyQuote))
+        buf.appendSql(prop.getColumnName(config.naming::apply, config.dialect::applyQuote))
     }
 
     private fun param(param: BasicInParameter<*>) {
@@ -108,6 +103,8 @@ class MultiEntitySqlBuilder(private val config: Config, private val selectContex
             is Criterion.Le -> comparison(c.left, c.right, "<=")
             is Criterion.In -> `in`(c.left, c.right)
             is Criterion.Between -> between(c.prop, c.begin, c.end)
+            is Criterion.Exists -> exists(c.context)
+            is Criterion.NotExists -> exists(c.context, true)
             is Criterion.And -> and(c.list, index)
             is Criterion.Or -> or(c.list, index)
             is Criterion.Not -> not(c.list, index)
@@ -155,6 +152,17 @@ class MultiEntitySqlBuilder(private val config: Config, private val selectContex
         param(begin.value)
         buf.appendSql(" and ")
         param(end.value)
+    }
+
+    private fun exists(selectContext: SelectContext, not: Boolean = false) {
+        if (not) {
+            buf.appendSql("not ")
+        }
+        buf.appendSql("exists (")
+        val parentAliasManager = AliasManager(selectContext, aliasManager)
+        val builder = MultiEntitySqlBuilder(config, selectContext, buf, parentAliasManager)
+        builder.interpretContext()
+        buf.appendSql(")")
     }
 
     private fun and(list: List<Criterion>, index: Int) {

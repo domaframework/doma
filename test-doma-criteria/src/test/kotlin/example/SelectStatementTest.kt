@@ -47,6 +47,38 @@ class SelectStatementTest(private val config: Config) {
     }
 
     @Test
+    fun where_exists() {
+        val query = select(::_Employee) { e ->
+            where {
+                exists(::_Employee) { e2 ->
+                    where {
+                        eq(e.managerId, e2.employeeId)
+                    }
+                }
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(13, list.size)
+        assertTrue(list.none { it.employeeName == "KING" })
+    }
+
+    @Test
+    fun where_notExists() {
+        val query = select(::_Employee) { e ->
+            where {
+                notExists(::_Employee) { e2 ->
+                    where {
+                        eq(e.managerId, e2.employeeId)
+                    }
+                }
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+        assertTrue(list.all { it.employeeName == "KING" })
+    }
+
+    @Test
     fun where_isNull() {
         val query = select(::_Employee) { e ->
             where {

@@ -8,10 +8,10 @@ import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.entity.EntityType
 
 fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> select(
-    provider: () -> ENTITY_TYPE,
+    from: () -> ENTITY_TYPE,
     block: SelectDeclaration.(ENTITY_TYPE) -> Unit
 ): SelectStatement<ENTITY, ENTITY_TYPE> {
-    return SelectStatement(provider, block)
+    return SelectStatement(from, block)
 }
 
 infix operator fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>>
@@ -24,12 +24,12 @@ infix operator fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>>
 }
 
 class SelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
-    val provider: () -> ENTITY_TYPE,
+    val from: () -> ENTITY_TYPE,
     private val block: SelectDeclaration.(ENTITY_TYPE) -> Unit
 ) {
 
     fun buildContextAndSql(config: Config): Pair<SelectContext, PreparedSql> {
-        val entityType = provider()
+        val entityType = from()
         val context = SelectContext(entityType)
         val declaration = SelectDeclaration(context)
         declaration.block(entityType)
@@ -45,6 +45,6 @@ class SelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
     }
 
     operator fun plus(other: SelectStatement<ENTITY, ENTITY_TYPE>): SelectStatement<ENTITY, ENTITY_TYPE> {
-        return SelectStatement(this.provider, this.block + other.block)
+        return SelectStatement(this.from, this.block + other.block)
     }
 }
