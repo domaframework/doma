@@ -4,7 +4,7 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
 open class SelectDeclaration(protected val _selectContext: SelectContext) {
-    private val whereDeclaration = WhereDeclaration { _selectContext.where.add(it) }
+    private val whereDeclaration = WhereDeclaration(_selectContext.config) { _selectContext.where.add(it) }
     private val orderByDeclaration = OrderByDeclaration { _selectContext.orderBy.add(it) }
     private val forUpdateDeclaration = ForUpdateDeclaration { _selectContext.forUpdate = it }
 
@@ -56,7 +56,7 @@ open class SelectDeclaration(protected val _selectContext: SelectContext) {
 }
 
 @Declaration
-class AssociableDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext){
+class AssociableDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext) {
     fun <ENTITY, ENTITY2> associate(type1: EntityType<ENTITY>, type2: EntityType<ENTITY2>, associator: (ENTITY, ENTITY2) -> Unit) {
         // TODO check arguments
         _selectContext.associations[type1 to type2] = associator as (Any, Any) -> Unit

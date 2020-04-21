@@ -1,38 +1,37 @@
 package org.seasar.doma.criteria
 
-import java.util.function.Supplier
+import java.util.Optional
+import java.util.OptionalDouble
+import java.util.OptionalInt
+import java.util.OptionalLong
 import org.seasar.doma.internal.jdbc.scalar.Scalars
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter
-import org.seasar.doma.jdbc.ConfigSupport
-import org.seasar.doma.jdbc.entity.EntityPropertyType
+import org.seasar.doma.jdbc.Config
+import org.seasar.doma.jdbc.entity.DefaultPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
-import org.seasar.doma.wrapper.IntegerWrapper
 
 @Declaration
 @Suppress("FunctionName")
-class WhereDeclaration(private val add: (Criterion) -> Unit) {
+class WhereDeclaration(private val config: Config, private val add: (Criterion) -> Unit) {
 
-    fun <BASIC> eq(left: EntityPropertyType<*, BASIC>, right: BASIC?) {
+    fun <CONTAINER> eq(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
         add(Criterion.Eq(toProp(left), toParam(left, right)))
     }
 
-    fun <BASIC> eq(left: EntityPropertyType<*, BASIC>, right: EntityPropertyType<*, BASIC>) {
+    fun <CONTAINER> eq(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
         add(Criterion.Eq(toProp(left), toProp(right)))
     }
 
-    fun <BASIC> ne(left: EntityPropertyType<*, BASIC>, right: BASIC?) {
+    fun <CONTAINER> ne(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
         add(Criterion.Ne(toProp(left), toParam(left, right)))
     }
 
-    fun <BASIC> ne(left: EntityPropertyType<*, BASIC>, right: EntityPropertyType<*, BASIC>) {
+    fun <CONTAINER> ne(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
         add(Criterion.Ne(toProp(left), toProp(right)))
     }
 
-    fun between(prop: EntityPropertyType<*, Int>, begin: Int?, end: Int?) {
-        add(Criterion.Between(Operand.Prop(prop),
-                Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(begin) })),
-                Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(end) }))))
+    fun <CONTAINER> between(propType: DefaultPropertyType<*, *, CONTAINER>, begin: CONTAINER?, end: CONTAINER?) {
+        add(Criterion.Between(toProp(propType), toParam(propType, begin), toParam(propType, end)))
     }
 
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> exists(
@@ -51,13 +50,13 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         add(Criterion.NotExists(context))
     }
 
-    fun <BASIC> `in`(left: EntityPropertyType<*, BASIC>, right: List<BASIC?>) {
+    fun <CONTAINER> `in`(left: DefaultPropertyType<*, *, CONTAINER>, right: List<CONTAINER?>) {
         add(Criterion.InSingle(toProp(left), right.map { toParam(left, it) }))
     }
 
-    fun <BASIC1, BASIC2> `in`(
-        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
-        right: List<Pair<BASIC1, BASIC2>>
+    fun <CONTAINER1, CONTAINER2> `in`(
+        left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
+        right: List<Pair<CONTAINER1, CONTAINER2>>
     ) {
         val prop1 = toProp(left.first)
         val prop2 = toProp(left.second)
@@ -69,13 +68,13 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         add(Criterion.InPair(prop1 to prop2, params))
     }
 
-    fun <BASIC> `in`(left: EntityPropertyType<*, BASIC>, right: SelectSingle<BASIC>) {
+    fun <CONTAINER> `in`(left: DefaultPropertyType<*, *, CONTAINER>, right: SelectSingle<CONTAINER>) {
         add(Criterion.InSelectSingle(toProp(left), right.context))
     }
 
-    fun <BASIC1, BASIC2> `in`(
-        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
-        right: SelectPair<BASIC1, BASIC2>
+    fun <CONTAINER1, CONTAINER2> `in`(
+        left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
+        right: SelectPair<CONTAINER1, CONTAINER2>
     ) {
         val (first, second) = left
         val prop1 = Operand.Prop(first)
@@ -83,13 +82,13 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         add(Criterion.InSelectPair(prop1 to prop2, right.context))
     }
 
-    fun <BASIC> notIn(left: EntityPropertyType<*, BASIC>, right: List<BASIC>) {
+    fun <CONTAINER> notIn(left: DefaultPropertyType<*, *, CONTAINER>, right: List<CONTAINER>) {
         add(Criterion.NotInSingle(toProp(left), right.map { toParam(left, it) }))
     }
 
-    fun <BASIC1, BASIC2> notIn(
-        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
-        values: List<Pair<BASIC1, BASIC2>>
+    fun <CONTAINER1, CONTAINER2> notIn(
+        left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
+        values: List<Pair<CONTAINER1, CONTAINER2>>
     ) {
         val (first, second) = left
         val prop1 = Operand.Prop(first)
@@ -102,13 +101,13 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         add(Criterion.NotInPair(prop1 to prop2, params))
     }
 
-    fun <BASIC> notIn(left: EntityPropertyType<*, BASIC>, right: SelectSingle<BASIC>) {
+    fun <CONTAINER> notIn(left: DefaultPropertyType<*, *, CONTAINER>, right: SelectSingle<CONTAINER>) {
         add(Criterion.NotInSelectSingle(Operand.Prop(left), right.context))
     }
 
-    fun <BASIC1, BASIC2> notIn(
-        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
-        right: SelectPair<BASIC1, BASIC2>
+    fun <CONTAINER1, CONTAINER2> notIn(
+        left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
+        right: SelectPair<CONTAINER1, CONTAINER2>
     ) {
         val (first, second) = left
         val prop1 = Operand.Prop(first)
@@ -117,11 +116,11 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
     }
 
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
-            BASIC, PROPERTY_TYPE : EntityPropertyType<ENTITY, BASIC>> selectSingle(
+            CONTAINER, PROPERTY_TYPE : DefaultPropertyType<ENTITY, *, CONTAINER>> selectSingle(
                 list: (ENTITY_TYPE) -> PROPERTY_TYPE,
                 from: () -> ENTITY_TYPE,
                 block: SelectDeclaration.(ENTITY_TYPE) -> Unit
-            ): SelectSingle<BASIC> {
+            ): SelectSingle<CONTAINER> {
         val entityType = from()
         val propType = list(entityType)
         val projection = Projection.Single(propType)
@@ -130,13 +129,13 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
     }
 
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
-            BASIC1, PROPERTY_TYPE1 : EntityPropertyType<ENTITY, BASIC1>,
-            BASIC2, PROPERTY_TYPE2 : EntityPropertyType<ENTITY, BASIC2>
+            CONTAINER1, PROPERTY_TYPE1 : DefaultPropertyType<ENTITY, *, CONTAINER1>,
+            CONTAINER2, PROPERTY_TYPE2 : DefaultPropertyType<ENTITY, *, CONTAINER2>
             > selectPair(
                 list: (ENTITY_TYPE) -> Pair<PROPERTY_TYPE1, PROPERTY_TYPE2>,
                 from: () -> ENTITY_TYPE,
                 block: SelectDeclaration.(ENTITY_TYPE) -> Unit
-            ): SelectPair<BASIC1, BASIC2> {
+            ): SelectPair<CONTAINER1, CONTAINER2> {
         val entityType = from()
         val (first, second) = list(entityType)
         val projection = Projection.Pair(first, second)
@@ -152,20 +151,33 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
 
     private fun runBlock(block: WhereDeclaration.() -> Unit, context: (List<Criterion>) -> Criterion) {
         val criteriaList = mutableListOf<Criterion>()
-        val declaration = WhereDeclaration { criteriaList.add(it) }
+        val declaration = WhereDeclaration(config) { criteriaList.add(it) }
         declaration.block()
         if (criteriaList.isNotEmpty()) {
             add(context(criteriaList))
         }
     }
 
-    private fun <BASIC> toProp(propType: EntityPropertyType<*, BASIC>): Operand.Prop {
+    private fun <CONTAINER> toProp(propType: DefaultPropertyType<*, *, CONTAINER>): Operand.Prop {
         return Operand.Prop(propType)
     }
 
-    private fun <BASIC> toParam(propType: EntityPropertyType<*, BASIC>, value: BASIC?): Operand.Param {
-        // TODO
-        val supplier = Scalars.wrap(value, propType.createProperty().wrapper.basicClass, false, ConfigSupport.defaultClassHelper)
+    // TODO simplify
+    private fun <CONTAINER> toParam(propType: DefaultPropertyType<*, *, CONTAINER>, value: CONTAINER?): Operand.Param {
+        val v = when (value) {
+            is Optional<*> -> if (value.isPresent) value.get() else null
+            is OptionalInt -> if (value.isPresent) value.asInt else null
+            is OptionalLong -> if (value.isPresent) value.asLong else null
+            is OptionalDouble -> if (value.isPresent) value.asDouble else null
+            else -> value
+        }
+        val prop = propType.createProperty()
+        val clazz = if (prop.domainClass.isPresent) {
+            prop.domainClass.get()
+        } else {
+            prop.wrapper.basicClass
+        }
+        val supplier = Scalars.wrap(v, clazz, false, config.classHelper)
         return Operand.Param(ScalarInParameter(supplier.get()))
     }
 
@@ -174,7 +186,7 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         block: SelectDeclaration.(ENTITY_TYPE) -> Unit,
         projection: Projection
     ): SelectContext {
-        val context = SelectContext(entityType, projection = projection)
+        val context = SelectContext(config, entityType, projection = projection)
         val declaration = SelectDeclaration(context)
         declaration.block(entityType)
         if (context.associations.isNotEmpty()) {

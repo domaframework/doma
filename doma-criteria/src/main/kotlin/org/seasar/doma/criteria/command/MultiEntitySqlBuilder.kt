@@ -6,7 +6,6 @@ import org.seasar.doma.criteria.Operand
 import org.seasar.doma.criteria.Projection
 import org.seasar.doma.criteria.SelectContext
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
-import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
@@ -15,11 +14,12 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class MultiEntitySqlBuilder(
-    private val config: Config,
     private val selectContext: SelectContext,
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED),
+    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(selectContext.config, SqlKind.SELECT, SqlLogType.FORMATTED),
     private val aliasManager: AliasManager = AliasManager(selectContext)
 ) {
+
+    private val config = selectContext.config
 
     fun build(): PreparedSql {
         interpretContext()
@@ -200,7 +200,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = MultiEntitySqlBuilder(config, right, buf, parentAliasManager)
+        val builder = MultiEntitySqlBuilder(right, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -217,7 +217,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = MultiEntitySqlBuilder(config, right, buf, parentAliasManager)
+        val builder = MultiEntitySqlBuilder(right, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -236,7 +236,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql("exists (")
         val parentAliasManager = AliasManager(selectContext, aliasManager)
-        val builder = MultiEntitySqlBuilder(config, selectContext, buf, parentAliasManager)
+        val builder = MultiEntitySqlBuilder(selectContext, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }

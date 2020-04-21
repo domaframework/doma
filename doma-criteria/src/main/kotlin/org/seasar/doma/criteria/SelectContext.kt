@@ -1,10 +1,12 @@
 package org.seasar.doma.criteria
 
+import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectContext(
+    val config: Config,
     val entityType: EntityType<*>,
     var distinct: Boolean = false,
     var projection: Projection = Projection.Default,

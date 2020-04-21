@@ -1,5 +1,7 @@
 package example
 
+import java.util.Optional
+import java.util.OptionalInt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -258,5 +260,71 @@ class SelectStatementTest(private val config: Config) {
         assertEquals(14, list.size)
         assertTrue(list.filter { it.employeeName == "KING" }.all { it.manager == null })
         assertTrue(list.filterNot { it.employeeName == "KING" }.all { it.manager != null })
+    }
+
+    @Test
+    fun domain() {
+        val query = select(::_Employee) { p ->
+            where {
+                eq(p.salary, Salary("3000"))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+    }
+
+    @Test
+    fun optional_domain() {
+        val query = select(::_Person) { p ->
+            where {
+                eq(p.salary, Optional.of(Salary("3000")))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+    }
+
+    @Test
+    fun optional_domain_empty() {
+        val query = select(::_Person) { p ->
+            where {
+                eq(p.salary, Optional.empty())
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(0, list.size)
+    }
+
+    @Test
+    fun optional_basic() {
+        val query = select(::_Person) { p ->
+            where {
+                eq(p.managerId, Optional.of(9))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(3, list.size)
+    }
+
+    @Test
+    fun optional_basic_empty() {
+        val query = select(::_Person) { p ->
+            where {
+                eq(p.managerId, Optional.empty())
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+    }
+
+    @Test
+    fun optionalInt() {
+        val query = select(::_Person) { p ->
+            where {
+                eq(p.employeeNo, OptionalInt.of(7900))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
     }
 }

@@ -30,10 +30,10 @@ class SelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
 
     fun buildContextAndSql(config: Config): Pair<SelectContext, PreparedSql> {
         val entityType = from()
-        val context = SelectContext(entityType)
+        val context = SelectContext(config, entityType)
         val declaration = AssociableDeclaration(context)
         declaration.block(entityType)
-        val builder = MultiEntitySqlBuilder(config, context)
+        val builder = MultiEntitySqlBuilder(context)
         return context to builder.build()
     }
 
