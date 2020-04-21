@@ -8,7 +8,7 @@ open class SelectDeclaration(protected val _selectContext: SelectContext) {
     private val orderByDeclaration = OrderByDeclaration { _selectContext.orderBy.add(it) }
     private val forUpdateDeclaration = ForUpdateDeclaration { _selectContext.forUpdate = it }
 
-    fun distinct(value: Boolean) {
+    fun distinct(value: Boolean = true) {
         _selectContext.distinct = value
     }
 
@@ -52,7 +52,10 @@ open class SelectDeclaration(protected val _selectContext: SelectContext) {
         _selectContext.offset = value
     }
 
-    fun forUpdate(block: ForUpdateDeclaration.() -> Unit) = forUpdateDeclaration.block()
+    fun forUpdate(block: ForUpdateDeclaration.() -> Unit) {
+        _selectContext.forUpdate = ForUpdate()
+        forUpdateDeclaration.block()
+    }
 }
 
 @Declaration

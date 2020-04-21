@@ -421,6 +421,56 @@ class SelectStatementTest {
     }
 
     @Test
+    fun limit() {
+        val query = select(::_Emp) {
+            limit(10)
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 10"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun offset() {
+        val query = select(::_Emp) {
+            offset(10)
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 10"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun forUpdate() {
+        val query = select(::_Emp) {
+            forUpdate {}
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun forUpdate_nowait() {
+        val query = select(::_Emp) {
+            forUpdate { nowait() }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update nowait"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun distinct() {
+        val query = select(::_Emp) {
+            distinct()
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun plus() {
         val query1 = select(::_Emp) { e ->
             where {

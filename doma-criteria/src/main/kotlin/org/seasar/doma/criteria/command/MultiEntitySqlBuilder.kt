@@ -28,6 +28,9 @@ class MultiEntitySqlBuilder(
 
     private fun interpretContext() {
         buf.appendSql("select ")
+        if (selectContext.distinct) {
+            buf.appendSql("distinct ")
+        }
         when (val projection = selectContext.projection) {
             is Projection.Default -> {
                 selectContext.getProjectionTargets().forEach {
@@ -86,6 +89,18 @@ class MultiEntitySqlBuilder(
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
+        }
+        selectContext.limit?.let {
+            buf.appendSql(" limit $it")
+        }
+        selectContext.offset?.let {
+            buf.appendSql(" offset $it")
+        }
+        selectContext.forUpdate?.let {
+            buf.appendSql(" for update")
+            if (it.nowait) {
+                buf.appendSql(" nowait")
+            }
         }
     }
 

@@ -327,4 +327,55 @@ class SelectStatementTest(private val config: Config) {
         val list = query.execute(config)
         assertEquals(1, list.size)
     }
+
+    @Test
+    fun offset_limit() {
+        val query = select(::_Employee) { e ->
+            orderBy {
+                asc(e.employeeId)
+            }
+            offset(5)
+            limit(2)
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals(6, list[0].employeeId)
+        assertEquals(7, list[1].employeeId)
+    }
+
+    @Test
+    fun forUpdate() {
+        val query = select(::_Employee) { e ->
+            where {
+                eq(e.employeeId, 1)
+            }
+            forUpdate { }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+    }
+
+    @Test
+    fun forUpdate_nowait() {
+        val query = select(::_Employee) { e ->
+            where {
+                eq(e.employeeId, 1)
+            }
+            forUpdate { nowait(true) }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+    }
+
+    @Test
+    fun distinct() {
+        val query = select(::_Employee) { e ->
+            distinct()
+            where {
+                eq(e.employeeId, 1)
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+    }
 }
