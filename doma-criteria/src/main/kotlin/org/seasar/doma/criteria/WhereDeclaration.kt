@@ -30,6 +30,46 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         add(Criterion.Ne(toProp(left), toProp(right)))
     }
 
+    fun <CONTAINER> gt(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.Gt(toProp(left), toParam(left, right)))
+    }
+
+    fun <CONTAINER> gt(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
+        add(Criterion.Gt(toProp(left), toProp(right)))
+    }
+
+    fun <CONTAINER> ge(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.Ge(toProp(left), toParam(left, right)))
+    }
+
+    fun <CONTAINER> ge(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
+        add(Criterion.Ge(toProp(left), toProp(right)))
+    }
+
+    fun <CONTAINER> lt(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.Lt(toProp(left), toParam(left, right)))
+    }
+
+    fun <CONTAINER> lt(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
+        add(Criterion.Lt(toProp(left), toProp(right)))
+    }
+
+    fun <CONTAINER> le(left: DefaultPropertyType<*, *, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.Le(toProp(left), toParam(left, right)))
+    }
+
+    fun <CONTAINER> le(left: DefaultPropertyType<*, *, CONTAINER>, right: DefaultPropertyType<*, *, CONTAINER>) {
+        add(Criterion.Le(toProp(left), toProp(right)))
+    }
+
+    fun <CONTAINER> like(left: DefaultPropertyType<*, String, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.Like(toProp(left), toParam(left, right)))
+    }
+
+    fun <CONTAINER> notLike(left: DefaultPropertyType<*, String, CONTAINER>, right: CONTAINER?) {
+        add(Criterion.NotLike(toProp(left), toParam(left, right)))
+    }
+
     fun <CONTAINER> between(propType: DefaultPropertyType<*, *, CONTAINER>, begin: CONTAINER?, end: CONTAINER?) {
         add(Criterion.Between(toProp(propType), toParam(propType, begin), toParam(propType, end)))
     }

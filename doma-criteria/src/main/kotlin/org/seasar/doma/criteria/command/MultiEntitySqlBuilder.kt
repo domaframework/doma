@@ -113,6 +113,9 @@ class MultiEntitySqlBuilder(
             is Criterion.Ge -> comparison(c.left, c.right, ">=")
             is Criterion.Lt -> comparison(c.left, c.right, "<")
             is Criterion.Le -> comparison(c.left, c.right, "<=")
+            is Criterion.Like -> like(c.left, c.right)
+            is Criterion.NotLike -> like(c.left, c.right, true)
+            is Criterion.Between -> between(c.prop, c.begin, c.end)
             is Criterion.InSingle -> inSingle(c.left, c.right)
             is Criterion.InPair -> inPair(c.left, c.right)
             is Criterion.InSelectSingle -> inSelectSingle(c.left, c.right)
@@ -121,7 +124,6 @@ class MultiEntitySqlBuilder(
             is Criterion.NotInPair -> inPair(c.left, c.right, true)
             is Criterion.NotInSelectSingle -> inSelectSingle(c.left, c.right, true)
             is Criterion.NotInSelectPair -> inSelectPair(c.left, c.right, true)
-            is Criterion.Between -> between(c.prop, c.begin, c.end)
             is Criterion.Exists -> exists(c.context)
             is Criterion.NotExists -> exists(c.context, true)
             is Criterion.And -> and(c.list, index)
@@ -148,6 +150,26 @@ class MultiEntitySqlBuilder(
                 is Operand.Prop -> column(right.value)
             }
         }
+    }
+
+    private fun like(left: Operand.Prop, right: Operand, not: Boolean = false) {
+        column(left.value)
+        if (not) {
+            buf.appendSql(" not")
+        }
+        buf.appendSql(" like ")
+        when (right) {
+            is Operand.Param -> param(right.value)
+            is Operand.Prop -> column(right.value)
+        }
+    }
+
+    private fun between(prop: Operand.Prop, begin: Operand.Param, end: Operand.Param) {
+        column(prop.value)
+        buf.appendSql(" between ")
+        param(begin.value)
+        buf.appendSql(" and ")
+        param(end.value)
     }
 
     private fun inSingle(left: Operand.Prop, right: List<Operand.Param>, not: Boolean = false) {
@@ -220,14 +242,6 @@ class MultiEntitySqlBuilder(
         val builder = MultiEntitySqlBuilder(right, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
-    }
-
-    private fun between(prop: Operand.Prop, begin: Operand.Param, end: Operand.Param) {
-        column(prop.value)
-        buf.appendSql(" between ")
-        param(begin.value)
-        buf.appendSql(" and ")
-        param(end.value)
     }
 
     private fun exists(selectContext: SelectContext, not: Boolean = false) {

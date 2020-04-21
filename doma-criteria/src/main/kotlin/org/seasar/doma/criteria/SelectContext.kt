@@ -52,6 +52,8 @@ sealed class Criterion {
     data class Ge(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Lt(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Le(val left: Operand.Prop, val right: Operand) : Criterion()
+    data class Like(val left: Operand.Prop, val right: Operand) : Criterion()
+    data class NotLike(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Between(val prop: Operand.Prop, val begin: Operand.Param, val end: Operand.Param) : Criterion()
     data class Exists(val context: SelectContext) : Criterion()
     data class NotExists(val context: SelectContext) : Criterion()

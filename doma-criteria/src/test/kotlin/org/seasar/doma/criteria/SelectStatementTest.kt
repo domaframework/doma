@@ -18,6 +18,192 @@ class SelectStatementTest {
     private val config = MockConfig()
 
     @Test
+    fun eq() {
+        val query = select(::_Dept) { d ->
+            where {
+                eq(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID = 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun eq_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                eq(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID = t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun ne() {
+        val query = select(::_Dept) { d ->
+            where {
+                ne(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID <> 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun ne_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                ne(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID <> t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun ge() {
+        val query = select(::_Dept) { d ->
+            where {
+                ge(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID >= 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun ge_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                ge(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID >= t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun gt() {
+        val query = select(::_Dept) { d ->
+            where {
+                gt(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID > 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun gt_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                gt(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID > t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun le() {
+        val query = select(::_Dept) { d ->
+            where {
+                le(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID <= 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun le_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                le(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID <= t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun lt() {
+        val query = select(::_Dept) { d ->
+            where {
+                lt(d.id, 1)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID < 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun lt_propType() {
+        val query = select(::_Dept) { d ->
+            val e = leftJoin(::_Emp) { e ->
+                eq(d.id, e.id)
+            }
+            where {
+                lt(d.id, e.id)
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID < t1_.ID"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun like() {
+        val query = select(::_Dept) { d ->
+            where {
+                like(d.name, "%test")
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME like '%test'"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notLike() {
+        val query = select(::_Dept) { d ->
+            where {
+                notLike(d.name, "%test")
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME not like '%test'"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun innerJoin() {
         val query = select(::_Emp) { e ->
             innerJoin(::_Dept) { d -> eq(e.id, d.id) }
