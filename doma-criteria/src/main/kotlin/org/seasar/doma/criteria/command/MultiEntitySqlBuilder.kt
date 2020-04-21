@@ -3,10 +3,11 @@ package org.seasar.doma.criteria.command
 import org.seasar.doma.criteria.Criterion
 import org.seasar.doma.criteria.JoinKind
 import org.seasar.doma.criteria.Operand
+import org.seasar.doma.criteria.Projection
 import org.seasar.doma.criteria.SelectContext
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.Config
+import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
@@ -27,16 +28,27 @@ class MultiEntitySqlBuilder(
 
     private fun interpretContext() {
         buf.appendSql("select ")
-        if (selectContext.asterisk) {
-            buf.appendSql("*")
-        } else {
-            selectContext.getProjectionTargets().forEach {
-                it.entityPropertyTypes.forEach { prop ->
-                    column(prop)
-                    buf.appendSql(", ")
+        when (val projection = selectContext.projection) {
+            is Projection.Default -> {
+                selectContext.getProjectionTargets().forEach {
+                    it.entityPropertyTypes.forEach { prop ->
+                        column(prop)
+                        buf.appendSql(", ")
+                    }
                 }
+                buf.cutBackSql(2)
             }
-            buf.cutBackSql(2)
+            is Projection.Asterisk -> {
+                buf.appendSql("*")
+            }
+            is Projection.Single -> {
+                column(projection.propType)
+            }
+            is Projection.Pair -> {
+                column(projection.first)
+                buf.appendSql(", ")
+                column(projection.second)
+            }
         }
         buf.appendSql(" from ")
         table(selectContext.entityType)
@@ -89,7 +101,7 @@ class MultiEntitySqlBuilder(
         buf.appendSql(prop.getColumnName(config.naming::apply, config.dialect::applyQuote))
     }
 
-    private fun param(param: BasicInParameter<*>) {
+    private fun param(param: InParameter<*>) {
         buf.appendParameter(param)
     }
 
@@ -102,6 +114,13 @@ class MultiEntitySqlBuilder(
             is Criterion.Lt -> comparison(c.left, c.right, "<")
             is Criterion.Le -> comparison(c.left, c.right, "<=")
             is Criterion.In -> `in`(c.left, c.right)
+            is Criterion.InPair -> inPair(c.left, c.right)
+            is Criterion.InSelect -> inSelect(c.left, c.right)
+            is Criterion.InSelectPair -> inSelectPair(c.left, c.right)
+            is Criterion.NotIn -> `in`(c.left, c.right, true)
+            is Criterion.NotInPair -> inPair(c.left, c.right, true)
+            is Criterion.NotInSelect -> inSelect(c.left, c.right, true)
+            is Criterion.NotInSelectPair -> inSelectPair(c.left, c.right, true)
             is Criterion.Between -> between(c.prop, c.begin, c.end)
             is Criterion.Exists -> exists(c.context)
             is Criterion.NotExists -> exists(c.context, true)
@@ -131,8 +150,11 @@ class MultiEntitySqlBuilder(
         }
     }
 
-    private fun `in`(left: Operand.Prop, right: List<Operand.Param>) {
+    private fun `in`(left: Operand.Prop, right: List<Operand.Param>, not: Boolean = false) {
         column(left.value)
+        if (not) {
+            buf.appendSql(" not")
+        }
         buf.appendSql(" in (")
         if (right.isEmpty()) {
             buf.appendSql("null")
@@ -143,6 +165,60 @@ class MultiEntitySqlBuilder(
             }
             buf.cutBackSql(2)
         }
+        buf.appendSql(")")
+    }
+
+    private fun inPair(left: Pair<Operand.Prop, Operand.Prop>, right: List<Pair<Operand.Param, Operand.Param>>, not: Boolean = false) {
+        buf.appendSql("(")
+        column(left.first.value)
+        buf.appendSql(", ")
+        column(left.second.value)
+        buf.appendSql(")")
+        if (not) {
+            buf.appendSql(" not")
+        }
+        buf.appendSql(" in (")
+        if (right.isEmpty()) {
+            buf.appendSql("null, null")
+        } else {
+            right.forEach {
+                buf.appendSql("(")
+                param(it.first.value)
+                buf.appendSql(", ")
+                param(it.second.value)
+                buf.appendSql("), ")
+            }
+            buf.cutBackSql(2)
+        }
+        buf.appendSql(")")
+    }
+
+    private fun inSelect(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
+        column(left.value)
+        if (not) {
+            buf.appendSql(" not")
+        }
+        buf.appendSql(" in (")
+        val parentAliasManager = AliasManager(right, aliasManager)
+        val builder = MultiEntitySqlBuilder(config, right, buf, parentAliasManager)
+        builder.interpretContext()
+        buf.appendSql(")")
+    }
+
+    private fun inSelectPair(left: Pair<Operand.Prop, Operand.Prop>, right: SelectContext, not: Boolean = false) {
+        val (prop1, prop2) = left
+        buf.appendSql("(")
+        column(prop1.value)
+        buf.appendSql(", ")
+        column(prop2.value)
+        buf.appendSql(")")
+        if (not) {
+            buf.appendSql(" not")
+        }
+        buf.appendSql(" in (")
+        val parentAliasManager = AliasManager(right, aliasManager)
+        val builder = MultiEntitySqlBuilder(config, right, buf, parentAliasManager)
+        builder.interpretContext()
         buf.appendSql(")")
     }
 

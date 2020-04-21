@@ -1,11 +1,17 @@
 package org.seasar.doma.criteria
 
 import java.util.function.Supplier
+import org.seasar.doma.internal.jdbc.scalar.Scalars
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter
+import org.seasar.doma.jdbc.ConfigSupport
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 import org.seasar.doma.wrapper.IntegerWrapper
 import org.seasar.doma.wrapper.StringWrapper
+
+class SelectSingle<BASIC>(val context: SelectContext)
+class SelectPair<BASIC1, BASIC2>(val context: SelectContext)
 
 @Declaration
 @Suppress("FunctionName")
@@ -48,11 +54,87 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
 //    }
 //
     fun `in`(prop: EntityPropertyType<*, Int>, values: List<Int?>, hint: Int? = null) {
-        _in(prop, values.map { Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(it) })) })
+        _inSingle(prop, values.map { Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(it) })) })
     }
 
     fun `in`(prop: EntityPropertyType<*, String>, values: List<String?>, hint: String? = null) {
-        _in(prop, values.map { Operand.Param(BasicInParameter<String?>(Supplier { StringWrapper(it) })) })
+        _inSingle(prop, values.map { Operand.Param(BasicInParameter<String?>(Supplier { StringWrapper(it) })) })
+    }
+
+    private fun _inSingle(prop: EntityPropertyType<*, *>, params: List<Operand.Param>) {
+        add(Criterion.In(Operand.Prop(prop), params))
+    }
+
+    fun <BASIC1, BASIC2> `in`(left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>, values: List<Pair<BASIC1, BASIC2>>) {
+        val (first, second) = left
+        val prop1 = Operand.Prop(first)
+        val prop2 = Operand.Prop(second)
+        // TODO
+        val params = values.map {
+            val (value1, value2) = it
+            val scalarSupplier1 = Scalars.wrap(value1, first.createProperty().wrapper.basicClass, false, ConfigSupport.defaultClassHelper)
+            val scalarSupplier2 = Scalars.wrap(value2, second.createProperty().wrapper.basicClass, false, ConfigSupport.defaultClassHelper)
+            val param1 = Operand.Param(ScalarInParameter(scalarSupplier1.get()))
+            val param2 = Operand.Param(ScalarInParameter(scalarSupplier2.get()))
+            param1 to param2
+        }
+        add(Criterion.InPair(prop1 to prop2, params))
+    }
+
+    fun <BASIC> `in`(left: EntityPropertyType<*, BASIC>, right: SelectSingle<BASIC>) {
+        add(Criterion.InSelect(Operand.Prop(left), right.context))
+    }
+
+    fun <BASIC1, BASIC2> `in`(
+        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
+        right: SelectPair<BASIC1, BASIC2>
+    ) {
+        val (first, second) = left
+        val prop1 = Operand.Prop(first)
+        val prop2 = Operand.Prop(second)
+        add(Criterion.InSelectPair(prop1 to prop2, right.context))
+    }
+
+    fun notIn(prop: EntityPropertyType<*, Int>, values: List<Int?>, hint: Int? = null) {
+        _notInSingle(prop, values.map { Operand.Param(BasicInParameter<Int?>(Supplier { IntegerWrapper(it) })) })
+    }
+
+    fun notIn(prop: EntityPropertyType<*, String>, values: List<String?>, hint: String? = null) {
+        _notInSingle(prop, values.map { Operand.Param(BasicInParameter<String?>(Supplier { StringWrapper(it) })) })
+    }
+
+    private fun _notInSingle(prop: EntityPropertyType<*, *>, params: List<Operand.Param>) {
+        add(Criterion.NotIn(Operand.Prop(prop), params))
+    }
+
+    fun <BASIC1, BASIC2> notIn(left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>, values: List<Pair<BASIC1, BASIC2>>) {
+        val (first, second) = left
+        val prop1 = Operand.Prop(first)
+        val prop2 = Operand.Prop(second)
+        // TODO
+        val params = values.map {
+            val (value1, value2) = it
+            val scalarSupplier1 = Scalars.wrap(value1, first.createProperty().wrapper.basicClass, false, ConfigSupport.defaultClassHelper)
+            val scalarSupplier2 = Scalars.wrap(value2, second.createProperty().wrapper.basicClass, false, ConfigSupport.defaultClassHelper)
+            val param1 = Operand.Param(ScalarInParameter(scalarSupplier1.get()))
+            val param2 = Operand.Param(ScalarInParameter(scalarSupplier2.get()))
+            param1 to param2
+        }
+        add(Criterion.NotInPair(prop1 to prop2, params))
+    }
+
+    fun <BASIC> notIn(left: EntityPropertyType<*, BASIC>, right: SelectSingle<BASIC>) {
+        add(Criterion.NotInSelect(Operand.Prop(left), right.context))
+    }
+
+    fun <BASIC1, BASIC2> notIn(
+        left: Pair<EntityPropertyType<*, BASIC1>, EntityPropertyType<*, BASIC2>>,
+        right: SelectPair<BASIC1, BASIC2>
+    ) {
+        val (first, second) = left
+        val prop1 = Operand.Prop(first)
+        val prop2 = Operand.Prop(second)
+        add(Criterion.NotInSelectPair(prop1 to prop2, right.context))
     }
 
     //    fun KProperty1<*, java.sql.Array?>.`in`(value: List<java.sql.Array?>, @Suppress("UNUSED_PARAMETER") `_`: java.sql.Array? = null) =
@@ -112,8 +194,33 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
 //    fun KProperty1<*, SQLXML?>.`in`(value: List<SQLXML?>, @Suppress("UNUSED_PARAMETER") `_`: SQLXML? = null) =
 //        _in(this, value)
 //
-    private fun _in(prop: EntityPropertyType<*, *>, params: List<Operand.Param>) {
-        add(Criterion.In(Operand.Prop(prop), params))
+
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
+            BASIC, PROPERTY_TYPE : EntityPropertyType<ENTITY, BASIC>> selectSingle(
+                list: (ENTITY_TYPE) -> PROPERTY_TYPE,
+                from: () -> ENTITY_TYPE,
+                block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+            ): SelectSingle<BASIC> {
+        val entityType = from()
+        val propType = list(entityType)
+        val projection = Projection.Single(propType)
+        val context = createSubContext(entityType, block, projection)
+        return SelectSingle(context)
+    }
+
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
+            BASIC1, PROPERTY_TYPE1 : EntityPropertyType<ENTITY, BASIC1>,
+            BASIC2, PROPERTY_TYPE2 : EntityPropertyType<ENTITY, BASIC2>
+            > selectPair(
+                list: (ENTITY_TYPE) -> Pair<PROPERTY_TYPE1, PROPERTY_TYPE2>,
+                from: () -> ENTITY_TYPE,
+                block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+            ): SelectPair<BASIC1, BASIC2> {
+        val entityType = from()
+        val (first, second) = list(entityType)
+        val projection = Projection.Pair(first, second)
+        val context = createSubContext(entityType, block, projection)
+        return SelectPair(context)
     }
 
     //
@@ -207,7 +314,7 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         from: () -> ENTITY_TYPE,
         block: SelectDeclaration.(ENTITY_TYPE) -> Unit
     ) {
-        val context = createChildContext(from, block)
+        val context = createSubContext(from(), block, Projection.Asterisk)
         add(Criterion.Exists(context))
     }
 
@@ -215,16 +322,16 @@ class WhereDeclaration(private val add: (Criterion) -> Unit) {
         from: () -> ENTITY_TYPE,
         block: SelectDeclaration.(ENTITY_TYPE) -> Unit
     ) {
-        val context = createChildContext(from, block)
+        val context = createSubContext(from(), block, Projection.Asterisk)
         add(Criterion.NotExists(context))
     }
 
-    private fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> createChildContext(
-        from: () -> ENTITY_TYPE,
-        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+    private fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> createSubContext(
+        entityType: ENTITY_TYPE,
+        block: SelectDeclaration.(ENTITY_TYPE) -> Unit,
+        projection: Projection
     ): SelectContext {
-        val entityType = from()
-        val context = SelectContext(entityType, asterisk = true)
+        val context = SelectContext(entityType, projection = projection)
         val declaration = SelectDeclaration(context)
         declaration.block(entityType)
         if (context.associations.isNotEmpty()) {

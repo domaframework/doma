@@ -78,6 +78,90 @@ class SelectStatementTest {
     }
 
     @Test
+    fun in_pair() {
+        val query = select(::_Emp) { e ->
+            where {
+                `in`(e.id to e.name, listOf(1 to "a", 2 to "b"))
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) in ((1, 'a'), (2, 'b'))"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun in_selectSingle() {
+        val query = select(::_Emp) { e ->
+            where {
+                `in`(e.id, selectSingle({ it.id }, ::_Dept) {})
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID in (select t1_.ID from "CATA"."DEPT" t1_)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun in_selectPair() {
+        val query = select(::_Emp) { e ->
+            where {
+                `in`(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) in (select t1_.ID, t1_.NAME from "CATA"."DEPT" t1_)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notIn() {
+        val query = select(::_Emp) { e ->
+            where {
+                notIn(e.id, listOf(1, 2, 3))
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID not in (1, 2, 3)"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notIn_pair() {
+        val query = select(::_Emp) { e ->
+            where {
+                notIn(e.id to e.name, listOf(1 to "a", 2 to "b"))
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) not in ((1, 'a'), (2, 'b'))"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notIn_selectSingle() {
+        val query = select(::_Emp) { e ->
+            where {
+                notIn(e.id, selectSingle({ it.id }, ::_Dept) {})
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID not in (select t1_.ID from "CATA"."DEPT" t1_)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun notIn_selectPair() {
+        val query = select(::_Emp) { e ->
+            where {
+                notIn(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+            }
+        }
+        val (_, sql) = query.buildContextAndSql(config)
+        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from "CATA"."DEPT" t1_)"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun between() {
         val query = select(::_Emp) { e ->
             where {

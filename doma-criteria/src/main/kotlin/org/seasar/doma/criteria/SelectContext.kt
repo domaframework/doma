@@ -1,13 +1,13 @@
 package org.seasar.doma.criteria
 
-import org.seasar.doma.internal.jdbc.sql.BasicInParameter
+import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectContext(
     val entityType: EntityType<*>,
-    var asterisk: Boolean = false,
     var distinct: Boolean = false,
+    var projection: Projection = Projection.Default,
     val joins: MutableList<Join> = mutableListOf(),
     val where: MutableList<Criterion> = mutableListOf(),
     val orderBy: MutableList<Pair<EntityPropertyType<*, *>, String>> = mutableListOf(),
@@ -31,8 +31,15 @@ class SelectContext(
     }
 }
 
+sealed class Projection {
+    object Default : Projection()
+    object Asterisk : Projection()
+    data class Single(val propType: EntityPropertyType<*, *>) : Projection()
+    data class Pair(val first: EntityPropertyType<*, *>, val second: EntityPropertyType<*, *>) : Projection()
+}
+
 sealed class Operand {
-    data class Param(val value: BasicInParameter<*>) : Operand()
+    data class Param(val value: InParameter<*>) : Operand()
     data class Prop(val value: EntityPropertyType<*, *>) : Operand()
 }
 
@@ -44,6 +51,13 @@ sealed class Criterion {
     data class Lt(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Le(val left: Operand.Prop, val right: Operand) : Criterion()
     data class In(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
+    data class NotIn(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
+    data class InPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
+    data class NotInPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
+    data class InSelect(val left: Operand.Prop, val right: SelectContext) : Criterion()
+    data class InSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
+    data class NotInSelect(val left: Operand.Prop, val right: SelectContext) : Criterion()
+    data class NotInSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
 
     //    data class NotIn(val prop: KProperty1<*, *>, val values: List<*>) : Criterion()
 //    data class In2(val props: Pair<KProperty1<*, *>, KProperty1<*, *>>, val values: List<Pair<*, *>>) : Criterion()

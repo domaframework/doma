@@ -47,6 +47,90 @@ class SelectStatementTest(private val config: Config) {
     }
 
     @Test
+    fun where_in_pair() {
+        val query = select(::_Employee) { e ->
+            where {
+                `in`(e.departmentId to e.version, listOf(1 to 1))
+            }
+            orderBy {
+                asc(e.employeeId)
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(3, list.size)
+        list.forEach {
+            println(it.employeeName)
+        }
+    }
+
+    @Test
+    fun where_in_select() {
+        val query = select(::_Employee) { e ->
+            where {
+                `in`(e.managerId,
+                        selectSingle({ it.employeeId }, ::_Employee) {})
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(13, list.size)
+        assertTrue(list.none { it.employeeName == "KING" })
+    }
+
+    @Test
+    fun where_in_select_pair() {
+        val query = select(::_Employee) { e ->
+            where {
+                `in`(e.managerId to e.departmentId,
+                        selectPair({ it.employeeId to it.departmentId }, ::_Employee) {})
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(11, list.size)
+    }
+
+    @Test
+    fun where_notIn() {
+        val query = select(::_Department) { d ->
+            where {
+                notIn(d.departmentId, listOf(1, 3))
+            }
+            orderBy {
+                asc(d.departmentId)
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals(2, list[0].departmentId)
+        assertEquals(4, list[1].departmentId)
+    }
+
+    @Test
+    fun where_notIn_select() {
+        val query = select(::_Department) { d ->
+            where {
+                notIn(d.departmentId,
+                        selectSingle({ it.departmentId }, ::_Employee) {})
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+        assertEquals("OPERATIONS", list[0].departmentName)
+    }
+
+    @Test
+    fun where_notIn_select_pair() {
+        val query = select(::_Department) { d ->
+            where {
+                notIn(d.departmentId to d.version,
+                        selectPair({ it.departmentId to it.version }, ::_Employee) {})
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+        assertEquals("OPERATIONS", list[0].departmentName)
+    }
+
+    @Test
     fun where_exists() {
         val query = select(::_Employee) { e ->
             where {
