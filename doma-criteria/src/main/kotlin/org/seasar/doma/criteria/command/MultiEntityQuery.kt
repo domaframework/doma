@@ -19,10 +19,12 @@ class MultiEntityQuery(private val config: Config, private val sql: PreparedSql)
     }
 
     override fun getClassName(): String {
+        // TODO which name is the best?
         return SelectStatement::class.qualifiedName!!
     }
 
     override fun getMethodName(): String {
+        // TODO which name is the best?
         return "select"
     }
 

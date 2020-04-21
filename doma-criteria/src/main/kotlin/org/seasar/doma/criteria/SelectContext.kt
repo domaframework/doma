@@ -19,13 +19,13 @@ class SelectContext(
     val associations: MutableMap<Pair<EntityType<*>, EntityType<*>>, (Any, Any) -> Unit> = mutableMapOf()
 ) {
 
-    fun getProjectionTargets(): List<EntityType<Any>> {
-        val entityTypes = mutableListOf<EntityType<Any>>()
-        entityTypes.add(entityType as EntityType<Any>)
+    fun getProjectionTargets(): List<EntityType<*>> {
+        val entityTypes = mutableListOf<EntityType<*>>()
+        entityTypes.add(entityType)
         associations.forEach { (pair, _) ->
             listOf(pair.first, pair.second).forEach {
                 if (!entityTypes.contains(it)) {
-                    entityTypes.add(it as EntityType<Any>)
+                    entityTypes.add(it)
                 }
             }
         }

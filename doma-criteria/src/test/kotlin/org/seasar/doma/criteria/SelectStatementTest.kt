@@ -217,7 +217,7 @@ class SelectStatementTest {
     fun association() {
         val query = select(::_Emp) { e ->
             val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
-            associate(e, d) { emp, dept -> }
+            associate(e, d) { _, _ -> }
         }
         val (_, sql) = query.buildContextAndSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID)"""

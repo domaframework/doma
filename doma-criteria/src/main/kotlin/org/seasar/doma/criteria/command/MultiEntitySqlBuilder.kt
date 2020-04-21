@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class MultiEntitySqlBuilder(
     private val selectContext: SelectContext,
+    // TODO the SqlLogType value should be passed from the caller
     private val buf: PreparedSqlBuilder = PreparedSqlBuilder(selectContext.config, SqlKind.SELECT, SqlLogType.FORMATTED),
     private val aliasManager: AliasManager = AliasManager(selectContext)
 ) {
@@ -23,6 +24,7 @@ class MultiEntitySqlBuilder(
 
     fun build(): PreparedSql {
         interpretContext()
+        // TODO Use config.commenter
         return buf.build { it }
     }
 
@@ -143,7 +145,7 @@ class MultiEntitySqlBuilder(
             is Criterion.NotExists -> exists(c.context, true)
             is Criterion.And -> and(c.list, index)
             is Criterion.Or -> or(c.list, index)
-            is Criterion.Not -> not(c.list, index)
+            is Criterion.Not -> not(c.list)
         }
     }
 
@@ -290,7 +292,7 @@ class MultiEntitySqlBuilder(
         }
     }
 
-    private fun not(list: List<Criterion>, index: Int) {
+    private fun not(list: List<Criterion>) {
         if (list.isNotEmpty()) {
             buf.appendSql(" not ")
             buf.appendSql("(")

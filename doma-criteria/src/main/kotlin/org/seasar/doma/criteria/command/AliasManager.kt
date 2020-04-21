@@ -25,10 +25,12 @@ class AliasManager(
     }
 
     operator fun get(key: EntityType<*>): String? {
+        // TODO throw an exception when the alias is not found
         return parentManager?.get(key) ?: entityAliasMap[key]
     }
 
     operator fun get(key: EntityPropertyType<*, *>): String? {
+        // TODO throw an exception when the alias is not found
         return parentManager?.get(key) ?: propAliasMap[key]
     }
 }

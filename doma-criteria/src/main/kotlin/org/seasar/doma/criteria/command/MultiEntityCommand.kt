@@ -11,7 +11,8 @@ class MultiEntityCommand<ENTITY>(
 
     fun execute(): List<ENTITY> {
         val cache = mutableMapOf<Pair<EntityType<Any>, EntityKey>, Any>()
-        val entityTypes = context.getProjectionTargets()
+        @Suppress("UNCHECKED_CAST")
+        val entityTypes = context.getProjectionTargets() as List<EntityType<Any>>
         val command = SelectCommand(query, MultiEntityIterationHandler(entityTypes))
         val multiEntityList = command.execute()
         for (multiEntity in multiEntityList) {
@@ -29,6 +30,7 @@ class MultiEntityCommand<ENTITY>(
             }
             associate(associationCandidate)
         }
+        @Suppress("UNCHECKED_CAST")
         return cache.asSequence()
                 .filter { (key, _) -> key.first == context.entityType }
                 .map { (_, value) -> value }

@@ -60,6 +60,7 @@ open class SelectDeclaration(protected val _selectContext: SelectContext) {
 
 @Declaration
 class AssociableDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext) {
+    @Suppress("UNCHECKED_CAST")
     fun <ENTITY, ENTITY2> associate(type1: EntityType<ENTITY>, type2: EntityType<ENTITY2>, associator: (ENTITY, ENTITY2) -> Unit) {
         // TODO check arguments
         _selectContext.associations[type1 to type2] = associator as (Any, Any) -> Unit

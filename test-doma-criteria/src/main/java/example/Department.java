@@ -23,7 +23,7 @@ public class Department {
 
   @OriginalStates Department originalStates;
 
-  @Transient List<Employee> employeeList = new ArrayList();
+  @Transient List<Employee> employeeList = new ArrayList<>();
 
   public Integer getDepartmentId() {
     return departmentId;

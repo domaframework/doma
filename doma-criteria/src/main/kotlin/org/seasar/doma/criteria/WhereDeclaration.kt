@@ -116,9 +116,8 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
         right: SelectPair<CONTAINER1, CONTAINER2>
     ) {
-        val (first, second) = left
-        val prop1 = Operand.Prop(first)
-        val prop2 = Operand.Prop(second)
+        val prop1 = toProp(left.first)
+        val prop2 = toProp(left.second)
         add(Criterion.InSelectPair(prop1 to prop2, right.context))
     }
 
@@ -131,8 +130,8 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         values: List<Pair<CONTAINER1, CONTAINER2>>
     ) {
         val (first, second) = left
-        val prop1 = Operand.Prop(first)
-        val prop2 = Operand.Prop(second)
+        val prop1 = toProp(first)
+        val prop2 = toProp(second)
         val params = values.map { (first, second) ->
             val param1 = toParam(left.first, first)
             val param2 = toParam(left.second, second)
@@ -142,16 +141,15 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
     }
 
     fun <CONTAINER> notIn(left: DefaultPropertyType<*, *, CONTAINER>, right: SelectSingle<CONTAINER>) {
-        add(Criterion.NotInSelectSingle(Operand.Prop(left), right.context))
+        add(Criterion.NotInSelectSingle(toProp(left), right.context))
     }
 
     fun <CONTAINER1, CONTAINER2> notIn(
         left: Pair<DefaultPropertyType<*, *, CONTAINER1>, DefaultPropertyType<*, *, CONTAINER2>>,
         right: SelectPair<CONTAINER1, CONTAINER2>
     ) {
-        val (first, second) = left
-        val prop1 = Operand.Prop(first)
-        val prop2 = Operand.Prop(second)
+        val prop1 = toProp(left.first)
+        val prop2 = toProp(left.second)
         add(Criterion.NotInSelectPair(prop1 to prop2, right.context))
     }
 
@@ -189,12 +187,12 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
 
     fun or(block: WhereDeclaration.() -> Unit) = runBlock(block, Criterion::Or)
 
-    private fun runBlock(block: WhereDeclaration.() -> Unit, context: (List<Criterion>) -> Criterion) {
-        val criteriaList = mutableListOf<Criterion>()
-        val declaration = WhereDeclaration(config) { criteriaList.add(it) }
+    private fun runBlock(block: WhereDeclaration.() -> Unit, newCriterion: (List<Criterion>) -> Criterion) {
+        val criterionList = mutableListOf<Criterion>()
+        val declaration = WhereDeclaration(config) { criterionList.add(it) }
         declaration.block()
-        if (criteriaList.isNotEmpty()) {
-            add(context(criteriaList))
+        if (criterionList.isNotEmpty()) {
+            add(newCriterion(criterionList))
         }
     }
 
