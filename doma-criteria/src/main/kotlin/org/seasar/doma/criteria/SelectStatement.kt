@@ -48,3 +48,6 @@ class SelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
         return SelectStatement(this.from, this.block + other.block)
     }
 }
+
+class SelectSingle<BASIC>(val context: SelectContext)
+class SelectPair<BASIC1, BASIC2>(val context: SelectContext)

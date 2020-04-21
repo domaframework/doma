@@ -50,35 +50,17 @@ sealed class Criterion {
     data class Ge(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Lt(val left: Operand.Prop, val right: Operand) : Criterion()
     data class Le(val left: Operand.Prop, val right: Operand) : Criterion()
-    data class In(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
-    data class NotIn(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
-    data class InPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
-    data class NotInPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
-    data class InSelect(val left: Operand.Prop, val right: SelectContext) : Criterion()
-    data class InSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
-    data class NotInSelect(val left: Operand.Prop, val right: SelectContext) : Criterion()
-    data class NotInSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
-
-    //    data class NotIn(val prop: KProperty1<*, *>, val values: List<*>) : Criterion()
-//    data class In2(val props: Pair<KProperty1<*, *>, KProperty1<*, *>>, val values: List<Pair<*, *>>) : Criterion()
-//    data class NotIn2(val props: Pair<KProperty1<*, *>, KProperty1<*, *>>, val values: List<Pair<*, *>>) :
-//        Criterion()
-//
-//    data class In3(
-//        val props: Triple<KProperty1<*, *>, KProperty1<*, *>, KProperty1<*, *>>,
-//        val values: List<Triple<*, *, *>>
-//    ) : Criterion()
-//
-//    data class NotIn3(
-//        val props: Triple<KProperty1<*, *>, KProperty1<*, *>, KProperty1<*, *>>,
-//        val values: List<Triple<*, *, *>>
-//    ) : Criterion()
-//
-//    data class Like(val prop: KProperty1<*, *>, val value: String?) : Criterion()
-//    data class NotLike(val prop: KProperty1<*, *>, val value: String?) : Criterion()
     data class Between(val prop: Operand.Prop, val begin: Operand.Param, val end: Operand.Param) : Criterion()
     data class Exists(val context: SelectContext) : Criterion()
     data class NotExists(val context: SelectContext) : Criterion()
+    data class InSingle(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
+    data class InPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
+    data class InSelectSingle(val left: Operand.Prop, val right: SelectContext) : Criterion()
+    data class InSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
+    data class NotInSingle(val left: Operand.Prop, val right: List<Operand.Param>) : Criterion()
+    data class NotInPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: List<Pair<Operand.Param, Operand.Param>>) : Criterion()
+    data class NotInSelectSingle(val left: Operand.Prop, val right: SelectContext) : Criterion()
+    data class NotInSelectPair(val left: Pair<Operand.Prop, Operand.Prop>, val right: SelectContext) : Criterion()
     data class Not(val list: List<Criterion>) : Criterion()
     data class And(val list: List<Criterion>) : Criterion()
     data class Or(val list: List<Criterion>) : Criterion()

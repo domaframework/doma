@@ -166,7 +166,7 @@ class SelectStatementTest(private val config: Config) {
     fun where_isNull() {
         val query = select(::_Employee) { e ->
             where {
-                eq(e.managerId, null)
+                eq(e.managerId, null as Int?)
             }
         }
         val list = query.execute(config)
@@ -178,7 +178,7 @@ class SelectStatementTest(private val config: Config) {
     fun where_isNotNull() {
         val query = select(::_Employee) { e ->
             where {
-                ne(e.managerId, null)
+                ne(e.managerId, null as Int?)
             }
         }
         val list = query.execute(config)

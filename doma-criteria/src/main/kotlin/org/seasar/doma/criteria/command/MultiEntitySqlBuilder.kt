@@ -113,13 +113,13 @@ class MultiEntitySqlBuilder(
             is Criterion.Ge -> comparison(c.left, c.right, ">=")
             is Criterion.Lt -> comparison(c.left, c.right, "<")
             is Criterion.Le -> comparison(c.left, c.right, "<=")
-            is Criterion.In -> `in`(c.left, c.right)
+            is Criterion.InSingle -> inSingle(c.left, c.right)
             is Criterion.InPair -> inPair(c.left, c.right)
-            is Criterion.InSelect -> inSelect(c.left, c.right)
+            is Criterion.InSelectSingle -> inSelectSingle(c.left, c.right)
             is Criterion.InSelectPair -> inSelectPair(c.left, c.right)
-            is Criterion.NotIn -> `in`(c.left, c.right, true)
+            is Criterion.NotInSingle -> inSingle(c.left, c.right, true)
             is Criterion.NotInPair -> inPair(c.left, c.right, true)
-            is Criterion.NotInSelect -> inSelect(c.left, c.right, true)
+            is Criterion.NotInSelectSingle -> inSelectSingle(c.left, c.right, true)
             is Criterion.NotInSelectPair -> inSelectPair(c.left, c.right, true)
             is Criterion.Between -> between(c.prop, c.begin, c.end)
             is Criterion.Exists -> exists(c.context)
@@ -150,7 +150,7 @@ class MultiEntitySqlBuilder(
         }
     }
 
-    private fun `in`(left: Operand.Prop, right: List<Operand.Param>, not: Boolean = false) {
+    private fun inSingle(left: Operand.Prop, right: List<Operand.Param>, not: Boolean = false) {
         column(left.value)
         if (not) {
             buf.appendSql(" not")
@@ -193,7 +193,7 @@ class MultiEntitySqlBuilder(
         buf.appendSql(")")
     }
 
-    private fun inSelect(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
+    private fun inSelectSingle(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
         column(left.value)
         if (not) {
             buf.appendSql(" not")
