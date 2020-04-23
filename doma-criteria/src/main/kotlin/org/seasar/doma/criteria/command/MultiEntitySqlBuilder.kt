@@ -5,6 +5,7 @@ import org.seasar.doma.criteria.JoinKind
 import org.seasar.doma.criteria.Operand
 import org.seasar.doma.criteria.Projection
 import org.seasar.doma.criteria.SelectContext
+import org.seasar.doma.criteria.SqlFunction
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
@@ -15,7 +16,7 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class MultiEntitySqlBuilder(
     private val selectContext: SelectContext,
-    // TODO the SqlLogType value should be passed from the caller
+        // TODO the SqlLogType value should be passed from the caller
     private val buf: PreparedSqlBuilder = PreparedSqlBuilder(selectContext.config, SqlKind.SELECT, SqlLogType.FORMATTED),
     private val aliasManager: AliasManager = AliasManager(selectContext)
 ) {
@@ -54,6 +55,13 @@ class MultiEntitySqlBuilder(
                 buf.appendSql(", ")
                 column(projection.second)
             }
+            is Projection.List -> {
+                projection.propTypes.forEach {
+                    column(it)
+                    buf.appendSql(", ")
+                }
+                buf.cutBackSql(2)
+            }
         }
         buf.appendSql(" from ")
         table(selectContext.entityType)
@@ -78,6 +86,22 @@ class MultiEntitySqlBuilder(
         if (selectContext.where.isNotEmpty()) {
             buf.appendSql(" where ")
             selectContext.where.forEachIndexed { index, c ->
+                visitCriterion(index, c)
+                buf.appendSql(" and ")
+            }
+            buf.cutBackSql(5)
+        }
+        if (selectContext.groupBy.isNotEmpty()) {
+            buf.appendSql(" group by ")
+            selectContext.groupBy.forEach { p ->
+                column(p)
+                buf.appendSql(", ")
+            }
+            buf.cutBackSql(2)
+        }
+        if (selectContext.having.isNotEmpty()) {
+            buf.appendSql(" having ")
+            selectContext.having.forEachIndexed { index, c ->
                 visitCriterion(index, c)
                 buf.appendSql(" and ")
             }
@@ -112,10 +136,21 @@ class MultiEntitySqlBuilder(
         buf.appendSql(aliasManager[entityType])
     }
 
-    private fun column(prop: EntityPropertyType<*, *>) {
-        buf.appendSql(aliasManager[prop])
-        buf.appendSql(".")
-        buf.appendSql(prop.getColumnName(config.naming::apply, config.dialect::applyQuote))
+    private fun column(propType: EntityPropertyType<*, *>) {
+        fun appendColumn(p: EntityPropertyType<*, *>) {
+            buf.appendSql(aliasManager[p])
+            buf.appendSql(".")
+            buf.appendSql(p.getColumnName(config.naming::apply, config.dialect::applyQuote))
+        }
+
+        if (propType is SqlFunction) {
+            buf.appendSql(propType.functionName)
+            buf.appendSql("(")
+            appendColumn(propType.propDesc)
+            buf.appendSql(")")
+        } else {
+            appendColumn(propType)
+        }
     }
 
     private fun param(param: InParameter<*>) {

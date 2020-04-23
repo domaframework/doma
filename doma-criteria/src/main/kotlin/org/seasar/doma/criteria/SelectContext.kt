@@ -13,6 +13,8 @@ class SelectContext(
     val joins: MutableList<Join> = mutableListOf(),
     val where: MutableList<Criterion> = mutableListOf(),
     val orderBy: MutableList<Pair<EntityPropertyType<*, *>, String>> = mutableListOf(),
+    val groupBy: MutableList<EntityPropertyType<*, *>> = mutableListOf(),
+    val having: MutableList<Criterion> = mutableListOf(),
     var limit: Int? = null,
     var offset: Int? = null,
     var forUpdate: ForUpdate? = null,
@@ -38,6 +40,7 @@ sealed class Projection {
     object Asterisk : Projection()
     data class Single(val propType: EntityPropertyType<*, *>) : Projection()
     data class Pair(val first: EntityPropertyType<*, *>, val second: EntityPropertyType<*, *>) : Projection()
+    data class List(val propTypes: Iterable<EntityPropertyType<*, *>>) : Projection()
 }
 
 sealed class Operand {

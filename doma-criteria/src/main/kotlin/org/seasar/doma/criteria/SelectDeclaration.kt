@@ -1,5 +1,6 @@
 package org.seasar.doma.criteria
 
+import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
@@ -64,5 +65,53 @@ class AssociableDeclaration(_selectContext: SelectContext) : SelectDeclaration(_
     fun <ENTITY, ENTITY2> associate(type1: EntityType<ENTITY>, type2: EntityType<ENTITY2>, associator: (ENTITY, ENTITY2) -> Unit) {
         // TODO check arguments
         _selectContext.associations[type1 to type2] = associator as (Any, Any) -> Unit
+    }
+}
+
+@Declaration
+class FromDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext) {
+    private val havingDeclaration = HavingDeclaration(_selectContext.config) { _selectContext.having.add(it) }
+
+    fun <ENTITY, BASIC, CONTAINER> count(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Count<ENTITY, BASIC, CONTAINER> {
+        return Count(propType)
+    }
+
+    fun groupBy(vararg propTypes: EntityPropertyDesc<*, *, *>) {
+        _selectContext.groupBy.addAll(propTypes.asList())
+    }
+
+    fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
+
+    fun <RESULT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT): Select<RESULT> {
+        return Select(listOf(*propTypes), mapper)
+    }
+}
+
+class Select<RESULT>(val propTypes: List<EntityPropertyDesc<*, *, *>>, val mapper: (Row) -> RESULT)
+
+interface SqlFunction {
+    val functionName: String
+    val propDesc: EntityPropertyDesc<*, *, *>
+}
+
+class Count<ENTITY, BASIC, CONTAINER>(override val propDesc: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
+        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by propDesc, SqlFunction {
+
+    override val functionName: String
+        get() = "count"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Count<*, *, *>
+
+        if (propDesc != other.propDesc) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return propDesc.hashCode()
     }
 }

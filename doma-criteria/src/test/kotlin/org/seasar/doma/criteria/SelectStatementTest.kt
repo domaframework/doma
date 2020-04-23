@@ -24,7 +24,7 @@ class SelectStatementTest {
                 eq(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID = 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -39,7 +39,7 @@ class SelectStatementTest {
                 eq(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID = t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -51,7 +51,7 @@ class SelectStatementTest {
                 ne(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID <> 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -66,7 +66,7 @@ class SelectStatementTest {
                 ne(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID <> t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -78,7 +78,7 @@ class SelectStatementTest {
                 ge(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID >= 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -93,7 +93,7 @@ class SelectStatementTest {
                 ge(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID >= t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -105,7 +105,7 @@ class SelectStatementTest {
                 gt(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID > 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -120,7 +120,7 @@ class SelectStatementTest {
                 gt(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID > t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -132,7 +132,7 @@ class SelectStatementTest {
                 le(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID <= 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -147,7 +147,7 @@ class SelectStatementTest {
                 le(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID <= t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -159,7 +159,7 @@ class SelectStatementTest {
                 lt(d.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.ID < 1"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -174,7 +174,7 @@ class SelectStatementTest {
                 lt(d.id, e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ left outer join EMP t1_ on (t0_.ID = t1_.ID) where t0_.ID < t1_.ID"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -186,7 +186,7 @@ class SelectStatementTest {
                 like(d.name, "%test")
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME like '%test'"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -198,7 +198,7 @@ class SelectStatementTest {
                 notLike(d.name, "%test")
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME not like '%test'"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -208,7 +208,7 @@ class SelectStatementTest {
         val query = select(::_Emp) { e ->
             innerJoin(::_Dept) { d -> eq(e.id, d.id) }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -219,7 +219,7 @@ class SelectStatementTest {
             val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
             associate(e, d) { _, _ -> }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -231,7 +231,7 @@ class SelectStatementTest {
                 eq(e.id, 1)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1"
         assertEquals(expected, sql.formattedSql)
     }
@@ -246,7 +246,7 @@ class SelectStatementTest {
                 }
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1 and (t0_.NAME = 'hoge')"
         assertEquals(expected, sql.formattedSql)
     }
@@ -258,7 +258,7 @@ class SelectStatementTest {
                 `in`(e.id, listOf(1, 2, 3))
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID in (1, 2, 3)"
         assertEquals(expected, sql.formattedSql)
     }
@@ -270,7 +270,7 @@ class SelectStatementTest {
                 `in`(e.id to e.name, listOf(1 to "a", 2 to "b"))
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) in ((1, 'a'), (2, 'b'))"
         assertEquals(expected, sql.formattedSql)
     }
@@ -282,7 +282,7 @@ class SelectStatementTest {
                 `in`(e.id, selectSingle({ it.id }, ::_Dept) {})
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID in (select t1_.ID from "CATA"."DEPT" t1_)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -294,7 +294,7 @@ class SelectStatementTest {
                 `in`(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) in (select t1_.ID, t1_.NAME from "CATA"."DEPT" t1_)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -306,7 +306,7 @@ class SelectStatementTest {
                 notIn(e.id, listOf(1, 2, 3))
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID not in (1, 2, 3)"
         assertEquals(expected, sql.formattedSql)
     }
@@ -318,7 +318,7 @@ class SelectStatementTest {
                 notIn(e.id to e.name, listOf(1 to "a", 2 to "b"))
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) not in ((1, 'a'), (2, 'b'))"
         assertEquals(expected, sql.formattedSql)
     }
@@ -330,7 +330,7 @@ class SelectStatementTest {
                 notIn(e.id, selectSingle({ it.id }, ::_Dept) {})
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID not in (select t1_.ID from "CATA"."DEPT" t1_)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -342,7 +342,7 @@ class SelectStatementTest {
                 notIn(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from "CATA"."DEPT" t1_)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -354,7 +354,7 @@ class SelectStatementTest {
                 between(e.id, 1, 5)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID between 1 and 5"
         assertEquals(expected, sql.formattedSql)
     }
@@ -370,7 +370,7 @@ class SelectStatementTest {
                 }
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where exists (select * from "CATA"."DEPT" t1_ where t0_.NAME = t1_.NAME)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -386,7 +386,7 @@ class SelectStatementTest {
                 }
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where not exists (select * from "CATA"."DEPT" t1_ where t0_.NAME = t1_.NAME)"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -398,7 +398,7 @@ class SelectStatementTest {
                 desc(e.id)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ order by t0_.ID desc"
         assertEquals(expected, sql.formattedSql)
     }
@@ -415,7 +415,7 @@ class SelectStatementTest {
                 desc(d.name)
             }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID) where t0_.ID = 1 and t1_.ID = 1 order by t1_.NAME desc"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -425,7 +425,7 @@ class SelectStatementTest {
         val query = select(::_Emp) {
             limit(10)
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 10"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -435,7 +435,7 @@ class SelectStatementTest {
         val query = select(::_Emp) {
             offset(10)
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 10"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -445,7 +445,7 @@ class SelectStatementTest {
         val query = select(::_Emp) {
             forUpdate {}
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -455,7 +455,7 @@ class SelectStatementTest {
         val query = select(::_Emp) {
             forUpdate { nowait() }
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update nowait"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -465,7 +465,7 @@ class SelectStatementTest {
         val query = select(::_Emp) {
             distinct()
         }
-        val (_, sql) = query.buildContextAndSql(config)
+        val sql = query.asSql(config)
         val expected = """select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_"""
         assertEquals(expected, sql.formattedSql)
     }
@@ -483,7 +483,7 @@ class SelectStatementTest {
             }
         }
         val query3 = query1 + query2
-        val (_, sql) = query3.buildContextAndSql(config)
+        val sql = query3.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1 and t0_.NAME = 'hoge'"""
         assertEquals(expected, sql.formattedSql)
     }
