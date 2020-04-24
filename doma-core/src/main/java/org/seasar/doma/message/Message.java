@@ -560,6 +560,8 @@ public enum Message implements MessageResource {
       "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. "
           + "The parameter type that corresponds to the expression \"{4}\" must be a subtype of either java.lang.Iterable or an array type. "
           + "But the actual type is \"{5}\". "
+          + "If the actual type is a subtype of java.lang.Iterable, ensure that the type parameter or it is resolved with one of the supported types. "
+          + "If the actual type is an array type, ensure that the component type of it is one of the supported types. "
           + "You may forget to access to its field or to invoke its method. SQL=[{1}]"),
   DOMA4163(
       "The user defined Config class must not be abstract. " + "The class \"{0}\" is abstract."),

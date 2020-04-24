@@ -29,4 +29,6 @@ public interface SqlValidationDao {
   void testExpand(String name);
 
   void testPopulate(String name);
+
+  void testTypeParameterResolution(CriteriaHolder criteriaHolder);
 }
