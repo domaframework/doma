@@ -4,7 +4,7 @@ import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
-open class SelectDeclaration(protected val _selectContext: SelectContext) {
+open class FromDeclaration(protected val _selectContext: SelectContext) {
     private val whereDeclaration = WhereDeclaration(_selectContext.config) { _selectContext.where.add(it) }
     private val orderByDeclaration = OrderByDeclaration { _selectContext.orderBy.add(it) }
     private val forUpdateDeclaration = ForUpdateDeclaration { _selectContext.forUpdate = it }
@@ -56,34 +56,6 @@ open class SelectDeclaration(protected val _selectContext: SelectContext) {
     fun forUpdate(block: ForUpdateDeclaration.() -> Unit) {
         _selectContext.forUpdate = ForUpdate()
         forUpdateDeclaration.block()
-    }
-}
-
-@Declaration
-class AssociableDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext) {
-    @Suppress("UNCHECKED_CAST")
-    fun <ENTITY, ENTITY2> associate(type1: EntityType<ENTITY>, type2: EntityType<ENTITY2>, associator: (ENTITY, ENTITY2) -> Unit) {
-        // TODO check arguments
-        _selectContext.associations[type1 to type2] = associator as (Any, Any) -> Unit
-    }
-}
-
-@Declaration
-class FromDeclaration(_selectContext: SelectContext) : SelectDeclaration(_selectContext) {
-    private val havingDeclaration = HavingDeclaration(_selectContext.config) { _selectContext.having.add(it) }
-
-    fun <ENTITY, BASIC, CONTAINER> count(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Count<ENTITY, BASIC, CONTAINER> {
-        return Count(propType)
-    }
-
-    fun groupBy(vararg propTypes: EntityPropertyDesc<*, *, *>) {
-        _selectContext.groupBy.addAll(propTypes.asList())
-    }
-
-    fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
-
-    fun <RESULT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT): Select<RESULT> {
-        return Select(listOf(*propTypes), mapper)
     }
 }
 

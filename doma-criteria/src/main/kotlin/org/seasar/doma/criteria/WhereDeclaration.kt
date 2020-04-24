@@ -76,7 +76,7 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
 
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> exists(
         from: () -> ENTITY_TYPE,
-        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+        block: FromDeclaration.(ENTITY_TYPE) -> Unit
     ) {
         val context = createSubContext(from(), block, Projection.Asterisk)
         add(Criterion.Exists(context))
@@ -84,7 +84,7 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
 
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> notExists(
         from: () -> ENTITY_TYPE,
-        block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+        block: FromDeclaration.(ENTITY_TYPE) -> Unit
     ) {
         val context = createSubContext(from(), block, Projection.Asterisk)
         add(Criterion.NotExists(context))
@@ -157,7 +157,7 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
             CONTAINER, PROPERTY_TYPE : EntityPropertyDesc<ENTITY, *, CONTAINER>> selectSingle(
                 list: (ENTITY_TYPE) -> PROPERTY_TYPE,
                 from: () -> ENTITY_TYPE,
-                block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+                block: FromDeclaration.(ENTITY_TYPE) -> Unit
             ): SelectSingle<CONTAINER> {
         val entityType = from()
         val propType = list(entityType)
@@ -172,7 +172,7 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
             > selectPair(
                 list: (ENTITY_TYPE) -> Pair<PROPERTY_TYPE1, PROPERTY_TYPE2>,
                 from: () -> ENTITY_TYPE,
-                block: SelectDeclaration.(ENTITY_TYPE) -> Unit
+                block: FromDeclaration.(ENTITY_TYPE) -> Unit
             ): SelectPair<CONTAINER1, CONTAINER2> {
         val entityType = from()
         val (first, second) = list(entityType)
@@ -221,11 +221,11 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
 
     private fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> createSubContext(
         entityType: ENTITY_TYPE,
-        block: SelectDeclaration.(ENTITY_TYPE) -> Unit,
+        block: FromDeclaration.(ENTITY_TYPE) -> Unit,
         projection: Projection
     ): SelectContext {
         val context = SelectContext(config, entityType, projection = projection)
-        val declaration = SelectDeclaration(context)
+        val declaration = FromDeclaration(context)
         declaration.block(entityType)
         if (context.associations.isNotEmpty()) {
             TODO()

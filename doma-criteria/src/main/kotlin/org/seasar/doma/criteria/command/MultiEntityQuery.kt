@@ -2,7 +2,7 @@ package org.seasar.doma.criteria.command
 
 import java.lang.reflect.Method
 import org.seasar.doma.FetchType
-import org.seasar.doma.criteria.SelectStatement
+import org.seasar.doma.criteria.EntityqlStatement
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SelectOptions
@@ -20,7 +20,7 @@ class MultiEntityQuery(private val config: Config, private val sql: PreparedSql)
 
     override fun getClassName(): String {
         // TODO which name is the best?
-        return SelectStatement::class.qualifiedName!!
+        return EntityqlStatement::class.qualifiedName!!
     }
 
     override fun getMethodName(): String {

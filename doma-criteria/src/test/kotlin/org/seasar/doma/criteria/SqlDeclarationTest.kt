@@ -5,18 +5,20 @@ import org.junit.jupiter.api.Test
 import org.seasar.doma.criteria.entity._Dept
 import org.seasar.doma.criteria.mock.MockConfig
 
-internal class FromQueryTest {
+internal class SqlDeclarationTest {
 
     private val config = MockConfig()
 
     @Test
     fun test() {
-        val query = from(::_Dept) { d ->
-            where {
-                eq(d.id, 1)
-            }
-            select(d.id, d.name) {
-                it[d.id] to it[d.name]
+        val query = sql {
+            select.from(::_Dept) { d ->
+                where {
+                    eq(d.id, 1)
+                }
+                map(d.id, d.name) {
+                    it[d.id] to it[d.name]
+                }
             }
         }
         val sql = query.asSql(config)
@@ -26,13 +28,15 @@ internal class FromQueryTest {
 
     @Test
     fun groupBy() {
-        val query = from(::_Dept) { d ->
-            where {
-                eq(d.id, 1)
-            }
-            groupBy(d.name)
-            select(d.name, count(d.id)) {
-                it[d.name] to it[count(d.id)]
+        val query = sql {
+            select.from(::_Dept) { d ->
+                where {
+                    eq(d.id, 1)
+                }
+                groupBy(d.name)
+                map(d.name, count(d.id)) {
+                    it[d.name] to it[count(d.id)]
+                }
             }
         }
         val sql = query.asSql(config)
@@ -42,16 +46,18 @@ internal class FromQueryTest {
 
     @Test
     fun having() {
-        val query = from(::_Dept) { d ->
-            where {
-                eq(d.id, 1)
-            }
-            groupBy(d.name)
-            having {
-                ge(count(d.id), 1)
-            }
-            select(d.name, count(d.id)) {
-                it[d.name] to count(d.id)
+        val query = sql {
+            select.from(::_Dept) { d ->
+                where {
+                    eq(d.id, 1)
+                }
+                groupBy(d.name)
+                having {
+                    ge(count(d.id), 1)
+                }
+                map(d.name, count(d.id)) {
+                    it[d.name] to count(d.id)
+                }
             }
         }
         val sql = query.asSql(config)

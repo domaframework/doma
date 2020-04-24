@@ -13,15 +13,17 @@ import org.seasar.doma.criteria.mock.MockResultSet
 import org.seasar.doma.criteria.mock.MockResultSetMetaData
 import org.seasar.doma.criteria.mock.RowData
 
-class SelectStatementTest {
+class EntityqlDeclarationTest {
 
     private val config = MockConfig()
 
     @Test
     fun eq() {
-        val query = select(::_Dept) { d ->
-            where {
-                eq(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    eq(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -31,12 +33,16 @@ class SelectStatementTest {
 
     @Test
     fun eq_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                eq(d.id, e.id)
+        val query = entityql {
+            entityql {
+                select.from(::_Dept) { d ->
+                    val e = leftJoin(::_Emp) { e ->
+                        eq(d.id, e.id)
+                    }
+                    where {
+                        eq(d.id, e.id)
+                    }
+                }
             }
         }
         val sql = query.asSql(config)
@@ -46,9 +52,11 @@ class SelectStatementTest {
 
     @Test
     fun ne() {
-        val query = select(::_Dept) { d ->
-            where {
-                ne(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    ne(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -58,12 +66,14 @@ class SelectStatementTest {
 
     @Test
     fun ne_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                ne(d.id, e.id)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                val e = leftJoin(::_Emp) { e ->
+                    eq(d.id, e.id)
+                }
+                where {
+                    ne(d.id, e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -73,9 +83,11 @@ class SelectStatementTest {
 
     @Test
     fun ge() {
-        val query = select(::_Dept) { d ->
-            where {
-                ge(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    ge(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -85,12 +97,14 @@ class SelectStatementTest {
 
     @Test
     fun ge_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                ge(d.id, e.id)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                val e = leftJoin(::_Emp) { e ->
+                    eq(d.id, e.id)
+                }
+                where {
+                    ge(d.id, e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -100,9 +114,11 @@ class SelectStatementTest {
 
     @Test
     fun gt() {
-        val query = select(::_Dept) { d ->
-            where {
-                gt(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    gt(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -112,12 +128,14 @@ class SelectStatementTest {
 
     @Test
     fun gt_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                gt(d.id, e.id)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                val e = leftJoin(::_Emp) { e ->
+                    eq(d.id, e.id)
+                }
+                where {
+                    gt(d.id, e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -127,9 +145,11 @@ class SelectStatementTest {
 
     @Test
     fun le() {
-        val query = select(::_Dept) { d ->
-            where {
-                le(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    le(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -139,12 +159,14 @@ class SelectStatementTest {
 
     @Test
     fun le_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                le(d.id, e.id)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                val e = leftJoin(::_Emp) { e ->
+                    eq(d.id, e.id)
+                }
+                where {
+                    le(d.id, e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -154,9 +176,11 @@ class SelectStatementTest {
 
     @Test
     fun lt() {
-        val query = select(::_Dept) { d ->
-            where {
-                lt(d.id, 1)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    lt(d.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -166,12 +190,14 @@ class SelectStatementTest {
 
     @Test
     fun lt_propType() {
-        val query = select(::_Dept) { d ->
-            val e = leftJoin(::_Emp) { e ->
-                eq(d.id, e.id)
-            }
-            where {
-                lt(d.id, e.id)
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                val e = leftJoin(::_Emp) { e ->
+                    eq(d.id, e.id)
+                }
+                where {
+                    lt(d.id, e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -181,9 +207,11 @@ class SelectStatementTest {
 
     @Test
     fun like() {
-        val query = select(::_Dept) { d ->
-            where {
-                like(d.name, "%test")
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    like(d.name, "%test")
+                }
             }
         }
         val sql = query.asSql(config)
@@ -193,9 +221,11 @@ class SelectStatementTest {
 
     @Test
     fun notLike() {
-        val query = select(::_Dept) { d ->
-            where {
-                notLike(d.name, "%test")
+        val query = entityql {
+            select.from(::_Dept) { d ->
+                where {
+                    notLike(d.name, "%test")
+                }
             }
         }
         val sql = query.asSql(config)
@@ -205,8 +235,10 @@ class SelectStatementTest {
 
     @Test
     fun innerJoin() {
-        val query = select(::_Emp) { e ->
-            innerJoin(::_Dept) { d -> eq(e.id, d.id) }
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                innerJoin(::_Dept) { d -> eq(e.id, d.id) }
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID)"""
@@ -215,9 +247,11 @@ class SelectStatementTest {
 
     @Test
     fun association() {
-        val query = select(::_Emp) { e ->
-            val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
-            associate(e, d) { _, _ -> }
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
+                associate(e, d) { _, _ -> }
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME from EMP t0_ inner join "CATA"."DEPT" t1_ on (t0_.ID = t1_.ID)"""
@@ -226,9 +260,11 @@ class SelectStatementTest {
 
     @Test
     fun where() {
-        val query = select(::_Emp) { e ->
-            where {
-                eq(e.id, 1)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    eq(e.id, 1)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -238,11 +274,13 @@ class SelectStatementTest {
 
     @Test
     fun where_and() {
-        val query = select(::_Emp) { e ->
-            where {
-                eq(e.id, (1))
-                and {
-                    eq(e.name, "hoge")
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    eq(e.id, (1))
+                    and {
+                        eq(e.name, "hoge")
+                    }
                 }
             }
         }
@@ -253,9 +291,11 @@ class SelectStatementTest {
 
     @Test
     fun `in`() {
-        val query = select(::_Emp) { e ->
-            where {
-                `in`(e.id, listOf(1, 2, 3))
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    `in`(e.id, listOf(1, 2, 3))
+                }
             }
         }
         val sql = query.asSql(config)
@@ -265,9 +305,11 @@ class SelectStatementTest {
 
     @Test
     fun in_pair() {
-        val query = select(::_Emp) { e ->
-            where {
-                `in`(e.id to e.name, listOf(1 to "a", 2 to "b"))
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    `in`(e.id to e.name, listOf(1 to "a", 2 to "b"))
+                }
             }
         }
         val sql = query.asSql(config)
@@ -277,9 +319,11 @@ class SelectStatementTest {
 
     @Test
     fun in_selectSingle() {
-        val query = select(::_Emp) { e ->
-            where {
-                `in`(e.id, selectSingle({ it.id }, ::_Dept) {})
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    `in`(e.id, selectSingle({ it.id }, ::_Dept) {})
+                }
             }
         }
         val sql = query.asSql(config)
@@ -289,9 +333,11 @@ class SelectStatementTest {
 
     @Test
     fun in_selectPair() {
-        val query = select(::_Emp) { e ->
-            where {
-                `in`(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    `in`(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+                }
             }
         }
         val sql = query.asSql(config)
@@ -301,9 +347,11 @@ class SelectStatementTest {
 
     @Test
     fun notIn() {
-        val query = select(::_Emp) { e ->
-            where {
-                notIn(e.id, listOf(1, 2, 3))
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    notIn(e.id, listOf(1, 2, 3))
+                }
             }
         }
         val sql = query.asSql(config)
@@ -313,9 +361,11 @@ class SelectStatementTest {
 
     @Test
     fun notIn_pair() {
-        val query = select(::_Emp) { e ->
-            where {
-                notIn(e.id to e.name, listOf(1 to "a", 2 to "b"))
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    notIn(e.id to e.name, listOf(1 to "a", 2 to "b"))
+                }
             }
         }
         val sql = query.asSql(config)
@@ -325,9 +375,11 @@ class SelectStatementTest {
 
     @Test
     fun notIn_selectSingle() {
-        val query = select(::_Emp) { e ->
-            where {
-                notIn(e.id, selectSingle({ it.id }, ::_Dept) {})
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    notIn(e.id, selectSingle({ it.id }, ::_Dept) {})
+                }
             }
         }
         val sql = query.asSql(config)
@@ -337,9 +389,11 @@ class SelectStatementTest {
 
     @Test
     fun notIn_selectPair() {
-        val query = select(::_Emp) { e ->
-            where {
-                notIn(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    notIn(e.id to e.name, selectPair({ it.id to it.name }, ::_Dept) {})
+                }
             }
         }
         val sql = query.asSql(config)
@@ -349,9 +403,11 @@ class SelectStatementTest {
 
     @Test
     fun between() {
-        val query = select(::_Emp) { e ->
-            where {
-                between(e.id, 1, 5)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    between(e.id, 1, 5)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -361,11 +417,13 @@ class SelectStatementTest {
 
     @Test
     fun exists() {
-        val query = select(::_Emp) { e ->
-            where {
-                exists(::_Dept) { d ->
-                    where {
-                        eq(e.name, d.name)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    exists(::_Dept) { d ->
+                        where {
+                            eq(e.name, d.name)
+                        }
                     }
                 }
             }
@@ -377,11 +435,13 @@ class SelectStatementTest {
 
     @Test
     fun notExists() {
-        val query = select(::_Emp) { e ->
-            where {
-                notExists(::_Dept) { d ->
-                    where {
-                        eq(e.name, d.name)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                where {
+                    notExists(::_Dept) { d ->
+                        where {
+                            eq(e.name, d.name)
+                        }
                     }
                 }
             }
@@ -393,9 +453,11 @@ class SelectStatementTest {
 
     @Test
     fun orderBy() {
-        val query = select(::_Emp) { e ->
-            orderBy {
-                desc(e.id)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                orderBy {
+                    desc(e.id)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -405,14 +467,16 @@ class SelectStatementTest {
 
     @Test
     fun innerJoin_where_orderBy() {
-        val query = select(::_Emp) { e ->
-            val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
-            where {
-                eq(e.id, 1)
-                eq(d.id, 1)
-            }
-            orderBy {
-                desc(d.name)
+        val query = entityql {
+            select.from(::_Emp) { e ->
+                val d = innerJoin(::_Dept) { d -> eq(e.id, d.id) }
+                where {
+                    eq(e.id, 1)
+                    eq(d.id, 1)
+                }
+                orderBy {
+                    desc(d.name)
+                }
             }
         }
         val sql = query.asSql(config)
@@ -422,8 +486,10 @@ class SelectStatementTest {
 
     @Test
     fun limit() {
-        val query = select(::_Emp) {
-            limit(10)
+        val query = entityql {
+            select.from(::_Emp) {
+                limit(10)
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 10"""
@@ -432,8 +498,10 @@ class SelectStatementTest {
 
     @Test
     fun offset() {
-        val query = select(::_Emp) {
-            offset(10)
+        val query = entityql {
+            select.from(::_Emp) {
+                offset(10)
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 10"""
@@ -442,8 +510,10 @@ class SelectStatementTest {
 
     @Test
     fun forUpdate() {
-        val query = select(::_Emp) {
-            forUpdate {}
+        val query = entityql {
+            select.from(::_Emp) {
+                forUpdate {}
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update"""
@@ -452,8 +522,10 @@ class SelectStatementTest {
 
     @Test
     fun forUpdate_nowait() {
-        val query = select(::_Emp) {
-            forUpdate { nowait() }
+        val query = entityql {
+            select.from(::_Emp) {
+                forUpdate { nowait() }
+            }
         }
         val sql = query.asSql(config)
         val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ for update nowait"""
@@ -462,29 +534,13 @@ class SelectStatementTest {
 
     @Test
     fun distinct() {
-        val query = select(::_Emp) {
-            distinct()
+        val query = entityql {
+            select.from(::_Emp) {
+                distinct()
+            }
         }
         val sql = query.asSql(config)
         val expected = """select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_"""
-        assertEquals(expected, sql.formattedSql)
-    }
-
-    @Test
-    fun plus() {
-        val query1 = select(::_Emp) { e ->
-            where {
-                eq(e.id, 1)
-            }
-        }
-        val query2 = select(::_Emp) { e ->
-            where {
-                eq(e.name, "hoge")
-            }
-        }
-        val query3 = query1 + query2
-        val sql = query3.asSql(config)
-        val expected = """select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1 and t0_.NAME = 'hoge'"""
         assertEquals(expected, sql.formattedSql)
     }
 
@@ -501,7 +557,7 @@ class SelectStatementTest {
         resultSet.rows.add(RowData(3, "bar", BigDecimal(30000), 300))
         config.dataSource.connection = MockConnection(MockPreparedStatement(resultSet))
 
-        val query = select(::_Emp) {}
+        val query = entityql { select.from(::_Emp) {} }
         val list = query.execute(config)
         assertEquals(3, list.size)
 
