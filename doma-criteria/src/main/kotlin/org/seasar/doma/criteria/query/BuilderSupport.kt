@@ -3,6 +3,7 @@ package org.seasar.doma.criteria.query
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.criteria.context.SelectContext
+import org.seasar.doma.criteria.declaration.CountAsterisk
 import org.seasar.doma.criteria.declaration.SqlFunction
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.Config
@@ -35,7 +36,11 @@ class BuilderSupport(
         if (propType is SqlFunction) {
             buf.appendSql(propType.functionName)
             buf.appendSql("(")
-            appendColumn(propType.propDesc)
+            if (propType.argument is CountAsterisk) {
+                buf.appendSql("*")
+            } else {
+                appendColumn(propType.argument)
+            }
             buf.appendSql(")")
         } else {
             appendColumn(propType)

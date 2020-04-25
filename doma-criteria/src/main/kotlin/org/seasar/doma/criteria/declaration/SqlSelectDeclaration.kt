@@ -5,11 +5,30 @@ import org.seasar.doma.criteria.context.SelectContext
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 
 @Declaration
-class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context) {
+open class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context) {
+    private val support = DeclarationSupport(context.config)
     private val havingDeclaration = HavingDeclaration(context.config) { context.having.add(it) }
 
-    fun <ENTITY, BASIC, CONTAINER> count(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Count<ENTITY, BASIC, CONTAINER> {
-        return Count(propType)
+    val `*` = CountAsterisk
+
+    fun <ENTITY, BASIC, CONTAINER> avg(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Avg<ENTITY, BASIC, CONTAINER> {
+        return support.avg(propType)
+    }
+
+    fun count(propType: EntityPropertyDesc<*, *, *>): Count {
+        return support.count(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> max(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Max<ENTITY, BASIC, CONTAINER> {
+        return support.max(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> min(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Min<ENTITY, BASIC, CONTAINER> {
+        return support.min(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> sum(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Sum<ENTITY, BASIC, CONTAINER> {
+        return support.sum(propType)
     }
 
     fun groupBy(vararg propTypes: EntityPropertyDesc<*, *, *>) {

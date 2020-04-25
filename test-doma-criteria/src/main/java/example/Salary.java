@@ -19,4 +19,9 @@ public class Salary {
   public BigDecimal getValue() {
     return value;
   }
+
+  @Override
+  public String toString() {
+    return value.toString();
+  }
 }

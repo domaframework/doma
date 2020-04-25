@@ -101,13 +101,34 @@ class SqlDslTest(private val config: Config) {
         }
         val list = query.execute(config)
         assertEquals(3, list.size)
-        assertEquals(Triple(1, "ACCOUNTING", 3), list[0])
-        assertEquals(Triple(2, "RESEARCH", 5), list[1])
-        assertEquals(Triple(3, "SALES", 6), list[2])
+        assertEquals(Triple(1, "ACCOUNTING", 3L), list[0])
+        assertEquals(Triple(2, "RESEARCH", 5L), list[1])
+        assertEquals(Triple(3, "SALES", 6L), list[2])
     }
 
     @Test
-    fun having() {
+    fun having_avg() {
+        val query = sql {
+            from(::_Employee) { e ->
+                val d = leftJoin(::_Department) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                orderBy { d.departmentId.asc() }
+                groupBy(d.departmentName)
+                having {
+                    avg(e.salary) gt Salary("2000")
+                }
+                select(d.departmentName, avg(e.salary))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals("ACCOUNTING", list[0].first)
+        assertEquals("RESEARCH", list[1].first)
+    }
+
+    @Test
+    fun having_count_property() {
         val query = sql {
             from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
@@ -115,18 +136,105 @@ class SqlDslTest(private val config: Config) {
                 }
                 groupBy(d.departmentId, d.departmentName)
                 having {
-                    count(e.employeeId) gt 3
+                    count(e.employeeName) gt 3
                 }
                 orderBy { e.departmentId.asc() }
-                select(d.departmentId, d.departmentName, count(e.employeeId)) {
-                    Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeId)])
+                select(d.departmentId, d.departmentName, count(e.employeeName)) {
+                    Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeName)])
                 }
             }
         }
         val list = query.execute(config)
         assertEquals(2, list.size)
-        assertEquals(Triple(2, "RESEARCH", 5), list[0])
-        assertEquals(Triple(3, "SALES", 6), list[1])
+        assertEquals(Triple(2, "RESEARCH", 5L), list[0])
+        assertEquals(Triple(3, "SALES", 6L), list[1])
+    }
+
+    @Test
+    fun having_count_asterisk() {
+        val query = sql {
+            from(::_Employee) { e ->
+                val d = leftJoin(::_Department) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                groupBy(d.departmentId, d.departmentName)
+                having {
+                    count(`*`) gt 3
+                }
+                orderBy { e.departmentId.asc() }
+                select(d.departmentId, d.departmentName, count(`*`)) {
+                    Triple(it[d.departmentId], it[d.departmentName], it[count(`*`)])
+                }
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals(Triple(2, "RESEARCH", 5L), list[0])
+        assertEquals(Triple(3, "SALES", 6L), list[1])
+    }
+
+    @Test
+    fun having_max() {
+        val query = sql {
+            from(::_Employee) { e ->
+                val d = leftJoin(::_Department) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                orderBy { d.departmentId.asc() }
+                groupBy(d.departmentName)
+                having {
+                    max(e.salary) ge Salary("3000")
+                }
+                select(d.departmentName, max(e.salary))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals("ACCOUNTING", list[0].first)
+        assertEquals("RESEARCH", list[1].first)
+    }
+
+    @Test
+    fun having_min() {
+        val query = sql {
+            from(::_Employee) { e ->
+                val d = leftJoin(::_Department) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                orderBy { d.departmentId.asc() }
+                groupBy(d.departmentName)
+                having {
+                    min(e.salary) le Salary("1000")
+                }
+                select(d.departmentName, min(e.salary))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals("RESEARCH", list[0].first)
+        assertEquals("SALES", list[1].first)
+    }
+
+    @Test
+    fun having_sum() {
+        val query = sql {
+            from(::_Employee) { e ->
+                val d = leftJoin(::_Department) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                orderBy { d.departmentId.asc() }
+                groupBy(d.departmentName)
+                having {
+                    sum(e.salary) gt Salary("9000")
+                }
+                select(d.departmentName, sum(e.salary))
+            }
+        }
+        val list = query.execute(config)
+        println(list)
+        assertEquals(2, list.size)
+        assertEquals("RESEARCH", list[0].first)
+        assertEquals("SALES", list[1].first)
     }
 
     @Test

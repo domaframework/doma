@@ -11,7 +11,25 @@ class HavingDeclaration(
     add: (Criterion) -> Unit
 ) : ComparisonDeclaration<HavingDeclaration>(config, add, ::HavingDeclaration) {
 
-    fun <ENTITY, BASIC, CONTAINER> count(propDesc: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Count<ENTITY, BASIC, CONTAINER> {
-        return Count(propDesc)
+    val `*` = CountAsterisk
+
+    fun <ENTITY, BASIC, CONTAINER> avg(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Avg<ENTITY, BASIC, CONTAINER> {
+        return support.avg(propType)
+    }
+
+    fun count(propType: EntityPropertyDesc<*, *, *>): Count {
+        return support.count(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> max(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Max<ENTITY, BASIC, CONTAINER> {
+        return support.max(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> min(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Min<ENTITY, BASIC, CONTAINER> {
+        return support.min(propType)
+    }
+
+    fun <ENTITY, BASIC, CONTAINER> sum(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Sum<ENTITY, BASIC, CONTAINER> {
+        return support.sum(propType)
     }
 }

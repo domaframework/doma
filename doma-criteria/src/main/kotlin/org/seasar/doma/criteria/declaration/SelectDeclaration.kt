@@ -4,7 +4,6 @@ import org.seasar.doma.criteria.context.ForUpdate
 import org.seasar.doma.criteria.context.Join
 import org.seasar.doma.criteria.context.JoinKind
 import org.seasar.doma.criteria.context.SelectContext
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
@@ -60,34 +59,5 @@ open class SelectDeclaration(protected val context: SelectContext) {
     fun forUpdate(block: ForUpdateDeclaration.() -> Unit) {
         context.forUpdate = ForUpdate()
         forUpdateDeclaration.block()
-    }
-}
-
-class Select<RESULT>(val propTypes: List<EntityPropertyDesc<*, *, *>>, val mapper: (Row) -> RESULT)
-
-interface SqlFunction {
-    val functionName: String
-    val propDesc: EntityPropertyDesc<*, *, *>
-}
-
-class Count<ENTITY, BASIC, CONTAINER>(override val propDesc: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
-        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by propDesc, SqlFunction {
-
-    override val functionName: String
-        get() = "count"
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Count<*, *, *>
-
-        if (propDesc != other.propDesc) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return propDesc.hashCode()
     }
 }
