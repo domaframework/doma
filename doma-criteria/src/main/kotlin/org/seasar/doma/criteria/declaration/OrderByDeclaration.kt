@@ -5,11 +5,11 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType
 @Declaration
 class OrderByDeclaration(private val add: (Pair<EntityPropertyType<*, *>, String>) -> Unit) {
 
-    fun desc(prop: EntityPropertyType<*, *>) {
-        add(prop to "desc")
+    fun EntityPropertyType<*, *>.desc() {
+        add(this to "desc")
     }
 
-    fun asc(prop: EntityPropertyType<*, *>) {
-        add(prop to "asc")
+    fun EntityPropertyType<*, *>.asc() {
+        add(this to "asc")
     }
 }

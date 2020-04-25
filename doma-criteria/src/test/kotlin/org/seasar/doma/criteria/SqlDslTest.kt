@@ -16,7 +16,7 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Emp) { e ->
                 where {
-                    eq(e.id, 1)
+                    e.id eq 1
                 }
                 select(e.id)
             }
@@ -31,7 +31,7 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Emp) { e ->
                 where {
-                    eq(e.id, 1)
+                    e.id eq 1
                 }
                 select(e.id, e.name)
             }
@@ -46,7 +46,7 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Emp) { e ->
                 where {
-                    eq(e.id, 1)
+                    e.id eq 1
                 }
                 select(e.id, e.name, e.salary)
             }
@@ -61,7 +61,7 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Emp) { e ->
                 where {
-                    eq(e.id, 1)
+                    e.id eq 1
                 }
                 select(e.id, e.name, e.salary, e.version) {
                     Emp().apply {
@@ -83,7 +83,7 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Dept) { d ->
                 where {
-                    eq(d.id, 1)
+                    d.id eq 1
                 }
                 groupBy(d.name)
                 select(d.name, count(d.id)) {
@@ -101,11 +101,11 @@ internal class SqlDslTest {
         val query = sql {
             from(::_Dept) { d ->
                 where {
-                    eq(d.id, 1)
+                    d.id eq 1
                 }
                 groupBy(d.name)
                 having {
-                    ge(count(d.id), 1)
+                    count(d.id) ge 1
                 }
                 select(d.name, count(d.id)) {
                     it[d.name] to count(d.id)
@@ -122,7 +122,7 @@ internal class SqlDslTest {
         val query = sql {
             delete.from(::_Dept) { d ->
                 where {
-                    eq(d.name, "hoge")
+                    d.name eq "hoge"
                 }
             }
         }
@@ -136,8 +136,8 @@ internal class SqlDslTest {
         val query = sql {
             insert.into(::_Dept) { d ->
                 values {
-                    value(d.id, 1)
-                    value(d.name, "hoge")
+                    it[d.id] = 1
+                    it[d.name] = "hoge"
                 }
             }
         }
@@ -151,10 +151,10 @@ internal class SqlDslTest {
         val query = sql {
             update(::_Dept) { d ->
                 set {
-                    value(d.name, "hoge")
+                    it[d.name] = "hoge"
                 }
                 where {
-                    eq(d.id, 1)
+                    d.id eq 1
                 }
             }
         }

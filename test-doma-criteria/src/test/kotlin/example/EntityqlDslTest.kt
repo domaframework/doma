@@ -24,7 +24,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeName, "SMITH")
+                    e.employeeName eq "SMITH"
                 }
             }
         }
@@ -38,10 +38,10 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    `in`(e.employeeId, listOf(3, 4, 5))
+                    e.employeeId `in` listOf(3, 4, 5)
                 }
                 orderBy {
-                    asc(e.employeeId)
+                    e.employeeId.asc()
                 }
             }
         }
@@ -57,10 +57,10 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    `in`(e.departmentId to e.version, listOf(1 to 1))
+                    (e.departmentId to e.version) `in` listOf(1 to 1)
                 }
                 orderBy {
-                    asc(e.employeeId)
+                    e.employeeId.asc()
                 }
             }
         }
@@ -76,7 +76,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    `in`(e.managerId) {
+                    e.managerId `in` {
                         from(::_Employee) {
                             select(it.employeeId)
                         }
@@ -94,7 +94,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    `in`(e.managerId to e.departmentId) {
+                    (e.managerId to e.departmentId) `in` {
                         from(::_Employee) {
                             select(it.employeeId to it.departmentId)
                         }
@@ -111,10 +111,10 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Department) { d ->
                 where {
-                    notIn(d.departmentId, listOf(1, 3))
+                    d.departmentId notIn listOf(1, 3)
                 }
                 orderBy {
-                    asc(d.departmentId)
+                    d.departmentId.asc()
                 }
             }
         }
@@ -129,7 +129,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Department) { d ->
                 where {
-                    notIn(d.departmentId) {
+                    d.departmentId notIn {
                         from(::_Employee) { e ->
                             select(e.departmentId)
                         }
@@ -147,7 +147,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Department) { d ->
                 where {
-                    notIn(d.departmentId to d.version) {
+                    (d.departmentId to d.version) notIn {
                         from(::_Employee) {
                             select(it.departmentId to it.version)
                         }
@@ -168,7 +168,7 @@ class EntityqlDslTest(private val config: Config) {
                     exists {
                         from(::_Employee) { e2 ->
                             where {
-                                eq(e.managerId, e2.employeeId)
+                                e.managerId eq e2.employeeId
                             }
                         }
                     }
@@ -188,7 +188,7 @@ class EntityqlDslTest(private val config: Config) {
                     notExists {
                         from(::_Employee) { e2 ->
                             where {
-                                eq(e.managerId, e2.employeeId)
+                                e.managerId eq e2.employeeId
                             }
                         }
                     }
@@ -205,7 +205,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.managerId, null as Int?)
+                    e.managerId eq null as Int?
                 }
             }
         }
@@ -219,7 +219,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    ne(e.managerId, null as Int?)
+                    e.managerId ne null as Int?
                 }
             }
         }
@@ -233,7 +233,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 leftJoin(::_Department) { d ->
-                    eq(e.departmentId, d.departmentId)
+                    e.departmentId eq d.departmentId
                 }
             }
         }
@@ -246,10 +246,10 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
-                    eq(e.departmentId, d.departmentId)
+                    e.departmentId eq d.departmentId
                 }
                 where {
-                    eq(e.employeeName, "SMITH")
+                    e.employeeName eq "SMITH"
                 }
                 associate(e, d) { employee, department ->
                     employee.department = department
@@ -266,7 +266,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Department) { d ->
                 leftJoin(::_Employee) { e ->
-                    eq(d.departmentId, e.departmentId)
+                    d.departmentId eq e.departmentId
                 }
             }
         }
@@ -279,7 +279,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Department) { d ->
                 val e = leftJoin(::_Employee) { e ->
-                    eq(d.departmentId, e.departmentId)
+                    d.departmentId eq e.departmentId
                 }
                 associate(d, e) { department, employee ->
                     department.employeeList.add(employee)
@@ -299,7 +299,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 val m = leftJoin(::_Employee) { m ->
-                    eq(e.managerId, m.employeeId)
+                    e.managerId eq m.employeeId
                 }
                 associate(e, m) { employee, manager ->
                     employee.manager = manager
@@ -317,7 +317,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { p ->
                 where {
-                    eq(p.salary, Salary("3000"))
+                    p.salary eq Salary("3000")
                 }
             }
         }
@@ -330,7 +330,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Person) { p ->
                 where {
-                    eq(p.salary, Optional.of(Salary("3000")))
+                    p.salary eq Optional.of(Salary("3000"))
                 }
             }
         }
@@ -343,7 +343,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Person) { p ->
                 where {
-                    eq(p.salary, Optional.empty())
+                    p.salary eq Optional.empty()
                 }
             }
         }
@@ -356,7 +356,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Person) { p ->
                 where {
-                    eq(p.managerId, Optional.of(9))
+                    p.managerId eq Optional.of(9)
                 }
             }
         }
@@ -369,7 +369,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Person) { p ->
                 where {
-                    eq(p.managerId, Optional.empty())
+                    p.managerId eq Optional.empty()
                 }
             }
         }
@@ -382,7 +382,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Person) { p ->
                 where {
-                    eq(p.employeeNo, OptionalInt.of(7900))
+                    p.employeeNo eq OptionalInt.of(7900)
                 }
             }
         }
@@ -395,7 +395,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 orderBy {
-                    asc(e.employeeId)
+                    e.employeeId.asc()
                 }
                 offset(5)
                 limit(2)
@@ -412,7 +412,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 forUpdate { }
             }
@@ -426,7 +426,7 @@ class EntityqlDslTest(private val config: Config) {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 forUpdate { nowait(true) }
             }
@@ -441,7 +441,7 @@ class EntityqlDslTest(private val config: Config) {
             from(::_Employee) { e ->
                 distinct()
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
             }
         }

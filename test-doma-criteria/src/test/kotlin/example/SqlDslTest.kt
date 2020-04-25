@@ -14,7 +14,7 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 select(e.employeeName)
             }
@@ -29,7 +29,7 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 select(e.employeeNo, e.employeeName)
             }
@@ -44,7 +44,7 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 select(e.employeeNo, e.employeeName, e.departmentId)
             }
@@ -59,7 +59,7 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 where {
-                    eq(e.employeeId, 1)
+                    e.employeeId eq 1
                 }
                 select(e.employeeName, e.employeeNo) {
                     it[e.employeeNo] to it[e.employeeName]
@@ -90,10 +90,10 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
-                    eq(e.departmentId, d.departmentId)
+                    e.departmentId eq d.departmentId
                 }
                 groupBy(d.departmentId, d.departmentName)
-                orderBy { asc(e.departmentId) }
+                orderBy { e.departmentId.asc() }
                 select(d.departmentId, d.departmentName, count(e.employeeId)) {
                     Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeId)])
                 }
@@ -111,13 +111,13 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
-                    eq(e.departmentId, d.departmentId)
+                    e.departmentId eq d.departmentId
                 }
                 groupBy(d.departmentId, d.departmentName)
                 having {
-                    gt(count(e.employeeId), 3)
+                    count(e.employeeId) gt 3
                 }
-                orderBy { asc(e.departmentId) }
+                orderBy { e.departmentId.asc() }
                 select(d.departmentId, d.departmentName, count(e.employeeId)) {
                     Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeId)])
                 }
@@ -134,10 +134,10 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             insert.into(::_Department) { d ->
                 values {
-                    value(d.departmentId, 99)
-                    value(d.departmentNo, 99)
-                    value(d.departmentName, "MARKETING")
-                    value(d.location, "TOKYO")
+                    it[d.departmentId] = 99
+                    it[d.departmentNo] = 99
+                    it[d.departmentName] = "MARKETING"
+                    it[d.location] = "TOKYO"
                 }
             }
         }
@@ -150,7 +150,7 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             delete.from(::_Employee) { e ->
                 where {
-                    eq(e.departmentId, 1)
+                    e.departmentId eq 1
                 }
             }
         }
@@ -163,10 +163,10 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             delete.from(::_Employee) { e ->
                 where {
-                    `in`(e.departmentId) {
+                    e.departmentId `in` {
                         from(::_Department) { d ->
                             where {
-                                eq(d.departmentName, "ACCOUNTING")
+                                d.departmentName eq "ACCOUNTING"
                             }
                             select(d.departmentId)
                         }
@@ -183,10 +183,10 @@ class SqlDslTest(private val config: Config) {
         val query = sql {
             update(::_Department) { e ->
                 set {
-                    value(e.location, "TOKYO")
+                    it[e.location] = "TOKYO"
                 }
                 where {
-                    eq(e.departmentId, 1)
+                    e.departmentId eq 1
                 }
             }
         }
