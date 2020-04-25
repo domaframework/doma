@@ -1,9 +1,9 @@
 package org.seasar.doma.criteria.query
 
-import org.seasar.doma.criteria.Criterion
-import org.seasar.doma.criteria.JoinKind
-import org.seasar.doma.criteria.Projection
-import org.seasar.doma.criteria.SelectContext
+import org.seasar.doma.criteria.context.Criterion
+import org.seasar.doma.criteria.context.JoinKind
+import org.seasar.doma.criteria.context.Projection
+import org.seasar.doma.criteria.context.SelectContext
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind

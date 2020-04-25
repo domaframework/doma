@@ -1,7 +1,7 @@
 package org.seasar.doma.criteria.command
 
 import java.sql.ResultSet
-import org.seasar.doma.criteria.Row
+import org.seasar.doma.criteria.declaration.Row
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityPropertyType

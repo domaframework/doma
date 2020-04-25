@@ -1,6 +1,6 @@
 package org.seasar.doma.criteria.command
 
-import org.seasar.doma.criteria.Row
+import org.seasar.doma.criteria.declaration.Row
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler
 import org.seasar.doma.internal.jdbc.command.ResultListCallback
 import org.seasar.doma.jdbc.ObjectProvider

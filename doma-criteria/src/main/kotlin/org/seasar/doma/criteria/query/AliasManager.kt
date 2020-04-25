@@ -1,11 +1,11 @@
 package org.seasar.doma.criteria.query
 
-import org.seasar.doma.criteria.CriteriaContext
+import org.seasar.doma.criteria.context.Context
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class AliasManager(
-    context: CriteriaContext,
+    context: Context,
     private val parentManager: AliasManager? = null
 ) {
 

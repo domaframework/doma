@@ -2,7 +2,7 @@ package org.seasar.doma.criteria.query
 
 import java.lang.reflect.Method
 import org.seasar.doma.FetchType
-import org.seasar.doma.criteria.EntityqlStatement
+import org.seasar.doma.criteria.statement.EntityqlSelectStatement
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SelectOptions
@@ -20,7 +20,7 @@ class SelectQuery(private val config: Config, private val sql: PreparedSql) : or
 
     override fun getClassName(): String {
         // TODO which name is the best?
-        return EntityqlStatement::class.qualifiedName!!
+        return EntityqlSelectStatement::class.qualifiedName!!
     }
 
     override fun getMethodName(): String {
