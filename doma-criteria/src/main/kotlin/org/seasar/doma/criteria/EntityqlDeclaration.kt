@@ -16,16 +16,11 @@ fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> entityql(
 
 @Declaration
 class EntityqlDeclaration {
-
-    val select = Select
-
-    object Select {
-        fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
-            from: () -> ENTITY_TYPE,
-            block: EntityqlFromDeclaration.(ENTITY_TYPE) -> Unit
-        ): EntityqlStatement<ENTITY, ENTITY_TYPE> {
-            return EntityqlStatement(from, block)
-        }
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
+        from: () -> ENTITY_TYPE,
+        block: EntityqlFromDeclaration.(ENTITY_TYPE) -> Unit
+    ): EntityqlStatement<ENTITY, ENTITY_TYPE> {
+        return EntityqlStatement(from, block)
     }
 }
 

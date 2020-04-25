@@ -19,16 +19,11 @@ fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT>
 
 @Declaration
 class SqlDeclaration {
-
-    val select = Select
-
-    object Select {
-        fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT> from(
-            from: () -> ENTITY_TYPE,
-            block: SqlFromDeclaration.(ENTITY_TYPE) -> org.seasar.doma.criteria.Select<RESULT>
-        ): SqlStatement<ENTITY, ENTITY_TYPE, RESULT> {
-            return SqlStatement(from, block)
-        }
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT> from(
+        from: () -> ENTITY_TYPE,
+        block: SqlFromDeclaration.(ENTITY_TYPE) -> org.seasar.doma.criteria.Select<RESULT>
+    ): SqlStatement<ENTITY, ENTITY_TYPE, RESULT> {
+        return SqlStatement(from, block)
     }
 }
 
@@ -46,7 +41,7 @@ class SqlFromDeclaration(_selectContext: SelectContext) : FromDeclaration(_selec
 
     fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
 
-    fun <RESULT> map(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT): Select<RESULT> {
+    fun <RESULT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT): Select<RESULT> {
         return Select(listOf(*propTypes), mapper)
     }
 }

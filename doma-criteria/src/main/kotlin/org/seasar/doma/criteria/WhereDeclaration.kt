@@ -8,7 +8,6 @@ import org.seasar.doma.internal.jdbc.scalar.Scalars
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc
-import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
 @Suppress("FunctionName")
@@ -74,19 +73,15 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         add(Criterion.Between(toProp(propType), toParam(propType, begin), toParam(propType, end)))
     }
 
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> exists(
-        from: () -> ENTITY_TYPE,
-        block: FromDeclaration.(ENTITY_TYPE) -> Unit
-    ) {
-        val context = createSubContext(from(), block, Projection.Asterisk)
+    fun exists(block: ExistsSubQueryDeclaration.() -> SelectContext) {
+        val declaration = ExistsSubQueryDeclaration(config)
+        val context = declaration.block()
         add(Criterion.Exists(context))
     }
 
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> notExists(
-        from: () -> ENTITY_TYPE,
-        block: FromDeclaration.(ENTITY_TYPE) -> Unit
-    ) {
-        val context = createSubContext(from(), block, Projection.Asterisk)
+    fun notExists(block: ExistsSubQueryDeclaration.() -> SelectContext) {
+        val declaration = ExistsSubQueryDeclaration(config)
+        val context = declaration.block()
         add(Criterion.NotExists(context))
     }
 
@@ -108,17 +103,24 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         add(Criterion.InPair(prop1 to prop2, params))
     }
 
-    fun <CONTAINER> `in`(left: EntityPropertyDesc<*, *, CONTAINER>, right: SelectSingle<CONTAINER>) {
-        add(Criterion.InSelectSingle(toProp(left), right.context))
+    fun <CONTAINER> `in`(
+        propType: EntityPropertyDesc<*, *, CONTAINER>,
+        block: SingleSubQueryDeclaration<CONTAINER>.() -> SelectContext
+    ) {
+        val declaration = SingleSubQueryDeclaration<CONTAINER>(config)
+        val context = declaration.block()
+        add(Criterion.InSingleSubQuery(toProp(propType), context))
     }
 
     fun <CONTAINER1, CONTAINER2> `in`(
-        left: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>,
-        right: SelectPair<CONTAINER1, CONTAINER2>
+        pair: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>,
+        block: PairSubQueryDeclaration<CONTAINER1, CONTAINER2>.() -> SelectContext
     ) {
-        val prop1 = toProp(left.first)
-        val prop2 = toProp(left.second)
-        add(Criterion.InSelectPair(prop1 to prop2, right.context))
+        val prop1 = toProp(pair.first)
+        val prop2 = toProp(pair.second)
+        val declaration = PairSubQueryDeclaration<CONTAINER1, CONTAINER2>(config)
+        val context = declaration.block()
+        add(Criterion.InPairSubQuery(prop1 to prop2, context))
     }
 
     fun <CONTAINER> notIn(left: EntityPropertyDesc<*, *, CONTAINER>, right: List<CONTAINER>) {
@@ -127,12 +129,12 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
 
     fun <CONTAINER1, CONTAINER2> notIn(
         left: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>,
-        values: List<Pair<CONTAINER1, CONTAINER2>>
+        right: List<Pair<CONTAINER1, CONTAINER2>>
     ) {
         val (first, second) = left
         val prop1 = toProp(first)
         val prop2 = toProp(second)
-        val params = values.map { (first, second) ->
+        val params = right.map { (first, second) ->
             val param1 = toParam(left.first, first)
             val param2 = toParam(left.second, second)
             param1 to param2
@@ -140,45 +142,21 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         add(Criterion.NotInPair(prop1 to prop2, params))
     }
 
-    fun <CONTAINER> notIn(left: EntityPropertyDesc<*, *, CONTAINER>, right: SelectSingle<CONTAINER>) {
-        add(Criterion.NotInSelectSingle(toProp(left), right.context))
+    fun <CONTAINER> notIn(propType: EntityPropertyDesc<*, *, CONTAINER>, block: SingleSubQueryDeclaration<CONTAINER>.() -> SelectContext) {
+        val declaration = SingleSubQueryDeclaration<CONTAINER>(config)
+        val context = declaration.block()
+        add(Criterion.NotInSingleSubQuery(toProp(propType), context))
     }
 
     fun <CONTAINER1, CONTAINER2> notIn(
-        left: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>,
-        right: SelectPair<CONTAINER1, CONTAINER2>
+        pair: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>,
+        block: PairSubQueryDeclaration<CONTAINER1, CONTAINER2>.() -> SelectContext
     ) {
-        val prop1 = toProp(left.first)
-        val prop2 = toProp(left.second)
-        add(Criterion.NotInSelectPair(prop1 to prop2, right.context))
-    }
-
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
-            CONTAINER, PROPERTY_TYPE : EntityPropertyDesc<ENTITY, *, CONTAINER>> selectSingle(
-                list: (ENTITY_TYPE) -> PROPERTY_TYPE,
-                from: () -> ENTITY_TYPE,
-                block: FromDeclaration.(ENTITY_TYPE) -> Unit
-            ): SelectSingle<CONTAINER> {
-        val entityType = from()
-        val propType = list(entityType)
-        val projection = Projection.Single(propType)
-        val context = createSubContext(entityType, block, projection)
-        return SelectSingle(context)
-    }
-
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>,
-            CONTAINER1, PROPERTY_TYPE1 : EntityPropertyDesc<ENTITY, *, CONTAINER1>,
-            CONTAINER2, PROPERTY_TYPE2 : EntityPropertyDesc<ENTITY, *, CONTAINER2>
-            > selectPair(
-                list: (ENTITY_TYPE) -> Pair<PROPERTY_TYPE1, PROPERTY_TYPE2>,
-                from: () -> ENTITY_TYPE,
-                block: FromDeclaration.(ENTITY_TYPE) -> Unit
-            ): SelectPair<CONTAINER1, CONTAINER2> {
-        val entityType = from()
-        val (first, second) = list(entityType)
-        val projection = Projection.Pair(first, second)
-        val context = createSubContext(entityType, block, projection)
-        return SelectPair(context)
+        val prop1 = toProp(pair.first)
+        val prop2 = toProp(pair.second)
+        val declaration = PairSubQueryDeclaration<CONTAINER1, CONTAINER2>(config)
+        val context = declaration.block()
+        add(Criterion.NotInPairSubQuery(prop1 to prop2, context))
     }
 
     fun not(block: WhereDeclaration.() -> Unit) = runBlock(block, Criterion::Not)
@@ -217,19 +195,5 @@ class WhereDeclaration(private val config: Config, private val add: (Criterion) 
         }
         val supplier = Scalars.wrap(v, clazz, false, config.classHelper)
         return Operand.Param(ScalarInParameter(supplier.get()))
-    }
-
-    private fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> createSubContext(
-        entityType: ENTITY_TYPE,
-        block: FromDeclaration.(ENTITY_TYPE) -> Unit,
-        projection: Projection
-    ): SelectContext {
-        val context = SelectContext(config, entityType, projection = projection)
-        val declaration = FromDeclaration(context)
-        declaration.block(entityType)
-        if (context.associations.isNotEmpty()) {
-            TODO()
-        }
-        return context
     }
 }

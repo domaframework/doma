@@ -12,11 +12,11 @@ internal class SqlDeclarationTest {
     @Test
     fun test() {
         val query = sql {
-            select.from(::_Dept) { d ->
+            from(::_Dept) { d ->
                 where {
                     eq(d.id, 1)
                 }
-                map(d.id, d.name) {
+                select(d.id, d.name) {
                     it[d.id] to it[d.name]
                 }
             }
@@ -29,12 +29,12 @@ internal class SqlDeclarationTest {
     @Test
     fun groupBy() {
         val query = sql {
-            select.from(::_Dept) { d ->
+            from(::_Dept) { d ->
                 where {
                     eq(d.id, 1)
                 }
                 groupBy(d.name)
-                map(d.name, count(d.id)) {
+                select(d.name, count(d.id)) {
                     it[d.name] to it[count(d.id)]
                 }
             }
@@ -47,7 +47,7 @@ internal class SqlDeclarationTest {
     @Test
     fun having() {
         val query = sql {
-            select.from(::_Dept) { d ->
+            from(::_Dept) { d ->
                 where {
                     eq(d.id, 1)
                 }
@@ -55,7 +55,7 @@ internal class SqlDeclarationTest {
                 having {
                     ge(count(d.id), 1)
                 }
-                map(d.name, count(d.id)) {
+                select(d.name, count(d.id)) {
                     it[d.name] to count(d.id)
                 }
             }

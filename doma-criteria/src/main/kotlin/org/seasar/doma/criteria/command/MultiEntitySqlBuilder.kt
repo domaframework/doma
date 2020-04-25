@@ -169,13 +169,13 @@ class MultiEntitySqlBuilder(
             is Criterion.NotLike -> like(c.left, c.right, true)
             is Criterion.Between -> between(c.prop, c.begin, c.end)
             is Criterion.InSingle -> inSingle(c.left, c.right)
-            is Criterion.InPair -> inPair(c.left, c.right)
-            is Criterion.InSelectSingle -> inSelectSingle(c.left, c.right)
-            is Criterion.InSelectPair -> inSelectPair(c.left, c.right)
             is Criterion.NotInSingle -> inSingle(c.left, c.right, true)
+            is Criterion.InPair -> inPair(c.left, c.right)
             is Criterion.NotInPair -> inPair(c.left, c.right, true)
-            is Criterion.NotInSelectSingle -> inSelectSingle(c.left, c.right, true)
-            is Criterion.NotInSelectPair -> inSelectPair(c.left, c.right, true)
+            is Criterion.InSingleSubQuery -> inSingleSubQuery(c.left, c.right)
+            is Criterion.NotInSingleSubQuery -> inSingleSubQuery(c.left, c.right, true)
+            is Criterion.InPairSubQuery -> inPairSubQuery(c.left, c.right)
+            is Criterion.NotInPairSubQuery -> inPairSubQuery(c.left, c.right, true)
             is Criterion.Exists -> exists(c.context)
             is Criterion.NotExists -> exists(c.context, true)
             is Criterion.And -> and(c.list, index)
@@ -267,7 +267,7 @@ class MultiEntitySqlBuilder(
         buf.appendSql(")")
     }
 
-    private fun inSelectSingle(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
+    private fun inSingleSubQuery(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
         column(left.value)
         if (not) {
             buf.appendSql(" not")
@@ -279,7 +279,7 @@ class MultiEntitySqlBuilder(
         buf.appendSql(")")
     }
 
-    private fun inSelectPair(left: Pair<Operand.Prop, Operand.Prop>, right: SelectContext, not: Boolean = false) {
+    private fun inPairSubQuery(left: Pair<Operand.Prop, Operand.Prop>, right: SelectContext, not: Boolean = false) {
         val (prop1, prop2) = left
         buf.appendSql("(")
         column(prop1.value)

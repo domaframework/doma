@@ -12,11 +12,11 @@ class SqlDeclarationTest(private val config: Config) {
     @Test
     fun test() {
         val query = sql {
-            select.from(::_Employee) { e ->
+            from(::_Employee) { e ->
                 where {
                     eq(e.employeeId, 1)
                 }
-                map(e.employeeName, e.employeeNo) {
+                select(e.employeeName, e.employeeNo) {
                     it[e.employeeNo] to it[e.employeeName]
                 }
             }
@@ -29,8 +29,8 @@ class SqlDeclarationTest(private val config: Config) {
     @Test
     fun count() {
         val query = sql {
-            select.from(::_Employee) { e ->
-                map(count(e.employeeId)) {
+            from(::_Employee) { e ->
+                select(count(e.employeeId)) {
                     it[count(e.employeeId)]
                 }
             }
@@ -43,13 +43,13 @@ class SqlDeclarationTest(private val config: Config) {
     @Test
     fun groupBy() {
         val query = sql {
-            select.from(::_Employee) { e ->
+            from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
                     eq(e.departmentId, d.departmentId)
                 }
                 groupBy(d.departmentId, d.departmentName)
                 orderBy { asc(e.departmentId) }
-                map(d.departmentId, d.departmentName, count(e.employeeId)) {
+                select(d.departmentId, d.departmentName, count(e.employeeId)) {
                     Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeId)])
                 }
             }
@@ -64,7 +64,7 @@ class SqlDeclarationTest(private val config: Config) {
     @Test
     fun having() {
         val query = sql {
-            select.from(::_Employee) { e ->
+            from(::_Employee) { e ->
                 val d = leftJoin(::_Department) { d ->
                     eq(e.departmentId, d.departmentId)
                 }
@@ -73,7 +73,7 @@ class SqlDeclarationTest(private val config: Config) {
                     gt(count(e.employeeId), 3)
                 }
                 orderBy { asc(e.departmentId) }
-                map(d.departmentId, d.departmentName, count(e.employeeId)) {
+                select(d.departmentId, d.departmentName, count(e.employeeId)) {
                     Triple(it[d.departmentId], it[d.departmentName], it[count(e.employeeId)])
                 }
             }
