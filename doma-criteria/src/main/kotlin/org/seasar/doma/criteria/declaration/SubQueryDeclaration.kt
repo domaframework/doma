@@ -76,9 +76,8 @@ class SingleSubQuerySelectDeclaration<CONTAINER>(context: SelectContext) : SubQu
 @Declaration
 class PairSubQuerySelectDeclaration<CONTAINER1, CONTAINER2>(_selectContext: SelectContext) : SubQuerySelectDeclaration(_selectContext) {
 
-    fun select(pair: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>): SelectContext {
-        // TODO
-        context.projection = Projection.Pair(pair.first, pair.second)
+    fun select(first: EntityPropertyDesc<*, *, CONTAINER1>, second: EntityPropertyDesc<*, *, CONTAINER2>): SelectContext {
+        context.projection = Projection.Pair(first, second)
         return context
     }
 }

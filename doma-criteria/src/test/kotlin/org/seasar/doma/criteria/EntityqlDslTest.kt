@@ -342,7 +342,7 @@ class EntityqlDslTest {
                 where {
                     (e.id to e.name) `in` {
                         from(::_Dept) { d ->
-                            select(d.id to d.name)
+                            select(d.id, d.name)
                         }
                     }
                 }
@@ -406,7 +406,7 @@ class EntityqlDslTest {
                 where {
                     (e.id to e.name) notIn {
                         from(::_Dept) { d ->
-                            select(d.id to d.name)
+                            select(d.id, d.name)
                         }
                     }
                 }

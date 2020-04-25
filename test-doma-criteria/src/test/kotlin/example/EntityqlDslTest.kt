@@ -96,7 +96,7 @@ class EntityqlDslTest(private val config: Config) {
                 where {
                     (e.managerId to e.departmentId) `in` {
                         from(::_Employee) {
-                            select(it.employeeId to it.departmentId)
+                            select(it.employeeId, it.departmentId)
                         }
                     }
                 }
@@ -149,7 +149,7 @@ class EntityqlDslTest(private val config: Config) {
                 where {
                     (d.departmentId to d.version) notIn {
                         from(::_Employee) {
-                            select(it.departmentId to it.version)
+                            select(it.departmentId, it.version)
                         }
                     }
                 }
