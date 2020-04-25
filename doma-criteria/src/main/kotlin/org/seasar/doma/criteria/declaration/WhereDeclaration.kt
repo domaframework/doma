@@ -12,11 +12,11 @@ class WhereDeclaration(
     add: (Criterion) -> Unit
 ) : ComparisonDeclaration<WhereDeclaration>(config, add, ::WhereDeclaration) {
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.like(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.like(other: CONTAINER) {
         add(Criterion.Like(support.toProp(this), support.toParam(this, other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.notLike(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.notLike(other: CONTAINER) {
         add(Criterion.NotLike(support.toProp(this), support.toParam(this, other)))
     }
 
@@ -26,7 +26,7 @@ class WhereDeclaration(
                 support.toParam(this, other.endInclusive)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.`in`(other: List<CONTAINER?>) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.`in`(other: List<CONTAINER>) {
         add(Criterion.InSingle(support.toProp(this), other.map { support.toParam(this, it) }))
     }
 

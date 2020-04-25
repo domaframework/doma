@@ -28,7 +28,7 @@ open class ComparisonDeclaration<DECLARATION : ComparisonDeclaration<DECLARATION
         add(Criterion.Ne(support.toProp(this), support.toProp(other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.gt(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.gt(other: CONTAINER) {
         add(Criterion.Gt(support.toProp(this), support.toParam(this, other)))
     }
 
@@ -36,7 +36,7 @@ open class ComparisonDeclaration<DECLARATION : ComparisonDeclaration<DECLARATION
         add(Criterion.Gt(support.toProp(this), support.toProp(other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.ge(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.ge(other: CONTAINER) {
         add(Criterion.Ge(support.toProp(this), support.toParam(this, other)))
     }
 
@@ -44,7 +44,7 @@ open class ComparisonDeclaration<DECLARATION : ComparisonDeclaration<DECLARATION
         add(Criterion.Ge(support.toProp(this), support.toProp(other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.lt(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.lt(other: CONTAINER) {
         add(Criterion.Lt(support.toProp(this), support.toParam(this, other)))
     }
 
@@ -52,7 +52,7 @@ open class ComparisonDeclaration<DECLARATION : ComparisonDeclaration<DECLARATION
         add(Criterion.Lt(support.toProp(this), support.toProp(other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.le(other: CONTAINER?) {
+    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.le(other: CONTAINER) {
         add(Criterion.Le(support.toProp(this), support.toParam(this, other)))
     }
 
