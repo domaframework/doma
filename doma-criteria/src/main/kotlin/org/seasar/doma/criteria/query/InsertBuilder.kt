@@ -1,12 +1,11 @@
 package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.context.InsertContext
+import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
-import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
-import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class InsertBuilder(
@@ -23,13 +22,13 @@ class InsertBuilder(
         if (context.values.isNotEmpty()) {
             buf.appendSql(" (")
             context.values.forEach { (key, _) ->
-                column(key.value)
+                column(key)
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
             buf.appendSql(") values (")
             context.values.forEach { (_, value) ->
-                param(value.value)
+                param(value)
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
@@ -43,11 +42,12 @@ class InsertBuilder(
         buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
     }
 
-    private fun column(propType: EntityPropertyType<*, *>) {
+    private fun column(prop: Operand.Prop) {
+        val propType = prop.value
         buf.appendSql(propType.getColumnName(config.naming::apply, config.dialect::applyQuote))
     }
 
-    private fun param(param: InParameter<*>) {
-        buf.appendParameter(param)
+    private fun param(param: Operand.Param) {
+        buf.appendParameter(param.value)
     }
 }

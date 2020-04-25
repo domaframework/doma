@@ -6,7 +6,6 @@ import org.seasar.doma.criteria.context.SelectContext
 import org.seasar.doma.criteria.declaration.SqlFunction
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
@@ -20,6 +19,10 @@ class BuilderSupport(
         buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
         buf.appendSql(" ")
         buf.appendSql(aliasManager[entityType])
+    }
+
+    fun column(prop: Operand.Prop) {
+        column(prop.value)
     }
 
     fun column(propType: EntityPropertyType<*, *>) {
@@ -39,8 +42,8 @@ class BuilderSupport(
         }
     }
 
-    fun param(param: InParameter<*>) {
-        buf.appendParameter(param)
+    fun param(param: Operand.Param) {
+        buf.appendParameter(param.value)
     }
 
     fun visitCriterion(index: Int, c: Criterion) {
@@ -78,40 +81,40 @@ class BuilderSupport(
             }
         }
 
-        column(left.value)
+        column(left)
         if (nullOp != null && isRightValueNull()) {
             buf.appendSql(" $nullOp")
         } else {
             buf.appendSql(" $op ")
             when (right) {
-                is Operand.Param -> param(right.value)
-                is Operand.Prop -> column(right.value)
+                is Operand.Param -> param(right)
+                is Operand.Prop -> column(right)
             }
         }
     }
 
     private fun like(left: Operand.Prop, right: Operand, not: Boolean = false) {
-        column(left.value)
+        column(left)
         if (not) {
             buf.appendSql(" not")
         }
         buf.appendSql(" like ")
         when (right) {
-            is Operand.Param -> param(right.value)
-            is Operand.Prop -> column(right.value)
+            is Operand.Param -> param(right)
+            is Operand.Prop -> column(right)
         }
     }
 
     private fun between(prop: Operand.Prop, begin: Operand.Param, end: Operand.Param) {
-        column(prop.value)
+        column(prop)
         buf.appendSql(" between ")
-        param(begin.value)
+        param(begin)
         buf.appendSql(" and ")
-        param(end.value)
+        param(end)
     }
 
     private fun inSingle(left: Operand.Prop, right: List<Operand.Param>, not: Boolean = false) {
-        column(left.value)
+        column(left)
         if (not) {
             buf.appendSql(" not")
         }
@@ -120,7 +123,7 @@ class BuilderSupport(
             buf.appendSql("null")
         } else {
             right.forEach {
-                param(it.value)
+                param(it)
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
@@ -130,9 +133,9 @@ class BuilderSupport(
 
     private fun inPair(left: Pair<Operand.Prop, Operand.Prop>, right: List<Pair<Operand.Param, Operand.Param>>, not: Boolean = false) {
         buf.appendSql("(")
-        column(left.first.value)
+        column(left.first)
         buf.appendSql(", ")
-        column(left.second.value)
+        column(left.second)
         buf.appendSql(")")
         if (not) {
             buf.appendSql(" not")
@@ -143,9 +146,9 @@ class BuilderSupport(
         } else {
             right.forEach {
                 buf.appendSql("(")
-                param(it.first.value)
+                param(it.first)
                 buf.appendSql(", ")
-                param(it.second.value)
+                param(it.second)
                 buf.appendSql("), ")
             }
             buf.cutBackSql(2)
@@ -154,7 +157,7 @@ class BuilderSupport(
     }
 
     private fun inSingleSubQuery(left: Operand.Prop, right: SelectContext, not: Boolean = false) {
-        column(left.value)
+        column(left)
         if (not) {
             buf.appendSql(" not")
         }
@@ -168,9 +171,9 @@ class BuilderSupport(
     private fun inPairSubQuery(left: Pair<Operand.Prop, Operand.Prop>, right: SelectContext, not: Boolean = false) {
         val (prop1, prop2) = left
         buf.appendSql("(")
-        column(prop1.value)
+        column(prop1)
         buf.appendSql(", ")
-        column(prop2.value)
+        column(prop2)
         buf.appendSql(")")
         if (not) {
             buf.appendSql(" not")
