@@ -201,7 +201,7 @@ class EntityqlDslTest(private val config: Config) {
     }
 
     @Test
-    fun where_isNull() {
+    fun where_eq_null() {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
@@ -215,11 +215,39 @@ class EntityqlDslTest(private val config: Config) {
     }
 
     @Test
-    fun where_isNotNull() {
+    fun where_ne_null() {
         val query = entityql {
             from(::_Employee) { e ->
                 where {
                     e.managerId ne null as Int?
+                }
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(13, list.size)
+        assertTrue(list.none { it.employeeName == "KING" })
+    }
+
+    @Test
+    fun where_isNull() {
+        val query = entityql {
+            from(::_Employee) { e ->
+                where {
+                    e.managerId.isNull()
+                }
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(1, list.size)
+        assertEquals("KING", list[0].employeeName)
+    }
+
+    @Test
+    fun where_isNotNull() {
+        val query = entityql {
+            from(::_Employee) { e ->
+                where {
+                    e.managerId.isNotNull()
                 }
             }
         }

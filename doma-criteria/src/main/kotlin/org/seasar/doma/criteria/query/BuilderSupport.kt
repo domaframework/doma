@@ -48,12 +48,14 @@ class BuilderSupport(
 
     fun visitCriterion(index: Int, c: Criterion) {
         when (c) {
-            is Criterion.Eq -> comparison(c.left, c.right, "=", "is null")
-            is Criterion.Ne -> comparison(c.left, c.right, "<>", "is not null")
+            is Criterion.Eq -> equality(c.left, c.right, "=")
+            is Criterion.Ne -> equality(c.left, c.right, "<>")
             is Criterion.Gt -> comparison(c.left, c.right, ">")
             is Criterion.Ge -> comparison(c.left, c.right, ">=")
             is Criterion.Lt -> comparison(c.left, c.right, "<")
             is Criterion.Le -> comparison(c.left, c.right, "<=")
+            is Criterion.IsNull -> isNull(c.prop)
+            is Criterion.IsNotNull -> isNotNull(c.prop)
             is Criterion.Like -> like(c.left, c.right)
             is Criterion.NotLike -> like(c.left, c.right, true)
             is Criterion.Between -> between(c.prop, c.begin, c.end)
@@ -73,24 +75,42 @@ class BuilderSupport(
         }
     }
 
-    private fun comparison(left: Operand.Prop, right: Operand, op: String, nullOp: String? = null) {
-        fun isRightValueNull(): Boolean {
-            return when (right) {
-                is Operand.Param -> right.value.wrapper.get() == null
+    private fun equality(left: Operand.Prop, right: Operand, op: String) {
+        fun isValueNull(operand: Operand): Boolean {
+            return when (operand) {
+                is Operand.Param -> operand.value.wrapper.get() == null
                 is Operand.Prop -> false
             }
         }
 
-        column(left)
-        if (nullOp != null && isRightValueNull()) {
-            buf.appendSql(" $nullOp")
-        } else {
-            buf.appendSql(" $op ")
-            when (right) {
-                is Operand.Param -> param(right)
-                is Operand.Prop -> column(right)
+        if (isValueNull(right)) {
+            when (op) {
+                "=" -> isNull(left)
+                "<>" -> isNotNull(left)
+                else -> error("The operator '$op' is illegal.")
             }
+        } else {
+            comparison(left, right, op)
         }
+    }
+
+    private fun comparison(left: Operand.Prop, right: Operand, op: String) {
+        column(left)
+        buf.appendSql(" $op ")
+        when (right) {
+            is Operand.Param -> param(right)
+            is Operand.Prop -> column(right)
+        }
+    }
+
+    private fun isNull(prop: Operand.Prop) {
+        column(prop)
+        buf.appendSql(" is null")
+    }
+
+    private fun isNotNull(prop: Operand.Prop) {
+        column(prop)
+        buf.appendSql(" is not null")
     }
 
     private fun like(left: Operand.Prop, right: Operand, not: Boolean = false) {

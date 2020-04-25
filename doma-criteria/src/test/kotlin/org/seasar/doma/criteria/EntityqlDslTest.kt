@@ -206,6 +206,34 @@ class EntityqlDslTest {
     }
 
     @Test
+    fun isNull() {
+        val query = entityql {
+            from(::_Dept) { d ->
+                where {
+                    d.name.isNull()
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME is null"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun isNotNull() {
+        val query = entityql {
+            from(::_Dept) { d ->
+                where {
+                    d.name.isNotNull()
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """select t0_.ID, t0_.NAME from "CATA"."DEPT" t0_ where t0_.NAME is not null"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun like() {
         val query = entityql {
             from(::_Dept) { d ->

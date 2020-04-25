@@ -12,6 +12,14 @@ class WhereDeclaration(
     add: (Criterion) -> Unit
 ) : ComparisonDeclaration<WhereDeclaration>(config, add, ::WhereDeclaration) {
 
+    fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.isNull() {
+        add(Criterion.IsNull(support.toProp(this)))
+    }
+
+    fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.isNotNull() {
+        add(Criterion.IsNotNull(support.toProp(this)))
+    }
+
     infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.like(other: CONTAINER) {
         add(Criterion.Like(support.toProp(this), support.toParam(this, other)))
     }
