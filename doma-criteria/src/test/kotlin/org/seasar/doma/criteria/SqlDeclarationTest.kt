@@ -64,4 +64,50 @@ internal class SqlDeclarationTest {
         val expected = """select t0_.NAME, count(t0_.ID) from "CATA"."DEPT" t0_ where t0_.ID = 1 group by t0_.NAME having count(t0_.ID) >= 1"""
         assertEquals(expected, sql.formattedSql)
     }
+
+    @Test
+    fun delete() {
+        val query = sql {
+            delete.from(::_Dept) { d ->
+                where {
+                    eq(d.name, "hoge")
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """delete from "CATA"."DEPT" t0_ where t0_.NAME = 'hoge'"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun insert() {
+        val query = sql {
+            insert.into(::_Dept) { d ->
+                values {
+                    value(d.id, 1)
+                    value(d.name, "hoge")
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """insert into "CATA"."DEPT" (ID, NAME) values (1, 'hoge')"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun update() {
+        val query = sql {
+            update(::_Dept) { d ->
+                set {
+                    value(d.name, "hoge")
+                }
+                where {
+                    eq(d.id, 1)
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """update "CATA"."DEPT" t0_ set t0_.NAME = 'hoge' where t0_.ID = 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
 }

@@ -1,16 +1,19 @@
 package org.seasar.doma.criteria.command
 
 import org.seasar.doma.criteria.SelectContext
+import org.seasar.doma.criteria.query.SelectQuery
+import org.seasar.doma.jdbc.command.Command
 import org.seasar.doma.jdbc.command.SelectCommand
 import org.seasar.doma.jdbc.entity.EntityType
 
 class MultiEntityCommand<ENTITY>(
     private val context: SelectContext,
-    private val query: MultiEntityQuery
-) {
+    private val query: SelectQuery
+) : Command<List<ENTITY>> {
 
-    fun execute(): List<ENTITY> {
+    override fun execute(): List<ENTITY> {
         val cache = mutableMapOf<Pair<EntityType<Any>, EntityKey>, Any>()
+
         @Suppress("UNCHECKED_CAST")
         val entityTypes = context.getProjectionTargets() as List<EntityType<Any>>
         val command = SelectCommand(query, MultiEntityIterationHandler(entityTypes))

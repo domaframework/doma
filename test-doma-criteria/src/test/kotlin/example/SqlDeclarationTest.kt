@@ -83,4 +83,69 @@ class SqlDeclarationTest(private val config: Config) {
         assertEquals(Triple(2, "RESEARCH", 5), list[0])
         assertEquals(Triple(3, "SALES", 6), list[1])
     }
+
+    @Test
+    fun insert() {
+        val query = sql {
+            insert.into(::_Department) { d ->
+                values {
+                    value(d.departmentId, 99)
+                    value(d.departmentNo, 99)
+                    value(d.departmentName, "MARKETING")
+                    value(d.location, "TOKYO")
+                }
+            }
+        }
+        val count = query.execute(config)
+        assertEquals(1, count)
+    }
+
+    @Test
+    fun delete() {
+        val query = sql {
+            delete.from(::_Employee) { e ->
+                where {
+                    eq(e.departmentId, 1)
+                }
+            }
+        }
+        val count = query.execute(config)
+        assertEquals(3, count)
+    }
+
+    @Test
+    fun delete_in_single_subQuery() {
+        val query = sql {
+            delete.from(::_Employee) { e ->
+                where {
+                    `in`(e.departmentId) {
+                        from(::_Department) { d ->
+                            where {
+                                eq(d.departmentName, "ACCOUNTING")
+                            }
+                            select(d.departmentId)
+                        }
+                    }
+                }
+            }
+        }
+        val count = query.execute(config)
+        assertEquals(3, count)
+    }
+
+    @Test
+    fun update() {
+        val query = sql {
+            update(::_Department) { e ->
+                set {
+                    value(e.location, "TOKYO")
+                }
+                where {
+                    eq(e.departmentId, 1)
+                }
+            }
+        }
+        val count = query.execute(config)
+        assertEquals(1, count)
+    }
 }

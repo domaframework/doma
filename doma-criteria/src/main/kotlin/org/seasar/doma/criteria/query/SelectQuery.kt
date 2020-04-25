@@ -1,4 +1,4 @@
-package org.seasar.doma.criteria.command
+package org.seasar.doma.criteria.query
 
 import java.lang.reflect.Method
 import org.seasar.doma.FetchType
@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SelectOptions
 import org.seasar.doma.jdbc.SqlLogType
 
-class MultiEntityQuery(private val config: Config, private val sql: PreparedSql) : org.seasar.doma.jdbc.query.SelectQuery {
+class SelectQuery(private val config: Config, private val sql: PreparedSql) : org.seasar.doma.jdbc.query.SelectQuery {
 
     override fun getConfig(): Config {
         return config

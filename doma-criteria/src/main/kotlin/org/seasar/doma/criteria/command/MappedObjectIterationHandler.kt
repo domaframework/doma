@@ -4,11 +4,11 @@ import org.seasar.doma.criteria.Row
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler
 import org.seasar.doma.internal.jdbc.command.ResultListCallback
 import org.seasar.doma.jdbc.ObjectProvider
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
+import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.query.SelectQuery
 
 class MappedObjectIterationHandler<RESULT>(
-    private val propTypes: List<EntityPropertyDesc<*, *, *>>,
+    private val propTypes: List<EntityPropertyType<*, *>>,
     private val mapper: (Row) -> RESULT
 ) :
         AbstractIterationHandler<RESULT, List<RESULT>>(ResultListCallback()) {

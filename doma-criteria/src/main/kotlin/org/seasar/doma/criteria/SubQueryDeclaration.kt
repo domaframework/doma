@@ -4,76 +4,79 @@ import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityType
 
+@Declaration
 class ExistsSubQueryDeclaration(private val config: Config) {
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
         entityTypeProvider: () -> ENTITY_TYPE,
-        block: ExistsSubQueryFromDeclaration.(ENTITY_TYPE) -> Unit
+        block: ExistsSubQuerySelectDeclaration.(ENTITY_TYPE) -> Unit
     ): SelectContext {
         val entityType = entityTypeProvider()
         val context = SelectContext(config, entityType, projection = Projection.Asterisk)
-        val declaration = ExistsSubQueryFromDeclaration(context)
+        val declaration = ExistsSubQuerySelectDeclaration(context)
         declaration.block(entityType)
         return context
     }
 }
 
+@Declaration
 class SingleSubQueryDeclaration<CONTAINER>(private val config: Config) {
     fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
         entityTypeProvider: () -> ENTITY_TYPE,
-        block: SingleSubQueryFromDeclaration<CONTAINER>.(ENTITY_TYPE) -> SelectContext
+        block: SingleSubQuerySelectDeclaration<CONTAINER>.(ENTITY_TYPE) -> SelectContext
     ): SelectContext {
         val entityType = entityTypeProvider()
         val context = SelectContext(config, entityType)
-        val declaration = SingleSubQueryFromDeclaration<CONTAINER>(context)
-        return declaration.block(entityType)
-    }
-}
-
-class PairSubQueryDeclaration<CONTAINER1, CONTAINER2>(private val config: Config) {
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: PairSubQueryFromDeclaration<CONTAINER1, CONTAINER2>.(ENTITY_TYPE) -> SelectContext
-    ): SelectContext {
-        val entityType = entityTypeProvider()
-        val context = SelectContext(config, entityType)
-        val declaration = PairSubQueryFromDeclaration<CONTAINER1, CONTAINER2>(context)
+        val declaration = SingleSubQuerySelectDeclaration<CONTAINER>(context)
         return declaration.block(entityType)
     }
 }
 
 @Declaration
-open class SubQueryFromDeclaration(_selectContext: SelectContext) : FromDeclaration(_selectContext) {
-    private val havingDeclaration = HavingDeclaration(_selectContext.config) { _selectContext.having.add(it) }
+class PairSubQueryDeclaration<CONTAINER1, CONTAINER2>(private val config: Config) {
+    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
+        entityTypeProvider: () -> ENTITY_TYPE,
+        block: PairSubQuerySelectDeclaration<CONTAINER1, CONTAINER2>.(ENTITY_TYPE) -> SelectContext
+    ): SelectContext {
+        val entityType = entityTypeProvider()
+        val context = SelectContext(config, entityType)
+        val declaration = PairSubQuerySelectDeclaration<CONTAINER1, CONTAINER2>(context)
+        return declaration.block(entityType)
+    }
+}
+
+@Declaration
+open class SubQuerySelectDeclaration(context: SelectContext) : SelectDeclaration(context) {
+    private val havingDeclaration = HavingDeclaration(context.config) { context.having.add(it) }
 
     fun <ENTITY, BASIC, CONTAINER> count(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Count<ENTITY, BASIC, CONTAINER> {
         return Count(propType)
     }
 
     fun groupBy(vararg propTypes: EntityPropertyDesc<*, *, *>) {
-        _selectContext.groupBy.addAll(propTypes.asList())
+        context.groupBy.addAll(propTypes.asList())
     }
 
     fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
 }
 
 @Declaration
-class ExistsSubQueryFromDeclaration(_selectContext: SelectContext) : SubQueryFromDeclaration(_selectContext)
+class ExistsSubQuerySelectDeclaration(_selectContext: SelectContext) : SubQuerySelectDeclaration(_selectContext)
 
 @Declaration
-class SingleSubQueryFromDeclaration<CONTAINER>(_selectContext: SelectContext) : SubQueryFromDeclaration(_selectContext) {
+class SingleSubQuerySelectDeclaration<CONTAINER>(context: SelectContext) : SubQuerySelectDeclaration(context) {
 
     fun select(propType: EntityPropertyDesc<*, *, CONTAINER>): SelectContext {
-        _selectContext.projection = Projection.Single(propType)
-        return _selectContext
+        context.projection = Projection.Single(propType)
+        return context
     }
 }
 
 @Declaration
-class PairSubQueryFromDeclaration<CONTAINER1, CONTAINER2>(_selectContext: SelectContext) : SubQueryFromDeclaration(_selectContext) {
+class PairSubQuerySelectDeclaration<CONTAINER1, CONTAINER2>(_selectContext: SelectContext) : SubQuerySelectDeclaration(_selectContext) {
 
     fun select(pair: Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>): SelectContext {
         // TODO
-        _selectContext.projection = Projection.Pair(pair.first, pair.second)
-        return _selectContext
+        context.projection = Projection.Pair(pair.first, pair.second)
+        return context
     }
 }

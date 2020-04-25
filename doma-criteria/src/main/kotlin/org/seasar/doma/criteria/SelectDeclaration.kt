@@ -4,13 +4,13 @@ import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 import org.seasar.doma.jdbc.entity.EntityType
 
 @Declaration
-open class FromDeclaration(protected val _selectContext: SelectContext) {
-    private val whereDeclaration = WhereDeclaration(_selectContext.config) { _selectContext.where.add(it) }
-    private val orderByDeclaration = OrderByDeclaration { _selectContext.orderBy.add(it) }
-    private val forUpdateDeclaration = ForUpdateDeclaration { _selectContext.forUpdate = it }
+open class SelectDeclaration(protected val context: SelectContext) {
+    private val whereDeclaration = WhereDeclaration(context.config) { context.where.add(it) }
+    private val orderByDeclaration = OrderByDeclaration { context.orderBy.add(it) }
+    private val forUpdateDeclaration = ForUpdateDeclaration { context.forUpdate = it }
 
     fun distinct(value: Boolean = true) {
-        _selectContext.distinct = value
+        context.distinct = value
     }
 
     fun <ENTITY_TYPE : EntityType<*>> innerJoin(
@@ -37,7 +37,7 @@ open class FromDeclaration(protected val _selectContext: SelectContext) {
             val declaration = JoinDeclaration(it)
             declaration.block(entityType)
         }
-        _selectContext.joins.add(join)
+        context.joins.add(join)
         return entityType
     }
 
@@ -46,15 +46,15 @@ open class FromDeclaration(protected val _selectContext: SelectContext) {
     fun orderBy(block: OrderByDeclaration.() -> Unit) = orderByDeclaration.block()
 
     fun limit(value: Int) {
-        _selectContext.limit = value
+        context.limit = value
     }
 
     fun offset(value: Int) {
-        _selectContext.offset = value
+        context.offset = value
     }
 
     fun forUpdate(block: ForUpdateDeclaration.() -> Unit) {
-        _selectContext.forUpdate = ForUpdate()
+        context.forUpdate = ForUpdate()
         forUpdateDeclaration.block()
     }
 }

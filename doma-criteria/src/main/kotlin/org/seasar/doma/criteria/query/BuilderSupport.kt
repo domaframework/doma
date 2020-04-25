@@ -1,142 +1,28 @@
-package org.seasar.doma.criteria.command
+package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.Criterion
-import org.seasar.doma.criteria.JoinKind
 import org.seasar.doma.criteria.Operand
-import org.seasar.doma.criteria.Projection
 import org.seasar.doma.criteria.SelectContext
 import org.seasar.doma.criteria.SqlFunction
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
+import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.InParameter
-import org.seasar.doma.jdbc.PreparedSql
-import org.seasar.doma.jdbc.SqlKind
-import org.seasar.doma.jdbc.SqlLogType
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
-class MultiEntitySqlBuilder(
-    private val selectContext: SelectContext,
-        // TODO the SqlLogType value should be passed from the caller
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(selectContext.config, SqlKind.SELECT, SqlLogType.FORMATTED),
-    private val aliasManager: AliasManager = AliasManager(selectContext)
+class BuilderSupport(
+    private val config: Config,
+    private val buf: PreparedSqlBuilder,
+    private val aliasManager: AliasManager
 ) {
 
-    private val config = selectContext.config
-
-    fun build(): PreparedSql {
-        interpretContext()
-        // TODO Use config.commenter
-        return buf.build { it }
-    }
-
-    private fun interpretContext() {
-        buf.appendSql("select ")
-        if (selectContext.distinct) {
-            buf.appendSql("distinct ")
-        }
-        when (val projection = selectContext.projection) {
-            is Projection.Default -> {
-                selectContext.getProjectionTargets().forEach {
-                    it.entityPropertyTypes.forEach { prop ->
-                        column(prop)
-                        buf.appendSql(", ")
-                    }
-                }
-                buf.cutBackSql(2)
-            }
-            is Projection.Asterisk -> {
-                buf.appendSql("*")
-            }
-            is Projection.Single -> {
-                column(projection.propType)
-            }
-            is Projection.Pair -> {
-                column(projection.first)
-                buf.appendSql(", ")
-                column(projection.second)
-            }
-            is Projection.List -> {
-                projection.propTypes.forEach {
-                    column(it)
-                    buf.appendSql(", ")
-                }
-                buf.cutBackSql(2)
-            }
-        }
-        buf.appendSql(" from ")
-        table(selectContext.entityType)
-        if (selectContext.joins.isNotEmpty()) {
-            selectContext.joins.forEach { join ->
-                when (join.kind) {
-                    JoinKind.INNER -> buf.appendSql(" inner join ")
-                    JoinKind.LEFT -> buf.appendSql(" left outer join ")
-                }
-                table(join.entityType)
-                if (join.on.isNotEmpty()) {
-                    buf.appendSql(" on (")
-                    join.on.forEachIndexed { index, c ->
-                        visitCriterion(index, c)
-                        buf.appendSql(" and ")
-                    }
-                    buf.cutBackSql(5)
-                    buf.appendSql(")")
-                }
-            }
-        }
-        if (selectContext.where.isNotEmpty()) {
-            buf.appendSql(" where ")
-            selectContext.where.forEachIndexed { index, c ->
-                visitCriterion(index, c)
-                buf.appendSql(" and ")
-            }
-            buf.cutBackSql(5)
-        }
-        if (selectContext.groupBy.isNotEmpty()) {
-            buf.appendSql(" group by ")
-            selectContext.groupBy.forEach { p ->
-                column(p)
-                buf.appendSql(", ")
-            }
-            buf.cutBackSql(2)
-        }
-        if (selectContext.having.isNotEmpty()) {
-            buf.appendSql(" having ")
-            selectContext.having.forEachIndexed { index, c ->
-                visitCriterion(index, c)
-                buf.appendSql(" and ")
-            }
-            buf.cutBackSql(5)
-        }
-        if (selectContext.orderBy.isNotEmpty()) {
-            buf.appendSql(" order by ")
-            selectContext.orderBy.forEach { (p, sort) ->
-                column(p)
-                buf.appendSql(" $sort")
-                buf.appendSql(", ")
-            }
-            buf.cutBackSql(2)
-        }
-        selectContext.limit?.let {
-            buf.appendSql(" limit $it")
-        }
-        selectContext.offset?.let {
-            buf.appendSql(" offset $it")
-        }
-        selectContext.forUpdate?.let {
-            buf.appendSql(" for update")
-            if (it.nowait) {
-                buf.appendSql(" nowait")
-            }
-        }
-    }
-
-    private fun table(entityType: EntityType<*>) {
+    fun table(entityType: EntityType<*>) {
         buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
         buf.appendSql(" ")
         buf.appendSql(aliasManager[entityType])
     }
 
-    private fun column(propType: EntityPropertyType<*, *>) {
+    fun column(propType: EntityPropertyType<*, *>) {
         fun appendColumn(p: EntityPropertyType<*, *>) {
             buf.appendSql(aliasManager[p])
             buf.appendSql(".")
@@ -153,11 +39,11 @@ class MultiEntitySqlBuilder(
         }
     }
 
-    private fun param(param: InParameter<*>) {
+    fun param(param: InParameter<*>) {
         buf.appendParameter(param)
     }
 
-    private fun visitCriterion(index: Int, c: Criterion) {
+    fun visitCriterion(index: Int, c: Criterion) {
         when (c) {
             is Criterion.Eq -> comparison(c.left, c.right, "=", "is null")
             is Criterion.Ne -> comparison(c.left, c.right, "<>", "is not null")
@@ -274,7 +160,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = MultiEntitySqlBuilder(right, buf, parentAliasManager)
+        val builder = SelectBuilder(right, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -291,7 +177,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = MultiEntitySqlBuilder(right, buf, parentAliasManager)
+        val builder = SelectBuilder(right, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -302,7 +188,7 @@ class MultiEntitySqlBuilder(
         }
         buf.appendSql("exists (")
         val parentAliasManager = AliasManager(selectContext, aliasManager)
-        val builder = MultiEntitySqlBuilder(selectContext, buf, parentAliasManager)
+        val builder = SelectBuilder(selectContext, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }

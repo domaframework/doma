@@ -1,11 +1,11 @@
-package org.seasar.doma.criteria.command
+package org.seasar.doma.criteria.query
 
-import org.seasar.doma.criteria.SelectContext
+import org.seasar.doma.criteria.CriteriaContext
 import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class AliasManager(
-    selectContext: SelectContext,
+    context: CriteriaContext,
     private val parentManager: AliasManager? = null
 ) {
 
@@ -14,8 +14,7 @@ class AliasManager(
     private val propAliasMap = mutableMapOf<EntityPropertyType<*, *>, String>()
 
     init {
-        val entityTypes = listOf(selectContext.entityType) + selectContext.joins.map { it.entityType }
-        entityTypes.forEach { entityType ->
+        context.entityTypes.forEach { entityType ->
             val alias = "t${index++}_"
             entityAliasMap[entityType] = alias
             entityType.entityPropertyTypes.forEach {
