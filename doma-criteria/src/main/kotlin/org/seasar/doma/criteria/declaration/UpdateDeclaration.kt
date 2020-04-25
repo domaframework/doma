@@ -4,7 +4,7 @@ import org.seasar.doma.criteria.context.UpdateContext
 import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 
 @Declaration
-open class UpdateDeclaration(private val context: UpdateContext) {
+class UpdateDeclaration(private val context: UpdateContext) {
     private val support = DeclarationSupport(context.config)
     private val valuesDeclaration = ValuesDeclaration()
     private val whereDeclaration = WhereDeclaration(context.config) { context.where.add(it) }

@@ -32,7 +32,7 @@ class SelectBuilder(
             buf.appendSql("distinct ")
         }
         when (val projection = selectContext.projection) {
-            is Projection.Default -> {
+            is Projection.All -> {
                 selectContext.getProjectionTargets().forEach {
                     it.entityPropertyTypes.forEach { prop ->
                         column(prop)

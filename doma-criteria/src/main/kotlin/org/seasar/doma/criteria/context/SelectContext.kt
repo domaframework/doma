@@ -8,7 +8,7 @@ class SelectContext(
     val config: Config,
     val entityType: EntityType<*>,
     var distinct: Boolean = false,
-    var projection: Projection = Projection.Default,
+    var projection: Projection = Projection.All,
     val joins: MutableList<Join> = mutableListOf(),
     val where: MutableList<Criterion> = mutableListOf(),
     val orderBy: MutableList<Pair<EntityPropertyType<*, *>, String>> = mutableListOf(),
@@ -38,7 +38,7 @@ class SelectContext(
 }
 
 sealed class Projection {
-    object Default : Projection()
+    object All : Projection()
     object Asterisk : Projection()
     data class Single(val propType: EntityPropertyType<*, *>) : Projection()
     data class Pair(val first: EntityPropertyType<*, *>, val second: EntityPropertyType<*, *>) : Projection()
