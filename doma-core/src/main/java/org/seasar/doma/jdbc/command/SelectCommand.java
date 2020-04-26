@@ -35,6 +35,11 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   }
 
   @Override
+  public SelectQuery getQuery() {
+    return query;
+  }
+
+  @Override
   public RESULT execute() {
     Supplier<RESULT> supplier = null;
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());

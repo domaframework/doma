@@ -16,6 +16,11 @@ public class CreateCommand<RESULT> implements Command<RESULT> {
   }
 
   @Override
+  public CreateQuery<RESULT> getQuery() {
+    return query;
+  }
+
+  @Override
   public RESULT execute() {
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {

@@ -27,6 +27,11 @@ public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implement
   }
 
   @Override
+  public QUERY getQuery() {
+    return query;
+  }
+
+  @Override
   public RESULT execute() {
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {

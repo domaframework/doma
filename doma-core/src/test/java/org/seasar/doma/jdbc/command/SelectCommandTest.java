@@ -240,4 +240,12 @@ public class SelectCommandTest {
     assertTrue(runtimeConfig.dataSource.connection.preparedStatement.isClosed());
     assertTrue(runtimeConfig.dataSource.connection.isClosed());
   }
+
+  @Test
+  public void getGetQuery() {
+    SqlFileSelectQuery query = new SqlFileSelectQuery();
+    SelectCommand command =
+        new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
+    assertEquals(query, command.getQuery());
+  }
 }
