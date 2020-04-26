@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.DomaIllegalArgumentException;
-import org.seasar.doma.experimental.Sql;
+import org.seasar.doma.Sql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 

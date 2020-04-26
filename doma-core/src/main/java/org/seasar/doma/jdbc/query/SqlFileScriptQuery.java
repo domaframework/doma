@@ -24,7 +24,7 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
 
   protected URL scriptFileUrl;
 
-  protected org.seasar.doma.experimental.Sql sqlAnnotation;
+  protected org.seasar.doma.Sql sqlAnnotation;
 
   protected SqlLogType sqlLogType;
 
@@ -48,7 +48,7 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
   public void prepare() {
     super.prepare();
     assertNotNull(scriptFilePath, blockDelimiter);
-    sqlAnnotation = method.getAnnotation(org.seasar.doma.experimental.Sql.class);
+    sqlAnnotation = method.getAnnotation(org.seasar.doma.Sql.class);
     if (sqlAnnotation == null) {
       assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
       assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
