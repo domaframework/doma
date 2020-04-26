@@ -3,12 +3,6 @@ plugins {
     kotlin("kapt") apply true
 }
 
-kapt {
-    arguments {
-        arg("doma.entity.field.prefix", "none")
-    }
-}
-
 dependencies {
     kapt(project(":doma-processor"))
     implementation(project(":doma-core"))
