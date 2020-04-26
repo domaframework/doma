@@ -192,7 +192,7 @@ public final class Options {
 
     public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
-    public static final String DEFAULT_ENTITY_FIELD_PREFIX = "$";
+    public static final String DEFAULT_ENTITY_FIELD_PREFIX = "none";
 
     public static final String DEFAULT_CONFIG_PATH = "doma.compile.config";
 
