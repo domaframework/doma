@@ -118,6 +118,78 @@ internal class SqlDslTest {
     }
 
     @Test
+    fun union() {
+        val query = sql {
+            val d = from(::_Dept) { d ->
+                select(d.name) {
+                    it[d.name]
+                }
+            }
+            val e = from(::_Emp) { e ->
+                select(e.name) {
+                    it[e.name]
+                }
+            }
+            d union e
+        }
+        val sql = query.asSql(config)
+        val expected = """
+            |select t0_.NAME from "CATA"."DEPT" t0_
+            |union
+            |select t0_.NAME from EMP t0_"""
+                .trimMargin().replace('\n', ' ')
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun unionAll() {
+        val query = sql {
+            val d = from(::_Dept) { d ->
+                select(d.name) {
+                    it[d.name]
+                }
+            }
+            val e = from(::_Emp) { e ->
+                select(e.name) {
+                    it[e.name]
+                }
+            }
+            d unionAll e
+        }
+        val sql = query.asSql(config)
+        val expected = """
+            |select t0_.NAME from "CATA"."DEPT" t0_
+            |union all
+            |select t0_.NAME from EMP t0_"""
+                .trimMargin().replace('\n', ' ')
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun union_multi() {
+        val query = sql {
+            val d = from(::_Dept) { d ->
+                select(d.name) {
+                    it[d.name]
+                }
+            }
+            val e = from(::_Emp) { e ->
+                select(e.name) {
+                    it[e.name]
+                }
+            }
+            d union e unionAll d
+        }
+        val sql = query.asSql(config)
+        val expected = """
+            |select t0_.NAME from "CATA"."DEPT" t0_
+            |union select t0_.NAME from EMP t0_
+            |union all select t0_.NAME from "CATA"."DEPT" t0_"""
+                .trimMargin().replace('\n', ' ')
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun delete() {
         val query = sql {
             delete.from(::_Dept) { d ->

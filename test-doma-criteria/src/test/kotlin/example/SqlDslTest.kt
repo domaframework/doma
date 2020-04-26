@@ -231,10 +231,63 @@ class SqlDslTest(private val config: Config) {
             }
         }
         val list = query.execute(config)
-        println(list)
         assertEquals(2, list.size)
         assertEquals("RESEARCH", list[0].first)
         assertEquals("SALES", list[1].first)
+    }
+
+    @Test
+    fun union() {
+        val query = sql {
+            val x = from(::_Department) { d ->
+                where {
+                    d.departmentId eq 1
+                }
+                select(d.departmentName) {
+                    it[d.departmentName]
+                }
+            }
+            val y = from(::_Employee) { e ->
+                where {
+                    e.employeeId eq 1
+                }
+                select(e.employeeName) {
+                    it[e.employeeName]
+                }
+            }
+            x union y
+        }
+        val list = query.execute(config).sortedBy { it }
+        assertEquals(2, list.size)
+        assertEquals("ACCOUNTING", list[0])
+        assertEquals("SMITH", list[1])
+    }
+
+    @Test
+    fun unionAll() {
+        val query = sql {
+            val x = from(::_Department) { d ->
+                where {
+                    d.departmentId eq 1
+                }
+                select(d.departmentName) {
+                    it[d.departmentName]
+                }
+            }
+            val y = from(::_Department) { d ->
+                where {
+                    d.departmentId eq 1
+                }
+                select(d.departmentName) {
+                    it[d.departmentName]
+                }
+            }
+            x unionAll y
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals("ACCOUNTING", list[0])
+        assertEquals("ACCOUNTING", list[1])
     }
 
     @Test

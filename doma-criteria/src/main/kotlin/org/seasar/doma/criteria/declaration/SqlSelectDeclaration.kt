@@ -44,9 +44,9 @@ class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context),
         }
     }
 
-    fun <RESULT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT): SqlSelectResult<RESULT> {
+    fun <RESULT_ELEMENT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT_ELEMENT): SqlSelectResult<RESULT_ELEMENT> {
         val list = listOf(*propTypes)
         context.projection = Projection.List(list)
-        return SqlSelectResult(list, mapper)
+        return SqlSelectResult(context, list, mapper)
     }
 }

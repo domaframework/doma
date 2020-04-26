@@ -12,21 +12,25 @@ import org.seasar.doma.jdbc.command.Command
 import org.seasar.doma.jdbc.command.SelectCommand
 import org.seasar.doma.jdbc.entity.EntityType
 
-class SqlSelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT>(
+class SqlSelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT_ELEMENT>(
     private val entityTypeProvider: () -> ENTITY_TYPE,
-    private val block: SqlSelectDeclaration.(ENTITY_TYPE) -> SqlSelectResult<RESULT>
-) : AbstractStatement<List<RESULT>>() {
+    private val block: SqlSelectDeclaration.(ENTITY_TYPE) -> SqlSelectResult<RESULT_ELEMENT>
+) : AbstractStatement<List<RESULT_ELEMENT>>() {
 
-    override fun commandAndSql(config: Config): Pair<Command<List<RESULT>>, PreparedSql> {
-        val entityType = entityTypeProvider()
-        val context = SelectContext(config, entityType)
-        val declaration = SqlSelectDeclaration(context)
-        val (propTypes, mapper) = declaration.block(entityType)
+    override fun commandAndSql(config: Config): Pair<Command<List<RESULT_ELEMENT>>, PreparedSql> {
+        val (context, propTypes, mapper) = selectResult(config)
         val builder = SelectBuilder(context)
         val sql = builder.build()
         val query = SelectQuery(config, sql)
         val handler = MappedObjectIterationHandler(propTypes, mapper)
         val command = SelectCommand(query, handler)
         return command to sql
+    }
+
+    internal fun selectResult(config: Config): SqlSelectResult<RESULT_ELEMENT> {
+        val entityType = entityTypeProvider()
+        val context = SelectContext(config, entityType)
+        val declaration = SqlSelectDeclaration(context)
+        return declaration.block(entityType)
     }
 }
