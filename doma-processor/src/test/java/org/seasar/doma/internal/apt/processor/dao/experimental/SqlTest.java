@@ -14,12 +14,13 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.seasar.doma.Sql;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.message.Message;
 
-/** Test case for {@link org.seasar.doma.experimental.Sql} */
+/** Test case for {@link Sql} */
 class SqlTest extends CompilerSupport {
 
   @BeforeEach

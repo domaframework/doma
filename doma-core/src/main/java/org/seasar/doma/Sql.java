@@ -1,4 +1,4 @@
-package org.seasar.doma.experimental;
+package org.seasar.doma;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
