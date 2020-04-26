@@ -12,6 +12,9 @@ import org.seasar.doma.criteria.mock.MockPreparedStatement
 import org.seasar.doma.criteria.mock.MockResultSet
 import org.seasar.doma.criteria.mock.MockResultSetMetaData
 import org.seasar.doma.criteria.mock.RowData
+import org.seasar.doma.jdbc.CommentContext
+import org.seasar.doma.jdbc.Commenter
+import org.seasar.doma.jdbc.Config
 
 class EntityqlDslTest {
 
@@ -594,12 +597,24 @@ class EntityqlDslTest {
 
     @Test
     fun comment() {
+        val commentConfig = object : Config by config {
+            override fun getCommenter(): Commenter {
+                return object : Commenter {
+                    override fun comment(sql: String, context: CommentContext): String {
+                        if (context.message.isPresent) {
+                            return "// ${context.message.get()}\n$sql"
+                        }
+                        return sql
+                    }
+                }
+            }
+        }
         val query = entityql {
             from(::_Emp) {
                 distinct()
             }
         }
-        val sql = query.asSql(config, "test")
+        val sql = query.asSql(commentConfig, "test")
         val expected = """
             |// test
             |select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_""".trimMargin()

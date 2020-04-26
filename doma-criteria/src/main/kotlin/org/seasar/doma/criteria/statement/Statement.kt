@@ -26,12 +26,10 @@ abstract class AbstractStatement<RESULT> : Statement<RESULT> {
         return sql
     }
 
-    // TODO enhance CommentContext to accept a message
     private fun commenter(config: Config, comment: String?): (String) -> String {
         return { sql ->
-            val newSql = if (comment == null) sql else "// ${comment}\n$sql"
-            val commentContext = CommentContext(javaClass.name, executeMethodName, config, null)
-            config.commenter.comment(newSql, commentContext)
+            val commentContext = CommentContext(javaClass.name, executeMethodName, config, null, comment)
+            config.commenter.comment(sql, commentContext)
         }
     }
 
