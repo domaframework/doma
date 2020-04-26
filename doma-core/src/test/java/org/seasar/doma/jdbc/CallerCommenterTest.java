@@ -11,7 +11,7 @@ public class CallerCommenterTest {
 
   @Test
   public void testComment() throws Exception {
-    CommentContext context = new CommentContext("class", "method", new MockConfig(), null);
+    CommentContext context = new CommentContext("class", "method", new MockConfig(), null, null);
     String actual = commenter.comment("select * from emp", context);
     assertEquals("/** class.method */" + System.lineSeparator() + "select * from emp", actual);
   }
