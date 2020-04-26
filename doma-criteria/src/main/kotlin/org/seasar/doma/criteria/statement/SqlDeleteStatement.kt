@@ -5,7 +5,6 @@ import org.seasar.doma.criteria.declaration.DeleteDeclaration
 import org.seasar.doma.criteria.query.DeleteBuilder
 import org.seasar.doma.criteria.query.DeleteQuery
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlLogType
 import org.seasar.doma.jdbc.command.Command
 import org.seasar.doma.jdbc.command.DeleteCommand
@@ -16,7 +15,7 @@ class SqlDeleteStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
     private val block: DeleteDeclaration.(ENTITY_TYPE) -> Unit
 ) : AbstractStatement<Int>() {
 
-    override fun commandAndSql(config: Config, commenter: (String) -> String, logType: SqlLogType): Pair<Command<Int>, PreparedSql> {
+    override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<Int> {
         val entityType = entityTypeProvider()
         val context = DeleteContext(config, entityType)
         val declaration = DeleteDeclaration(context)
@@ -24,7 +23,6 @@ class SqlDeleteStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
         val builder = DeleteBuilder(context, commenter, logType)
         val sql = builder.build()
         val query = DeleteQuery(config, sql, javaClass.name, executeMethodName)
-        val command = DeleteCommand(query)
-        return command to sql
+        return DeleteCommand(query)
     }
 }

@@ -5,6 +5,7 @@ import org.seasar.doma.criteria.query.SelectQuery
 import org.seasar.doma.jdbc.command.Command
 import org.seasar.doma.jdbc.command.SelectCommand
 import org.seasar.doma.jdbc.entity.EntityType
+import org.seasar.doma.jdbc.query.Query
 
 class MultiEntityCommand<ENTITY>(
     private val context: SelectContext,
@@ -49,5 +50,9 @@ class MultiEntityCommand<ENTITY>(
             }
             associator(entity1, entity2)
         }
+    }
+
+    override fun getQuery(): Query {
+        return query
     }
 }

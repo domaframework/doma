@@ -2,7 +2,6 @@ package org.seasar.doma.criteria.statement
 
 import org.seasar.doma.jdbc.CommentContext
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.Sql
 import org.seasar.doma.jdbc.SqlLogType
 import org.seasar.doma.jdbc.command.Command
@@ -17,13 +16,14 @@ abstract class AbstractStatement<RESULT> : Statement<RESULT> {
     protected val executeMethodName = "execute"
 
     override fun execute(config: Config, comment: String?, logType: SqlLogType): RESULT {
-        val (command, _) = commandAndSql(config, commenter(config, comment), logType)
+        val command = createCommand(config, commenter(config, comment), logType)
         return command.execute()
     }
 
     override fun asSql(config: Config, comment: String?): Sql<*> {
-        val (_, sql) = commandAndSql(config, commenter(config, comment), SqlLogType.FORMATTED)
-        return sql
+        val command = createCommand(config, commenter(config, comment), SqlLogType.FORMATTED)
+        val query = command.query
+        return query.sql
     }
 
     private fun commenter(config: Config, comment: String?): (String) -> String {
@@ -33,5 +33,5 @@ abstract class AbstractStatement<RESULT> : Statement<RESULT> {
         }
     }
 
-    protected abstract fun commandAndSql(config: Config, commenter: (String) -> String, logType: SqlLogType): Pair<Command<RESULT>, PreparedSql>
+    protected abstract fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<RESULT>
 }
