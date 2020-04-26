@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
 
-class UnionBuilder(
+class SetOperationBuilder(
     private val contexts: SetOperator<SelectContext>,
     private val commenter: (String) -> String,
     private val buf: PreparedSqlBuilder
