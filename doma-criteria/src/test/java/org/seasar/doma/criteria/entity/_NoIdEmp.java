@@ -10,7 +10,6 @@ import java.util.function.BiFunction;
 import javax.annotation.Generated;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
@@ -26,27 +25,29 @@ import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.PrimitiveIntWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 
 @Generated("")
-public class _Emp extends AbstractEntityType<Emp> {
+public class _NoIdEmp extends AbstractEntityType<NoIdEmp> {
 
-  private static _Emp singleton = new _Emp();
-
-  private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp>
-      __originalStatesAccessor =
-          new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(Emp.class, "originalStates");
+  private static _NoIdEmp singleton = new _NoIdEmp();
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 
-  public final AssignedIdPropertyType<Emp, Integer, Integer> id =
-      new AssignedIdPropertyType<>(
-          Emp.class, () -> new BasicScalar<>(IntegerWrapper::new), "id", "ID", __namingType, false);
-
-  public final DefaultPropertyType<Emp, String, String> name =
+  public final DefaultPropertyType<NoIdEmp, Integer, Integer> id =
       new DefaultPropertyType<>(
-          Emp.class,
+          NoIdEmp.class,
+          () -> new BasicScalar<>(IntegerWrapper::new),
+          "id",
+          "ID",
+          __namingType,
+          true,
+          true,
+          false);
+
+  public final DefaultPropertyType<NoIdEmp, String, String> name =
+      new DefaultPropertyType<>(
+          NoIdEmp.class,
           () -> new BasicScalar<>(StringWrapper::new),
           "name",
           "NAME",
@@ -55,9 +56,9 @@ public class _Emp extends AbstractEntityType<Emp> {
           true,
           false);
 
-  public final DefaultPropertyType<Emp, BigDecimal, BigDecimal> salary =
+  public final DefaultPropertyType<NoIdEmp, BigDecimal, BigDecimal> salary =
       new DefaultPropertyType<>(
-          Emp.class,
+          NoIdEmp.class,
           () -> new BasicScalar<>(BigDecimalWrapper::new),
           "salary",
           "SALARY",
@@ -66,10 +67,10 @@ public class _Emp extends AbstractEntityType<Emp> {
           true,
           false);
 
-  public final VersionPropertyType<Emp, Integer, Integer> version =
+  public final VersionPropertyType<NoIdEmp, Integer, Integer> version =
       new VersionPropertyType<>(
-          Emp.class,
-          () -> new BasicScalar<>(PrimitiveIntWrapper::new),
+          NoIdEmp.class,
+          () -> new BasicScalar<>(IntegerWrapper::new),
           "version",
           "VERSION",
           __namingType,
@@ -83,23 +84,22 @@ public class _Emp extends AbstractEntityType<Emp> {
 
   private final String __tableName = "";
 
-  private final List<EntityPropertyType<Emp, ?>> __idPropertyTypes;
+  private final List<EntityPropertyType<NoIdEmp, ?>> __idPropertyTypes;
 
-  private final List<EntityPropertyType<Emp, ?>> __entityPropertyTypes;
+  private final List<EntityPropertyType<NoIdEmp, ?>> __entityPropertyTypes;
 
-  private final Map<String, EntityPropertyType<Emp, ?>> __entityPropertyTypeMap;
+  private final Map<String, EntityPropertyType<NoIdEmp, ?>> __entityPropertyTypeMap;
 
-  public _Emp() {
-    List<EntityPropertyType<Emp, ?>> __idList = new ArrayList<>();
-    __idList.add(id);
+  public _NoIdEmp() {
+    List<EntityPropertyType<NoIdEmp, ?>> __idList = new ArrayList<>();
     __idPropertyTypes = Collections.unmodifiableList(__idList);
-    List<EntityPropertyType<Emp, ?>> __list = new ArrayList<>();
+    List<EntityPropertyType<NoIdEmp, ?>> __list = new ArrayList<>();
     __list.add(id);
     __list.add(name);
     __list.add(salary);
     __list.add(version);
     __entityPropertyTypes = Collections.unmodifiableList(__list);
-    Map<String, EntityPropertyType<Emp, ?>> __map = new HashMap<>();
+    Map<String, EntityPropertyType<NoIdEmp, ?>> __map = new HashMap<>();
     __map.put("id", id);
     __map.put("name", name);
     __map.put("salary", salary);
@@ -113,15 +113,15 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
-  public Emp newEntity(Map<String, Property<Emp, ?>> args) {
-    Emp entity = new Emp();
+  public NoIdEmp newEntity(Map<String, Property<NoIdEmp, ?>> args) {
+    NoIdEmp entity = new NoIdEmp();
     args.values().forEach(v -> v.save(entity));
     return entity;
   }
 
   @Override
-  public Class<Emp> getEntityClass() {
-    return Emp.class;
+  public Class<NoIdEmp> getEntityClass() {
+    return NoIdEmp.class;
   }
 
   @Override
@@ -130,71 +130,60 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
-  public List<EntityPropertyType<Emp, ?>> getEntityPropertyTypes() {
+  public List<EntityPropertyType<NoIdEmp, ?>> getEntityPropertyTypes() {
     return __entityPropertyTypes;
   }
 
   @Override
-  public EntityPropertyType<Emp, ?> getEntityPropertyType(String propertyName) {
+  public EntityPropertyType<NoIdEmp, ?> getEntityPropertyType(String propertyName) {
     return __entityPropertyTypeMap.get(propertyName);
   }
 
   @Override
-  public void saveCurrentStates(Emp __entity) {
-    Emp __currentStates = new Emp();
-    id.copy(__currentStates, __entity);
-    name.copy(__currentStates, __entity);
-    salary.copy(__currentStates, __entity);
-    version.copy(__currentStates, __entity);
-    __originalStatesAccessor.set(__entity, __currentStates);
-  }
+  public void saveCurrentStates(NoIdEmp __entity) {}
 
   @Override
-  public Emp getOriginalStates(Emp entity) {
-    if (entity.originalStates instanceof Emp) {
-      Emp originalStates = (Emp) entity.originalStates;
-      return originalStates;
-    }
+  public NoIdEmp getOriginalStates(NoIdEmp entity) {
     return null;
   }
 
   @Override
-  public GeneratedIdPropertyType<Emp, ?, ?> getGeneratedIdPropertyType() {
+  public GeneratedIdPropertyType<NoIdEmp, ?, ?> getGeneratedIdPropertyType() {
     return null;
   }
 
   @Override
-  public VersionPropertyType<Emp, ?, ?> getVersionPropertyType() {
+  public VersionPropertyType<NoIdEmp, ?, ?> getVersionPropertyType() {
     return version;
   }
 
   @Override
-  public TenantIdPropertyType<Emp, ?, ?> getTenantIdPropertyType() {
+  public TenantIdPropertyType<NoIdEmp, ?, ?> getTenantIdPropertyType() {
     return null;
   }
 
   @Override
-  public List<EntityPropertyType<Emp, ?>> getIdPropertyTypes() {
+  public List<EntityPropertyType<NoIdEmp, ?>> getIdPropertyTypes() {
     return __idPropertyTypes;
   }
 
   @Override
-  public void preInsert(Emp entity, PreInsertContext<Emp> context) {}
+  public void preInsert(NoIdEmp entity, PreInsertContext<NoIdEmp> context) {}
 
   @Override
-  public void preUpdate(Emp entity, PreUpdateContext<Emp> context) {}
+  public void preUpdate(NoIdEmp entity, PreUpdateContext<NoIdEmp> context) {}
 
   @Override
-  public void preDelete(Emp entity, PreDeleteContext<Emp> context) {}
+  public void preDelete(NoIdEmp entity, PreDeleteContext<NoIdEmp> context) {}
 
   @Override
-  public void postInsert(Emp entity, PostInsertContext<Emp> context) {}
+  public void postInsert(NoIdEmp entity, PostInsertContext<NoIdEmp> context) {}
 
   @Override
-  public void postUpdate(Emp entity, PostUpdateContext<Emp> context) {}
+  public void postUpdate(NoIdEmp entity, PostUpdateContext<NoIdEmp> context) {}
 
   @Override
-  public void postDelete(Emp entity, PostDeleteContext<Emp> context) {}
+  public void postDelete(NoIdEmp entity, PostDeleteContext<NoIdEmp> context) {}
 
   @Override
   public String getCatalogName() {
@@ -229,7 +218,7 @@ public class _Emp extends AbstractEntityType<Emp> {
     return false;
   }
 
-  public static _Emp getSingletonInternal() {
+  public static _NoIdEmp getSingletonInternal() {
     return singleton;
   }
 }

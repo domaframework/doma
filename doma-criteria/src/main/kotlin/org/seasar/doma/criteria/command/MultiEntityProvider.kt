@@ -1,13 +1,16 @@
 package org.seasar.doma.criteria.command
 
 import java.sql.ResultSet
-import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider
-import org.seasar.doma.jdbc.entity.EntityPropertyType
+import org.seasar.doma.internal.jdbc.command.JdbcValueGetter
+import org.seasar.doma.jdbc.JdbcMappable
+import org.seasar.doma.jdbc.JdbcMappingFunction
+import org.seasar.doma.jdbc.ObjectProvider
 import org.seasar.doma.jdbc.entity.EntityType
-import org.seasar.doma.jdbc.entity.Property
 import org.seasar.doma.jdbc.query.Query
+import org.seasar.doma.jdbc.type.JdbcType
+import org.seasar.doma.wrapper.Wrapper
 
-class MultiEntityProvider(private val entityTypes: List<EntityType<Any>>, query: Query) : AbstractObjectProvider<MultiEntity>() {
+class MultiEntityProvider(private val entityTypes: List<EntityType<Any>>, query: Query) : ObjectProvider<MultiEntity> {
 
     private val jdbcMappingVisitor = query.config.dialect.jdbcMappingVisitor
 
@@ -15,23 +18,52 @@ class MultiEntityProvider(private val entityTypes: List<EntityType<Any>>, query:
         val multiEntity = MultiEntity()
         var index = 1
         for (entityType in entityTypes) {
-            val pairs = mutableListOf<Pair<EntityPropertyType<*, *>, Property<Any, *>>>()
-            entityType.entityPropertyTypes.forEach { propType ->
-                val prop = propType.createProperty().also {
-                    fetch(resultSet, it, index, jdbcMappingVisitor)
-                    index++
+            val triples = entityType.entityPropertyTypes.map { propType ->
+                val (prop, rawValue) = propType.createProperty().let { prop ->
+                    val rawValue = fetch(resultSet, prop, index++)
+                    prop to rawValue
                 }
-                pairs.add(propType to prop)
+                Triple(propType, prop, rawValue)
             }
-            val key = pairs.filter { (propType, _) -> propType.isId }
-                    .map { (_, prop) -> prop.wrapper.get() }
-                    .let { EntityKey(it) }
-            val data = pairs.map { (propType, prop) -> propType.name to prop }.toMap().let { EntityData(it) }
-            if (data.states.values.all { it.wrapper.get() == null }) {
+            if (triples.all { it.third == null }) {
                 continue
             }
+            val key = if (entityType.idPropertyTypes.isEmpty()) {
+                EntityKey(listOf(Any()))
+            } else {
+                triples.filter { it.first.isId }.map { it.second.wrapper.get() }.let { EntityKey(it) }
+            }
+            val data = triples.map { (propType, prop) -> propType.name to prop }.toMap().let { EntityData(it) }
             multiEntity.keyDataMap[entityType] = key to data
         }
         return multiEntity
+    }
+
+    private fun fetch(resultSet: ResultSet, mappable: JdbcMappable<*>, index: Int): Any? {
+        val wrapper = mappable.wrapper
+        val proxy = JdbcValueGetterProxy(JdbcValueGetter(resultSet, index))
+        wrapper.accept(jdbcMappingVisitor, proxy, mappable)
+        return proxy.rawValue
+    }
+}
+
+internal class JdbcValueGetterProxy(private val jdbcValueGetter: JdbcValueGetter) : JdbcMappingFunction by jdbcValueGetter {
+    var rawValue: Any? = null
+
+    override fun <R : Any?, V : Any?> apply(wrapper: Wrapper<V>, jdbcType: JdbcType<V>): R {
+        val proxy = JdbcTypeProxy(jdbcType)
+        return jdbcValueGetter.apply<R, V>(wrapper, proxy).also {
+            rawValue = proxy.rawValue
+        }
+    }
+}
+
+internal class JdbcTypeProxy<T>(private val jdbcType: JdbcType<T>) : JdbcType<T> by jdbcType {
+    var rawValue: T? = null
+
+    override fun getValue(resultSet: ResultSet, index: Int): T? {
+        return jdbcType.getValue(resultSet, index).also {
+            rawValue = it
+        }
     }
 }
