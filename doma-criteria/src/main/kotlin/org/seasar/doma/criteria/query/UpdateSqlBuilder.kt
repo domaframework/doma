@@ -12,14 +12,17 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class UpdateSqlBuilder(
     private val context: UpdateContext,
-        // TODO the SqlLogType value should be passed from the caller
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(context.config, SqlKind.INSERT, SqlLogType.FORMATTED),
-    aliasManager: AliasManager = AliasManager(context)
+    private val commenter: (String) -> String,
+    private val buf: PreparedSqlBuilder,
+    aliasManager: AliasManager
 ) {
+
+    constructor(context: UpdateContext, commenter: (String) -> String, logType: SqlLogType) :
+            this(context, commenter, PreparedSqlBuilder(context.config, SqlKind.UPDATE, logType), AliasManager(context))
 
     private val config = context.config
 
-    private val support = BuilderSupport(config, buf, aliasManager)
+    private val support = BuilderSupport(config, commenter, buf, aliasManager)
 
     fun build(): PreparedSql {
         buf.appendSql("update ")
@@ -42,8 +45,7 @@ class UpdateSqlBuilder(
             }
             buf.cutBackSql(5)
         }
-        // TODO Use config.commenter
-        return buf.build { it }
+        return buf.build(commenter)
     }
 
     private fun table(entityType: EntityType<*>) {

@@ -7,7 +7,12 @@ import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlExecutionSkipCause
 import org.seasar.doma.jdbc.SqlLogType
 
-class InsertQuery(private val config: Config, private val sql: PreparedSql) : org.seasar.doma.jdbc.query.InsertQuery {
+class InsertQuery(
+    private val config: Config,
+    private val sql: PreparedSql,
+    private val className: String,
+    private val methodName: String
+) : org.seasar.doma.jdbc.query.InsertQuery {
 
     override fun getConfig(): Config {
         return config
@@ -18,26 +23,23 @@ class InsertQuery(private val config: Config, private val sql: PreparedSql) : or
     }
 
     override fun getClassName(): String {
-        // TODO
-        return javaClass.name
+        return className
     }
 
     override fun getMethodName(): String {
-        // TODO
-        return "insert"
-    }
-
-    override fun comment(sql: String?): String {
-        // TODO
-        return sql!!
-    }
-
-    override fun getSqlLogType(): SqlLogType {
-        return sql.sqlLogType
+        return methodName
     }
 
     override fun getQueryTimeout(): Int {
         return config.queryTimeout
+    }
+
+    override fun getSqlLogType(): SqlLogType {
+        throw UnsupportedOperationException()
+    }
+
+    override fun comment(sql: String?): String {
+        throw UnsupportedOperationException()
     }
 
     override fun getMethod(): Method {

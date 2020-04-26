@@ -9,16 +9,20 @@ import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
 
 class UnionBuilder(
-    private val config: Config,
     private val contexts: SetOperator<SelectContext>,
-        // TODO the SqlLogType value should be passed from the caller
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED)
+    private val commenter: (String) -> String,
+    private val buf: PreparedSqlBuilder
 ) {
+
+    constructor(config: Config, contexts: SetOperator<SelectContext>, commenter: (String) -> String, logType: SqlLogType) :
+            this(contexts, commenter, PreparedSqlBuilder(config, SqlKind.SELECT, logType))
+
     fun build(): PreparedSql {
         fun visit(operator: SetOperator<SelectContext>) {
             when (operator) {
                 is SetOperator.Select -> {
-                    val builder = SelectBuilder(operator.content, buf)
+                    val context = operator.content
+                    val builder = SelectBuilder(context, commenter, buf, AliasManager(context))
                     builder.interpretContext()
                 }
                 is SetOperator.Union -> {
@@ -32,7 +36,6 @@ class UnionBuilder(
             }
         }
         visit(contexts)
-        // TODO Use config.commenter
-        return buf.build { it }
+        return buf.build(commenter)
     }
 }

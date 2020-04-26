@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class BuilderSupport(
     private val config: Config,
+    private val commenter: (String) -> String,
     private val buf: PreparedSqlBuilder,
     private val aliasManager: AliasManager
 ) {
@@ -18,7 +19,9 @@ class BuilderSupport(
     fun table(entityType: EntityType<*>) {
         buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
         buf.appendSql(" ")
-        buf.appendSql(aliasManager[entityType])
+        val alias = aliasManager[entityType]
+                ?: error("Alias not found. The entityType '${entityType.name}' is unknown.")
+        buf.appendSql(alias)
     }
 
     fun column(prop: Operand.Prop) {
@@ -27,7 +30,9 @@ class BuilderSupport(
 
     fun column(propType: EntityPropertyType<*, *>) {
         fun appendColumn(p: EntityPropertyType<*, *>) {
-            buf.appendSql(aliasManager[p])
+            val alias = aliasManager[p]
+                    ?: error("Alias not found. The p '${p.name}' is unknown.")
+            buf.appendSql(alias)
             buf.appendSql(".")
             buf.appendSql(p.getColumnName(config.naming::apply, config.dialect::applyQuote))
         }
@@ -187,7 +192,7 @@ class BuilderSupport(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = SelectBuilder(right, buf, parentAliasManager)
+        val builder = SelectBuilder(right, commenter, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -204,7 +209,7 @@ class BuilderSupport(
         }
         buf.appendSql(" in (")
         val parentAliasManager = AliasManager(right, aliasManager)
-        val builder = SelectBuilder(right, buf, parentAliasManager)
+        val builder = SelectBuilder(right, commenter, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }
@@ -215,7 +220,7 @@ class BuilderSupport(
         }
         buf.appendSql("exists (")
         val parentAliasManager = AliasManager(selectContext, aliasManager)
-        val builder = SelectBuilder(selectContext, buf, parentAliasManager)
+        val builder = SelectBuilder(selectContext, commenter, buf, parentAliasManager)
         builder.interpretContext()
         buf.appendSql(")")
     }

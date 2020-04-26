@@ -32,7 +32,7 @@ internal class MultiEntityProviderTest {
 
     private val sql = PreparedSql(SqlKind.SELECT, "", "", "", emptyList(), SqlLogType.FORMATTED)
 
-    private val query = SelectQuery(config, sql)
+    private val query = SelectQuery(config, sql, javaClass.name, "execute")
 
     @Test
     fun get() {

@@ -10,9 +10,12 @@ import org.seasar.doma.jdbc.entity.EntityType
 
 class InsertBuilder(
     private val context: InsertContext,
-        // TODO the SqlLogType value should be passed from the caller
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(context.config, SqlKind.INSERT, SqlLogType.FORMATTED)
+    private val commenter: (String) -> String,
+    private val buf: PreparedSqlBuilder
 ) {
+
+    constructor(context: InsertContext, commenter: (String) -> String, logType: SqlLogType) :
+            this(context, commenter, PreparedSqlBuilder(context.config, SqlKind.INSERT, logType))
 
     private val config = context.config
 
@@ -34,8 +37,7 @@ class InsertBuilder(
             buf.cutBackSql(2)
             buf.appendSql(")")
         }
-        // TODO Use config.commenter
-        return buf.build { it }
+        return buf.build(commenter)
     }
 
     private fun table(entityType: EntityType<*>) {

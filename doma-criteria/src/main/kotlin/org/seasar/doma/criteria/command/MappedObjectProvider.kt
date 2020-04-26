@@ -8,8 +8,8 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.query.Query
 
 class MappedObjectProvider<RESULT>(
-    private val query: Query,
-    private val propTypes: List<EntityPropertyType<*, *>>,
+    query: Query,
+    propTypes: List<EntityPropertyType<*, *>>,
     private val mapper: (Row) -> RESULT
 ) : AbstractObjectProvider<RESULT>() {
 
@@ -22,10 +22,14 @@ class MappedObjectProvider<RESULT>(
     override fun get(resultSet: ResultSet?): RESULT {
         val row = object : Row {
             override fun <CONTAINER> get(propType: EntityPropertyDesc<*, *, CONTAINER>): CONTAINER? {
-                val index = indexMap[propType] ?: TODO()
+                val index = indexMap[propType]
+                require(index != null) {
+                    "The propType '${propType.name}' is unknown. " +
+                        "Ensure that you specified it to the select function."
+                }
                 val prop = propType.createProperty()
                 fetch(resultSet, prop, index, jdbcMappingVisitor)
-                // TODO
+                @Suppress("UNCHECKED_CAST")
                 return prop.get() as CONTAINER?
             }
         }

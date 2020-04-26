@@ -593,6 +593,20 @@ class EntityqlDslTest {
     }
 
     @Test
+    fun comment() {
+        val query = entityql {
+            from(::_Emp) {
+                distinct()
+            }
+        }
+        val sql = query.asSql(config, "test")
+        val expected = """
+            |// test
+            |select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_""".trimMargin()
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun execute() {
         val metaData = MockResultSetMetaData()
         metaData.columns.add(ColumnMetaData("id"))

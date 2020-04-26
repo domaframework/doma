@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.seasar.doma.criteria.entityql
 import org.seasar.doma.jdbc.Config
+import org.seasar.doma.jdbc.SqlLogType
 
 @ExtendWith(Env::class)
 class EntityqlDslTest(private val config: Config) {
@@ -475,5 +476,17 @@ class EntityqlDslTest(private val config: Config) {
         }
         val list = query.execute(config)
         assertEquals(1, list.size)
+    }
+
+    @Test
+    fun logType() {
+        val query = entityql {
+            from(::_Employee) { e ->
+                where {
+                    e.employeeId eq 1
+                }
+            }
+        }
+        query.execute(config, logType = SqlLogType.RAW)
     }
 }

@@ -2,13 +2,17 @@ package org.seasar.doma.criteria.query
 
 import java.lang.reflect.Method
 import org.seasar.doma.FetchType
-import org.seasar.doma.criteria.statement.EntityqlSelectStatement
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SelectOptions
 import org.seasar.doma.jdbc.SqlLogType
 
-class SelectQuery(private val config: Config, private val sql: PreparedSql) : org.seasar.doma.jdbc.query.SelectQuery {
+class SelectQuery(
+    private val config: Config,
+    private val sql: PreparedSql,
+    private val className: String,
+    private val methodName: String
+) : org.seasar.doma.jdbc.query.SelectQuery {
 
     override fun getConfig(): Config {
         return config
@@ -19,13 +23,11 @@ class SelectQuery(private val config: Config, private val sql: PreparedSql) : or
     }
 
     override fun getClassName(): String {
-        // TODO which name is the best?
-        return EntityqlSelectStatement::class.qualifiedName!!
+        return className
     }
 
     override fun getMethodName(): String {
-        // TODO which name is the best?
-        return "select"
+        return methodName
     }
 
     override fun getFetchType(): FetchType {
@@ -45,13 +47,11 @@ class SelectQuery(private val config: Config, private val sql: PreparedSql) : or
     }
 
     override fun comment(sql: String?): String {
-        // TODO
-        return sql!!
+        throw UnsupportedOperationException()
     }
 
     override fun getSqlLogType(): SqlLogType {
-        // TODO
-        return SqlLogType.FORMATTED
+        throw UnsupportedOperationException()
     }
 
     override fun isResultEnsured(): Boolean {

@@ -12,28 +12,30 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectBuilder(
-    private val selectContext: SelectContext,
-        // TODO the SqlLogType value should be passed from the caller
-    private val buf: PreparedSqlBuilder = PreparedSqlBuilder(selectContext.config, SqlKind.SELECT, SqlLogType.FORMATTED),
-    private val aliasManager: AliasManager = AliasManager(selectContext)
+    private val context: SelectContext,
+    private val commenter: (String) -> String,
+    private val buf: PreparedSqlBuilder,
+    aliasManager: AliasManager
 ) {
 
-    private val config = selectContext.config
-    private val support = BuilderSupport(config, buf, aliasManager)
+    constructor(context: SelectContext, commenter: (String) -> String, logType: SqlLogType) :
+            this(context, commenter, PreparedSqlBuilder(context.config, SqlKind.SELECT, logType), AliasManager(context))
+
+    private val config = context.config
+    private val support = BuilderSupport(config, commenter, buf, aliasManager)
     fun build(): PreparedSql {
         interpretContext()
-        // TODO Use config.commenter
-        return buf.build { it }
+        return buf.build(commenter)
     }
 
     internal fun interpretContext() {
         buf.appendSql("select ")
-        if (selectContext.distinct) {
+        if (context.distinct) {
             buf.appendSql("distinct ")
         }
-        when (val projection = selectContext.projection) {
+        when (val projection = context.projection) {
             is Projection.All -> {
-                selectContext.getProjectionTargets().forEach {
+                context.getProjectionTargets().forEach {
                     it.entityPropertyTypes.forEach { prop ->
                         column(prop)
                         buf.appendSql(", ")
@@ -61,9 +63,9 @@ class SelectBuilder(
             }
         }
         buf.appendSql(" from ")
-        table(selectContext.entityType)
-        if (selectContext.joins.isNotEmpty()) {
-            selectContext.joins.forEach { join ->
+        table(context.entityType)
+        if (context.joins.isNotEmpty()) {
+            context.joins.forEach { join ->
                 when (join.kind) {
                     JoinKind.INNER -> buf.appendSql(" inner join ")
                     JoinKind.LEFT -> buf.appendSql(" left outer join ")
@@ -80,46 +82,46 @@ class SelectBuilder(
                 }
             }
         }
-        if (selectContext.where.isNotEmpty()) {
+        if (context.where.isNotEmpty()) {
             buf.appendSql(" where ")
-            selectContext.where.forEachIndexed { index, c ->
+            context.where.forEachIndexed { index, c ->
                 visitCriterion(index, c)
                 buf.appendSql(" and ")
             }
             buf.cutBackSql(5)
         }
-        if (selectContext.groupBy.isNotEmpty()) {
+        if (context.groupBy.isNotEmpty()) {
             buf.appendSql(" group by ")
-            selectContext.groupBy.forEach { p ->
+            context.groupBy.forEach { p ->
                 column(p)
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
         }
-        if (selectContext.having.isNotEmpty()) {
+        if (context.having.isNotEmpty()) {
             buf.appendSql(" having ")
-            selectContext.having.forEachIndexed { index, c ->
+            context.having.forEachIndexed { index, c ->
                 visitCriterion(index, c)
                 buf.appendSql(" and ")
             }
             buf.cutBackSql(5)
         }
-        if (selectContext.orderBy.isNotEmpty()) {
+        if (context.orderBy.isNotEmpty()) {
             buf.appendSql(" order by ")
-            selectContext.orderBy.forEach { (p, sort) ->
+            context.orderBy.forEach { (p, sort) ->
                 column(p)
                 buf.appendSql(" $sort")
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
         }
-        selectContext.limit?.let {
+        context.limit?.let {
             buf.appendSql(" limit $it")
         }
-        selectContext.offset?.let {
+        context.offset?.let {
             buf.appendSql(" offset $it")
         }
-        selectContext.forUpdate?.let {
+        context.forUpdate?.let {
             buf.appendSql(" for update")
             if (it.nowait) {
                 buf.appendSql(" nowait")
