@@ -70,7 +70,7 @@ public abstract class AbstractQuery implements Query {
   @Override
   public void prepare() {
     assertNotNull(callerClassName, callerMethodName, config);
-    commentContext = new CommentContext(callerClassName, callerMethodName, config, method);
+    commentContext = new CommentContext(callerClassName, callerMethodName, config, method, null);
   }
 
   @Override
