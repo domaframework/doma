@@ -60,7 +60,7 @@ Embeddable classes
 Dao interfaces
 --------------
 
-* Specify a SQL template to ``@org.seasar.doma.experimental.Sql``
+* Specify a SQL template to ``@org.seasar.doma.Sql``
 * Use ``org.seasar.doma.jdbc.Result`` as the return type of ``@Delete``, ``@Insert`` and ``@Update``
 * Use ``org.seasar.doma.jdbc.BatchResult`` as the return type of
   ``@BatchDelete``, ``@BatchInsert`` and ``@BatchUpdate``

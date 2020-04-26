@@ -29,6 +29,11 @@ public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Comman
   }
 
   @Override
+  public QUERY getQuery() {
+    return query;
+  }
+
+  @Override
   public Integer execute() {
     if (!query.isExecutable()) {
       JdbcLogger logger = query.getConfig().getJdbcLogger();

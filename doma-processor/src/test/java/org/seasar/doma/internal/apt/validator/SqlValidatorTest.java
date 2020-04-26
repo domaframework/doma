@@ -26,6 +26,33 @@ class SqlValidatorTest extends CompilerSupport {
   }
 
   @Test
+  void testFormalTypeParameterResolution() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run() {
+            ExecutableElement methodElement =
+                createMethodElement(target, "testTypeParameterResolution", CriteriaHolder.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", false, false);
+            SqlParser parser =
+                new SqlParser(
+                    "select * from emp where name in /* criteriaHolder.criteria.list */(0)");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  @Test
   void testBindVariable() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);

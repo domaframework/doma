@@ -16,6 +16,8 @@ public class CommentContext {
 
   protected final Optional<Method> method;
 
+  protected final Optional<String> message;
+
   /**
    * Creates an instance.
    *
@@ -23,8 +25,10 @@ public class CommentContext {
    * @param methodName the method name that executes the SQL
    * @param config the configuration
    * @param method the DAO method
+   * @param message the message
    */
-  public CommentContext(String className, String methodName, Config config, Method method) {
+  public CommentContext(
+      String className, String methodName, Config config, Method method, String message) {
     if (className == null) {
       throw new DomaNullPointerException("className");
     }
@@ -38,6 +42,7 @@ public class CommentContext {
     this.methodName = methodName;
     this.config = config;
     this.method = Optional.ofNullable(method);
+    this.message = Optional.ofNullable(message);
   }
 
   /**
@@ -75,5 +80,14 @@ public class CommentContext {
    */
   public Optional<Method> getMethod() {
     return method;
+  }
+
+  /**
+   * Returns the message or {@link Optional#empty()}.
+   *
+   * @return the message or {@link Optional#empty()} if it does not exit
+   */
+  public Optional<String> getMessage() {
+    return message;
   }
 }

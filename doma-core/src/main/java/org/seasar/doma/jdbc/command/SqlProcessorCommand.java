@@ -21,6 +21,11 @@ public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
   }
 
   @Override
+  public SqlProcessorQuery getQuery() {
+    return query;
+  }
+
+  @Override
   public RESULT execute() {
     return handler.apply(query.getConfig(), query.getSql());
   }

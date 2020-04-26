@@ -28,6 +28,11 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
   }
 
   @Override
+  public QUERY getQuery() {
+    return query;
+  }
+
+  @Override
   public int[] execute() {
     if (!query.isExecutable()) {
       JdbcLogger logger = query.getConfig().getJdbcLogger();

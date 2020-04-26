@@ -161,11 +161,6 @@ The ``@Sql`` annotation must be combined with following annotations:
 * @BatchUpdate
 * @BatchDelete
 
-.. warning::
-
-  The ``@Sql`` annotation is an experimental feature.
-  The full qualified name of ``@Sql`` is ``@org.seasar.doma.experimental.Sql``.
-
 Directives
 ==========
 

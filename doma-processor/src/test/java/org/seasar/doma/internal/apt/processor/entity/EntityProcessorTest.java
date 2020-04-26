@@ -29,6 +29,7 @@ class EntityProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption(
         "-Adoma.test=true",
+        "-Adoma.entity.field.prefix=$",
         "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
   }
 

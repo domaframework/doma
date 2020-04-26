@@ -8,8 +8,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.lang.model.element.*;
 import org.seasar.doma.*;
+import org.seasar.doma.Sql;
 import org.seasar.doma.experimental.DataType;
-import org.seasar.doma.experimental.Sql;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
