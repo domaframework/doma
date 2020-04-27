@@ -14,7 +14,7 @@ class SqlSetStatement<RESULT_ELEMENT>(
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<List<RESULT_ELEMENT>> {
         val results = operator.map { it.runSelectDeclaration(config) }
-        val (propTypes, mapper) = results.toList().map { it.propTypes to it.mapper }.first()
+        val (propTypes, mapper) = results.toList().map { it.propDefs to it.mapper }.first()
         val contexts = results.map { it.context }
         val builder = SetOperationBuilder(config, contexts, commenter, logType)
         val sql = builder.build()

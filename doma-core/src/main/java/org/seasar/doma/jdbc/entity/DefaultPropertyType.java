@@ -24,7 +24,7 @@ import org.seasar.doma.wrapper.WrapperVisitor;
  * @param <CONTAINER> the property container type
  */
 public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
-    implements EntityPropertyType<ENTITY, BASIC>, EntityPropertyDesc<ENTITY, BASIC, CONTAINER> {
+    implements EntityPropertyType<ENTITY, BASIC> {
 
   protected final Class<ENTITY> entityClass;
 

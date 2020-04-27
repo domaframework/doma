@@ -2,28 +2,28 @@ package org.seasar.doma.criteria.declaration
 
 import org.seasar.doma.criteria.context.Projection
 import org.seasar.doma.criteria.context.SelectContext
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
+import org.seasar.doma.def.PropertyDef
 
 @Declaration
 class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context), AggregateDeclaration {
     private val havingDeclaration = HavingDeclaration(context.config) { context.having.add(it) }
 
-    fun groupBy(vararg propTypes: EntityPropertyDesc<*, *, *>) {
-        context.groupBy.addAll(propTypes.asList())
+    fun groupBy(vararg propDefs: PropertyDef<*>) {
+        context.groupBy.addAll(propDefs.asList().map { it.asType() })
     }
 
     fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
 
-    fun <CONTAINER> select(propType: EntityPropertyDesc<*, *, CONTAINER>): SqlSelectResult<CONTAINER?> {
+    fun <PROPERTY> select(propType: PropertyDef<PROPERTY>): SqlSelectResult<PROPERTY?> {
         return select(propType) {
             it[propType]
         }
     }
 
-    fun <CONTAINER1, CONTAINER2> select(
-        first: EntityPropertyDesc<*, *, CONTAINER1>,
-        second: EntityPropertyDesc<*, *, CONTAINER2>
-    ): SqlSelectResult<Pair<CONTAINER1?, CONTAINER2?>> {
+    fun <PROPERTY1, PROPERTY2> select(
+        first: PropertyDef<PROPERTY1>,
+        second: PropertyDef<PROPERTY2>
+    ): SqlSelectResult<Pair<PROPERTY1?, PROPERTY2?>> {
         return select(first, second) {
             val a = it[first]
             val b = it[second]
@@ -31,11 +31,11 @@ class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context),
         }
     }
 
-    fun <CONTAINER1, CONTAINER2, CONTAINER3> select(
-        first: EntityPropertyDesc<*, *, CONTAINER1>,
-        second: EntityPropertyDesc<*, *, CONTAINER2>,
-        third: EntityPropertyDesc<*, *, CONTAINER3>
-    ): SqlSelectResult<Triple<CONTAINER1?, CONTAINER2?, CONTAINER3?>> {
+    fun <PROPERTY1, PROPERTY2, PROPERTY3> select(
+        first: PropertyDef<PROPERTY1>,
+        second: PropertyDef<PROPERTY2>,
+        third: PropertyDef<PROPERTY3>
+    ): SqlSelectResult<Triple<PROPERTY1?, PROPERTY2?, PROPERTY3?>> {
         return select(first, second, third) {
             val a = it[first]
             val b = it[second]
@@ -44,9 +44,9 @@ class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context),
         }
     }
 
-    fun <RESULT_ELEMENT> select(vararg propTypes: EntityPropertyDesc<*, *, *>, mapper: (Row) -> RESULT_ELEMENT): SqlSelectResult<RESULT_ELEMENT> {
-        val list = listOf(*propTypes)
-        context.projection = Projection.List(list)
+    fun <RESULT_ELEMENT> select(vararg propDefs: PropertyDef<*>, mapper: (Row) -> RESULT_ELEMENT): SqlSelectResult<RESULT_ELEMENT> {
+        val list = listOf(*propDefs)
+        context.projection = Projection.List(list.map { it.asType() })
         return SqlSelectResult(context, list, mapper)
     }
 }

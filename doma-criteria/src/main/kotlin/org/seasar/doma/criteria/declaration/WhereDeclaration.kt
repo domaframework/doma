@@ -2,8 +2,8 @@ package org.seasar.doma.criteria.declaration
 
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.SelectContext
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
 
 @Declaration
 class WhereDeclaration(
@@ -11,34 +11,34 @@ class WhereDeclaration(
     add: (Criterion) -> Unit
 ) : ComparisonDeclaration<WhereDeclaration>(config, add, ::WhereDeclaration) {
 
-    fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.isNull() {
+    fun <PROPERTY> PropertyDef<PROPERTY>.isNull() {
         add(Criterion.IsNull(support.toProp(this)))
     }
 
-    fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.isNotNull() {
+    fun <PROPERTY> PropertyDef<PROPERTY>.isNotNull() {
         add(Criterion.IsNotNull(support.toProp(this)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.like(other: CONTAINER) {
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.like(other: PROPERTY) {
         add(Criterion.Like(support.toProp(this), support.toParam(this, other)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, String, CONTAINER>.notLike(other: CONTAINER) {
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.notLike(other: PROPERTY) {
         add(Criterion.NotLike(support.toProp(this), support.toParam(this, other)))
     }
 
-    infix fun <CONTAINER : Comparable<CONTAINER>> EntityPropertyDesc<*, *, CONTAINER>.between(other: ClosedRange<CONTAINER>) {
+    infix fun <PROPERTY : Comparable<PROPERTY>> PropertyDef<PROPERTY>.between(other: ClosedRange<PROPERTY>) {
         add(Criterion.Between(support.toProp(this),
                 support.toParam(this, other.start),
                 support.toParam(this, other.endInclusive)))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.`in`(other: List<CONTAINER>) {
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.`in`(other: List<PROPERTY>) {
         add(Criterion.InSingle(support.toProp(this), other.map { support.toParam(this, it) }))
     }
 
-    infix fun <CONTAINER1, CONTAINER2> Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>.`in`(
-        other: List<Pair<CONTAINER1, CONTAINER2>>
+    infix fun <PROPERTY1, PROPERTY2> Pair<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>>.`in`(
+        other: List<Pair<PROPERTY1, PROPERTY2>>
     ) {
         val prop1 = support.toProp(this.first)
         val prop2 = support.toProp(this.second)
@@ -50,30 +50,30 @@ class WhereDeclaration(
         add(Criterion.InPair(prop1 to prop2, params))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.`in`(
-        block: SubQueryDeclaration<SqlSelectResult<CONTAINER>>.() -> SelectContext
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.`in`(
+        block: SubQueryDeclaration<SqlSelectResult<PROPERTY>>.() -> SelectContext
     ) {
-        val declaration = SubQueryDeclaration<SqlSelectResult<CONTAINER>>(config)
+        val declaration = SubQueryDeclaration<SqlSelectResult<PROPERTY>>(config)
         val context = declaration.block()
         add(Criterion.InSingleSubQuery(support.toProp(this), context))
     }
 
-    infix fun <CONTAINER1, CONTAINER2> Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>.`in`(
-        block: SubQueryDeclaration<SqlSelectResult<Pair<CONTAINER1, CONTAINER2>>>.() -> SelectContext
+    infix fun <PROPERTY1, PROPERTY2> Pair<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>>.`in`(
+        block: SubQueryDeclaration<SqlSelectResult<Pair<PROPERTY1, PROPERTY2>>>.() -> SelectContext
     ) {
         val prop1 = support.toProp(this.first)
         val prop2 = support.toProp(this.second)
-        val declaration = SubQueryDeclaration<SqlSelectResult<Pair<CONTAINER1, CONTAINER2>>>(config)
+        val declaration = SubQueryDeclaration<SqlSelectResult<Pair<PROPERTY1, PROPERTY2>>>(config)
         val context = declaration.block()
         add(Criterion.InPairSubQuery(prop1 to prop2, context))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.notIn(other: List<CONTAINER>) {
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.notIn(other: List<PROPERTY>) {
         add(Criterion.NotInSingle(support.toProp(this), other.map { support.toParam(this, it) }))
     }
 
-    infix fun <CONTAINER1, CONTAINER2> Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>.notIn(
-        other: List<Pair<CONTAINER1, CONTAINER2>>
+    infix fun <PROPERTY1, PROPERTY2> Pair<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>>.notIn(
+        other: List<Pair<PROPERTY1, PROPERTY2>>
     ) {
         val prop1 = support.toProp(this.first)
         val prop2 = support.toProp(this.second)
@@ -85,18 +85,18 @@ class WhereDeclaration(
         add(Criterion.NotInPair(prop1 to prop2, params))
     }
 
-    infix fun <CONTAINER> EntityPropertyDesc<*, *, CONTAINER>.notIn(block: SubQueryDeclaration<SqlSelectResult<CONTAINER>>.() -> SelectContext) {
-        val declaration = SubQueryDeclaration<SqlSelectResult<CONTAINER>>(config)
+    infix fun <PROPERTY> PropertyDef<PROPERTY>.notIn(block: SubQueryDeclaration<SqlSelectResult<PROPERTY>>.() -> SelectContext) {
+        val declaration = SubQueryDeclaration<SqlSelectResult<PROPERTY>>(config)
         val context = declaration.block()
         add(Criterion.NotInSingleSubQuery(support.toProp(this), context))
     }
 
-    infix fun <CONTAINER1, CONTAINER2> Pair<EntityPropertyDesc<*, *, CONTAINER1>, EntityPropertyDesc<*, *, CONTAINER2>>.notIn(
-        block: SubQueryDeclaration<SqlSelectResult<Pair<CONTAINER1, CONTAINER2>>>.() -> SelectContext
+    infix fun <PROPERTY1, PROPERTY2> Pair<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>>.notIn(
+        block: SubQueryDeclaration<SqlSelectResult<Pair<PROPERTY1, PROPERTY2>>>.() -> SelectContext
     ) {
         val prop1 = support.toProp(this.first)
         val prop2 = support.toProp(this.second)
-        val declaration = SubQueryDeclaration<SqlSelectResult<Pair<CONTAINER1, CONTAINER2>>>(config)
+        val declaration = SubQueryDeclaration<SqlSelectResult<Pair<PROPERTY1, PROPERTY2>>>(config)
         val context = declaration.block()
         add(Criterion.NotInPairSubQuery(prop1 to prop2, context))
     }

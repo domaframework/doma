@@ -1,7 +1,5 @@
 package example
 
-import java.util.Optional
-import java.util.OptionalInt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -15,7 +13,7 @@ class EntityqlDslTest(private val config: Config) {
 
     @Test
     fun test() {
-        val query = entityql { from(::_Employee) {} }
+        val query = entityql { from(::Employee_) {} }
         val list = query.execute(config)
         println(list.size)
     }
@@ -23,7 +21,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeName eq "SMITH"
                 }
@@ -37,7 +35,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_in() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId `in` listOf(3, 4, 5)
                 }
@@ -56,7 +54,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_in_pair() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     (e.departmentId to e.version) `in` listOf(1 to 1)
                 }
@@ -75,10 +73,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_in_single_subQuery() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.managerId `in` {
-                        from(::_Employee) {
+                        from(::Employee_) {
                             select(it.employeeId)
                         }
                     }
@@ -93,10 +91,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_in_pair_subQuery() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     (e.managerId to e.departmentId) `in` {
-                        from(::_Employee) {
+                        from(::Employee_) {
                             select(it.employeeId, it.departmentId)
                         }
                     }
@@ -110,7 +108,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_notIn() {
         val query = entityql {
-            from(::_Department) { d ->
+            from(::Department_) { d ->
                 where {
                     d.departmentId notIn listOf(1, 3)
                 }
@@ -128,10 +126,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_notIn_single_subQuery() {
         val query = entityql {
-            from(::_Department) { d ->
+            from(::Department_) { d ->
                 where {
                     d.departmentId notIn {
-                        from(::_Employee) { e ->
+                        from(::Employee_) { e ->
                             select(e.departmentId)
                         }
                     }
@@ -146,10 +144,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_notIn_pair_subQuery() {
         val query = entityql {
-            from(::_Department) { d ->
+            from(::Department_) { d ->
                 where {
                     (d.departmentId to d.version) notIn {
-                        from(::_Employee) {
+                        from(::Employee_) {
                             select(it.departmentId, it.version)
                         }
                     }
@@ -164,10 +162,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_exists() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     exists {
-                        from(::_Employee) { e2 ->
+                        from(::Employee_) { e2 ->
                             where {
                                 e.managerId eq e2.employeeId
                             }
@@ -184,10 +182,10 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_notExists() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     notExists {
-                        from(::_Employee) { e2 ->
+                        from(::Employee_) { e2 ->
                             where {
                                 e.managerId eq e2.employeeId
                             }
@@ -204,7 +202,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_eq_null() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.managerId eq null as Int?
                 }
@@ -218,7 +216,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_ne_null() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.managerId ne null as Int?
                 }
@@ -232,7 +230,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_isNull() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.managerId.isNull()
                 }
@@ -246,7 +244,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun where_isNotNull() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.managerId.isNotNull()
                 }
@@ -260,8 +258,8 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun leftJoin_manyToOne() {
         val query = entityql {
-            from(::_Employee) { e ->
-                leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
             }
@@ -273,8 +271,8 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun leftJoin_manyToOne_associate() {
         val query = entityql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 where {
@@ -293,8 +291,8 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun leftJoin_oneToMany() {
         val query = entityql {
-            from(::_Department) { d ->
-                leftJoin(::_Employee) { e ->
+            from(::Department_) { d ->
+                leftJoin(::Employee_) { e ->
                     d.departmentId eq e.departmentId
                 }
             }
@@ -306,8 +304,8 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun leftJoin_oneToMany_association() {
         val query = entityql {
-            from(::_Department) { d ->
-                val e = leftJoin(::_Employee) { e ->
+            from(::Department_) { d ->
+                val e = leftJoin(::Employee_) { e ->
                     d.departmentId eq e.departmentId
                 }
                 associate(d, e) { department, employee ->
@@ -326,8 +324,8 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun selfJoin() {
         val query = entityql {
-            from(::_Employee) { e ->
-                val m = leftJoin(::_Employee) { m ->
+            from(::Employee_) { e ->
+                val m = leftJoin(::Employee_) { m ->
                     e.managerId eq m.employeeId
                 }
                 associate(e, m) { employee, manager ->
@@ -344,7 +342,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun domain() {
         val query = entityql {
-            from(::_Employee) { p ->
+            from(::Employee_) { p ->
                 where {
                     p.salary eq Salary("3000")
                 }
@@ -355,74 +353,9 @@ class EntityqlDslTest(private val config: Config) {
     }
 
     @Test
-    fun optional_domain() {
-        val query = entityql {
-            from(::_Person) { p ->
-                where {
-                    p.salary eq Optional.of(Salary("3000"))
-                }
-            }
-        }
-        val list = query.execute(config)
-        assertEquals(2, list.size)
-    }
-
-    @Test
-    fun optional_domain_empty() {
-        val query = entityql {
-            from(::_Person) { p ->
-                where {
-                    p.salary eq Optional.empty()
-                }
-            }
-        }
-        val list = query.execute(config)
-        assertEquals(0, list.size)
-    }
-
-    @Test
-    fun optional_basic() {
-        val query = entityql {
-            from(::_Person) { p ->
-                where {
-                    p.managerId eq Optional.of(9)
-                }
-            }
-        }
-        val list = query.execute(config)
-        assertEquals(3, list.size)
-    }
-
-    @Test
-    fun optional_basic_empty() {
-        val query = entityql {
-            from(::_Person) { p ->
-                where {
-                    p.managerId eq Optional.empty()
-                }
-            }
-        }
-        val list = query.execute(config)
-        assertEquals(1, list.size)
-    }
-
-    @Test
-    fun optionalInt() {
-        val query = entityql {
-            from(::_Person) { p ->
-                where {
-                    p.employeeNo eq OptionalInt.of(7900)
-                }
-            }
-        }
-        val list = query.execute(config)
-        assertEquals(1, list.size)
-    }
-
-    @Test
     fun offset_limit() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 orderBy {
                     e.employeeId.asc()
                 }
@@ -439,7 +372,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun forUpdate() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -453,7 +386,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun forUpdate_nowait() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -467,7 +400,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun distinct() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 distinct()
                 where {
                     e.employeeId eq 1
@@ -481,7 +414,7 @@ class EntityqlDslTest(private val config: Config) {
     @Test
     fun logType() {
         val query = entityql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }

@@ -1,0 +1,31 @@
+package org.seasar.doma.internal.apt.processor.entitydesc;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class Emp_ implements org.seasar.doma.def.EntityDef<org.seasar.doma.internal.apt.processor.entitydesc.Emp> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    public final org.seasar.doma.internal.apt.processor.entitydesc._Emp entityType = new org.seasar.doma.internal.apt.processor.entitydesc._Emp();
+
+    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> id = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.Integer.class, entityType, "id");
+
+    public final org.seasar.doma.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, entityType, "name");
+
+    public final org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_ empInfo = new org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_(entityType, "empInfo");
+
+    public final org.seasar.doma.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.String.class, entityType, "optional");
+
+    public final org.seasar.doma.def.PropertyDef<java.lang.Double> optionalDouble = new org.seasar.doma.def.DefaultPropertyDef<>(double.class, entityType, "optionalDouble");
+
+    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> optionalInt = new org.seasar.doma.def.DefaultPropertyDef<>(int.class, entityType, "optionalInt");
+
+    public final org.seasar.doma.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.def.DefaultPropertyDef<>(long.class, entityType, "optionalLong");
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.entitydesc._Emp asType() {
+        return entityType;
+    }
+}

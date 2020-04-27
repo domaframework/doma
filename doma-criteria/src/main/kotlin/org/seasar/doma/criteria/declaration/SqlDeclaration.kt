@@ -7,44 +7,44 @@ import org.seasar.doma.criteria.statement.SqlSelectStatement
 import org.seasar.doma.criteria.statement.SqlSetStatement
 import org.seasar.doma.criteria.statement.SqlUpdateStatement
 import org.seasar.doma.criteria.statement.Statement
-import org.seasar.doma.jdbc.entity.EntityType
+import org.seasar.doma.def.EntityDef
 
 @Declaration
 class SqlDeclaration {
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>, RESULT_ELEMENT> from(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: SqlSelectDeclaration.(ENTITY_TYPE) -> SqlSelectResult<RESULT_ELEMENT>
-    ): SqlSelectStatement<ENTITY, ENTITY_TYPE, RESULT_ELEMENT> {
-        return SqlSelectStatement(entityTypeProvider, block)
+    fun <ENTITY, ENTITY_DEF : EntityDef<ENTITY>, RESULT_ELEMENT> from(
+        entityDefProvider: () -> ENTITY_DEF,
+        block: SqlSelectDeclaration.(ENTITY_DEF) -> SqlSelectResult<RESULT_ELEMENT>
+    ): SqlSelectStatement<ENTITY, ENTITY_DEF, RESULT_ELEMENT> {
+        return SqlSelectStatement(entityDefProvider, block)
     }
 
     val delete = Delete
 
     object Delete {
-        fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> from(
-            entityTypeProvider: () -> ENTITY_TYPE,
-            block: DeleteDeclaration.(ENTITY_TYPE) -> Unit
+        fun <ENTITY, ENTITY_DEF : EntityDef<ENTITY>> from(
+            entityDefProvider: () -> ENTITY_DEF,
+            block: DeleteDeclaration.(ENTITY_DEF) -> Unit
         ): Statement<Int> {
-            return SqlDeleteStatement(entityTypeProvider, block)
+            return SqlDeleteStatement(entityDefProvider, block)
         }
     }
 
     val insert = Insert
 
     object Insert {
-        fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> into(
-            entityTypeProvider: () -> ENTITY_TYPE,
-            block: InsertDeclaration.(ENTITY_TYPE) -> Unit
+        fun <ENTITY, ENTITY_DEF : EntityDef<ENTITY>> into(
+            entityDefProvider: () -> ENTITY_DEF,
+            block: InsertDeclaration.(ENTITY_DEF) -> Unit
         ): Statement<Int> {
-            return SqlInsertStatement(entityTypeProvider, block)
+            return SqlInsertStatement(entityDefProvider, block)
         }
     }
 
-    fun <ENTITY, ENTITY_TYPE : EntityType<ENTITY>> update(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: UpdateDeclaration.(ENTITY_TYPE) -> Unit
+    fun <ENTITY, ENTITY_DEF : EntityDef<ENTITY>> update(
+        entityDefProvider: () -> ENTITY_DEF,
+        block: UpdateDeclaration.(ENTITY_DEF) -> Unit
     ): Statement<Int> {
-        return SqlUpdateStatement(entityTypeProvider, block)
+        return SqlUpdateStatement(entityDefProvider, block)
     }
 
     infix fun <RESULT_ELEMENT> SqlSelectStatement<*, *, RESULT_ELEMENT>.union(

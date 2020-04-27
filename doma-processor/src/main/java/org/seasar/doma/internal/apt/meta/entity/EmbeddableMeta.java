@@ -39,6 +39,10 @@ public class EmbeddableMeta implements TypeElementMeta {
     return type;
   }
 
+  public TypeElement getTypeElement() {
+    return typeElement;
+  }
+
   public void addEmbeddablePropertyMeta(EmbeddablePropertyMeta propertyMeta) {
     propertyMetas.add(propertyMeta);
   }

@@ -3,10 +3,11 @@ package org.seasar.doma.criteria.declaration
 import java.util.Optional
 import java.util.function.BiFunction
 import java.util.function.Function
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter
 import org.seasar.doma.jdbc.InParameter
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
+import org.seasar.doma.jdbc.entity.EntityPropertyType
 import org.seasar.doma.jdbc.entity.NamingType
 import org.seasar.doma.jdbc.entity.Property
 import org.seasar.doma.wrapper.LongWrapper
@@ -17,179 +18,173 @@ interface AggregateDeclaration {
     val `*`: Asterisk
         get() = Asterisk
 
-    fun <ENTITY, BASIC, CONTAINER> avg(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Avg<ENTITY, BASIC, CONTAINER> {
+    fun <PROPERTY> avg(propType: PropertyDef<PROPERTY>): Avg<PROPERTY> {
         return Avg(propType)
     }
 
-    fun count(asterisk: Asterisk): Count {
-        return Count(AsteriskDesk)
+    fun count(asterisk: Asterisk): Count<Long> {
+        return Count(AsteriskDef)
     }
 
-    fun count(propType: EntityPropertyDesc<*, *, *>): Count {
+    fun <PROPERTY> count(propType: PropertyDef<PROPERTY>): Count<PROPERTY> {
         return Count(propType)
     }
 
-    fun <ENTITY, BASIC, CONTAINER> max(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Max<ENTITY, BASIC, CONTAINER> {
+    fun <PROPERTY> max(propType: PropertyDef<PROPERTY>): Max<PROPERTY> {
         return Max(propType)
     }
 
-    fun <ENTITY, BASIC, CONTAINER> min(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Min<ENTITY, BASIC, CONTAINER> {
+    fun <PROPERTY> min(propType: PropertyDef<PROPERTY>): Min<PROPERTY> {
         return Min(propType)
     }
 
-    fun <ENTITY, BASIC, CONTAINER> sum(propType: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>): Sum<ENTITY, BASIC, CONTAINER> {
+    fun <PROPERTY> sum(propType: PropertyDef<PROPERTY>): Sum<PROPERTY> {
         return Sum(propType)
     }
 }
 
-data class Avg<ENTITY, BASIC, CONTAINER>(override val argument: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
-        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by argument, SqlFunction {
+data class Avg<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
 
-    override val functionName: String
-        get() = "avg"
-}
+    private val functionType = SqlFunctionType<Any, PROPERTY>("avg", argument, null)
 
-data class Count(override val argument: EntityPropertyDesc<*, *, *>) : EntityPropertyDesc<Any, Long, Long>, SqlFunction {
-
-    override val functionName: String
-        get() = "count"
-
-    override fun getName(): String {
-        throw UnsupportedOperationException()
+    override fun asClass(): Class<PROPERTY> {
+        return argument.asClass()
     }
 
-    override fun getColumnName(): String {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getColumnName(quoteFunction: Function<String, String>?): String {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?): String {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?, quoteFunction: Function<String, String>?): String {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isQuoteRequired(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isId(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isVersion(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isTenantId(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isInsertable(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun isUpdatable(): Boolean {
-        throw UnsupportedOperationException()
-    }
-
-    override fun createProperty(): Property<Any, Long> {
-        return LongProperty()
-    }
-
-    override fun copy(dest: Any, src: Any) {
-        throw UnsupportedOperationException()
+    override fun asType(): EntityPropertyType<*, *> {
+        return functionType
     }
 }
 
-data class Max<ENTITY, BASIC, CONTAINER>(override val argument: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
-        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by argument, SqlFunction {
+data class Count<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<Long> {
 
-    override val functionName: String
-        get() = "max"
+    private val functionType = SqlFunctionType("count", argument) { LongProperty() }
+
+    override fun asClass(): Class<Long> {
+        return Long::class.java
+    }
+
+    override fun asType(): EntityPropertyType<*, *> {
+        return functionType
+    }
 }
 
-data class Min<ENTITY, BASIC, CONTAINER>(override val argument: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
-        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by argument, SqlFunction {
+data class Max<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
 
-    override val functionName: String
-        get() = "min"
+    private val functionType = SqlFunctionType<Any, PROPERTY>("max", argument, null)
+
+    override fun asClass(): Class<PROPERTY> {
+        return argument.asClass()
+    }
+
+    override fun asType(): EntityPropertyType<*, *> {
+        return functionType
+    }
 }
 
-data class Sum<ENTITY, BASIC, CONTAINER>(override val argument: EntityPropertyDesc<ENTITY, BASIC, CONTAINER>) :
-        EntityPropertyDesc<ENTITY, BASIC, CONTAINER> by argument, SqlFunction {
+data class Min<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
 
-    override val functionName: String
-        get() = "sum"
+    private val functionType = SqlFunctionType<Any, PROPERTY>("min", argument, null)
+
+    override fun asClass(): Class<PROPERTY> {
+        return argument.asClass()
+    }
+
+    override fun asType(): EntityPropertyType<*, *> {
+        return functionType
+    }
 }
 
-interface SqlFunction {
-    val functionName: String
-    val argument: EntityPropertyDesc<*, *, *>
+data class Sum<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
+
+    private val functionType = SqlFunctionType<Any, PROPERTY>("sum", argument, null)
+
+    override fun asClass(): Class<PROPERTY> {
+        return argument.asClass()
+    }
+
+    override fun asType(): EntityPropertyType<*, *> {
+        return functionType
+    }
+}
+
+class SqlFunctionType<BASIC, PROPERTY>(
+    val functionName: String,
+    val argument: PropertyDef<PROPERTY>,
+    private val propertyProvider: (() -> Property<Any, BASIC>)?
+) :
+        EntityPropertyType<Any, BASIC> by argument.asType() as EntityPropertyType<Any, BASIC> {
+
     fun isArgumentAsterisk(): Boolean {
-        return argument is AsteriskDesk
+        return argument is AsteriskDef
+    }
+
+    override fun createProperty(): Property<Any, BASIC> {
+        return (propertyProvider?.invoke() ?: argument.asType().createProperty()) as Property<Any, BASIC>
     }
 }
 
 object Asterisk
 
-private object AsteriskDesk : EntityPropertyDesc<Any, Any, Any> {
-
-    override fun getName(): String {
-        throw UnsupportedOperationException()
+private object AsteriskDef : PropertyDef<Long> {
+    override fun asClass(): Class<Long> {
+        return Long::class.java
     }
 
-    override fun getColumnName(): String {
-        throw UnsupportedOperationException()
-    }
+    override fun asType(): EntityPropertyType<*, Long> {
+        return object : EntityPropertyType<Any, Long> {
+            override fun getName(): String {
+                throw UnsupportedOperationException()
+            }
 
-    override fun getColumnName(quoteFunction: Function<String, String>?): String {
-        throw UnsupportedOperationException()
-    }
+            override fun getColumnName(): String {
+                throw UnsupportedOperationException()
+            }
 
-    override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?): String {
-        throw UnsupportedOperationException()
-    }
+            override fun getColumnName(quoteFunction: Function<String, String>?): String {
+                throw UnsupportedOperationException()
+            }
 
-    override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?, quoteFunction: Function<String, String>?): String {
-        throw UnsupportedOperationException()
-    }
+            override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?): String {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isQuoteRequired(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun getColumnName(namingFunction: BiFunction<NamingType, String, String>?, quoteFunction: Function<String, String>?): String {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isId(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun isQuoteRequired(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isVersion(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun isId(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isTenantId(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun isVersion(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isInsertable(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun isTenantId(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun isUpdatable(): Boolean {
-        throw UnsupportedOperationException()
-    }
+            override fun isInsertable(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun createProperty(): Property<Any, Any> {
-        throw UnsupportedOperationException()
-    }
+            override fun isUpdatable(): Boolean {
+                throw UnsupportedOperationException()
+            }
 
-    override fun copy(dest: Any, src: Any) {
-        throw UnsupportedOperationException()
+            override fun createProperty(): Property<Any, Long>? {
+                return null
+            }
+
+            override fun copy(dest: Any?, src: Any?) {
+                throw UnsupportedOperationException()
+            }
+        }
     }
 }
 

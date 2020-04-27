@@ -5,21 +5,21 @@ import org.seasar.doma.criteria.context.SelectContext
 import org.seasar.doma.criteria.declaration.EntityqlSelectDeclaration
 import org.seasar.doma.criteria.query.SelectBuilder
 import org.seasar.doma.criteria.query.SelectQuery
+import org.seasar.doma.def.EntityDef
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.SqlLogType
 import org.seasar.doma.jdbc.command.Command
-import org.seasar.doma.jdbc.entity.EntityType
 
-class EntityqlSelectStatement<ENTITY, ENTITY_TYPE : EntityType<ENTITY>>(
-    val entityTypeProvider: () -> ENTITY_TYPE,
-    private val block: EntityqlSelectDeclaration.(ENTITY_TYPE) -> Unit
+class EntityqlSelectStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
+    val entityDefProvider: () -> ENTITY_DEF,
+    private val block: EntityqlSelectDeclaration.(ENTITY_DEF) -> Unit
 ) : AbstractStatement<List<ENTITY>>() {
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<List<ENTITY>> {
-        val entityType = entityTypeProvider()
-        val context = SelectContext(config, entityType)
+        val entityDef = entityDefProvider()
+        val context = SelectContext(config, entityDef.asType())
         val declaration = EntityqlSelectDeclaration(context)
-        declaration.block(entityType)
+        declaration.block(entityDef)
         val builder = SelectBuilder(context, commenter, logType)
         val sql = builder.build()
         val query = SelectQuery(config, sql, javaClass.name, executeMethodName)

@@ -2,9 +2,9 @@ package org.seasar.doma.criteria
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.seasar.doma.criteria.entity.Dept_
 import org.seasar.doma.criteria.entity.Emp
-import org.seasar.doma.criteria.entity._Dept
-import org.seasar.doma.criteria.entity._Emp
+import org.seasar.doma.criteria.entity.Emp_
 import org.seasar.doma.criteria.mock.MockConfig
 
 internal class SqlDslTest {
@@ -14,7 +14,7 @@ internal class SqlDslTest {
     @Test
     fun select_single() {
         val query = sql {
-            from(::_Emp) { e ->
+            from(::Emp_) { e ->
                 where {
                     e.id eq 1
                 }
@@ -29,7 +29,7 @@ internal class SqlDslTest {
     @Test
     fun select_pair() {
         val query = sql {
-            from(::_Emp) { e ->
+            from(::Emp_) { e ->
                 where {
                     e.id eq 1
                 }
@@ -44,7 +44,7 @@ internal class SqlDslTest {
     @Test
     fun select_triple() {
         val query = sql {
-            from(::_Emp) { e ->
+            from(::Emp_) { e ->
                 where {
                     e.id eq 1
                 }
@@ -59,7 +59,7 @@ internal class SqlDslTest {
     @Test
     fun select_with_mapper() {
         val query = sql {
-            from(::_Emp) { e ->
+            from(::Emp_) { e ->
                 where {
                     e.id eq 1
                 }
@@ -81,7 +81,7 @@ internal class SqlDslTest {
     @Test
     fun groupBy() {
         val query = sql {
-            from(::_Dept) { d ->
+            from(::Dept_) { d ->
                 where {
                     d.id eq 1
                 }
@@ -99,7 +99,7 @@ internal class SqlDslTest {
     @Test
     fun having() {
         val query = sql {
-            from(::_Dept) { d ->
+            from(::Dept_) { d ->
                 where {
                     d.id eq 1
                 }
@@ -120,12 +120,12 @@ internal class SqlDslTest {
     @Test
     fun union() {
         val query = sql {
-            val d = from(::_Dept) { d ->
+            val d = from(::Dept_) { d ->
                 select(d.name) {
                     it[d.name]
                 }
             }
-            val e = from(::_Emp) { e ->
+            val e = from(::Emp_) { e ->
                 select(e.name) {
                     it[e.name]
                 }
@@ -144,12 +144,12 @@ internal class SqlDslTest {
     @Test
     fun unionAll() {
         val query = sql {
-            val d = from(::_Dept) { d ->
+            val d = from(::Dept_) { d ->
                 select(d.name) {
                     it[d.name]
                 }
             }
-            val e = from(::_Emp) { e ->
+            val e = from(::Emp_) { e ->
                 select(e.name) {
                     it[e.name]
                 }
@@ -168,12 +168,12 @@ internal class SqlDslTest {
     @Test
     fun union_multi() {
         val query = sql {
-            val d = from(::_Dept) { d ->
+            val d = from(::Dept_) { d ->
                 select(d.name) {
                     it[d.name]
                 }
             }
-            val e = from(::_Emp) { e ->
+            val e = from(::Emp_) { e ->
                 select(e.name) {
                     it[e.name]
                 }
@@ -192,7 +192,7 @@ internal class SqlDslTest {
     @Test
     fun delete() {
         val query = sql {
-            delete.from(::_Dept) { d ->
+            delete.from(::Dept_) { d ->
                 where {
                     d.name eq "hoge"
                 }
@@ -206,7 +206,7 @@ internal class SqlDslTest {
     @Test
     fun insert() {
         val query = sql {
-            insert.into(::_Dept) { d ->
+            insert.into(::Dept_) { d ->
                 values {
                     it[d.id] = 1
                     it[d.name] = "hoge"
@@ -221,7 +221,7 @@ internal class SqlDslTest {
     @Test
     fun update() {
         val query = sql {
-            update(::_Dept) { d ->
+            update(::Dept_) { d ->
                 set {
                     it[d.name] = "hoge"
                 }

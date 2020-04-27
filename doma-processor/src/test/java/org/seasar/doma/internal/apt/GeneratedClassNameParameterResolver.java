@@ -13,6 +13,8 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.EmbeddableDesc;
+import org.seasar.doma.internal.EntityDesc;
 
 public class GeneratedClassNameParameterResolver implements ParameterResolver {
 
@@ -61,6 +63,14 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
     }
     if (clazz.isAnnotationPresent(Domain.class)) {
       return ClassNames.newDomainDescClassName(clazz.getName()).toString();
+    }
+    if (clazz.isAnnotationPresent(EntityDesc.class)) {
+      EntityDesc entityDesc = clazz.getAnnotation(EntityDesc.class);
+      return entityDesc.value().getName() + "_";
+    }
+    if (clazz.isAnnotationPresent(EmbeddableDesc.class)) {
+      EmbeddableDesc embeddableDesc = clazz.getAnnotation(EmbeddableDesc.class);
+      return embeddableDesc.value().getName() + "_";
     }
     throw new AssertionFailedError("annotation not found.");
   }

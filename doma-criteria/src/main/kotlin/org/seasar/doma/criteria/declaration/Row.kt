@@ -1,7 +1,7 @@
 package org.seasar.doma.criteria.declaration
 
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
+import org.seasar.doma.def.PropertyDef
 
 interface Row {
-    operator fun <CONTAINER> get(propType: EntityPropertyDesc<*, *, CONTAINER>): CONTAINER?
+    operator fun <PROPERTY> get(propDef: PropertyDef<PROPERTY>): PROPERTY?
 }

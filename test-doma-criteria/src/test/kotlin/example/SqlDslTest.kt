@@ -1,5 +1,6 @@
 package example
 
+import java.time.LocalDate
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.seasar.doma.criteria.sql
@@ -12,7 +13,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun select_single() {
         val query = sql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -27,7 +28,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun select_pair() {
         val query = sql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -42,7 +43,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun select_triple() {
         val query = sql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -57,7 +58,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun select_with_mapper() {
         val query = sql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -74,7 +75,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun count() {
         val query = sql {
-            from(::_Employee) { e ->
+            from(::Employee_) { e ->
                 select(count(e.employeeId)) {
                     it[count(e.employeeId)]
                 }
@@ -88,8 +89,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun groupBy() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 groupBy(d.departmentId, d.departmentName)
@@ -109,8 +110,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_avg() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 orderBy { d.departmentId.asc() }
@@ -130,8 +131,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_count_property() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 groupBy(d.departmentId, d.departmentName)
@@ -153,8 +154,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_count_asterisk() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 groupBy(d.departmentId, d.departmentName)
@@ -176,8 +177,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_max() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 orderBy { d.departmentId.asc() }
@@ -197,8 +198,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_min() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 orderBy { d.departmentId.asc() }
@@ -218,8 +219,8 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun having_sum() {
         val query = sql {
-            from(::_Employee) { e ->
-                val d = leftJoin(::_Department) { d ->
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
                     e.departmentId eq d.departmentId
                 }
                 orderBy { d.departmentId.asc() }
@@ -239,7 +240,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun union() {
         val query = sql {
-            val x = from(::_Department) { d ->
+            val x = from(::Department_) { d ->
                 where {
                     d.departmentId eq 1
                 }
@@ -247,7 +248,7 @@ class SqlDslTest(private val config: Config) {
                     it[d.departmentName]
                 }
             }
-            val y = from(::_Employee) { e ->
+            val y = from(::Employee_) { e ->
                 where {
                     e.employeeId eq 1
                 }
@@ -266,7 +267,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun unionAll() {
         val query = sql {
-            val x = from(::_Department) { d ->
+            val x = from(::Department_) { d ->
                 where {
                     d.departmentId eq 1
                 }
@@ -274,7 +275,7 @@ class SqlDslTest(private val config: Config) {
                     it[d.departmentName]
                 }
             }
-            val y = from(::_Department) { d ->
+            val y = from(::Department_) { d ->
                 where {
                     d.departmentId eq 1
                 }
@@ -293,7 +294,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun insert() {
         val query = sql {
-            insert.into(::_Department) { d ->
+            insert.into(::Department_) { d ->
                 values {
                     it[d.departmentId] = 99
                     it[d.departmentNo] = 99
@@ -309,7 +310,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun delete() {
         val query = sql {
-            delete.from(::_Employee) { e ->
+            delete.from(::Employee_) { e ->
                 where {
                     e.departmentId eq 1
                 }
@@ -322,10 +323,10 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun delete_in_single_subQuery() {
         val query = sql {
-            delete.from(::_Employee) { e ->
+            delete.from(::Employee_) { e ->
                 where {
                     e.departmentId `in` {
-                        from(::_Department) { d ->
+                        from(::Department_) { d ->
                             where {
                                 d.departmentName eq "ACCOUNTING"
                             }
@@ -342,7 +343,7 @@ class SqlDslTest(private val config: Config) {
     @Test
     fun update() {
         val query = sql {
-            update(::_Department) { e ->
+            update(::Department_) { e ->
                 set {
                     it[e.location] = "TOKYO"
                 }
@@ -353,5 +354,19 @@ class SqlDslTest(private val config: Config) {
         }
         val count = query.execute(config)
         assertEquals(1, count)
+    }
+
+    @Test
+    fun embeddable() {
+        val query = sql {
+            from(::Employee_) { e ->
+                where {
+                    e.employeeInfo.hiredate ge LocalDate.of(1982, 1, 1)
+                }
+                select(e.employeeName)
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(3, list.size)
     }
 }

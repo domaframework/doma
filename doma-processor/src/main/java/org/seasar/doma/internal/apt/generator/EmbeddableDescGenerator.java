@@ -4,6 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.*;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.EmbeddableDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
@@ -41,6 +42,7 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
+    printEmbeddableDesc();
     iprint(
         "public final class %1$s implements %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ EmbeddableType.class, /* 3 */ embeddableMeta.getType());
@@ -51,6 +53,10 @@ public class EmbeddableDescGenerator extends AbstractGenerator {
     printMethods();
     unindent();
     iprint("}%n");
+  }
+
+  private void printEmbeddableDesc() {
+    iprint("@%1$s(%2$s.class)%n", EmbeddableDesc.class, embeddableMeta.getType());
   }
 
   private void printFields() {

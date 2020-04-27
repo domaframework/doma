@@ -1,6 +1,6 @@
 package example;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.seasar.doma.Entity;
@@ -65,7 +65,7 @@ public class Person {
     return hiredate;
   }
 
-  public void setHiredate(Date hiredate) {
+  public void setHiredate(java.sql.Date hiredate) {
     this.hiredate = hiredate;
   }
 

@@ -1,7 +1,7 @@
 package org.seasar.doma.criteria.declaration
 
 import org.seasar.doma.criteria.context.UpdateContext
-import org.seasar.doma.jdbc.entity.EntityPropertyDesc
+import org.seasar.doma.def.PropertyDef
 
 @Declaration
 class UpdateDeclaration(private val context: UpdateContext) {
@@ -11,9 +11,9 @@ class UpdateDeclaration(private val context: UpdateContext) {
 
     fun set(block: ValuesDeclaration.(Values) -> Unit) {
         valuesDeclaration.block(object : Values {
-            override fun <CONTAINER> set(propType: EntityPropertyDesc<*, *, CONTAINER>, value: CONTAINER?) {
-                val prop = support.toProp(propType)
-                val param = support.toParam(propType, value)
+            override fun <PROPERTY> set(propDef: PropertyDef<PROPERTY>, value: PROPERTY?) {
+                val prop = support.toProp(propDef)
+                val param = support.toParam(propDef, value)
                 context.set[prop] = param
             }
         })

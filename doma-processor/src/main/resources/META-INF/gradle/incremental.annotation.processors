@@ -6,3 +6,5 @@ org.seasar.doma.internal.apt.processor.EmbeddableProcessor,isolating
 org.seasar.doma.internal.apt.processor.EntityProcessor,isolating
 org.seasar.doma.internal.apt.processor.DaoProcessor,isolating
 org.seasar.doma.internal.apt.processor.SingletonConfigProcessor,isolating
+org.seasar.doma.internal.apt.processor.EmbeddableDescProcessor,isolating
+org.seasar.doma.internal.apt.processor.EntityDescProcessor,isolating

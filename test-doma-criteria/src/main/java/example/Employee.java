@@ -1,9 +1,7 @@
 package example;
 
-import java.sql.Date;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
-import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 
@@ -18,7 +16,7 @@ public class Employee {
 
   private Integer managerId;
 
-  private java.sql.Date hiredate;
+  private EmployeeInfo employeeInfo;
 
   private Salary salary;
 
@@ -27,8 +25,6 @@ public class Employee {
   private Integer addressId;
 
   @Version private Integer version;
-
-  @OriginalStates private Employee originalStates;
 
   @Transient private Department department;
 
@@ -66,12 +62,12 @@ public class Employee {
     this.managerId = managerId;
   }
 
-  public Date getHiredate() {
-    return hiredate;
+  public EmployeeInfo getEmployeeInfo() {
+    return employeeInfo;
   }
 
-  public void setHiredate(Date hiredate) {
-    this.hiredate = hiredate;
+  public void setEmployeeInfo(EmployeeInfo employeeInfo) {
+    this.employeeInfo = employeeInfo;
   }
 
   public Salary getSalary() {

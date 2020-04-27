@@ -4,7 +4,7 @@ import org.seasar.doma.criteria.context.ForUpdate
 import org.seasar.doma.criteria.context.Join
 import org.seasar.doma.criteria.context.JoinKind
 import org.seasar.doma.criteria.context.SelectContext
-import org.seasar.doma.jdbc.entity.EntityType
+import org.seasar.doma.def.EntityDef
 
 @Declaration
 open class SelectDeclaration(protected val context: SelectContext) {
@@ -16,32 +16,32 @@ open class SelectDeclaration(protected val context: SelectContext) {
         context.distinct = value
     }
 
-    fun <ENTITY_TYPE : EntityType<*>> innerJoin(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: JoinDeclaration.(ENTITY_TYPE) -> Unit
-    ): ENTITY_TYPE {
-        return join(entityTypeProvider, block, JoinKind.INNER)
+    fun <ENTITY_DEF : EntityDef<*>> innerJoin(
+        entityDefProvider: () -> ENTITY_DEF,
+        block: JoinDeclaration.(ENTITY_DEF) -> Unit
+    ): ENTITY_DEF {
+        return join(entityDefProvider, block, JoinKind.INNER)
     }
 
-    fun <ENTITY_TYPE : EntityType<*>> leftJoin(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: JoinDeclaration.(ENTITY_TYPE) -> Unit
-    ): ENTITY_TYPE {
-        return join(entityTypeProvider, block, JoinKind.LEFT)
+    fun <ENTITY_DEF : EntityDef<*>> leftJoin(
+        entityDefProvider: () -> ENTITY_DEF,
+        block: JoinDeclaration.(ENTITY_DEF) -> Unit
+    ): ENTITY_DEF {
+        return join(entityDefProvider, block, JoinKind.LEFT)
     }
 
-    private fun <ENTITY_TYPE : EntityType<*>> join(
-        entityTypeProvider: () -> ENTITY_TYPE,
-        block: JoinDeclaration.(ENTITY_TYPE) -> Unit,
+    private fun <ENTITY_DEF : EntityDef<*>> join(
+        entityDefProvider: () -> ENTITY_DEF,
+        block: JoinDeclaration.(ENTITY_DEF) -> Unit,
         joinKind: JoinKind
-    ): ENTITY_TYPE {
-        val entityType = entityTypeProvider()
-        val join = Join(entityType, joinKind).also {
+    ): ENTITY_DEF {
+        val entityDef = entityDefProvider()
+        val join = Join(entityDef.asType(), joinKind).also {
             val declaration = JoinDeclaration(it)
-            declaration.block(entityType)
+            declaration.block(entityDef)
         }
         context.joins.add(join)
-        return entityType
+        return entityDef
     }
 
     fun where(block: WhereDeclaration.() -> Unit) = whereDeclaration.block()

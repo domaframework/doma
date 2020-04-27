@@ -3,7 +3,7 @@ package org.seasar.doma.criteria.query
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.criteria.context.SelectContext
-import org.seasar.doma.criteria.declaration.SqlFunction
+import org.seasar.doma.criteria.declaration.SqlFunctionType
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.entity.EntityPropertyType
@@ -37,13 +37,13 @@ class BuilderSupport(
             buf.appendSql(p.getColumnName(config.naming::apply, config.dialect::applyQuote))
         }
 
-        if (propType is SqlFunction) {
+        if (propType is SqlFunctionType<*, *>) {
             buf.appendSql(propType.functionName)
             buf.appendSql("(")
             if (propType.isArgumentAsterisk()) {
                 buf.appendSql("*")
             } else {
-                appendColumn(propType.argument)
+                appendColumn(propType.argument.asType())
             }
             buf.appendSql(")")
         } else {

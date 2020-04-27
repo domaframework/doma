@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
@@ -62,6 +63,7 @@ public class EntityDescGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
+    printEntityDesc();
     iprint(
         "public final class %1$s extends %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ AbstractEntityType.class, /* 3 */ entityMeta.getType());
@@ -74,6 +76,10 @@ public class EntityDescGenerator extends AbstractGenerator {
     printListenerHolder();
     unindent();
     iprint("}%n");
+  }
+
+  private void printEntityDesc() {
+    iprint("@%1$s(%2$s.class)%n", EntityDesc.class, entityMeta.getType());
   }
 
   private void printFields() {
