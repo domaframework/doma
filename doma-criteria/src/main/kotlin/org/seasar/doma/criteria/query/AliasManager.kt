@@ -1,8 +1,8 @@
 package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.context.Context
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 
 class AliasManager(
     context: Context,
@@ -10,24 +10,24 @@ class AliasManager(
 ) {
 
     private var index: Int = parentManager?.index ?: 0
-    private val entityAliasMap = mutableMapOf<EntityType<*>, String>()
-    private val propAliasMap = mutableMapOf<EntityPropertyType<*, *>, String>()
+    private val entityAliasMap = mutableMapOf<EntityDef<*>, String>()
+    private val propAliasMap = mutableMapOf<PropertyDef<*>, String>()
 
     init {
-        context.entityTypes.forEach { entityType ->
+        context.entityDefs.forEach { entityDef ->
             val alias = "t${index++}_"
-            entityAliasMap[entityType] = alias
-            entityType.entityPropertyTypes.forEach {
+            entityAliasMap[entityDef] = alias
+            entityDef.allPropertyDefs().forEach {
                 propAliasMap[it] = alias
             }
         }
     }
 
-    operator fun get(key: EntityType<*>): String? {
+    operator fun get(key: EntityDef<*>): String? {
         return parentManager?.get(key) ?: entityAliasMap[key]
     }
 
-    operator fun get(key: EntityPropertyType<*, *>): String? {
+    operator fun get(key: PropertyDef<*>): String? {
         return parentManager?.get(key) ?: propAliasMap[key]
     }
 }

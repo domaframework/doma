@@ -9,7 +9,7 @@ import org.seasar.doma.jdbc.Config
 class DeclarationSupport(private val config: Config) {
 
     fun <PROPERTY> toProp(propDef: PropertyDef<PROPERTY>): Operand.Prop {
-        return Operand.Prop(propDef.asType())
+        return Operand.Prop(propDef)
     }
 
     fun <PROPERTY> toParam(propDef: PropertyDef<PROPERTY>, value: PROPERTY?): Operand.Param {

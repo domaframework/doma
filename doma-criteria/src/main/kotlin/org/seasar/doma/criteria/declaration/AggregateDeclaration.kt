@@ -22,11 +22,11 @@ interface AggregateDeclaration {
         return Avg(propType)
     }
 
-    fun count(asterisk: Asterisk): Count<Long> {
-        return Count(AsteriskDef)
+    fun count(asterisk: Asterisk): Count {
+        return Count(asterisk)
     }
 
-    fun <PROPERTY> count(propType: PropertyDef<PROPERTY>): Count<PROPERTY> {
+    fun count(propType: PropertyDef<*>): Count {
         return Count(propType)
     }
 
@@ -43,90 +43,86 @@ interface AggregateDeclaration {
     }
 }
 
-data class Avg<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
+interface AggregateFunction<PROPERTY> : PropertyDef<PROPERTY> {
+    val functionName: String
+    val argument: PropertyDef<*>
+}
 
-    private val functionType = SqlFunctionType<Any, PROPERTY>("avg", argument, null)
+data class Avg<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
+
+    override val functionName: String
+        get() = "avg"
 
     override fun asClass(): Class<PROPERTY> {
         return argument.asClass()
     }
 
     override fun asType(): EntityPropertyType<*, *> {
-        return functionType
+        return argument.asType()
     }
 }
 
-data class Count<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<Long> {
+data class Count(override val argument: PropertyDef<*>) : AggregateFunction<Long> {
 
-    private val functionType = SqlFunctionType("count", argument) { LongProperty() }
+    override val functionName: String
+        get() = "count"
 
     override fun asClass(): Class<Long> {
         return Long::class.java
     }
 
     override fun asType(): EntityPropertyType<*, *> {
-        return functionType
+        return object : EntityPropertyType<Any, Long> by argument.asType() as EntityPropertyType<Any, Long> {
+            override fun createProperty(): Property<Any, Long> {
+                return LongProperty()
+            }
+        }
     }
 }
 
-data class Max<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
+data class Max<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
 
-    private val functionType = SqlFunctionType<Any, PROPERTY>("max", argument, null)
+    override val functionName: String
+        get() = "max"
 
     override fun asClass(): Class<PROPERTY> {
         return argument.asClass()
     }
 
     override fun asType(): EntityPropertyType<*, *> {
-        return functionType
+        return argument.asType()
     }
 }
 
-data class Min<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
+data class Min<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
 
-    private val functionType = SqlFunctionType<Any, PROPERTY>("min", argument, null)
+    override val functionName: String
+        get() = "min"
 
     override fun asClass(): Class<PROPERTY> {
         return argument.asClass()
     }
 
     override fun asType(): EntityPropertyType<*, *> {
-        return functionType
+        return argument.asType()
     }
 }
 
-data class Sum<PROPERTY>(val argument: PropertyDef<PROPERTY>) : PropertyDef<PROPERTY> {
+data class Sum<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
 
-    private val functionType = SqlFunctionType<Any, PROPERTY>("sum", argument, null)
+    override val functionName: String
+        get() = "sum"
 
     override fun asClass(): Class<PROPERTY> {
         return argument.asClass()
     }
 
     override fun asType(): EntityPropertyType<*, *> {
-        return functionType
+        return argument.asType()
     }
 }
 
-class SqlFunctionType<BASIC, PROPERTY>(
-    val functionName: String,
-    val argument: PropertyDef<PROPERTY>,
-    private val propertyProvider: (() -> Property<Any, BASIC>)?
-) :
-        EntityPropertyType<Any, BASIC> by argument.asType() as EntityPropertyType<Any, BASIC> {
-
-    fun isArgumentAsterisk(): Boolean {
-        return argument is AsteriskDef
-    }
-
-    override fun createProperty(): Property<Any, BASIC> {
-        return (propertyProvider?.invoke() ?: argument.asType().createProperty()) as Property<Any, BASIC>
-    }
-}
-
-object Asterisk
-
-private object AsteriskDef : PropertyDef<Long> {
+object Asterisk : PropertyDef<Long> {
     override fun asClass(): Class<Long> {
         return Long::class.java
     }
@@ -178,7 +174,7 @@ private object AsteriskDef : PropertyDef<Long> {
             }
 
             override fun createProperty(): Property<Any, Long>? {
-                return null
+                throw UnsupportedOperationException()
             }
 
             override fun copy(dest: Any?, src: Any?) {

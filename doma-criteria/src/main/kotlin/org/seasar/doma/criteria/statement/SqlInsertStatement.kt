@@ -17,7 +17,7 @@ class SqlInsertStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<Int> {
         val entityDef = entityDefProvider()
-        val context = InsertContext(config, entityDef.asType())
+        val context = InsertContext(config, entityDef)
         val declaration = InsertDeclaration(context)
         declaration.block(entityDef)
         val builder = InsertBuilder(context, commenter, logType)

@@ -2,11 +2,11 @@ package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.DeleteContext
+import org.seasar.doma.def.EntityDef
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
-import org.seasar.doma.jdbc.entity.EntityType
 
 class DeleteBuilder(
     private val context: DeleteContext,
@@ -24,7 +24,7 @@ class DeleteBuilder(
 
     fun build(): PreparedSql {
         buf.appendSql("delete from ")
-        table(context.entityType)
+        table(context.entityDef)
         if (context.where.isNotEmpty()) {
             buf.appendSql(" where ")
             context.where.forEachIndexed { index, c ->
@@ -36,8 +36,8 @@ class DeleteBuilder(
         return buf.build(commenter)
     }
 
-    private fun table(entityType: EntityType<*>) {
-        support.table(entityType)
+    private fun table(entityDef: EntityDef<*>) {
+        support.table(entityDef)
     }
 
     private fun visitCriterion(index: Int, c: Criterion) {

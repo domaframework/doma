@@ -4,12 +4,12 @@ import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.JoinKind
 import org.seasar.doma.criteria.context.Projection
 import org.seasar.doma.criteria.context.SelectContext
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectBuilder(
     private val context: SelectContext,
@@ -36,7 +36,7 @@ class SelectBuilder(
         when (val projection = context.projection) {
             is Projection.All -> {
                 context.getProjectionTargets().forEach {
-                    it.entityPropertyTypes.forEach { prop ->
+                    it.allPropertyDefs().forEach { prop ->
                         column(prop)
                         buf.appendSql(", ")
                     }
@@ -47,7 +47,7 @@ class SelectBuilder(
                 buf.appendSql("*")
             }
             is Projection.Single -> {
-                column(projection.propType)
+                column(projection.propDef)
             }
             is Projection.Pair -> {
                 column(projection.first)
@@ -55,7 +55,7 @@ class SelectBuilder(
                 column(projection.second)
             }
             is Projection.List -> {
-                projection.propTypes.forEach {
+                projection.propDefs.forEach {
                     column(it)
                     buf.appendSql(", ")
                 }
@@ -63,14 +63,14 @@ class SelectBuilder(
             }
         }
         buf.appendSql(" from ")
-        table(context.entityType)
+        table(context.entityDef)
         if (context.joins.isNotEmpty()) {
             context.joins.forEach { join ->
                 when (join.kind) {
                     JoinKind.INNER -> buf.appendSql(" inner join ")
                     JoinKind.LEFT -> buf.appendSql(" left outer join ")
                 }
-                table(join.entityType)
+                table(join.entityDef)
                 if (join.on.isNotEmpty()) {
                     buf.appendSql(" on (")
                     join.on.forEachIndexed { index, c ->
@@ -129,12 +129,12 @@ class SelectBuilder(
         }
     }
 
-    private fun table(entityType: EntityType<*>) {
-        support.table(entityType)
+    private fun table(entityDef: EntityDef<*>) {
+        support.table(entityDef)
     }
 
-    private fun column(propType: EntityPropertyType<*, *>) {
-        support.column(propType)
+    private fun column(propDef: PropertyDef<*>) {
+        support.column(propDef)
     }
 
     private fun visitCriterion(index: Int, c: Criterion) {

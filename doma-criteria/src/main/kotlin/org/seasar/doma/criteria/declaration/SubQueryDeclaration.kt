@@ -8,11 +8,11 @@ import org.seasar.doma.jdbc.Config
 @Declaration
 class SubQueryDeclaration<RESULT>(private val config: Config) {
     fun <ENTITY, ENTITY_DEF : EntityDef<ENTITY>> from(
-        entityTypeProvider: () -> ENTITY_DEF,
+        entityDefProvider: () -> ENTITY_DEF,
         block: SqlSelectDeclaration.(ENTITY_DEF) -> RESULT
     ): SelectContext {
-        val entityDef = entityTypeProvider()
-        val context = SelectContext(config, entityDef.asType(), projection = Projection.Asterisk)
+        val entityDef = entityDefProvider()
+        val context = SelectContext(config, entityDef, projection = Projection.Asterisk)
         val declaration = SqlSelectDeclaration(context)
         declaration.block(entityDef)
         return context

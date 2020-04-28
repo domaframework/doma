@@ -1,6 +1,8 @@
 package org.seasar.doma.criteria.entity;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import org.seasar.doma.def.DefaultPropertyDef;
 import org.seasar.doma.def.EntityDef;
 import org.seasar.doma.def.PropertyDef;
@@ -23,5 +25,10 @@ public class NoIdEmp_ implements EntityDef<NoIdEmp> {
 
   public _NoIdEmp asType() {
     return entityType;
+  }
+
+  @Override
+  public List<PropertyDef<?>> allPropertyDefs() {
+    return Arrays.asList(employeeId, employeeName, managerId, version);
   }
 }

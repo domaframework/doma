@@ -1,16 +1,16 @@
 package org.seasar.doma.criteria.context
 
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.jdbc.InParameter
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
 
 interface Context {
-    val entityTypes: List<EntityType<*>>
+    val entityDefs: List<EntityDef<*>>
 }
 
 sealed class Operand {
     data class Param(val value: InParameter<*>) : Operand()
-    data class Prop(val value: EntityPropertyType<*, *>) : Operand()
+    data class Prop(val value: PropertyDef<*>) : Operand()
 }
 
 sealed class Criterion {

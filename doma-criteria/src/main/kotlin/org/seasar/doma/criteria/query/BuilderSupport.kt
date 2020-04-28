@@ -3,11 +3,12 @@ package org.seasar.doma.criteria.query
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.criteria.context.SelectContext
-import org.seasar.doma.criteria.declaration.SqlFunctionType
+import org.seasar.doma.criteria.declaration.AggregateFunction
+import org.seasar.doma.criteria.declaration.Asterisk
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
 
 class BuilderSupport(
     private val config: Config,
@@ -16,10 +17,11 @@ class BuilderSupport(
     private val aliasManager: AliasManager
 ) {
 
-    fun table(entityType: EntityType<*>) {
+    fun table(entityDef: EntityDef<*>) {
+        val entityType = entityDef.asType()
         buf.appendSql(entityType.getQualifiedTableName(config.naming::apply, config.dialect::applyQuote))
         buf.appendSql(" ")
-        val alias = aliasManager[entityType]
+        val alias = aliasManager[entityDef]
                 ?: error("Alias not found. The entityType '${entityType.name}' is unknown.")
         buf.appendSql(alias)
     }
@@ -28,26 +30,27 @@ class BuilderSupport(
         column(prop.value)
     }
 
-    fun column(propType: EntityPropertyType<*, *>) {
-        fun appendColumn(p: EntityPropertyType<*, *>) {
-            val alias = aliasManager[p]
-                    ?: error("Alias not found. The p '${p.name}' is unknown.")
-            buf.appendSql(alias)
-            buf.appendSql(".")
-            buf.appendSql(p.getColumnName(config.naming::apply, config.dialect::applyQuote))
-        }
-
-        if (propType is SqlFunctionType<*, *>) {
-            buf.appendSql(propType.functionName)
-            buf.appendSql("(")
-            if (propType.isArgumentAsterisk()) {
+    fun column(propDef: PropertyDef<*>) {
+        fun appendColumn(p: PropertyDef<*>) {
+            if (p == Asterisk) {
                 buf.appendSql("*")
             } else {
-                appendColumn(propType.argument.asType())
+                val propType = p.asType()
+                val alias = aliasManager[p]
+                        ?: error("Alias not found. The p '${propType.name}' is unknown.")
+                buf.appendSql(alias)
+                buf.appendSql(".")
+                buf.appendSql(propType.getColumnName(config.naming::apply, config.dialect::applyQuote))
             }
+        }
+
+        if (propDef is AggregateFunction) {
+            buf.appendSql(propDef.functionName)
+            buf.appendSql("(")
+            appendColumn(propDef.argument)
             buf.appendSql(")")
         } else {
-            appendColumn(propType)
+            appendColumn(propDef)
         }
     }
 

@@ -6,6 +6,7 @@ import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.def.DefaultPropertyDef;
+import org.seasar.doma.def.EmbeddableDef;
 import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
@@ -49,18 +50,25 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
-    iprint("public final class %1$s {%n", simpleName);
+    iprint("public final class %1$s implements %2$s {%n", simpleName, EmbeddableDef.class);
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
     printFields();
     printConstructor();
+    printMethods();
     unindent();
     iprint("}%n");
   }
 
   private void printFields() {
+    printAllPropertyDefsFields();
     printPropertyDefFields();
+  }
+
+  private void printAllPropertyDefsFields() {
+    iprint("private final java.util.List<%1$s<?>> __allPropertyDefs;%n", PropertyDef.class);
+    print("%n");
   }
 
   private void printPropertyDefFields() {
@@ -82,11 +90,33 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
       Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
       iprint(
           "this.%1$s = new %2$s<>(%3$s.class, entityType, name + \".%1$s\");%n",
-          /* 1 */ p.getName(), /* 2 */
-          DefaultPropertyDef.class, /* 3 */
-          pair.fst.getQualifiedName());
+          /* 1 */ p.getName(),
+          /* 2 */ DefaultPropertyDef.class,
+          /* 3 */ pair.fst.getQualifiedName());
     }
+    iprint(
+        "java.util.List<%1$s<?>> __list = new java.util.ArrayList<>(%2$s);%n",
+        PropertyDef.class, embeddableMeta.getEmbeddablePropertyMetas().size());
+    for (EmbeddablePropertyMeta p : embeddableMeta.getEmbeddablePropertyMetas()) {
+      iprint("__list.add(this.%1$s);%n", p.getName());
+    }
+    iprint("__allPropertyDefs = java.util.Collections.unmodifiableList(__list);%n");
     unindent();
     iprint("}%n");
+    print("%n");
+  }
+
+  private void printMethods() {
+    printAllPropertyDefsMethod();
+  }
+
+  private void printAllPropertyDefsMethod() {
+    iprint("@Override%n");
+    iprint("public java.util.List<%1$s<?>> allPropertyDefs() {%n", PropertyDef.class);
+    indent();
+    iprint("return __allPropertyDefs;%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
   }
 }

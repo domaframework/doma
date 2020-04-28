@@ -9,6 +9,6 @@ import org.seasar.doma.def.PropertyDef
 class JoinDeclaration(private val join: Join) {
 
     infix fun <PROPERTY> PropertyDef<PROPERTY>.eq(other: PropertyDef<PROPERTY>) {
-        join.on.add(Criterion.Eq(Operand.Prop(this.asType()), Operand.Prop(other.asType())))
+        join.on.add(Criterion.Eq(Operand.Prop(this), Operand.Prop(other)))
     }
 }

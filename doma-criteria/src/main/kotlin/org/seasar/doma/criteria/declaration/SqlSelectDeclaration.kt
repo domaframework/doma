@@ -9,7 +9,7 @@ class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context),
     private val havingDeclaration = HavingDeclaration(context.config) { context.having.add(it) }
 
     fun groupBy(vararg propDefs: PropertyDef<*>) {
-        context.groupBy.addAll(propDefs.asList().map { it.asType() })
+        context.groupBy.addAll(propDefs.asList())
     }
 
     fun having(block: HavingDeclaration.() -> Unit) = havingDeclaration.block()
@@ -46,7 +46,7 @@ class SqlSelectDeclaration(context: SelectContext) : SelectDeclaration(context),
 
     fun <RESULT_ELEMENT> select(vararg propDefs: PropertyDef<*>, mapper: (Row) -> RESULT_ELEMENT): SqlSelectResult<RESULT_ELEMENT> {
         val list = listOf(*propDefs)
-        context.projection = Projection.List(list.map { it.asType() })
+        context.projection = Projection.List(list)
         return SqlSelectResult(context, list, mapper)
     }
 }

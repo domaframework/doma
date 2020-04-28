@@ -17,7 +17,7 @@ class SqlUpdateStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<Int> {
         val entityDef = entityDefProvider()
-        val context = UpdateContext(config, entityDef.asType())
+        val context = UpdateContext(config, entityDef)
         val declaration = UpdateDeclaration(context)
         declaration.block(entityDef)
         val builder = UpdateSqlBuilder(context, commenter, logType)

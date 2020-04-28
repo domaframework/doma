@@ -1,5 +1,7 @@
 package org.seasar.doma.criteria.entity;
 
+import java.util.Arrays;
+import java.util.List;
 import org.seasar.doma.def.DefaultPropertyDef;
 import org.seasar.doma.def.EntityDef;
 import org.seasar.doma.def.PropertyDef;
@@ -15,5 +17,10 @@ public class Dept_ implements EntityDef<Dept> {
 
   public _Dept asType() {
     return entityType;
+  }
+
+  @Override
+  public List<PropertyDef<?>> allPropertyDefs() {
+    return Arrays.asList(id, name);
   }
 }

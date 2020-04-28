@@ -1,52 +1,52 @@
 package org.seasar.doma.criteria.context
 
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
 
 class SelectContext(
     val config: Config,
-    val entityType: EntityType<*>,
+    val entityDef: EntityDef<*>,
     var distinct: Boolean = false,
     var projection: Projection = Projection.All,
     val joins: MutableList<Join> = mutableListOf(),
     val where: MutableList<Criterion> = mutableListOf(),
-    val orderBy: MutableList<Pair<EntityPropertyType<*, *>, String>> = mutableListOf(),
-    val groupBy: MutableList<EntityPropertyType<*, *>> = mutableListOf(),
+    val orderBy: MutableList<Pair<PropertyDef<*>, String>> = mutableListOf(),
+    val groupBy: MutableList<PropertyDef<*>> = mutableListOf(),
     val having: MutableList<Criterion> = mutableListOf(),
     var limit: Int? = null,
     var offset: Int? = null,
     var forUpdate: ForUpdate? = null,
-    val associations: MutableMap<Pair<EntityType<*>, EntityType<*>>, (Any, Any) -> Unit> = mutableMapOf()
+    val associations: MutableMap<Pair<EntityDef<*>, EntityDef<*>>, (Any, Any) -> Unit> = mutableMapOf()
 ) : Context {
 
-    override val entityTypes: List<EntityType<*>>
-        get() = listOf(entityType) + joins.map { it.entityType }
+    override val entityDefs: List<EntityDef<*>>
+        get() = listOf(entityDef) + joins.map { it.entityDef }
 
-    fun getProjectionTargets(): List<EntityType<*>> {
-        val entityTypes = mutableListOf<EntityType<*>>()
-        entityTypes.add(entityType)
+    fun getProjectionTargets(): List<EntityDef<*>> {
+        val entityDefs = mutableListOf<EntityDef<*>>()
+        entityDefs.add(entityDef)
         associations.forEach { (pair, _) ->
             listOf(pair.first, pair.second).forEach {
-                if (!entityTypes.contains(it)) {
-                    entityTypes.add(it)
+                if (!entityDefs.contains(it)) {
+                    entityDefs.add(it)
                 }
             }
         }
-        return entityTypes
+        return entityDefs
     }
 }
 
 sealed class Projection {
     object All : Projection()
     object Asterisk : Projection()
-    data class Single(val propType: EntityPropertyType<*, *>) : Projection()
-    data class Pair(val first: EntityPropertyType<*, *>, val second: EntityPropertyType<*, *>) : Projection()
-    data class List(val propTypes: Iterable<EntityPropertyType<*, *>>) : Projection()
+    data class Single(val propDef: PropertyDef<*>) : Projection()
+    data class Pair(val first: PropertyDef<*>, val second: PropertyDef<*>) : Projection()
+    data class List(val propDefs: Iterable<PropertyDef<*>>) : Projection()
 }
 
 class Join(
-    val entityType: EntityType<*>,
+    val entityDef: EntityDef<*>,
     val kind: JoinKind,
     val on: MutableList<Criterion> = mutableListOf()
 )

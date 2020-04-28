@@ -28,7 +28,7 @@ class SqlSelectStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>, RESULT_ELEMENT>
 
     internal fun runSelectDeclaration(config: Config): SqlSelectResult<RESULT_ELEMENT> {
         val entityDef = entityDefProvider()
-        val context = SelectContext(config, entityDef.asType())
+        val context = SelectContext(config, entityDef)
         val declaration = SqlSelectDeclaration(context)
         return declaration.block(entityDef)
     }

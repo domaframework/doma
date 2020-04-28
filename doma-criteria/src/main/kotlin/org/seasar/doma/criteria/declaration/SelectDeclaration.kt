@@ -36,7 +36,7 @@ open class SelectDeclaration(protected val context: SelectContext) {
         joinKind: JoinKind
     ): ENTITY_DEF {
         val entityDef = entityDefProvider()
-        val join = Join(entityDef.asType(), joinKind).also {
+        val join = Join(entityDef, joinKind).also {
             val declaration = JoinDeclaration(it)
             declaration.block(entityDef)
         }

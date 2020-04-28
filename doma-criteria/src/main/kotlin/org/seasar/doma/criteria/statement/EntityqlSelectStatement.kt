@@ -17,7 +17,7 @@ class EntityqlSelectStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<List<ENTITY>> {
         val entityDef = entityDefProvider()
-        val context = SelectContext(config, entityDef.asType())
+        val context = SelectContext(config, entityDef)
         val declaration = EntityqlSelectDeclaration(context)
         declaration.block(entityDef)
         val builder = SelectBuilder(context, commenter, logType)

@@ -2,13 +2,13 @@ package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.UpdateContext
+import org.seasar.doma.def.EntityDef
+import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
 import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
-import org.seasar.doma.jdbc.entity.EntityPropertyType
-import org.seasar.doma.jdbc.entity.EntityType
 
 class UpdateSqlBuilder(
     private val context: UpdateContext,
@@ -26,7 +26,7 @@ class UpdateSqlBuilder(
 
     fun build(): PreparedSql {
         buf.appendSql("update ")
-        table(context.entityType)
+        table(context.entityDef)
         if (context.set.isNotEmpty()) {
             buf.appendSql(" set ")
             context.set.forEach { (prop, param) ->
@@ -48,12 +48,12 @@ class UpdateSqlBuilder(
         return buf.build(commenter)
     }
 
-    private fun table(entityType: EntityType<*>) {
-        support.table(entityType)
+    private fun table(entityDef: EntityDef<*>) {
+        support.table(entityDef)
     }
 
-    private fun column(propType: EntityPropertyType<*, *>) {
-        support.column(propType)
+    private fun column(propDef: PropertyDef<*>) {
+        support.column(propDef)
     }
 
     private fun param(param: InParameter<*>) {

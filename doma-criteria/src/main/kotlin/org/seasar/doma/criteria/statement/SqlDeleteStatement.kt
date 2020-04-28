@@ -17,7 +17,7 @@ class SqlDeleteStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
 
     override fun createCommand(config: Config, commenter: (String) -> String, logType: SqlLogType): Command<Int> {
         val entityDef = entityDefProvider()
-        val context = DeleteContext(config, entityDef.asType())
+        val context = DeleteContext(config, entityDef)
         val declaration = DeleteDeclaration(context)
         declaration.block(entityDef)
         val builder = DeleteBuilder(context, commenter, logType)
