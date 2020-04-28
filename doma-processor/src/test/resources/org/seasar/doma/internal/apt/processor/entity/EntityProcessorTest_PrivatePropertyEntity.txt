@@ -36,7 +36,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __entityPropertyTypeMap;
 
-    _PrivatePropertyEntity() {
+    public _PrivatePropertyEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "PrivatePropertyEntity";

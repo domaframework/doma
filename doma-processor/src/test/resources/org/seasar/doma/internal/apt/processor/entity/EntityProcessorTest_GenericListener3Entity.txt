@@ -33,7 +33,7 @@ public final class _GenericListener3Entity extends org.seasar.doma.jdbc.entity.A
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener3Entity, ?>> __entityPropertyTypeMap;
 
-    _GenericListener3Entity() {
+    public _GenericListener3Entity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "GenericListener3Entity";

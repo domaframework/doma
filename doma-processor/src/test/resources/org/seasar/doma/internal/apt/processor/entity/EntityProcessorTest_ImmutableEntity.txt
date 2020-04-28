@@ -42,7 +42,7 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __entityPropertyTypeMap;
 
-    _ImmutableEntity() {
+    public _ImmutableEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
         __name = "ImmutableEntity";

@@ -39,7 +39,7 @@ public final class _Child2NoInheritingEntity extends org.seasar.doma.jdbc.entity
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?>> __entityPropertyTypeMap;
 
-    _Child2NoInheritingEntity() {
+    public _Child2NoInheritingEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "Child2NoInheritingEntity";

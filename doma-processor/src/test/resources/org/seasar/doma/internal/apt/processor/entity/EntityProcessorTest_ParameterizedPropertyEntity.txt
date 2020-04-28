@@ -36,7 +36,7 @@ public final class _ParameterizedPropertyEntity extends org.seasar.doma.jdbc.ent
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?>> __entityPropertyTypeMap;
 
-    _ParameterizedPropertyEntity() {
+    public _ParameterizedPropertyEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "ParameterizedPropertyEntity";

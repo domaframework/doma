@@ -42,7 +42,7 @@ public final class _OptionalDoubleEntity extends org.seasar.doma.jdbc.entity.Abs
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalDoubleEntity, ?>> __entityPropertyTypeMap;
 
-    _OptionalDoubleEntity() {
+    public _OptionalDoubleEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "OptionalDoubleEntity";
