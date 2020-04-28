@@ -211,7 +211,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
   }
 
   private void printConstructor() {
-    iprint("public %1$s() {%n", simpleName);
+    iprint("%1$s() {%n", simpleName);
     iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
     iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
     iprint("    __name = \"%1$s\";%n", entityMeta.getEntityName());

@@ -58,7 +58,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Emp, ?>> __entityPropertyTypeMap;
 
-    public _Emp() {
+    _Emp() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "Emp";

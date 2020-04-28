@@ -39,7 +39,7 @@ public final class _Dept extends org.seasar.doma.jdbc.entity.AbstractEntityType<
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Dept, ?>> __entityPropertyTypeMap;
 
-    public _Dept() {
+    _Dept() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "Dept";

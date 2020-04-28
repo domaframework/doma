@@ -33,7 +33,7 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?>> __entityPropertyTypeMap;
 
-    public _NotTopLevelEntity__Hoge() {
+    _NotTopLevelEntity__Hoge() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "Hoge";
