@@ -33,7 +33,7 @@ public final class _CommonChild extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.CommonChild, ?>> __entityPropertyTypeMap;
 
-    public _CommonChild() {
+    private _CommonChild() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "CommonChild";

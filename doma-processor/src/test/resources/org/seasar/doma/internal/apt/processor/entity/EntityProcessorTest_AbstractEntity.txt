@@ -36,7 +36,7 @@ public final class _AbstractEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.AbstractEntity, ?>> __entityPropertyTypeMap;
 
-    public _AbstractEntity() {
+    private _AbstractEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "AbstractEntity";

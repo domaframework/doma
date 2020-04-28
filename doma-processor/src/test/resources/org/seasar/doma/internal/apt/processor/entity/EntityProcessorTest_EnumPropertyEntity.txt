@@ -39,7 +39,7 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __entityPropertyTypeMap;
 
-    public _EnumPropertyEntity() {
+    private _EnumPropertyEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
         __name = "EnumPropertyEntity";

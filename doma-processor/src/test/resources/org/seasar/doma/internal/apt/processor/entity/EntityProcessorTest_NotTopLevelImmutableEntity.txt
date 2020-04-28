@@ -36,7 +36,7 @@ public final class _NotTopLevelImmutableEntity__Hoge extends org.seasar.doma.jdb
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelImmutableEntity.Hoge, ?>> __entityPropertyTypeMap;
 
-    public _NotTopLevelImmutableEntity__Hoge() {
+    private _NotTopLevelImmutableEntity__Hoge() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
         __name = "Hoge";

@@ -39,7 +39,7 @@ public final class _LombokAllArgsConstructor extends org.seasar.doma.jdbc.entity
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokAllArgsConstructor, ?>> __entityPropertyTypeMap;
 
-    public _LombokAllArgsConstructor() {
+    private _LombokAllArgsConstructor() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
         __name = "LombokAllArgsConstructor";
