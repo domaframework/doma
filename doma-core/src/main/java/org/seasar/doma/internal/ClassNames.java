@@ -19,26 +19,26 @@ public class ClassNames {
       base = packageName + ".";
     }
     return base
-        + enclosingNames.stream().map(n -> n + Constants.DESC_NAME_DELIMITER).collect(joining())
+        + enclosingNames.stream().map(n -> n + Constants.TYPE_NAME_DELIMITER).collect(joining())
         + simpleName;
   }
 
-  public static ClassName newEntityDescClassName(CharSequence entityClassName) {
+  public static ClassName newEntityTypeClassName(CharSequence entityClassName) {
     assertNotNull(entityClassName);
     return new ClassNameBuilder(entityClassName).build();
   }
 
-  public static ClassName newEmbeddableDescClassName(CharSequence embeddedClassName) {
+  public static ClassName newEmbeddableTypeClassName(CharSequence embeddedClassName) {
     assertNotNull(embeddedClassName);
     return new ClassNameBuilder(embeddedClassName).build();
   }
 
-  public static ClassName newDomainDescClassName(CharSequence domainClassName) {
+  public static ClassName newDomainTypeClassName(CharSequence domainClassName) {
     assertNotNull(domainClassName);
     return new ClassNameBuilder(domainClassName).build();
   }
 
-  public static ClassName newExternalDomainDescClassName(CharSequence externalDomainClassName) {
+  public static ClassName newExternalDomainTypeClassName(CharSequence externalDomainClassName) {
     assertNotNull(externalDomainClassName);
     return new ExternalDomainClassNameBuilder(externalDomainClassName).build();
   }
@@ -61,7 +61,7 @@ public class ClassNames {
     }
 
     protected String infix() {
-      return Constants.DESC_PREFIX;
+      return Constants.TYPE_PREFIX;
     }
 
     protected String suffix() {
@@ -82,7 +82,7 @@ public class ClassNames {
 
     @Override
     protected String prefix() {
-      return Constants.EXTERNAL_DOMAIN_DESC_ROOT_PACKAGE
+      return Constants.EXTERNAL_DOMAIN_TYPE_ROOT_PACKAGE
           + "."
           + ClassUtil.getPackageName(binaryName)
           + ".";

@@ -16,13 +16,13 @@ import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class EntityDescPropertyGenerator extends AbstractGenerator {
+public class EntityTypePropertyGenerator extends AbstractGenerator {
 
   private final EntityMeta entityMeta;
 
   private final EntityPropertyMeta propertyMeta;
 
-  EntityDescPropertyGenerator(
+  EntityTypePropertyGenerator(
       Context ctx,
       ClassName className,
       Printer printer,

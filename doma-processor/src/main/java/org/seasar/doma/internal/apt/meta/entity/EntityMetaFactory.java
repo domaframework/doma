@@ -227,7 +227,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       }
       String simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-          || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
+          || simpleName.contains(Constants.TYPE_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4317, typeElement, new Object[] {typeElement.getQualifiedName()});
       }

@@ -30,7 +30,7 @@ public class EntityDefGenerator extends AbstractGenerator {
     this.entityMeta = entityDescMeta.getEntityMeta();
     TypeElement entityTypeElement = entityMeta.getTypeElement();
     Name binaryName = ctx.getMoreElements().getBinaryName(entityTypeElement);
-    entityTypeClassName = ClassNames.newEntityDescClassName(binaryName);
+    entityTypeClassName = ClassNames.newEntityTypeClassName(binaryName);
   }
 
   @Override

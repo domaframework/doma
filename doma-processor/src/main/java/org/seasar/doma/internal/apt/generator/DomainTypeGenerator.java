@@ -8,11 +8,11 @@ import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class DomainDescGenerator extends AbstractGenerator {
+public class DomainTypeGenerator extends AbstractGenerator {
 
   private final DomainMeta domainMeta;
 
-  public DomainDescGenerator(
+  public DomainTypeGenerator(
       Context ctx, ClassName className, Printer printer, DomainMeta domainMeta) {
     super(ctx, className, printer);
     assertNotNull(domainMeta);

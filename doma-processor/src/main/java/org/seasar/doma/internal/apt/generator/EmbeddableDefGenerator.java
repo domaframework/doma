@@ -30,7 +30,7 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
     this.embeddableMeta = embeddableDescMeta.getEmbeddableMeta();
     TypeElement embeddableTypeElement = embeddableMeta.getTypeElement();
     Name binaryName = ctx.getMoreElements().getBinaryName(embeddableTypeElement);
-    embeddableTypeClassName = ClassNames.newEmbeddableDescClassName(binaryName);
+    embeddableTypeClassName = ClassNames.newEmbeddableTypeClassName(binaryName);
   }
 
   @Override

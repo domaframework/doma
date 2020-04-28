@@ -1,6 +1,6 @@
 package org.seasar.doma.jdbc.domain;
 
-import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX;
 
 import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
@@ -58,7 +58,7 @@ public final class DomainTypeFactory {
           "domainClass", Message.DOMA2205.getMessage(domainClass.getName()));
     }
     String domainTypeClassName =
-        ClassNames.newDomainDescClassName(domainClass.getName()).toString();
+        ClassNames.newDomainTypeClassName(domainClass.getName()).toString();
     try {
       Class<DOMAIN> clazz = classHelper.forName(domainTypeClassName);
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
@@ -106,7 +106,7 @@ public final class DomainTypeFactory {
     Class<?> clazz;
     if (domainClass.isArray()) {
       String domainName =
-          domainClass.getComponentType().getName() + EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+          domainClass.getComponentType().getName() + EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX;
       clazz = loadExternalDomainDescClass(domainName, classHelper);
     } else {
       clazz = loadExternalDomainDescClassWithTraversal(domainClass, classHelper);
@@ -125,7 +125,7 @@ public final class DomainTypeFactory {
   }
 
   private static Class<?> loadExternalDomainDescClass(String domainName, ClassHelper classHelper) {
-    String domainTypeClassName = ClassNames.newExternalDomainDescClassName(domainName).toString();
+    String domainTypeClassName = ClassNames.newExternalDomainTypeClassName(domainName).toString();
     try {
       return classHelper.forName(domainTypeClassName);
     } catch (WrapException e) {

@@ -36,11 +36,11 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class EntityDescGenerator extends AbstractGenerator {
+public class EntityTypeGenerator extends AbstractGenerator {
 
   private final EntityMeta entityMeta;
 
-  public EntityDescGenerator(
+  public EntityTypeGenerator(
       Context ctx, ClassName className, Printer printer, EntityMeta entityMeta) {
     super(ctx, className, printer);
     assertNotNull(entityMeta);
@@ -129,8 +129,8 @@ public class EntityDescGenerator extends AbstractGenerator {
 
   private void printPropertyTypeFields() {
     for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-      EntityDescPropertyGenerator propertyGenerator =
-          new EntityDescPropertyGenerator(ctx, className, printer, entityMeta, pm);
+      EntityTypePropertyGenerator propertyGenerator =
+          new EntityTypePropertyGenerator(ctx, className, printer, entityMeta, pm);
       propertyGenerator.generate();
       print("%n");
     }

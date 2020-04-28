@@ -10,7 +10,7 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.EntityDescGenerator;
+import org.seasar.doma.internal.apt.generator.EntityTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
@@ -43,12 +43,12 @@ public class EntityProcessor extends AbstractGeneratingProcessor<EntityMeta> {
   protected ClassName createClassName(TypeElement typeElement, EntityMeta meta) {
     assertNotNull(typeElement, meta);
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    return ClassNames.newEntityDescClassName(binaryName);
+    return ClassNames.newEntityTypeClassName(binaryName);
   }
 
   @Override
   protected Generator createGenerator(ClassName className, Printer printer, EntityMeta meta) {
     assertNotNull(className, meta, printer);
-    return new EntityDescGenerator(ctx, className, printer, meta);
+    return new EntityTypeGenerator(ctx, className, printer, meta);
   }
 }

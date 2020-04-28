@@ -10,7 +10,7 @@ import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.generator.EmbeddableDescGenerator;
+import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
@@ -41,12 +41,12 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
   protected ClassName createClassName(TypeElement typeElement, EmbeddableMeta meta) {
     assertNotNull(typeElement, meta);
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    return ClassNames.newEmbeddableDescClassName(binaryName);
+    return ClassNames.newEmbeddableTypeClassName(binaryName);
   }
 
   @Override
   protected Generator createGenerator(ClassName className, Printer printer, EmbeddableMeta meta) {
     assertNotNull(className, meta, printer);
-    return new EmbeddableDescGenerator(ctx, className, printer, meta);
+    return new EmbeddableTypeGenerator(ctx, className, printer, meta);
   }
 }

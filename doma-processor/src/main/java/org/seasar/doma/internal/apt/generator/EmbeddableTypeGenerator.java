@@ -15,11 +15,11 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 
-public class EmbeddableDescGenerator extends AbstractGenerator {
+public class EmbeddableTypeGenerator extends AbstractGenerator {
 
   private final EmbeddableMeta embeddableMeta;
 
-  public EmbeddableDescGenerator(
+  public EmbeddableTypeGenerator(
       Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
     super(ctx, className, printer);
     assertNotNull(embeddableMeta);
