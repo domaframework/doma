@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.entitydesc;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+
 import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -20,6 +21,9 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 @EntityDesc(Emp.class)
 public class _Emp extends AbstractEntityType<Emp> {
+
+  private static final _Emp INSTANCE = new _Emp();
+
   @Override
   public boolean isImmutable() {
     return false;
@@ -125,4 +129,8 @@ public class _Emp extends AbstractEntityType<Emp> {
 
   @Override
   public void postDelete(Emp emp, PostDeleteContext<Emp> context) {}
+
+  public static _Emp getSingletonInternal() {
+    return INSTANCE;
+  }
 }

@@ -8,7 +8,7 @@ public final class Emp_ implements org.seasar.doma.def.EntityDef<org.seasar.doma
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private final org.seasar.doma.internal.apt.processor.entitydesc._Emp __entityType = new org.seasar.doma.internal.apt.processor.entitydesc._Emp();
+    private final org.seasar.doma.internal.apt.processor.entitydesc._Emp __entityType = org.seasar.doma.internal.apt.processor.entitydesc._Emp.getSingletonInternal();
 
     private final java.util.List<org.seasar.doma.def.PropertyDef<?>> __allPropertyDefs;
 

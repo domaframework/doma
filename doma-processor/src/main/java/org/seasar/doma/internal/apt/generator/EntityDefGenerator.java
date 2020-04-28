@@ -69,7 +69,7 @@ public class EntityDefGenerator extends AbstractGenerator {
   }
 
   private void printEntityTypeField() {
-    iprint("private final %1$s __entityType = new %1$s();%n", entityTypeClassName);
+    iprint("private final %1$s __entityType = %1$s.getSingletonInternal();%n", entityTypeClassName);
     print("%n");
   }
 
