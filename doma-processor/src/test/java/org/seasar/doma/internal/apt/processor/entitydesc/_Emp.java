@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.entitydesc;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
 import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
