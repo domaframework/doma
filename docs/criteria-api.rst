@@ -68,6 +68,7 @@ To use the Criteria API, write your build.gradle as follows:
 
     dependencies {
         kapt "org.seasar.doma:doma-processor:2.31.0"
+        implementation "org.seasar.doma:doma-core:2.31.0"
         implementation "org.seasar.doma:doma-criteria:2.31.0"
     }
 
