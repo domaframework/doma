@@ -24,4 +24,9 @@ public class DefaultPropertyDef<PROPERTY> implements PropertyDef<PROPERTY> {
   public EntityPropertyType<?, ?> asType() {
     return entityType.getEntityPropertyType(name);
   }
+
+  @Override
+  public String getName() {
+    return name;
+  }
 }

@@ -33,7 +33,7 @@ class BuilderSupport(
     fun column(propDef: PropertyDef<*>) {
         fun appendColumn(p: PropertyDef<*>) {
             if (p == Asterisk) {
-                buf.appendSql("*")
+                buf.appendSql(Asterisk.name)
             } else {
                 val propType = p.asType()
                 val alias = aliasManager[p]
@@ -45,7 +45,7 @@ class BuilderSupport(
         }
 
         if (propDef is AggregateFunction) {
-            buf.appendSql(propDef.functionName)
+            buf.appendSql(propDef.name)
             buf.appendSql("(")
             appendColumn(propDef.argument)
             buf.appendSql(")")

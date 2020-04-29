@@ -7,4 +7,6 @@ public interface PropertyDef<PROPERTY> {
   Class<PROPERTY> asClass();
 
   EntityPropertyType<?, ?> asType();
+
+  String getName();
 }

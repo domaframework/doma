@@ -43,35 +43,25 @@ interface AggregateDeclaration {
     }
 }
 
-interface AggregateFunction<PROPERTY> : PropertyDef<PROPERTY> {
-    val functionName: String
+interface AggregateFunction {
     val argument: PropertyDef<*>
 }
 
-data class Avg<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
+data class Avg<PROPERTY>(override val argument: PropertyDef<PROPERTY>) :
+    PropertyDef<PROPERTY> by argument, AggregateFunction {
 
-    override val functionName: String
-        get() = "avg"
-
-    override fun asClass(): Class<PROPERTY> {
-        return argument.asClass()
-    }
-
-    override fun asType(): EntityPropertyType<*, *> {
-        return argument.asType()
-    }
+    override fun getName() = "avg"
 }
 
-data class Count(override val argument: PropertyDef<*>) : AggregateFunction<Long> {
+data class Count(override val argument: PropertyDef<*>) :
+    PropertyDef<Long>, AggregateFunction {
 
-    override val functionName: String
-        get() = "count"
+    override fun getName() = "count"
 
-    override fun asClass(): Class<Long> {
-        return Long::class.java
-    }
+    override fun asClass() = Long::class.java
 
     override fun asType(): EntityPropertyType<*, *> {
+        @Suppress("UNCHECKED_CAST")
         return object : EntityPropertyType<Any, Long> by argument.asType() as EntityPropertyType<Any, Long> {
             override fun createProperty(): Property<Any, Long> {
                 return LongProperty()
@@ -80,52 +70,29 @@ data class Count(override val argument: PropertyDef<*>) : AggregateFunction<Long
     }
 }
 
-data class Max<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
+data class Max<PROPERTY>(override val argument: PropertyDef<PROPERTY>) :
+    PropertyDef<PROPERTY> by argument, AggregateFunction {
 
-    override val functionName: String
-        get() = "max"
-
-    override fun asClass(): Class<PROPERTY> {
-        return argument.asClass()
-    }
-
-    override fun asType(): EntityPropertyType<*, *> {
-        return argument.asType()
-    }
+    override fun getName() = "max"
 }
 
-data class Min<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
+data class Min<PROPERTY>(override val argument: PropertyDef<PROPERTY>) :
+    PropertyDef<PROPERTY> by argument, AggregateFunction {
 
-    override val functionName: String
-        get() = "min"
-
-    override fun asClass(): Class<PROPERTY> {
-        return argument.asClass()
-    }
-
-    override fun asType(): EntityPropertyType<*, *> {
-        return argument.asType()
-    }
+    override fun getName() = "min"
 }
 
-data class Sum<PROPERTY>(override val argument: PropertyDef<PROPERTY>) : AggregateFunction<PROPERTY> {
+data class Sum<PROPERTY>(override val argument: PropertyDef<PROPERTY>) :
+    PropertyDef<PROPERTY> by argument, AggregateFunction {
 
-    override val functionName: String
-        get() = "sum"
-
-    override fun asClass(): Class<PROPERTY> {
-        return argument.asClass()
-    }
-
-    override fun asType(): EntityPropertyType<*, *> {
-        return argument.asType()
-    }
+    override fun getName() = "sum"
 }
 
 object Asterisk : PropertyDef<Long> {
-    override fun asClass(): Class<Long> {
-        return Long::class.java
-    }
+
+    override fun getName() = "*"
+
+    override fun asClass() = Long::class.java
 
     override fun asType(): EntityPropertyType<*, Long> {
         return object : EntityPropertyType<Any, Long> {
