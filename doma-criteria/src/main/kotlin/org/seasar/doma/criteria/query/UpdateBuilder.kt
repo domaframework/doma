@@ -1,6 +1,7 @@
 package org.seasar.doma.criteria.query
 
 import org.seasar.doma.criteria.context.Criterion
+import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.criteria.context.UpdateContext
 import org.seasar.doma.def.EntityDef
 import org.seasar.doma.def.PropertyDef
@@ -10,7 +11,7 @@ import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType
 
-class UpdateSqlBuilder(
+class UpdateBuilder(
     private val context: UpdateContext,
     private val commenter: (String) -> String,
     private val buf: PreparedSqlBuilder,
@@ -30,9 +31,9 @@ class UpdateSqlBuilder(
         if (context.set.isNotEmpty()) {
             buf.appendSql(" set ")
             context.set.forEach { (prop, param) ->
-                column(prop.value)
+                column(prop)
                 buf.appendSql(" = ")
-                param(param.value)
+                param(param)
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
@@ -52,12 +53,12 @@ class UpdateSqlBuilder(
         support.table(entityDef)
     }
 
-    private fun column(propDef: PropertyDef<*>) {
-        support.column(propDef)
+    private fun column(prop: Operand.Prop) {
+        support.column(prop)
     }
 
-    private fun param(param: InParameter<*>) {
-        buf.appendParameter(param)
+    private fun param(param: Operand.Param) {
+        support.param(param)
     }
 
     private fun visitCriterion(index: Int, c: Criterion) {

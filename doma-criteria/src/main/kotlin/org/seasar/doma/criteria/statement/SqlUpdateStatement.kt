@@ -3,7 +3,7 @@ package org.seasar.doma.criteria.statement
 import org.seasar.doma.criteria.context.UpdateContext
 import org.seasar.doma.criteria.declaration.UpdateDeclaration
 import org.seasar.doma.criteria.query.UpdateQuery
-import org.seasar.doma.criteria.query.UpdateSqlBuilder
+import org.seasar.doma.criteria.query.UpdateBuilder
 import org.seasar.doma.def.EntityDef
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.SqlLogType
@@ -20,7 +20,7 @@ class SqlUpdateStatement<ENTITY, ENTITY_DEF : EntityDef<ENTITY>>(
         val context = UpdateContext(config, entityDef)
         val declaration = UpdateDeclaration(context)
         declaration.block(entityDef)
-        val builder = UpdateSqlBuilder(context, commenter, logType)
+        val builder = UpdateBuilder(context, commenter, logType)
         val sql = builder.build()
         val query = UpdateQuery(config, sql, javaClass.name, executeMethodName)
         return UpdateCommand(query)
