@@ -3,7 +3,7 @@ package org.seasar.doma.criteria.declaration
 import org.seasar.doma.def.PropertyDef
 
 @Declaration
-class OrderByDeclaration(private val add: (Pair<PropertyDef<*>, String>) -> Unit) {
+class OrderByDeclaration(private val add: (Pair<PropertyDef<*>, String>) -> Unit) : AggregateDeclaration {
 
     fun PropertyDef<*>.desc() {
         add(this to "desc")

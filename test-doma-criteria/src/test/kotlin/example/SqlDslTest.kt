@@ -238,6 +238,27 @@ class SqlDslTest(private val config: Config) {
     }
 
     @Test
+    fun orderBy_sum() {
+        val query = sql {
+            from(::Employee_) { e ->
+                val d = leftJoin(::Department_) { d ->
+                    e.departmentId eq d.departmentId
+                }
+                groupBy(d.departmentName)
+                having {
+                    sum(e.salary) gt Salary("9000")
+                }
+                orderBy { sum(e.salary).desc() }
+                select(d.departmentName, sum(e.salary))
+            }
+        }
+        val list = query.execute(config)
+        assertEquals(2, list.size)
+        assertEquals("RESEARCH", list[0].first)
+        assertEquals("SALES", list[1].first)
+    }
+
+    @Test
     fun union() {
         val query = sql {
             val x = from(::Department_) { d ->
