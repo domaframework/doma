@@ -2,7 +2,7 @@
 Release notes
 =============
 
-v2.31.0: 2020-04-18
+v2.31.0: 2020-04-29
 ======================
 
 * `GH388 <https://github.com/domaframework/doma/pull/388>`_
