@@ -58,6 +58,20 @@ class BuilderSupport(
         buf.appendParameter(param.value)
     }
 
+    fun expr(expr: Operand.Expr) {
+        when (expr) {
+            is Operand.Expr.Prop -> column(expr.value)
+            is Operand.Expr.Param -> param(expr.value)
+            is Operand.Expr.Plus -> {
+                buf.appendSql("(")
+                expr(expr.left)
+                buf.appendSql(" + ")
+                expr(expr.right)
+                buf.appendSql(")")
+            }
+        }
+    }
+
     fun visitCriterion(index: Int, c: Criterion) {
         when (c) {
             is Criterion.Eq -> equality(c.left, c.right, "=")
@@ -92,6 +106,7 @@ class BuilderSupport(
             return when (operand) {
                 is Operand.Param -> operand.value.wrapper.get() == null
                 is Operand.Prop -> false
+                is Operand.Expr -> false
             }
         }
 

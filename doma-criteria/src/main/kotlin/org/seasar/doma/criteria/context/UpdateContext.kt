@@ -6,7 +6,7 @@ import org.seasar.doma.jdbc.Config
 class UpdateContext(
     val config: Config,
     val entityDef: EntityDef<*>,
-    val set: MutableMap<Operand.Prop, Operand.Param> = mutableMapOf(),
+    val set: MutableMap<Operand.Prop, Operand> = mutableMapOf(),
     val where: MutableList<Criterion> = mutableListOf()
 ) : Context {
 

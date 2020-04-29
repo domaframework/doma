@@ -11,6 +11,11 @@ interface Context {
 sealed class Operand {
     data class Param(val value: InParameter<*>) : Operand()
     data class Prop(val value: PropertyDef<*>) : Operand()
+    sealed class Expr : Operand() {
+        data class Plus(val left: Expr, val right: Expr) : Expr()
+        data class Prop(val value: Operand.Prop) : Expr()
+        data class Param(val value: Operand.Param) : Expr()
+    }
 }
 
 sealed class Criterion {

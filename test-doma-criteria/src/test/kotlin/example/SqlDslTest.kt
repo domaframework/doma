@@ -378,6 +378,22 @@ class SqlDslTest(private val config: Config) {
     }
 
     @Test
+    fun update_expression() {
+        val query = sql {
+            update(::Department_) { e ->
+                set {
+                    it[e.departmentNo] = expression { e.departmentNo + 100 }
+                }
+                where {
+                    e.departmentId eq 1
+                }
+            }
+        }
+        val count = query.execute(config)
+        assertEquals(1, count)
+    }
+
+    @Test
     fun embeddable() {
         val query = sql {
             from(::Employee_) { e ->

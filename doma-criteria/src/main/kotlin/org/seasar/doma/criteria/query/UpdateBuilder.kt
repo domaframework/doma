@@ -28,10 +28,14 @@ class UpdateBuilder(
         table(context.entityDef)
         if (context.set.isNotEmpty()) {
             buf.appendSql(" set ")
-            context.set.forEach { (prop, param) ->
-                column(prop)
+            context.set.forEach { (left, right) ->
+                column(left)
                 buf.appendSql(" = ")
-                param(param)
+                when (right) {
+                    is Operand.Prop -> column(right)
+                    is Operand.Param -> param(right)
+                    is Operand.Expr -> expr(right)
+                }
                 buf.appendSql(", ")
             }
             buf.cutBackSql(2)
@@ -57,6 +61,10 @@ class UpdateBuilder(
 
     private fun param(param: Operand.Param) {
         support.param(param)
+    }
+
+    private fun expr(expr: Operand.Expr) {
+        support.expr(expr)
     }
 
     private fun visitCriterion(index: Int, c: Criterion) {

@@ -1,5 +1,6 @@
 package org.seasar.doma.criteria
 
+import java.math.BigDecimal
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.seasar.doma.criteria.entity.Dept_
@@ -232,6 +233,23 @@ internal class SqlDslTest {
         }
         val sql = query.asSql(config)
         val expected = """update "CATA"."DEPT" t0_ set t0_.NAME = 'hoge' where t0_.ID = 1"""
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun update_expression() {
+        val query = sql {
+            update(::Emp_) { e ->
+                set {
+                    it[e.salary] = expression { e.salary + BigDecimal("1") }
+                }
+                where {
+                    e.id eq 1
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = """update EMP t0_ set t0_.SALARY = (t0_.SALARY + 1) where t0_.ID = 1"""
         assertEquals(expected, sql.formattedSql)
     }
 }
