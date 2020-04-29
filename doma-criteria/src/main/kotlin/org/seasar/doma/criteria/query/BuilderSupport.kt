@@ -256,18 +256,28 @@ class BuilderSupport(
             if (index > 0) {
                 buf.cutBackSql(5)
             }
-            buf.appendSql(" $operator ")
+            if (index != 0) {
+                buf.appendSql(" $operator ")
+            }
             buf.appendSql("(")
-            list.forEachIndexed(::visitCriterion)
+            list.forEachIndexed { i, c ->
+                visitCriterion(i, c)
+                buf.appendSql(" and ")
+            }
+            buf.cutBackSql(5)
             buf.appendSql(")")
         }
     }
 
     private fun not(list: List<Criterion>) {
         if (list.isNotEmpty()) {
-            buf.appendSql(" not ")
+            buf.appendSql("not ")
             buf.appendSql("(")
-            list.forEachIndexed(::visitCriterion)
+            list.forEachIndexed { i, c ->
+                visitCriterion(i, c)
+                buf.appendSql(" and ")
+            }
+            buf.cutBackSql(5)
             buf.appendSql(")")
         }
     }

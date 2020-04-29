@@ -321,6 +321,84 @@ class EntityqlDslTest {
     }
 
     @Test
+    fun where_or() {
+        val query = entityql {
+            from(::Emp_) { e ->
+                where {
+                    e.id eq 1
+                    and {
+                        e.name eq "hoge"
+                        or {
+                            e.name eq "foo"
+                            e.salary eq BigDecimal("1000")
+                        }
+                        e.version eq 1
+                    }
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1 and (t0_.NAME = 'hoge' or (t0_.NAME = 'foo' and t0_.SALARY = 1000) and t0_.VERSION = 1)"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun where_not() {
+        val query = entityql {
+            from(::Emp_) { e ->
+                where {
+                    e.id eq 1
+                    or {
+                        e.name eq "hoge"
+                        not {
+                            e.name eq "foo"
+                            e.salary eq BigDecimal("1000")
+                        }
+                        e.version eq 1
+                    }
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.ID = 1 or (t0_.NAME = 'hoge' and not (t0_.NAME = 'foo' and t0_.SALARY = 1000) and t0_.VERSION = 1)"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun and_right_after_where() {
+        val query = entityql {
+            from(::Emp_) { e ->
+                where {
+                    and {
+                        e.name eq "hoge"
+                    }
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where (t0_.NAME = 'hoge')"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
+    fun and_right_after_not() {
+        val query = entityql {
+            from(::Emp_) { e ->
+                where {
+                    not {
+                        and {
+                            e.name eq "hoge"
+                        }
+                    }
+                }
+            }
+        }
+        val sql = query.asSql(config)
+        val expected = "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where not ((t0_.NAME = 'hoge'))"
+        assertEquals(expected, sql.formattedSql)
+    }
+
+    @Test
     fun `in`() {
         val query = entityql {
             from(::Emp_) { e ->
