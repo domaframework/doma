@@ -20,6 +20,8 @@ public final class Options {
 
   public static final String TEST = "doma.test";
 
+  public static final String CRITERIA_ENABLED = "doma.criteria.enabled";
+
   public static final String DEBUG = "doma.debug";
 
   public static final String DAO_PACKAGE = "doma.dao.package";
@@ -70,6 +72,11 @@ public final class Options {
       return "@VERSION@";
     }
     return Artifact.getVersion();
+  }
+
+  public boolean isCriteriaEnabled() {
+    String enabled = getOption(CRITERIA_ENABLED);
+    return Boolean.valueOf(enabled);
   }
 
   public Date getDate() {

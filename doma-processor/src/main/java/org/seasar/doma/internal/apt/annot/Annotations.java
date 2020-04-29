@@ -10,6 +10,8 @@ import javax.lang.model.element.*;
 import org.seasar.doma.*;
 import org.seasar.doma.Sql;
 import org.seasar.doma.experimental.DataType;
+import org.seasar.doma.internal.EmbeddableDesc;
+import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -126,9 +128,19 @@ public class Annotations {
     return newInstance(typeElement, Embeddable.class, EmbeddableAnnot::new);
   }
 
+  public EmbeddableDescAnnot newEmbeddableDescAnnot(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newInstance(typeElement, EmbeddableDesc.class, EmbeddableDescAnnot::new);
+  }
+
   public EntityAnnot newEntityAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, Entity.class, EntityAnnot::new);
+  }
+
+  public EntityDescAnnot newEntityDescAnnot(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newInstance(typeElement, EntityDesc.class, EntityDescAnnot::new);
   }
 
   public FunctionAnnot newFunctionAnnot(final ExecutableElement method) {

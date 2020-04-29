@@ -1,7 +1,7 @@
 package org.seasar.doma.internal.apt;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -13,6 +13,8 @@ import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.EmbeddableDesc;
+import org.seasar.doma.internal.EntityDesc;
 
 public class GeneratedClassNameParameterResolver implements ParameterResolver {
 
@@ -46,21 +48,29 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
     if (isExternalDomain) {
       String name =
           clazz.isArray()
-              ? clazz.getComponentType().getName() + EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX
+              ? clazz.getComponentType().getName() + EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX
               : clazz.getName();
-      return ClassNames.newExternalDomainDescClassName(name).toString();
+      return ClassNames.newExternalDomainTypeClassName(name).toString();
     }
     if (clazz.isAnnotationPresent(Dao.class)) {
       return clazz.getName() + Options.Constants.DEFAULT_DAO_SUFFIX;
     }
     if (clazz.isAnnotationPresent(Entity.class)) {
-      return ClassNames.newEntityDescClassName(clazz.getName()).toString();
+      return ClassNames.newEntityTypeClassName(clazz.getName()).toString();
     }
     if (clazz.isAnnotationPresent(Embeddable.class)) {
-      return ClassNames.newEmbeddableDescClassName(clazz.getName()).toString();
+      return ClassNames.newEmbeddableTypeClassName(clazz.getName()).toString();
     }
     if (clazz.isAnnotationPresent(Domain.class)) {
-      return ClassNames.newDomainDescClassName(clazz.getName()).toString();
+      return ClassNames.newDomainTypeClassName(clazz.getName()).toString();
+    }
+    if (clazz.isAnnotationPresent(EntityDesc.class)) {
+      EntityDesc entityDesc = clazz.getAnnotation(EntityDesc.class);
+      return entityDesc.value().getName() + "_";
+    }
+    if (clazz.isAnnotationPresent(EmbeddableDesc.class)) {
+      EmbeddableDesc embeddableDesc = clazz.getAnnotation(EmbeddableDesc.class);
+      return embeddableDesc.value().getName() + "_";
     }
     throw new AssertionFailedError("annotation not found.");
   }

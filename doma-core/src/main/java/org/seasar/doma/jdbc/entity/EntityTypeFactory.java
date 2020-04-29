@@ -38,7 +38,7 @@ public final class EntityTypeFactory {
           "entityClass", Message.DOMA2206.getMessage("entityClass"));
     }
     String entityTypeClassName =
-        ClassNames.newEntityDescClassName(entityClass.getName()).toString();
+        ClassNames.newEntityTypeClassName(entityClass.getName()).toString();
     try {
       Class<E> clazz = classHelper.forName(entityTypeClassName);
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");

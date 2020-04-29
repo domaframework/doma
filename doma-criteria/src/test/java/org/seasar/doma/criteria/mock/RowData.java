@@ -1,0 +1,23 @@
+package org.seasar.doma.criteria.mock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RowData {
+
+  protected final List<Object> values = new ArrayList<Object>();
+
+  public RowData(Object... values) {
+    for (Object object : values) {
+      this.values.add(object);
+    }
+  }
+
+  public Object get(int index) {
+    return values.get(index - 1);
+  }
+
+  public int size() {
+    return values.size();
+  }
+}

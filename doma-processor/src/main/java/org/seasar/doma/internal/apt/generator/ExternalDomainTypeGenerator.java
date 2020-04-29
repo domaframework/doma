@@ -8,11 +8,11 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
 
-public class ExternalDomainDescGenerator extends AbstractGenerator {
+public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
   private final ExternalDomainMeta domainMeta;
 
-  public ExternalDomainDescGenerator(
+  public ExternalDomainTypeGenerator(
       Context ctx, ClassName className, Printer printer, ExternalDomainMeta domainMeta) {
     super(ctx, className, printer);
     assertNotNull(domainMeta);
