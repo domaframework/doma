@@ -2,8 +2,8 @@ package org.seasar.doma.criteria.statement
 
 import org.seasar.doma.criteria.context.UpdateContext
 import org.seasar.doma.criteria.declaration.UpdateDeclaration
-import org.seasar.doma.criteria.query.UpdateQuery
 import org.seasar.doma.criteria.query.UpdateBuilder
+import org.seasar.doma.criteria.query.UpdateQuery
 import org.seasar.doma.def.EntityDef
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.SqlLogType

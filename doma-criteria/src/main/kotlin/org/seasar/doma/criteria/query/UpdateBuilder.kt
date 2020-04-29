@@ -4,9 +4,7 @@ import org.seasar.doma.criteria.context.Criterion
 import org.seasar.doma.criteria.context.Operand
 import org.seasar.doma.criteria.context.UpdateContext
 import org.seasar.doma.def.EntityDef
-import org.seasar.doma.def.PropertyDef
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder
-import org.seasar.doma.jdbc.InParameter
 import org.seasar.doma.jdbc.PreparedSql
 import org.seasar.doma.jdbc.SqlKind
 import org.seasar.doma.jdbc.SqlLogType

@@ -3,6 +3,12 @@ plugins {
     kotlin("kapt") apply true
 }
 
+kapt {
+    arguments {
+        arg("doma.criteria.enabled", true)
+    }
+}
+
 dependencies {
     kapt(project(":doma-processor"))
     implementation(project(":doma-core"))

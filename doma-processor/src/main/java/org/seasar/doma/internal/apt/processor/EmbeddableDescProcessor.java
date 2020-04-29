@@ -2,6 +2,8 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Set;
+import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.TypeElement;
@@ -16,11 +18,25 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddableDescMetaFactory;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 
 @SupportedAnnotationTypes({"org.seasar.doma.internal.EmbeddableDesc"})
-@SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG, Options.CONFIG_PATH})
+@SupportedOptions({
+  Options.RESOURCES_DIR,
+  Options.TEST,
+  Options.DEBUG,
+  Options.CONFIG_PATH,
+  Options.CRITERIA_ENABLED
+})
 public class EmbeddableDescProcessor extends AbstractGeneratingProcessor<EmbeddableDescMeta> {
 
   public EmbeddableDescProcessor() {
     super(EmbeddableDesc.class);
+  }
+
+  @Override
+  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    if (!ctx.getOptions().isCriteriaEnabled()) {
+      return true;
+    }
+    return super.process(annotations, roundEnv);
   }
 
   @Override
