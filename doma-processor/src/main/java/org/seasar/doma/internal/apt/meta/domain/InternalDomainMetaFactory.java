@@ -173,7 +173,7 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
       }
       String simpleName = typeElement.getSimpleName().toString();
       if (simpleName.contains(Constants.BINARY_NAME_DELIMITER)
-          || simpleName.contains(Constants.DESC_NAME_DELIMITER)) {
+          || simpleName.contains(Constants.TYPE_NAME_DELIMITER)) {
         throw new AptException(
             Message.DOMA4277, typeElement, new Object[] {typeElement.getQualifiedName()});
       }

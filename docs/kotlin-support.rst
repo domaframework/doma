@@ -60,7 +60,7 @@ Embeddable classes
 Dao interfaces
 --------------
 
-* Specify a SQL template to ``@org.seasar.doma.experimental.Sql``
+* Specify a SQL template to ``@org.seasar.doma.Sql``
 * Use ``org.seasar.doma.jdbc.Result`` as the return type of ``@Delete``, ``@Insert`` and ``@Update``
 * Use ``org.seasar.doma.jdbc.BatchResult`` as the return type of
   ``@BatchDelete``, ``@BatchInsert`` and ``@BatchUpdate``
@@ -99,8 +99,8 @@ Add the dependencies using the `kapt` and `implementation` configuration in your
 .. code-block:: groovy
 
   dependencies {
-      implementation "org.seasar.doma:doma-core:2.30.0-beta-6-SNAPSHOT"
-      kapt "org.seasar.doma:doma-processor:2.30.0-beta-6-SNAPSHOT"
+      implementation "org.seasar.doma:doma-core:2.31.0"
+      kapt "org.seasar.doma:doma-processor:2.31.0"
   }
 
 To simplify your build.script, we recommend you use

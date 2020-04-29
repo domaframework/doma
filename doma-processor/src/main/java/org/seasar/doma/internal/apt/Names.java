@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.apt;
 
-import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX;
+import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.Name;
@@ -27,7 +27,7 @@ public class Names {
         throw new AptIllegalStateException(componentType.toString());
       }
       Name binaryName = ctx.getMoreElements().getBinaryName(componentElement);
-      return ctx.getMoreElements().getName(binaryName + EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX);
+      return ctx.getMoreElements().getName(binaryName + EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX);
     }
     TypeElement domainElement = ctx.getMoreTypes().toTypeElement(externalDomainType);
     if (domainElement == null) {

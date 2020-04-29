@@ -30,6 +30,11 @@ public class ScriptCommand implements Command<Void> {
   }
 
   @Override
+  public ScriptQuery getQuery() {
+    return query;
+  }
+
+  @Override
   public Void execute() {
     Config config = query.getConfig();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());

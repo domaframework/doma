@@ -17,31 +17,31 @@ class ClassNamesTest {
 
   @Test
   void newEmbeddableTypeClassName() {
-    ClassName className = ClassNames.newEmbeddableDescClassName(getClass().getName());
+    ClassName className = ClassNames.newEmbeddableTypeClassName(getClass().getName());
     assertEquals("org.seasar.doma.internal._ClassNamesTest", className.toString());
   }
 
   @Test
   void newEmbeddableTypeClassName_innerClass() {
-    ClassName className = ClassNames.newEmbeddableDescClassName(Inner.class.getName());
+    ClassName className = ClassNames.newEmbeddableTypeClassName(Inner.class.getName());
     assertEquals("org.seasar.doma.internal._ClassNamesTest__Inner", className.toString());
   }
 
   @Test
   void newEntityTypeClassName() {
-    ClassName className = ClassNames.newEntityDescClassName(getClass().getName());
+    ClassName className = ClassNames.newEntityTypeClassName(getClass().getName());
     assertEquals("org.seasar.doma.internal._ClassNamesTest", className.toString());
   }
 
   @Test
   void newDomainTypeClassName() {
-    ClassName className = ClassNames.newDomainDescClassName(getClass().getName());
+    ClassName className = ClassNames.newDomainTypeClassName(getClass().getName());
     assertEquals("org.seasar.doma.internal._ClassNamesTest", className.toString());
   }
 
   @Test
   void newExternalDomainTypClassName() {
-    ClassName className = ClassNames.newExternalDomainDescClassName(getClass().getName());
+    ClassName className = ClassNames.newExternalDomainTypeClassName(getClass().getName());
     assertEquals("__.org.seasar.doma.internal._ClassNamesTest", className.toString());
   }
 }

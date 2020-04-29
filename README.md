@@ -1,7 +1,5 @@
-Doma [![Build Status](https://travis-ci.org/domaframework/doma.svg?branch=master)](https://travis-ci.org/domaframework/doma) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.seasar.doma/doma/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.seasar.doma/doma)
+Doma [![Build Status](https://travis-ci.org/domaframework/doma.svg?branch=master)](https://travis-ci.org/domaframework/doma) [![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ========================================
-
-[![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Doma is a database access framework for Java.
 Doma uses [Pluggable Annotation Processing API][apt] to generate source code and validate sql mappings **at compile time**.
@@ -57,8 +55,8 @@ Build with Gradle
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-core:2.30.0-beta-6-SNAPSHOT"
-    annotationProcessor "org.seasar.doma:doma-processor:2.30.0-beta-6-SNAPSHOT"
+    implementation "org.seasar.doma:doma-core:2.31.0"
+    annotationProcessor "org.seasar.doma:doma-processor:2.31.0"
 }
 ```
 

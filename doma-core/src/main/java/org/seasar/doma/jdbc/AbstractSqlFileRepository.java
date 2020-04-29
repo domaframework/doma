@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc;
 import java.lang.reflect.Method;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.experimental.Sql;
+import org.seasar.doma.Sql;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;

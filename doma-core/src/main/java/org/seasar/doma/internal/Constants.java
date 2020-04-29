@@ -16,13 +16,13 @@ public final class Constants {
 
   public static final String SCRIPT_PATH_SUFFIX = ".script";
 
-  public static final String DESC_PREFIX = "_";
+  public static final String TYPE_PREFIX = "_";
 
-  public static final String EXTERNAL_DOMAIN_DESC_ROOT_PACKAGE = "__";
+  public static final String EXTERNAL_DOMAIN_TYPE_ROOT_PACKAGE = "__";
 
-  public static final String EXTERNAL_DOMAIN_DESC_ARRAY_SUFFIX = "__ARRAY__";
+  public static final String EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX = "__ARRAY__";
 
-  public static final String DESC_NAME_DELIMITER = "__";
+  public static final String TYPE_NAME_DELIMITER = "__";
 
   public static final String BINARY_NAME_DELIMITER = "$";
 

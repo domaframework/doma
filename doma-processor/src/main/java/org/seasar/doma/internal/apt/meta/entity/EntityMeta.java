@@ -139,6 +139,10 @@ public class EntityMeta implements TypeElementMeta {
     return generatedIdPropertyMeta;
   }
 
+  public TypeElement getTypeElement() {
+    return typeElement;
+  }
+
   public TypeMirror getType() {
     return type;
   }

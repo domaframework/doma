@@ -53,6 +53,7 @@ User Documentation
    dao
    query/index
    query-builder/index
+   criteria-api
    sql
    expression
    transaction

@@ -190,7 +190,7 @@ public class CtTypes {
         return null;
       }
       Name name = ctx.getNames().createExternalDomainName(type);
-      ClassName descClassName = ClassNames.newExternalDomainDescClassName(name);
+      ClassName descClassName = ClassNames.newExternalDomainTypeClassName(name);
       return new DomainCtType(ctx, type, basicCtType, Collections.emptyList(), descClassName);
     }
 
@@ -219,9 +219,9 @@ public class CtTypes {
     ClassName descClassName;
     if (info.external) {
       Name name = ctx.getNames().createExternalDomainName(type);
-      descClassName = ClassNames.newExternalDomainDescClassName(name);
+      descClassName = ClassNames.newExternalDomainTypeClassName(name);
     } else {
-      descClassName = ClassNames.newDomainDescClassName(binaryName);
+      descClassName = ClassNames.newDomainTypeClassName(binaryName);
     }
     return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, descClassName);
   }
@@ -348,7 +348,7 @@ public class CtTypes {
       return null;
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    ClassName descClassName = ClassNames.newEmbeddableDescClassName(binaryName);
+    ClassName descClassName = ClassNames.newEmbeddableTypeClassName(binaryName);
     return new EmbeddableCtType(ctx, type, descClassName);
   }
 
@@ -362,7 +362,7 @@ public class CtTypes {
       return null;
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    ClassName descClassName = ClassNames.newEntityDescClassName(binaryName);
+    ClassName descClassName = ClassNames.newEntityTypeClassName(binaryName);
     boolean immutable = ElementKindUtil.isRecord(typeElement.getKind()) || entity.immutable();
     return new EntityCtType(ctx, type, immutable, descClassName);
   }

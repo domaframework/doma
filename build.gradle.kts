@@ -1,5 +1,7 @@
 plugins {
     base
+    kotlin("jvm") version "1.3.72" apply false
+    kotlin("kapt") version "1.3.72" apply false
     id("com.diffplug.eclipse.apt") version "3.22.0" apply false
     id("com.diffplug.gradle.spotless") version "3.27.2"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
@@ -7,17 +9,19 @@ plugins {
 }
 
 val encoding: String by project
-val isSnapshot = project.version.toString().endsWith("SNAPSHOT")
+val isSnapshot = version.toString().endsWith("SNAPSHOT")
+val releaseVersion = properties["release.releaseVersion"].toString()
+val newVersion = properties["release.newVersion"].toString()
 val secretKeyRingFile: String? =
         findProperty("signing.secretKeyRingFile")?.toString()?.let {
             if (it.isEmpty()) null
             else file(it).absolutePath
         }
 
-fun replaceVersionArtifactClass() {
+fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
         "replaceregexp"("match" to """(private static final String VERSION = ")[^"]*(")""",
-                "replace" to "\\1${version}\\2",
+                "replace" to "\\1${ver}\\2",
                 "encoding" to encoding,
                 "flags" to "g") {
             "fileset"("dir" to ".") {
@@ -43,14 +47,14 @@ subprojects {
 
     extra["signing.secretKeyRingFile"] = secretKeyRingFile
 
-    val replaceVersionJava by tasks.registering {
+    val replaceVersionInJava by tasks.registering {
         doLast {
-            replaceVersionArtifactClass()
+            replaceVersionInArtifact(version.toString())
         }
     }
 
     val compileJava by tasks.existing(JavaCompile::class) {
-        dependsOn(tasks.named("replaceVersionJava"))
+        dependsOn(replaceVersionInJava)
         options.encoding = encoding
     }
 
@@ -59,6 +63,57 @@ subprojects {
         options.compilerArgs = listOf("-proc:none")
     }
 
+    val test by tasks.existing(Test::class) {
+        maxHeapSize = "1g"
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.6.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    }
+
+    configure<JavaPluginExtension> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        java {
+            googleJavaFormat("1.7")
+        }
+        kotlin {
+            ktlint("0.36.0")
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+
+    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
+        classpath {
+            file {
+                whenMerged {
+                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                    classpath.entries.removeAll {
+                        when (it) {
+                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                            else -> false
+                        }
+                    }
+                }
+                withXml {
+                    val node = asNode()
+                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
+                }
+            }
+        }
+        jdt {
+            javaRuntimeName = "JavaSE-1.8"
+        }
+    }
+}
+
+configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor", "doma-criteria") }) {
     val javadoc by tasks.existing(Javadoc::class) {
         options.encoding = encoding
         (options as StandardJavadocDocletOptions).apply {
@@ -76,24 +131,12 @@ subprojects {
         }
     }
 
-    val test by tasks.existing(Test::class) {
-        maxHeapSize = "1g"
-        useJUnitPlatform()
-    }
-
     val build by tasks.existing {
         val publishToMavenLocal by tasks.existing
         dependsOn(publishToMavenLocal)
     }
 
-    dependencies {
-        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.6.2")
-        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-    }
-
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
         withJavadocJar()
         withSourcesJar()
     }
@@ -142,60 +185,40 @@ subprojects {
         sign(publishing.publications)
         isRequired = !isSnapshot
     }
-
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        java {
-            googleJavaFormat("1.7")
-        }
-    }
-
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-1.8"
-        }
-    }
 }
 
 rootProject.apply {
     apply(from = "release.gradle")
 
-    val replaceVersion by tasks.registering {
-        mustRunAfter(tasks.named("updateVersion"))
-        doLast {
-            replaceVersionArtifactClass()
-            ant.withGroovyBuilder {
-                "replaceregexp"("match" to """("org.seasar.doma:doma(-core|-processor)?:)[^"]*(")""",
-                        "replace" to "\\1${version}\\3",
-                        "encoding" to encoding,
-                        "flags" to "g") {
-                    "fileset"("dir" to ".") {
-                        "include"("name" to "README.md")
-                        "include"("name" to "docs/**/*.rst")
-                    }
+    fun replaceVersionInDocs(ver: String) {
+        ant.withGroovyBuilder {
+            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor|criteria)?:)[^"]*(")""",
+                    "replace" to "\\1${ver}\\3",
+                    "encoding" to encoding,
+                    "flags" to "g") {
+                "fileset"("dir" to ".") {
+                    "include"("name" to "README.md")
+                    "include"("name" to "docs/**/*.rst")
                 }
             }
         }
     }
 
-    val commitNewVersion by tasks.existing {
+    val replaceVersion by tasks.registering {
+        doLast {
+            replaceVersionInArtifact(releaseVersion)
+            replaceVersionInDocs(releaseVersion)
+        }
+    }
+
+    val beforeReleaseBuild by tasks.existing {
         dependsOn(replaceVersion)
+     }
+
+    val updateVersion by tasks.existing {
+        doLast {
+            replaceVersionInArtifact(newVersion)
+        }
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {

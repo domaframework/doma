@@ -2,6 +2,28 @@
 Release notes
 =============
 
+v2.31.0: 2020-04-18
+======================
+
+* `GH388 <https://github.com/domaframework/doma/pull/388>`_
+  Enhance the CommentContext class to accept a message
+* `GH387 <https://github.com/domaframework/doma/pull/387>`_
+  Support the Sql annotation officially
+* `GH386 <https://github.com/domaframework/doma/pull/386>`_
+  Add the "getQuery" method to the "Command" interface
+* `GH384 <https://github.com/domaframework/doma/pull/384>`_
+  Resolve type parameters with actual type arguments for generic types
+* `GH382 <https://github.com/domaframework/doma/pull/382>`_
+  Add the Criteria API
+* `GH381 <https://github.com/domaframework/doma/pull/381>`_
+  Replace version before build
+* `GH380 <https://github.com/domaframework/doma/pull/380>`_
+  Allow uncommitted files before release
+* `GH379 <https://github.com/domaframework/doma/pull/379>`_
+  Don't replace the version with the snapshot version in documents
+* `GH378 <https://github.com/domaframework/doma/pull/378>`_
+  Allow no-args default method in Kotlin
+
 v2.30.0: 2020-04-18
 ======================
 
