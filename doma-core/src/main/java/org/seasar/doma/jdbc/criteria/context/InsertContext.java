@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public class InsertContext implements Context {
   public final EntityDef<?> entityDef;

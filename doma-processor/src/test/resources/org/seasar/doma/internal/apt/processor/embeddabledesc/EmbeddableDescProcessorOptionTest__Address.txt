@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.processor.embeddabledesc;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class Address_ implements org.seasar.doma.jdbc.criteria.def.EmbeddableDef {
+public final class QAddressDef implements org.seasar.doma.jdbc.criteria.def.EmbeddableDef {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -22,7 +22,7 @@ public final class Address_ implements org.seasar.doma.jdbc.criteria.def.Embedda
 
     public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong;
 
-    public Address_(org.seasar.doma.jdbc.entity.EntityType<?> entityType, String name) {
+    public QAddressDef(org.seasar.doma.jdbc.entity.EntityType<?> entityType, String name) {
         this.streetNo = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.Integer.class, entityType, name + ".streetNo");
         this.city = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.embeddabledesc.City.class, entityType, name + ".city");
         this.optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.String.class, entityType, name + ".optional");

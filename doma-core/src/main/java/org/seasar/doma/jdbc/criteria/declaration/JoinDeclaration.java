@@ -1,9 +1,9 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
 import java.util.Objects;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class JoinDeclaration {
 

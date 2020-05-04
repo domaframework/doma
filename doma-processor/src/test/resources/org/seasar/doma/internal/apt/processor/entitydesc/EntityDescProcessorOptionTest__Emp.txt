@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.processor.entitydesc;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class Emp_ implements org.seasar.doma.jdbc.criteria.def.EntityDef<org.seasar.doma.internal.apt.processor.entitydesc.Emp> {
+public final class QEmpDef implements org.seasar.doma.jdbc.criteria.def.EntityDef<org.seasar.doma.internal.apt.processor.entitydesc.Emp> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -16,7 +16,7 @@ public final class Emp_ implements org.seasar.doma.jdbc.criteria.def.EntityDef<o
 
     public final org.seasar.doma.jdbc.criteria.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, __entityType, "name");
 
-    public final org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_ empInfo = new org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_(__entityType, "empInfo");
+    public final org.seasar.doma.internal.apt.processor.entitydesc.QEmpInfoDef empInfo = new org.seasar.doma.internal.apt.processor.entitydesc.QEmpInfoDef(__entityType, "empInfo");
 
     public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.String.class, __entityType, "optional");
 
@@ -26,7 +26,7 @@ public final class Emp_ implements org.seasar.doma.jdbc.criteria.def.EntityDef<o
 
     public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(long.class, __entityType, "optionalLong");
 
-    public Emp_() {
+    public QEmpDef() {
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __list = new java.util.ArrayList<>(7);
         __list.add(id);
         __list.add(name);

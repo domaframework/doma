@@ -1,7 +1,7 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.List;
-import org.seasar.doma.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public interface Context {
 

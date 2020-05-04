@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc.criteria.context;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public class Join {
   public final EntityDef<?> entityDef;

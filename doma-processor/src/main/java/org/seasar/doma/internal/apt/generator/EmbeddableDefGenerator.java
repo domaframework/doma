@@ -5,9 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.def.DefaultPropertyDef;
-import org.seasar.doma.def.EmbeddableDef;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
@@ -16,6 +13,9 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddableDescMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef;
+import org.seasar.doma.jdbc.criteria.def.EmbeddableDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 public class EmbeddableDefGenerator extends AbstractGenerator {

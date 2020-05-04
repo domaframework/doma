@@ -1,9 +1,9 @@
 package org.seasar.doma.jdbc.criteria;
 
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStatement;
 
 public final class Entityql {

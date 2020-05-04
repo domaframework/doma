@@ -6,8 +6,10 @@ import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.EmbeddableDesc;
 import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.EmbeddableDefGenerator;
@@ -23,7 +25,9 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
   Options.TEST,
   Options.DEBUG,
   Options.CONFIG_PATH,
-  Options.CRITERIA_ENABLED
+  Options.CRITERIA_ENABLED,
+  Options.CRITERIA_PREFIX,
+  Options.CRITERIA_SUFFIX
 })
 public class EmbeddableDescProcessor extends AbstractGeneratingProcessor<EmbeddableDescMeta> {
 
@@ -49,7 +53,10 @@ public class EmbeddableDescProcessor extends AbstractGeneratingProcessor<Embedda
     assertNotNull(typeElement, meta);
     EmbeddableMeta embeddableMeta = meta.getEmbeddableMeta();
     TypeElement embeddableTypeElement = embeddableMeta.getTypeElement();
-    return new ClassName(embeddableTypeElement.getQualifiedName().toString() + "_");
+    Name binaryName = ctx.getMoreElements().getBinaryName(embeddableTypeElement);
+    String prefix = ctx.getOptions().getCriteriaPrefix();
+    String suffix = ctx.getOptions().getCriteriaSuffix();
+    return ClassNames.newEmbeddableDefClassNameBuilder(binaryName, prefix, suffix);
   }
 
   @Override

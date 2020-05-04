@@ -1,6 +1,6 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
-import org.seasar.doma.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public interface Row {
 

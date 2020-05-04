@@ -8,11 +8,11 @@ import org.seasar.doma.jdbc.criteria.def.EmbeddableDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-public class EmpInfo_ implements EmbeddableDef {
+public class QEmpInfoDef implements EmbeddableDef {
 
   public final PropertyDef<LocalDate> hiredate;
 
-  public EmpInfo_(EntityType<?> entityType, String name) {
+  public QEmpInfoDef(EntityType<?> entityType, String name) {
     hiredate = new DefaultPropertyDef<>(LocalDate.class, entityType, name + ".hiredate");
   }
 

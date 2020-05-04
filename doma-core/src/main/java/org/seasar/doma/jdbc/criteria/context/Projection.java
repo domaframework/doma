@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc.criteria.context;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import org.seasar.doma.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public interface Projection {
   All All = new All() {};

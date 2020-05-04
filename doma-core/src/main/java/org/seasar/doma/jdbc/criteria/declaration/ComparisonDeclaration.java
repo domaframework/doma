@@ -3,9 +3,9 @@ package org.seasar.doma.jdbc.criteria.declaration;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public abstract class ComparisonDeclaration<CONTEXT extends Context> {
 

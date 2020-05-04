@@ -2,12 +2,12 @@ package org.seasar.doma.jdbc.criteria.declaration;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.seasar.doma.def.EntityDef;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class SubSelectFromDeclaration {
 

@@ -11,19 +11,30 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.opentest4j.AssertionFailedError;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.EmbeddableDesc;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.EmbeddableDescProcessor;
 
-class EmbeddableDescProcessorTest extends CompilerSupport {
+class EmbeddableDescProcessorOptionTest extends CompilerSupport {
+
+  private static final String prefix = "Q";
+  private static final String suffix = "Def";
 
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addOption("-Adoma.criteria.prefix=" + prefix);
+    addOption("-Adoma.criteria.suffix=" + suffix);
   }
 
   @TestTemplate
@@ -63,10 +74,32 @@ class EmbeddableDescProcessorTest extends CompilerSupport {
           return Arrays.asList(
               new SimpleParameterResolver(compilationUnit),
               new ResourceParameterResolver(compilationUnit),
-              new GeneratedClassNameParameterResolver(compilationUnit),
+              new CustomGeneratedClassNameParameterResolver(compilationUnit),
               new SimpleParameterResolver(options));
         }
       };
+    }
+  }
+
+  private static class CustomGeneratedClassNameParameterResolver
+      extends GeneratedClassNameParameterResolver {
+
+    public CustomGeneratedClassNameParameterResolver(Class<?> clazz) {
+      super(clazz);
+    }
+
+    @Override
+    public Object resolveParameter(
+        ParameterContext parameterContext, ExtensionContext extensionContext)
+        throws ParameterResolutionException {
+      if (clazz.isAnnotationPresent(EmbeddableDesc.class)) {
+        EmbeddableDesc embeddableDesc = clazz.getAnnotation(EmbeddableDesc.class);
+        ClassName className =
+            ClassNames.newEmbeddableDefClassNameBuilder(
+                embeddableDesc.value().getName(), prefix, suffix);
+        return className.toString();
+      }
+      throw new AssertionFailedError("annotation not found.");
     }
   }
 }

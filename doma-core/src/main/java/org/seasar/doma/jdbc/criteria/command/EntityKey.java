@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc.criteria.command;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public final class EntityKey {
   private final EntityDef<?> entityDef;

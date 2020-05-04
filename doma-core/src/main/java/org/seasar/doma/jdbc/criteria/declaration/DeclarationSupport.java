@@ -2,13 +2,13 @@ package org.seasar.doma.jdbc.criteria.declaration;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.context.Operand;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class DeclarationSupport {
 

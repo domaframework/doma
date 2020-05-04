@@ -18,9 +18,9 @@ import org.seasar.doma.internal.EntityDesc;
 
 public class GeneratedClassNameParameterResolver implements ParameterResolver {
 
-  private final Class<?> clazz;
+  protected final Class<?> clazz;
 
-  private final boolean isExternalDomain;
+  protected final boolean isExternalDomain;
 
   public GeneratedClassNameParameterResolver(Class<?> clazz) {
     assertNotNull(clazz);

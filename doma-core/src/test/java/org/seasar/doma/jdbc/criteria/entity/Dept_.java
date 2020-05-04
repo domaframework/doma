@@ -2,9 +2,9 @@ package org.seasar.doma.jdbc.criteria.entity;
 
 import java.util.Arrays;
 import java.util.List;
-import org.seasar.doma.def.DefaultPropertyDef;
-import org.seasar.doma.def.EntityDef;
-import org.seasar.doma.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class Dept_ implements EntityDef<Dept> {
 

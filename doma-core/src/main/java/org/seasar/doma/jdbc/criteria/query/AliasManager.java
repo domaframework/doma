@@ -3,9 +3,9 @@ package org.seasar.doma.jdbc.criteria.query;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.context.Context;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class AliasManager {
   private final AliasManager parent;

@@ -13,6 +13,18 @@ and show you how to pass them to build tools.
 Options
 =======
 
+doma.criteria.enabled
+  Whether to generate meta classes for the Criteria API.
+  The default value is ``true``.
+
+doma.criteria.prefix
+  The name prefix of the meta classes for the Criteria API.
+  The default value is an empty string.
+
+doma.criteria.suffix
+  The name suffix of the meta classes for the Criteria API.
+  The default value is ``_``.
+
 doma.dao.package
   The package that the generated implementation classes of interfaces annotated with ``@Dao`` belong to.
   The specified value overrides the value of doma.dao.subpackage.

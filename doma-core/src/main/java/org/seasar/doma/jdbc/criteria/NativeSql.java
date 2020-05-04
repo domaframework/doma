@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc.criteria;
 
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -10,6 +9,7 @@ import org.seasar.doma.jdbc.criteria.declaration.DeleteFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.InsertIntoDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.UpdateDeclaration;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlDeleteStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlInsertStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
