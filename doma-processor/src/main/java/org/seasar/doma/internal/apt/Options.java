@@ -76,7 +76,7 @@ public final class Options {
 
   public boolean isCriteriaEnabled() {
     String enabled = getOption(CRITERIA_ENABLED);
-    return Boolean.valueOf(enabled);
+    return enabled != null ? Boolean.valueOf(enabled) : true;
   }
 
   public Date getDate() {
