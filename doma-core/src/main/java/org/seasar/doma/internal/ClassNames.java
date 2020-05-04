@@ -43,6 +43,18 @@ public class ClassNames {
     return new ExternalDomainClassNameBuilder(externalDomainClassName).build();
   }
 
+  public static ClassName newEntityDefClassNameBuilder(
+      CharSequence entityClassName, String criteriaPrefix, String criteriaSuffix) {
+    assertNotNull(entityClassName, criteriaPrefix, criteriaSuffix);
+    return new DefClassNameBuilder(entityClassName, criteriaPrefix, criteriaSuffix).build();
+  }
+
+  public static ClassName newEmbeddableDefClassNameBuilder(
+      CharSequence entityClassName, String criteriaPrefix, String criteriaSuffix) {
+    assertNotNull(entityClassName, criteriaPrefix, criteriaSuffix);
+    return new DefClassNameBuilder(entityClassName, criteriaPrefix, criteriaSuffix).build();
+  }
+
   private static class ClassNameBuilder {
 
     final String binaryName;
@@ -86,6 +98,28 @@ public class ClassNames {
           + "."
           + ClassUtil.getPackageName(binaryName)
           + ".";
+    }
+  }
+
+  private static class DefClassNameBuilder extends ClassNameBuilder {
+    private final String criteriaPrefix;
+    private final String criteriaSuffix;
+
+    public DefClassNameBuilder(
+        CharSequence binaryName, String criteriaPrefix, String criteriaSuffix) {
+      super(binaryName);
+      this.criteriaPrefix = criteriaPrefix;
+      this.criteriaSuffix = criteriaSuffix;
+    }
+
+    @Override
+    protected String infix() {
+      return criteriaPrefix;
+    }
+
+    @Override
+    protected String suffix() {
+      return super.suffix() + criteriaSuffix;
     }
   }
 }

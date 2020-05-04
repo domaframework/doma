@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.processor.entitydesc;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class Emp_ implements org.seasar.doma.def.EntityDef<org.seasar.doma.internal.apt.processor.entitydesc.Emp> {
+public final class Emp_ implements org.seasar.doma.jdbc.criteria.def.EntityDef<org.seasar.doma.internal.apt.processor.entitydesc.Emp> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -10,24 +10,24 @@ public final class Emp_ implements org.seasar.doma.def.EntityDef<org.seasar.doma
 
     private final org.seasar.doma.internal.apt.processor.entitydesc._Emp __entityType = org.seasar.doma.internal.apt.processor.entitydesc._Emp.getSingletonInternal();
 
-    private final java.util.List<org.seasar.doma.def.PropertyDef<?>> __allPropertyDefs;
+    private final java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __allPropertyDefs;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> id = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.Integer.class, __entityType, "id");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> id = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(java.lang.Integer.class, __entityType, "id");
 
-    public final org.seasar.doma.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, __entityType, "name");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, __entityType, "name");
 
     public final org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_ empInfo = new org.seasar.doma.internal.apt.processor.entitydesc.EmpInfo_(__entityType, "empInfo");
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.String.class, __entityType, "optional");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.String>(java.lang.String.class, __entityType, "optional");
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Double> optionalDouble = new org.seasar.doma.def.DefaultPropertyDef<>(double.class, __entityType, "optionalDouble");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Double> optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Double>(double.class, __entityType, "optionalDouble");
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> optionalInt = new org.seasar.doma.def.DefaultPropertyDef<>(int.class, __entityType, "optionalInt");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(int.class, __entityType, "optionalInt");
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.def.DefaultPropertyDef<>(long.class, __entityType, "optionalLong");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Long>(long.class, __entityType, "optionalLong");
 
     public Emp_() {
-        java.util.ArrayList<org.seasar.doma.def.PropertyDef<?>> __list = new java.util.ArrayList<>(7);
+        java.util.ArrayList<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __list = new java.util.ArrayList<>(7);
         __list.add(id);
         __list.add(name);
         __list.addAll(empInfo.allPropertyDefs());
@@ -44,7 +44,7 @@ public final class Emp_ implements org.seasar.doma.def.EntityDef<org.seasar.doma
     }
 
     @Override
-    public java.util.List<org.seasar.doma.def.PropertyDef<?>> allPropertyDefs() {
+    public java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> allPropertyDefs() {
         return __allPropertyDefs;
     }
 

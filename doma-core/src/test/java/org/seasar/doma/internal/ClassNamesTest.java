@@ -44,4 +44,30 @@ class ClassNamesTest {
     ClassName className = ClassNames.newExternalDomainTypeClassName(getClass().getName());
     assertEquals("__.org.seasar.doma.internal._ClassNamesTest", className.toString());
   }
+
+  @Test
+  void newEntityDefClassNameBuilder() {
+    ClassName className = ClassNames.newEntityDefClassNameBuilder(getClass().getName(), "P", "S");
+    assertEquals("org.seasar.doma.internal.PClassNamesTestS", className.toString());
+  }
+
+  @Test
+  void newEntityDefClassNameBuilder_withDefaultValues() {
+    ClassName className = ClassNames.newEntityDefClassNameBuilder(getClass().getName(), "", "_");
+    assertEquals("org.seasar.doma.internal.ClassNamesTest_", className.toString());
+  }
+
+  @Test
+  void newEmbeddableDefClassNameBuilder() {
+    ClassName className =
+        ClassNames.newEmbeddableDefClassNameBuilder(getClass().getName(), "P", "S");
+    assertEquals("org.seasar.doma.internal.PClassNamesTestS", className.toString());
+  }
+
+  @Test
+  void newEmbeddableDefClassNameBuilder_withDefaultValues() {
+    ClassName className =
+        ClassNames.newEmbeddableDefClassNameBuilder(getClass().getName(), "", "_");
+    assertEquals("org.seasar.doma.internal.ClassNamesTest_", className.toString());
+  }
 }

@@ -5,17 +5,18 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.def.DefaultPropertyDef;
-import org.seasar.doma.def.EntityDef;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EntityDescMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class EntityDefGenerator extends AbstractGenerator {
 
@@ -101,13 +102,14 @@ public class EntityDefGenerator extends AbstractGenerator {
     UnwrapOptionalVisitor visitor = new UnwrapOptionalVisitor();
     for (EntityPropertyMeta p : entityMeta.getAllPropertyMetas()) {
       if (p.isEmbedded()) {
+        ClassName className = createEmbeddableDefClassName(p);
         iprint(
-            "public final %1$s_ %2$s = new %1$s_(__entityType, \"%2$s\");%n",
-            /* 1 */ p.getCtType().getQualifiedName(), /* 2 */ p.getName());
+            "public final %1$s %2$s = new %1$s(__entityType, \"%2$s\");%n",
+            /* 1 */ className, /* 2 */ p.getName());
       } else {
         Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
         iprint(
-            "public final %1$s<%2$s> %3$s = new %4$s<>(%5$s.class, __entityType, \"%3$s\");%n",
+            "public final %1$s<%2$s> %3$s = new %4$s<%2$s>(%5$s.class, __entityType, \"%3$s\");%n",
             /* 1 */ PropertyDef.class,
             /* 2 */ pair.snd,
             /* 3 */ p.getName(),
@@ -116,6 +118,17 @@ public class EntityDefGenerator extends AbstractGenerator {
       }
       print("%n");
     }
+  }
+
+  private ClassName createEmbeddableDefClassName(EntityPropertyMeta p) {
+    TypeElement embeddableTypeElement = ctx.getMoreTypes().toTypeElement(p.getType());
+    if (embeddableTypeElement == null) {
+      throw new AptIllegalStateException("embeddableTypeElement");
+    }
+    Name binaryName = ctx.getMoreElements().getBinaryName(embeddableTypeElement);
+    String prefix = ctx.getOptions().getCriteriaPrefix();
+    String suffix = ctx.getOptions().getCriteriaSuffix();
+    return ClassNames.newEntityDefClassNameBuilder(binaryName, prefix, suffix);
   }
 
   private void printMethods() {
