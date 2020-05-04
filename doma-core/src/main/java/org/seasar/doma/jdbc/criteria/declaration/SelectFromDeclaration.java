@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.AssociationKind;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -49,7 +50,9 @@ public class SelectFromDeclaration {
     Join join = new Join(entityDef, joinKind);
     JoinDeclaration declaration = new JoinDeclaration(join);
     block.accept(declaration);
-    context.joins.add(join);
+    if (!join.on.isEmpty()) {
+      context.joins.add(join);
+    }
   }
 
   public void where(Consumer<WhereDeclaration> block) {
@@ -103,15 +106,23 @@ public class SelectFromDeclaration {
   public <ENTITY1, ENTITY2> void associate(
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
-      BiConsumer<ENTITY1, ENTITY2> associator) {
+      BiConsumer<ENTITY1, ENTITY2> associator,
+      AssociationKind kind) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
+    Objects.requireNonNull(kind);
     if (!context.getEntityDefs().contains(first)) {
-      throw new DomaException(Message.DOMA6001, "first");
+      if (kind == AssociationKind.MANDATORY) {
+        throw new DomaException(Message.DOMA6001, "first");
+      }
+      return;
     }
     if (!context.getEntityDefs().contains(second)) {
-      throw new DomaException(Message.DOMA6001, "second");
+      if (kind == AssociationKind.MANDATORY) {
+        throw new DomaException(Message.DOMA6001, "second");
+      }
+      return;
     }
     //noinspection unchecked
     context.associations.put(new Pair<>(first, second), (BiConsumer<Object, Object>) associator);

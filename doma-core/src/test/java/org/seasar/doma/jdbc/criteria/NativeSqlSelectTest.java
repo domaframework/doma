@@ -483,6 +483,16 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void innerJoin_empty() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    SelectIntermediate<Emp> stmt = NativeSql.from(e).innerJoin(d, on -> {}).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
   void leftJoin() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
@@ -493,6 +503,16 @@ class NativeSqlSelectTest {
     assertEquals(
         "select t0_.ID from EMP t0_ left outer join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
         sql.getFormattedSql());
+  }
+
+  @Test
+  void leftJoin_empty() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    SelectIntermediate<Emp> stmt = NativeSql.from(e).leftJoin(d, on -> {}).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
   }
 
   @Test

@@ -926,9 +926,11 @@ public enum Message implements MessageResource {
 
   // criteria
   DOMA6001(
-      "The parameter \"{0}\" is unknown. Ensure that you have passed it to the \"from\" method or the \"join\" method."),
+      "The parameter \"{0}\" is unknown. "
+          + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the associate method. "
+          + "If the innerJoin or leftJoin method call is optional, pass the AssociationKind.OPTIONAL value to the associate method."),
   DOMA6002(
-      "The propertyDef \"{0}\" is unknown. Ensure that you have passed it to the \"select\" method."),
+      "The propertyDef \"{0}\" is unknown. Ensure that you have passed it to the select method."),
   DOMA6003("The table alias is not found for the entityDef \"{0}\"."),
   DOMA6004("The column alias is not found for the propertyDef \"{0}\"."),
   ;
