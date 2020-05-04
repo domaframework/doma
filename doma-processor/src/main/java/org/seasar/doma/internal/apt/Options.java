@@ -22,6 +22,10 @@ public final class Options {
 
   public static final String CRITERIA_ENABLED = "doma.criteria.enabled";
 
+  public static final String CRITERIA_PREFIX = "doma.criteria.prefix";
+
+  public static final String CRITERIA_SUFFIX = "doma.criteria.suffix";
+
   public static final String DEBUG = "doma.debug";
 
   public static final String DAO_PACKAGE = "doma.dao.package";
@@ -77,6 +81,16 @@ public final class Options {
   public boolean isCriteriaEnabled() {
     String enabled = getOption(CRITERIA_ENABLED);
     return enabled != null ? Boolean.valueOf(enabled) : true;
+  }
+
+  public String getCriteriaPrefix() {
+    String prefix = getOption(CRITERIA_PREFIX);
+    return prefix != null ? prefix : Constants.DEFAULT_CRITERIA_PREFIX;
+  }
+
+  public String getCriteriaSuffix() {
+    String suffix = getOption(CRITERIA_SUFFIX);
+    return suffix != null ? suffix : Constants.DEFAULT_CRITERIA_SUFFIX;
   }
 
   public Date getDate() {
@@ -196,6 +210,10 @@ public final class Options {
   }
 
   public static class Constants {
+
+    public static final String DEFAULT_CRITERIA_PREFIX = "";
+
+    public static final String DEFAULT_CRITERIA_SUFFIX = "_";
 
     public static final String DEFAULT_DAO_SUFFIX = "Impl";
 
