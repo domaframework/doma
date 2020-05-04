@@ -109,7 +109,7 @@ public class EntityDefGenerator extends AbstractGenerator {
       } else {
         Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
         iprint(
-            "public final %1$s<%2$s> %3$s = new %4$s<>(%5$s.class, __entityType, \"%3$s\");%n",
+            "public final %1$s<%2$s> %3$s = new %4$s<%2$s>(%5$s.class, __entityType, \"%3$s\");%n",
             /* 1 */ PropertyDef.class,
             /* 2 */ pair.snd,
             /* 3 */ p.getName(),

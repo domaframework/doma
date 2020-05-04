@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
@@ -14,6 +15,7 @@ import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.statement.Row;
+import org.seasar.doma.message.Message;
 
 public class SelectFromDeclaration {
 
@@ -106,12 +108,10 @@ public class SelectFromDeclaration {
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
     if (!context.getEntityDefs().contains(first)) {
-      throw new IllegalStateException(
-          "The first is unknown. Ensure that you have added its constructor to the from function or the join functions.");
+      throw new DomaException(Message.DOMA6001, "first");
     }
     if (!context.getEntityDefs().contains(second)) {
-      throw new IllegalStateException(
-          "The second is unknown. Ensure that you have added its constructor to the from function or the join functions.");
+      throw new DomaException(Message.DOMA6001, "second");
     }
     //noinspection unchecked
     context.associations.put(new Pair<>(first, second), (BiConsumer<Object, Object>) associator);

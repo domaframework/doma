@@ -37,6 +37,11 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
     }
 
     @Override
+    public Class<?> asClass() {
+      return argument.asClass();
+    }
+
+    @Override
     public EntityPropertyType<?, ?> asType() {
       return argument.asType();
     }
@@ -62,16 +67,8 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
 
   class Avg<PROPERTY> extends AbstractFunction<PROPERTY> {
 
-    private final PropertyDef<PROPERTY> argument;
-
     public Avg(PropertyDef<PROPERTY> argument) {
       super("avg", argument);
-      this.argument = argument;
-    }
-
-    @Override
-    public Class<PROPERTY> asClass() {
-      return argument.asClass();
     }
   }
 
@@ -83,7 +80,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
     }
 
     @Override
-    public Class<Long> asClass() {
+    public Class<?> asClass() {
       return Long.class;
     }
 
@@ -94,44 +91,22 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
   }
 
   class Max<PROPERTY> extends AbstractFunction<PROPERTY> {
-    private final PropertyDef<PROPERTY> argument;
 
     public Max(PropertyDef<PROPERTY> argument) {
       super("max", argument);
-      this.argument = argument;
-    }
-
-    @Override
-    public Class<PROPERTY> asClass() {
-      return argument.asClass();
     }
   }
 
   class Min<PROPERTY> extends AbstractFunction<PROPERTY> {
-    private final PropertyDef<PROPERTY> argument;
 
     public Min(PropertyDef<PROPERTY> argument) {
       super("min", argument);
-      this.argument = argument;
-    }
-
-    @Override
-    public Class<PROPERTY> asClass() {
-      return argument.asClass();
     }
   }
 
   class Sum<PROPERTY> extends AbstractFunction<PROPERTY> {
-    private final PropertyDef<PROPERTY> argument;
-
     public Sum(PropertyDef<PROPERTY> argument) {
       super("sum", argument);
-      this.argument = argument;
-    }
-
-    @Override
-    public Class<PROPERTY> asClass() {
-      return argument.asClass();
     }
   }
 
@@ -146,7 +121,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
     }
 
     @Override
-    public Class<Long> asClass() {
+    public Class<?> asClass() {
       return Long.class;
     }
 

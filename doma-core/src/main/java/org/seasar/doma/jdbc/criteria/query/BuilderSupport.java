@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
@@ -16,6 +17,7 @@ import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.message.Message;
 
 public class BuilderSupport {
   private final Config config;
@@ -46,7 +48,7 @@ public class BuilderSupport {
       buf.appendSql(" ");
       String alias = aliasManager.getAlias(entityDef);
       if (alias == null) {
-        throw new IllegalStateException("The alias is not found. " + entityType.getName());
+        throw new DomaException(Message.DOMA6003, entityType.getName());
       }
       buf.appendSql(alias);
     }
@@ -65,7 +67,7 @@ public class BuilderSupport {
             if (aliasManager != null) {
               String alias = aliasManager.getAlias(p);
               if (alias == null) {
-                throw new IllegalStateException("The alias is not found. " + p.getName());
+                throw new DomaException(Message.DOMA6004, p.getName());
               }
               buf.appendSql(alias);
               buf.appendSql(".");

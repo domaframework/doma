@@ -23,12 +23,12 @@ public final class QAddressDef implements org.seasar.doma.jdbc.criteria.def.Embe
     public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong;
 
     public QAddressDef(org.seasar.doma.jdbc.entity.EntityType<?> entityType, String name) {
-        this.streetNo = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.Integer.class, entityType, name + ".streetNo");
-        this.city = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.embeddabledesc.City.class, entityType, name + ".city");
-        this.optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.String.class, entityType, name + ".optional");
-        this.optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(double.class, entityType, name + ".optionalDouble");
-        this.optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(int.class, entityType, name + ".optionalInt");
-        this.optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(long.class, entityType, name + ".optionalLong");
+        this.streetNo = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(java.lang.Integer.class, entityType, name + ".streetNo");
+        this.city = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<org.seasar.doma.internal.apt.processor.embeddabledesc.City>(org.seasar.doma.internal.apt.processor.embeddabledesc.City.class, entityType, name + ".city");
+        this.optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.String>(java.lang.String.class, entityType, name + ".optional");
+        this.optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Double>(double.class, entityType, name + ".optionalDouble");
+        this.optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(int.class, entityType, name + ".optionalInt");
+        this.optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Long>(long.class, entityType, name + ".optionalLong");
         java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __list = new java.util.ArrayList<>(6);
         __list.add(this.streetNo);
         __list.add(this.city);
