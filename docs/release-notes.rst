@@ -2,6 +2,16 @@
 Release notes
 =============
 
+v2.32.0: 2020-05-04
+======================
+
+See also :doc:`criteria-api`.
+
+* `GH395 <https://github.com/domaframework/doma/pull/395>`_
+  `GH394 <https://github.com/domaframework/doma/pull/394>`_
+  `GH393 <https://github.com/domaframework/doma/pull/393>`_
+  Rewrite the Criteria API in Java
+
 v2.31.0: 2020-04-29
 ======================
 
