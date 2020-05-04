@@ -558,12 +558,30 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void limit_null() {
+    Emp_ e = new Emp_();
+    SelectIntermediate<Emp> stmt = NativeSql.from(e).limit(null).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
   void offset() {
     Emp_ e = new Emp_();
     SelectIntermediate<Emp> stmt = NativeSql.from(e).offset(10).select(e.id);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals("select t0_.ID from EMP t0_ offset 10", sql.getFormattedSql());
+  }
+
+  @Test
+  void offset_null() {
+    Emp_ e = new Emp_();
+    SelectIntermediate<Emp> stmt = NativeSql.from(e).offset(null).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
   }
 
   @Test

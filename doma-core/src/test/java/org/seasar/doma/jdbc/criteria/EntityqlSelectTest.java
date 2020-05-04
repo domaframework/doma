@@ -67,4 +67,46 @@ class EntityqlSelectTest {
             + "left outer join CATA.DEPT t3_ on (t1_.ID = t3_.ID)",
         sql.getFormattedSql());
   }
+
+  @Test
+  void limit() {
+    Emp_ e = new Emp_();
+    SelectStatement<Emp> stmt = Entityql.from(e).limit(5);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 5",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void limit_null() {
+    Emp_ e = new Emp_();
+    SelectStatement<Emp> stmt = Entityql.from(e).limit(null);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void offset() {
+    Emp_ e = new Emp_();
+    SelectStatement<Emp> stmt = Entityql.from(e).offset(5);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void offset_null() {
+    Emp_ e = new Emp_();
+    SelectStatement<Emp> stmt = Entityql.from(e).offset(null);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
 }
