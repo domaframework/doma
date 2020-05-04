@@ -9,6 +9,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.AssociationKind;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
@@ -45,7 +46,16 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
-    declaration.associate(first, second, associator);
+    declaration.associate(first, second, associator, AssociationKind.MANDATORY);
+    return this;
+  }
+
+  public <ENTITY1, ENTITY2> EntityqlSelectStatement<ENTITY> associate(
+      EntityDef<ENTITY1> first,
+      EntityDef<ENTITY2> second,
+      BiConsumer<ENTITY1, ENTITY2> associator,
+      AssociationKind kind) {
+    declaration.associate(first, second, associator, kind);
     return this;
   }
 
