@@ -65,12 +65,12 @@ public class NativeSqlSelectStarting<ELEMENT> extends AbstractStatement<List<ELE
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> limit(int limit) {
+  public NativeSqlSelectStarting<ELEMENT> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> offset(int offset) {
+  public NativeSqlSelectStarting<ELEMENT> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }

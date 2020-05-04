@@ -74,11 +74,11 @@ public class SelectFromDeclaration {
     block.accept(declaration);
   }
 
-  public void limit(int limit) {
+  public void limit(Integer limit) {
     context.limit = limit;
   }
 
-  public void offset(int offset) {
+  public void offset(Integer offset) {
     context.offset = offset;
   }
 

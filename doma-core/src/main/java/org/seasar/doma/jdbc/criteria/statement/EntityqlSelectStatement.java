@@ -59,12 +59,12 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> limit(int limit) {
+  public EntityqlSelectStatement<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> offset(int offset) {
+  public EntityqlSelectStatement<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
