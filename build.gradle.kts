@@ -113,7 +113,7 @@ subprojects {
     }
 }
 
-configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor", "doma-criteria") }) {
+configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") }) {
     val javadoc by tasks.existing(Javadoc::class) {
         options.encoding = encoding
         (options as StandardJavadocDocletOptions).apply {
@@ -192,7 +192,7 @@ rootProject.apply {
 
     fun replaceVersionInDocs(ver: String) {
         ant.withGroovyBuilder {
-            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor|criteria)?:)[^"]*(")""",
+            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
                     "replace" to "\\1${ver}\\3",
                     "encoding" to encoding,
                     "flags" to "g") {
