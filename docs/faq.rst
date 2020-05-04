@@ -31,7 +31,7 @@ Runtime environment
 Which version of JRE does Doma support?
 ---------------------------------------
 
-JRE 8, 9, 10, 11, 12, 13 and 14.
+JRE 8 and above.
 
 Which libraries are required for Doma to work?
 ----------------------------------------------
@@ -48,7 +48,7 @@ Development environment
 Which version of JDK does Doma support?
 ---------------------------------------
 
-JDK 8, 9, 10, 11, 12, 13 and 14.
+JDK 8 and above.
 
 Which IDE do you recommend?
 ---------------------------
@@ -105,30 +105,31 @@ Does Doma generate SQL statements?
 
 Yes, Doma generates the following statements:
 
+- SELECT
 - INSERT
 - DELETE
 - UPDATE
 - Stored procedure call
 - Stored function call
 
-Doma doesn't generate SELECT statements
-but executes arbitrary SELECT statements and maps the results to the Java objects.
-
-See also :doc:`query/index` for detailed information.
-
 How are dynamic SQL statements executed?
 ----------------------------------------
 
-Dynamic SQL statements are built by directives that are represented by the SQL comments.
+There are two ways:
 
-See also :doc:`sql` for detail information.
+* The SQL Templates.
+* The Criteria API.
+
+See :doc:`sql` and :doc:`criteria-api` for detail information.
 
 Does Doma map database relationships such as one-to-one and one-to-many to Java objects?
 ----------------------------------------------------------------------------------------
 
-No.
+Yes.
 
-Doma only maps each row of the SQL result set to a Java entity instance.
+Doma provides the Criteria API to map database relationships to Java entities.
+
+See :ref:`criteria_associate` for detail information.
 
 Does Doma provide a JDBC connection pooling feature?
 ----------------------------------------------------

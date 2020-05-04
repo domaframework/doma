@@ -61,6 +61,10 @@ We use the following Entity classes to show you some examples:
 Each of the above classes has a corresponding meta class - ``Employee_`` and ``Department_``.
 These meta classes allow you to make your query typesafe.
 
+You can customize the name of the meta classes by specifying annotation processor options.
+See :doc:`annotation-processing` and check the `doma.criteria.prefix`
+and the `doma.criteria.suffix` options.
+
 Entityql DSL
 ============
 
@@ -293,6 +297,8 @@ The above query issues the following SQL statement:
     t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
     from EMPLOYEE t0_
     left outer join DEPARTMENT t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
+
+.. _criteria_associate:
 
 associate (Entityql)
 --------------------
@@ -653,8 +659,9 @@ The use of the select method (NativeSql)
 
 Be careful of the following points when you use the ``select`` method:
 
-* Specify a type argument to the select method.
-* Use the select method in combination with the following map method.
+* Specify a type argument to the ``select`` method.
+* Use the ``select`` method in combination with the ``map`` method.
+  The object returned by the ``select`` method doesn't have any ``execute`` methods.
 
 .. code-block:: java
 
