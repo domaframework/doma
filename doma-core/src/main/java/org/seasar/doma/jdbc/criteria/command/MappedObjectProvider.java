@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.statement.Row;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.message.Message;
 
 public class MappedObjectProvider<RESULT> extends AbstractObjectProvider<RESULT> {
   private final Function<Row, RESULT> mapper;
@@ -42,8 +44,7 @@ public class MappedObjectProvider<RESULT> extends AbstractObjectProvider<RESULT>
           public <PROPERTY> PROPERTY get(PropertyDef<PROPERTY> propertyDef) {
             Integer index = indexMap.get(propertyDef);
             if (index == null) {
-              throw new IllegalArgumentException(
-                  "The propertyDef is unknown. " + propertyDef.getName());
+              throw new DomaException(Message.DOMA6002, propertyDef.getName());
             }
             Property<?, ?> property = propertyDef.asType().createProperty();
             try {
