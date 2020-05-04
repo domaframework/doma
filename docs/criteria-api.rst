@@ -654,6 +654,27 @@ The above query issues the following SQL statement:
 Tips
 ====
 
+Execution in Dao (Entityql, NativeSql)
+--------------------------------------
+
+It is useful to execute DSLs in the default method of the Dao interface.
+To get a ``config`` object, call ``Config.get(this)`` in the default method as follows:
+
+.. code-block:: java
+
+    @Dao
+    public interface EmployeeDao {
+
+      default Optional<Employee> selectById(Integer id) {
+        Employee_ e = new Employee_();
+        List<Employee> list =
+            Entityql.from(e)
+                .where(c -> c.eq(e.employeeId, id))
+                .execute(Config.get(this));
+        return list.stream().findFirst();
+      }
+    }
+
 The use of the select method (NativeSql)
 ----------------------------------------
 
