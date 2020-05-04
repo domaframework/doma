@@ -89,10 +89,11 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
     for (EmbeddablePropertyMeta p : embeddableMeta.getEmbeddablePropertyMetas()) {
       Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
       iprint(
-          "this.%1$s = new %2$s<>(%3$s.class, entityType, name + \".%1$s\");%n",
+          "this.%1$s = new %2$s<%3$s>(%4$s.class, entityType, name + \".%1$s\");%n",
           /* 1 */ p.getName(),
           /* 2 */ DefaultPropertyDef.class,
-          /* 3 */ pair.fst.getQualifiedName());
+          /* 3 */ pair.snd,
+          /* 4 */ pair.fst.getQualifiedName());
     }
     iprint(
         "java.util.List<%1$s<?>> __list = new java.util.ArrayList<>(%2$s);%n",

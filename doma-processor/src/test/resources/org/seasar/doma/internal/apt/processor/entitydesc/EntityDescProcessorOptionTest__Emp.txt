@@ -12,19 +12,19 @@ public final class QEmpDef implements org.seasar.doma.jdbc.criteria.def.EntityDe
 
     private final java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __allPropertyDefs;
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> id = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.Integer.class, __entityType, "id");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> id = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(java.lang.Integer.class, __entityType, "id");
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, __entityType, "name");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name> name = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<org.seasar.doma.internal.apt.processor.entitydesc.Name>(org.seasar.doma.internal.apt.processor.entitydesc.Name.class, __entityType, "name");
 
     public final org.seasar.doma.internal.apt.processor.entitydesc.QEmpInfoDef empInfo = new org.seasar.doma.internal.apt.processor.entitydesc.QEmpInfoDef(__entityType, "empInfo");
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.String.class, __entityType, "optional");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.String> optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.String>(java.lang.String.class, __entityType, "optional");
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Double> optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(double.class, __entityType, "optionalDouble");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Double> optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Double>(double.class, __entityType, "optionalDouble");
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(int.class, __entityType, "optionalInt");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Integer>(int.class, __entityType, "optionalInt");
 
-    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(long.class, __entityType, "optionalLong");
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<java.lang.Long>(long.class, __entityType, "optionalLong");
 
     public QEmpDef() {
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __list = new java.util.ArrayList<>(7);
