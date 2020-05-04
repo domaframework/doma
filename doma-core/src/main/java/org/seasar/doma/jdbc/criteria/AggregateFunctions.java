@@ -1,7 +1,7 @@
 package org.seasar.doma.jdbc.criteria;
 
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public final class AggregateFunctions {
 

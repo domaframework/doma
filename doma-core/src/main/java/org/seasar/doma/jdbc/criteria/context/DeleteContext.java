@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import org.seasar.doma.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public class DeleteContext implements Context {
   public final EntityDef<?> entityDef;

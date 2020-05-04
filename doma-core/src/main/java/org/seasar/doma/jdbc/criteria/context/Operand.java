@@ -1,9 +1,9 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.function.Function;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public interface Operand {
 

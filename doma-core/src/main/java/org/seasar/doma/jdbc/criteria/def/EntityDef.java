@@ -1,4 +1,4 @@
-package org.seasar.doma.def;
+package org.seasar.doma.jdbc.criteria.def;
 
 import java.util.List;
 import org.seasar.doma.jdbc.entity.EntityType;

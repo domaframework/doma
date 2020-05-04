@@ -2,34 +2,34 @@ package org.seasar.doma.internal.apt.processor.embeddabledesc;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class Address_ implements org.seasar.doma.def.EmbeddableDef {
+public final class Address_ implements org.seasar.doma.jdbc.criteria.def.EmbeddableDef {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private final java.util.List<org.seasar.doma.def.PropertyDef<?>> __allPropertyDefs;
+    private final java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __allPropertyDefs;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> streetNo;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> streetNo;
 
-    public final org.seasar.doma.def.PropertyDef<org.seasar.doma.internal.apt.processor.embeddabledesc.City> city;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<org.seasar.doma.internal.apt.processor.embeddabledesc.City> city;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.String> optional;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.String> optional;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Double> optionalDouble;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Double> optionalDouble;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Integer> optionalInt;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Integer> optionalInt;
 
-    public final org.seasar.doma.def.PropertyDef<java.lang.Long> optionalLong;
+    public final org.seasar.doma.jdbc.criteria.def.PropertyDef<java.lang.Long> optionalLong;
 
     public Address_(org.seasar.doma.jdbc.entity.EntityType<?> entityType, String name) {
-        this.streetNo = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.Integer.class, entityType, name + ".streetNo");
-        this.city = new org.seasar.doma.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.embeddabledesc.City.class, entityType, name + ".city");
-        this.optional = new org.seasar.doma.def.DefaultPropertyDef<>(java.lang.String.class, entityType, name + ".optional");
-        this.optionalDouble = new org.seasar.doma.def.DefaultPropertyDef<>(double.class, entityType, name + ".optionalDouble");
-        this.optionalInt = new org.seasar.doma.def.DefaultPropertyDef<>(int.class, entityType, name + ".optionalInt");
-        this.optionalLong = new org.seasar.doma.def.DefaultPropertyDef<>(long.class, entityType, name + ".optionalLong");
-        java.util.List<org.seasar.doma.def.PropertyDef<?>> __list = new java.util.ArrayList<>(6);
+        this.streetNo = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.Integer.class, entityType, name + ".streetNo");
+        this.city = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(org.seasar.doma.internal.apt.processor.embeddabledesc.City.class, entityType, name + ".city");
+        this.optional = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(java.lang.String.class, entityType, name + ".optional");
+        this.optionalDouble = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(double.class, entityType, name + ".optionalDouble");
+        this.optionalInt = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(int.class, entityType, name + ".optionalInt");
+        this.optionalLong = new org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef<>(long.class, entityType, name + ".optionalLong");
+        java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> __list = new java.util.ArrayList<>(6);
         __list.add(this.streetNo);
         __list.add(this.city);
         __list.add(this.optional);
@@ -40,7 +40,7 @@ public final class Address_ implements org.seasar.doma.def.EmbeddableDef {
     }
 
     @Override
-    public java.util.List<org.seasar.doma.def.PropertyDef<?>> allPropertyDefs() {
+    public java.util.List<org.seasar.doma.jdbc.criteria.def.PropertyDef<?>> allPropertyDefs() {
         return __allPropertyDefs;
     }
 

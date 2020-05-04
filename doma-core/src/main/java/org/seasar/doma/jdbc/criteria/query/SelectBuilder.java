@@ -3,8 +3,6 @@ package org.seasar.doma.jdbc.criteria.query;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import org.seasar.doma.def.EntityDef;
-import org.seasar.doma.def.PropertyDef;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.Config;
@@ -15,6 +13,8 @@ import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class SelectBuilder {
   private final SelectContext context;
