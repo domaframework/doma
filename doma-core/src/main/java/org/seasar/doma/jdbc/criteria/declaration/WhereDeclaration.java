@@ -23,41 +23,45 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
 
   public <PROPERTY> void isNull(PropertyDef<PROPERTY> propertyDef) {
     Objects.requireNonNull(propertyDef);
-    add(new Criterion.IsNull(support.toProp(propertyDef)));
+    add(new Criterion.IsNull(new Operand.Prop(propertyDef)));
   }
 
   public <PROPERTY> void isNotNull(PropertyDef<PROPERTY> propertyDef) {
     Objects.requireNonNull(propertyDef);
-    add(new Criterion.IsNotNull(support.toProp(propertyDef)));
+    add(new Criterion.IsNotNull(new Operand.Prop(propertyDef)));
   }
 
   public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    add(new Criterion.Like(support.toProp(left), support.toParam(left, right), LikeOption.NONE));
+    add(
+        new Criterion.Like(
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
   }
 
   public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
     Objects.requireNonNull(left);
-    add(new Criterion.Like(support.toProp(left), support.toParam(left, right), option));
+    add(new Criterion.Like(new Operand.Prop(left), new Operand.Param(left, right), option));
   }
 
   public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    add(new Criterion.NotLike(support.toProp(left), support.toParam(left, right), LikeOption.NONE));
+    add(
+        new Criterion.NotLike(
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
   }
 
   public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
     Objects.requireNonNull(left);
-    add(new Criterion.NotLike(support.toProp(left), support.toParam(left, right), option));
+    add(new Criterion.NotLike(new Operand.Prop(left), new Operand.Param(left, right), option));
   }
 
   public <PROPERTY> void between(PropertyDef<PROPERTY> propertyDef, PROPERTY start, PROPERTY end) {
     Objects.requireNonNull(propertyDef);
     add(
         new Criterion.Between(
-            support.toProp(propertyDef),
-            support.toParam(propertyDef, start),
-            support.toParam(propertyDef, end)));
+            new Operand.Prop(propertyDef),
+            new Operand.Param(propertyDef, start),
+            new Operand.Param(propertyDef, end)));
   }
 
   public <PROPERTY> void in(PropertyDef<PROPERTY> left, List<PROPERTY> right) {
@@ -65,8 +69,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     Objects.requireNonNull(right);
     add(
         new Criterion.In(
-            support.toProp(left),
-            right.stream().map(p -> support.toParam(left, p)).collect(toList())));
+            new Operand.Prop(left),
+            right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
   public <PROPERTY> void notIn(PropertyDef<PROPERTY> left, List<PROPERTY> right) {
@@ -74,33 +78,33 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     Objects.requireNonNull(right);
     add(
         new Criterion.NotIn(
-            support.toProp(left),
-            right.stream().map(p -> support.toParam(left, p)).collect(toList())));
+            new Operand.Prop(left),
+            right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
   public <PROPERTY> void in(PropertyDef<PROPERTY> left, SubSelectContext<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    add(new Criterion.InSubQuery(support.toProp(left), right.context));
+    add(new Criterion.InSubQuery(new Operand.Prop(left), right.context));
   }
 
   public <PROPERTY> void notIn(PropertyDef<PROPERTY> left, SubSelectContext<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    add(new Criterion.NotInSubQuery(support.toProp(left), right.context));
+    add(new Criterion.NotInSubQuery(new Operand.Prop(left), right.context));
   }
 
   public <PROPERTY1, PROPERTY2> void in(
       Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
-    Operand.Prop prop1 = support.toProp(left.first());
-    Operand.Prop prop2 = support.toProp(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.first());
+    Operand.Prop prop2 = new Operand.Prop(left.second());
     List<Tuple2<Operand.Param, Operand.Param>> params =
         right.stream()
             .map(
                 pair -> {
-                  Operand.Param param1 = support.toParam(left.first(), pair.first());
-                  Operand.Param param2 = support.toParam(left.second(), pair.second());
+                  Operand.Param param1 = new Operand.Param(left.first(), pair.first());
+                  Operand.Param param2 = new Operand.Param(left.second(), pair.second());
                   return new Tuple2<>(param1, param2);
                 })
             .collect(toList());
@@ -110,14 +114,14 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   public <PROPERTY1, PROPERTY2> void notIn(
       Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
-    Operand.Prop prop1 = support.toProp(left.first());
-    Operand.Prop prop2 = support.toProp(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.first());
+    Operand.Prop prop2 = new Operand.Prop(left.second());
     List<Tuple2<Operand.Param, Operand.Param>> params =
         right.stream()
             .map(
                 pair -> {
-                  Operand.Param param1 = support.toParam(left.first(), pair.first());
-                  Operand.Param param2 = support.toParam(left.second(), pair.second());
+                  Operand.Param param1 = new Operand.Param(left.first(), pair.first());
+                  Operand.Param param2 = new Operand.Param(left.second(), pair.second());
                   return new Tuple2<>(param1, param2);
                 })
             .collect(toList());
@@ -129,8 +133,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    Operand.Prop prop1 = support.toProp(left.first());
-    Operand.Prop prop2 = support.toProp(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.first());
+    Operand.Prop prop2 = new Operand.Prop(left.second());
     add(new Criterion.InTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
   }
 
@@ -139,8 +143,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    Operand.Prop prop1 = support.toProp(left.first());
-    Operand.Prop prop2 = support.toProp(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.first());
+    Operand.Prop prop2 = new Operand.Prop(left.second());
     add(new Criterion.NotInTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
   }
 
