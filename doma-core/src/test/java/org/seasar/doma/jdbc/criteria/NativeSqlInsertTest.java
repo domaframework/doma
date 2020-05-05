@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Config;
@@ -24,13 +23,13 @@ class NativeSqlInsertTest {
                 c -> {
                   c.value(e.id, 99);
                   c.value(e.name, "aaa");
-                  c.value(e.salary, new BigDecimal("1000"));
+                  c.value(e.salary, null);
                   c.value(e.version, 1);
                 });
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
-        "insert into EMP (ID, NAME, SALARY, VERSION) values (99, 'aaa', 1000, 1)",
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1)",
         sql.getFormattedSql());
   }
 }

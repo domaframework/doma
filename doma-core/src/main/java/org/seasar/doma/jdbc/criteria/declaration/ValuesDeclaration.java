@@ -17,7 +17,6 @@ public class ValuesDeclaration {
 
   public <PROPERTY> void value(PropertyDef<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    Objects.requireNonNull(right);
     context.values.put(support.toProp(left), support.toParam(left, right));
   }
 }
