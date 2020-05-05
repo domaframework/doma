@@ -616,10 +616,20 @@ class NativeSqlSelectTest {
   @Test
   void forUpdate_nowait() {
     Emp_ e = new Emp_();
-    SelectIntermediate<Emp> stmt = NativeSql.from(e).forUpdate(true).select(e.id);
+    SelectIntermediate<Emp> stmt = NativeSql.from(e).forUpdate(ForUpdateOption.NOWAIT).select(e.id);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals("select t0_.ID from EMP t0_ for update nowait", sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_disabled() {
+    Emp_ e = new Emp_();
+    SelectIntermediate<Emp> stmt =
+        NativeSql.from(e).forUpdate(ForUpdateOption.DISABLED).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
   }
 
   @Test
