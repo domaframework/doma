@@ -95,7 +95,7 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
     SelectContext context = declaration.getContext();
     SelectBuilder builder = new SelectBuilder(config, context, commenter, sqlLogType);
     PreparedSql sql = builder.build();
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), executeMethodName);
+    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new AssociateCommand<>(context, query);
   }
 }

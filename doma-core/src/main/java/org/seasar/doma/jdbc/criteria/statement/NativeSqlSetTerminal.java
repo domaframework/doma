@@ -30,7 +30,7 @@ public class NativeSqlSetTerminal<RESULT> extends AbstractStatement<RESULT> {
       Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
     SetOperationBuilder builder = new SetOperationBuilder(config, context, commenter, sqlLogType);
     PreparedSql sql = builder.build();
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), executeMethodName);
+    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new SelectCommand<>(query, resultSetHandler);
   }
 }

@@ -12,7 +12,7 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
 
   private static final SqlLogType defaultSqlLogType = SqlLogType.FORMATTED;
   private static final String defaultComment = "";
-  protected static String executeMethodName = "execute";
+  protected static String EXECUTE_METHOD_NAME = "execute";
 
   @Override
   public RESULT execute(Config config) {
@@ -62,7 +62,7 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
   private Function<String, String> commenter(Config config, String comment) {
     return sql -> {
       CommentContext context =
-          new CommentContext(getClass().getName(), executeMethodName, config, null, comment);
+          new CommentContext(getClass().getName(), EXECUTE_METHOD_NAME, config, null, comment);
       return config.getCommenter().comment(sql, context);
     };
   }

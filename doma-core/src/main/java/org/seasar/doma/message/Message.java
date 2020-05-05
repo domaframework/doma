@@ -933,6 +933,7 @@ public enum Message implements MessageResource {
       "The propertyDef \"{0}\" is unknown. Ensure that you have passed it to the select method."),
   DOMA6003("The table alias is not found for the entityDef \"{0}\"."),
   DOMA6004("The column alias is not found for the propertyDef \"{0}\"."),
+  DOMA6005("The method \"{0}\" is not found."),
   ;
 
   private final String messagePattern;

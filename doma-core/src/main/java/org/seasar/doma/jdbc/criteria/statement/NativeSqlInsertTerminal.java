@@ -27,7 +27,7 @@ public class NativeSqlInsertTerminal extends AbstractStatement<Integer> {
     InsertContext context = declaration.getContext();
     InsertBuilder builder = new InsertBuilder(config, context, commenter, sqlLogType);
     PreparedSql sql = builder.build();
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), executeMethodName);
+    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new InsertCommand(query);
   }
 }
