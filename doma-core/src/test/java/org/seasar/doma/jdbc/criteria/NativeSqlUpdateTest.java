@@ -8,7 +8,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.UpdateStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 class NativeSqlUpdateTest {
 
@@ -17,7 +17,7 @@ class NativeSqlUpdateTest {
   @Test
   void set() {
     Emp_ e = new Emp_();
-    UpdateStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.update(e)
             .set(
                 c -> {
@@ -32,7 +32,7 @@ class NativeSqlUpdateTest {
   @Test
   void where() {
     Emp_ e = new Emp_();
-    UpdateStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.update(e)
             .set(
                 c -> {

@@ -3,25 +3,25 @@ package org.seasar.doma.jdbc.criteria.command;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
-import org.seasar.doma.internal.jdbc.command.ResultListCallback;
+import java.util.stream.Stream;
+import org.seasar.doma.internal.jdbc.command.AbstractStreamHandler;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.statement.Row;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-public class MappedObjectIterationHandler<ELEMENT>
-    extends AbstractIterationHandler<ELEMENT, List<ELEMENT>> {
+public class MappedObjectStreamHandler<ELEMENT, RESULT>
+    extends AbstractStreamHandler<ELEMENT, RESULT> {
   private final List<PropertyDef<?>> propertyDefs;
   private final Function<Row, ELEMENT> mapper;
 
-  public MappedObjectIterationHandler(
-      List<PropertyDef<?>> propertyDefs, Function<Row, ELEMENT> mapper) {
-    super(new ResultListCallback<>());
-    Objects.requireNonNull(propertyDefs);
-    Objects.requireNonNull(mapper);
-    this.propertyDefs = propertyDefs;
-    this.mapper = mapper;
+  public MappedObjectStreamHandler(
+      Function<Stream<ELEMENT>, RESULT> streamMapper,
+      List<PropertyDef<?>> propertyDefs,
+      Function<Row, ELEMENT> rowMapper) {
+    super(Objects.requireNonNull(streamMapper));
+    this.propertyDefs = Objects.requireNonNull(propertyDefs);
+    this.mapper = Objects.requireNonNull(rowMapper);
   }
 
   @Override

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.declaration.SetDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.UpdateDeclaration;
 
-public class NativeSqlUpdateStarting<ELEMENT> {
+public class NativeSqlUpdateStarting {
 
   private final UpdateDeclaration declaration;
 
@@ -14,9 +14,9 @@ public class NativeSqlUpdateStarting<ELEMENT> {
     this.declaration = declaration;
   }
 
-  public NativeSqlUpdateTerminal<ELEMENT> set(Consumer<SetDeclaration> block) {
+  public NativeSqlUpdateTerminal set(Consumer<SetDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.set(block);
-    return new NativeSqlUpdateTerminal<>(declaration);
+    return new NativeSqlUpdateTerminal(declaration);
   }
 }

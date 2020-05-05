@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
@@ -16,7 +15,6 @@ import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
-import org.seasar.doma.jdbc.criteria.statement.Row;
 import org.seasar.doma.message.Message;
 
 public class SelectFromDeclaration {
@@ -92,11 +90,6 @@ public class SelectFromDeclaration {
 
   public void select(PropertyDef<?>... propertyDefs) {
     context.projection = new Projection.List(propertyDefs);
-  }
-
-  @SuppressWarnings("unchecked")
-  public <RESULT> void map(Function<Row, RESULT> mapper) {
-    context.mapper = (Function<Row, Object>) mapper;
   }
 
   @SuppressWarnings("unchecked")

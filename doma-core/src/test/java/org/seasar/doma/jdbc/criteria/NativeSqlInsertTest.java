@@ -7,7 +7,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.InsertStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 class NativeSqlInsertTest {
 
@@ -16,7 +16,7 @@ class NativeSqlInsertTest {
   @Test
   void insertInto() {
     Emp_ e = new Emp_();
-    InsertStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.insert
             .into(e)
             .values(
