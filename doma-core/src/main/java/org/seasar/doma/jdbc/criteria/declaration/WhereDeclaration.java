@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import org.seasar.doma.jdbc.criteria.LikeOption;
 import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
@@ -32,12 +33,22 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
 
   public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    add(new Criterion.Like(support.toProp(left), support.toParam(left, right)));
+    add(new Criterion.Like(support.toProp(left), support.toParam(left, right), LikeOption.NONE));
+  }
+
+  public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
+    Objects.requireNonNull(left);
+    add(new Criterion.Like(support.toProp(left), support.toParam(left, right), option));
   }
 
   public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    add(new Criterion.NotLike(support.toProp(left), support.toParam(left, right)));
+    add(new Criterion.NotLike(support.toProp(left), support.toParam(left, right), LikeOption.NONE));
+  }
+
+  public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
+    Objects.requireNonNull(left);
+    add(new Criterion.NotLike(support.toProp(left), support.toParam(left, right), option));
   }
 
   public <PROPERTY> void between(PropertyDef<PROPERTY> propertyDef, PROPERTY start, PROPERTY end) {

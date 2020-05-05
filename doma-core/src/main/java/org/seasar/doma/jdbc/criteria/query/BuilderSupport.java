@@ -2,12 +2,16 @@ package org.seasar.doma.jdbc.criteria.query;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.DomaException;
+import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.criteria.LikeOption;
 import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
@@ -18,6 +22,7 @@ import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class BuilderSupport {
   private final Config config;
@@ -91,7 +96,11 @@ public class BuilderSupport {
   }
 
   public void param(Operand.Param param) {
-    InParameter<?> parameter = param.value.apply(config.getClassHelper());
+    InParameter<?> parameter = param.createInParameter(config);
+    param(parameter);
+  }
+
+  private void param(InParameter<?> parameter) {
     buf.appendParameter(parameter);
   }
 
@@ -120,7 +129,7 @@ public class BuilderSupport {
 
           @Override
           public Boolean visit(Operand.Param operand) {
-            InParameter<?> parameter = operand.value.apply(config.getClassHelper());
+            InParameter<?> parameter = operand.createInParameter(config);
             return parameter.getWrapper().get() == null;
           }
 
@@ -160,7 +169,7 @@ public class BuilderSupport {
     buf.appendSql(" is not null");
   }
 
-  private void like(Operand.Prop left, Operand right, boolean not) {
+  private void like(Operand.Prop left, Operand right, LikeOption option, boolean not) {
     column(left);
     if (not) {
       buf.appendSql(" not");
@@ -169,14 +178,40 @@ public class BuilderSupport {
     right.accept(
         new Operand.Visitor<Void>() {
           @Override
-          public Void visit(Operand.Param operand) {
-            param(operand);
+          public Void visit(Operand.Param param) {
+            InParameter<?> parameter = param.createInParameter(config);
+            Object value = parameter.getWrapper().get();
+            if (value == null || option == LikeOption.NONE) {
+              param(parameter);
+            } else {
+              char escapeChar = '$';
+              BiFunction<String, Character, String> transformer = getTransformer(option);
+              String newValue = transformer.apply(value.toString(), escapeChar);
+              param(new BasicInParameter<>(() -> new StringWrapper(newValue)));
+              buf.appendSql(" escape '" + escapeChar + "'");
+            }
             return null;
           }
 
+          private BiFunction<String, Character, String> getTransformer(LikeOption option) {
+            ExpressionFunctions functions = config.getDialect().getExpressionFunctions();
+            switch (option) {
+              case ESCAPE:
+                return functions::escape;
+              case PREFIX:
+                return functions::prefix;
+              case INFIX:
+                return functions::infix;
+              case SUFFIX:
+                return functions::suffix;
+              default:
+                throw new AssertionError("unreachable. " + option);
+            }
+          }
+
           @Override
-          public Void visit(Operand.Prop operand) {
-            column(operand);
+          public Void visit(Operand.Prop prop) {
+            column(prop);
             return null;
           }
         });
@@ -368,12 +403,12 @@ public class BuilderSupport {
 
     @Override
     public void visit(Criterion.Like c) {
-      like(c.left, c.right, false);
+      like(c.left, c.right, c.option, false);
     }
 
     @Override
     public void visit(Criterion.NotLike c) {
-      like(c.left, c.right, true);
+      like(c.left, c.right, c.option, true);
     }
 
     @Override
