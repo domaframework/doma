@@ -22,11 +22,11 @@ class NativeSqlUpdateTest {
             .set(
                 c -> {
                   c.value(e.name, "bbb");
-                  c.value(e.salary, new BigDecimal("1000"));
+                  c.value(e.salary, null);
                 });
 
     Sql<?> sql = stmt.asSql(config);
-    assertEquals("update EMP t0_ set t0_.NAME = 'bbb', t0_.SALARY = 1000", sql.getFormattedSql());
+    assertEquals("update EMP t0_ set t0_.NAME = 'bbb', t0_.SALARY = null", sql.getFormattedSql());
   }
 
   @Test
