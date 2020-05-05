@@ -14,8 +14,7 @@ import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.UpdateBuilder;
 
-public class NativeSqlUpdateTerminal<ELEMENT> extends AbstractStatement<Integer>
-    implements UpdateStatement {
+public class NativeSqlUpdateTerminal extends AbstractStatement<Integer> {
 
   private final UpdateDeclaration declaration;
 
@@ -24,7 +23,7 @@ public class NativeSqlUpdateTerminal<ELEMENT> extends AbstractStatement<Integer>
     this.declaration = declaration;
   }
 
-  public NativeSqlUpdateTerminal<ELEMENT> where(Consumer<WhereDeclaration> block) {
+  public Statement<Integer> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;

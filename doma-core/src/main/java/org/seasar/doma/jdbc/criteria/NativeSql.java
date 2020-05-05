@@ -21,31 +21,31 @@ public final class NativeSql {
     Objects.requireNonNull(entityDef);
     SelectContext context = new SelectContext(entityDef);
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
-    return new NativeSqlSelectStarting<>(declaration);
+    return new NativeSqlSelectStarting<>(declaration, entityDef);
   }
 
-  public static <ELEMENT> NativeSqlUpdateStarting<ELEMENT> update(EntityDef<ELEMENT> entityDef) {
+  public static <ELEMENT> NativeSqlUpdateStarting update(EntityDef<ELEMENT> entityDef) {
     Objects.requireNonNull(entityDef);
     UpdateContext context = new UpdateContext(entityDef);
     UpdateDeclaration declaration = new UpdateDeclaration(context);
-    return new NativeSqlUpdateStarting<>(declaration);
+    return new NativeSqlUpdateStarting(declaration);
   }
 
   public static final class delete {
-    public static <ELEMENT> NativeSqlDeleteStarting<ELEMENT> from(EntityDef<ELEMENT> entityDef) {
+    public static <ELEMENT> NativeSqlDeleteStarting from(EntityDef<ELEMENT> entityDef) {
       Objects.requireNonNull(entityDef);
       DeleteContext context = new DeleteContext(entityDef);
       DeleteFromDeclaration declaration = new DeleteFromDeclaration(context);
-      return new NativeSqlDeleteStarting<>(declaration);
+      return new NativeSqlDeleteStarting(declaration);
     }
   }
 
   public static final class insert {
-    public static <ELEMENT> NativeSqlInsertStarting<ELEMENT> into(EntityDef<ELEMENT> entityDef) {
+    public static <ELEMENT> NativeSqlInsertStarting into(EntityDef<ELEMENT> entityDef) {
       Objects.requireNonNull(entityDef);
       InsertContext context = new InsertContext(entityDef);
       InsertIntoDeclaration declaration = new InsertIntoDeclaration(context);
-      return new NativeSqlInsertStarting<>(declaration);
+      return new NativeSqlInsertStarting(declaration);
     }
   }
 }

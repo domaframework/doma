@@ -2,11 +2,11 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 
-public interface SetOperand<ELEMENT> extends SelectIntermediate<ELEMENT> {
+public interface SetOperand<ELEMENT> {
 
   SetOperationContext<ELEMENT> getContext();
 
-  SetOperand<ELEMENT> union(SetOperand<ELEMENT> other);
+  Mappable<ELEMENT> union(Mappable<ELEMENT> other);
 
-  SetOperand<ELEMENT> unionAll(SetOperand<ELEMENT> other);
+  Mappable<ELEMENT> unionAll(Mappable<ELEMENT> other);
 }

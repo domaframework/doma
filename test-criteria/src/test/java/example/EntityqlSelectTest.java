@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.Entityql;
-import org.seasar.doma.jdbc.criteria.statement.SelectStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class EntityqlSelectTest {
@@ -25,7 +25,7 @@ public class EntityqlSelectTest {
   void all() {
     Employee_ e = new Employee_();
 
-    SelectStatement<Employee> stmt = Entityql.from(e);
+    Statement<List<Employee>> stmt = Entityql.from(e);
 
     List<Employee> list = stmt.execute(config);
     assertEquals(14, list.size());
@@ -35,7 +35,7 @@ public class EntityqlSelectTest {
   void where() {
     Employee_ e = new Employee_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .where(
                 c -> {
@@ -58,7 +58,7 @@ public class EntityqlSelectTest {
   void where_in() {
     Employee_ e = new Employee_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .where(c -> c.in(e.employeeId, Arrays.asList(2, 3, 4)))
             .orderBy(c -> c.asc(e.employeeId));
@@ -72,7 +72,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .where(c -> c.in(e.employeeId, c.from(e2).select(e2.managerId)))
             .orderBy(c -> c.asc(e.employeeId));
@@ -88,7 +88,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .where(
                 c ->
@@ -107,7 +107,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
     List<Employee> list = stmt.execute(config);
@@ -121,7 +121,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
     List<Employee> list = stmt.execute(config);
@@ -135,7 +135,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
             .where(c -> c.eq(d.departmentName, "SALES"))
@@ -161,7 +161,7 @@ public class EntityqlSelectTest {
     Department_ d = new Department_();
     Address_ a = new Address_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
             .innerJoin(a, on -> on.eq(e.addressId, a.addressId))
@@ -186,7 +186,7 @@ public class EntityqlSelectTest {
   void orderBy() {
     Employee_ e = new Employee_();
 
-    SelectStatement<Employee> stmt =
+    Statement<List<Employee>> stmt =
         Entityql.from(e)
             .orderBy(
                 c -> {
@@ -204,7 +204,7 @@ public class EntityqlSelectTest {
   void asSql() {
     Department_ d = new Department_();
 
-    SelectStatement<Department> stmt = Entityql.from(d).where(c -> c.eq(d.departmentName, "SALES"));
+    Statement<List<Department>> stmt = Entityql.from(d).where(c -> c.eq(d.departmentName, "SALES"));
 
     Sql<?> sql = stmt.asSql(config);
     System.out.printf("Raw SQL      : %s\n", sql.getRawSql());

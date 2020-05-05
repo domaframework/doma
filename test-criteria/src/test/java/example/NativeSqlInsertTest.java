@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.statement.InsertStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class NativeSqlInsertTest {
@@ -21,7 +21,7 @@ public class NativeSqlInsertTest {
   void insert() {
     Department_ d = new Department_();
 
-    InsertStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.insert
             .into(d)
             .values(

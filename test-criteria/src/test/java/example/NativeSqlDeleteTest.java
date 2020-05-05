@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.statement.DeleteStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class NativeSqlDeleteTest {
@@ -21,7 +21,7 @@ public class NativeSqlDeleteTest {
   void from() {
     Employee_ e = new Employee_();
 
-    DeleteStatement stmt = NativeSql.delete.from(e);
+    Statement<Integer> stmt = NativeSql.delete.from(e);
 
     int count = stmt.execute(config);
     assertEquals(14, count);
@@ -31,7 +31,8 @@ public class NativeSqlDeleteTest {
   void where() {
     Employee_ e = new Employee_();
 
-    DeleteStatement stmt = NativeSql.delete.from(e).where(c -> c.ge(e.salary, new Salary("2000")));
+    Statement<Integer> stmt =
+        NativeSql.delete.from(e).where(c -> c.ge(e.salary, new Salary("2000")));
 
     int count = stmt.execute(config);
     assertEquals(6, count);

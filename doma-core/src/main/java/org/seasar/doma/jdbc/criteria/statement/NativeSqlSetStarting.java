@@ -5,18 +5,18 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 
-public class NativeSqlSetIntermediate<ELEMENT> extends AbstractSetOperand<ELEMENT>
-    implements SelectIntermediate<ELEMENT> {
+public class NativeSqlSetStarting<ELEMENT> extends AbstractSetOperand<ELEMENT>
+    implements Mappable<ELEMENT> {
 
   private final SetOperationContext<ELEMENT> context;
 
-  public NativeSqlSetIntermediate(SetOperationContext<ELEMENT> context) {
+  public NativeSqlSetStarting(SetOperationContext<ELEMENT> context) {
     this.context = context;
   }
 
   @Override
-  public NativeSqlSetTerminate<ELEMENT> map(Function<Row, ELEMENT> mapper) {
-    return new NativeSqlSetTerminate<>(context, mapper);
+  public Collectable<ELEMENT> map(Function<Row, ELEMENT> mapper) {
+    return new NativeSqlSetCollectable<>(context, mapper);
   }
 
   @Override
@@ -26,7 +26,8 @@ public class NativeSqlSetIntermediate<ELEMENT> extends AbstractSetOperand<ELEMEN
 
   @Override
   public Sql<?> asSql(Config config) {
-    NativeSqlSetTerminate<ELEMENT> terminate = new NativeSqlSetTerminate<>(context, row -> null);
+    NativeSqlSetCollectable<ELEMENT> terminate =
+        new NativeSqlSetCollectable<>(context, row -> null);
     return terminate.asSql(config);
   }
 }

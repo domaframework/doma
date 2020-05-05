@@ -6,7 +6,7 @@ import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.declaration.InsertIntoDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.ValuesDeclaration;
 
-public class NativeSqlInsertStarting<ELEMENT> {
+public class NativeSqlInsertStarting {
 
   private final InsertIntoDeclaration declaration;
 
@@ -15,10 +15,10 @@ public class NativeSqlInsertStarting<ELEMENT> {
     this.declaration = declaration;
   }
 
-  public NativeSqlInsertTerminal<ELEMENT> values(Consumer<ValuesDeclaration> block) {
+  public NativeSqlInsertTerminal values(Consumer<ValuesDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.values(block);
     InsertContext context = declaration.getContext();
-    return new NativeSqlInsertTerminal<>(context);
+    return new NativeSqlInsertTerminal(context);
   }
 }

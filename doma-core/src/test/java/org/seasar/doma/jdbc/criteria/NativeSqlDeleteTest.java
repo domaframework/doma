@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.DeleteStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 class NativeSqlDeleteTest {
 
@@ -17,7 +17,7 @@ class NativeSqlDeleteTest {
   @Test
   void deleteFrom() {
     Emp_ e = new Emp_();
-    DeleteStatement stmt = NativeSql.delete.from(e);
+    Statement<Integer> stmt = NativeSql.delete.from(e);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals("delete from EMP t0_", sql.getFormattedSql());
@@ -26,7 +26,7 @@ class NativeSqlDeleteTest {
   @Test
   void where() {
     Emp_ e = new Emp_();
-    DeleteStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.delete
             .from(e)
             .where(
@@ -44,7 +44,8 @@ class NativeSqlDeleteTest {
   void where_in() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
-    DeleteStatement stmt = NativeSql.delete.from(e).where(c -> c.in(e.id, c.from(d).select(d.id)));
+    Statement<Integer> stmt =
+        NativeSql.delete.from(e).where(c -> c.in(e.id, c.from(d).select(d.id)));
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(

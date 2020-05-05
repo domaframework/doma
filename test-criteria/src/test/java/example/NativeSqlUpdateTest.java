@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.statement.UpdateStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class NativeSqlUpdateTest {
@@ -21,7 +21,7 @@ public class NativeSqlUpdateTest {
   void set() {
     Employee_ e = new Employee_();
 
-    UpdateStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.update(e)
             .set(
                 c -> {
@@ -37,7 +37,7 @@ public class NativeSqlUpdateTest {
   void where() {
     Employee_ e = new Employee_();
 
-    UpdateStatement stmt =
+    Statement<Integer> stmt =
         NativeSql.update(e)
             .set(c -> c.value(e.departmentId, 3))
             .where(

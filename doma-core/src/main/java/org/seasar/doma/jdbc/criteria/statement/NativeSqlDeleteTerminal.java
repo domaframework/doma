@@ -12,8 +12,7 @@ import org.seasar.doma.jdbc.criteria.declaration.DeleteFromDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.DeleteBuilder;
 
-public class NativeSqlDeleteTerminal<ELEMENT> extends AbstractStatement<Integer>
-    implements DeleteStatement {
+public class NativeSqlDeleteTerminal extends AbstractStatement<Integer> {
 
   private final DeleteFromDeclaration declaration;
 

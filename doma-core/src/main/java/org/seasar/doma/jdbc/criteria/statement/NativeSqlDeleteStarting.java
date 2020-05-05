@@ -9,8 +9,7 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
-public class NativeSqlDeleteStarting<ELEMENT> extends AbstractStatement<Integer>
-    implements DeleteStatement {
+public class NativeSqlDeleteStarting extends AbstractStatement<Integer> {
 
   private final DeleteFromDeclaration declaration;
 
@@ -19,16 +18,16 @@ public class NativeSqlDeleteStarting<ELEMENT> extends AbstractStatement<Integer>
     this.declaration = declaration;
   }
 
-  public NativeSqlDeleteTerminal<ELEMENT> where(Consumer<WhereDeclaration> block) {
+  public Statement<Integer> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
-    return new NativeSqlDeleteTerminal<>(declaration);
+    return new NativeSqlDeleteTerminal(declaration);
   }
 
   @Override
   protected Command<Integer> createCommand(
       Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
-    NativeSqlDeleteTerminal<ELEMENT> terminal = new NativeSqlDeleteTerminal<>(declaration);
+    NativeSqlDeleteTerminal terminal = new NativeSqlDeleteTerminal(declaration);
     return terminal.createCommand(config, commenter, sqlLogType);
   }
 }

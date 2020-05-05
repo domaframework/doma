@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc.criteria;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -11,7 +12,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.SelectStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.message.Message;
 
 class EntityqlSelectTest {
@@ -21,7 +22,7 @@ class EntityqlSelectTest {
   @Test
   void from() {
     Emp_ e = new Emp_();
-    SelectStatement<Emp> stmt = Entityql.from(e);
+    Statement<List<Emp>> stmt = Entityql.from(e);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -33,7 +34,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt = Entityql.from(e).innerJoin(d, on -> on.eq(e.id, d.id));
+    Statement<List<Emp>> stmt = Entityql.from(e).innerJoin(d, on -> on.eq(e.id, d.id));
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -46,7 +47,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt = Entityql.from(e).innerJoin(d, on -> {});
+    Statement<List<Emp>> stmt = Entityql.from(e).innerJoin(d, on -> {});
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -58,7 +59,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt = Entityql.from(e).leftJoin(d, on -> on.eq(e.id, d.id));
+    Statement<List<Emp>> stmt = Entityql.from(e).leftJoin(d, on -> on.eq(e.id, d.id));
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -71,7 +72,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt = Entityql.from(e).leftJoin(d, on -> {});
+    Statement<List<Emp>> stmt = Entityql.from(e).leftJoin(d, on -> {});
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -83,7 +84,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt =
+    Statement<List<Emp>> stmt =
         Entityql.from(e).innerJoin(d, on -> on.eq(e.id, d.id)).associate(e, d, (emp, dept) -> {});
 
     Sql<?> sql = stmt.asSql(config);
@@ -111,7 +112,7 @@ class EntityqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    SelectStatement<Emp> stmt =
+    Statement<List<Emp>> stmt =
         Entityql.from(e)
             .innerJoin(d, on -> {})
             .associate(e, d, (emp, dept) -> {}, AssociationKind.OPTIONAL);
@@ -128,7 +129,7 @@ class EntityqlSelectTest {
     Emp_ e2 = new Emp_();
     Dept_ d2 = new Dept_();
 
-    SelectStatement<Emp> stmt =
+    Statement<List<Emp>> stmt =
         Entityql.from(e)
             .innerJoin(d, on -> on.eq(e.id, d.id))
             .leftJoin(e2, on -> on.eq(e.id, e2.id))
@@ -153,7 +154,7 @@ class EntityqlSelectTest {
   @Test
   void limit() {
     Emp_ e = new Emp_();
-    SelectStatement<Emp> stmt = Entityql.from(e).limit(5);
+    Statement<List<Emp>> stmt = Entityql.from(e).limit(5);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -164,7 +165,7 @@ class EntityqlSelectTest {
   @Test
   void limit_null() {
     Emp_ e = new Emp_();
-    SelectStatement<Emp> stmt = Entityql.from(e).limit(null);
+    Statement<List<Emp>> stmt = Entityql.from(e).limit(null);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -174,7 +175,7 @@ class EntityqlSelectTest {
   @Test
   void offset() {
     Emp_ e = new Emp_();
-    SelectStatement<Emp> stmt = Entityql.from(e).offset(5);
+    Statement<List<Emp>> stmt = Entityql.from(e).offset(5);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
@@ -185,7 +186,7 @@ class EntityqlSelectTest {
   @Test
   void offset_null() {
     Emp_ e = new Emp_();
-    SelectStatement<Emp> stmt = Entityql.from(e).offset(null);
+    Statement<List<Emp>> stmt = Entityql.from(e).offset(null);
 
     Sql<?> sql = stmt.asSql(config);
     assertEquals(
