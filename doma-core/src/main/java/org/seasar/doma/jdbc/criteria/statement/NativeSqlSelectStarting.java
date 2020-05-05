@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.declaration.HavingDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByDeclaration;
@@ -76,12 +77,12 @@ public class NativeSqlSelectStarting<ELEMENT> extends AbstractStatement<List<ELE
   }
 
   public NativeSqlSelectStarting<ELEMENT> forUpdate() {
-    declaration.forUpdate();
+    declaration.forUpdate(ForUpdateOption.WAIT);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> forUpdate(boolean nowait) {
-    declaration.forUpdate(nowait);
+  public NativeSqlSelectStarting<ELEMENT> forUpdate(ForUpdateOption option) {
+    declaration.forUpdate(option);
     return this;
   }
 

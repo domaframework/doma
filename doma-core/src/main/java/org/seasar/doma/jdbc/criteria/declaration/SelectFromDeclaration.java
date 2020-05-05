@@ -8,6 +8,7 @@ import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -85,12 +86,8 @@ public class SelectFromDeclaration {
     context.offset = offset;
   }
 
-  public void forUpdate() {
-    context.forUpdate = new ForUpdate(false);
-  }
-
-  public void forUpdate(boolean nowait) {
-    context.forUpdate = new ForUpdate(nowait);
+  public void forUpdate(ForUpdateOption option) {
+    context.forUpdate = new ForUpdate(option);
   }
 
   public void select(PropertyDef<?>... propertyDefs) {

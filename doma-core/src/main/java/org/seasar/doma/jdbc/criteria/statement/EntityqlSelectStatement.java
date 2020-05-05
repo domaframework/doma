@@ -10,6 +10,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
@@ -80,12 +81,12 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
   }
 
   public EntityqlSelectStatement<ENTITY> forUpdate() {
-    declaration.forUpdate();
+    declaration.forUpdate(ForUpdateOption.WAIT);
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> forUpdate(boolean nowait) {
-    declaration.forUpdate(nowait);
+  public EntityqlSelectStatement<ENTITY> forUpdate(ForUpdateOption option) {
+    declaration.forUpdate(option);
     return this;
   }
 
