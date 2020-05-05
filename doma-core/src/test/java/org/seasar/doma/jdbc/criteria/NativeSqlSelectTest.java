@@ -171,10 +171,54 @@ class NativeSqlSelectTest {
   @Test
   void where_like() {
     Emp_ e = new Emp_();
-    Mappable<Emp> stmt = NativeSql.from(e).where(c -> c.like(e.name, "a%")).select(e.id);
+    Mappable<Emp> stmt = NativeSql.from(e).where(c -> c.like(e.name, "a$")).select(e.id);
 
     Sql<?> sql = stmt.asSql(config);
-    assertEquals("select t0_.ID from EMP t0_ where t0_.NAME like 'a%'", sql.getFormattedSql());
+    assertEquals("select t0_.ID from EMP t0_ where t0_.NAME like 'a$'", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_like_escape() {
+    Emp_ e = new Emp_();
+    Mappable<Emp> stmt =
+        NativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.ESCAPE)).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$' escape '$'", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_like_prefix() {
+    Emp_ e = new Emp_();
+    Mappable<Emp> stmt =
+        NativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.PREFIX)).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$%' escape '$'", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_like_infix() {
+    Emp_ e = new Emp_();
+    Mappable<Emp> stmt =
+        NativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.INFIX)).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$%' escape '$'", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_like_suffix() {
+    Emp_ e = new Emp_();
+    Mappable<Emp> stmt =
+        NativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.SUFFIX)).select(e.id);
+
+    Sql<?> sql = stmt.asSql(config);
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$' escape '$'", sql.getFormattedSql());
   }
 
   @Test
