@@ -21,7 +21,8 @@ import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
-public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTITY>> {
+public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTITY>>
+    implements Collectable<ENTITY> {
 
   private final SelectFromDeclaration declaration;
   private final EntityDef<ENTITY> entityDef;
@@ -100,13 +101,15 @@ public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTI
     return new NativeSqlSelectMappable<>(config, declaration);
   }
 
-  public <RESULT> Statement<RESULT> stream(Function<Stream<ENTITY>, RESULT> streamMapper) {
+  public <RESULT> RESULT mapStream(Function<Stream<ENTITY>, RESULT> streamMapper) {
     ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(entityDef.asType(), streamMapper);
-    return new NativeSqlSelectTerminal<>(config, declaration, handler);
+    NativeSqlSelectTerminal<RESULT> terminal =
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return terminal.execute();
   }
 
-  public <RESULT> Statement<RESULT> collect(Collector<ENTITY, ?, RESULT> collector) {
-    return stream(s -> s.collect(collector));
+  public <RESULT> RESULT collect(Collector<ENTITY, ?, RESULT> collector) {
+    return mapStream(s -> s.collect(collector));
   }
 
   @Override

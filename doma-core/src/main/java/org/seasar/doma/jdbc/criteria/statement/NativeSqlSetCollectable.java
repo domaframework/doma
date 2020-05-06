@@ -28,13 +28,14 @@ public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELE
     this.mapper = mapper;
   }
 
-  public <RESULT> Statement<RESULT> stream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
+  public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
     ResultSetHandler<RESULT> handler = new SetOperationResultStreamHandler<>(streamMapper, mapper);
-    return new NativeSqlSetTerminal<>(config, context, handler);
+    NativeSqlSetTerminal<RESULT> terminal = new NativeSqlSetTerminal<>(config, context, handler);
+    return terminal.execute();
   }
 
-  public <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector) {
-    return stream(s -> s.collect(collector));
+  public <RESULT> RESULT collect(Collector<ELEMENT, ?, RESULT> collector) {
+    return mapStream(s -> s.collect(collector));
   }
 
   @Override

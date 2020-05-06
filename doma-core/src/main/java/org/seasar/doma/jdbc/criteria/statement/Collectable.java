@@ -5,9 +5,9 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-public interface Collectable<ELEMENT> extends Statement<List<ELEMENT>> {
+public interface Collectable<ELEMENT> extends Statement<List<ELEMENT>>, Listable<ELEMENT> {
 
-  <RESULT> Statement<RESULT> stream(Function<Stream<ELEMENT>, RESULT> streamMapper);
+  <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper);
 
-  <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector);
+  <RESULT> RESULT collect(Collector<ELEMENT, ?, RESULT> collector);
 }
