@@ -11,6 +11,7 @@ public class InsertContext implements Context {
   public final EntityDef<?> entityDef;
   public final List<EntityDef<?>> entityDefs;
   public Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
+  public final Options options = new Options();
 
   public InsertContext(EntityDef<?> entityDef) {
     Objects.requireNonNull(entityDef);
@@ -31,5 +32,10 @@ public class InsertContext implements Context {
   @Override
   public void setWhere(List<Criterion> where) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Options getOptions() {
+    return options;
   }
 }

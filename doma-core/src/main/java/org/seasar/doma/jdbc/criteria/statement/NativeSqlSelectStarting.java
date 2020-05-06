@@ -1,12 +1,18 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
+import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.command.ResultSetHandler;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.declaration.HavingDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByDeclaration;
@@ -15,17 +21,23 @@ import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
-public class NativeSqlSelectStarting<ELEMENT> extends AbstractStatement<List<ELEMENT>>
-    implements SelectStatement<ELEMENT> {
+public class NativeSqlSelectStarting<ENTITY>
+    extends AbstractStatement<List<ENTITY>, NativeSqlSelectStarting<ENTITY>>
+    implements Collectable<ENTITY> {
 
   private final SelectFromDeclaration declaration;
+  private final EntityDef<ENTITY> entityDef;
 
-  public NativeSqlSelectStarting(SelectFromDeclaration declaration) {
+  public NativeSqlSelectStarting(
+      Config config, SelectFromDeclaration declaration, EntityDef<ENTITY> entityDef) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
+    Objects.requireNonNull(entityDef);
     this.declaration = declaration;
+    this.entityDef = entityDef;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> innerJoin(
+  public NativeSqlSelectStarting<ENTITY> innerJoin(
       EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityDef);
     Objects.requireNonNull(block);
@@ -33,7 +45,7 @@ public class NativeSqlSelectStarting<ELEMENT> extends AbstractStatement<List<ELE
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> leftJoin(
+  public NativeSqlSelectStarting<ENTITY> leftJoin(
       EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityDef);
     Objects.requireNonNull(block);
@@ -41,59 +53,72 @@ public class NativeSqlSelectStarting<ELEMENT> extends AbstractStatement<List<ELE
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> where(Consumer<WhereDeclaration> block) {
+  public NativeSqlSelectStarting<ENTITY> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> groupBy(PropertyDef<?>... propertyDefs) {
+  public NativeSqlSelectStarting<ENTITY> groupBy(PropertyDef<?>... propertyDefs) {
     Objects.requireNonNull(propertyDefs);
     declaration.groupBy(propertyDefs);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> having(Consumer<HavingDeclaration> block) {
+  public NativeSqlSelectStarting<ENTITY> having(Consumer<HavingDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.having(block);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> orderBy(Consumer<OrderByDeclaration> block) {
+  public NativeSqlSelectStarting<ENTITY> orderBy(Consumer<OrderByDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> limit(int limit) {
+  public NativeSqlSelectStarting<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> offset(int offset) {
+  public NativeSqlSelectStarting<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> forUpdate() {
-    declaration.forUpdate();
+  public NativeSqlSelectStarting<ENTITY> forUpdate() {
+    declaration.forUpdate(ForUpdateOption.WAIT);
     return this;
   }
 
-  public NativeSqlSelectStarting<ELEMENT> forUpdate(boolean nowait) {
-    declaration.forUpdate(nowait);
+  public NativeSqlSelectStarting<ENTITY> forUpdate(ForUpdateOption option) {
+    declaration.forUpdate(option);
     return this;
   }
 
-  public <RESULT> NativeSqlSelectIntermediate<RESULT> select(PropertyDef<?>... propertyDefs) {
+  public <RESULT> Mappable<RESULT> select(PropertyDef<?>... propertyDefs) {
     declaration.select(propertyDefs);
-    return new NativeSqlSelectIntermediate<>(declaration);
+    return new NativeSqlSelectMappable<>(config, declaration);
+  }
+
+  public <RESULT> RESULT mapStream(Function<Stream<ENTITY>, RESULT> streamMapper) {
+    ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(entityDef.asType(), streamMapper);
+    NativeSqlSelectTerminal<RESULT> terminal =
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return terminal.execute();
+  }
+
+  public <RESULT> RESULT collect(Collector<ENTITY, ?, RESULT> collector) {
+    return mapStream(s -> s.collect(collector));
   }
 
   @Override
-  protected Command<List<ELEMENT>> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
-    NativeSqlSelectTerminate<ELEMENT> statement = new NativeSqlSelectTerminate<>(declaration);
-    return statement.createCommand(config, commenter, sqlLogType);
+  protected Command<List<ENTITY>> createCommand() {
+    ResultSetHandler<List<ENTITY>> handler =
+        new EntityStreamHandler<>(entityDef.asType(), s -> s.collect(toList()));
+    NativeSqlSelectTerminal<List<ENTITY>> terminal =
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return terminal.createCommand();
   }
 }

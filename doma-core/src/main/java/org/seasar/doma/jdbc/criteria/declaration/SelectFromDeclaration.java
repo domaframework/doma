@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -14,7 +15,6 @@ import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
-import org.seasar.doma.jdbc.criteria.statement.Row;
 import org.seasar.doma.message.Message;
 
 public class SelectFromDeclaration {
@@ -49,7 +49,9 @@ public class SelectFromDeclaration {
     Join join = new Join(entityDef, joinKind);
     JoinDeclaration declaration = new JoinDeclaration(join);
     block.accept(declaration);
-    context.joins.add(join);
+    if (!join.on.isEmpty()) {
+      context.joins.add(join);
+    }
   }
 
   public void where(Consumer<WhereDeclaration> block) {
@@ -74,20 +76,16 @@ public class SelectFromDeclaration {
     block.accept(declaration);
   }
 
-  public void limit(int limit) {
+  public void limit(Integer limit) {
     context.limit = limit;
   }
 
-  public void offset(int offset) {
+  public void offset(Integer offset) {
     context.offset = offset;
   }
 
-  public void forUpdate() {
-    context.forUpdate = new ForUpdate(false);
-  }
-
-  public void forUpdate(boolean nowait) {
-    context.forUpdate = new ForUpdate(nowait);
+  public void forUpdate(ForUpdateOption option) {
+    context.forUpdate = new ForUpdate(option);
   }
 
   public void select(PropertyDef<?>... propertyDefs) {
@@ -95,23 +93,26 @@ public class SelectFromDeclaration {
   }
 
   @SuppressWarnings("unchecked")
-  public <RESULT> void map(Function<Row, RESULT> mapper) {
-    context.mapper = (Function<Row, Object>) mapper;
-  }
-
-  @SuppressWarnings("unchecked")
   public <ENTITY1, ENTITY2> void associate(
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
-      BiConsumer<ENTITY1, ENTITY2> associator) {
+      BiConsumer<ENTITY1, ENTITY2> associator,
+      AssociationKind kind) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
+    Objects.requireNonNull(kind);
     if (!context.getEntityDefs().contains(first)) {
-      throw new DomaException(Message.DOMA6001, "first");
+      if (kind == AssociationKind.MANDATORY) {
+        throw new DomaException(Message.DOMA6001, "first");
+      }
+      return;
     }
     if (!context.getEntityDefs().contains(second)) {
-      throw new DomaException(Message.DOMA6001, "second");
+      if (kind == AssociationKind.MANDATORY) {
+        throw new DomaException(Message.DOMA6001, "second");
+      }
+      return;
     }
     //noinspection unchecked
     context.associations.put(new Pair<>(first, second), (BiConsumer<Object, Object>) associator);

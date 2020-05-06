@@ -1,7 +1,10 @@
 package org.seasar.doma.jdbc.criteria.context;
 
-import java.util.function.Function;
-import org.seasar.doma.jdbc.ClassHelper;
+import java.util.function.Supplier;
+import org.seasar.doma.internal.jdbc.scalar.Scalar;
+import org.seasar.doma.internal.jdbc.scalar.Scalars;
+import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
@@ -10,10 +13,18 @@ public interface Operand {
   <R> R accept(Visitor<R> visitor);
 
   class Param implements Operand {
-    public final Function<ClassHelper, InParameter<?>> value;
+    private final PropertyDef<?> propertyDef;
+    private final Object value;
 
-    public Param(Function<ClassHelper, InParameter<?>> value) {
+    public Param(PropertyDef<?> propertyDef, Object value) {
+      this.propertyDef = propertyDef;
       this.value = value;
+    }
+
+    public InParameter<?> createInParameter(Config config) {
+      Class<?> clazz = propertyDef.asClass();
+      Supplier<Scalar<?, ?>> supplier = Scalars.wrap(value, clazz, false, config.getClassHelper());
+      return new ScalarInParameter<>(supplier.get());
     }
 
     @Override

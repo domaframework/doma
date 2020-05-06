@@ -9,10 +9,13 @@ import org.seasar.doma.jdbc.criteria.Entityql
 import org.seasar.doma.jdbc.criteria.NativeSql
 import org.seasar.doma.jdbc.criteria.Tuple2
 import org.seasar.doma.jdbc.criteria.Tuple3
-import org.seasar.doma.jdbc.criteria.statement.SelectStatement
+import org.seasar.doma.jdbc.criteria.statement.Collectable
 
 @ExtendWith(Env::class)
 class KotlinTest(private val config: Config) {
+
+    private val entityql = Entityql(config)
+    private val nativeSql = NativeSql(config)
 
     @Test
     fun tuple2() {
@@ -32,7 +35,7 @@ class KotlinTest(private val config: Config) {
     @Test
     fun where() {
         val e = Employee_()
-        val stmt = Entityql.from(e)
+        val stmt = entityql.from(e)
                 .where { c ->
                     c.eq(e.departmentId, 2)
                     c.isNotNull(e.managerId)
@@ -41,17 +44,17 @@ class KotlinTest(private val config: Config) {
                         c.lt(e.salary, Salary("2000"))
                     }
                 }
-        val list = stmt.execute(config)
+        val list = stmt.execute()
         assertEquals(10, list.size)
     }
 
     @Test
     fun aggregate() {
         val e = Employee_()
-        val stmt: SelectStatement<Long> = NativeSql.from(e).select<Long>(count()).map { row -> row.get(count()) }
-        val list = stmt.execute(config)
+        val stmt: Collectable<Long> = nativeSql.from(e).select<Long>(count()).map { row -> row.get(count()) }
+        val list = stmt.execute()
         assertEquals(1, list.size)
         assertEquals(14, list[0])
-        println(stmt.asSql(config).rawSql)
+        println(stmt.asSql().rawSql)
     }
 }

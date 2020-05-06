@@ -2,24 +2,31 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 
 public abstract class AbstractSetOperand<ELEMENT> implements SetOperand<ELEMENT> {
 
+  protected final Config config;
+
+  protected AbstractSetOperand(Config config) {
+    this.config = Objects.requireNonNull(config);
+  }
+
   @Override
-  public SetOperand<ELEMENT> union(SetOperand<ELEMENT> other) {
+  public Mappable<ELEMENT> union(Mappable<ELEMENT> other) {
     Objects.requireNonNull(other);
     return union(other, SetOperationContext.Union::new);
   }
 
   @Override
-  public SetOperand<ELEMENT> unionAll(SetOperand<ELEMENT> other) {
+  public Mappable<ELEMENT> unionAll(Mappable<ELEMENT> other) {
     Objects.requireNonNull(other);
     return union(other, SetOperationContext.UnionAll::new);
   }
 
-  private SetOperand<ELEMENT> union(
-      SetOperand<ELEMENT> other,
+  private Mappable<ELEMENT> union(
+      Mappable<ELEMENT> other,
       BiFunction<
               SetOperationContext<ELEMENT>,
               SetOperationContext<ELEMENT>,
@@ -27,6 +34,6 @@ public abstract class AbstractSetOperand<ELEMENT> implements SetOperand<ELEMENT>
           newSetOperation) {
     Objects.requireNonNull(other);
     SetOperationContext<ELEMENT> context = newSetOperation.apply(getContext(), other.getContext());
-    return new NativeSqlSetIntermediate<>(context);
+    return new NativeSqlSetStarting<>(config, context);
   }
 }

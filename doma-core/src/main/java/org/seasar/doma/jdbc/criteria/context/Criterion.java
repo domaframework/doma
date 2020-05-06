@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.Collections;
 import java.util.List;
+import org.seasar.doma.jdbc.criteria.LikeOption;
 import org.seasar.doma.jdbc.criteria.Tuple2;
 
 public interface Criterion {
@@ -126,10 +127,12 @@ public interface Criterion {
   class Like implements Criterion {
     public final Operand.Prop left;
     public final Operand right;
+    public final LikeOption option;
 
-    public Like(Operand.Prop left, Operand right) {
+    public Like(Operand.Prop left, Operand right, LikeOption option) {
       this.left = left;
       this.right = right;
+      this.option = option;
     }
 
     @Override
@@ -141,10 +144,12 @@ public interface Criterion {
   class NotLike implements Criterion {
     public final Operand.Prop left;
     public final Operand right;
+    public final LikeOption option;
 
-    public NotLike(Operand.Prop left, Operand right) {
+    public NotLike(Operand.Prop left, Operand right, LikeOption option) {
       this.left = left;
       this.right = right;
+      this.option = option;
     }
 
     @Override

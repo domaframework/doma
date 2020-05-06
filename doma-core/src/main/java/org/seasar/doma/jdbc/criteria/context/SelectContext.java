@@ -8,12 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
-import org.seasar.doma.jdbc.criteria.statement.Row;
 
 public class SelectContext implements Context {
   public final EntityDef<?> entityDef;
@@ -27,9 +25,9 @@ public class SelectContext implements Context {
   public Integer limit;
   public Integer offset;
   public ForUpdate forUpdate;
-  public Function<Row, Object> mapper;
   public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
       new LinkedHashMap<>();
+  public final Options options = new Options();
 
   public SelectContext(EntityDef<?> entityDef) {
     this(entityDef, Projection.All);
@@ -59,6 +57,11 @@ public class SelectContext implements Context {
   @Override
   public void setWhere(List<Criterion> where) {
     this.where = where;
+  }
+
+  @Override
+  public Options getOptions() {
+    return options;
   }
 
   public List<EntityDef<?>> allEntityDefs() {

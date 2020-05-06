@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
+import org.seasar.doma.jdbc.criteria.context.Options;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByDeclaration;
@@ -19,14 +20,15 @@ import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
-public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTITY>>
-    implements SelectStatement<ENTITY> {
+public class EntityqlSelectStatement<ENTITY>
+    extends AbstractStatement<List<ENTITY>, EntityqlSelectStatement<ENTITY>>
+    implements Listable<ENTITY> {
 
   private final SelectFromDeclaration declaration;
 
-  public EntityqlSelectStatement(SelectFromDeclaration declaration) {
-    Objects.requireNonNull(declaration);
-    this.declaration = declaration;
+  public EntityqlSelectStatement(Config config, SelectFromDeclaration declaration) {
+    super(Objects.requireNonNull(config));
+    this.declaration = Objects.requireNonNull(declaration);
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(
@@ -45,7 +47,16 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
-    declaration.associate(first, second, associator);
+    declaration.associate(first, second, associator, AssociationKind.MANDATORY);
+    return this;
+  }
+
+  public <ENTITY1, ENTITY2> EntityqlSelectStatement<ENTITY> associate(
+      EntityDef<ENTITY1> first,
+      EntityDef<ENTITY2> second,
+      BiConsumer<ENTITY1, ENTITY2> associator,
+      AssociationKind kind) {
+    declaration.associate(first, second, associator, kind);
     return this;
   }
 
@@ -59,33 +70,35 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> limit(int limit) {
+  public EntityqlSelectStatement<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> offset(int offset) {
+  public EntityqlSelectStatement<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> forUpdate() {
-    declaration.forUpdate();
+    declaration.forUpdate(ForUpdateOption.WAIT);
     return this;
   }
 
-  public EntityqlSelectStatement<ENTITY> forUpdate(boolean nowait) {
-    declaration.forUpdate(nowait);
+  public EntityqlSelectStatement<ENTITY> forUpdate(ForUpdateOption option) {
+    declaration.forUpdate(option);
     return this;
   }
 
   @Override
-  protected Command<List<ENTITY>> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<List<ENTITY>> createCommand() {
     SelectContext context = declaration.getContext();
-    SelectBuilder builder = new SelectBuilder(config, context, commenter, sqlLogType);
+    Options options = context.getOptions();
+    SelectBuilder builder =
+        new SelectBuilder(
+            config, context, createCommenter(options.comment()), options.sqlLogType());
     PreparedSql sql = builder.build();
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), executeMethodName);
+    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new AssociateCommand<>(context, query);
   }
 }

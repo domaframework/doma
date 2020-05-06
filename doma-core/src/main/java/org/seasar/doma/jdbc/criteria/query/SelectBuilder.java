@@ -9,6 +9,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -176,9 +177,12 @@ public class SelectBuilder {
 
   private void forUpdate() {
     if (context.forUpdate != null) {
-      buf.appendSql(" for update");
-      if (context.forUpdate.nowait) {
-        buf.appendSql(" nowait");
+      ForUpdateOption option = context.forUpdate.option;
+      if (option != ForUpdateOption.DISABLED) {
+        buf.appendSql(" for update");
+        if (option == ForUpdateOption.NOWAIT) {
+          buf.appendSql(" nowait");
+        }
       }
     }
   }

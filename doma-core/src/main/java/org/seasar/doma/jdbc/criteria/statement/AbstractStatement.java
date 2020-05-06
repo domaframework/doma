@@ -1,72 +1,63 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
+import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.jdbc.CommentContext;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.message.Message;
 
-public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
+public abstract class AbstractStatement<RESULT, STMT extends AbstractStatement<RESULT, STMT>>
+    implements Statement<RESULT>, Peekable<STMT> {
 
-  private static final SqlLogType defaultSqlLogType = SqlLogType.FORMATTED;
-  private static final String defaultComment = "";
-  protected static String executeMethodName = "execute";
+  protected static final String EXECUTE_METHOD_NAME = "execute";
+  protected static final Method EXECUTE_METHOD;
 
-  @Override
-  public RESULT execute(Config config) {
-    Objects.requireNonNull(config, "config");
-    return execute(config, defaultSqlLogType);
+  static {
+    try {
+      EXECUTE_METHOD = Statement.class.getMethod(EXECUTE_METHOD_NAME);
+    } catch (NoSuchMethodException e) {
+      throw new DomaException(Message.DOMA6005, e, EXECUTE_METHOD_NAME);
+    }
+  }
+
+  protected final Config config;
+
+  protected AbstractStatement(Config config) {
+    this.config = Objects.requireNonNull(config);
   }
 
   @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    return execute(config, sqlLogType, defaultComment);
-  }
-
-  @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType, String comment) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, sqlLogType);
-  }
-
-  @Override
-  public RESULT execute(Config config, String comment) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, defaultSqlLogType);
-  }
-
-  @Override
-  public RESULT execute(Config config, String comment, SqlLogType sqlLogType) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    Objects.requireNonNull(comment, "comment");
-    Command<RESULT> command = createCommand(config, commenter(config, comment), sqlLogType);
+  public RESULT execute() {
+    Command<RESULT> command = createCommand();
     return command.execute();
   }
 
   @Override
-  public Sql<?> asSql(Config config) {
-    Objects.requireNonNull(config, "config");
-    Command<RESULT> command =
-        createCommand(config, commenter(config, defaultComment), defaultSqlLogType);
+  public Sql<?> asSql() {
+    Command<RESULT> command = createCommand();
     return command.getQuery().getSql();
   }
 
-  private Function<String, String> commenter(Config config, String comment) {
+  @Override
+  @SuppressWarnings("unchecked")
+  public STMT peek(Consumer<Sql<?>> consumer) {
+    consumer.accept(asSql());
+    return (STMT) this;
+  }
+
+  protected Function<String, String> createCommenter(String comment) {
     return sql -> {
       CommentContext context =
-          new CommentContext(getClass().getName(), executeMethodName, config, null, comment);
+          new CommentContext(
+              getClass().getName(), EXECUTE_METHOD_NAME, config, EXECUTE_METHOD, comment);
       return config.getCommenter().comment(sql, context);
     };
   }
 
-  protected abstract Command<RESULT> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType);
+  protected abstract Command<RESULT> createCommand();
 }

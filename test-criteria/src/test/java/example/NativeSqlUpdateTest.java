@@ -6,30 +6,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.statement.UpdateStatement;
+import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class NativeSqlUpdateTest {
 
-  private final Config config;
+  private final NativeSql nativeSql;
 
   public NativeSqlUpdateTest(Config config) {
-    this.config = config;
+    this.nativeSql = new NativeSql(config);
   }
 
   @Test
   void set() {
     Employee_ e = new Employee_();
 
-    UpdateStatement stmt =
-        NativeSql.update(e)
+    Statement<Integer> stmt =
+        nativeSql
+            .update(e)
             .set(
                 c -> {
                   c.value(e.employeeName, "aaa");
                   c.value(e.salary, new Salary("2000"));
                 });
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(14, count);
   }
 
@@ -37,8 +38,9 @@ public class NativeSqlUpdateTest {
   void where() {
     Employee_ e = new Employee_();
 
-    UpdateStatement stmt =
-        NativeSql.update(e)
+    Statement<Integer> stmt =
+        nativeSql
+            .update(e)
             .set(c -> c.value(e.departmentId, 3))
             .where(
                 c -> {
@@ -46,9 +48,7 @@ public class NativeSqlUpdateTest {
                   c.ge(e.salary, new Salary("2000"));
                 });
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(5, count);
-
-    System.out.println(stmt.asSql(config));
   }
 }
