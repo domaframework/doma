@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.SetOperationResultStreamHandler;
@@ -39,12 +38,11 @@ public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELE
   }
 
   @Override
-  protected Command<List<ELEMENT>> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<List<ELEMENT>> createCommand() {
     ResultSetHandler<List<ELEMENT>> handler =
         new SetOperationResultStreamHandler<>(s -> s.collect(toList()), mapper);
     NativeSqlSetTerminal<List<ELEMENT>> terminal =
         new NativeSqlSetTerminal<>(config, context, handler);
-    return terminal.createCommand(config, commenter, sqlLogType);
+    return terminal.createCommand();
   }
 }

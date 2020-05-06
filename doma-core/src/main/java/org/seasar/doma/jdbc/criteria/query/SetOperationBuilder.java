@@ -34,27 +34,30 @@ public class SetOperationBuilder {
 
   public PreparedSql build() {
     context.accept(
-        new SetOperationContext.Visitor() {
+        new SetOperationContext.Visitor<Void>() {
           @Override
-          public void visit(SetOperationContext.Select<?> select) {
+          public Void visit(SetOperationContext.Select<?> select) {
             SelectContext context = select.context;
             SelectBuilder builder =
                 new SelectBuilder(config, context, commenter, buf, new AliasManager(context));
             builder.interpret();
+            return null;
           }
 
           @Override
-          public void visit(SetOperationContext.Union<?> union) {
+          public Void visit(SetOperationContext.Union<?> union) {
             union.left.accept(this);
             buf.appendSql(" union ");
             union.right.accept(this);
+            return null;
           }
 
           @Override
-          public void visit(SetOperationContext.UnionAll<?> unionAll) {
+          public Void visit(SetOperationContext.UnionAll<?> unionAll) {
             unionAll.left.accept(this);
             buf.appendSql(" union all ");
             unionAll.right.accept(this);
+            return null;
           }
         });
     return buf.build(commenter);

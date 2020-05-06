@@ -2,9 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
@@ -26,9 +24,8 @@ public class NativeSqlDeleteStarting extends AbstractStatement<Integer> {
   }
 
   @Override
-  protected Command<Integer> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<Integer> createCommand() {
     NativeSqlDeleteTerminal terminal = new NativeSqlDeleteTerminal(config, declaration);
-    return terminal.createCommand(config, commenter, sqlLogType);
+    return terminal.createCommand();
   }
 }

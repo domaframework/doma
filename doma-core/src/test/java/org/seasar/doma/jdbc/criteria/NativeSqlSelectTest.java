@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.jdbc.CommentContext;
+import org.seasar.doma.jdbc.Commenter;
+import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
@@ -811,6 +814,41 @@ class NativeSqlSelectTest {
 
     assertEquals(
         "select t0_.NAME from EMP t0_ union all select t0_.NAME from CATA.DEPT t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void options_comment() {
+    Config config =
+        new MockConfig() {
+          @Override
+          public Commenter getCommenter() {
+            return new Commenter() {
+              @Override
+              public String comment(String sql, CommentContext context) {
+                if (context.getMessage().isPresent()) {
+                  String message = context.getMessage().get();
+                  return String.format("// %s\n%s", message, sql);
+                }
+                return sql;
+              }
+            };
+          }
+        };
+
+    NativeSql nativeSql = new NativeSql(config);
+
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt =
+        nativeSql.from(
+            e,
+            options -> {
+              options.comment("hello");
+            });
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "// hello\nselect t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
         sql.getFormattedSql());
   }
 }

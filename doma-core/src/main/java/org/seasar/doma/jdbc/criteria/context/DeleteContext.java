@@ -10,6 +10,7 @@ public class DeleteContext implements Context {
   public final EntityDef<?> entityDef;
   public final List<EntityDef<?>> entityDefs;
   public List<Criterion> where = new ArrayList<>();
+  public final Options options = new Options();
 
   public DeleteContext(EntityDef<?> entityDef) {
     Objects.requireNonNull(entityDef);
@@ -30,5 +31,10 @@ public class DeleteContext implements Context {
   @Override
   public void setWhere(List<Criterion> where) {
     this.where = where;
+  }
+
+  @Override
+  public Options getOptions() {
+    return options;
   }
 }

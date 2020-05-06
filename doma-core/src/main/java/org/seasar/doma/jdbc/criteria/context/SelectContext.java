@@ -27,6 +27,7 @@ public class SelectContext implements Context {
   public ForUpdate forUpdate;
   public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
       new LinkedHashMap<>();
+  public final Options options = new Options();
 
   public SelectContext(EntityDef<?> entityDef) {
     this(entityDef, Projection.All);
@@ -56,6 +57,11 @@ public class SelectContext implements Context {
   @Override
   public void setWhere(List<Criterion> where) {
     this.where = where;
+  }
+
+  @Override
+  public Options getOptions() {
+    return options;
   }
 
   public List<EntityDef<?>> allEntityDefs() {

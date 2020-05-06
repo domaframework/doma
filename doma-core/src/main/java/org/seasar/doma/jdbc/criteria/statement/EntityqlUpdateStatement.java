@@ -2,12 +2,11 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
-import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.criteria.context.Options;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
@@ -28,16 +27,18 @@ public class EntityqlUpdateStatement<ENTITY> extends AbstractStatement<ENTITY> {
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;
+  private final Options options;
 
-  public EntityqlUpdateStatement(Config config, EntityDef<ENTITY> entityDef, ENTITY entity) {
+  public EntityqlUpdateStatement(
+      Config config, EntityDef<ENTITY> entityDef, ENTITY entity, Options options) {
     super(Objects.requireNonNull(config));
     this.entityDef = Objects.requireNonNull(entityDef);
     this.entity = Objects.requireNonNull(entity);
+    this.options = Objects.requireNonNull(options);
   }
 
   @Override
-  protected Command<ENTITY> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<ENTITY> createCommand() {
     EntityType<ENTITY> entityType = entityDef.asType();
     AutoUpdateQuery<ENTITY> query =
         config.getQueryImplementors().createAutoUpdateQuery(METHOD, entityType);
@@ -47,13 +48,14 @@ public class EntityqlUpdateStatement<ENTITY> extends AbstractStatement<ENTITY> {
     query.setCallerClassName(getClass().getName());
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(config.getQueryTimeout());
-    query.setSqlLogType(sqlLogType);
+    query.setSqlLogType(options.sqlLogType());
     query.setNullExcluded(false);
     query.setVersionIgnored(false);
     query.setIncludedPropertyNames();
     query.setExcludedPropertyNames();
     query.setUnchangedPropertyIncluded(false);
     query.setOptimisticLockExceptionSuppressed(false);
+    query.setMessage(options.comment());
     query.prepare();
     UpdateCommand command = config.getCommandImplementors().createUpdateCommand(METHOD, query);
     return new Command<ENTITY>() {

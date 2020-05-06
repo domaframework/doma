@@ -10,7 +10,6 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.jdbc.command.EntityStreamHandler;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
@@ -111,12 +110,11 @@ public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTI
   }
 
   @Override
-  protected Command<List<ENTITY>> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<List<ENTITY>> createCommand() {
     ResultSetHandler<List<ENTITY>> handler =
         new EntityStreamHandler<>(entityDef.asType(), s -> s.collect(toList()));
     NativeSqlSelectTerminal<List<ENTITY>> terminal =
         new NativeSqlSelectTerminal<>(config, declaration, handler);
-    return terminal.createCommand(config, commenter, sqlLogType);
+    return terminal.createCommand();
   }
 }

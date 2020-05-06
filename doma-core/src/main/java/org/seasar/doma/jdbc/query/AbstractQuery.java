@@ -18,6 +18,8 @@ public abstract class AbstractQuery implements Query {
 
   protected int queryTimeout;
 
+  protected String message;
+
   private CommentContext commentContext;
 
   protected AbstractQuery() {}
@@ -67,10 +69,14 @@ public abstract class AbstractQuery implements Query {
     this.queryTimeout = queryTimeout;
   }
 
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
   @Override
   public void prepare() {
     assertNotNull(callerClassName, callerMethodName, config);
-    commentContext = new CommentContext(callerClassName, callerMethodName, config, method, null);
+    commentContext = new CommentContext(callerClassName, callerMethodName, config, method, message);
   }
 
   @Override
