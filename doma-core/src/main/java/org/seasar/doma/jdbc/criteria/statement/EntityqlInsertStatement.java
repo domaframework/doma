@@ -1,8 +1,6 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
-import java.lang.reflect.Method;
 import java.util.Objects;
-import org.seasar.doma.DomaException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
@@ -11,19 +9,8 @@ import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.message.Message;
 
 public class EntityqlInsertStatement<ENTITY> extends AbstractStatement<ENTITY> {
-
-  private static final Method METHOD;
-
-  static {
-    try {
-      METHOD = EntityqlInsertStatement.class.getMethod(EXECUTE_METHOD_NAME);
-    } catch (NoSuchMethodException e) {
-      throw new DomaException(Message.DOMA6005, e, EXECUTE_METHOD_NAME);
-    }
-  }
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;
@@ -41,8 +28,8 @@ public class EntityqlInsertStatement<ENTITY> extends AbstractStatement<ENTITY> {
   protected Command<ENTITY> createCommand() {
     EntityType<ENTITY> entityType = entityDef.asType();
     AutoInsertQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoInsertQuery(METHOD, entityType);
-    query.setMethod(METHOD);
+        config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
+    query.setMethod(EXECUTE_METHOD);
     query.setConfig(config);
     query.setEntity(entity);
     query.setCallerClassName(getClass().getName());
@@ -54,7 +41,8 @@ public class EntityqlInsertStatement<ENTITY> extends AbstractStatement<ENTITY> {
     query.setExcludedPropertyNames();
     query.setMessage(options.comment());
     query.prepare();
-    InsertCommand command = config.getCommandImplementors().createInsertCommand(METHOD, query);
+    InsertCommand command =
+        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
     return new Command<ENTITY>() {
       @Override
       public Query getQuery() {

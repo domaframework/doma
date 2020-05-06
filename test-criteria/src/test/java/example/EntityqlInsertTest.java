@@ -2,11 +2,11 @@ package example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
+import org.seasar.doma.jdbc.criteria.statement.Listable;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
@@ -28,12 +28,14 @@ public class EntityqlInsertTest {
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    assertEquals(department, entityql.insert(d, department).execute());
+    Statement<Department> insert = entityql.insert(d, department);
+    Department result = insert.execute();
 
-    Statement<List<Department>> select =
+    assertEquals(department, result);
+
+    Listable<Department> select =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId()));
-
-    Department department2 = select.execute().get(0);
+    Department department2 = select.getSingleResult().orElseThrow(AssertionError::new);
     assertEquals("aaa", department2.getDepartmentName());
   }
 }

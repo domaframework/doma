@@ -11,7 +11,6 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.Entityql;
 import org.seasar.doma.jdbc.criteria.statement.Listable;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class EntityqlSelectTest {
@@ -34,7 +33,7 @@ public class EntityqlSelectTest {
   void where() {
     Employee_ e = new Employee_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .where(
@@ -46,9 +45,9 @@ public class EntityqlSelectTest {
                         c.gt(e.salary, new Salary("1000"));
                         c.lt(e.salary, new Salary("2000"));
                       });
-                })
-            .getResultList();
+                });
 
+    List<Employee> list = stmt.getResultList();
     assertEquals(10, list.size());
   }
 
@@ -56,13 +55,13 @@ public class EntityqlSelectTest {
   void where_in() {
     Employee_ e = new Employee_();
 
-    Statement<List<Employee>> stmt =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .where(c -> c.in(e.employeeId, Arrays.asList(2, 3, 4)))
             .orderBy(c -> c.asc(e.employeeId));
 
-    List<Employee> list = stmt.execute();
+    List<Employee> list = stmt.getResultList();
     assertEquals(3, list.size());
   }
 
@@ -71,13 +70,13 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .where(c -> c.in(e.employeeId, c.from(e2).select(e2.managerId)))
-            .orderBy(c -> c.asc(e.employeeId))
-            .getResultList();
+            .orderBy(c -> c.asc(e.employeeId));
 
+    List<Employee> list = stmt.getResultList();
     assertEquals(6, list.size());
   }
 
@@ -86,7 +85,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .where(
@@ -95,9 +94,9 @@ public class EntityqlSelectTest {
                         c.from(e2)
                             .where(c2 -> c2.eq(e.employeeId, e2.managerId))
                             .select(e2.managerId)))
-            .orderBy(c -> c.asc(e.employeeId))
-            .getResultList();
+            .orderBy(c -> c.asc(e.employeeId));
 
+    List<Employee> list = stmt.getResultList();
     assertEquals(6, list.size());
   }
 
@@ -106,8 +105,10 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    List<Employee> list =
-        entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId)).getResultList();
+    Listable<Employee> stmt =
+        entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId));
+
+    List<Employee> list = stmt.getResultList();
     assertEquals(14, list.size());
   }
 
@@ -116,8 +117,10 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    List<Employee> list =
-        entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId)).getResultList();
+    Listable<Employee> stmt =
+        entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId));
+
+    List<Employee> list = stmt.getResultList();
     assertEquals(14, list.size());
   }
 
@@ -126,7 +129,7 @@ public class EntityqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
@@ -137,9 +140,9 @@ public class EntityqlSelectTest {
                 (employee, department) -> {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
-                })
-            .getResultList();
+                });
 
+    List<Employee> list = stmt.getResultList();
     assertEquals(6, list.size());
     assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
@@ -151,7 +154,7 @@ public class EntityqlSelectTest {
     Department_ d = new Department_();
     Address_ a = new Address_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
@@ -164,9 +167,9 @@ public class EntityqlSelectTest {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
                 })
-            .associate(e, a, (employee, address) -> employee.setAddress(address))
-            .getResultList();
+            .associate(e, a, (employee, address) -> employee.setAddress(address));
 
+    List<Employee> list = stmt.getResultList();
     assertEquals(6, list.size());
     assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
@@ -177,15 +180,16 @@ public class EntityqlSelectTest {
   void orderBy() {
     Employee_ e = new Employee_();
 
-    List<Employee> list =
+    Listable<Employee> stmt =
         entityql
             .from(e)
             .orderBy(
                 c -> {
                   c.asc(e.departmentId);
                   c.desc(e.salary);
-                })
-            .getResultList();
+                });
+
+    List<Employee> list = stmt.getResultList();
 
     assertEquals(14, list.size());
   }
