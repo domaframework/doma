@@ -29,7 +29,7 @@ public class EntityqlBatchUpdateTest {
     Listable<Employee> select =
         entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
 
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees = select.fetch();
     employees.forEach(it -> it.setEmployeeName("aaa"));
 
     Statement<List<Employee>> update = entityql.update(e, employees);

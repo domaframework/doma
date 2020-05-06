@@ -49,7 +49,7 @@ public class EntityqlBatchInsertTest {
 
     Listable<Department> select =
         entityql.from(d).where(c -> c.in(d.departmentId, ids)).orderBy(c -> c.asc(d.departmentId));
-    List<Department> departments2 = select.getResultList();
+    List<Department> departments2 = select.fetch();
     assertEquals(2, departments2.size());
   }
 

@@ -34,7 +34,7 @@ public class NativeSqlSelectTest {
 
     Listable<Employee> stmt = nativeSql.from(e);
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
     assertEquals(14, list.size());
   }
@@ -70,7 +70,7 @@ public class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.EMPLOYEE_NAME from EMPLOYEE t0_", sql.getFormattedSql());
-    List<String> list = stmt.getResultList();
+    List<String> list = stmt.fetch();
     assertEquals(14, list.size());
     assertEquals("SMITH", list.get(0));
   }
@@ -108,7 +108,7 @@ public class NativeSqlSelectTest {
 
     Listable<Employee> stmt = nativeSql.from(e).where(c -> c.eq(e.departmentId, 2));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
     assertEquals(5, list.size());
   }
@@ -120,7 +120,7 @@ public class NativeSqlSelectTest {
     Listable<Salary> stmt =
         nativeSql.from(e).<Salary>select(sum(e.salary)).map(row -> row.get(sum(e.salary)));
 
-    List<Salary> list = stmt.getResultList();
+    List<Salary> list = stmt.fetch();
 
     assertEquals(1, list.size());
     assertEquals(0, list.get(0).getValue().compareTo(new BigDecimal("29025")));
@@ -142,7 +142,7 @@ public class NativeSqlSelectTest {
                   return new Tuple2<>(id, count);
                 });
 
-    List<Tuple2<Integer, Long>> list = stmt.getResultList();
+    List<Tuple2<Integer, Long>> list = stmt.fetch();
 
     assertEquals(3, list.size());
   }
@@ -167,7 +167,7 @@ public class NativeSqlSelectTest {
                   return new Tuple2<>(first, second);
                 });
 
-    List<Tuple2<Long, String>> list = stmt.getResultList();
+    List<Tuple2<Long, String>> list = stmt.fetch();
 
     assertEquals(2, list.size());
     assertEquals(new Tuple2<>(5L, "RESEARCH"), list.get(0));
@@ -198,7 +198,7 @@ public class NativeSqlSelectTest {
                   return new Tuple2<>(first, second);
                 });
 
-    List<Tuple2<Long, String>> list = stmt.getResultList();
+    List<Tuple2<Long, String>> list = stmt.fetch();
 
     assertEquals(3, list.size());
     assertEquals(new Tuple2<>(3L, "ACCOUNTING"), list.get(0));
@@ -213,7 +213,7 @@ public class NativeSqlSelectTest {
     Listable<Employee> stmt =
         nativeSql.from(e).limit(5).offset(3).orderBy(c -> c.asc(e.employeeNo));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
     assertEquals(5, list.size());
   }
@@ -224,7 +224,7 @@ public class NativeSqlSelectTest {
 
     Listable<Employee> stmt = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).forUpdate();
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
     assertEquals(1, list.size());
   }
@@ -248,7 +248,7 @@ public class NativeSqlSelectTest {
                   return new Tuple2<>(id, name);
                 });
 
-    List<Tuple2<Integer, String>> list = stmt3.getResultList();
+    List<Tuple2<Integer, String>> list = stmt3.fetch();
 
     assertEquals(18, list.size());
   }

@@ -24,7 +24,7 @@ public class EntityqlUpdateTest {
     Employee_ e = new Employee_();
     Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
 
-    Employee employee = select.getSingleResult().orElseThrow(AssertionError::new);
+    Employee employee = select.fetchOptional().orElseThrow(AssertionError::new);
     employee.setEmployeeName("aaa");
     employee.setSalary(new Salary("2000"));
 
@@ -32,7 +32,7 @@ public class EntityqlUpdateTest {
     Employee result = update.execute();
     assertEquals(employee, result);
 
-    Employee employee2 = select.getSingleResult().orElseThrow(AssertionError::new);
+    Employee employee2 = select.fetchOptional().orElseThrow(AssertionError::new);
     assertEquals("aaa", employee2.getEmployeeName());
     assertEquals(0, new BigDecimal("2000").compareTo(employee2.getSalary().getValue()));
   }

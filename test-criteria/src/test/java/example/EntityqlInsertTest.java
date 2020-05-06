@@ -35,7 +35,7 @@ public class EntityqlInsertTest {
 
     Listable<Department> select =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId()));
-    Department department2 = select.getSingleResult().orElseThrow(AssertionError::new);
+    Department department2 = select.fetchOptional().orElseThrow(AssertionError::new);
     assertEquals("aaa", department2.getDepartmentName());
   }
 }
