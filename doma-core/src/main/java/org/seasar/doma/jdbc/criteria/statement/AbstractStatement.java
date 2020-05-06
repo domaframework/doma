@@ -12,61 +12,33 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
 
   private static final SqlLogType defaultSqlLogType = SqlLogType.FORMATTED;
   private static final String defaultComment = "";
-  protected static String executeMethodName = "execute";
+  protected static final String EXECUTE_METHOD_NAME = "execute";
 
-  @Override
-  public RESULT execute(Config config) {
-    Objects.requireNonNull(config, "config");
-    return execute(config, defaultSqlLogType);
+  protected final Config config;
+
+  protected AbstractStatement(Config config) {
+    this.config = Objects.requireNonNull(config);
   }
 
   @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    return execute(config, sqlLogType, defaultComment);
-  }
-
-  @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType, String comment) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, sqlLogType);
-  }
-
-  @Override
-  public RESULT execute(Config config, String comment) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, defaultSqlLogType);
-  }
-
-  @Override
-  public RESULT execute(Config config, String comment, SqlLogType sqlLogType) {
-    Objects.requireNonNull(config, "config");
-    Objects.requireNonNull(sqlLogType, "sqlLogType");
-    Objects.requireNonNull(comment, "comment");
-    Command<RESULT> command = createCommand(config, commenter(config, comment), sqlLogType);
+  public RESULT execute() {
+    Command<RESULT> command = createCommand();
     return command.execute();
   }
 
   @Override
-  public Sql<?> asSql(Config config) {
-    Objects.requireNonNull(config, "config");
-    Command<RESULT> command =
-        createCommand(config, commenter(config, defaultComment), defaultSqlLogType);
+  public Sql<?> asSql() {
+    Command<RESULT> command = createCommand();
     return command.getQuery().getSql();
   }
 
-  private Function<String, String> commenter(Config config, String comment) {
+  protected Function<String, String> createCommenter(String comment) {
     return sql -> {
       CommentContext context =
-          new CommentContext(getClass().getName(), executeMethodName, config, null, comment);
+          new CommentContext(getClass().getName(), EXECUTE_METHOD_NAME, config, null, comment);
       return config.getCommenter().comment(sql, context);
     };
   }
 
-  protected abstract Command<RESULT> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType);
+  protected abstract Command<RESULT> createCommand();
 }

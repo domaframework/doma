@@ -11,19 +11,19 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 @ExtendWith(Env.class)
 public class NativeSqlDeleteTest {
 
-  private final Config config;
+  private final NativeSql nativeSql;
 
   public NativeSqlDeleteTest(Config config) {
-    this.config = config;
+    this.nativeSql = new NativeSql(config);
   }
 
   @Test
   void from() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt = NativeSql.delete.from(e);
+    Statement<Integer> stmt = nativeSql.delete(e);
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(14, count);
   }
 
@@ -31,10 +31,9 @@ public class NativeSqlDeleteTest {
   void where() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt =
-        NativeSql.delete.from(e).where(c -> c.ge(e.salary, new Salary("2000")));
+    Statement<Integer> stmt = nativeSql.delete(e).where(c -> c.ge(e.salary, new Salary("2000")));
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(6, count);
   }
 }

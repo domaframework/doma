@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public interface SetOperationContext<ELEMENT> {
 
-  void accept(Visitor visitor);
+  <R> R accept(Visitor<R> visitor);
 
   class Select<ELEMENT> implements SetOperationContext<ELEMENT> {
     public final SelectContext context;
@@ -15,8 +15,8 @@ public interface SetOperationContext<ELEMENT> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
-      visitor.visit(this);
+    public <R> R accept(Visitor<R> visitor) {
+      return visitor.visit(this);
     }
   }
 
@@ -32,8 +32,8 @@ public interface SetOperationContext<ELEMENT> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
-      visitor.visit(this);
+    public <R> R accept(Visitor<R> visitor) {
+      return visitor.visit(this);
     }
   }
 
@@ -49,16 +49,16 @@ public interface SetOperationContext<ELEMENT> {
     }
 
     @Override
-    public void accept(Visitor visitor) {
-      visitor.visit(this);
+    public <R> R accept(Visitor<R> visitor) {
+      return visitor.visit(this);
     }
   }
 
-  interface Visitor {
-    void visit(Select<?> select);
+  interface Visitor<R> {
+    R visit(Select<?> select);
 
-    void visit(Union<?> union);
+    R visit(Union<?> union);
 
-    void visit(UnionAll<?> unionAll);
+    R visit(UnionAll<?> unionAll);
   }
 }

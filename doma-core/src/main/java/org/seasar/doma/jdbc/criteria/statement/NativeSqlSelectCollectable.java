@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.MappedObjectStreamHandler;
@@ -22,7 +21,8 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
   private final Function<Row, ELEMENT> rowMapper;
 
   public NativeSqlSelectCollectable(
-      SelectFromDeclaration declaration, Function<Row, ELEMENT> rowMapper) {
+      Config config, SelectFromDeclaration declaration, Function<Row, ELEMENT> rowMapper) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     Objects.requireNonNull(rowMapper);
     this.declaration = declaration;
@@ -33,7 +33,7 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
     List<PropertyDef<?>> propertyDefs = declaration.getContext().allPropertyDefs();
     ResultSetHandler<RESULT> handler =
         new MappedObjectStreamHandler<>(streamMapper, propertyDefs, rowMapper);
-    return new NativeSqlSelectTerminal<>(declaration, handler);
+    return new NativeSqlSelectTerminal<>(config, declaration, handler);
   }
 
   public <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector) {
@@ -41,13 +41,12 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
   }
 
   @Override
-  protected Command<List<ELEMENT>> createCommand(
-      Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
+  protected Command<List<ELEMENT>> createCommand() {
     List<PropertyDef<?>> propertyDefs = declaration.getContext().allPropertyDefs();
     ResultSetHandler<List<ELEMENT>> handler =
         new MappedObjectStreamHandler<>(s -> s.collect(toList()), propertyDefs, rowMapper);
     NativeSqlSelectTerminal<List<ELEMENT>> terminal =
-        new NativeSqlSelectTerminal<>(declaration, handler);
-    return terminal.createCommand(config, commenter, sqlLogType);
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return terminal.createCommand();
   }
 }

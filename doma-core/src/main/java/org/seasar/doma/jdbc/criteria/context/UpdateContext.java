@@ -13,6 +13,7 @@ public class UpdateContext implements Context {
   public final List<EntityDef<?>> entityDefs;
   public final Map<Operand.Prop, Operand.Param> set = new LinkedHashMap<>();
   public List<Criterion> where = new ArrayList<>();
+  public final Options options = new Options();
 
   public UpdateContext(EntityDef<?> entityDef) {
     Objects.requireNonNull(entityDef);
@@ -33,5 +34,10 @@ public class UpdateContext implements Context {
   @Override
   public void setWhere(List<Criterion> where) {
     this.where = where;
+  }
+
+  @Override
+  public Options getOptions() {
+    return options;
   }
 }

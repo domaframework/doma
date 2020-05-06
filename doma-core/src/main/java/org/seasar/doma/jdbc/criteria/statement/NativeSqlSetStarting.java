@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
+import java.util.Objects;
 import java.util.function.Function;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
@@ -10,13 +11,14 @@ public class NativeSqlSetStarting<ELEMENT> extends AbstractSetOperand<ELEMENT>
 
   private final SetOperationContext<ELEMENT> context;
 
-  public NativeSqlSetStarting(SetOperationContext<ELEMENT> context) {
-    this.context = context;
+  public NativeSqlSetStarting(Config config, SetOperationContext<ELEMENT> context) {
+    super(Objects.requireNonNull(config));
+    this.context = Objects.requireNonNull(context);
   }
 
   @Override
   public Collectable<ELEMENT> map(Function<Row, ELEMENT> mapper) {
-    return new NativeSqlSetCollectable<>(context, mapper);
+    return new NativeSqlSetCollectable<>(config, context, mapper);
   }
 
   @Override
@@ -25,9 +27,9 @@ public class NativeSqlSetStarting<ELEMENT> extends AbstractSetOperand<ELEMENT>
   }
 
   @Override
-  public Sql<?> asSql(Config config) {
+  public Sql<?> asSql() {
     NativeSqlSetCollectable<ELEMENT> terminate =
-        new NativeSqlSetCollectable<>(context, row -> null);
-    return terminate.asSql(config);
+        new NativeSqlSetCollectable<>(config, context, row -> null);
+    return terminate.asSql();
   }
 }

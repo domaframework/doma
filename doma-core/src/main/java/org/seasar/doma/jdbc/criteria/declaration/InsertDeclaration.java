@@ -4,11 +4,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 
-public class InsertIntoDeclaration {
+public class InsertDeclaration {
 
   private final InsertContext context;
 
-  public InsertIntoDeclaration(InsertContext context) {
+  public InsertDeclaration(InsertContext context) {
     Objects.requireNonNull(context);
     this.context = context;
   }

@@ -10,4 +10,6 @@ public interface Context {
   List<Criterion> getWhere();
 
   void setWhere(List<Criterion> where);
+
+  Options getOptions();
 }
