@@ -2,7 +2,7 @@
 Release notes
 =============
 
-v2.32.0: 2020-05-06
+v2.33.0: 2020-05-06
 ======================
 
 See also :doc:`criteria-api` and `simple-examples <https://github.com/domaframework/simple-examples>`_.
