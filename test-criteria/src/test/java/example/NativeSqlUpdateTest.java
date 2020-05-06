@@ -50,7 +50,5 @@ public class NativeSqlUpdateTest {
 
     int count = stmt.execute();
     assertEquals(5, count);
-
-    System.out.println(stmt.asSql());
   }
 }
