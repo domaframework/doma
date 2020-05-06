@@ -29,15 +29,17 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
     this.rowMapper = rowMapper;
   }
 
-  public <RESULT> Statement<RESULT> stream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
+  public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
     List<PropertyDef<?>> propertyDefs = declaration.getContext().allPropertyDefs();
     ResultSetHandler<RESULT> handler =
         new MappedObjectStreamHandler<>(streamMapper, propertyDefs, rowMapper);
-    return new NativeSqlSelectTerminal<>(config, declaration, handler);
+    NativeSqlSelectTerminal<RESULT> terminal =
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return terminal.execute();
   }
 
-  public <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector) {
-    return stream(s -> s.collect(collector));
+  public <RESULT> RESULT collect(Collector<ELEMENT, ?, RESULT> collector) {
+    return mapStream(s -> s.collect(collector));
   }
 
   @Override

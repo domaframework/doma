@@ -20,7 +20,8 @@ import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
-public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTITY>> {
+public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTITY>>
+    implements Listable<ENTITY> {
 
   private final SelectFromDeclaration declaration;
 
