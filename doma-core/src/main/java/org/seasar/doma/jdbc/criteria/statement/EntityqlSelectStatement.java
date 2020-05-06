@@ -25,9 +25,9 @@ public class EntityqlSelectStatement<ENTITY> extends AbstractStatement<List<ENTI
 
   private final SelectFromDeclaration declaration;
 
-  public EntityqlSelectStatement(SelectFromDeclaration declaration) {
-    Objects.requireNonNull(declaration);
-    this.declaration = declaration;
+  public EntityqlSelectStatement(Config config, SelectFromDeclaration declaration) {
+    super(Objects.requireNonNull(config));
+    this.declaration = Objects.requireNonNull(declaration);
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(

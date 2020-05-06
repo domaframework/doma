@@ -20,7 +20,7 @@ public class EntityqlUpdateStatement<ENTITY> extends AbstractStatement<ENTITY> {
 
   static {
     try {
-      METHOD = EntityqlUpdateStatement.class.getMethod(EXECUTE_METHOD_NAME, Config.class);
+      METHOD = EntityqlUpdateStatement.class.getMethod(EXECUTE_METHOD_NAME);
     } catch (NoSuchMethodException e) {
       throw new DomaException(Message.DOMA6005, e, EXECUTE_METHOD_NAME);
     }
@@ -29,7 +29,8 @@ public class EntityqlUpdateStatement<ENTITY> extends AbstractStatement<ENTITY> {
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;
 
-  public EntityqlUpdateStatement(EntityDef<ENTITY> entityDef, ENTITY entity) {
+  public EntityqlUpdateStatement(Config config, EntityDef<ENTITY> entityDef, ENTITY entity) {
+    super(Objects.requireNonNull(config));
     this.entityDef = Objects.requireNonNull(entityDef);
     this.entity = Objects.requireNonNull(entity);
   }

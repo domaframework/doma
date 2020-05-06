@@ -12,38 +12,44 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
 
   private static final SqlLogType defaultSqlLogType = SqlLogType.FORMATTED;
   private static final String defaultComment = "";
-  protected static String EXECUTE_METHOD_NAME = "execute";
+  protected static final String EXECUTE_METHOD_NAME = "execute";
 
-  @Override
-  public RESULT execute(Config config) {
-    Objects.requireNonNull(config, "config");
-    return execute(config, defaultSqlLogType);
+  protected final Config config;
+
+  protected AbstractStatement(Config config) {
+    this.config = Objects.requireNonNull(config);
   }
 
   @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType) {
+  public RESULT execute() {
+    Objects.requireNonNull(config, "config");
+    return execute(defaultSqlLogType);
+  }
+
+  @Override
+  public RESULT execute(SqlLogType sqlLogType) {
     Objects.requireNonNull(config, "config");
     Objects.requireNonNull(sqlLogType, "sqlLogType");
-    return execute(config, sqlLogType, defaultComment);
+    return execute(sqlLogType, defaultComment);
   }
 
   @Override
-  public RESULT execute(Config config, SqlLogType sqlLogType, String comment) {
+  public RESULT execute(SqlLogType sqlLogType, String comment) {
     Objects.requireNonNull(config, "config");
     Objects.requireNonNull(sqlLogType, "sqlLogType");
     Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, sqlLogType);
+    return execute(comment, sqlLogType);
   }
 
   @Override
-  public RESULT execute(Config config, String comment) {
+  public RESULT execute(String comment) {
     Objects.requireNonNull(config, "config");
     Objects.requireNonNull(comment, "comment");
-    return execute(config, comment, defaultSqlLogType);
+    return execute(comment, defaultSqlLogType);
   }
 
   @Override
-  public RESULT execute(Config config, String comment, SqlLogType sqlLogType) {
+  public RESULT execute(String comment, SqlLogType sqlLogType) {
     Objects.requireNonNull(config, "config");
     Objects.requireNonNull(sqlLogType, "sqlLogType");
     Objects.requireNonNull(comment, "comment");
@@ -52,7 +58,7 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
   }
 
   @Override
-  public Sql<?> asSql(Config config) {
+  public Sql<?> asSql() {
     Objects.requireNonNull(config, "config");
     Command<RESULT> command =
         createCommand(config, commenter(config, defaultComment), defaultSqlLogType);

@@ -27,7 +27,9 @@ public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTI
   private final SelectFromDeclaration declaration;
   private final EntityDef<ENTITY> entityDef;
 
-  public NativeSqlSelectStarting(SelectFromDeclaration declaration, EntityDef<ENTITY> entityDef) {
+  public NativeSqlSelectStarting(
+      Config config, SelectFromDeclaration declaration, EntityDef<ENTITY> entityDef) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     Objects.requireNonNull(entityDef);
     this.declaration = declaration;
@@ -96,12 +98,12 @@ public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTI
 
   public <RESULT> Mappable<RESULT> select(PropertyDef<?>... propertyDefs) {
     declaration.select(propertyDefs);
-    return new NativeSqlSelectMappable<>(declaration);
+    return new NativeSqlSelectMappable<>(config, declaration);
   }
 
   public <RESULT> Statement<RESULT> stream(Function<Stream<ENTITY>, RESULT> streamMapper) {
     ResultSetHandler<RESULT> handler = new EntityStreamHandler<>(entityDef.asType(), streamMapper);
-    return new NativeSqlSelectTerminal<>(declaration, handler);
+    return new NativeSqlSelectTerminal<>(config, declaration, handler);
   }
 
   public <RESULT> Statement<RESULT> collect(Collector<ENTITY, ?, RESULT> collector) {
@@ -114,7 +116,7 @@ public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTI
     ResultSetHandler<List<ENTITY>> handler =
         new EntityStreamHandler<>(entityDef.asType(), s -> s.collect(toList()));
     NativeSqlSelectTerminal<List<ENTITY>> terminal =
-        new NativeSqlSelectTerminal<>(declaration, handler);
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
     return terminal.createCommand(config, commenter, sqlLogType);
   }
 }

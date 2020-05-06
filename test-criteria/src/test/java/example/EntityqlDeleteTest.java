@@ -13,22 +13,22 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 @ExtendWith(Env.class)
 public class EntityqlDeleteTest {
 
-  private final Config config;
+  private final Entityql entityql;
 
   public EntityqlDeleteTest(Config config) {
-    this.config = config;
+    this.entityql = new Entityql(config);
   }
 
   @Test
   void test() {
     Employee_ e = new Employee_();
-    Statement<List<Employee>> select = Entityql.from(e).where(c -> c.eq(e.employeeId, 5));
+    Statement<List<Employee>> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
 
-    Employee employee = select.execute(config).get(0);
+    Employee employee = select.execute().get(0);
 
-    assertEquals(employee, Entityql.delete.from(e, employee).execute(config));
+    assertEquals(employee, entityql.delete(e, employee).execute());
 
-    List<Employee> employees = select.execute(config);
+    List<Employee> employees = select.execute();
     assertTrue(employees.isEmpty());
   }
 }

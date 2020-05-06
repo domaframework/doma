@@ -12,14 +12,15 @@ public class NativeSqlSelectMappable<ELEMENT> extends AbstractSetOperand<ELEMENT
 
   private final SelectFromDeclaration declaration;
 
-  public NativeSqlSelectMappable(SelectFromDeclaration declaration) {
+  public NativeSqlSelectMappable(Config config, SelectFromDeclaration declaration) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     this.declaration = declaration;
   }
 
   @Override
   public Collectable<ELEMENT> map(Function<Row, ELEMENT> mapper) {
-    return new NativeSqlSelectCollectable<>(declaration, mapper);
+    return new NativeSqlSelectCollectable<>(config, declaration, mapper);
   }
 
   @Override
@@ -28,9 +29,9 @@ public class NativeSqlSelectMappable<ELEMENT> extends AbstractSetOperand<ELEMENT
   }
 
   @Override
-  public Sql<?> asSql(Config config) {
+  public Sql<?> asSql() {
     NativeSqlSelectCollectable<ELEMENT> collectable =
-        new NativeSqlSelectCollectable<>(declaration, row -> null);
-    return collectable.asSql(config);
+        new NativeSqlSelectCollectable<>(config, declaration, row -> null);
+    return collectable.asSql();
   }
 }

@@ -19,7 +19,8 @@ public class NativeSqlSelectTerminal<RESULT> extends AbstractStatement<RESULT> {
   private final ResultSetHandler<RESULT> resultSetHandler;
 
   public NativeSqlSelectTerminal(
-      SelectFromDeclaration declaration, ResultSetHandler<RESULT> resultSetHandler) {
+      Config config, SelectFromDeclaration declaration, ResultSetHandler<RESULT> resultSetHandler) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     Objects.requireNonNull(resultSetHandler);
     this.declaration = declaration;

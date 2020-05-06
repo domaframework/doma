@@ -8,15 +8,16 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
-import org.seasar.doma.jdbc.criteria.declaration.DeleteFromDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.DeleteBuilder;
 
 public class NativeSqlDeleteTerminal extends AbstractStatement<Integer> {
 
-  private final DeleteFromDeclaration declaration;
+  private final DeleteDeclaration declaration;
 
-  public NativeSqlDeleteTerminal(DeleteFromDeclaration declaration) {
+  public NativeSqlDeleteTerminal(Config config, DeleteDeclaration declaration) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     this.declaration = declaration;
   }

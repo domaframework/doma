@@ -11,10 +11,10 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 @ExtendWith(Env.class)
 public class NativeSqlInsertTest {
 
-  private final Config config;
+  private final NativeSql nativeSql;
 
   public NativeSqlInsertTest(Config config) {
-    this.config = config;
+    this.nativeSql = new NativeSql(config);
   }
 
   @Test
@@ -22,8 +22,8 @@ public class NativeSqlInsertTest {
     Department_ d = new Department_();
 
     Statement<Integer> stmt =
-        NativeSql.insert
-            .into(d)
+        nativeSql
+            .insert(d)
             .values(
                 c -> {
                   c.value(d.departmentId, 99);
@@ -33,9 +33,9 @@ public class NativeSqlInsertTest {
                   c.value(d.version, 1);
                 });
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(1, count);
 
-    System.out.println(stmt.asSql(config));
+    System.out.println(stmt.asSql());
   }
 }

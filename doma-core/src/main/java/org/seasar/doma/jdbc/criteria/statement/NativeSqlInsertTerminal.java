@@ -8,17 +8,18 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
-import org.seasar.doma.jdbc.criteria.declaration.InsertIntoDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.InsertBuilder;
 
 public class NativeSqlInsertTerminal extends AbstractStatement<Integer> {
 
-  private final InsertIntoDeclaration declaration;
+  private final InsertDeclaration declaration;
 
-  public NativeSqlInsertTerminal(InsertContext context) {
-    Objects.requireNonNull(context);
-    this.declaration = new InsertIntoDeclaration(context);
+  public NativeSqlInsertTerminal(Config config, InsertDeclaration declaration) {
+    super(Objects.requireNonNull(config));
+    Objects.requireNonNull(declaration);
+    this.declaration = declaration;
   }
 
   @Override

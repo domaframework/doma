@@ -21,7 +21,8 @@ public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELE
   private final Function<Row, ELEMENT> mapper;
 
   public NativeSqlSetCollectable(
-      SetOperationContext<ELEMENT> context, Function<Row, ELEMENT> mapper) {
+      Config config, SetOperationContext<ELEMENT> context, Function<Row, ELEMENT> mapper) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(context);
     Objects.requireNonNull(mapper);
     this.context = context;
@@ -30,7 +31,7 @@ public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELE
 
   public <RESULT> Statement<RESULT> stream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
     ResultSetHandler<RESULT> handler = new SetOperationResultStreamHandler<>(streamMapper, mapper);
-    return new NativeSqlSetTerminal<>(context, handler);
+    return new NativeSqlSetTerminal<>(config, context, handler);
   }
 
   public <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector) {
@@ -42,7 +43,8 @@ public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELE
       Config config, Function<String, String> commenter, SqlLogType sqlLogType) {
     ResultSetHandler<List<ELEMENT>> handler =
         new SetOperationResultStreamHandler<>(s -> s.collect(toList()), mapper);
-    NativeSqlSetTerminal<List<ELEMENT>> terminal = new NativeSqlSetTerminal<>(context, handler);
+    NativeSqlSetTerminal<List<ELEMENT>> terminal =
+        new NativeSqlSetTerminal<>(config, context, handler);
     return terminal.createCommand(config, commenter, sqlLogType);
   }
 }

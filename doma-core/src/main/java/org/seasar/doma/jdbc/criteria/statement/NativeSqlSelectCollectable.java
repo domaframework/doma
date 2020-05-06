@@ -22,7 +22,8 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
   private final Function<Row, ELEMENT> rowMapper;
 
   public NativeSqlSelectCollectable(
-      SelectFromDeclaration declaration, Function<Row, ELEMENT> rowMapper) {
+      Config config, SelectFromDeclaration declaration, Function<Row, ELEMENT> rowMapper) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     Objects.requireNonNull(rowMapper);
     this.declaration = declaration;
@@ -33,7 +34,7 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
     List<PropertyDef<?>> propertyDefs = declaration.getContext().allPropertyDefs();
     ResultSetHandler<RESULT> handler =
         new MappedObjectStreamHandler<>(streamMapper, propertyDefs, rowMapper);
-    return new NativeSqlSelectTerminal<>(declaration, handler);
+    return new NativeSqlSelectTerminal<>(config, declaration, handler);
   }
 
   public <RESULT> Statement<RESULT> collect(Collector<ELEMENT, ?, RESULT> collector) {
@@ -47,7 +48,7 @@ public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<
     ResultSetHandler<List<ELEMENT>> handler =
         new MappedObjectStreamHandler<>(s -> s.collect(toList()), propertyDefs, rowMapper);
     NativeSqlSelectTerminal<List<ELEMENT>> terminal =
-        new NativeSqlSelectTerminal<>(declaration, handler);
+        new NativeSqlSelectTerminal<>(config, declaration, handler);
     return terminal.createCommand(config, commenter, sqlLogType);
   }
 }

@@ -11,10 +11,10 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 @ExtendWith(Env.class)
 public class NativeSqlUpdateTest {
 
-  private final Config config;
+  private final NativeSql nativeSql;
 
   public NativeSqlUpdateTest(Config config) {
-    this.config = config;
+    this.nativeSql = new NativeSql(config);
   }
 
   @Test
@@ -22,14 +22,15 @@ public class NativeSqlUpdateTest {
     Employee_ e = new Employee_();
 
     Statement<Integer> stmt =
-        NativeSql.update(e)
+        nativeSql
+            .update(e)
             .set(
                 c -> {
                   c.value(e.employeeName, "aaa");
                   c.value(e.salary, new Salary("2000"));
                 });
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(14, count);
   }
 
@@ -38,7 +39,8 @@ public class NativeSqlUpdateTest {
     Employee_ e = new Employee_();
 
     Statement<Integer> stmt =
-        NativeSql.update(e)
+        nativeSql
+            .update(e)
             .set(c -> c.value(e.departmentId, 3))
             .where(
                 c -> {
@@ -46,9 +48,9 @@ public class NativeSqlUpdateTest {
                   c.ge(e.salary, new Salary("2000"));
                 });
 
-    int count = stmt.execute(config);
+    int count = stmt.execute();
     assertEquals(5, count);
 
-    System.out.println(stmt.asSql(config));
+    System.out.println(stmt.asSql());
   }
 }

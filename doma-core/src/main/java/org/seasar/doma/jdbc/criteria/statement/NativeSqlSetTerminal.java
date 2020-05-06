@@ -18,7 +18,8 @@ public class NativeSqlSetTerminal<RESULT> extends AbstractStatement<RESULT> {
   private final ResultSetHandler<RESULT> resultSetHandler;
 
   public NativeSqlSetTerminal(
-      SetOperationContext<?> context, ResultSetHandler<RESULT> resultSetHandler) {
+      Config config, SetOperationContext<?> context, ResultSetHandler<RESULT> resultSetHandler) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(context);
     Objects.requireNonNull(resultSetHandler);
     this.context = context;

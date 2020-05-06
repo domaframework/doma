@@ -12,10 +12,10 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 @ExtendWith(Env.class)
 public class EntityqlInsertTest {
 
-  private final Config config;
+  private final Entityql entityql;
 
   public EntityqlInsertTest(Config config) {
-    this.config = config;
+    this.entityql = new Entityql(config);
   }
 
   @Test
@@ -28,12 +28,12 @@ public class EntityqlInsertTest {
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    assertEquals(department, Entityql.insert.into(d, department).execute(config));
+    assertEquals(department, entityql.insert(d, department).execute());
 
     Statement<List<Department>> select =
-        Entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId()));
+        entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId()));
 
-    Department department2 = select.execute(config).get(0);
+    Department department2 = select.execute().get(0);
     assertEquals("aaa", department2.getDepartmentName());
   }
 }

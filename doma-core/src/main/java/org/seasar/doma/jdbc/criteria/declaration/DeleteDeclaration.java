@@ -4,11 +4,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 
-public class DeleteFromDeclaration {
+public class DeleteDeclaration {
 
   private final DeleteContext context;
 
-  public DeleteFromDeclaration(DeleteContext context) {
+  public DeleteDeclaration(DeleteContext context) {
     Objects.requireNonNull(context);
     this.context = context;
   }

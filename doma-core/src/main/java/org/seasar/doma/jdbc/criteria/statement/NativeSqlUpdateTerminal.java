@@ -18,7 +18,8 @@ public class NativeSqlUpdateTerminal extends AbstractStatement<Integer> {
 
   private final UpdateDeclaration declaration;
 
-  public NativeSqlUpdateTerminal(UpdateDeclaration declaration) {
+  public NativeSqlUpdateTerminal(Config config, UpdateDeclaration declaration) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(declaration);
     this.declaration = declaration;
   }
