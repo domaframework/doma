@@ -11,7 +11,8 @@ import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SetOperationBuilder;
 
-public class NativeSqlSetTerminal<RESULT> extends AbstractStatement<RESULT> {
+public class NativeSqlSetTerminal<RESULT>
+    extends AbstractStatement<RESULT, NativeSqlSetTerminal<RESULT>> {
 
   private final SetOperationContext<?> context;
   private final ResultSetHandler<RESULT> resultSetHandler;

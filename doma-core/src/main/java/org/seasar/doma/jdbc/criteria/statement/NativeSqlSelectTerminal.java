@@ -12,7 +12,8 @@ import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
-public class NativeSqlSelectTerminal<RESULT> extends AbstractStatement<RESULT> {
+public class NativeSqlSelectTerminal<RESULT>
+    extends AbstractStatement<RESULT, NativeSqlSelectTerminal<RESULT>> {
 
   private final SelectFromDeclaration declaration;
   private final ResultSetHandler<RESULT> resultSetHandler;

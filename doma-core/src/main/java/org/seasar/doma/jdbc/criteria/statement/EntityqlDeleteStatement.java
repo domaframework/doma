@@ -10,7 +10,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
 
-public class EntityqlDeleteStatement<ENTITY> extends AbstractStatement<ENTITY> {
+public class EntityqlDeleteStatement<ENTITY>
+    extends AbstractStatement<ENTITY, EntityqlDeleteStatement<ENTITY>> {
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;

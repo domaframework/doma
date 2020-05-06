@@ -204,4 +204,19 @@ public class EntityqlSelectTest {
     System.out.printf("Raw SQL      : %s\n", sql.getRawSql());
     System.out.printf("Formatted SQL: %s\n", sql.getFormattedSql());
   }
+
+  @Test
+  void peek() {
+    Department_ d = new Department_();
+
+    List<Department> list =
+        entityql
+            .from(d)
+            .peek(System.out::println)
+            .where(c -> c.eq(d.departmentName, "SALES"))
+            .peek(System.out::println)
+            .orderBy(c -> c.asc(d.location))
+            .peek(sql -> System.out.println(sql.getFormattedSql()))
+            .getResultList();
+  }
 }

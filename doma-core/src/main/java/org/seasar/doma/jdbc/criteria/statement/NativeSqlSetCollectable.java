@@ -13,7 +13,8 @@ import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.SetOperationResultStreamHandler;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 
-public class NativeSqlSetCollectable<ELEMENT> extends AbstractStatement<List<ELEMENT>>
+public class NativeSqlSetCollectable<ELEMENT>
+    extends AbstractStatement<List<ELEMENT>, NativeSqlSetCollectable<ELEMENT>>
     implements Collectable<ELEMENT> {
 
   private final SetOperationContext<ELEMENT> context;
