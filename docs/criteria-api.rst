@@ -826,7 +826,7 @@ Be careful of the following points when you use the ``select`` method:
 Debugging (Entityql, NativeSql)
 -------------------------------
 
-To know the SQL statement built by the DSLs, use the ``asSql`` method instead of the ``execute`` method:
+To know the SQL statement built by the DSLs, use the ``asSql`` method:
 
 .. code-block:: java
 
@@ -847,6 +847,31 @@ The above code prints as follows:
 
 The ``asSql`` method doesn't issue the SQL statement to your Database.
 It only builds the SQL statement and return it as an ``Sql`` object.
+
+You can also get the ``Sql`` object by calling the ``peek`` method.
+
+.. code-block:: java
+
+    Department_ d = new Department_();
+
+    List<Department> list =
+        entityql
+            .from(d)
+            .peek(System.out::println)
+            .where(c -> c.eq(d.departmentName, "SALES"))
+            .peek(System.out::println)
+            .orderBy(c -> c.asc(d.location))
+            .peek(sql -> System.out.println(sql.getFormattedSql()))
+            .getResultList();
+
+The above code prints as follows:
+
+.. code-block:: sh
+
+    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_
+    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_ where t0_.DEPARTMENT_NAME = ?
+    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_ where t0_.DEPARTMENT_NAME = 'SALES' order by t0_.LOCATION asc
+
 
 Sample projects
 ===============

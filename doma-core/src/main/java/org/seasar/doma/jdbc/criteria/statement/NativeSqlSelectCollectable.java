@@ -14,7 +14,8 @@ import org.seasar.doma.jdbc.criteria.command.MappedObjectStreamHandler;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
-public class NativeSqlSelectCollectable<ELEMENT> extends AbstractStatement<List<ELEMENT>>
+public class NativeSqlSelectCollectable<ELEMENT>
+    extends AbstractStatement<List<ELEMENT>, NativeSqlSelectCollectable<ELEMENT>>
     implements Collectable<ELEMENT> {
 
   private final SelectFromDeclaration declaration;

@@ -13,7 +13,8 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
 
-public class EntityqlBatchInsertStatement<ENTITY> extends AbstractStatement<List<ENTITY>> {
+public class EntityqlBatchInsertStatement<ENTITY>
+    extends AbstractStatement<List<ENTITY>, EntityqlBatchInsertStatement<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_INSERT);
   private final EntityDef<ENTITY> entityDef;

@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.InsertBuilder;
 
-public class NativeSqlInsertTerminal extends AbstractStatement<Integer> {
+public class NativeSqlInsertTerminal extends AbstractStatement<Integer, NativeSqlInsertTerminal> {
 
   private final InsertDeclaration declaration;
 

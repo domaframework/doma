@@ -21,7 +21,8 @@ import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
-public class NativeSqlSelectStarting<ENTITY> extends AbstractStatement<List<ENTITY>>
+public class NativeSqlSelectStarting<ENTITY>
+    extends AbstractStatement<List<ENTITY>, NativeSqlSelectStarting<ENTITY>>
     implements Collectable<ENTITY> {
 
   private final SelectFromDeclaration declaration;

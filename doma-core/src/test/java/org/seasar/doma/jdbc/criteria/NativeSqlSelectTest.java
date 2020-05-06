@@ -851,4 +851,18 @@ class NativeSqlSelectTest {
         "// hello\nselect t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
         sql.getFormattedSql());
   }
+
+  @Test
+  void peek() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Collectable<Object> stmt =
+        nativeSql
+            .from(e)
+            .select(e.name)
+            .peek(System.out::println)
+            .union(nativeSql.from(d).select(d.name).peek(System.out::println))
+            .peek(System.out::println)
+            .map(row -> row.get(e.name));
+  }
 }

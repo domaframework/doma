@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.jdbc.CommentContext;
@@ -10,7 +11,8 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.message.Message;
 
-public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
+public abstract class AbstractStatement<RESULT, STMT extends AbstractStatement<RESULT, STMT>>
+    implements Statement<RESULT>, Peekable<STMT> {
 
   protected static final String EXECUTE_METHOD_NAME = "execute";
   protected static final Method EXECUTE_METHOD;
@@ -39,6 +41,13 @@ public abstract class AbstractStatement<RESULT> implements Statement<RESULT> {
   public Sql<?> asSql() {
     Command<RESULT> command = createCommand();
     return command.getQuery().getSql();
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public STMT peek(Consumer<Sql<?>> consumer) {
+    consumer.accept(asSql());
+    return (STMT) this;
   }
 
   protected Function<String, String> createCommenter(String comment) {
