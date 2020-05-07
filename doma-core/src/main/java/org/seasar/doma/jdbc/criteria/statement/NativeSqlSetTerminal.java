@@ -29,7 +29,7 @@ public class NativeSqlSetTerminal<RESULT>
     Options options = findOptions();
     SetOperationBuilder builder =
         new SetOperationBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(options.getComment()), options.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new SelectCommand<>(query, resultSetHandler);

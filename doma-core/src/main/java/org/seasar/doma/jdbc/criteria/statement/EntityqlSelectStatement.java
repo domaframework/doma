@@ -96,7 +96,7 @@ public class EntityqlSelectStatement<ENTITY>
     Options options = context.getOptions();
     SelectBuilder builder =
         new SelectBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(options.getComment()), options.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new AssociateCommand<>(context, query);

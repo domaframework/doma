@@ -37,10 +37,10 @@ public class EntityqlDeleteStatement<ENTITY>
     query.setCallerClassName(getClass().getName());
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(config.getQueryTimeout());
-    query.setSqlLogType(options.sqlLogType());
+    query.setSqlLogType(options.getSqlLogType());
     query.setVersionIgnored(false);
     query.setOptimisticLockExceptionSuppressed(false);
-    query.setMessage(options.comment());
+    query.setMessage(options.getComment());
     query.prepare();
     DeleteCommand command =
         config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);

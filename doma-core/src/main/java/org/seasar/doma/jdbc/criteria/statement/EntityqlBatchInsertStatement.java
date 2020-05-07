@@ -41,10 +41,10 @@ public class EntityqlBatchInsertStatement<ENTITY>
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(config.getQueryTimeout());
     query.setBatchSize(config.getBatchSize());
-    query.setSqlLogType(options.sqlLogType());
+    query.setSqlLogType(options.getSqlLogType());
     query.setIncludedPropertyNames();
     query.setExcludedPropertyNames();
-    query.setMessage(options.comment());
+    query.setMessage(options.getComment());
     query.prepare();
     BatchInsertCommand command =
         config.getCommandImplementors().createBatchInsertCommand(EXECUTE_METHOD, query);

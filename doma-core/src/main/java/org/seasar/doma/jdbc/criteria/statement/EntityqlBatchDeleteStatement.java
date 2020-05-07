@@ -41,10 +41,10 @@ public class EntityqlBatchDeleteStatement<ENTITY>
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(config.getQueryTimeout());
     query.setBatchSize(config.getBatchSize());
-    query.setSqlLogType(options.sqlLogType());
+    query.setSqlLogType(options.getSqlLogType());
     query.setVersionIgnored(false);
     query.setOptimisticLockExceptionSuppressed(false);
-    query.setMessage(options.comment());
+    query.setMessage(options.getComment());
     query.prepare();
     BatchDeleteCommand command =
         config.getCommandImplementors().createBatchDeleteCommand(EXECUTE_METHOD, query);

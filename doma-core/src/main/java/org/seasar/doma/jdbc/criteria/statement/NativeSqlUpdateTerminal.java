@@ -35,7 +35,7 @@ public class NativeSqlUpdateTerminal extends AbstractStatement<NativeSqlUpdateTe
     Options options = context.getOptions();
     UpdateBuilder builder =
         new UpdateBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(options.getComment()), options.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new UpdateCommand(query);

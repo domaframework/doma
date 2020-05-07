@@ -1,26 +1,33 @@
 package org.seasar.doma.jdbc.criteria.context;
 
-import java.util.Objects;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class Options {
-
   private String comment;
   private SqlLogType sqlLogType = SqlLogType.FORMATTED;
+  private int queryTimeout = 0;
 
-  public String comment() {
+  public String getComment() {
     return comment;
   }
 
-  public void comment(String comment) {
+  public void setComment(String comment) {
     this.comment = comment;
   }
 
-  public SqlLogType sqlLogType() {
+  public SqlLogType getSqlLogType() {
     return sqlLogType;
   }
 
-  public void sqlLogType(SqlLogType sqlLogType) {
-    this.sqlLogType = Objects.requireNonNull(sqlLogType);
+  public void setSqlLogType(SqlLogType sqlLogType) {
+    this.sqlLogType = sqlLogType;
+  }
+
+  public int getQueryTimeout() {
+    return queryTimeout;
+  }
+
+  public void setQueryTimeout(int queryTimeout) {
+    this.queryTimeout = queryTimeout;
   }
 }

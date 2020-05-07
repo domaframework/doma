@@ -27,7 +27,7 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
     Options options = context.getOptions();
     InsertBuilder builder =
         new InsertBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(options.getComment()), options.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new InsertCommand(query);

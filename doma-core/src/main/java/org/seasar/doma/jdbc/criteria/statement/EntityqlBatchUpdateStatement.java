@@ -41,12 +41,12 @@ public class EntityqlBatchUpdateStatement<ENTITY>
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(config.getQueryTimeout());
     query.setBatchSize(config.getBatchSize());
-    query.setSqlLogType(options.sqlLogType());
+    query.setSqlLogType(options.getSqlLogType());
     query.setVersionIgnored(false);
     query.setIncludedPropertyNames();
     query.setExcludedPropertyNames();
     query.setOptimisticLockExceptionSuppressed(false);
-    query.setMessage(options.comment());
+    query.setMessage(options.getComment());
     query.prepare();
     BatchUpdateCommand command =
         config.getCommandImplementors().createBatchUpdateCommand(EXECUTE_METHOD, query);

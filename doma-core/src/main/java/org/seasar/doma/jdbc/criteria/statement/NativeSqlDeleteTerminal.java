@@ -27,7 +27,7 @@ public class NativeSqlDeleteTerminal extends AbstractStatement<NativeSqlDeleteTe
     Options options = context.getOptions();
     DeleteBuilder builder =
         new DeleteBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(options.getComment()), options.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     return new DeleteCommand(query);

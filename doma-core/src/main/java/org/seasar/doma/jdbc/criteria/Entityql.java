@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.context.Options;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SelectOptions;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchDeleteStatement;
@@ -31,7 +32,7 @@ public class Entityql {
   }
 
   public <ENTITY> EntityqlSelectStatement<ENTITY> from(
-      EntityDef<ENTITY> entityDef, Consumer<Options> optionsConsumer) {
+      EntityDef<ENTITY> entityDef, Consumer<SelectOptions> optionsConsumer) {
     Objects.requireNonNull(entityDef);
     Objects.requireNonNull(optionsConsumer);
     SelectContext context = new SelectContext(entityDef);
