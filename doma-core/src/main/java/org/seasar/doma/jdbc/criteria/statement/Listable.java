@@ -24,8 +24,6 @@ public interface Listable<ELEMENT> extends Statement<List<ELEMENT>> {
     return fetchOptional().orElse(null);
   }
 
-  default Listable<ELEMENT> peek(Consumer<Sql<?>> consumer) {
-    consumer.accept(asSql());
-    return this;
-  }
+  @Override
+  Listable<ELEMENT> peek(Consumer<Sql<?>> consumer);
 }
