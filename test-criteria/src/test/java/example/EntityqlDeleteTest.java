@@ -25,13 +25,13 @@ public class EntityqlDeleteTest {
     Employee_ e = new Employee_();
     Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
 
-    Employee employee = select.getSingleResult().orElseThrow(AssertionError::new);
+    Employee employee = select.fetchOptional().orElseThrow(AssertionError::new);
 
     Statement<Employee> delete = entityql.delete(e, employee);
     Employee result = delete.execute();
     assertEquals(employee, result);
 
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees = select.fetch();
     assertTrue(employees.isEmpty());
   }
 }

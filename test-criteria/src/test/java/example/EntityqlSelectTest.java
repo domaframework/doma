@@ -1,10 +1,14 @@
 package example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
@@ -22,11 +26,45 @@ public class EntityqlSelectTest {
   }
 
   @Test
-  void all() {
+  void fetch() {
     Employee_ e = new Employee_();
 
-    List<Employee> list = entityql.from(e).getResultList();
+    List<Employee> list = entityql.from(e).fetch();
     assertEquals(14, list.size());
+  }
+
+  @Test
+  void fetchOptional() {
+    Employee_ e = new Employee_();
+
+    Optional<Employee> employee =
+        entityql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOptional();
+    assertTrue(employee.isPresent());
+  }
+
+  @Test
+  void fetchOptional_notPresent() {
+    Employee_ e = new Employee_();
+
+    Optional<Employee> employee =
+        entityql.from(e).where(c -> c.eq(e.employeeId, 100)).fetchOptional();
+    assertFalse(employee.isPresent());
+  }
+
+  @Test
+  void fetchOne() {
+    Employee_ e = new Employee_();
+
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOne();
+    assertNotNull(employee);
+  }
+
+  @Test
+  void fetchOne_null() {
+    Employee_ e = new Employee_();
+
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 100)).fetchOne();
+    assertNull(employee);
   }
 
   @Test
@@ -47,7 +85,7 @@ public class EntityqlSelectTest {
                       });
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(10, list.size());
   }
 
@@ -61,7 +99,7 @@ public class EntityqlSelectTest {
             .where(c -> c.in(e.employeeId, Arrays.asList(2, 3, 4)))
             .orderBy(c -> c.asc(e.employeeId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(3, list.size());
   }
 
@@ -76,7 +114,7 @@ public class EntityqlSelectTest {
             .where(c -> c.in(e.employeeId, c.from(e2).select(e2.managerId)))
             .orderBy(c -> c.asc(e.employeeId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(6, list.size());
   }
 
@@ -96,7 +134,7 @@ public class EntityqlSelectTest {
                             .select(e2.managerId)))
             .orderBy(c -> c.asc(e.employeeId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(6, list.size());
   }
 
@@ -108,7 +146,7 @@ public class EntityqlSelectTest {
     Listable<Employee> stmt =
         entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(14, list.size());
   }
 
@@ -120,7 +158,7 @@ public class EntityqlSelectTest {
     Listable<Employee> stmt =
         entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(14, list.size());
   }
 
@@ -142,7 +180,7 @@ public class EntityqlSelectTest {
                   department.getEmployeeList().add(employee);
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(6, list.size());
     assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
@@ -169,7 +207,7 @@ public class EntityqlSelectTest {
                 })
             .associate(e, a, (employee, address) -> employee.setAddress(address));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
     assertEquals(6, list.size());
     assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
@@ -189,7 +227,7 @@ public class EntityqlSelectTest {
                   c.desc(e.salary);
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
     assertEquals(14, list.size());
   }
@@ -217,6 +255,6 @@ public class EntityqlSelectTest {
             .peek(System.out::println)
             .orderBy(c -> c.asc(d.location))
             .peek(sql -> System.out.println(sql.getFormattedSql()))
-            .getResultList();
+            .fetch();
   }
 }

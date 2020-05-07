@@ -28,13 +28,13 @@ public class EntityqlBatchDeleteTest {
 
     Listable<Employee> select =
         entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees = select.fetch();
 
     Statement<List<Employee>> delete = entityql.delete(e, employees);
     List<Employee> results = delete.execute();
     assertEquals(employees, results);
 
-    List<Employee> employees2 = select.getResultList();
+    List<Employee> employees2 = select.fetch();
     assertTrue(employees2.isEmpty());
   }
 

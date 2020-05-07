@@ -103,7 +103,7 @@ For example, to query ``Employee`` and ``Department`` entities and associate the
                   department.getEmployeeList().add(employee);
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -157,7 +157,7 @@ For example, to query two columns with GROUP BY and HAVING clauses, write as fol
                   return new Tuple2<>(first, second);
                 });
 
-    List<Tuple2<Long, String>> list = stmt.getResultList();
+    List<Tuple2<Long, String>> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -214,7 +214,7 @@ We also support the following logical operators:
                       });
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -238,7 +238,7 @@ You can write a subquery as follows:
             .where(c -> c.in(e.employeeId, c.from(e2).select(e2.managerId)))
             .orderBy(c -> c.asc(e.employeeId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -269,7 +269,7 @@ innerJoin (Entityql, NativeSql)
     Listable<Employee> stmt =
         entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -291,7 +291,7 @@ leftJoin (Entityql, NativeSql)
     Listable<Employee> stmt =
         entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -328,7 +328,7 @@ You have to use the ``associate`` operation with join expression.
                   department.getEmployeeList().add(employee);
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -363,7 +363,7 @@ You can associate many entities:
                 })
             .associate(e, a, (employee, address) -> employee.setAddress(address));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 Aggregate Functions (NativeSql)
 ===============================
@@ -389,7 +389,7 @@ For example, you can pass the ``sum`` function to the select method:
     Listable<Salary> stmt =
         nativeSql.from(e).<Salary>select(sum(e.salary)).map(row -> row.get(sum(e.salary)));
 
-    List<Salary> list = stmt.getResultList();
+    List<Salary> list = stmt.fetch();
 
 Note that you have to specify a type argument to the select method.
 
@@ -418,7 +418,7 @@ Group by expression (NativeSql)
                   return new Tuple2<>(id, count);
                 });
 
-    List<Tuple2<Integer, Long>> list = stmt.getResultList();
+    List<Tuple2<Integer, Long>> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -464,7 +464,7 @@ We also support the following logical operators:
                   return new Tuple2<>(first, second);
                 });
 
-    List<Tuple2<Long, String>> list = stmt.getResultList();
+    List<Tuple2<Long, String>> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -497,7 +497,7 @@ We support the following order operations:
                   c.desc(e.salary);
                 });
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -518,7 +518,7 @@ Limit and Offset expression (Entityql, NativeSql)
     Listable<Employee> stmt =
         nativeSql.from(e).limit(5).offset(3).orderBy(c -> c.asc(e.employeeNo));
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -539,7 +539,7 @@ For Update expression (Entityql, NativeSql)
 
     Listable<Employee> stmt = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).forUpdate();
 
-    List<Employee> list = stmt.getResultList();
+    List<Employee> list = stmt.fetch();
 
 The above query issues the following SQL statement:
 
@@ -578,7 +578,7 @@ We support the following expressions:
                   return new Tuple2<>(id, name);
                 });
 
-    List<Tuple2<Integer, String>> list = stmt3.getResultList();
+    List<Tuple2<Integer, String>> list = stmt3.fetch();
 
 The above query issues the following SQL statement:
 
@@ -599,7 +599,7 @@ Delete statement (Entityql)
     Employee_ e = new Employee_();
 
     Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
-    Employee employee = select.getSingleResult().orElseThrow(AssertionError::new);
+    Employee employee = select.fetchOptional().orElseThrow(AssertionError::new);
 
     Statement<Employee> delete = entityql.delete(e, employee);
     Employee result = delete.execute();
@@ -618,7 +618,7 @@ Batch Delete is also supported:
 
     Listable<Employee> select =
         entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees = select.fetch();
 
     Statement<List<Employee>> delete = entityql.delete(e, employees);
     List<Employee> results = delete.execute();
@@ -751,7 +751,7 @@ Batch Update is also supported:
 
     Listable<Employee> select =
         entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees = select.fetch();
     employees.forEach(it -> it.setEmployeeName("aaa"));
 
     Statement<List<Employee>> update = entityql.update(e, employees);
@@ -802,7 +802,7 @@ To get a ``config`` object, call ``Config.get(this)`` in the default method as f
 
         Employee_ e = new Employee_();
         Listable<Employee> stmt = entityql.from(e).where(c -> c.eq(e.employeeId, id));
-        return stmt.getSingleResult();
+        return stmt.fetchOptional();
       }
     }
 
@@ -821,7 +821,7 @@ Be careful of the following points when you use the ``select`` method:
     Listable<String> stmt =
         nativeSql.from(e).<String>select(e.employeeName).map(row -> row.get(e.employeeName));
 
-    List<Salary> list = stmt.getResultList();
+    List<Salary> list = stmt.fetch();
 
 Debugging (Entityql, NativeSql)
 -------------------------------
@@ -862,7 +862,7 @@ You can also get the ``Sql`` object by calling the ``peek`` method.
             .peek(System.out::println)
             .orderBy(c -> c.asc(d.location))
             .peek(sql -> System.out.println(sql.getFormattedSql()))
-            .getResultList();
+            .fetch();
 
 The above code prints as follows:
 

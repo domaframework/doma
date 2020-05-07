@@ -8,16 +8,20 @@ import org.seasar.doma.jdbc.Sql;
 
 public interface Listable<ELEMENT> extends Statement<List<ELEMENT>> {
 
-  default List<ELEMENT> getResultList() {
+  default List<ELEMENT> fetch() {
     return execute();
-  }
-
-  default Optional<ELEMENT> getSingleResult() {
-    return execute().stream().findFirst();
   }
 
   default Stream<ELEMENT> stream() {
     return execute().stream();
+  }
+
+  default Optional<ELEMENT> fetchOptional() {
+    return stream().findFirst();
+  }
+
+  default ELEMENT fetchOne() {
+    return fetchOptional().orElse(null);
   }
 
   default Listable<ELEMENT> peek(Consumer<Sql<?>> consumer) {
