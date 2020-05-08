@@ -8,16 +8,18 @@ import static org.seasar.doma.jdbc.criteria.AggregateFunctions.sum;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.Tuple2;
+import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 import org.seasar.doma.jdbc.criteria.statement.Collectable;
 import org.seasar.doma.jdbc.criteria.statement.Listable;
-import org.seasar.doma.jdbc.criteria.statement.Mappable;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 @ExtendWith(Env.class)
 public class NativeSqlSelectTest {
@@ -62,11 +64,10 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void map() {
+  void select() {
     Employee_ e = new Employee_();
 
-    Collectable<String> stmt =
-        nativeSql.from(e).<String>select(e.employeeName).map(row -> row.get(e.employeeName));
+    Collectable<String> stmt = nativeSql.from(e).select(e.employeeName);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.EMPLOYEE_NAME from EMPLOYEE t0_", sql.getFormattedSql());
@@ -76,11 +77,10 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void map_stream() {
+  void select_mapStream() {
     Employee_ e = new Employee_();
 
-    Collectable<String> stmt =
-        nativeSql.from(e).<String>select(e.employeeName).map(row -> row.get(e.employeeName));
+    Collectable<String> stmt = nativeSql.from(e).select(e.employeeName);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.EMPLOYEE_NAME from EMPLOYEE t0_", sql.getFormattedSql());
@@ -90,16 +90,56 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void map_collect() {
+  void select_collect() {
     Employee_ e = new Employee_();
 
-    Collectable<String> stmt =
-        nativeSql.from(e).<String>select(e.employeeName).map(row -> row.get(e.employeeName));
+    Collectable<String> stmt = nativeSql.from(e).select(e.employeeName);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.EMPLOYEE_NAME from EMPLOYEE t0_", sql.getFormattedSql());
     long count = stmt.collect(counting());
     assertEquals(14, count);
+  }
+
+  @Test
+  void selectAsMap() {
+    Employee_ e = new Employee_();
+
+    Collectable<Map<PropertyDef<?>, Object>> stmt =
+        nativeSql
+            .from(e)
+            .orderBy(c -> c.asc(e.employeeId))
+            .select(new PropertyDef<?>[] {e.employeeId, e.employeeName});
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NAME from EMPLOYEE t0_ order by t0_.EMPLOYEE_ID asc",
+        sql.getFormattedSql());
+    List<Map<PropertyDef<?>, Object>> list = stmt.fetch();
+    assertEquals(14, list.size());
+    Map<PropertyDef<?>, Object> row = list.get(0);
+    assertEquals(2, row.size());
+    assertEquals(1, row.get(e.employeeId));
+    assertEquals("SMITH", row.get(e.employeeName));
+  }
+
+  @Test
+  void selectAsMap_empty() {
+    Employee_ e = new Employee_();
+
+    Collectable<Map<PropertyDef<?>, Object>> stmt =
+        nativeSql.from(e).orderBy(c -> c.asc(e.employeeId)).select();
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NO, t0_.EMPLOYEE_NAME, t0_.MANAGER_ID, t0_.HIREDATE, t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION from EMPLOYEE t0_ order by t0_.EMPLOYEE_ID asc",
+        sql.getFormattedSql());
+    List<Map<PropertyDef<?>, Object>> list = stmt.fetch();
+    assertEquals(14, list.size());
+    Map<PropertyDef<?>, Object> row = list.get(0);
+    assertEquals(9, row.size());
+    assertEquals(1, row.get(e.employeeId));
+    assertEquals("SMITH", row.get(e.employeeName));
   }
 
   @Test
@@ -117,8 +157,7 @@ public class NativeSqlSelectTest {
   void aggregate() {
     Employee_ e = new Employee_();
 
-    Listable<Salary> stmt =
-        nativeSql.from(e).<Salary>select(sum(e.salary)).map(row -> row.get(sum(e.salary)));
+    Listable<Salary> stmt = nativeSql.from(e).select(sum(e.salary));
 
     List<Salary> list = stmt.fetch();
 
@@ -131,16 +170,7 @@ public class NativeSqlSelectTest {
     Employee_ e = new Employee_();
 
     Listable<Tuple2<Integer, Long>> stmt =
-        nativeSql
-            .from(e)
-            .groupBy(e.departmentId)
-            .<Tuple2<Integer, Long>>select(e.departmentId, count())
-            .map(
-                row -> {
-                  Integer id = row.get(e.departmentId);
-                  Long count = row.get(count());
-                  return new Tuple2<>(id, count);
-                });
+        nativeSql.from(e).groupBy(e.departmentId).select(e.departmentId, count());
 
     List<Tuple2<Integer, Long>> list = stmt.fetch();
 
@@ -159,13 +189,7 @@ public class NativeSqlSelectTest {
             .groupBy(d.departmentName)
             .having(c -> c.gt(count(), 3L))
             .orderBy(c -> c.asc(count()))
-            .<Tuple2<Long, String>>select(count(), d.departmentName)
-            .map(
-                row -> {
-                  Long first = row.get(count());
-                  String second = row.get(d.departmentName);
-                  return new Tuple2<>(first, second);
-                });
+            .select(count(), d.departmentName);
 
     List<Tuple2<Long, String>> list = stmt.fetch();
 
@@ -190,13 +214,7 @@ public class NativeSqlSelectTest {
                   c.or(() -> c.le(min(e.salary), new Salary("2000")));
                 })
             .orderBy(c -> c.asc(count()))
-            .<Tuple2<Long, String>>select(count(), d.departmentName)
-            .map(
-                row -> {
-                  Long first = row.get(count());
-                  String second = row.get(d.departmentName);
-                  return new Tuple2<>(first, second);
-                });
+            .select(count(), d.departmentName);
 
     List<Tuple2<Long, String>> list = stmt.fetch();
 
@@ -234,19 +252,11 @@ public class NativeSqlSelectTest {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Mappable<Tuple2<Integer, String>> stmt1 =
+    SetOperand<Tuple2<Integer, String>> stmt1 =
         nativeSql.from(e).select(e.employeeId, e.employeeName);
-    Mappable<Tuple2<Integer, String>> stmt2 =
+    SetOperand<Tuple2<Integer, String>> stmt2 =
         nativeSql.from(d).select(d.departmentId, d.departmentName);
-    Listable<Tuple2<Integer, String>> stmt3 =
-        stmt1
-            .union(stmt2)
-            .map(
-                row -> {
-                  Integer id = row.get(e.employeeId);
-                  String name = row.get(e.employeeName);
-                  return new Tuple2<>(id, name);
-                });
+    SetOperand<Tuple2<Integer, String>> stmt3 = stmt1.union(stmt2);
 
     List<Tuple2<Integer, String>> list = stmt3.fetch();
 
@@ -254,26 +264,31 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void union_stream() {
+  void union_mapStream() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Mappable<Tuple2<Integer, String>> stmt1 =
+    SetOperand<Tuple2<Integer, String>> stmt1 =
         nativeSql.from(e).select(e.employeeId, e.employeeName);
-    Mappable<Tuple2<Integer, String>> stmt2 =
+    SetOperand<Tuple2<Integer, String>> stmt2 =
         nativeSql.from(d).select(d.departmentId, d.departmentName);
-    Collectable<Tuple2<Integer, String>> stmt3 =
-        stmt1
-            .union(stmt2)
-            .map(
-                row -> {
-                  Integer id = row.get(e.employeeId);
-                  String name = row.get(e.employeeName);
-                  return new Tuple2<>(id, name);
-                });
+    SetOperand<Tuple2<Integer, String>> stmt3 = stmt1.union(stmt2);
 
     long count = stmt3.mapStream(Stream::count);
 
     assertEquals(18, count);
+  }
+
+  @Test
+  void unionAll_entity() {
+    Department_ d = new Department_();
+
+    SetOperand<Department> stmt1 = nativeSql.from(d);
+    SetOperand<Department> stmt2 = nativeSql.from(d);
+    SetOperand<Department> stmt3 = stmt1.unionAll(stmt2);
+
+    List<Department> list = stmt3.fetch();
+
+    assertEquals(8, list.size());
   }
 }

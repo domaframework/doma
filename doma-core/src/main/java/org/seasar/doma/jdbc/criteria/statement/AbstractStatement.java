@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.message.Message;
 
-public abstract class AbstractStatement<RESULT, STMT extends AbstractStatement<RESULT, STMT>>
+public abstract class AbstractStatement<STMT extends AbstractStatement<STMT, RESULT>, RESULT>
     implements Statement<RESULT> {
 
   protected static final String EXECUTE_METHOD_NAME = "execute";

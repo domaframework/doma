@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlInsertStatement<ENTITY>
-    extends AbstractStatement<ENTITY, EntityqlInsertStatement<ENTITY>> {
+    extends AbstractStatement<EntityqlInsertStatement<ENTITY>, ENTITY> {
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;

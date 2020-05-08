@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import org.seasar.doma.jdbc.criteria.LikeOption;
-import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class WhereDeclaration extends ComparisonDeclaration<Context> {
 
@@ -97,14 +97,14 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   public <PROPERTY1, PROPERTY2> void in(
       Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
-    Operand.Prop prop1 = new Operand.Prop(left.first());
-    Operand.Prop prop2 = new Operand.Prop(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+    Operand.Prop prop2 = new Operand.Prop(left.getItem2());
     List<Tuple2<Operand.Param, Operand.Param>> params =
         right.stream()
             .map(
                 pair -> {
-                  Operand.Param param1 = new Operand.Param(left.first(), pair.first());
-                  Operand.Param param2 = new Operand.Param(left.second(), pair.second());
+                  Operand.Param param1 = new Operand.Param(left.getItem1(), pair.getItem1());
+                  Operand.Param param2 = new Operand.Param(left.getItem2(), pair.getItem2());
                   return new Tuple2<>(param1, param2);
                 })
             .collect(toList());
@@ -114,14 +114,14 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   public <PROPERTY1, PROPERTY2> void notIn(
       Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
-    Operand.Prop prop1 = new Operand.Prop(left.first());
-    Operand.Prop prop2 = new Operand.Prop(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+    Operand.Prop prop2 = new Operand.Prop(left.getItem2());
     List<Tuple2<Operand.Param, Operand.Param>> params =
         right.stream()
             .map(
                 pair -> {
-                  Operand.Param param1 = new Operand.Param(left.first(), pair.first());
-                  Operand.Param param2 = new Operand.Param(left.second(), pair.second());
+                  Operand.Param param1 = new Operand.Param(left.getItem1(), pair.getItem1());
+                  Operand.Param param2 = new Operand.Param(left.getItem2(), pair.getItem2());
                   return new Tuple2<>(param1, param2);
                 })
             .collect(toList());
@@ -133,8 +133,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    Operand.Prop prop1 = new Operand.Prop(left.first());
-    Operand.Prop prop2 = new Operand.Prop(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+    Operand.Prop prop2 = new Operand.Prop(left.getItem2());
     add(new Criterion.InTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
   }
 
@@ -143,8 +143,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    Operand.Prop prop1 = new Operand.Prop(left.first());
-    Operand.Prop prop2 = new Operand.Prop(left.second());
+    Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+    Operand.Prop prop2 = new Operand.Prop(left.getItem2());
     add(new Criterion.NotInTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
   }
 

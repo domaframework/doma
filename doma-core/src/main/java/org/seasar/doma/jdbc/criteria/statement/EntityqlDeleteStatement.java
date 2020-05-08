@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlDeleteStatement<ENTITY>
-    extends AbstractStatement<ENTITY, EntityqlDeleteStatement<ENTITY>> {
+    extends AbstractStatement<EntityqlDeleteStatement<ENTITY>, ENTITY> {
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;

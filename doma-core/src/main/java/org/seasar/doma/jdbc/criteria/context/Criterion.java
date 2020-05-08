@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc.criteria.context;
 import java.util.Collections;
 import java.util.List;
 import org.seasar.doma.jdbc.criteria.LikeOption;
-import org.seasar.doma.jdbc.criteria.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public interface Criterion {
   void accept(Visitor visitor);

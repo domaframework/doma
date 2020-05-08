@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
-public class NativeSqlDeleteStarting extends AbstractStatement<Integer, NativeSqlDeleteStarting> {
+public class NativeSqlDeleteStarting extends AbstractStatement<NativeSqlDeleteStarting, Integer> {
 
   private final DeleteDeclaration declaration;
 

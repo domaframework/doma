@@ -21,7 +21,7 @@ import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
 public class EntityqlSelectStatement<ENTITY>
-    extends AbstractStatement<List<ENTITY>, EntityqlSelectStatement<ENTITY>>
+    extends AbstractStatement<EntityqlSelectStatement<ENTITY>, List<ENTITY>>
     implements Listable<ENTITY> {
 
   private final SelectFromDeclaration declaration;

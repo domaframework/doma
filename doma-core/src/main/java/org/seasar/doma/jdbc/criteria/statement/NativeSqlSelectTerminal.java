@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
 public class NativeSqlSelectTerminal<RESULT>
-    extends AbstractStatement<RESULT, NativeSqlSelectTerminal<RESULT>> {
+    extends AbstractStatement<NativeSqlSelectTerminal<RESULT>, RESULT> {
 
   private final SelectFromDeclaration declaration;
   private final ResultSetHandler<RESULT> resultSetHandler;
@@ -21,10 +21,8 @@ public class NativeSqlSelectTerminal<RESULT>
   public NativeSqlSelectTerminal(
       Config config, SelectFromDeclaration declaration, ResultSetHandler<RESULT> resultSetHandler) {
     super(Objects.requireNonNull(config));
-    Objects.requireNonNull(declaration);
-    Objects.requireNonNull(resultSetHandler);
-    this.declaration = declaration;
-    this.resultSetHandler = resultSetHandler;
+    this.declaration = Objects.requireNonNull(declaration);
+    this.resultSetHandler = Objects.requireNonNull(resultSetHandler);
   }
 
   @Override
