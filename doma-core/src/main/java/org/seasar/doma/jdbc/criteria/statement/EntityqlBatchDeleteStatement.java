@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlBatchDeleteStatement<ENTITY>
-    extends AbstractStatement<List<ENTITY>, EntityqlBatchDeleteStatement<ENTITY>> {
+    extends AbstractStatement<EntityqlBatchDeleteStatement<ENTITY>, List<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_DELETE);
   private final EntityDef<ENTITY> entityDef;

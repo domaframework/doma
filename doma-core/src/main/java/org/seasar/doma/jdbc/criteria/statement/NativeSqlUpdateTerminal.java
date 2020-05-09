@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.UpdateBuilder;
 
-public class NativeSqlUpdateTerminal extends AbstractStatement<Integer, NativeSqlUpdateTerminal> {
+public class NativeSqlUpdateTerminal extends AbstractStatement<NativeSqlUpdateTerminal, Integer> {
 
   private final UpdateDeclaration declaration;
 

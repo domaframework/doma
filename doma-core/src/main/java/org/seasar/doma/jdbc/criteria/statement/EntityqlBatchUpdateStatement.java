@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlBatchUpdateStatement<ENTITY>
-    extends AbstractStatement<List<ENTITY>, EntityqlBatchUpdateStatement<ENTITY>> {
+    extends AbstractStatement<EntityqlBatchUpdateStatement<ENTITY>, List<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_UPDATE);
   private final EntityDef<ENTITY> entityDef;

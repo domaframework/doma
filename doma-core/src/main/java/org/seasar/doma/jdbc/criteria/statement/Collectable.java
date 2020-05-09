@@ -10,7 +10,9 @@ public interface Collectable<ELEMENT> extends Listable<ELEMENT> {
 
   <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper);
 
-  <RESULT> RESULT collect(Collector<ELEMENT, ?, RESULT> collector);
+  default <RESULT> RESULT collect(Collector<ELEMENT, ?, RESULT> collector) {
+    return mapStream(s -> s.collect(collector));
+  }
 
   @Override
   Collectable<ELEMENT> peek(Consumer<Sql<?>> consumer);

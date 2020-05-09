@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlUpdateStatement<ENTITY>
-    extends AbstractStatement<ENTITY, EntityqlUpdateStatement<ENTITY>> {
+    extends AbstractStatement<EntityqlUpdateStatement<ENTITY>, ENTITY> {
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;

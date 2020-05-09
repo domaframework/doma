@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SetOperationBuilder;
 
 public class NativeSqlSetTerminal<RESULT>
-    extends AbstractStatement<RESULT, NativeSqlSetTerminal<RESULT>> {
+    extends AbstractStatement<NativeSqlSetTerminal<RESULT>, RESULT> {
 
   private final SetOperationContext<?> context;
   private final ResultSetHandler<RESULT> resultSetHandler;
@@ -20,10 +20,8 @@ public class NativeSqlSetTerminal<RESULT>
   public NativeSqlSetTerminal(
       Config config, SetOperationContext<?> context, ResultSetHandler<RESULT> resultSetHandler) {
     super(Objects.requireNonNull(config));
-    Objects.requireNonNull(context);
-    Objects.requireNonNull(resultSetHandler);
-    this.context = context;
-    this.resultSetHandler = resultSetHandler;
+    this.context = Objects.requireNonNull(context);
+    this.resultSetHandler = Objects.requireNonNull(resultSetHandler);
   }
 
   @Override

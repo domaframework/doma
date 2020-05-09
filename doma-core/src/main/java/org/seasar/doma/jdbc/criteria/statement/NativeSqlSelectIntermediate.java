@@ -12,43 +12,45 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.MappedResultStreamHandler;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
+import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-public class NativeSqlSetStarting<ELEMENT>
-    extends AbstractSetOperand<NativeSqlSetStarting<ELEMENT>, ELEMENT> {
+public class NativeSqlSelectIntermediate<ELEMENT>
+    extends AbstractSetOperand<NativeSqlSelectIntermediate<ELEMENT>, ELEMENT>
+    implements SetOperand<ELEMENT> {
 
-  private final SetOperationContext<ELEMENT> context;
+  private final SelectFromDeclaration declaration;
 
-  public NativeSqlSetStarting(
+  public NativeSqlSelectIntermediate(
       Config config,
-      SetOperationContext<ELEMENT> context,
+      SelectFromDeclaration declaration,
       Function<SelectQuery, ObjectProvider<ELEMENT>> objectProviderFactory) {
-    super(Objects.requireNonNull(config), Objects.requireNonNull(objectProviderFactory));
-    this.context = Objects.requireNonNull(context);
+    super(Objects.requireNonNull(config), objectProviderFactory);
+    this.declaration = Objects.requireNonNull(declaration);
   }
 
   @Override
   public SetOperationContext<ELEMENT> getContext() {
-    return context;
+    return new SetOperationContext.Select<>(declaration.getContext());
   }
 
   @Override
   public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
-    NativeSqlSetTerminal<RESULT> terminal = createNativeSqlSetTerminal(streamMapper);
+    NativeSqlSelectTerminal<RESULT> terminal = createNativeSqlSelectTerminal(streamMapper);
     return terminal.execute();
   }
 
   @Override
   protected Command<List<ELEMENT>> createCommand() {
-    NativeSqlSetTerminal<List<ELEMENT>> terminal =
-        createNativeSqlSetTerminal(stream -> stream.collect(toList()));
+    NativeSqlSelectTerminal<List<ELEMENT>> terminal =
+        createNativeSqlSelectTerminal(stream -> stream.collect(toList()));
     return terminal.createCommand();
   }
 
-  private <RESULT> NativeSqlSetTerminal<RESULT> createNativeSqlSetTerminal(
+  private <RESULT> NativeSqlSelectTerminal<RESULT> createNativeSqlSelectTerminal(
       Function<Stream<ELEMENT>, RESULT> streamMapper) {
     ResultSetHandler<RESULT> handler =
         new MappedResultStreamHandler<>(streamMapper, objectProviderFactory);
-    return new NativeSqlSetTerminal<>(config, context, handler);
+    return new NativeSqlSelectTerminal<>(config, declaration, handler);
   }
 }

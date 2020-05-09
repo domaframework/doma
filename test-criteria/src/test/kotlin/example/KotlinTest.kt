@@ -7,9 +7,9 @@ import org.seasar.doma.jdbc.Config
 import org.seasar.doma.jdbc.criteria.AggregateFunctions.count
 import org.seasar.doma.jdbc.criteria.Entityql
 import org.seasar.doma.jdbc.criteria.NativeSql
-import org.seasar.doma.jdbc.criteria.Tuple2
-import org.seasar.doma.jdbc.criteria.Tuple3
 import org.seasar.doma.jdbc.criteria.statement.Collectable
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3
 
 @ExtendWith(Env::class)
 class KotlinTest(private val config: Config) {
@@ -51,7 +51,7 @@ class KotlinTest(private val config: Config) {
     @Test
     fun aggregate() {
         val e = Employee_()
-        val stmt: Collectable<Long> = nativeSql.from(e).select<Long>(count()).map { row -> row.get(count()) }
+        val stmt: Collectable<Long> = nativeSql.from(e).select(count())
         val list = stmt.execute()
         assertEquals(1, list.size)
         assertEquals(14, list[0])
