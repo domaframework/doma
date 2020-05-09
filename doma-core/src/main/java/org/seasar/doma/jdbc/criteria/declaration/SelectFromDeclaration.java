@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
@@ -28,6 +29,10 @@ public class SelectFromDeclaration {
 
   public SelectContext getContext() {
     return context;
+  }
+
+  public void distinct(DistinctOption distinctOption) {
+    context.distinct = distinctOption;
   }
 
   public void innerJoin(EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {

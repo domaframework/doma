@@ -8,6 +8,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
+import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -29,6 +30,16 @@ public class EntityqlSelectStatement<ENTITY>
   public EntityqlSelectStatement(Config config, SelectFromDeclaration declaration) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
+  }
+
+  public EntityqlSelectStatement<ENTITY> distinct() {
+    declaration.distinct(DistinctOption.ENABLED);
+    return this;
+  }
+
+  public EntityqlSelectStatement<ENTITY> distinct(DistinctOption distinctOption) {
+    declaration.distinct(distinctOption);
+    return this;
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(

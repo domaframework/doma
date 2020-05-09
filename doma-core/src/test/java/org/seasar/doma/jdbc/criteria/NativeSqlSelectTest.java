@@ -892,4 +892,36 @@ class NativeSqlSelectTest {
             .union(nativeSql.from(d).select(d.name).peek(System.out::println))
             .peek(System.out::println);
   }
+
+  @Test
+  void distinct() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).distinct().where(c -> c.eq(e.name, "a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_enabled() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql.from(e).distinct(DistinctOption.ENABLED).where(c -> c.eq(e.name, "a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_disabled() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql.from(e).distinct(DistinctOption.DISABLED).where(c -> c.eq(e.name, "a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+        sql.getFormattedSql());
+  }
 }

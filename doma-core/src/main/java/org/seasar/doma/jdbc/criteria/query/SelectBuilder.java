@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
@@ -77,7 +78,7 @@ public class SelectBuilder {
   private void select() {
     buf.appendSql("select ");
 
-    if (context.distinct) {
+    if (context.distinct == DistinctOption.ENABLED) {
       buf.appendSql("distinct ");
     }
 

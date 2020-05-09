@@ -10,13 +10,14 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
 public class SelectContext implements Context {
   public final EntityDef<?> entityDef;
   public Projection projection;
-  public boolean distinct;
+  public DistinctOption distinct = DistinctOption.DISABLED;
   public final List<Join> joins = new ArrayList<>();
   public List<Criterion> where = new ArrayList<>();
   public final List<PropertyDef<?>> groupBy = new ArrayList<>();

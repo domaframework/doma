@@ -12,6 +12,7 @@ import org.seasar.doma.internal.jdbc.command.EntityProvider;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.MappedResultProvider;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -47,6 +48,16 @@ public class NativeSqlSelectStarting<ENTITY>
     super(Objects.requireNonNull(config), Objects.requireNonNull(objectProviderFactory));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityDef = Objects.requireNonNull(entityDef);
+  }
+
+  public NativeSqlSelectStarting<ENTITY> distinct() {
+    declaration.distinct(DistinctOption.ENABLED);
+    return this;
+  }
+
+  public NativeSqlSelectStarting<ENTITY> distinct(DistinctOption distinctOption) {
+    declaration.distinct(distinctOption);
+    return this;
   }
 
   public NativeSqlSelectStarting<ENTITY> innerJoin(

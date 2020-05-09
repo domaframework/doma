@@ -193,4 +193,36 @@ class EntityqlSelectTest {
     assertEquals(
         "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
   }
+
+  @Test
+  void distinct() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct();
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_enabled() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.ENABLED);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_disabled() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.DISABLED);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
 }
