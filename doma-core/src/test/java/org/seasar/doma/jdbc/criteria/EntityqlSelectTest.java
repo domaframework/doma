@@ -11,6 +11,8 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
+import org.seasar.doma.jdbc.criteria.option.AssociationOption;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.message.Message;
 
@@ -115,7 +117,7 @@ class EntityqlSelectTest {
         entityql
             .from(e)
             .innerJoin(d, on -> {})
-            .associate(e, d, (emp, dept) -> {}, AssociationKind.OPTIONAL);
+            .associate(e, d, (emp, dept) -> {}, AssociationOption.OPTIONAL);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -188,6 +190,38 @@ class EntityqlSelectTest {
   void offset_null() {
     Emp_ e = new Emp_();
     Statement<List<Emp>> stmt = entityql.from(e).offset(null);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct();
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_enabled() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.ENABLED);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void distinct_disabled() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.DISABLED);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

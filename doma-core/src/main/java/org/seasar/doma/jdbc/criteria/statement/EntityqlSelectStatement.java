@@ -7,8 +7,6 @@ import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.criteria.AssociationKind;
-import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
@@ -17,6 +15,9 @@ import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.option.AssociationOption;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 
@@ -29,6 +30,16 @@ public class EntityqlSelectStatement<ENTITY>
   public EntityqlSelectStatement(Config config, SelectFromDeclaration declaration) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
+  }
+
+  public EntityqlSelectStatement<ENTITY> distinct() {
+    declaration.distinct(DistinctOption.ENABLED);
+    return this;
+  }
+
+  public EntityqlSelectStatement<ENTITY> distinct(DistinctOption distinctOption) {
+    declaration.distinct(distinctOption);
+    return this;
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(
@@ -47,7 +58,7 @@ public class EntityqlSelectStatement<ENTITY>
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
-    declaration.associate(first, second, associator, AssociationKind.MANDATORY);
+    declaration.associate(first, second, associator, AssociationOption.MANDATORY);
     return this;
   }
 
@@ -55,7 +66,7 @@ public class EntityqlSelectStatement<ENTITY>
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
-      AssociationKind kind) {
+      AssociationOption kind) {
     declaration.associate(first, second, associator, kind);
     return this;
   }
