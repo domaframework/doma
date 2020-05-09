@@ -11,5 +11,5 @@ public interface Context {
 
   void setWhere(List<Criterion> where);
 
-  Options getOptions();
+  Settings getSettings();
 }

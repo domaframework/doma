@@ -13,7 +13,7 @@ public class UpdateContext implements Context {
   public final List<EntityDef<?>> entityDefs;
   public final Map<Operand.Prop, Operand.Param> set = new LinkedHashMap<>();
   public List<Criterion> where = new ArrayList<>();
-  public final Options options = new Options();
+  public final UpdateSettings options = new UpdateSettings();
 
   public UpdateContext(EntityDef<?> entityDef) {
     Objects.requireNonNull(entityDef);
@@ -37,7 +37,7 @@ public class UpdateContext implements Context {
   }
 
   @Override
-  public Options getOptions() {
+  public UpdateSettings getSettings() {
     return options;
   }
 }

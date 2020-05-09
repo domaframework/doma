@@ -11,7 +11,7 @@ public class InsertContext implements Context {
   public final EntityDef<?> entityDef;
   public final List<EntityDef<?>> entityDefs;
   public Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
-  public final Options options = new Options();
+  public final InsertSettings options = new InsertSettings();
 
   public InsertContext(EntityDef<?> entityDef) {
     Objects.requireNonNull(entityDef);
@@ -35,7 +35,7 @@ public class InsertContext implements Context {
   }
 
   @Override
-  public Options getOptions() {
+  public InsertSettings getSettings() {
     return options;
   }
 }

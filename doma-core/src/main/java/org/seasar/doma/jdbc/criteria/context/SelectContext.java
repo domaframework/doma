@@ -27,7 +27,7 @@ public class SelectContext implements Context {
   public ForUpdate forUpdate;
   public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
       new LinkedHashMap<>();
-  public final SelectOptions options = new SelectOptions();
+  public final SelectSettings options = new SelectSettings();
 
   public SelectContext(EntityDef<?> entityDef) {
     this(entityDef, Projection.All);
@@ -60,7 +60,7 @@ public class SelectContext implements Context {
   }
 
   @Override
-  public SelectOptions getOptions() {
+  public SelectSettings getSettings() {
     return options;
   }
 

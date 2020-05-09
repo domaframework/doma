@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.DeleteCommand;
-import org.seasar.doma.jdbc.criteria.context.Options;
+import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
@@ -15,14 +15,14 @@ public class EntityqlDeleteStatement<ENTITY>
 
   private final EntityDef<ENTITY> entityDef;
   private final ENTITY entity;
-  private final Options options;
+  private final DeleteSettings settings;
 
   public EntityqlDeleteStatement(
-      Config config, EntityDef<ENTITY> entityDef, ENTITY entity, Options options) {
+      Config config, EntityDef<ENTITY> entityDef, ENTITY entity, DeleteSettings settings) {
     super(Objects.requireNonNull(config));
     this.entityDef = Objects.requireNonNull(entityDef);
     this.entity = Objects.requireNonNull(entity);
-    this.options = Objects.requireNonNull(options);
+    this.settings = Objects.requireNonNull(settings);
   }
 
   @Override
@@ -32,15 +32,14 @@ public class EntityqlDeleteStatement<ENTITY>
         config.getQueryImplementors().createAutoDeleteQuery(EXECUTE_METHOD, entityType);
     query.setConfig(config);
     query.setMethod(EXECUTE_METHOD);
-    query.setConfig(config);
     query.setEntity(entity);
     query.setCallerClassName(getClass().getName());
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
-    query.setQueryTimeout(config.getQueryTimeout());
-    query.setSqlLogType(options.getSqlLogType());
+    query.setQueryTimeout(settings.getQueryTimeout());
+    query.setSqlLogType(settings.getSqlLogType());
     query.setVersionIgnored(false);
     query.setOptimisticLockExceptionSuppressed(false);
-    query.setMessage(options.getComment());
+    query.setMessage(settings.getComment());
     query.prepare();
     DeleteCommand command =
         config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);

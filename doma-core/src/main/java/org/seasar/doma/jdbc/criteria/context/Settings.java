@@ -2,7 +2,7 @@ package org.seasar.doma.jdbc.criteria.context;
 
 import org.seasar.doma.jdbc.SqlLogType;
 
-public class Options {
+public class Settings {
   private String comment;
   private SqlLogType sqlLogType = SqlLogType.FORMATTED;
   private int queryTimeout = 0;

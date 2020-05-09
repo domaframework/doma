@@ -10,8 +10,8 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.AssociationKind;
 import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
-import org.seasar.doma.jdbc.criteria.context.Options;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SelectSettings;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
@@ -93,12 +93,15 @@ public class EntityqlSelectStatement<ENTITY>
   @Override
   protected Command<List<ENTITY>> createCommand() {
     SelectContext context = declaration.getContext();
-    Options options = context.getOptions();
+    SelectSettings settings = context.getSettings();
     SelectBuilder builder =
         new SelectBuilder(
-            config, context, createCommenter(options.getComment()), options.getSqlLogType());
+            config, context, createCommenter(settings.getComment()), settings.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
+    query.setFetchSize(settings.getFetchSize());
+    query.setMaxRows(settings.getMaxRows());
+    query.setQueryTimeout(settings.getQueryTimeout());
     return new AssociateCommand<>(context, query);
   }
 }
