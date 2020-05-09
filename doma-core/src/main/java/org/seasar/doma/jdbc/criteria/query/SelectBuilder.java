@@ -1,5 +1,7 @@
 package org.seasar.doma.jdbc.criteria.query;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -14,6 +16,7 @@ import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
 
@@ -128,6 +131,16 @@ public class SelectBuilder {
   }
 
   private void groupBy() {
+    if (context.groupBy.isEmpty()) {
+      List<PropertyDef<?>> propertyDefs = context.allPropertyDefs();
+      if (propertyDefs.stream().anyMatch(p -> p instanceof AggregateFunction<?>)) {
+        List<PropertyDef<?>> groupKeys =
+            propertyDefs.stream()
+                .filter(p -> !(p instanceof AggregateFunction<?>))
+                .collect(toList());
+        context.groupBy.addAll(groupKeys);
+      }
+    }
     if (!context.groupBy.isEmpty()) {
       buf.appendSql(" group by ");
       for (PropertyDef<?> p : context.groupBy) {

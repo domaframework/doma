@@ -710,6 +710,17 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void groupBy_auto_generation() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(e.id, e.salary, count(e.name), max(e.id));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.SALARY, count(t0_.NAME), max(t0_.ID) from EMP t0_ group by t0_.ID, t0_.SALARY",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void having() {
     Emp_ e = new Emp_();
     Buildable<?> stmt = nativeSql.from(e).having(c -> c.eq(e.id, 1)).select(e.id);

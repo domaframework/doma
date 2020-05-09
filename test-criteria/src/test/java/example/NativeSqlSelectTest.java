@@ -178,6 +178,17 @@ public class NativeSqlSelectTest {
   }
 
   @Test
+  void groupBy_auto_generation() {
+    Employee_ e = new Employee_();
+
+    Listable<Tuple2<Integer, Long>> stmt = nativeSql.from(e).select(e.departmentId, count());
+
+    List<Tuple2<Integer, Long>> list = stmt.fetch();
+
+    assertEquals(3, list.size());
+  }
+
+  @Test
   void having() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
