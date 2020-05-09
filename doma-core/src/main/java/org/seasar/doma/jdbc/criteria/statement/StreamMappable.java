@@ -6,7 +6,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.seasar.doma.jdbc.Sql;
 
-public interface Collectable<ELEMENT> extends Listable<ELEMENT> {
+public interface StreamMappable<ELEMENT> extends Listable<ELEMENT> {
 
   <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper);
 
@@ -15,5 +15,5 @@ public interface Collectable<ELEMENT> extends Listable<ELEMENT> {
   }
 
   @Override
-  Collectable<ELEMENT> peek(Consumer<Sql<?>> consumer);
+  StreamMappable<ELEMENT> peek(Consumer<Sql<?>> consumer);
 }

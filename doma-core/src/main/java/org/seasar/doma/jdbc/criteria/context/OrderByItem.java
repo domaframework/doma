@@ -11,8 +11,7 @@ public interface OrderByItem {
     public final PropertyDef<?> value;
 
     public Name(PropertyDef<?> value) {
-      Objects.requireNonNull(value);
-      this.value = value;
+      this.value = Objects.requireNonNull(value);
     }
 
     @Override

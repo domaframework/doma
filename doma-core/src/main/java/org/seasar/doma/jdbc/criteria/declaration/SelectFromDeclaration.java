@@ -23,8 +23,7 @@ public class SelectFromDeclaration {
   private final SelectContext context;
 
   public SelectFromDeclaration(SelectContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public SelectContext getContext() {

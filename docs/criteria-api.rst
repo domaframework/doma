@@ -3,7 +3,7 @@ Criteria API
 ============
 
 .. contents::
-   :depth: 3
+   :depth: 4
 
 .. warning::
 
@@ -30,15 +30,15 @@ We use the following Entity classes to show you some examples:
       private Integer employeeNo;
       private String employeeName;
       private Integer managerId;
-      private EmployeeInfo employeeInfo;
+      public LocalDate hiredate;
       private Salary salary;
       private Integer departmentId;
       private Integer addressId;
       @Version private Integer version;
+      @OriginalStates private Employee states;
       @Transient private Department department;
       @Transient private Employee manager;
       @Transient private Address address;
-
       // getter and setter
     }
 
@@ -66,7 +66,7 @@ See :doc:`annotation-processing` and check the `doma.criteria.prefix`
 and the `doma.criteria.suffix` options.
 
 Entityql DSL
-============
+------------
 
 The Entityql DSL can query and associate entities.
 The entry point is the ``org.seasar.doma.jdbc.criteria.Entityql`` class.
@@ -90,7 +90,7 @@ For example, to query ``Employee`` and ``Department`` entities and associate the
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
@@ -101,9 +101,8 @@ For example, to query ``Employee`` and ``Department`` entities and associate the
                 (employee, department) -> {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
-                });
-
-    List<Employee> list = stmt.fetch();
+                })
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -116,7 +115,7 @@ The above query issues the following SQL statement:
     where t1_.DEPARTMENT_NAME = ?
 
 NativeSql DSL
-=============
+-------------
 
 The NativeSql DSL can issue more complex SQL statements rather than the Entityql DSL.
 But note that the NativeSql DSL doesn't support to associate entities.
@@ -142,22 +141,15 @@ For example, to query two columns with GROUP BY and HAVING clauses, write as fol
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Tuple2<Long, String>> stmt =
+    List<Tuple2<Long, String>> list =
         nativeSql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .having(c -> c.gt(count(), 3L))
             .orderBy(c -> c.asc(count()))
-            .<Tuple2<Long, String>>select(count(), d.departmentName)
-            .map(
-                row -> {
-                  Long first = row.get(count());
-                  String second = row.get(d.departmentName);
-                  return new Tuple2<>(first, second);
-                });
-
-    List<Tuple2<Long, String>> list = stmt.fetch();
+            .select(count(), d.departmentName)
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -169,8 +161,133 @@ The above query issues the following SQL statement:
     having count(*) > ?
     order by count(*) asc
 
+Select statement
+================
+
+Select settings (Entityql, NativeSql)
+-------------------------------------
+
+We support the following settings:
+
+* comment
+* queryTimeout
+* sqlLogType
+* fetchSize
+* maxRows
+
+They are all optional.
+You can apply them as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list = entityql.from(e, settings -> {
+      settings.setComment("all employees");
+      settings.setSqlLogType(SqlLogType.RAW);
+      settings.setQueryTimeout(1000);
+      settings.setFetchSize(100);
+      settings.setMaxRows(100);
+    }).fetch();
+
+Fetching (Entityql, NativeSql)
+------------------------------
+
+Both Entityql DSL and NativeSql DSL support the following methods to fetch data from a database:
+
+* fetch
+* fetchOne
+* fetchOptional
+* stream
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    // The fetch method returns results as list.
+    List<Employee> list =
+        entityql.from(e).fetch();
+
+    // The fetchOne method returns a single result. The result may be null.
+    Employee employee =
+        entityql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOne();
+
+    // The fetchOptional method returns a single result as an optional object.
+    Optional<Employee> optional =
+        entityql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOptional();
+
+    // The stream method returns results as a stream.
+    // The following code is equivalent to "entityql.from(e).fetch().stream()"
+    Stream<Employee> stream =
+        entityql.from(e).stream();
+
+Streaming (NativeSql)
+---------------------
+
+The NativeSql Dsl supports the following methods:
+
+* mapStream
+* collect
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    // The mapStream method handles a stream.
+    Map<Integer, List<Employee>> map =
+        nativeSql
+            .from(e)
+            .mapStream(stream -> stream.collect(groupingBy(Employee::getDepartmentId)));
+
+    // The collect method is a shortcut of the mapStream method.
+    // The following code does the same thing with the above.
+    Map<Integer, List<Employee>> map2 =
+        nativeSql.from(e).collect(groupingBy(Employee::getDepartmentId));
+
+These methods handle the stream that wraps a JDBC ResultSet.
+So they are useful to process a large ResultSet effectively.
+
+Select expression (NativeSql)
+-----------------------------
+
+To project columns, use the select method.
+
+To project one column, pass one property to the select method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<String> list = nativeSql.from(e).select(e.employeeName).fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_NAME from EMPLOYEE t0_
+
+To project two or more columns, pass two or more properties to the select method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Tuple2<String, Integer>> list =
+        nativeSql.from(e).select(e.employeeName, e.employeeNo).fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_NAME, t0_.EMPLOYEE_NO from EMPLOYEE t0_
+
+Up to 9 numbers, the column results are held by ``Tuple2`` to ``Tuple9``.
+For more than 9 numbers, the results are held by ``List<Object>``.
+
+.. _criteria_where:
+
 Where expression (Entityql, NativeSql)
-======================================
+--------------------------------------
 
 We support the following operators and predicates:
 
@@ -200,7 +317,7 @@ We also support the following logical operators:
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .where(
@@ -212,9 +329,8 @@ We also support the following logical operators:
                         c.gt(e.salary, new Salary("1000"));
                         c.lt(e.salary, new Salary("2000"));
                       });
-                });
-
-    List<Employee> list = stmt.fetch();
+                })
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -232,13 +348,12 @@ You can write a subquery as follows:
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .where(c -> c.in(e.employeeId, c.from(e2).select(e2.managerId)))
-            .orderBy(c -> c.asc(e.employeeId));
-
-    List<Employee> list = stmt.fetch();
+            .orderBy(c -> c.asc(e.employeeId))
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -250,8 +365,46 @@ The above query issues the following SQL statement:
     where t0_.EMPLOYEE_ID in (select t1_.MANAGER_ID from EMPLOYEE t1_)
     order by t0_.EMPLOYEE_ID asc
 
+Dynamic where expression (Entityql, NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A where expression uses only evaluated operators to build a WHERE clause.
+
+When every operators are not evaluated in a where expression,
+the built statement doesn't have any WHERE clause.
+
+As well as, when every operators are not evaluated in a logical operator expression,
+the built statement doesn't have the logical operator expression.
+
+For example, suppose that a where expression contains a conditional expression as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .where(
+                c -> {
+                  c.eq(e.departmentId, 1);
+                  if (name != null) {
+                    c.like(e.employeeName, name);
+                  }
+                })
+            .fetch();
+
+In the case that the ``name`` variable is ``null``, the ``like`` expression is ignored.
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NO, t0_.EMPLOYEE_NAME, t0_.MANAGER_ID, t0_.HIREDATE,
+    t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
+    from EMPLOYEE t0_ where t0_.DEPARTMENT_ID = ?
+
 Join expression
-===============
+---------------
 
 We support the following expressions:
 
@@ -259,17 +412,15 @@ We support the following expressions:
 - leftJoin - (left outer join)
 
 innerJoin (Entityql, NativeSql)
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Employee> stmt =
-        entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId));
-
-    List<Employee> list = stmt.fetch();
+    List<Employee> list =
+        entityql.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId)).fetch();
 
 The above query issues the following SQL statement:
 
@@ -281,17 +432,15 @@ The above query issues the following SQL statement:
     inner join DEPARTMENT t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
 
 leftJoin (Entityql, NativeSql)
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Employee> stmt =
-        entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId));
-
-    List<Employee> list = stmt.fetch();
+    List<Employee> list =
+        entityql.from(e).leftJoin(d, on -> on.eq(e.departmentId, d.departmentId)).fetch();
 
 The above query issues the following SQL statement:
 
@@ -305,7 +454,7 @@ The above query issues the following SQL statement:
 .. _criteria_associate:
 
 associate (Entityql)
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 You can associate entities with the ``associate`` operation in the Entityql DSL.
 You have to use the ``associate`` operation with join expression.
@@ -315,7 +464,7 @@ You have to use the ``associate`` operation with join expression.
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
@@ -326,9 +475,8 @@ You have to use the ``associate`` operation with join expression.
                 (employee, department) -> {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
-                });
-
-    List<Employee> list = stmt.fetch();
+                })
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -348,7 +496,7 @@ You can associate many entities:
     Department_ d = new Department_();
     Address_ a = new Address_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
@@ -361,12 +509,78 @@ You can associate many entities:
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
                 })
-            .associate(e, a, (employee, address) -> employee.setAddress(address));
+            .associate(e, a, Employee::setAddress)
+            .fetch();
 
-    List<Employee> list = stmt.fetch();
+Dynamic join expression (Entityql, NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A join expression uses only evaluated operators to build a JOIN clause.
+
+When every operators are not evaluated in a join expression,
+the built statement doesn't have any JOIN clause.
+
+For example, suppose that a join expression contains a conditional expression as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Employee_ e2 = new Employee_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .innerJoin(
+                e2,
+                on -> {
+                  if (join) {
+                    on.eq(e.managerId, e2.employeeId);
+                  }
+                })
+            .fetch();
+
+In the case that the ``join`` variable is ``false``, the ``on`` expression is ignored.
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NO, t0_.EMPLOYEE_NAME, t0_.MANAGER_ID, t0_.HIREDATE,
+    t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
+    from EMPLOYEE t0_
+
+Dynamic associate (Entityql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you use the above dynamic join expression, the association must be optional.
+To do it, pass ``AssociationOption.OPTIONAL`` to the associate method:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .innerJoin(
+                d,
+                on -> {
+                  if (join) {
+                    on.eq(e.departmentId, d.departmentId);
+                  }
+                })
+            .associate(
+                e,
+                d,
+                (employee, department) -> {
+                  employee.setDepartment(department);
+                  department.getEmployeeList().add(employee);
+                },
+                AssociationOption.OPTIONAL)
+            .fetch();
 
 Aggregate Functions (NativeSql)
-===============================
+-------------------------------
 
 We support the following aggregate functions:
 
@@ -386,12 +600,7 @@ For example, you can pass the ``sum`` function to the select method:
 
     Employee_ e = new Employee_();
 
-    Listable<Salary> stmt =
-        nativeSql.from(e).<Salary>select(sum(e.salary)).map(row -> row.get(sum(e.salary)));
-
-    List<Salary> list = stmt.fetch();
-
-Note that you have to specify a type argument to the select method.
+    Salary salary = nativeSql.from(e).select(sum(e.salary)).fetchOne();
 
 The above query issues the following SQL statement:
 
@@ -400,25 +609,14 @@ The above query issues the following SQL statement:
     select sum(t0_.SALARY) from EMPLOYEE t0_
 
 Group by expression (NativeSql)
-===============================
+-------------------------------
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
 
-    Listable<Tuple2<Integer, Long>> stmt =
-        nativeSql
-            .from(e)
-            .groupBy(e.departmentId)
-            .<Tuple2<Integer, Long>>select(e.departmentId, count())
-            .map(
-                row -> {
-                  Integer id = row.get(e.departmentId);
-                  Long count = row.get(count());
-                  return new Tuple2<>(id, count);
-                });
-
-    List<Tuple2<Integer, Long>> list = stmt.fetch();
+    List<Tuple2<Integer, Long>> list =
+        nativeSql.from(e).groupBy(e.departmentId).select(e.departmentId, count()).fetch();
 
 The above query issues the following SQL statement:
 
@@ -426,8 +624,19 @@ The above query issues the following SQL statement:
 
     select t0_.DEPARTMENT_ID, count(*) from EMPLOYEE t0_ group by t0_.DEPARTMENT_ID
 
+When you don't specify a group by expression,
+the expression is inferred from the select expression automatically.
+So the following code issue the same SQL statement above:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Tuple2<Integer, Long>> list =
+        nativeSql.from(e).select(e.departmentId, count()).fetch();
+
 Having expression (NativeSql)
-=============================
+-----------------------------
 
 We support the following operators:
 
@@ -449,22 +658,14 @@ We also support the following logical operators:
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Listable<Tuple2<Long, String>> stmt =
+    List<Tuple2<Long, String>> list =
         nativeSql
             .from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
-            .groupBy(d.departmentName)
             .having(c -> c.gt(count(), 3L))
             .orderBy(c -> c.asc(count()))
-            .<Tuple2<Long, String>>select(count(), d.departmentName)
-            .map(
-                row -> {
-                  Long first = row.get(count());
-                  String second = row.get(d.departmentName);
-                  return new Tuple2<>(first, second);
-                });
-
-    List<Tuple2<Long, String>> list = stmt.fetch();
+            .select(count(), d.departmentName)
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -476,8 +677,19 @@ The above query issues the following SQL statement:
     group by t1_.DEPARTMENT_NAME having count(*) > ? or (min(t0_.SALARY) <= ?)
     order by count(*) asc
 
+Dynamic having expression (NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A having expression uses only evaluated operators to build a HAVING clause.
+
+When every operators are not evaluated in a having expression,
+the built statement doesn't have any HAVING clause.
+
+As well as, when every operators are not evaluated in a logical operator expression,
+the built statement doesn't have the logical operator expression.
+
 Order by expression (Entityql, NativeSql)
-=========================================
+-----------------------------------------
 
 We support the following order operations:
 
@@ -488,16 +700,15 @@ We support the following order operations:
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> stmt =
+    List<Employee> list =
         entityql
             .from(e)
             .orderBy(
                 c -> {
                   c.asc(e.departmentId);
                   c.desc(e.salary);
-                });
-
-    List<Employee> list = stmt.fetch();
+                })
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -508,17 +719,44 @@ The above query issues the following SQL statement:
     from EMPLOYEE t0_
     order by t0_.DEPARTMENT_ID asc, t0_.SALARY desc
 
+Dynamic order by expression (NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An order by expression uses only evaluated operators to build an ORDER BY clause.
+
+When every operators are not evaluated in a order by expression,
+the built statement doesn't have any ORDER BY clause.
+
+Distinct expression (Entityql, NativeSql)
+-----------------------------------------
+
+.. code-block:: java
+
+    List<Department> list =
+            nativeSql
+                    .from(d)
+                    .distinct()
+                    .leftJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+                    .fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select distinct t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME,
+    t0_.LOCATION, t0_.VERSION
+    from DEPARTMENT t0_
+    left outer join EMPLOYEE t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
+
 Limit and Offset expression (Entityql, NativeSql)
-=================================================
+-------------------------------------------------
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> stmt =
-        nativeSql.from(e).limit(5).offset(3).orderBy(c -> c.asc(e.employeeNo));
-
-    List<Employee> list = stmt.fetch();
+    List<Employee> list =
+        nativeSql.from(e).limit(5).offset(3).orderBy(c -> c.asc(e.employeeNo)).fetch();
 
 The above query issues the following SQL statement:
 
@@ -530,16 +768,23 @@ The above query issues the following SQL statement:
     order by t0_.EMPLOYEE_NO asc
     limit 5 offset 3
 
+Dynamic Limit and Offset expression (Entityql, NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A limit expressions uses only non-null value to build a LIMIT clause.
+When the value is null ,the built statement doesn't have any LIMIT clause.
+
+As well as, an offset expressions uses only non-null value to build a OFFSET clause.
+When the value is null ,the built statement doesn't have any OFFSET clause.
+
 For Update expression (Entityql, NativeSql)
-=================================================
+-------------------------------------------
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> stmt = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).forUpdate();
-
-    List<Employee> list = stmt.fetch();
+    List<Employee> list = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).forUpdate().fetch();
 
 The above query issues the following SQL statement:
 
@@ -552,7 +797,7 @@ The above query issues the following SQL statement:
     for update
 
 Union expression (NativeSql)
-============================
+----------------------------
 
 We support the following expressions:
 
@@ -564,21 +809,13 @@ We support the following expressions:
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
-    Mappable<Tuple2<Integer, String>> stmt1 =
-        nativeSql.from(e).select(e.employeeId, e.employeeName);
-    Mappable<Tuple2<Integer, String>> stmt2 =
-        nativeSql.from(d).select(d.departmentId, d.departmentName);
-    Listable<Tuple2<Integer, String>> stmt3 =
-        stmt1
-            .union(stmt2)
-            .map(
-                row -> {
-                  Integer id = row.get(e.employeeId);
-                  String name = row.get(e.employeeName);
-                  return new Tuple2<>(id, name);
-                });
-
-    List<Tuple2<Integer, String>> list = stmt3.fetch();
+    List<Tuple2<Integer, String>> list =
+        nativeSql
+            .from(e)
+            .select(e.employeeId, e.employeeName)
+            .union(nativeSql.from(d)
+            .select(d.departmentId, d.departmentName))
+            .fetch();
 
 The above query issues the following SQL statement:
 
@@ -588,21 +825,70 @@ The above query issues the following SQL statement:
     union
     select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NAME from DEPARTMENT t0_
 
+The order by expression with index is supported:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Tuple2<Integer, String>> list =
+        nativeSql
+            .from(e)
+            .select(e.employeeId, e.employeeName)
+            .union(nativeSql.from(d)
+            .select(d.departmentId, d.departmentName))
+            .orderBy(c -> c.asc(2))
+            .fetch();
+
 Delete statement
 ============================
 
-Delete statement (Entityql)
-----------------------------
+For the specification of the where expression, see :ref:`criteria_where`.
+The same rule is applied to delete statements.
+
+Delete settings (Entityql, NativeSql)
+-------------------------------------
+
+We support the following settings:
+
+* comment
+* queryTimeout
+* sqlLogType
+* allowEmptyWhere
+* batchSize
+
+They are all optional.
+
+You can apply them as follows:
 
 .. code-block:: java
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
-    Employee employee = select.fetchOptional().orElseThrow(AssertionError::new);
+    int count = nativeSql.delete(e, settings -> {
+      settings.setComment("delete all");
+      settings.setQueryTimeout(1000);
+      settings.setSqlLogType(SqlLogType.RAW);
+      settings.setAllowEmptyWhere(true);
+      settings.setBatchSize(20);
+    }).execute();
 
-    Statement<Employee> delete = entityql.delete(e, employee);
-    Employee result = delete.execute();
+.. note::
+
+    If you want to build a delete statement without a WHERE clause,
+    you have to enable the `allowEmptyWhere` setting.
+
+Delete statement (Entityql)
+---------------------------
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    Employee result = entityql.delete(e, employee).execute();
 
 The above query issues the following SQL statement:
 
@@ -616,12 +902,14 @@ Batch Delete is also supported:
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> select =
-        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.fetch();
+    List<Employee> employees =
+        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6))).fetch();
 
-    Statement<List<Employee>> delete = entityql.delete(e, employees);
-    List<Employee> results = delete.execute();
+    List<Employee> results = entityql.delete(e, employees).execute();
+
+The execute method may throw following exceptions:
+
+* OptimisticLockException: if the entity has a version property and an update count is 0
 
 Delete statement (NativeSql)
 ----------------------------
@@ -630,9 +918,7 @@ Delete statement (NativeSql)
 
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt = nativeSql.delete(e).where(c -> c.ge(e.salary, new Salary("2000")));
-
-    int count = stmt.execute();
+    int count = nativeSql.delete(e).where(c -> c.ge(e.salary, new Salary("2000"))).execute();
 
 The above query issues the following SQL statement:
 
@@ -642,6 +928,40 @@ The above query issues the following SQL statement:
 
 Insert statement
 ============================
+
+Insert settings (Entityql, NativeSql)
+-------------------------------------
+
+We support the following settings:
+
+* comment
+* queryTimeout
+* sqlLogType
+* batchSize
+
+They are all optional.
+
+You can apply them as follows:
+
+.. code-block:: java
+
+    int count =
+        nativeSql
+            .insert(d, settings -> {
+                settings.setComment("insert department");
+                settings.setQueryTimeout(1000);
+                settings.setSqlLogType(SqlLogType.RAW);
+                settings.setBatchSize(20);
+            })
+            .values(
+                c -> {
+                  c.value(d.departmentId, 99);
+                  c.value(d.departmentNo, 99);
+                  c.value(d.departmentName, "aaa");
+                  c.value(d.location, "bbb");
+                  c.value(d.version, 1);
+                })
+            .execute();
 
 Insert statement (Entityql)
 ----------------------------
@@ -656,8 +976,7 @@ Insert statement (Entityql)
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    Statement<Department> insert = entityql.insert(d, department);
-    Department result = insert.execute();
+    Department result = entityql.insert(d, department).execute();
 
 The above query issues the following SQL statement:
 
@@ -672,22 +991,15 @@ Batch Insert is also supported:
 
     Department_ d = new Department_();
 
-    Department department = new Department();
-    department.setDepartmentId(99);
-    department.setDepartmentNo(99);
-    department.setDepartmentName("aaa");
-    department.setLocation("bbb");
-
-    Department department2 = new Department();
-    department2.setDepartmentId(100);
-    department2.setDepartmentNo(100);
-    department2.setDepartmentName("ccc");
-    department2.setLocation("ddd");
-
+    Department department = ...;
+    Department department2 = ...;
     List<Department> departments = Arrays.asList(department, department2);
 
-    Statement<List<Department>> insert = entityql.insert(d, departments);
-    List<Department> results = insert.execute();
+    List<Department> results = entityql.insert(d, departments).execute();
+
+The execute method may throw following exceptions:
+
+* UniqueConstraintException: if an unique constraint is violated
 
 Insert statement (NativeSql)
 ----------------------------
@@ -696,7 +1008,7 @@ Insert statement (NativeSql)
 
     Department_ d = new Department_();
 
-    Statement<Integer> stmt =
+    int count =
         nativeSql
             .insert(d)
             .values(
@@ -706,9 +1018,8 @@ Insert statement (NativeSql)
                   c.value(d.departmentName, "aaa");
                   c.value(d.location, "bbb");
                   c.value(d.version, 1);
-                });
-
-    int count = stmt.execute();
+                })
+            .execute();
 
 The above query issues the following SQL statement:
 
@@ -717,8 +1028,49 @@ The above query issues the following SQL statement:
     insert into DEPARTMENT (DEPARTMENT_ID, DEPARTMENT_NO, DEPARTMENT_NAME, LOCATION, VERSION)
     values (?, ?, ?, ?, ?)
 
+The execute method may throw following exceptions:
+
+* UniqueConstraintException: if an unique constraint is violated
+
 Update statement
 ============================
+
+For the specification of the where expression, see :ref:`criteria_where`.
+The same rule is applied to update statements.
+
+Update settings (Entityql, NativeSql)
+-------------------------------------
+
+We support the following settings:
+
+* comment
+* queryTimeout
+* sqlLogType
+* allowEmptyWhere
+* batchSize
+
+They are all optional.
+
+You can apply them as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    int count = nativeSql.update(e, settings -> {
+      settings.setComment("update all");
+      settings.setQueryTimeout(1000);
+      settings.setSqlLogType(SqlLogType.RAW);
+      settings.setAllowEmptyWhere(true);
+      settings.setBatchSize(20);
+    }).set(c -> {
+      c.value(e.employeeName, "aaa");
+    }).execute();
+
+.. note::
+
+    If you want to build a update statement without a WHERE clause,
+    you have to enable the `allowEmptyWhere` setting.
 
 Update statement (Entityql)
 ----------------------------
@@ -727,21 +1079,18 @@ Update statement (Entityql)
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
-    Employee employee = select.execute().get(0);
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
     employee.setEmployeeName("aaa");
     employee.setSalary(new Salary("2000"));
 
-    Statement<Employee> update = entityql.update(e, employee);
-    Employee result = update.execute();
+    Employee result = entityql.update(e, employee).execute();
 
 The above query issues the following SQL statement:
 
 .. code-block:: sql
 
-    update EMPLOYEE set EMPLOYEE_NO = 7654, EMPLOYEE_NAME = 'aaa', MANAGER_ID = 6,
-    HIREDATE = '1981-09-28', SALARY = 2000, DEPARTMENT_ID = 3, ADDRESS_ID = 5, VERSION = 1 + 1
-    where EMPLOYEE_ID = 5 and VERSION = 1
+    update EMPLOYEE set EMPLOYEE_NAME = ?, SALARY = ?, VERSION = ? + 1
+    where EMPLOYEE_ID = ? and VERSION = ?
 
 Batch Update is also supported:
 
@@ -749,13 +1098,16 @@ Batch Update is also supported:
 
     Employee_ e = new Employee_();
 
-    Listable<Employee> select =
-        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.fetch();
-    employees.forEach(it -> it.setEmployeeName("aaa"));
+    Employee employee = ...;
+    Employee employee2 = ...;
+    List<Employee> departments = Arrays.asList(employee, employee2);
 
-    Statement<List<Employee>> update = entityql.update(e, employees);
-    List<Employee> results = update.execute();
+    List<Employee> results = entityql.update(e, employees).execute();
+
+The execute method may throw following exceptions:
+
+* OptimisticLockException: if the entity has a version property and an update count is 0
+* UniqueConstraintException: if an unique constraint is violated
 
 Update statement (NativeSql)
 ----------------------------
@@ -764,7 +1116,7 @@ Update statement (NativeSql)
 
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt =
+    int count =
         nativeSql
             .update(e)
             .set(c -> c.value(e.departmentId, 3))
@@ -772,9 +1124,8 @@ Update statement (NativeSql)
                 c -> {
                   c.isNotNull(e.managerId);
                   c.ge(e.salary, new Salary("2000"));
-                });
-
-    int count = stmt.execute();
+                })
+            .execute();
 
 The above query issues the following SQL statement:
 
@@ -782,6 +1133,10 @@ The above query issues the following SQL statement:
 
     update EMPLOYEE t0_ set t0_.DEPARTMENT_ID = ?
     where t0_.MANAGER_ID is not null and t0_.SALARY >= ?
+
+The execute method may throw following exceptions:
+
+* UniqueConstraintException: if an unique constraint is violated
 
 Tips
 ====
@@ -801,27 +1156,9 @@ To get a ``config`` object, call ``Config.get(this)`` in the default method as f
         Entityql entityql = new Entityql(Config.get(this));
 
         Employee_ e = new Employee_();
-        Listable<Employee> stmt = entityql.from(e).where(c -> c.eq(e.employeeId, id));
-        return stmt.fetchOptional();
+        return entityql.from(e).where(c -> c.eq(e.employeeId, id)).fetchOptional();
       }
     }
-
-The use of the select method (NativeSql)
-----------------------------------------
-
-Be careful of the following points when you use the ``select`` method:
-
-* Specify a type argument to the ``select`` method.
-* Use the ``select`` method in combination with the ``map`` method.
-
-.. code-block:: java
-
-    Employee_ e = new Employee_();
-
-    Listable<String> stmt =
-        nativeSql.from(e).<String>select(e.employeeName).map(row -> row.get(e.employeeName));
-
-    List<Salary> list = stmt.fetch();
 
 Debugging (Entityql, NativeSql)
 -------------------------------
@@ -854,13 +1191,14 @@ You can also get the ``Sql`` object by calling the ``peek`` method.
 
     Department_ d = new Department_();
 
-    List<Department> list =
-        entityql
+    List<String> locations = nativeSql
             .from(d)
             .peek(System.out::println)
             .where(c -> c.eq(d.departmentName, "SALES"))
             .peek(System.out::println)
             .orderBy(c -> c.asc(d.location))
+            .peek(sql -> System.out.println(sql.getFormattedSql()))
+            .select(d.location)
             .peek(sql -> System.out.println(sql.getFormattedSql()))
             .fetch();
 
@@ -871,6 +1209,7 @@ The above code prints as follows:
     select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_
     select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_ where t0_.DEPARTMENT_NAME = ?
     select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_ where t0_.DEPARTMENT_NAME = 'SALES' order by t0_.LOCATION asc
+    select t0_.LOCATION from DEPARTMENT t0_ where t0_.DEPARTMENT_NAME = 'SALES' order by t0_.LOCATION asc
 
 
 Sample projects

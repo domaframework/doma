@@ -11,9 +11,7 @@ public class Join {
   public final List<Criterion> on = new ArrayList<>();
 
   public Join(EntityDef<?> entityDef, JoinKind kind) {
-    Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(kind);
-    this.entityDef = entityDef;
-    this.kind = kind;
+    this.entityDef = Objects.requireNonNull(entityDef);
+    this.kind = Objects.requireNonNull(kind);
   }
 }

@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
@@ -13,8 +14,8 @@ public interface Criterion {
     public final Operand right;
 
     public Eq(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -28,8 +29,8 @@ public interface Criterion {
     public final Operand right;
 
     public Ne(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -43,8 +44,8 @@ public interface Criterion {
     public final Operand right;
 
     public Gt(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -58,8 +59,8 @@ public interface Criterion {
     public final Operand right;
 
     public Ge(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -73,8 +74,8 @@ public interface Criterion {
     public final Operand right;
 
     public Lt(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -88,8 +89,8 @@ public interface Criterion {
     public final Operand right;
 
     public Le(Operand.Prop left, Operand right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -102,7 +103,7 @@ public interface Criterion {
     public final Operand.Prop prop;
 
     public IsNull(Operand.Prop prop) {
-      this.prop = prop;
+      this.prop = Objects.requireNonNull(prop);
     }
 
     @Override
@@ -115,7 +116,7 @@ public interface Criterion {
     public final Operand.Prop prop;
 
     public IsNotNull(Operand.Prop prop) {
-      this.prop = prop;
+      this.prop = Objects.requireNonNull(prop);
     }
 
     @Override
@@ -130,9 +131,9 @@ public interface Criterion {
     public final LikeOption option;
 
     public Like(Operand.Prop left, Operand right, LikeOption option) {
-      this.left = left;
-      this.right = right;
-      this.option = option;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+      this.option = Objects.requireNonNull(option);
     }
 
     @Override
@@ -147,9 +148,9 @@ public interface Criterion {
     public final LikeOption option;
 
     public NotLike(Operand.Prop left, Operand right, LikeOption option) {
-      this.left = left;
-      this.right = right;
-      this.option = option;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+      this.option = Objects.requireNonNull(option);
     }
 
     @Override
@@ -164,9 +165,9 @@ public interface Criterion {
     public final Operand.Param end;
 
     public Between(Operand.Prop prop, Operand.Param start, Operand.Param end) {
-      this.prop = prop;
-      this.start = start;
-      this.end = end;
+      this.prop = Objects.requireNonNull(prop);
+      this.start = Objects.requireNonNull(start);
+      this.end = Objects.requireNonNull(end);
     }
 
     @Override
@@ -180,8 +181,8 @@ public interface Criterion {
     public final List<Operand.Param> right;
 
     public In(Operand.Prop left, List<Operand.Param> right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -195,8 +196,8 @@ public interface Criterion {
     public final List<Operand.Param> right;
 
     public NotIn(Operand.Prop left, List<Operand.Param> right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -210,8 +211,8 @@ public interface Criterion {
     public final SelectContext right;
 
     public InSubQuery(Operand.Prop left, SelectContext right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -225,8 +226,8 @@ public interface Criterion {
     public final SelectContext right;
 
     public NotInSubQuery(Operand.Prop left, SelectContext right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -241,8 +242,8 @@ public interface Criterion {
 
     public InTuple2(
         Tuple2<Operand.Prop, Operand.Prop> left, List<Tuple2<Operand.Param, Operand.Param>> right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -257,8 +258,8 @@ public interface Criterion {
 
     public NotInTuple2(
         Tuple2<Operand.Prop, Operand.Prop> left, List<Tuple2<Operand.Param, Operand.Param>> right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -272,8 +273,8 @@ public interface Criterion {
     public final SelectContext right;
 
     public InTuple2SubQuery(Tuple2<Operand.Prop, Operand.Prop> left, SelectContext right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -287,8 +288,8 @@ public interface Criterion {
     public final SelectContext right;
 
     public NotInTuple2SubQuery(Tuple2<Operand.Prop, Operand.Prop> left, SelectContext right) {
-      this.left = left;
-      this.right = right;
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
     }
 
     @Override
@@ -301,7 +302,7 @@ public interface Criterion {
     public final SelectContext context;
 
     public Exists(SelectContext context) {
-      this.context = context;
+      this.context = Objects.requireNonNull(context);
     }
 
     @Override
@@ -314,7 +315,7 @@ public interface Criterion {
     public final SelectContext context;
 
     public NotExists(SelectContext context) {
-      this.context = context;
+      this.context = Objects.requireNonNull(context);
     }
 
     @Override
@@ -327,6 +328,7 @@ public interface Criterion {
     public final List<Criterion> criterionList;
 
     public And(List<Criterion> criterionList) {
+      Objects.requireNonNull(criterionList);
       this.criterionList = Collections.unmodifiableList(criterionList);
     }
 
@@ -340,6 +342,7 @@ public interface Criterion {
     public final List<Criterion> criterionList;
 
     public Or(List<Criterion> criterionList) {
+      Objects.requireNonNull(criterionList);
       this.criterionList = Collections.unmodifiableList(criterionList);
     }
 
@@ -353,6 +356,7 @@ public interface Criterion {
     public final List<Criterion> criterionList;
 
     public Not(List<Criterion> criterionList) {
+      Objects.requireNonNull(criterionList);
       this.criterionList = Collections.unmodifiableList(criterionList);
     }
 

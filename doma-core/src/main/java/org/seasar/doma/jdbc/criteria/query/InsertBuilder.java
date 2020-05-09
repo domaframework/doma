@@ -12,7 +12,6 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 
 public class InsertBuilder {
-  private final Config config;
   private final InsertContext context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
@@ -31,14 +30,9 @@ public class InsertBuilder {
       InsertContext context,
       Function<String, String> commenter,
       PreparedSqlBuilder buf) {
-    Objects.requireNonNull(config);
-    Objects.requireNonNull(context);
-    Objects.requireNonNull(commenter);
-    Objects.requireNonNull(buf);
-    this.config = config;
-    this.context = context;
-    this.commenter = commenter;
-    this.buf = buf;
+    this.context = Objects.requireNonNull(context);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.buf = Objects.requireNonNull(buf);
     support = new BuilderSupport(config, commenter, buf, null);
   }
 

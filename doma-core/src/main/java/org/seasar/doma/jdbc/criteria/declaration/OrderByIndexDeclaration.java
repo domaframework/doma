@@ -10,8 +10,7 @@ public class OrderByIndexDeclaration {
   private final SetOperationContext<?> context;
 
   public OrderByIndexDeclaration(SetOperationContext<?> context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public void asc(int index) {

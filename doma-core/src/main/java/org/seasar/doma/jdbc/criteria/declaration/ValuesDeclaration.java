@@ -10,8 +10,7 @@ public class ValuesDeclaration {
   private final InsertContext context;
 
   public ValuesDeclaration(InsertContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public <PROPERTY> void value(PropertyDef<PROPERTY> left, PROPERTY right) {

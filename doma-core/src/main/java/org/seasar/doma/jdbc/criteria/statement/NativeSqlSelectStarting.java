@@ -1,9 +1,8 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -325,7 +324,7 @@ public class NativeSqlSelectStarting<ENTITY>
             }));
   }
 
-  public SetOperand<Map<PropertyDef<?>, Object>> select(PropertyDef<?>... propertyDefs) {
+  public SetOperand<List<Object>> select(PropertyDef<?>... propertyDefs) {
     List<PropertyDef<?>> list;
     if (propertyDefs.length == 0) {
       SelectContext context = declaration.getContext();
@@ -339,12 +338,12 @@ public class NativeSqlSelectStarting<ENTITY>
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              LinkedHashMap<PropertyDef<?>, Object> map = new LinkedHashMap<>(list.size());
+              List<Object> results = new ArrayList<>();
               for (PropertyDef<?> propertyDef : list) {
                 Object value = row.get(propertyDef);
-                map.put(propertyDef, value);
+                results.add(value);
               }
-              return map;
+              return results;
             }));
   }
 

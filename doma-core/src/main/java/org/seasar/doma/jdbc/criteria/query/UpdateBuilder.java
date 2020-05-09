@@ -40,13 +40,10 @@ public class UpdateBuilder {
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
     Objects.requireNonNull(config);
-    Objects.requireNonNull(context);
-    Objects.requireNonNull(commenter);
-    Objects.requireNonNull(buf);
+    this.context = Objects.requireNonNull(context);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.buf = Objects.requireNonNull(buf);
     Objects.requireNonNull(aliasManager);
-    this.context = context;
-    this.commenter = commenter;
-    this.buf = buf;
     support = new BuilderSupport(config, commenter, buf, aliasManager);
   }
 

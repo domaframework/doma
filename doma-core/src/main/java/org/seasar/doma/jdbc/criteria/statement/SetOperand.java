@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 
-public interface SetOperand<ELEMENT> extends Collectable<ELEMENT> {
+public interface SetOperand<ELEMENT> extends StreamMappable<ELEMENT> {
 
   SetOperationContext<ELEMENT> getContext();
 

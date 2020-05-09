@@ -1,8 +1,8 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 public class DeleteSettings extends Settings {
-  int batchSize = 0;
-  boolean allowEmptyWhere;
+  private int batchSize = 0;
+  private boolean allowEmptyWhere;
 
   public int getBatchSize() {
     return batchSize;

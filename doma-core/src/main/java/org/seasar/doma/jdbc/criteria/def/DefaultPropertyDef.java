@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.criteria.def;
 
+import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
@@ -10,9 +11,9 @@ public class DefaultPropertyDef<PROPERTY> implements PropertyDef<PROPERTY> {
   private final String name;
 
   public DefaultPropertyDef(Class<?> clazz, EntityType<?> entityType, String name) {
-    this.clazz = clazz;
-    this.entityType = entityType;
-    this.name = name;
+    this.clazz = Objects.requireNonNull(clazz);
+    this.entityType = Objects.requireNonNull(entityType);
+    this.name = Objects.requireNonNull(name);
   }
 
   @Override

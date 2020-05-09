@@ -10,12 +10,11 @@ import org.seasar.doma.jdbc.criteria.def.EntityDef;
 public class InsertContext implements Context {
   public final EntityDef<?> entityDef;
   public final List<EntityDef<?>> entityDefs;
-  public Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
-  public final InsertSettings options = new InsertSettings();
+  public final Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
+  public final InsertSettings settings = new InsertSettings();
 
   public InsertContext(EntityDef<?> entityDef) {
-    Objects.requireNonNull(entityDef);
-    this.entityDef = entityDef;
+    this.entityDef = Objects.requireNonNull(entityDef);
     this.entityDefs = Collections.singletonList(entityDef);
   }
 
@@ -36,6 +35,6 @@ public class InsertContext implements Context {
 
   @Override
   public InsertSettings getSettings() {
-    return options;
+    return settings;
   }
 }

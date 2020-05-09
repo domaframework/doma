@@ -35,12 +35,9 @@ public class BuilderSupport {
       Function<String, String> commenter,
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
-    Objects.requireNonNull(config);
-    Objects.requireNonNull(commenter);
-    Objects.requireNonNull(buf);
-    this.config = config;
-    this.commenter = commenter;
-    this.buf = buf;
+    this.config = Objects.requireNonNull(config);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.buf = Objects.requireNonNull(buf);
     this.aliasManager = aliasManager;
   }
 

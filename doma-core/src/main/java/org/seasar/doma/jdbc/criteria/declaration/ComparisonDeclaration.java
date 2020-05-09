@@ -13,8 +13,7 @@ public abstract class ComparisonDeclaration<CONTEXT extends Context> {
   protected final CONTEXT context;
 
   protected ComparisonDeclaration(CONTEXT context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public <PROPERTY> void eq(PropertyDef<PROPERTY> left, PROPERTY right) {
