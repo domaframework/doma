@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import org.seasar.doma.jdbc.Config;
@@ -12,10 +13,12 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.MappedResultStreamHandler;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
+import org.seasar.doma.jdbc.criteria.declaration.OrderByIndexDeclaration;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class NativeSqlSetStarting<ELEMENT>
-    extends AbstractSetOperand<NativeSqlSetStarting<ELEMENT>, ELEMENT> {
+    extends AbstractSetOperand<NativeSqlSetStarting<ELEMENT>, ELEMENT>
+    implements SetOperator<ELEMENT> {
 
   private final SetOperationContext<ELEMENT> context;
 
@@ -25,6 +28,13 @@ public class NativeSqlSetStarting<ELEMENT>
       Function<SelectQuery, ObjectProvider<ELEMENT>> objectProviderFactory) {
     super(Objects.requireNonNull(config), Objects.requireNonNull(objectProviderFactory));
     this.context = Objects.requireNonNull(context);
+  }
+
+  @Override
+  public SetOperand<ELEMENT> orderBy(Consumer<OrderByIndexDeclaration> block) {
+    OrderByIndexDeclaration declaration = new OrderByIndexDeclaration(context);
+    block.accept(declaration);
+    return this;
   }
 
   @Override

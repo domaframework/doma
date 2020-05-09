@@ -302,4 +302,40 @@ public class NativeSqlSelectTest {
 
     assertEquals(8, list.size());
   }
+
+  @Test
+  void union_orderBy() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    SetOperand<Tuple2<Integer, String>> stmt1 =
+        nativeSql.from(e).select(e.employeeId, e.employeeName);
+    SetOperand<Tuple2<Integer, String>> stmt2 =
+        nativeSql.from(d).select(d.departmentId, d.departmentName);
+    SetOperand<Tuple2<Integer, String>> stmt3 = stmt1.union(stmt2).orderBy(c -> c.asc(2));
+
+    List<Tuple2<Integer, String>> list = stmt3.fetch();
+
+    assertEquals(18, list.size());
+  }
+
+  @Test
+  void union_multi_orderBy() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    SetOperand<Tuple2<Integer, String>> stmt1 =
+        nativeSql.from(e).select(e.employeeId, e.employeeName);
+    SetOperand<Tuple2<Integer, String>> stmt2 =
+        nativeSql.from(d).select(d.departmentId, d.departmentName);
+    SetOperand<Tuple2<Integer, String>> stmt3 =
+        nativeSql.from(e).select(e.employeeId, e.employeeName);
+
+    SetOperand<Tuple2<Integer, String>> stmt4 =
+        stmt1.union(stmt2).unionAll(stmt3).orderBy(c -> c.asc(2));
+
+    List<Tuple2<Integer, String>> list = stmt4.fetch();
+
+    assertEquals(32, list.size());
+  }
 }

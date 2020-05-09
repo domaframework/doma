@@ -1,6 +1,9 @@
 package org.seasar.doma.jdbc.criteria.context;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.internal.util.Pair;
 
 public interface SetOperationContext<ELEMENT> {
 
@@ -23,6 +26,7 @@ public interface SetOperationContext<ELEMENT> {
   class Union<ELEMENT> implements SetOperationContext<ELEMENT> {
     public final SetOperationContext<ELEMENT> left;
     public final SetOperationContext<ELEMENT> right;
+    public final List<Pair<OrderByItem.Index, String>> orderBy = new ArrayList<>();
 
     public Union(SetOperationContext<ELEMENT> left, SetOperationContext<ELEMENT> right) {
       Objects.requireNonNull(left);
@@ -40,6 +44,7 @@ public interface SetOperationContext<ELEMENT> {
   class UnionAll<ELEMENT> implements SetOperationContext<ELEMENT> {
     public final SetOperationContext<ELEMENT> left;
     public final SetOperationContext<ELEMENT> right;
+    public final List<Pair<OrderByItem.Index, String>> orderBy = new ArrayList<>();
 
     public UnionAll(SetOperationContext<ELEMENT> left, SetOperationContext<ELEMENT> right) {
       Objects.requireNonNull(left);

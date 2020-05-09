@@ -21,7 +21,7 @@ public class SelectContext implements Context {
   public List<Criterion> where = new ArrayList<>();
   public final List<PropertyDef<?>> groupBy = new ArrayList<>();
   public List<Criterion> having = new ArrayList<>();
-  public final List<Pair<PropertyDef<?>, String>> orderBy = new ArrayList<>();
+  public final List<Pair<OrderByItem, String>> orderBy = new ArrayList<>();
   public Integer limit;
   public Integer offset;
   public ForUpdate forUpdate;

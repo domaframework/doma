@@ -36,7 +36,7 @@ public class SubSelectFromDeclaration {
     return this;
   }
 
-  public SubSelectFromDeclaration orderBy(Consumer<OrderByDeclaration> block) {
+  public SubSelectFromDeclaration orderBy(Consumer<OrderByNameDeclaration> block) {
     declaration.orderBy(block);
     return this;
   }

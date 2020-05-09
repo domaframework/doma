@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.declaration.HavingDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
-import org.seasar.doma.jdbc.criteria.declaration.OrderByDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
@@ -83,7 +83,7 @@ public class NativeSqlSelectStarting<ENTITY>
     return this;
   }
 
-  public NativeSqlSelectStarting<ENTITY> orderBy(Consumer<OrderByDeclaration> block) {
+  public NativeSqlSelectStarting<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
