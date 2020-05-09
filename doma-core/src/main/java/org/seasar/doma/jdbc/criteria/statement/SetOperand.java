@@ -8,9 +8,9 @@ public interface SetOperand<ELEMENT> extends Collectable<ELEMENT> {
 
   SetOperationContext<ELEMENT> getContext();
 
-  SetOperand<ELEMENT> union(SetOperand<ELEMENT> other);
+  SetOperator<ELEMENT> union(SetOperand<ELEMENT> other);
 
-  SetOperand<ELEMENT> unionAll(SetOperand<ELEMENT> other);
+  SetOperator<ELEMENT> unionAll(SetOperand<ELEMENT> other);
 
   @Override
   SetOperand<ELEMENT> peek(Consumer<Sql<?>> consumer);

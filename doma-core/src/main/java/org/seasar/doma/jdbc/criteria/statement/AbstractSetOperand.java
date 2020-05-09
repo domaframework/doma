@@ -20,7 +20,7 @@ public abstract class AbstractSetOperand<STMT extends AbstractSetOperand<STMT, E
   }
 
   @Override
-  public SetOperand<ELEMENT> union(SetOperand<ELEMENT> other) {
+  public SetOperator<ELEMENT> union(SetOperand<ELEMENT> other) {
     Objects.requireNonNull(other);
     SetOperationContext<ELEMENT> newContext =
         new SetOperationContext.Union<>(getContext(), other.getContext());
@@ -28,7 +28,7 @@ public abstract class AbstractSetOperand<STMT extends AbstractSetOperand<STMT, E
   }
 
   @Override
-  public SetOperand<ELEMENT> unionAll(SetOperand<ELEMENT> other) {
+  public SetOperator<ELEMENT> unionAll(SetOperand<ELEMENT> other) {
     Objects.requireNonNull(other);
     SetOperationContext<ELEMENT> newContext =
         new SetOperationContext.UnionAll<>(getContext(), other.getContext());

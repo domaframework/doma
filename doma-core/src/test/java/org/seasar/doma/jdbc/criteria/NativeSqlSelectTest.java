@@ -780,6 +780,26 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void union_orderBy() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    SetOperand<String> stmt1 = nativeSql.from(e).select(e.name);
+    SetOperand<String> stmt2 = nativeSql.from(d).select(d.name);
+    SetOperand<String> stmt3 = stmt1.union(stmt2).orderBy(c -> c.asc(1));
+
+    Sql<?> sql1 = stmt1.asSql();
+    assertEquals("select t0_.NAME from EMP t0_", sql1.getFormattedSql());
+
+    Sql<?> sql2 = stmt2.asSql();
+    assertEquals("select t0_.NAME from CATA.DEPT t0_", sql2.getFormattedSql());
+
+    Sql<?> sql3 = stmt3.asSql();
+    assertEquals(
+        "(select t0_.NAME from EMP t0_) union (select t0_.NAME from CATA.DEPT t0_) order by 1 asc",
+        sql3.getFormattedSql());
+  }
+
+  @Test
   void multi_union() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
@@ -792,6 +812,22 @@ class NativeSqlSelectTest {
     Sql<?> sql = stmt4.asSql();
     assertEquals(
         "select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_ union select t0_.NAME from NO_ID_EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void multi_union_orderBy() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    NoIdEmp_ n = new NoIdEmp_();
+    SetOperand<String> stmt1 = nativeSql.from(e).select(e.name);
+    SetOperand<String> stmt2 = nativeSql.from(d).select(d.name);
+    SetOperand<String> stmt3 = nativeSql.from(n).select(n.name);
+    SetOperand<String> stmt4 = stmt1.union(stmt2).union(stmt3).orderBy(c -> c.desc(1));
+
+    Sql<?> sql = stmt4.asSql();
+    assertEquals(
+        "(select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_) union (select t0_.NAME from NO_ID_EMP t0_) order by 1 desc",
         sql.getFormattedSql());
   }
 

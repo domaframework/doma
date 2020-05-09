@@ -70,9 +70,9 @@ public class SelectFromDeclaration {
     block.accept(declaration);
   }
 
-  public void orderBy(Consumer<OrderByDeclaration> block) {
+  public void orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
-    OrderByDeclaration declaration = new OrderByDeclaration(context);
+    OrderByNameDeclaration declaration = new OrderByNameDeclaration(context);
     block.accept(declaration);
   }
 
