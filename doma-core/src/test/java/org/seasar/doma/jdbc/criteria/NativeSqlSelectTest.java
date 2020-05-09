@@ -871,7 +871,7 @@ class NativeSqlSelectTest {
         nativeSql.from(
             e,
             options -> {
-              options.comment("hello");
+              options.setComment("hello");
             });
 
     Sql<?> sql = stmt.asSql();

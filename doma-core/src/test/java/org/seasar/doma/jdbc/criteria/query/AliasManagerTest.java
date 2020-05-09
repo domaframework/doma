@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
-import org.seasar.doma.jdbc.criteria.context.Options;
+import org.seasar.doma.jdbc.criteria.context.Settings;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
@@ -41,7 +41,7 @@ class AliasManagerTest {
     }
 
     @Override
-    public Options getOptions() {
+    public Settings getSettings() {
       throw new UnsupportedOperationException();
     }
   }
