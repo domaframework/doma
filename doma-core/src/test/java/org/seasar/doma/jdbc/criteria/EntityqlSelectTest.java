@@ -11,6 +11,8 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
+import org.seasar.doma.jdbc.criteria.option.AssociationOption;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.message.Message;
 
@@ -115,7 +117,7 @@ class EntityqlSelectTest {
         entityql
             .from(e)
             .innerJoin(d, on -> {})
-            .associate(e, d, (emp, dept) -> {}, AssociationKind.OPTIONAL);
+            .associate(e, d, (emp, dept) -> {}, AssociationOption.OPTIONAL);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

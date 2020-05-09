@@ -1,4 +1,4 @@
-package org.seasar.doma.jdbc.criteria;
+package org.seasar.doma.jdbc.criteria.option;
 
 public enum LikeOption {
   NONE,

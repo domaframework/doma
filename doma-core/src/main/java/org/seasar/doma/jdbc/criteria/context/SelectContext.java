@@ -10,9 +10,10 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.jdbc.criteria.DistinctOption;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectContext implements Context {
   public final EntityDef<?> entityDef;
@@ -25,7 +26,7 @@ public class SelectContext implements Context {
   public final List<Pair<OrderByItem, String>> orderBy = new ArrayList<>();
   public Integer limit;
   public Integer offset;
-  public ForUpdate forUpdate;
+  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.DISABLED);
   public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
       new LinkedHashMap<>();
   public final SelectSettings options = new SelectSettings();
