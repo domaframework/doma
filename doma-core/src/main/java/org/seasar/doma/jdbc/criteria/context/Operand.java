@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.criteria.context;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
@@ -17,7 +18,7 @@ public interface Operand {
     private final Object value;
 
     public Param(PropertyDef<?> propertyDef, Object value) {
-      this.propertyDef = propertyDef;
+      this.propertyDef = Objects.requireNonNull(propertyDef);
       this.value = value;
     }
 
@@ -37,7 +38,7 @@ public interface Operand {
     public final PropertyDef<?> value;
 
     public Prop(PropertyDef<?> value) {
-      this.value = value;
+      this.value = Objects.requireNonNull(value);
     }
 
     @Override

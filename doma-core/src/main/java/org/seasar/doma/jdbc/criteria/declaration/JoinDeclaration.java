@@ -11,8 +11,7 @@ public class JoinDeclaration {
   private final Join join;
 
   public JoinDeclaration(Join join) {
-    Objects.requireNonNull(join);
-    this.join = join;
+    this.join = Objects.requireNonNull(join);
   }
 
   private void add(Criterion criterion) {

@@ -12,32 +12,27 @@ import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectContext implements Context {
   public final EntityDef<?> entityDef;
-  public Projection projection;
-  public boolean distinct;
+  public Projection projection = Projection.All;
+  public DistinctOption distinct = DistinctOption.DISABLED;
   public final List<Join> joins = new ArrayList<>();
   public List<Criterion> where = new ArrayList<>();
   public final List<PropertyDef<?>> groupBy = new ArrayList<>();
   public List<Criterion> having = new ArrayList<>();
-  public final List<Pair<PropertyDef<?>, String>> orderBy = new ArrayList<>();
+  public final List<Pair<OrderByItem, String>> orderBy = new ArrayList<>();
   public Integer limit;
   public Integer offset;
-  public ForUpdate forUpdate;
+  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.DISABLED);
   public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
       new LinkedHashMap<>();
-  public final Options options = new Options();
+  public final SelectSettings settings = new SelectSettings();
 
   public SelectContext(EntityDef<?> entityDef) {
-    this(entityDef, Projection.All);
-  }
-
-  private SelectContext(EntityDef<?> entityDef, Projection projection) {
-    Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(projection);
-    this.entityDef = entityDef;
-    this.projection = projection;
+    this.entityDef = Objects.requireNonNull(entityDef);
   }
 
   @Override
@@ -60,8 +55,8 @@ public class SelectContext implements Context {
   }
 
   @Override
-  public Options getOptions() {
-    return options;
+  public SelectSettings getSettings() {
+    return settings;
   }
 
   public List<EntityDef<?>> allEntityDefs() {

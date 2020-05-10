@@ -1,5 +1,7 @@
 package org.seasar.doma.jdbc.criteria.query;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -9,13 +11,16 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
+import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectBuilder {
   private final SelectContext context;
@@ -43,13 +48,10 @@ public class SelectBuilder {
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
     Objects.requireNonNull(config);
-    Objects.requireNonNull(context);
-    Objects.requireNonNull(commenter);
-    Objects.requireNonNull(buf);
+    this.context = Objects.requireNonNull(context);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.buf = Objects.requireNonNull(buf);
     Objects.requireNonNull(aliasManager);
-    this.context = context;
-    this.commenter = commenter;
-    this.buf = buf;
     support = new BuilderSupport(config, commenter, buf, aliasManager);
   }
 
@@ -73,7 +75,7 @@ public class SelectBuilder {
   private void select() {
     buf.appendSql("select ");
 
-    if (context.distinct) {
+    if (context.distinct == DistinctOption.ENABLED) {
       buf.appendSql("distinct ");
     }
 
@@ -128,6 +130,16 @@ public class SelectBuilder {
   }
 
   private void groupBy() {
+    if (context.groupBy.isEmpty()) {
+      List<PropertyDef<?>> propertyDefs = context.allPropertyDefs();
+      if (propertyDefs.stream().anyMatch(p -> p instanceof AggregateFunction<?>)) {
+        List<PropertyDef<?>> groupKeys =
+            propertyDefs.stream()
+                .filter(p -> !(p instanceof AggregateFunction<?>))
+                .collect(toList());
+        context.groupBy.addAll(groupKeys);
+      }
+    }
     if (!context.groupBy.isEmpty()) {
       buf.appendSql(" group by ");
       for (PropertyDef<?> p : context.groupBy) {
@@ -153,8 +165,20 @@ public class SelectBuilder {
   private void orderBy() {
     if (!context.orderBy.isEmpty()) {
       buf.appendSql(" order by ");
-      for (Pair<PropertyDef<?>, String> pair : context.orderBy) {
-        column(pair.fst);
+      for (Pair<OrderByItem, String> pair : context.orderBy) {
+        pair.fst.accept(
+            new OrderByItem.Visitor() {
+
+              @Override
+              public void visit(OrderByItem.Name name) {
+                column(name.value);
+              }
+
+              @Override
+              public void visit(OrderByItem.Index index) {
+                buf.appendSql(String.valueOf(index.value));
+              }
+            });
         buf.appendSql(" " + pair.snd + ", ");
       }
       buf.cutBackSql(2);

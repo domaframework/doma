@@ -2,12 +2,18 @@ package org.seasar.doma.jdbc.criteria;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import org.seasar.doma.internal.jdbc.command.EntityProvider;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
+import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
-import org.seasar.doma.jdbc.criteria.context.Options;
+import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SelectSettings;
 import org.seasar.doma.jdbc.criteria.context.UpdateContext;
+import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
@@ -17,6 +23,7 @@ import org.seasar.doma.jdbc.criteria.statement.NativeSqlDeleteStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlInsertStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlUpdateStarting;
+import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class NativeSql {
 
@@ -26,61 +33,63 @@ public class NativeSql {
     this.config = Objects.requireNonNull(config);
   }
 
-  public <ELEMENT> NativeSqlSelectStarting<ELEMENT> from(EntityDef<ELEMENT> entityDef) {
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(EntityDef<ENTITY> entityDef) {
     return from(entityDef, (options) -> {});
   }
 
-  public <ELEMENT> NativeSqlSelectStarting<ELEMENT> from(
-      EntityDef<ELEMENT> entityDef, Consumer<Options> optionsConsumer) {
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
+      EntityDef<ENTITY> entityDef, Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(optionsConsumer);
+    Objects.requireNonNull(settingsConsumer);
     SelectContext context = new SelectContext(entityDef);
-    optionsConsumer.accept(context.getOptions());
+    settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
-    return new NativeSqlSelectStarting<>(config, declaration, entityDef);
+    Function<SelectQuery, ObjectProvider<ENTITY>> factory =
+        query -> new EntityProvider<>(entityDef.asType(), query, false);
+    return new NativeSqlSelectStarting<>(config, declaration, entityDef, factory);
   }
 
-  public <ELEMENT> NativeSqlUpdateStarting update(EntityDef<ELEMENT> entityDef) {
+  public <ENTITY> NativeSqlUpdateStarting update(EntityDef<ENTITY> entityDef) {
     Objects.requireNonNull(entityDef);
     return this.update(entityDef, options -> {});
   }
 
-  public <ELEMENT> NativeSqlUpdateStarting update(
-      EntityDef<ELEMENT> entityDef, Consumer<Options> optionsConsumer) {
+  public <ENTITY> NativeSqlUpdateStarting update(
+      EntityDef<ENTITY> entityDef, Consumer<UpdateSettings> settingsConsumer) {
     Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(optionsConsumer);
+    Objects.requireNonNull(settingsConsumer);
     UpdateContext context = new UpdateContext(entityDef);
-    optionsConsumer.accept(context.getOptions());
+    settingsConsumer.accept(context.getSettings());
     UpdateDeclaration declaration = new UpdateDeclaration(context);
     return new NativeSqlUpdateStarting(config, declaration);
   }
 
-  public <ELEMENT> NativeSqlDeleteStarting delete(EntityDef<ELEMENT> entityDef) {
+  public <ENTITY> NativeSqlDeleteStarting delete(EntityDef<ENTITY> entityDef) {
     Objects.requireNonNull(entityDef);
     return this.delete(entityDef, options -> {});
   }
 
-  public <ELEMENT> NativeSqlDeleteStarting delete(
-      EntityDef<ELEMENT> entityDef, Consumer<Options> optionsConsumer) {
+  public <ENTITY> NativeSqlDeleteStarting delete(
+      EntityDef<ENTITY> entityDef, Consumer<DeleteSettings> settingsConsumer) {
     Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(optionsConsumer);
+    Objects.requireNonNull(settingsConsumer);
     DeleteContext context = new DeleteContext(entityDef);
-    optionsConsumer.accept(context.getOptions());
+    settingsConsumer.accept(context.getSettings());
     DeleteDeclaration declaration = new DeleteDeclaration(context);
     return new NativeSqlDeleteStarting(config, declaration);
   }
 
-  public <ELEMENT> NativeSqlInsertStarting insert(EntityDef<ELEMENT> entityDef) {
+  public <ENTITY> NativeSqlInsertStarting insert(EntityDef<ENTITY> entityDef) {
     Objects.requireNonNull(entityDef);
     return this.insert(entityDef, options -> {});
   }
 
-  public <ELEMENT> NativeSqlInsertStarting insert(
-      EntityDef<ELEMENT> entityDef, Consumer<Options> optionsConsumer) {
+  public <ENTITY> NativeSqlInsertStarting insert(
+      EntityDef<ENTITY> entityDef, Consumer<InsertSettings> settingsConsumer) {
     Objects.requireNonNull(entityDef);
-    Objects.requireNonNull(optionsConsumer);
+    Objects.requireNonNull(settingsConsumer);
     InsertContext context = new InsertContext(entityDef);
-    optionsConsumer.accept(context.getOptions());
+    settingsConsumer.accept(context.getSettings());
     InsertDeclaration declaration = new InsertDeclaration(context);
     return new NativeSqlInsertStarting(config, declaration);
   }

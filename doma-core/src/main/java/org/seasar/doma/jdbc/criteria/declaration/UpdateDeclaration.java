@@ -9,8 +9,7 @@ public class UpdateDeclaration {
   private final UpdateContext context;
 
   public UpdateDeclaration(UpdateContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public UpdateContext getContext() {

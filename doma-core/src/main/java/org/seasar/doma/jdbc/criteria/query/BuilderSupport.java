@@ -11,14 +11,14 @@ import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.criteria.LikeOption;
-import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.option.LikeOption;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
@@ -35,12 +35,9 @@ public class BuilderSupport {
       Function<String, String> commenter,
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
-    Objects.requireNonNull(config);
-    Objects.requireNonNull(commenter);
-    Objects.requireNonNull(buf);
-    this.config = config;
-    this.commenter = commenter;
-    this.buf = buf;
+    this.config = Objects.requireNonNull(config);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.buf = Objects.requireNonNull(buf);
     this.aliasManager = aliasManager;
   }
 
@@ -260,9 +257,9 @@ public class BuilderSupport {
       List<Tuple2<Operand.Param, Operand.Param>> right,
       boolean not) {
     buf.appendSql("(");
-    column(left.first());
+    column(left.getItem1());
     buf.appendSql(", ");
-    column(left.second());
+    column(left.getItem2());
     buf.appendSql(")");
     if (not) {
       buf.appendSql(" not");
@@ -274,9 +271,9 @@ public class BuilderSupport {
       right.forEach(
           pair -> {
             buf.appendSql("(");
-            param(pair.first());
+            param(pair.getItem1());
             buf.appendSql(", ");
-            param(pair.second());
+            param(pair.getItem2());
             buf.appendSql("), ");
           });
       buf.cutBackSql(2);
@@ -287,9 +284,9 @@ public class BuilderSupport {
   private void inPairSubQuery(
       Tuple2<Operand.Prop, Operand.Prop> left, SelectContext right, boolean not) {
     buf.appendSql("(");
-    column(left.first());
+    column(left.getItem1());
     buf.appendSql(", ");
-    column(left.second());
+    column(left.getItem2());
     buf.appendSql(")");
     if (not) {
       buf.appendSql(" not");

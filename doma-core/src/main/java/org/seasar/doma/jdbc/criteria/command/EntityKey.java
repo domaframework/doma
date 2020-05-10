@@ -10,9 +10,8 @@ public final class EntityKey {
   private final List<?> items;
 
   public EntityKey(EntityDef<?> entityDef, List<?> items) {
-    Objects.requireNonNull(entityDef);
+    this.entityDef = Objects.requireNonNull(entityDef);
     Objects.requireNonNull(items);
-    this.entityDef = entityDef;
     this.items = Collections.unmodifiableList(items);
   }
 

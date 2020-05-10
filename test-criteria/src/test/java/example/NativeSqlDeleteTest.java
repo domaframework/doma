@@ -1,12 +1,14 @@
 package example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 
 @ExtendWith(Env.class)
 public class NativeSqlDeleteTest {
@@ -18,12 +20,22 @@ public class NativeSqlDeleteTest {
   }
 
   @Test
-  void from() {
+  void settings() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt = nativeSql.delete(e);
+    int count =
+        nativeSql
+            .delete(
+                e,
+                settings -> {
+                  settings.setComment("delete all");
+                  settings.setQueryTimeout(1000);
+                  settings.setSqlLogType(SqlLogType.RAW);
+                  settings.setAllowEmptyWhere(true);
+                  settings.setBatchSize(20);
+                })
+            .execute();
 
-    int count = stmt.execute();
     assertEquals(14, count);
   }
 
@@ -31,9 +43,26 @@ public class NativeSqlDeleteTest {
   void where() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt = nativeSql.delete(e).where(c -> c.ge(e.salary, new Salary("2000")));
+    int count = nativeSql.delete(e).where(c -> c.ge(e.salary, new Salary("2000"))).execute();
 
-    int count = stmt.execute();
     assertEquals(6, count);
+  }
+
+  @Test
+  void where_empty() {
+    Employee_ e = new Employee_();
+
+    EmptyWhereClauseException ex =
+        assertThrows(EmptyWhereClauseException.class, () -> nativeSql.delete(e).execute());
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void where_empty_allowEmptyWhere_enabled() {
+    Employee_ e = new Employee_();
+
+    int count = nativeSql.delete(e, settings -> settings.setAllowEmptyWhere(true)).execute();
+
+    assertEquals(14, count);
   }
 }

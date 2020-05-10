@@ -20,16 +20,42 @@ public class CriteriaQuery implements SelectQuery, DeleteQuery, InsertQuery, Upd
   private final PreparedSql sql;
   private final String className;
   private final String methodName;
+  private int fetchSize;
+  private int maxRows;
+  private int queryTimeout;
 
   public CriteriaQuery(Config config, PreparedSql sql, String className, String methodName) {
-    Objects.requireNonNull(config);
-    Objects.requireNonNull(sql);
-    Objects.requireNonNull(className);
-    Objects.requireNonNull(methodName);
-    this.config = config;
-    this.sql = sql;
-    this.className = className;
-    this.methodName = methodName;
+    this.config = Objects.requireNonNull(config);
+    this.sql = Objects.requireNonNull(sql);
+    this.className = Objects.requireNonNull(className);
+    this.methodName = Objects.requireNonNull(methodName);
+  }
+
+  @Override
+  public int getFetchSize() {
+    return fetchSize;
+  }
+
+  public void setFetchSize(int fetchSize) {
+    this.fetchSize = fetchSize;
+  }
+
+  @Override
+  public int getMaxRows() {
+    return maxRows;
+  }
+
+  public void setMaxRows(int maxRows) {
+    this.maxRows = maxRows;
+  }
+
+  @Override
+  public int getQueryTimeout() {
+    return queryTimeout;
+  }
+
+  public void setQueryTimeout(int queryTimeout) {
+    this.queryTimeout = queryTimeout;
   }
 
   @Override
@@ -55,11 +81,6 @@ public class CriteriaQuery implements SelectQuery, DeleteQuery, InsertQuery, Upd
   @Override
   public Config getConfig() {
     return config;
-  }
-
-  @Override
-  public int getQueryTimeout() {
-    return config.getQueryTimeout();
   }
 
   @Override
@@ -95,16 +116,6 @@ public class CriteriaQuery implements SelectQuery, DeleteQuery, InsertQuery, Upd
   @Override
   public FetchType getFetchType() {
     return FetchType.EAGER;
-  }
-
-  @Override
-  public int getFetchSize() {
-    return config.getFetchSize();
-  }
-
-  @Override
-  public int getMaxRows() {
-    return config.getMaxRows();
   }
 
   @Override

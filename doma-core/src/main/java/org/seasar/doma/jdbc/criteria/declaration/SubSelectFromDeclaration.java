@@ -2,12 +2,12 @@ package org.seasar.doma.jdbc.criteria.declaration;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.seasar.doma.jdbc.criteria.Tuple2;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class SubSelectFromDeclaration {
 
@@ -36,7 +36,7 @@ public class SubSelectFromDeclaration {
     return this;
   }
 
-  public SubSelectFromDeclaration orderBy(Consumer<OrderByDeclaration> block) {
+  public SubSelectFromDeclaration orderBy(Consumer<OrderByNameDeclaration> block) {
     declaration.orderBy(block);
     return this;
   }

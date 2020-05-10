@@ -6,8 +6,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.jdbc.criteria.AssociationKind;
-import org.seasar.doma.jdbc.criteria.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -15,6 +13,9 @@ import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.option.AssociationOption;
+import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.message.Message;
 
 public class SelectFromDeclaration {
@@ -22,12 +23,15 @@ public class SelectFromDeclaration {
   private final SelectContext context;
 
   public SelectFromDeclaration(SelectContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public SelectContext getContext() {
     return context;
+  }
+
+  public void distinct(DistinctOption distinctOption) {
+    context.distinct = distinctOption;
   }
 
   public void innerJoin(EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
@@ -70,9 +74,9 @@ public class SelectFromDeclaration {
     block.accept(declaration);
   }
 
-  public void orderBy(Consumer<OrderByDeclaration> block) {
+  public void orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
-    OrderByDeclaration declaration = new OrderByDeclaration(context);
+    OrderByNameDeclaration declaration = new OrderByNameDeclaration(context);
     block.accept(declaration);
   }
 
@@ -97,19 +101,19 @@ public class SelectFromDeclaration {
       EntityDef<ENTITY1> first,
       EntityDef<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
-      AssociationKind kind) {
+      AssociationOption kind) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
     Objects.requireNonNull(kind);
     if (!context.getEntityDefs().contains(first)) {
-      if (kind == AssociationKind.MANDATORY) {
+      if (kind == AssociationOption.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "first");
       }
       return;
     }
     if (!context.getEntityDefs().contains(second)) {
-      if (kind == AssociationKind.MANDATORY) {
+      if (kind == AssociationOption.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "second");
       }
       return;

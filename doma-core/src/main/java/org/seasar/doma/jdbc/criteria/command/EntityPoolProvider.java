@@ -27,15 +27,12 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class EntityPoolProvider implements ObjectProvider<EntityPool> {
-
   private final List<EntityDef<?>> entityDefs;
-
   private final JdbcMappingVisitor jdbcMappingVisitor;
 
   public EntityPoolProvider(List<EntityDef<?>> entityDefs, Query query) {
-    Objects.requireNonNull(entityDefs);
+    this.entityDefs = Objects.requireNonNull(entityDefs);
     Objects.requireNonNull(query);
-    this.entityDefs = entityDefs;
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
   }
 

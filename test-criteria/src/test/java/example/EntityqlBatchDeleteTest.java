@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
-import org.seasar.doma.jdbc.criteria.statement.Listable;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class EntityqlBatchDeleteTest {
@@ -26,15 +24,14 @@ public class EntityqlBatchDeleteTest {
   void test() {
     Employee_ e = new Employee_();
 
-    Listable<Employee> select =
-        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6)));
-    List<Employee> employees = select.getResultList();
+    List<Employee> employees =
+        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6))).fetch();
 
-    Statement<List<Employee>> delete = entityql.delete(e, employees);
-    List<Employee> results = delete.execute();
+    List<Employee> results = entityql.delete(e, employees).execute();
     assertEquals(employees, results);
 
-    List<Employee> employees2 = select.getResultList();
+    List<Employee> employees2 =
+        entityql.from(e).where(c -> c.in(e.employeeId, Arrays.asList(5, 6))).fetch();
     assertTrue(employees2.isEmpty());
   }
 
@@ -42,8 +39,7 @@ public class EntityqlBatchDeleteTest {
   void empty() {
     Employee_ e = new Employee_();
 
-    Statement<List<Employee>> update = entityql.delete(e, Collections.emptyList());
-    List<Employee> results = update.execute();
+    List<Employee> results = entityql.delete(e, Collections.emptyList()).execute();
     assertTrue(results.isEmpty());
   }
 }

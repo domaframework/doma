@@ -6,12 +6,12 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
-import org.seasar.doma.jdbc.criteria.context.Options;
+import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.DeleteBuilder;
 
-public class NativeSqlDeleteTerminal extends AbstractStatement<Integer, NativeSqlDeleteTerminal> {
+public class NativeSqlDeleteTerminal extends AbstractStatement<NativeSqlDeleteTerminal, Integer> {
 
   private final DeleteDeclaration declaration;
 
@@ -24,12 +24,23 @@ public class NativeSqlDeleteTerminal extends AbstractStatement<Integer, NativeSq
   @Override
   protected Command<Integer> createCommand() {
     DeleteContext context = declaration.getContext();
-    Options options = context.getOptions();
+    DeleteSettings settings = context.getSettings();
     DeleteBuilder builder =
         new DeleteBuilder(
-            config, context, createCommenter(options.comment()), options.sqlLogType());
+            config, context, createCommenter(settings.getComment()), settings.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
-    return new DeleteCommand(query);
+    query.setQueryTimeout(settings.getQueryTimeout());
+    return new DeleteCommand(query) {
+      @Override
+      public Integer execute() {
+        if (!settings.getAllowEmptyWhere()) {
+          if (context.where.isEmpty()) {
+            throw new EmptyWhereClauseException(sql);
+          }
+        }
+        return super.execute();
+      }
+    };
   }
 }

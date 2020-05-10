@@ -4,15 +4,13 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
 import org.seasar.doma.Table;
-import org.seasar.doma.Version;
 
 @Entity
 @Table(name = "EMPLOYEE")
 public class Person {
 
-  @Id private Integer employeeId;
+  private Integer employeeId;
   private OptionalInt employeeNo;
   private String employeeName;
   private Optional<Integer> managerId;
@@ -20,7 +18,7 @@ public class Person {
   private Optional<Salary> salary;
   private Integer departmentId;
   private Integer addressId;
-  @Version private Integer version;
+  private Integer version;
 
   public Integer getEmployeeId() {
     return employeeId;

@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
-import org.seasar.doma.jdbc.criteria.statement.Listable;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class EntityqlBatchInsertTest {
@@ -41,15 +39,17 @@ public class EntityqlBatchInsertTest {
 
     List<Department> departments = Arrays.asList(department, department2);
 
-    Statement<List<Department>> insert = entityql.insert(d, departments);
-    List<Department> results = insert.execute();
+    List<Department> results = entityql.insert(d, departments).execute();
     assertEquals(departments, results);
 
-    List<Integer> ids = departments.stream().map(it -> it.getDepartmentId()).collect(toList());
+    List<Integer> ids = departments.stream().map(Department::getDepartmentId).collect(toList());
 
-    Listable<Department> select =
-        entityql.from(d).where(c -> c.in(d.departmentId, ids)).orderBy(c -> c.asc(d.departmentId));
-    List<Department> departments2 = select.getResultList();
+    List<Department> departments2 =
+        entityql
+            .from(d)
+            .where(c -> c.in(d.departmentId, ids))
+            .orderBy(c -> c.asc(d.departmentId))
+            .fetch();
     assertEquals(2, departments2.size());
   }
 
@@ -57,8 +57,7 @@ public class EntityqlBatchInsertTest {
   void empty() {
     Employee_ e = new Employee_();
 
-    Statement<List<Employee>> update = entityql.insert(e, Collections.emptyList());
-    List<Employee> results = update.execute();
+    List<Employee> results = entityql.insert(e, Collections.emptyList()).execute();
     assertTrue(results.isEmpty());
   }
 }
