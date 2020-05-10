@@ -2,6 +2,21 @@
 Release notes
 =============
 
+v2.34.0: 2020-05-10
+======================
+
+See also :doc:`criteria-api` and `simple-examples <https://github.com/domaframework/simple-examples>`_.
+
+* `GH417 <https://github.com/domaframework/doma/pull/417>`_
+  `GH416 <https://github.com/domaframework/doma/pull/416>`_
+  `GH415 <https://github.com/domaframework/doma/pull/415>`_
+  `GH414 <https://github.com/domaframework/doma/pull/414>`_
+  `GH413 <https://github.com/domaframework/doma/pull/413>`_
+  `GH412 <https://github.com/domaframework/doma/pull/412>`_
+  `GH411 <https://github.com/domaframework/doma/pull/411>`_
+  `GH410 <https://github.com/domaframework/doma/pull/410>`_
+  Enhance and improve the Criteria API
+
 v2.33.0: 2020-05-06
 ======================
 
