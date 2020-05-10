@@ -34,7 +34,7 @@ public class NativeSql {
   }
 
   public <ENTITY> NativeSqlSelectStarting<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
-    return from(entityMetamodel, (options) -> {});
+    return from(entityMetamodel, (settings) -> {});
   }
 
   public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
@@ -51,7 +51,7 @@ public class NativeSql {
 
   public <ENTITY> NativeSqlUpdateStarting update(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    return this.update(entityMetamodel, options -> {});
+    return this.update(entityMetamodel, settings -> {});
   }
 
   public <ENTITY> NativeSqlUpdateStarting update(
@@ -66,7 +66,7 @@ public class NativeSql {
 
   public <ENTITY> NativeSqlDeleteStarting delete(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    return this.delete(entityMetamodel, options -> {});
+    return this.delete(entityMetamodel, settings -> {});
   }
 
   public <ENTITY> NativeSqlDeleteStarting delete(
@@ -81,7 +81,7 @@ public class NativeSql {
 
   public <ENTITY> NativeSqlInsertStarting insert(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    return this.insert(entityMetamodel, options -> {});
+    return this.insert(entityMetamodel, settings -> {});
   }
 
   public <ENTITY> NativeSqlInsertStarting insert(

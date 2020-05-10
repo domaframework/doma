@@ -24,16 +24,6 @@ public class InsertContext implements Context {
   }
 
   @Override
-  public List<Criterion> getWhere() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public InsertSettings getSettings() {
     return settings;
   }

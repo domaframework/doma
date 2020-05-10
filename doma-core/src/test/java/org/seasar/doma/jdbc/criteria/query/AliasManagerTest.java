@@ -5,7 +5,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.criteria.context.Context;
-import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Settings;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
@@ -28,16 +27,6 @@ class AliasManagerTest {
     @Override
     public List<EntityMetamodel<?>> getEntityMetamodels() {
       return entityMetamodels;
-    }
-
-    @Override
-    public List<Criterion> getWhere() {
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setWhere(List<Criterion> where) {
-      throw new UnsupportedOperationException();
     }
 
     @Override

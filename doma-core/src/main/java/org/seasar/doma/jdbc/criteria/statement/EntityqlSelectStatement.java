@@ -38,18 +38,23 @@ public class EntityqlSelectStatement<ENTITY>
   }
 
   public EntityqlSelectStatement<ENTITY> distinct(DistinctOption distinctOption) {
+    Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(block);
     declaration.innerJoin(entityMetamodel, block);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> leftJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(block);
     declaration.leftJoin(entityMetamodel, block);
     return this;
   }
@@ -58,6 +63,9 @@ public class EntityqlSelectStatement<ENTITY>
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
     declaration.associate(first, second, associator, AssociationOption.MANDATORY);
     return this;
   }
@@ -67,16 +75,22 @@ public class EntityqlSelectStatement<ENTITY>
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
       AssociationOption kind) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
+    Objects.requireNonNull(kind);
     declaration.associate(first, second, associator, kind);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> where(Consumer<WhereDeclaration> block) {
+    Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
+    Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
@@ -97,6 +111,7 @@ public class EntityqlSelectStatement<ENTITY>
   }
 
   public EntityqlSelectStatement<ENTITY> forUpdate(ForUpdateOption option) {
+    Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }

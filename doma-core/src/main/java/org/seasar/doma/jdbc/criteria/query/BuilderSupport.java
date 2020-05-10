@@ -38,7 +38,7 @@ public class BuilderSupport {
     this.config = Objects.requireNonNull(config);
     this.commenter = Objects.requireNonNull(commenter);
     this.buf = Objects.requireNonNull(buf);
-    this.aliasManager = aliasManager;
+    this.aliasManager = Objects.requireNonNull(aliasManager);
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {
@@ -46,14 +46,12 @@ public class BuilderSupport {
     buf.appendSql(
         entityType.getQualifiedTableName(
             config.getNaming()::apply, config.getDialect()::applyQuote));
-    if (aliasManager != null) {
-      buf.appendSql(" ");
-      String alias = aliasManager.getAlias(entityMetamodel);
-      if (alias == null) {
-        throw new DomaException(Message.DOMA6003, entityType.getName());
-      }
-      buf.appendSql(alias);
+    buf.appendSql(" ");
+    String alias = aliasManager.getAlias(entityMetamodel);
+    if (alias == null) {
+      throw new DomaException(Message.DOMA6003, entityType.getName());
     }
+    buf.appendSql(alias);
   }
 
   public void column(Operand.Prop prop) {
@@ -66,14 +64,12 @@ public class BuilderSupport {
           if (p == AggregateFunction.Asterisk) {
             buf.appendSql(AggregateFunction.Asterisk.getName());
           } else {
-            if (aliasManager != null) {
-              String alias = aliasManager.getAlias(p);
-              if (alias == null) {
-                throw new DomaException(Message.DOMA6004, p.getName());
-              }
-              buf.appendSql(alias);
-              buf.appendSql(".");
+            String alias = aliasManager.getAlias(p);
+            if (alias == null) {
+              throw new DomaException(Message.DOMA6004, p.getName());
             }
+            buf.appendSql(alias);
+            buf.appendSql(".");
             EntityPropertyType<?, ?> propertyType = p.asType();
             buf.appendSql(
                 propertyType.getColumnName(

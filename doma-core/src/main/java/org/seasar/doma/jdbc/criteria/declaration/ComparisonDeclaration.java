@@ -1,19 +1,24 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import org.seasar.doma.jdbc.criteria.context.Context;
+import java.util.function.Supplier;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
-public abstract class ComparisonDeclaration<CONTEXT extends Context> {
+public abstract class ComparisonDeclaration {
 
-  protected final CONTEXT context;
+  private final Supplier<List<Criterion>> getter;
+  private final Consumer<List<Criterion>> setter;
 
-  protected ComparisonDeclaration(CONTEXT context) {
-    this.context = Objects.requireNonNull(context);
+  protected ComparisonDeclaration(
+      Supplier<List<Criterion>> getter, Consumer<List<Criterion>> setter) {
+    this.getter = Objects.requireNonNull(getter);
+    this.setter = Objects.requireNonNull(setter);
   }
 
   public <PROPERTY> void eq(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
@@ -83,19 +88,32 @@ public abstract class ComparisonDeclaration<CONTEXT extends Context> {
   }
 
   public void and(Runnable block) {
+    Objects.requireNonNull(block);
     runBlock(block, Criterion.And::new);
   }
 
   public void or(Runnable block) {
+    Objects.requireNonNull(block);
     runBlock(block, Criterion.Or::new);
   }
 
   public void not(Runnable block) {
+    Objects.requireNonNull(block);
     runBlock(block, Criterion.Not::new);
   }
 
-  protected abstract void runBlock(
-      Runnable block, Function<List<Criterion>, Criterion> newCriterion);
+  private void runBlock(Runnable block, Function<List<Criterion>, Criterion> factory) {
+    List<Criterion> preservedList = getter.get();
+    List<Criterion> newList = new ArrayList<>();
+    setter.accept(newList);
+    block.run();
+    setter.accept(preservedList);
+    if (!newList.isEmpty()) {
+      add(factory.apply(newList));
+    }
+  }
 
-  protected abstract void add(Criterion criterion);
+  protected void add(Criterion criterion) {
+    getter.get().add(criterion);
+  }
 }

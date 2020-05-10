@@ -7,9 +7,5 @@ public interface Context {
 
   List<EntityMetamodel<?>> getEntityMetamodels();
 
-  List<Criterion> getWhere();
-
-  void setWhere(List<Criterion> where);
-
   Settings getSettings();
 }

@@ -90,6 +90,7 @@ public class SelectFromDeclaration {
   }
 
   public void forUpdate(ForUpdateOption option) {
+    Objects.requireNonNull(option);
     context.forUpdate = new ForUpdate(option);
   }
 

@@ -26,16 +26,6 @@ public class UpdateContext implements Context {
   }
 
   @Override
-  public List<Criterion> getWhere() {
-    return where;
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    this.where = where;
-  }
-
-  @Override
   public UpdateSettings getSettings() {
     return settings;
   }

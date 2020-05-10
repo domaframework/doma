@@ -30,7 +30,7 @@ public class Entityql {
 
   public <ENTITY> EntityqlSelectStatement<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    return from(entityMetamodel, options -> {});
+    return from(entityMetamodel, settings -> {});
   }
 
   public <ENTITY> EntityqlSelectStatement<ENTITY> from(
@@ -46,7 +46,7 @@ public class Entityql {
   public <ENTITY> Statement<ENTITY> update(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
-    return update(entityMetamodel, entity, options -> {});
+    return update(entityMetamodel, entity, settings -> {});
   }
 
   public <ENTITY> Statement<ENTITY> update(
@@ -64,7 +64,7 @@ public class Entityql {
   public <ENTITY> Statement<ENTITY> delete(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
-    return delete(entityMetamodel, entity, options -> {});
+    return delete(entityMetamodel, entity, settings -> {});
   }
 
   public <ENTITY> Statement<ENTITY> delete(
@@ -82,7 +82,7 @@ public class Entityql {
   public <ENTITY> Statement<ENTITY> insert(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
-    return insert(entityMetamodel, entity, options -> {});
+    return insert(entityMetamodel, entity, settings -> {});
   }
 
   public <ENTITY> Statement<ENTITY> insert(
@@ -101,7 +101,7 @@ public class Entityql {
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
-    return update(entityMetamodel, entities, options -> {});
+    return update(entityMetamodel, entities, settings -> {});
   }
 
   public <ENTITY> Statement<List<ENTITY>> update(
@@ -120,7 +120,7 @@ public class Entityql {
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
-    return delete(entityMetamodel, entities, options -> {});
+    return delete(entityMetamodel, entities, settings -> {});
   }
 
   public <ENTITY> Statement<List<ENTITY>> delete(
@@ -139,7 +139,7 @@ public class Entityql {
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
-    return insert(entityMetamodel, entities, options -> {});
+    return insert(entityMetamodel, entities, settings -> {});
   }
 
   public <ENTITY> Statement<List<ENTITY>> insert(

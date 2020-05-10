@@ -46,16 +46,6 @@ public class SelectContext implements Context {
   }
 
   @Override
-  public List<Criterion> getWhere() {
-    return where;
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    this.where = where;
-  }
-
-  @Override
   public SelectSettings getSettings() {
     return settings;
   }

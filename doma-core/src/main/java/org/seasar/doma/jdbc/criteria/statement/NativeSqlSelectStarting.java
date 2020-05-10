@@ -55,6 +55,7 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public NativeSqlSelectStarting<ENTITY> distinct(DistinctOption distinctOption) {
+    Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
@@ -115,11 +116,13 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public NativeSqlSelectStarting<ENTITY> forUpdate(ForUpdateOption option) {
+    Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }
 
   public <T> SetOperand<T> select(PropertyMetamodel<T> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
     declaration.select(propertyMetamodel);
     return new NativeSqlSelectIntermediate<>(
         config, declaration, createMappedResultProviderFactory(row -> row.get(propertyMetamodel)));
@@ -127,6 +130,8 @@ public class NativeSqlSelectStarting<ENTITY>
 
   public <T1, T2> SetOperand<Tuple2<T1, T2>> select(
       PropertyMetamodel<T1> propertyMetamodel1, PropertyMetamodel<T2> propertyMetamodel2) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
     declaration.select(propertyMetamodel1, propertyMetamodel2);
     return new NativeSqlSelectIntermediate<>(
         config,
@@ -143,6 +148,9 @@ public class NativeSqlSelectStarting<ENTITY>
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
       PropertyMetamodel<T3> propertyMetamodel3) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
     declaration.select(propertyMetamodel1, propertyMetamodel2, propertyMetamodel3);
     return new NativeSqlSelectIntermediate<>(
         config,
@@ -161,6 +169,10 @@ public class NativeSqlSelectStarting<ENTITY>
       PropertyMetamodel<T2> propertyMetamodel2,
       PropertyMetamodel<T3> propertyMetamodel3,
       PropertyMetamodel<T4> propertyMetamodel4) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
     declaration.select(
         propertyMetamodel1, propertyMetamodel2, propertyMetamodel3, propertyMetamodel4);
     return new NativeSqlSelectIntermediate<>(
@@ -182,6 +194,11 @@ public class NativeSqlSelectStarting<ENTITY>
       PropertyMetamodel<T3> propertyMetamodel3,
       PropertyMetamodel<T4> propertyMetamodel4,
       PropertyMetamodel<T5> propertyMetamodel5) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
+    Objects.requireNonNull(propertyMetamodel5);
     declaration.select(
         propertyMetamodel1,
         propertyMetamodel2,
@@ -209,6 +226,12 @@ public class NativeSqlSelectStarting<ENTITY>
       PropertyMetamodel<T4> propertyMetamodel4,
       PropertyMetamodel<T5> propertyMetamodel5,
       PropertyMetamodel<T6> propertyMetamodel6) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
+    Objects.requireNonNull(propertyMetamodel5);
+    Objects.requireNonNull(propertyMetamodel6);
     declaration.select(
         propertyMetamodel1,
         propertyMetamodel2,
@@ -247,6 +270,13 @@ public class NativeSqlSelectStarting<ENTITY>
         propertyMetamodel5,
         propertyMetamodel6,
         propertyMetamodel7);
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
+    Objects.requireNonNull(propertyMetamodel5);
+    Objects.requireNonNull(propertyMetamodel6);
+    Objects.requireNonNull(propertyMetamodel7);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
@@ -272,6 +302,14 @@ public class NativeSqlSelectStarting<ENTITY>
       PropertyMetamodel<T6> propertyMetamodel6,
       PropertyMetamodel<T7> propertyMetamodel7,
       PropertyMetamodel<T8> propertyMetamodel8) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
+    Objects.requireNonNull(propertyMetamodel5);
+    Objects.requireNonNull(propertyMetamodel6);
+    Objects.requireNonNull(propertyMetamodel7);
+    Objects.requireNonNull(propertyMetamodel8);
     declaration.select(
         propertyMetamodel1,
         propertyMetamodel2,
@@ -309,6 +347,15 @@ public class NativeSqlSelectStarting<ENTITY>
           PropertyMetamodel<T7> propertyMetamodel7,
           PropertyMetamodel<T8> propertyMetamodel8,
           PropertyMetamodel<T9> propertyMetamodel9) {
+    Objects.requireNonNull(propertyMetamodel1);
+    Objects.requireNonNull(propertyMetamodel2);
+    Objects.requireNonNull(propertyMetamodel3);
+    Objects.requireNonNull(propertyMetamodel4);
+    Objects.requireNonNull(propertyMetamodel5);
+    Objects.requireNonNull(propertyMetamodel6);
+    Objects.requireNonNull(propertyMetamodel7);
+    Objects.requireNonNull(propertyMetamodel8);
+    Objects.requireNonNull(propertyMetamodel9);
     declaration.select(
         propertyMetamodel1,
         propertyMetamodel2,
@@ -338,6 +385,10 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public SetOperand<List<Object>> select(PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodels);
+    for (int i = 0; i < propertyMetamodels.length; i++) {
+      Objects.requireNonNull(propertyMetamodels[i], "propertyMetamodels[" + i + "]");
+    }
     List<PropertyMetamodel<?>> list;
     if (propertyMetamodels.length == 0) {
       SelectContext context = declaration.getContext();
