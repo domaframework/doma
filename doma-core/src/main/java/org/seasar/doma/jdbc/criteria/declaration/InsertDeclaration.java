@@ -9,8 +9,7 @@ public class InsertDeclaration {
   private final InsertContext context;
 
   public InsertDeclaration(InsertContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public InsertContext getContext() {

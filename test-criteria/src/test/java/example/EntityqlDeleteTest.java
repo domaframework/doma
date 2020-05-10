@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
-import org.seasar.doma.jdbc.criteria.statement.Listable;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class EntityqlDeleteTest {
@@ -23,15 +21,13 @@ public class EntityqlDeleteTest {
   @Test
   void test() {
     Employee_ e = new Employee_();
-    Listable<Employee> select = entityql.from(e).where(c -> c.eq(e.employeeId, 5));
 
-    Employee employee = select.fetchOptional().orElseThrow(AssertionError::new);
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
 
-    Statement<Employee> delete = entityql.delete(e, employee);
-    Employee result = delete.execute();
+    Employee result = entityql.delete(e, employee).execute();
+
     assertEquals(employee, result);
-
-    List<Employee> employees = select.fetch();
+    List<Employee> employees = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetch();
     assertTrue(employees.isEmpty());
   }
 }

@@ -25,14 +25,10 @@ public class CriteriaQuery implements SelectQuery, DeleteQuery, InsertQuery, Upd
   private int queryTimeout;
 
   public CriteriaQuery(Config config, PreparedSql sql, String className, String methodName) {
-    Objects.requireNonNull(config);
-    Objects.requireNonNull(sql);
-    Objects.requireNonNull(className);
-    Objects.requireNonNull(methodName);
-    this.config = config;
-    this.sql = sql;
-    this.className = className;
-    this.methodName = methodName;
+    this.config = Objects.requireNonNull(config);
+    this.sql = Objects.requireNonNull(sql);
+    this.className = Objects.requireNonNull(className);
+    this.methodName = Objects.requireNonNull(methodName);
   }
 
   @Override

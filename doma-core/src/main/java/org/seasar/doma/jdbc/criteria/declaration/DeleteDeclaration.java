@@ -9,8 +9,7 @@ public class DeleteDeclaration {
   private final DeleteContext context;
 
   public DeleteDeclaration(DeleteContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public DeleteContext getContext() {

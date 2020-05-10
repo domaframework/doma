@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 @ExtendWith(Env.class)
 public class NativeSqlUpdateTest {
@@ -20,10 +20,34 @@ public class NativeSqlUpdateTest {
   }
 
   @Test
+  void settings() {
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(
+                e,
+                settings -> {
+                  settings.setComment("update all");
+                  settings.setQueryTimeout(1000);
+                  settings.setSqlLogType(SqlLogType.RAW);
+                  settings.setAllowEmptyWhere(true);
+                  settings.setBatchSize(20);
+                })
+            .set(
+                c -> {
+                  c.value(e.employeeName, "aaa");
+                })
+            .execute();
+
+    assertEquals(14, count);
+  }
+
+  @Test
   void where() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt =
+    int count =
         nativeSql
             .update(e)
             .set(c -> c.value(e.departmentId, 3))
@@ -31,9 +55,9 @@ public class NativeSqlUpdateTest {
                 c -> {
                   c.isNotNull(e.managerId);
                   c.ge(e.salary, new Salary("2000"));
-                });
+                })
+            .execute();
 
-    int count = stmt.execute();
     assertEquals(5, count);
   }
 
@@ -52,12 +76,12 @@ public class NativeSqlUpdateTest {
   void where_empty_allowEmptyWhere_enabled() {
     Employee_ e = new Employee_();
 
-    Statement<Integer> stmt =
+    int count =
         nativeSql
             .update(e, settings -> settings.setAllowEmptyWhere(true))
-            .set(c -> c.value(e.departmentId, 3));
+            .set(c -> c.value(e.departmentId, 3))
+            .execute();
 
-    int count = stmt.execute();
     assertEquals(14, count);
   }
 }

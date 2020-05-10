@@ -1,6 +1,6 @@
 package org.seasar.doma.jdbc.criteria.command;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,10 +21,8 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
   private final SelectQuery query;
 
   public AssociateCommand(SelectContext context, SelectQuery query) {
-    Objects.requireNonNull(context);
-    Objects.requireNonNull(query);
-    this.context = context;
-    this.query = query;
+    this.context = Objects.requireNonNull(context);
+    this.query = Objects.requireNonNull(query);
   }
 
   @Override

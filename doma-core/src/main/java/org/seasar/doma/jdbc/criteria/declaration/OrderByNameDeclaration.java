@@ -11,8 +11,7 @@ public class OrderByNameDeclaration {
   private final SelectContext context;
 
   public OrderByNameDeclaration(SelectContext context) {
-    Objects.requireNonNull(context);
-    this.context = context;
+    this.context = Objects.requireNonNull(context);
   }
 
   public void asc(PropertyDef<?> propertyDef) {

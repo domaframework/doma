@@ -14,8 +14,7 @@ public class EntityPoolIterationHandler
 
   public EntityPoolIterationHandler(List<EntityDef<?>> entityDefs) {
     super(new ResultListCallback<>());
-    Objects.requireNonNull(entityDefs);
-    this.entityDefs = entityDefs;
+    this.entityDefs = Objects.requireNonNull(entityDefs);
   }
 
   @Override

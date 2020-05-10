@@ -17,8 +17,7 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
 
   public MappedResultProvider(Query query, Function<Row, RESULT> mapper) {
     Objects.requireNonNull(query);
-    Objects.requireNonNull(mapper);
-    this.mapper = mapper;
+    this.mapper = Objects.requireNonNull(mapper);
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
   }
 
