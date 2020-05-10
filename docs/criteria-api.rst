@@ -30,7 +30,7 @@ We use the following Entity classes to show you some examples:
       private Integer employeeNo;
       private String employeeName;
       private Integer managerId;
-      public LocalDate hiredate;
+      private LocalDate hiredate;
       private Salary salary;
       private Integer departmentId;
       private Integer addressId;
@@ -39,6 +39,7 @@ We use the following Entity classes to show you some examples:
       @Transient private Department department;
       @Transient private Employee manager;
       @Transient private Address address;
+
       // getter and setter
     }
 
@@ -47,13 +48,13 @@ We use the following Entity classes to show you some examples:
     @Entity
     public class Department {
 
-      @Id Integer departmentId;
-      Integer departmentNo;
-      String departmentName;
-      String location;
-      @Version Integer version;
-      @OriginalStates Department originalStates;
-      @Transient List<Employee> employeeList = new ArrayList<>();
+      @Id private Integer departmentId;
+      private Integer departmentNo;
+      private String departmentName;
+      private String location;
+      @Version private Integer version;
+      @OriginalStates private Department originalStates;
+      @Transient private List<Employee> employeeList = new ArrayList<>();
 
       // getter and setter
     }

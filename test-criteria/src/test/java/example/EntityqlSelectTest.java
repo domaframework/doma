@@ -255,7 +255,8 @@ public class EntityqlSelectTest {
             .fetch();
 
     assertEquals(6, list.size());
-    assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
+    assertTrue(
+        list.stream().allMatch(it -> it.getDepartment().getDepartmentName().equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
   }
 
@@ -323,7 +324,8 @@ public class EntityqlSelectTest {
             .fetch();
 
     assertEquals(6, list.size());
-    assertTrue(list.stream().allMatch(it -> it.getDepartment().departmentName.equals("SALES")));
+    assertTrue(
+        list.stream().allMatch(it -> it.getDepartment().getDepartmentName().equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
     assertTrue(list.stream().allMatch(it -> it.getAddress() != null));
   }

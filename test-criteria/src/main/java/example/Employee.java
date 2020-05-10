@@ -14,7 +14,7 @@ public class Employee {
   private Integer employeeNo;
   private String employeeName;
   private Integer managerId;
-  public LocalDate hiredate;
+  private LocalDate hiredate;
   private Salary salary;
   private Integer departmentId;
   private Integer addressId;

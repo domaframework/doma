@@ -11,13 +11,13 @@ import org.seasar.doma.Version;
 @Entity
 public class Department {
 
-  @Id Integer departmentId;
-  Integer departmentNo;
-  String departmentName;
-  String location;
-  @Version Integer version;
-  @OriginalStates Department originalStates;
-  @Transient List<Employee> employeeList = new ArrayList<>();
+  @Id private Integer departmentId;
+  private Integer departmentNo;
+  private String departmentName;
+  private String location;
+  @Version private Integer version;
+  @OriginalStates private Department originalStates;
+  @Transient private List<Employee> employeeList = new ArrayList<>();
 
   public Integer getDepartmentId() {
     return departmentId;
