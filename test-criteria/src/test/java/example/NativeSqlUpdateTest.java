@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -103,5 +105,23 @@ public class NativeSqlUpdateTest {
     Employee employee = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOne();
     assertNotNull(employee);
     assertEquals(11, employee.getVersion());
+  }
+
+  @Test
+  void expressions() {
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(
+                c -> {
+                  c.value(e.employeeName, concat("[", concat(e.employeeName, "]")));
+                  c.value(e.version, add(e.version, literal(1)));
+                })
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+    assertEquals(1, count);
   }
 }
