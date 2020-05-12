@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -94,7 +95,12 @@ public class SelectFromDeclaration {
     context.forUpdate = new ForUpdate(option);
   }
 
-  public void select(PropertyMetamodel<?>... propertyMetamodels) {
+  public void select(List<PropertyMetamodel<?>> propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodels);
+    int i = 0;
+    for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+      Objects.requireNonNull(propertyMetamodels, "propertyMetamodels: " + i);
+    }
     context.projection = new Projection.List(propertyMetamodels);
   }
 
