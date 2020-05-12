@@ -128,6 +128,16 @@ public class EntityqlSelectStatement<ENTITY>
     query.setFetchSize(settings.getFetchSize());
     query.setMaxRows(settings.getMaxRows());
     query.setQueryTimeout(settings.getQueryTimeout());
-    return new AssociateCommand<>(context, query);
+    return new AssociateCommand<ENTITY>(context, query) {
+      @Override
+      public List<ENTITY> execute() {
+        if (!settings.getAllowEmptyWhere()) {
+          if (context.where.isEmpty()) {
+            throw new EmptyWhereClauseException(sql);
+          }
+        }
+        return super.execute();
+      }
+    };
   }
 }

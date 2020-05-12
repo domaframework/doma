@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.seasar.doma.jdbc.criteria.AggregateFunctions.count;
 import static org.seasar.doma.jdbc.criteria.AggregateFunctions.min;
@@ -18,8 +19,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 import org.seasar.doma.jdbc.criteria.tuple.Row;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
@@ -30,6 +33,35 @@ public class NativeSqlSelectTest {
 
   public NativeSqlSelectTest(Config config) {
     this.nativeSql = new NativeSql(config);
+  }
+
+  @Test
+  void settings() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        nativeSql
+            .from(
+                e,
+                settings -> {
+                  settings.setComment("all employees");
+                  settings.setSqlLogType(SqlLogType.RAW);
+                  settings.setQueryTimeout(1000);
+                  settings.setAllowEmptyWhere(true);
+                  settings.setFetchSize(100);
+                  settings.setMaxRows(100);
+                })
+            .fetch();
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void fetch_allowEmptyWhere_disabled() {
+    Employee_ e = new Employee_();
+
+    assertThrows(
+        EmptyWhereClauseException.class,
+        () -> nativeSql.from(e, settings -> settings.setAllowEmptyWhere(false)).fetch());
   }
 
   @Test
