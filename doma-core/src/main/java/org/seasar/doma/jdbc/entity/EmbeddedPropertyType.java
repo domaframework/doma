@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.entity;
 
 import static java.util.stream.Collectors.toMap;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,7 +36,14 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
     this.embeddablePropertyTypes = embeddablePropertyType;
     this.embeddablePropertyTypeMap =
         this.embeddablePropertyTypes.stream()
-            .collect(toMap(EntityPropertyType::getName, Function.identity()));
+            .collect(
+                toMap(
+                    EntityPropertyType::getName,
+                    Function.identity(),
+                    (u, v) -> {
+                      throw new IllegalStateException(String.format("Duplicate key %s", u));
+                    },
+                    LinkedHashMap::new));
     this.field = new PropertyField<>(name, entityClass);
   }
 
