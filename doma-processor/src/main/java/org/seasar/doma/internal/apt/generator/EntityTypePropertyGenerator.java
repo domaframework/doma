@@ -40,7 +40,6 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printPropertyTypeField() {
-    iprint("/** the %1$s */%n", propertyMeta.getName());
     if (propertyMeta.isEmbedded()) {
       EmbeddableCtTypeVisitor visitor = new EmbeddableCtTypeVisitor();
       EmbeddableCtType embeddableCtType = propertyMeta.getCtType().accept(visitor, null);
@@ -64,26 +63,24 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printEmbeddedPropertyTypeField(EmbeddableCtType embeddableCtType) {
-    iprint(
-        "public final %1$s<%2$s, %3$s> %4$s = "
-            + "new %1$s<>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType));%n",
+    print(
+        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType))",
         /* 1 */ EmbeddedPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ propertyMeta.getType(),
-        /* 4 */ propertyMeta.getFieldName(),
+        /* 4 */ null,
         /* 5 */ propertyMeta.getName(),
         /* 6 */ embeddableCtType.getDescCode());
   }
 
   private void printGeneratedIdPropertyTypeField(ScalarMeta scalarMeta) {
-    iprint(
-        "public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-            + "new %1$s<>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, __idGenerator);%n",
+    print(
+        "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, __idGenerator)",
         /* 1 */ GeneratedIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ scalarMeta.getBasicType(),
         /* 4 */ scalarMeta.getContainerType(),
-        /* 5 */ propertyMeta.getFieldName(),
+        /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
         /* 8 */ propertyMeta.getName(),
@@ -92,14 +89,13 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printAssignedIdPropertyTypeField(ScalarMeta scalarMeta) {
-    iprint(
-        "public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-            + "new %1$s<>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s);%n",
+    print(
+        "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ AssignedIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ scalarMeta.getBasicType(),
         /* 4 */ scalarMeta.getContainerType(),
-        /* 5 */ propertyMeta.getFieldName(),
+        /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
         /* 8 */ propertyMeta.getName(),
@@ -108,14 +104,13 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printVersionPropertyTypeField(ScalarMeta scalarMeta) {
-    iprint(
-        "public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-            + "new %1$s<>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s);%n",
+    print(
+        "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ VersionPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ scalarMeta.getBasicType(),
         /* 4 */ scalarMeta.getContainerType(),
-        /* 5 */ propertyMeta.getFieldName(),
+        /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
         /* 8 */ propertyMeta.getName(),
@@ -124,14 +119,13 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printTenantIdPropertyTypeField(ScalarMeta scalarMeta) {
-    iprint(
-        "public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-            + "new %1$s<>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s);%n",
+    print(
+        "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ TenantIdPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ scalarMeta.getBasicType(),
         /* 4 */ scalarMeta.getContainerType(),
-        /* 5 */ propertyMeta.getFieldName(),
+        /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
         /* 8 */ propertyMeta.getName(),
@@ -140,14 +134,13 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printDefaultPropertyTypeField(ScalarMeta scalarMeta) {
-    iprint(
-        "public final %1$s<%2$s, %3$s, %4$s> %5$s = "
-            + "new %1$s<>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, %11$s, %12$s);%n",
+    print(
+        "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, %11$s, %12$s)",
         /* 1 */ DefaultPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ scalarMeta.getBasicType(),
         /* 4 */ scalarMeta.getContainerType(),
-        /* 5 */ propertyMeta.getFieldName(),
+        /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
         /* 8 */ propertyMeta.getName(),

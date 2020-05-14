@@ -33,6 +33,9 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __entityPropertyTypeMap;
 
+    @SuppressWarnings("unused")
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __embeddedPropertyTypeMap;
+
     private _GenericListener6Entity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
@@ -43,10 +46,25 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __list = new java.util.ArrayList<>(0);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __map = new java.util.HashMap<>(0);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __map = new java.util.LinkedHashMap<>(0);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __embeddedMap = new java.util.LinkedHashMap<>(0);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __embeddedMap) {
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __idList) {
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?>> __list) {
+        __list.addAll(__map.values());
     }
 
     @Override
@@ -155,19 +173,22 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
         return __idPropertyTypes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?> getGeneratedIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?> getVersionPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?> getTenantIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener6Entity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
     @Override

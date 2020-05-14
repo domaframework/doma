@@ -13,12 +13,6 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
-    /** the id */
-    public final org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new), "id", "", __namingType, false);
-
-    /** the address */
-    public final org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, org.seasar.doma.internal.apt.processor.entity.UserAddress> $address = new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<>("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().getEmbeddablePropertyTypes("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, __namingType));
-
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.ImmutableUser>> __listenerSupplier;
 
     private final boolean __immutable;
@@ -39,6 +33,8 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __entityPropertyTypeMap;
 
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __embeddedPropertyTypeMap;
+
     private _ImmutableUser() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
@@ -49,15 +45,29 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __list = new java.util.ArrayList<>(2);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __map = new java.util.HashMap<>(2);
-        __idList.add($id);
-        __list.add($id);
-        __map.put("id", $id);
-        __list.addAll($address.getEmbeddablePropertyTypes());
-        __map.putAll($address.getEmbeddablePropertyTypeMap());
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __map = new java.util.LinkedHashMap<>(2);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __embeddedMap = new java.util.LinkedHashMap<>(2);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __embeddedMap) {
+        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "id", "", __namingType, false));
+        __embeddedMap.put("address", new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, org.seasar.doma.internal.apt.processor.entity.UserAddress>("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().getEmbeddablePropertyTypes("address", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class, __namingType)));
+        __map.putAll(__embeddedMap.get("address").getEmbeddablePropertyTypeMap());
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __idList) {
+        __idList.add(__map.get("id"));
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?>> __list) {
+        __list.addAll(__map.values());
     }
 
     @Override
@@ -166,19 +176,22 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
         return __idPropertyTypes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getGeneratedIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getVersionPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?> getTenantIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableUser, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
     @Override

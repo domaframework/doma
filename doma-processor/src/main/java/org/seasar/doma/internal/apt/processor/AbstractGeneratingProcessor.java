@@ -55,7 +55,8 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     try {
       JavaFileObject file = ctx.getResources().createSourceFile(className, typeElement);
       formatter = new Formatter(new BufferedWriter(file.openWriter()));
-      Generator generator = createGenerator(className, new Printer(ctx, formatter), meta);
+      Printer printer = new Printer(ctx, formatter);
+      Generator generator = createGenerator(className, printer, meta);
       generator.generate();
     } catch (IOException | UncheckedIOException e) {
       throw new AptException(

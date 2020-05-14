@@ -13,9 +13,6 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
 
-    /** the tenantDiscriminator */
-    public final org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, java.lang.String, java.lang.String> $tenantDiscriminator = new org.seasar.doma.jdbc.entity.TenantIdPropertyType<>(org.seasar.doma.internal.apt.processor.entity.TenantIdEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), "tenantDiscriminator", "", __namingType, false);
-
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity>> __listenerSupplier;
 
     private final boolean __immutable;
@@ -36,6 +33,9 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __entityPropertyTypeMap;
 
+    @SuppressWarnings("unused")
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __embeddedPropertyTypeMap;
+
     private _TenantIdEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
@@ -46,12 +46,26 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __list = new java.util.ArrayList<>(1);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map = new java.util.HashMap<>(1);
-        __list.add($tenantDiscriminator);
-        __map.put("tenantDiscriminator", $tenantDiscriminator);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map = new java.util.LinkedHashMap<>(1);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __embeddedMap = new java.util.LinkedHashMap<>(1);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __embeddedMap) {
+        __map.put("tenantDiscriminator", new org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.TenantIdEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "tenantDiscriminator", "", __namingType, false));
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __idList) {
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __list) {
+        __list.addAll(__map.values());
     }
 
     @Override
@@ -160,19 +174,22 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
         return __idPropertyTypes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?> getGeneratedIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?> getVersionPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?> getTenantIdPropertyType() {
-        return $tenantDiscriminator;
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?, ?>)__entityPropertyTypeMap.get("tenantDiscriminator");
     }
 
     @Override
