@@ -10,8 +10,8 @@ import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
@@ -21,50 +21,52 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     super(context);
   }
 
-  public <PROPERTY> void isNull(PropertyDef<PROPERTY> propertyDef) {
-    Objects.requireNonNull(propertyDef);
-    add(new Criterion.IsNull(new Operand.Prop(propertyDef)));
+  public <PROPERTY> void isNull(PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    add(new Criterion.IsNull(new Operand.Prop(propertyMetamodel)));
   }
 
-  public <PROPERTY> void isNotNull(PropertyDef<PROPERTY> propertyDef) {
-    Objects.requireNonNull(propertyDef);
-    add(new Criterion.IsNotNull(new Operand.Prop(propertyDef)));
+  public <PROPERTY> void isNotNull(PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    add(new Criterion.IsNotNull(new Operand.Prop(propertyMetamodel)));
   }
 
-  public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right) {
+  public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
     add(
         new Criterion.Like(
             new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
   }
 
-  public <PROPERTY> void like(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
+  public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
     Objects.requireNonNull(left);
     add(new Criterion.Like(new Operand.Prop(left), new Operand.Param(left, right), option));
   }
 
-  public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right) {
+  public <PROPERTY> void notLike(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
     add(
         new Criterion.NotLike(
             new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
   }
 
-  public <PROPERTY> void notLike(PropertyDef<PROPERTY> left, PROPERTY right, LikeOption option) {
+  public <PROPERTY> void notLike(
+      PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
     Objects.requireNonNull(left);
     add(new Criterion.NotLike(new Operand.Prop(left), new Operand.Param(left, right), option));
   }
 
-  public <PROPERTY> void between(PropertyDef<PROPERTY> propertyDef, PROPERTY start, PROPERTY end) {
-    Objects.requireNonNull(propertyDef);
+  public <PROPERTY> void between(
+      PropertyMetamodel<PROPERTY> propertyMetamodel, PROPERTY start, PROPERTY end) {
+    Objects.requireNonNull(propertyMetamodel);
     add(
         new Criterion.Between(
-            new Operand.Prop(propertyDef),
-            new Operand.Param(propertyDef, start),
-            new Operand.Param(propertyDef, end)));
+            new Operand.Prop(propertyMetamodel),
+            new Operand.Param(propertyMetamodel, start),
+            new Operand.Param(propertyMetamodel, end)));
   }
 
-  public <PROPERTY> void in(PropertyDef<PROPERTY> left, List<PROPERTY> right) {
+  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, List<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(
@@ -73,7 +75,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
             right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
-  public <PROPERTY> void notIn(PropertyDef<PROPERTY> left, List<PROPERTY> right) {
+  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, List<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(
@@ -82,20 +84,20 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
             right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
-  public <PROPERTY> void in(PropertyDef<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(new Criterion.InSubQuery(new Operand.Prop(left), right.context));
   }
 
-  public <PROPERTY> void notIn(PropertyDef<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(new Criterion.NotInSubQuery(new Operand.Prop(left), right.context));
   }
 
   public <PROPERTY1, PROPERTY2> void in(
-      Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());
     Operand.Prop prop2 = new Operand.Prop(left.getItem2());
@@ -112,7 +114,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   }
 
   public <PROPERTY1, PROPERTY2> void notIn(
-      Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());
     Operand.Prop prop2 = new Operand.Prop(left.getItem2());
@@ -129,7 +131,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   }
 
   public <PROPERTY1, PROPERTY2> void in(
-      Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
@@ -139,7 +141,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
   }
 
   public <PROPERTY1, PROPERTY2> void notIn(
-      Tuple2<PropertyDef<PROPERTY1>, PropertyDef<PROPERTY2>> left,
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
       SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
@@ -158,8 +160,8 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     add(new Criterion.NotExists(subSelectContext.context));
   }
 
-  public SubSelectFromDeclaration from(EntityDef<?> entityDef) {
-    return new SubSelectFromDeclaration(entityDef);
+  public SubSelectFromDeclaration from(EntityMetamodel<?> entityMetamodel) {
+    return new SubSelectFromDeclaration(entityMetamodel);
   }
 
   public void and(Runnable block) {

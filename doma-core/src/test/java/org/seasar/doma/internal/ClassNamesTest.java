@@ -47,27 +47,15 @@ class ClassNamesTest {
 
   @Test
   void newEntityDefClassNameBuilder() {
-    ClassName className = ClassNames.newEntityDefClassNameBuilder(getClass().getName(), "P", "S");
+    ClassName className =
+        ClassNames.newEntityMetamodelClassNameBuilder(getClass().getName(), "P", "S");
     assertEquals("org.seasar.doma.internal.PClassNamesTestS", className.toString());
   }
 
   @Test
   void newEntityDefClassNameBuilder_withDefaultValues() {
-    ClassName className = ClassNames.newEntityDefClassNameBuilder(getClass().getName(), "", "_");
-    assertEquals("org.seasar.doma.internal.ClassNamesTest_", className.toString());
-  }
-
-  @Test
-  void newEmbeddableDefClassNameBuilder() {
     ClassName className =
-        ClassNames.newEmbeddableDefClassNameBuilder(getClass().getName(), "P", "S");
-    assertEquals("org.seasar.doma.internal.PClassNamesTestS", className.toString());
-  }
-
-  @Test
-  void newEmbeddableDefClassNameBuilder_withDefaultValues() {
-    ClassName className =
-        ClassNames.newEmbeddableDefClassNameBuilder(getClass().getName(), "", "_");
+        ClassNames.newEntityMetamodelClassNameBuilder(getClass().getName(), "", "_");
     assertEquals("org.seasar.doma.internal.ClassNamesTest_", className.toString());
   }
 }

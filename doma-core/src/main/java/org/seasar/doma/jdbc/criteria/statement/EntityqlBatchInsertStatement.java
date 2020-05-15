@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
@@ -17,21 +17,24 @@ public class EntityqlBatchInsertStatement<ENTITY>
     extends AbstractStatement<EntityqlBatchInsertStatement<ENTITY>, List<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_INSERT);
-  private final EntityDef<ENTITY> entityDef;
+  private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
 
   public EntityqlBatchInsertStatement(
-      Config config, EntityDef<ENTITY> entityDef, List<ENTITY> entities, InsertSettings settings) {
+      Config config,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      List<ENTITY> entities,
+      InsertSettings settings) {
     super(Objects.requireNonNull(config));
-    this.entityDef = Objects.requireNonNull(entityDef);
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
   }
 
   @Override
   protected Command<List<ENTITY>> createCommand() {
-    EntityType<ENTITY> entityType = entityDef.asType();
+    EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoBatchInsertQuery<ENTITY> query =
         config.getQueryImplementors().createAutoBatchInsertQuery(EXECUTE_METHOD, entityType);
     query.setMethod(EXECUTE_METHOD);

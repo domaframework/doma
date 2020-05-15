@@ -8,23 +8,23 @@ import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
-public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
+public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY> {
   Asterisk Asterisk = new Asterisk();
 
-  PropertyDef<?> argument();
+  PropertyMetamodel<?> argument();
 
   abstract class AbstractFunction<PROPERTY> implements AggregateFunction<PROPERTY> {
     private final String name;
-    private final PropertyDef<?> argument;
+    private final PropertyMetamodel<?> argument;
 
-    protected AbstractFunction(String name, PropertyDef<?> argument) {
+    protected AbstractFunction(String name, PropertyMetamodel<?> argument) {
       Objects.requireNonNull(name);
       Objects.requireNonNull(argument);
       this.name = name;
@@ -47,7 +47,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
     }
 
     @Override
-    public PropertyDef<?> argument() {
+    public PropertyMetamodel<?> argument() {
       return argument;
     }
 
@@ -67,7 +67,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
 
   class Avg<PROPERTY> extends AbstractFunction<PROPERTY> {
 
-    public Avg(PropertyDef<PROPERTY> argument) {
+    public Avg(PropertyMetamodel<PROPERTY> argument) {
       super("avg", argument);
     }
   }
@@ -75,7 +75,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
   class Count extends AbstractFunction<Long> {
     private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
-    public Count(PropertyDef<?> argument) {
+    public Count(PropertyMetamodel<?> argument) {
       super("count", argument);
     }
 
@@ -92,25 +92,25 @@ public interface AggregateFunction<PROPERTY> extends PropertyDef<PROPERTY> {
 
   class Max<PROPERTY> extends AbstractFunction<PROPERTY> {
 
-    public Max(PropertyDef<PROPERTY> argument) {
+    public Max(PropertyMetamodel<PROPERTY> argument) {
       super("max", argument);
     }
   }
 
   class Min<PROPERTY> extends AbstractFunction<PROPERTY> {
 
-    public Min(PropertyDef<PROPERTY> argument) {
+    public Min(PropertyMetamodel<PROPERTY> argument) {
       super("min", argument);
     }
   }
 
   class Sum<PROPERTY> extends AbstractFunction<PROPERTY> {
-    public Sum(PropertyDef<PROPERTY> argument) {
+    public Sum(PropertyMetamodel<PROPERTY> argument) {
       super("sum", argument);
     }
   }
 
-  class Asterisk implements PropertyDef<Long> {
+  class Asterisk implements PropertyMetamodel<Long> {
     private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
     private Asterisk() {}

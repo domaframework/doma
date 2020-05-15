@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 class EntityKeyTest {
 
-  private final EntityDefImpl entityDef = new EntityDefImpl();
+  private final EntityMetamodelImpl entityDef = new EntityMetamodelImpl();
 
   @Test
   void testEquals() {
@@ -83,7 +83,7 @@ class EntityKeyTest {
     assertNotEquals(key1.hashCode(), key2.hashCode());
   }
 
-  static class EntityDefImpl implements EntityDef<Object> {
+  static class EntityMetamodelImpl implements EntityMetamodel<Object> {
 
     @Override
     public EntityType<Object> asType() {
@@ -91,7 +91,7 @@ class EntityKeyTest {
     }
 
     @Override
-    public List<PropertyDef<?>> allPropertyDefs() {
+    public List<PropertyMetamodel<?>> allPropertyMetamodels() {
       return null;
     }
   }

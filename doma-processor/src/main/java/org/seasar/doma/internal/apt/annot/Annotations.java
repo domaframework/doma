@@ -6,12 +6,41 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import javax.lang.model.element.*;
-import org.seasar.doma.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import org.seasar.doma.AnnotateWith;
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.BlobFactory;
+import org.seasar.doma.ClobFactory;
+import org.seasar.doma.Column;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Domain;
+import org.seasar.doma.DomainConverters;
+import org.seasar.doma.Embeddable;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Insert;
+import org.seasar.doma.NClobFactory;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.ResultSet;
+import org.seasar.doma.SQLXMLFactory;
+import org.seasar.doma.Script;
+import org.seasar.doma.Select;
+import org.seasar.doma.SequenceGenerator;
+import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Sql;
+import org.seasar.doma.SqlProcessor;
+import org.seasar.doma.Table;
+import org.seasar.doma.TableGenerator;
+import org.seasar.doma.Update;
 import org.seasar.doma.experimental.DataType;
-import org.seasar.doma.internal.EmbeddableDesc;
-import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -125,22 +154,38 @@ public class Annotations {
 
   public EmbeddableAnnot newEmbeddableAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
-    return newInstance(typeElement, Embeddable.class, EmbeddableAnnot::new);
-  }
-
-  public EmbeddableDescAnnot newEmbeddableDescAnnot(TypeElement typeElement) {
-    assertNotNull(typeElement);
-    return newInstance(typeElement, EmbeddableDesc.class, EmbeddableDescAnnot::new);
+    AnnotationMirror embeddableMirror =
+        ctx.getMoreElements().getAnnotationMirror(typeElement, Embeddable.class);
+    Map<String, AnnotationValue> valuesWithoutDefaults =
+        ctx.getMoreElements().getValuesWithoutDefaults(embeddableMirror);
+    AnnotationValue metamodel = valuesWithoutDefaults.get(EmbeddableAnnot.METAMODEL);
+    MetamodelAnnot metamodelAnnot = null;
+    if (metamodel != null) {
+      AnnotationMirror metamodelMirror = AnnotationValueUtil.toAnnotation(metamodel);
+      if (metamodelMirror != null) {
+        metamodelAnnot = newMetamodelAnnot(metamodelMirror);
+      }
+    }
+    return new EmbeddableAnnot(embeddableMirror, metamodelAnnot);
   }
 
   public EntityAnnot newEntityAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
-    return newInstance(typeElement, Entity.class, EntityAnnot::new);
-  }
-
-  public EntityDescAnnot newEntityDescAnnot(TypeElement typeElement) {
-    assertNotNull(typeElement);
-    return newInstance(typeElement, EntityDesc.class, EntityDescAnnot::new);
+    AnnotationMirror entityMirror =
+        ctx.getMoreElements().getAnnotationMirror(typeElement, Entity.class);
+    Map<String, AnnotationValue> valuesWithoutDefaults =
+        ctx.getMoreElements().getValuesWithoutDefaults(entityMirror);
+    AnnotationValue metamodel = valuesWithoutDefaults.get(EntityAnnot.METAMODEL);
+    MetamodelAnnot metamodelAnnot = null;
+    if (metamodel != null) {
+      AnnotationMirror metamodelMirror = AnnotationValueUtil.toAnnotation(metamodel);
+      if (metamodelMirror != null) {
+        metamodelAnnot = newMetamodelAnnot(metamodelMirror);
+      }
+    }
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(entityMirror);
+    return new EntityAnnot(entityMirror, metamodelAnnot, valuesWithDefaults);
   }
 
   public FunctionAnnot newFunctionAnnot(final ExecutableElement method) {
@@ -155,6 +200,11 @@ public class Annotations {
   public InsertAnnot newInsertAnnot(ExecutableElement method) {
     assertNotNull(method);
     return newInstance(method, Insert.class, InsertAnnot::new);
+  }
+
+  public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {
+    assertNotNull(annotationMirror);
+    return newInstance(annotationMirror, MetamodelAnnot::new);
   }
 
   public NClobFactoryAnnot newNClobFactoryAnnot(ExecutableElement method) {

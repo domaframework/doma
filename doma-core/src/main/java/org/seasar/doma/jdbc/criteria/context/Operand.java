@@ -7,23 +7,23 @@ import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public interface Operand {
 
   <R> R accept(Visitor<R> visitor);
 
   class Param implements Operand {
-    private final PropertyDef<?> propertyDef;
+    private final PropertyMetamodel<?> propertyMetamodel;
     private final Object value;
 
-    public Param(PropertyDef<?> propertyDef, Object value) {
-      this.propertyDef = Objects.requireNonNull(propertyDef);
+    public Param(PropertyMetamodel<?> propertyMetamodel, Object value) {
+      this.propertyMetamodel = Objects.requireNonNull(propertyMetamodel);
       this.value = value;
     }
 
     public InParameter<?> createInParameter(Config config) {
-      Class<?> clazz = propertyDef.asClass();
+      Class<?> clazz = propertyMetamodel.asClass();
       Supplier<Scalar<?, ?>> supplier = Scalars.wrap(value, clazz, false, config.getClassHelper());
       return new ScalarInParameter<>(supplier.get());
     }
@@ -35,9 +35,9 @@ public interface Operand {
   }
 
   class Prop implements Operand {
-    public final PropertyDef<?> value;
+    public final PropertyMetamodel<?> value;
 
-    public Prop(PropertyDef<?> value) {
+    public Prop(PropertyMetamodel<?> value) {
       this.value = Objects.requireNonNull(value);
     }
 

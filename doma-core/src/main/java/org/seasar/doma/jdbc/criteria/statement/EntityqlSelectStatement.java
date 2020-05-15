@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
@@ -43,28 +43,28 @@ public class EntityqlSelectStatement<ENTITY>
   }
 
   public EntityqlSelectStatement<ENTITY> innerJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    declaration.innerJoin(entityDef, block);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    declaration.innerJoin(entityMetamodel, block);
     return this;
   }
 
   public EntityqlSelectStatement<ENTITY> leftJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    declaration.leftJoin(entityDef, block);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    declaration.leftJoin(entityMetamodel, block);
     return this;
   }
 
   public <ENTITY1, ENTITY2> EntityqlSelectStatement<ENTITY> associate(
-      EntityDef<ENTITY1> first,
-      EntityDef<ENTITY2> second,
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
     declaration.associate(first, second, associator, AssociationOption.MANDATORY);
     return this;
   }
 
   public <ENTITY1, ENTITY2> EntityqlSelectStatement<ENTITY> associate(
-      EntityDef<ENTITY1> first,
-      EntityDef<ENTITY2> second,
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
       AssociationOption kind) {
     declaration.associate(first, second, associator, kind);

@@ -267,6 +267,18 @@ public class MoreElements implements Elements {
     return null;
   }
 
+  public Map<String, AnnotationValue> getValuesWithoutDefaults(AnnotationMirror annotationMirror) {
+    assertNotNull(annotationMirror);
+    Map<String, AnnotationValue> map = new HashMap<>();
+    for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry :
+        annotationMirror.getElementValues().entrySet()) {
+      String key = entry.getKey().getSimpleName().toString();
+      AnnotationValue value = entry.getValue();
+      map.put(key, value);
+    }
+    return Collections.unmodifiableMap(map);
+  }
+
   public Map<String, AnnotationValue> getValuesWithDefaults(AnnotationMirror annotationMirror) {
     assertNotNull(annotationMirror);
     Map<String, AnnotationValue> map = new HashMap<>();

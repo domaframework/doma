@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.Row;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
@@ -29,7 +29,7 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
           int index = 1;
 
           @Override
-          public <PROPERTY> PROPERTY get(PropertyDef<PROPERTY> propertyDef) {
+          public <PROPERTY> PROPERTY get(PropertyMetamodel<PROPERTY> propertyDef) {
             Property<?, ?> property = propertyDef.asType().createProperty();
             try {
               fetch(resultSet, property, index++, jdbcMappingVisitor);

@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.JdbcMappable;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ObjectProvider;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -27,11 +27,11 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class EntityPoolProvider implements ObjectProvider<EntityPool> {
-  private final List<EntityDef<?>> entityDefs;
+  private final List<EntityMetamodel<?>> entityMetamodels;
   private final JdbcMappingVisitor jdbcMappingVisitor;
 
-  public EntityPoolProvider(List<EntityDef<?>> entityDefs, Query query) {
-    this.entityDefs = Objects.requireNonNull(entityDefs);
+  public EntityPoolProvider(List<EntityMetamodel<?>> entityMetamodels, Query query) {
+    this.entityMetamodels = Objects.requireNonNull(entityMetamodels);
     Objects.requireNonNull(query);
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
   }
@@ -42,8 +42,8 @@ public class EntityPoolProvider implements ObjectProvider<EntityPool> {
     Objects.requireNonNull(resultSet);
     EntityPool entityPool = new EntityPool();
     int index = 1;
-    for (EntityDef<?> entityDef : entityDefs) {
-      EntityType<?> entityType = entityDef.asType();
+    for (EntityMetamodel<?> entityMetamodel : entityMetamodels) {
+      EntityType<?> entityType = entityMetamodel.asType();
       List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
       List<Prop> props = new ArrayList<>(propertyTypes.size());
       for (EntityPropertyType<?, ?> propertyType : propertyTypes) {
@@ -56,14 +56,14 @@ public class EntityPoolProvider implements ObjectProvider<EntityPool> {
       }
       EntityKey key;
       if (entityType.getIdPropertyTypes().isEmpty()) {
-        key = new EntityKey(entityDef, Collections.singletonList(new Object()));
+        key = new EntityKey(entityMetamodel, Collections.singletonList(new Object()));
       } else {
         List<?> items =
             props.stream()
                 .filter(it -> it.propType.isId())
                 .map(it -> it.prop.getWrapper().get())
                 .collect(toList());
-        key = new EntityKey(entityDef, items);
+        key = new EntityKey(entityMetamodel, items);
       }
       Map<String, Property<Object, ?>> states =
           props.stream().collect(Collectors.toMap(p -> p.propType.getName(), p -> p.prop));

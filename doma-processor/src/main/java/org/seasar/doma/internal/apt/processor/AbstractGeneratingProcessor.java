@@ -1,23 +1,16 @@
 package org.seasar.doma.internal.apt.processor;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
-import java.util.Formatter;
 import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.JavaFileObject;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.JavaFileGenerator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.util.IOUtil;
-import org.seasar.doma.message.Message;
 
 public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
     extends AbstractProcessor {
@@ -50,20 +43,9 @@ public abstract class AbstractGeneratingProcessor<M extends TypeElementMeta>
   protected abstract TypeElementMetaFactory<M> createTypeElementMetaFactory();
 
   protected void generate(TypeElement typeElement, M meta) {
-    ClassName className = createClassName(typeElement, meta);
-    Formatter formatter = null;
-    try {
-      JavaFileObject file = ctx.getResources().createSourceFile(className, typeElement);
-      formatter = new Formatter(new BufferedWriter(file.openWriter()));
-      Printer printer = new Printer(ctx, formatter);
-      Generator generator = createGenerator(className, printer, meta);
-      generator.generate();
-    } catch (IOException | UncheckedIOException e) {
-      throw new AptException(
-          Message.DOMA4011, typeElement, e, new Object[] {typeElement.getQualifiedName(), e});
-    } finally {
-      IOUtil.close(formatter);
-    }
+    JavaFileGenerator<M> javaFileGenerator =
+        new JavaFileGenerator<>(ctx, this::createClassName, this::createGenerator);
+    javaFileGenerator.generate(typeElement, meta);
   }
 
   protected abstract ClassName createClassName(TypeElement typeElement, M meta);

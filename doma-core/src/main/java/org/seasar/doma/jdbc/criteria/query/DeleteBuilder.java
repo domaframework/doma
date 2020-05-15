@@ -9,7 +9,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class DeleteBuilder {
   private final DeleteContext context;
@@ -46,7 +46,7 @@ public class DeleteBuilder {
 
   public PreparedSql build() {
     buf.appendSql("delete from ");
-    table(context.entityDef);
+    table(context.entityMetamodel);
     if (!context.where.isEmpty()) {
       buf.appendSql(" where ");
       int index = 0;
@@ -59,8 +59,8 @@ public class DeleteBuilder {
     return buf.build(commenter);
   }
 
-  private void table(EntityDef<?> entityDef) {
-    support.table(entityDef);
+  private void table(EntityMetamodel<?> entityMetamodel) {
+    support.table(entityMetamodel);
   }
 
   private void visitCriterion(int index, Criterion criterion) {

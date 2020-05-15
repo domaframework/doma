@@ -11,7 +11,7 @@ import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -29,12 +29,12 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
   @SuppressWarnings("unchecked")
   public List<ENTITY> execute() {
     Map<EntityKey, Object> cache = new LinkedHashMap<>();
-    List<EntityDef<?>> entityDefs = context.allEntityDefs();
+    List<EntityMetamodel<?>> entityMetamodels = context.allEntityDefs();
     SelectCommand<List<EntityPool>> command =
-        new SelectCommand<>(query, new EntityPoolIterationHandler(entityDefs));
+        new SelectCommand<>(query, new EntityPoolIterationHandler(entityMetamodels));
     List<EntityPool> entityPools = command.execute();
     for (EntityPool entityPool : entityPools) {
-      Map<EntityDef<?>, Object> associationCandidate = new LinkedHashMap<>();
+      Map<EntityMetamodel<?>, Object> associationCandidate = new LinkedHashMap<>();
       for (Map.Entry<EntityKey, EntityData> e : entityPool.entrySet()) {
         EntityKey key = e.getKey();
         EntityData data = e.getValue();
@@ -42,29 +42,29 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
             cache.computeIfAbsent(
                 key,
                 k -> {
-                  EntityDef<?> entityDef = k.getEntityDef();
-                  EntityType<Object> entityType = (EntityType<Object>) entityDef.asType();
+                  EntityMetamodel<?> entityMetamodel = k.getEntityMetamodel();
+                  EntityType<Object> entityType = (EntityType<Object>) entityMetamodel.asType();
                   Object newEntity = entityType.newEntity(data.getStates());
                   if (!entityType.isImmutable()) {
                     entityType.saveCurrentStates(newEntity);
                   }
                   return newEntity;
                 });
-        associationCandidate.put(key.getEntityDef(), entity);
+        associationCandidate.put(key.getEntityMetamodel(), entity);
       }
       associate(associationCandidate);
     }
     return (List<ENTITY>)
         cache.entrySet().stream()
-            .filter(e -> e.getKey().getEntityDef() == context.entityDef)
+            .filter(e -> e.getKey().getEntityMetamodel() == context.entityMetamodel)
             .map(Map.Entry::getValue)
             .collect(toList());
   }
 
-  private void associate(Map<EntityDef<?>, Object> associationCandidate) {
-    for (Map.Entry<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> e :
+  private void associate(Map<EntityMetamodel<?>, Object> associationCandidate) {
+    for (Map.Entry<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiConsumer<Object, Object>> e :
         context.associations.entrySet()) {
-      Pair<EntityDef<?>, EntityDef<?>> pair = e.getKey();
+      Pair<EntityMetamodel<?>, EntityMetamodel<?>> pair = e.getKey();
       BiConsumer<Object, Object> associator = e.getValue();
       Object entity1 = associationCandidate.get(pair.fst);
       Object entity2 = associationCandidate.get(pair.snd);

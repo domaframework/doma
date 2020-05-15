@@ -15,19 +15,19 @@ public class DomainCtType extends AbstractCtType {
 
   private final List<CtType> typeArgCtTypes;
 
-  private final ClassName descClassName;
+  private final ClassName typeClassName;
 
   DomainCtType(
       Context ctx,
       TypeMirror type,
       BasicCtType basicCtType,
       List<CtType> typeArgCtTypes,
-      ClassName descClassName) {
+      ClassName typeClassName) {
     super(ctx, type);
-    assertNotNull(basicCtType, typeArgCtTypes, descClassName);
+    assertNotNull(basicCtType, typeArgCtTypes, typeClassName);
     this.basicCtType = basicCtType;
     this.typeArgCtTypes = typeArgCtTypes;
-    this.descClassName = descClassName;
+    this.typeClassName = typeClassName;
   }
 
   public BasicCtType getBasicCtType() {
@@ -46,15 +46,15 @@ public class DomainCtType extends AbstractCtType {
     return typeArgCtTypes.stream().anyMatch(CtType::isTypevar);
   }
 
-  public Code getDescCode() {
+  public Code getTypeCode() {
     return new Code(
         p -> {
           if (typeArgCtTypes.isEmpty()) {
-            p.print("%1$s.getSingletonInternal()", descClassName);
+            p.print("%1$s.getSingletonInternal()", typeClassName);
           } else {
             List<TypeMirror> typeArgs =
                 typeArgCtTypes.stream().map(CtType::getType).collect(toList());
-            p.print("%1$s.<%2$s>getSingletonInternal()", descClassName, typeArgs);
+            p.print("%1$s.<%2$s>getSingletonInternal()", typeClassName, typeArgs);
           }
         });
   }

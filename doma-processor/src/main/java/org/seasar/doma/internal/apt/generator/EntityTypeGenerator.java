@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
@@ -64,7 +63,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
-    printEntityDesc();
     iprint(
         "public final class %1$s extends %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ AbstractEntityType.class, /* 3 */ entityMeta.getType());
@@ -77,10 +75,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printListenerHolder();
     unindent();
     iprint("}%n");
-  }
-
-  private void printEntityDesc() {
-    iprint("@%1$s(%2$s.class)%n", EntityDesc.class, entityMeta.getType());
   }
 
   private void printFields() {
@@ -582,7 +576,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         throws RuntimeException {
                       iprint(
                           "        %1$s.newEmbeddable(\"%2$s\", __args)",
-                          ctType.getDescCode(), propertyMeta.getName());
+                          ctType.getTypeCode(), propertyMeta.getName());
                       return null;
                     }
 
@@ -614,7 +608,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                       iprint(
                           "    ((%4$s<%5$s, %6$s>)__embeddedPropertyTypeMap.get(\"%1$s\")).save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
                           /* 1 */ propertyMeta.getName(),
-                          /* 2 */ ctType.getDescCode(),
+                          /* 2 */ ctType.getTypeCode(),
                           /* 3 */ propertyMeta.getName(),
                           /* 4 */ EmbeddedPropertyType.class,
                           /* 5 */ entityMeta.getType(),

@@ -107,9 +107,9 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
         new Code(
             p -> {
               if (optional) {
-                p.print("%1$s::createOptionalScalar", domainCtType.getDescCode());
+                p.print("%1$s::createOptionalScalar", domainCtType.getTypeCode());
               } else {
-                p.print("%1$s::createScalar", domainCtType.getDescCode());
+                p.print("%1$s::createScalar", domainCtType.getTypeCode());
               }
             });
     return defaultAction(domainCtType, optional);

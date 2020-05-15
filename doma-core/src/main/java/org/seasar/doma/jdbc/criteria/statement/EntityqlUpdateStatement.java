@@ -5,7 +5,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.Query;
@@ -13,21 +13,24 @@ import org.seasar.doma.jdbc.query.Query;
 public class EntityqlUpdateStatement<ENTITY>
     extends AbstractStatement<EntityqlUpdateStatement<ENTITY>, ENTITY> {
 
-  private final EntityDef<ENTITY> entityDef;
+  private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final UpdateSettings settings;
 
   public EntityqlUpdateStatement(
-      Config config, EntityDef<ENTITY> entityDef, ENTITY entity, UpdateSettings settings) {
+      Config config,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      ENTITY entity,
+      UpdateSettings settings) {
     super(Objects.requireNonNull(config));
-    this.entityDef = Objects.requireNonNull(entityDef);
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
   }
 
   @Override
   protected Command<ENTITY> createCommand() {
-    EntityType<ENTITY> entityType = entityDef.asType();
+    EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoUpdateQuery<ENTITY> query =
         config.getQueryImplementors().createAutoUpdateQuery(EXECUTE_METHOD, entityType);
     query.setConfig(config);

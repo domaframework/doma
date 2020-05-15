@@ -2,25 +2,26 @@ package org.seasar.doma.jdbc.criteria.entity;
 
 import java.util.Arrays;
 import java.util.List;
-import org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
-public class Dept_ implements EntityDef<Dept> {
+public class Dept_ implements EntityMetamodel<Dept> {
 
   private final _Dept entityType = new _Dept();
 
-  public final PropertyDef<Integer> id = new DefaultPropertyDef<>(Integer.class, entityType, "id");
+  public final PropertyMetamodel<Integer> id =
+      new DefaultPropertyMetamodel<>(Integer.class, entityType, "id");
 
-  public final PropertyDef<String> name =
-      new DefaultPropertyDef<>(String.class, entityType, "name");
+  public final PropertyMetamodel<String> name =
+      new DefaultPropertyMetamodel<>(String.class, entityType, "name");
 
   public _Dept asType() {
     return entityType;
   }
 
   @Override
-  public List<PropertyDef<?>> allPropertyDefs() {
+  public List<PropertyMetamodel<?>> allPropertyMetamodels() {
     return Arrays.asList(id, name);
   }
 }

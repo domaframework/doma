@@ -2,9 +2,11 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.EmbeddableDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
@@ -42,7 +44,6 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
-    printEmbeddableDesc();
     iprint(
         "public final class %1$s implements %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ EmbeddableType.class, /* 3 */ embeddableMeta.getType());
@@ -51,12 +52,9 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     printValidateVersionStaticInitializer();
     printFields();
     printMethods();
+    printNestedClass();
     unindent();
     iprint("}%n");
-  }
-
-  private void printEmbeddableDesc() {
-    iprint("@%1$s(%2$s.class)%n", EmbeddableDesc.class, embeddableMeta.getType());
   }
 
   private void printFields() {
@@ -106,6 +104,10 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   }
 
   private void printNewEmbeddableMethod() {
+    if (embeddableMeta.getEmbeddablePropertyMetas().stream()
+        .anyMatch(p -> p.getCtType().hasTypeParameter())) {
+      iprint("@SuppressWarnings(\"unchecked\")%n");
+    }
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args) {%n",
@@ -140,5 +142,11 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     iprint("    return __singleton;%n");
     iprint("}%n");
     print("%n");
+  }
+
+  private void printNestedClass() {
+    EmbeddableMetamodelGenerator generator =
+        new EmbeddableMetamodelGenerator(ctx, className, printer, embeddableMeta);
+    generator.generate();
   }
 }
