@@ -11,8 +11,8 @@ import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
@@ -34,23 +34,24 @@ public class SelectFromDeclaration {
     context.distinct = distinctOption;
   }
 
-  public void innerJoin(EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    Objects.requireNonNull(entityDef);
+  public void innerJoin(EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
-    join(entityDef, block, JoinKind.INNER);
+    join(entityMetamodel, block, JoinKind.INNER);
   }
 
-  public void leftJoin(EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    Objects.requireNonNull(entityDef);
+  public void leftJoin(EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
-    join(entityDef, block, JoinKind.LEFT);
+    join(entityMetamodel, block, JoinKind.LEFT);
   }
 
-  private void join(EntityDef<?> entityDef, Consumer<JoinDeclaration> block, JoinKind joinKind) {
-    Objects.requireNonNull(entityDef);
+  private void join(
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block, JoinKind joinKind) {
+    Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
     Objects.requireNonNull(joinKind);
-    Join join = new Join(entityDef, joinKind);
+    Join join = new Join(entityMetamodel, joinKind);
     JoinDeclaration declaration = new JoinDeclaration(join);
     block.accept(declaration);
     if (!join.on.isEmpty()) {
@@ -64,8 +65,8 @@ public class SelectFromDeclaration {
     block.accept(declaration);
   }
 
-  public void groupBy(PropertyDef<?>... propertyDefs) {
-    context.groupBy.addAll(Arrays.asList(propertyDefs));
+  public void groupBy(PropertyMetamodel<?>... propertyMetamodels) {
+    context.groupBy.addAll(Arrays.asList(propertyMetamodels));
   }
 
   public void having(Consumer<HavingDeclaration> block) {
@@ -92,27 +93,27 @@ public class SelectFromDeclaration {
     context.forUpdate = new ForUpdate(option);
   }
 
-  public void select(PropertyDef<?>... propertyDefs) {
-    context.projection = new Projection.List(propertyDefs);
+  public void select(PropertyMetamodel<?>... propertyMetamodels) {
+    context.projection = new Projection.List(propertyMetamodels);
   }
 
   @SuppressWarnings("unchecked")
   public <ENTITY1, ENTITY2> void associate(
-      EntityDef<ENTITY1> first,
-      EntityDef<ENTITY2> second,
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
       AssociationOption kind) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
     Objects.requireNonNull(kind);
-    if (!context.getEntityDefs().contains(first)) {
+    if (!context.getEntityMetamodels().contains(first)) {
       if (kind == AssociationOption.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "first");
       }
       return;
     }
-    if (!context.getEntityDefs().contains(second)) {
+    if (!context.getEntityMetamodels().contains(second)) {
       if (kind == AssociationOption.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "second");
       }

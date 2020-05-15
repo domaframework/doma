@@ -2,58 +2,38 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.meta.entity.EmbeddableDescMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
 import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.jdbc.criteria.def.DefaultPropertyDef;
-import org.seasar.doma.jdbc.criteria.def.EmbeddableDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-public class EmbeddableDefGenerator extends AbstractGenerator {
+public class EmbeddableMetamodelGenerator extends AbstractGenerator {
 
   private final EmbeddableMeta embeddableMeta;
 
-  private final ClassName embeddableTypeClassName;
-
-  public EmbeddableDefGenerator(
-      Context ctx, ClassName className, Printer printer, EmbeddableDescMeta embeddableDescMeta) {
+  public EmbeddableMetamodelGenerator(
+      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
     super(ctx, className, printer);
-    assertNotNull(embeddableDescMeta);
-    this.embeddableMeta = embeddableDescMeta.getEmbeddableMeta();
-    TypeElement embeddableTypeElement = embeddableMeta.getTypeElement();
-    Name binaryName = ctx.getMoreElements().getBinaryName(embeddableTypeElement);
-    embeddableTypeClassName = ClassNames.newEmbeddableTypeClassName(binaryName);
+    assertNotNull(embeddableMeta);
+    this.embeddableMeta = embeddableMeta;
   }
 
   @Override
   public void generate() {
-    printPackage();
     printClass();
-  }
-
-  private void printPackage() {
-    if (!packageName.isEmpty()) {
-      iprint("package %1$s;%n", packageName);
-      iprint("%n");
-    }
   }
 
   private void printClass() {
     iprint("/** */%n");
-    printGenerated();
-    iprint("public final class %1$s implements %2$s {%n", simpleName, EmbeddableDef.class);
+    iprint("public static final class Metamodel {%n");
     print("%n");
     indent();
-    printValidateVersionStaticInitializer();
     printFields();
     printConstructor();
     printMethods();
@@ -62,12 +42,14 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
   }
 
   private void printFields() {
-    printAllPropertyDefsFields();
+    printAllPropertyModelFields();
     printPropertyDefFields();
   }
 
-  private void printAllPropertyDefsFields() {
-    iprint("private final java.util.List<%1$s<?>> __allPropertyDefs;%n", PropertyDef.class);
+  private void printAllPropertyModelFields() {
+    iprint(
+        "private final java.util.List<%1$s<?>> __allPropertyMetamodels;%n",
+        PropertyMetamodel.class);
     print("%n");
   }
 
@@ -77,13 +59,13 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
       Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
       iprint(
           "public final %1$s<%2$s> %3$s;%n",
-          /* 1 */ PropertyDef.class, /* 2 */ pair.snd, /* 3 */ p.getName());
+          /* 1 */ PropertyMetamodel.class, /* 2 */ pair.snd, /* 3 */ p.getName());
       print("%n");
     }
   }
 
   private void printConstructor() {
-    iprint("public %1$s(%2$s<?> entityType, String name) {%n", simpleName, EntityType.class);
+    iprint("public Metamodel(%1$s<?> entityType, String name) {%n", EntityType.class);
     indent();
     UnwrapOptionalVisitor visitor = new UnwrapOptionalVisitor();
     for (EmbeddablePropertyMeta p : embeddableMeta.getEmbeddablePropertyMetas()) {
@@ -91,31 +73,30 @@ public class EmbeddableDefGenerator extends AbstractGenerator {
       iprint(
           "this.%1$s = new %2$s<%3$s>(%4$s.class, entityType, name + \".%1$s\");%n",
           /* 1 */ p.getName(),
-          /* 2 */ DefaultPropertyDef.class,
+          /* 2 */ DefaultPropertyMetamodel.class,
           /* 3 */ pair.snd,
           /* 4 */ pair.fst.getQualifiedName());
     }
     iprint(
         "java.util.List<%1$s<?>> __list = new java.util.ArrayList<>(%2$s);%n",
-        PropertyDef.class, embeddableMeta.getEmbeddablePropertyMetas().size());
+        PropertyMetamodel.class, embeddableMeta.getEmbeddablePropertyMetas().size());
     for (EmbeddablePropertyMeta p : embeddableMeta.getEmbeddablePropertyMetas()) {
       iprint("__list.add(this.%1$s);%n", p.getName());
     }
-    iprint("__allPropertyDefs = java.util.Collections.unmodifiableList(__list);%n");
+    iprint("__allPropertyMetamodels = java.util.Collections.unmodifiableList(__list);%n");
     unindent();
     iprint("}%n");
     print("%n");
   }
 
   private void printMethods() {
-    printAllPropertyDefsMethod();
+    printAllPropertyMetamodelsMethod();
   }
 
-  private void printAllPropertyDefsMethod() {
-    iprint("@Override%n");
-    iprint("public java.util.List<%1$s<?>> allPropertyDefs() {%n", PropertyDef.class);
+  private void printAllPropertyMetamodelsMethod() {
+    iprint("public java.util.List<%1$s<?>> allPropertyMetamodels() {%n", PropertyMetamodel.class);
     indent();
-    iprint("return __allPropertyDefs;%n");
+    iprint("return __allPropertyMetamodels;%n");
     unindent();
     iprint("}%n");
     print("%n");

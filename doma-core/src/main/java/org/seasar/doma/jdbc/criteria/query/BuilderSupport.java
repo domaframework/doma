@@ -15,8 +15,8 @@ import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -41,14 +41,14 @@ public class BuilderSupport {
     this.aliasManager = aliasManager;
   }
 
-  public void table(EntityDef<?> entityDef) {
-    EntityType<?> entityType = entityDef.asType();
+  public void table(EntityMetamodel<?> entityMetamodel) {
+    EntityType<?> entityType = entityMetamodel.asType();
     buf.appendSql(
         entityType.getQualifiedTableName(
             config.getNaming()::apply, config.getDialect()::applyQuote));
     if (aliasManager != null) {
       buf.appendSql(" ");
-      String alias = aliasManager.getAlias(entityDef);
+      String alias = aliasManager.getAlias(entityMetamodel);
       if (alias == null) {
         throw new DomaException(Message.DOMA6003, entityType.getName());
       }
@@ -60,8 +60,8 @@ public class BuilderSupport {
     column(prop.value);
   }
 
-  public void column(PropertyDef<?> propertyDef) {
-    Consumer<PropertyDef<?>> appendColumn =
+  public void column(PropertyMetamodel<?> propertyMetamodel) {
+    Consumer<PropertyMetamodel<?>> appendColumn =
         (p) -> {
           if (p == AggregateFunction.Asterisk) {
             buf.appendSql(AggregateFunction.Asterisk.getName());
@@ -81,14 +81,14 @@ public class BuilderSupport {
           }
         };
 
-    if (propertyDef instanceof AggregateFunction) {
-      AggregateFunction<?> function = (AggregateFunction<?>) propertyDef;
+    if (propertyMetamodel instanceof AggregateFunction) {
+      AggregateFunction<?> function = (AggregateFunction<?>) propertyMetamodel;
       buf.appendSql(function.getName());
       buf.appendSql("(");
       appendColumn.accept(function.argument());
       buf.appendSql(")");
     } else {
-      appendColumn.accept(propertyDef);
+      appendColumn.accept(propertyMetamodel);
     }
   }
 

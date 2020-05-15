@@ -3,7 +3,7 @@ package org.seasar.doma.jdbc.criteria.context;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public interface Projection {
   All All = new All() {};
@@ -20,15 +20,15 @@ public interface Projection {
   }
 
   class List implements Projection {
-    public final java.util.List<PropertyDef<?>> propertyDefs;
+    public final java.util.List<PropertyMetamodel<?>> propertyMetamodels;
 
-    public List(PropertyDef<?>... propertyDefs) {
-      this(Arrays.asList(propertyDefs));
+    public List(PropertyMetamodel<?>... propertyMetamodels) {
+      this(Arrays.asList(propertyMetamodels));
     }
 
-    public List(java.util.List<PropertyDef<?>> propertyDefs) {
-      Objects.requireNonNull(propertyDefs);
-      this.propertyDefs = Collections.unmodifiableList(propertyDefs);
+    public List(java.util.List<PropertyMetamodel<?>> propertyMetamodels) {
+      Objects.requireNonNull(propertyMetamodels);
+      this.propertyMetamodels = Collections.unmodifiableList(propertyMetamodels);
     }
 
     @Override

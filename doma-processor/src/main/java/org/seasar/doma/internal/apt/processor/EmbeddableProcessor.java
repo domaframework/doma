@@ -13,6 +13,7 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
+import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
@@ -24,7 +25,10 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
   Options.LOMBOK_ALL_ARGS_CONSTRUCTOR,
   Options.TEST,
   Options.DEBUG,
-  Options.CONFIG_PATH
+  Options.CONFIG_PATH,
+  Options.CRITERIA_ENABLED,
+  Options.CRITERIA_PREFIX,
+  Options.CRITERIA_SUFFIX
 })
 public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableMeta> {
 
@@ -33,7 +37,7 @@ public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableM
   }
 
   @Override
-  protected EmbeddableMetaFactory createTypeElementMetaFactory() {
+  protected TypeElementMetaFactory<EmbeddableMeta> createTypeElementMetaFactory() {
     return new EmbeddableMetaFactory(ctx);
   }
 

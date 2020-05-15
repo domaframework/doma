@@ -1,11 +1,11 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.List;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public interface Context {
 
-  List<EntityDef<?>> getEntityDefs();
+  List<EntityMetamodel<?>> getEntityMetamodels();
 
   List<Criterion> getWhere();
 

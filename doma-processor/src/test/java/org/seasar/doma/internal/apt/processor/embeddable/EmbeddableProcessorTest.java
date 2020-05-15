@@ -27,7 +27,7 @@ class EmbeddableProcessorTest extends CompilerSupport {
 
   @BeforeEach
   void setUp() {
-    addOption("-Adoma.test=true");
+    addOption("-Adoma.test=true", "-Adoma.criteria.enabled=false");
   }
 
   @TestTemplate

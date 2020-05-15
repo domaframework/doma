@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public class OrderByNameDeclaration {
 
@@ -14,15 +14,15 @@ public class OrderByNameDeclaration {
     this.context = Objects.requireNonNull(context);
   }
 
-  public void asc(PropertyDef<?> propertyDef) {
-    Objects.requireNonNull(propertyDef);
-    Pair<OrderByItem, String> pair = new Pair<>(new OrderByItem.Name(propertyDef), "asc");
+  public void asc(PropertyMetamodel<?> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    Pair<OrderByItem, String> pair = new Pair<>(new OrderByItem.Name(propertyMetamodel), "asc");
     context.orderBy.add(pair);
   }
 
-  public void desc(PropertyDef<?> propertyDef) {
-    Objects.requireNonNull(propertyDef);
-    Pair<OrderByItem, String> pair = new Pair<>(new OrderByItem.Name(propertyDef), "desc");
+  public void desc(PropertyMetamodel<?> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    Pair<OrderByItem, String> pair = new Pair<>(new OrderByItem.Name(propertyMetamodel), "desc");
     context.orderBy.add(pair);
   }
 }

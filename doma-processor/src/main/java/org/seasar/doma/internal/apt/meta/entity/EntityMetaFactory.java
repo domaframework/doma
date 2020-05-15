@@ -37,6 +37,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
@@ -203,6 +204,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     public void doClassElement(TypeElement classElement, EntityMeta entityMeta) {
       validateClass(classElement, entityMeta);
       validateEntityListener(classElement, entityMeta);
+      validateMetamodelAnnotation(classElement, entityMeta);
 
       doTable(classElement, entityMeta);
     }
@@ -459,6 +461,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
         }
       }
       return null;
+    }
+
+    void validateMetamodelAnnotation(TypeElement classElement, EntityMeta entityMeta) {
+      EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
+      MetamodelAnnot metamodelAnnot = entityAnnot.getMetamodelValue();
+      if (metamodelAnnot != null) {
+        String prefix = metamodelAnnot.getPrefixValue();
+        String suffix = metamodelAnnot.getSuffixValue();
+        if (Constants.TYPE_PREFIX.equals(prefix) && suffix.isEmpty()) {
+          throw new AptException(
+              Message.DOMA4455,
+              classElement,
+              metamodelAnnot.getAnnotationMirror(),
+              new Object[] {Constants.TYPE_PREFIX});
+        }
+      }
     }
 
     void doTable(TypeElement classElement, EntityMeta entityMeta) {

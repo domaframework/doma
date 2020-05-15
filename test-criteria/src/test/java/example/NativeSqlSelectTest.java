@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 @ExtendWith(Env.class)
@@ -105,7 +105,7 @@ public class NativeSqlSelectTest {
         nativeSql
             .from(e)
             .orderBy(c -> c.asc(e.employeeId))
-            .select(new PropertyDef<?>[] {e.employeeId, e.employeeName})
+            .select(new PropertyMetamodel<?>[] {e.employeeId, e.employeeName})
             .fetch();
 
     assertEquals(14, list.size());

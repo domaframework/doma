@@ -9,7 +9,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.Operand;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class InsertBuilder {
   private final InsertContext context;
@@ -38,7 +38,7 @@ public class InsertBuilder {
 
   public PreparedSql build() {
     buf.appendSql("insert into ");
-    table(context.entityDef);
+    table(context.entityMetamodel);
     if (!context.values.isEmpty()) {
       buf.appendSql(" (");
       context
@@ -65,8 +65,8 @@ public class InsertBuilder {
     return buf.build(commenter);
   }
 
-  private void table(EntityDef<?> entityDef) {
-    support.table(entityDef);
+  private void table(EntityMetamodel<?> entityMetamodel) {
+    support.table(entityMetamodel);
   }
 
   private void column(Operand.Prop prop) {

@@ -19,8 +19,8 @@ import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
@@ -37,16 +37,16 @@ public class NativeSqlSelectStarting<ENTITY>
     extends AbstractSetOperand<NativeSqlSelectStarting<ENTITY>, ENTITY> {
 
   private final SelectFromDeclaration declaration;
-  private final EntityDef<ENTITY> entityDef;
+  private final EntityMetamodel<ENTITY> entityMetamodel;
 
   public NativeSqlSelectStarting(
       Config config,
       SelectFromDeclaration declaration,
-      EntityDef<ENTITY> entityDef,
+      EntityMetamodel<ENTITY> entityMetamodel,
       Function<SelectQuery, ObjectProvider<ENTITY>> objectProviderFactory) {
     super(Objects.requireNonNull(config), Objects.requireNonNull(objectProviderFactory));
     this.declaration = Objects.requireNonNull(declaration);
-    this.entityDef = Objects.requireNonNull(entityDef);
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
   public NativeSqlSelectStarting<ENTITY> distinct() {
@@ -60,18 +60,18 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public NativeSqlSelectStarting<ENTITY> innerJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    Objects.requireNonNull(entityDef);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
-    declaration.innerJoin(entityDef, block);
+    declaration.innerJoin(entityMetamodel, block);
     return this;
   }
 
   public NativeSqlSelectStarting<ENTITY> leftJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    Objects.requireNonNull(entityDef);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
-    declaration.leftJoin(entityDef, block);
+    declaration.leftJoin(entityMetamodel, block);
     return this;
   }
 
@@ -81,9 +81,9 @@ public class NativeSqlSelectStarting<ENTITY>
     return this;
   }
 
-  public NativeSqlSelectStarting<ENTITY> groupBy(PropertyDef<?>... propertyDefs) {
-    Objects.requireNonNull(propertyDefs);
-    declaration.groupBy(propertyDefs);
+  public NativeSqlSelectStarting<ENTITY> groupBy(PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodels);
+    declaration.groupBy(propertyMetamodels);
     return this;
   }
 
@@ -119,219 +119,232 @@ public class NativeSqlSelectStarting<ENTITY>
     return this;
   }
 
-  public <T> SetOperand<T> select(PropertyDef<T> propertyDef) {
-    declaration.select(propertyDef);
+  public <T> SetOperand<T> select(PropertyMetamodel<T> propertyMetamodel) {
+    declaration.select(propertyMetamodel);
     return new NativeSqlSelectIntermediate<>(
-        config, declaration, createMappedResultProviderFactory(row -> row.get(propertyDef)));
+        config, declaration, createMappedResultProviderFactory(row -> row.get(propertyMetamodel)));
   }
 
   public <T1, T2> SetOperand<Tuple2<T1, T2>> select(
-      PropertyDef<T1> propertyDef1, PropertyDef<T2> propertyDef2) {
-    declaration.select(propertyDef1, propertyDef2);
+      PropertyMetamodel<T1> propertyMetamodel1, PropertyMetamodel<T2> propertyMetamodel2) {
+    declaration.select(propertyMetamodel1, propertyMetamodel2);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
               return new Tuple2<>(item1, item2);
             }));
   }
 
   public <T1, T2, T3> SetOperand<Tuple3<T1, T2, T3>> select(
-      PropertyDef<T1> propertyDef1, PropertyDef<T2> propertyDef2, PropertyDef<T3> propertyDef3) {
-    declaration.select(propertyDef1, propertyDef2, propertyDef3);
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3) {
+    declaration.select(propertyMetamodel1, propertyMetamodel2, propertyMetamodel3);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
               return new Tuple3<>(item1, item2, item3);
             }));
   }
 
   public <T1, T2, T3, T4> SetOperand<Tuple4<T1, T2, T3, T4>> select(
-      PropertyDef<T1> propertyDef1,
-      PropertyDef<T2> propertyDef2,
-      PropertyDef<T3> propertyDef3,
-      PropertyDef<T4> propertyDef4) {
-    declaration.select(propertyDef1, propertyDef2, propertyDef3, propertyDef4);
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3,
+      PropertyMetamodel<T4> propertyMetamodel4) {
+    declaration.select(
+        propertyMetamodel1, propertyMetamodel2, propertyMetamodel3, propertyMetamodel4);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
               return new Tuple4<>(item1, item2, item3, item4);
             }));
   }
 
   public <T1, T2, T3, T4, T5> SetOperand<Tuple5<T1, T2, T3, T4, T5>> select(
-      PropertyDef<T1> propertyDef1,
-      PropertyDef<T2> propertyDef2,
-      PropertyDef<T3> propertyDef3,
-      PropertyDef<T4> propertyDef4,
-      PropertyDef<T5> propertyDef5) {
-    declaration.select(propertyDef1, propertyDef2, propertyDef3, propertyDef4, propertyDef5);
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3,
+      PropertyMetamodel<T4> propertyMetamodel4,
+      PropertyMetamodel<T5> propertyMetamodel5) {
+    declaration.select(
+        propertyMetamodel1,
+        propertyMetamodel2,
+        propertyMetamodel3,
+        propertyMetamodel4,
+        propertyMetamodel5);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
-              T5 item5 = row.get(propertyDef5);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
+              T5 item5 = row.get(propertyMetamodel5);
               return new Tuple5<>(item1, item2, item3, item4, item5);
             }));
   }
 
   public <T1, T2, T3, T4, T5, T6> SetOperand<Tuple6<T1, T2, T3, T4, T5, T6>> select(
-      PropertyDef<T1> propertyDef1,
-      PropertyDef<T2> propertyDef2,
-      PropertyDef<T3> propertyDef3,
-      PropertyDef<T4> propertyDef4,
-      PropertyDef<T5> propertyDef5,
-      PropertyDef<T6> propertyDef6) {
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3,
+      PropertyMetamodel<T4> propertyMetamodel4,
+      PropertyMetamodel<T5> propertyMetamodel5,
+      PropertyMetamodel<T6> propertyMetamodel6) {
     declaration.select(
-        propertyDef1, propertyDef2, propertyDef3, propertyDef4, propertyDef5, propertyDef6);
+        propertyMetamodel1,
+        propertyMetamodel2,
+        propertyMetamodel3,
+        propertyMetamodel4,
+        propertyMetamodel5,
+        propertyMetamodel6);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
-              T5 item5 = row.get(propertyDef5);
-              T6 item6 = row.get(propertyDef6);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
+              T5 item5 = row.get(propertyMetamodel5);
+              T6 item6 = row.get(propertyMetamodel6);
               return new Tuple6<>(item1, item2, item3, item4, item5, item6);
             }));
   }
 
   public <T1, T2, T3, T4, T5, T6, T7> SetOperand<Tuple7<T1, T2, T3, T4, T5, T6, T7>> select(
-      PropertyDef<T1> propertyDef1,
-      PropertyDef<T2> propertyDef2,
-      PropertyDef<T3> propertyDef3,
-      PropertyDef<T4> propertyDef4,
-      PropertyDef<T5> propertyDef5,
-      PropertyDef<T6> propertyDef6,
-      PropertyDef<T7> propertyDef7) {
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3,
+      PropertyMetamodel<T4> propertyMetamodel4,
+      PropertyMetamodel<T5> propertyMetamodel5,
+      PropertyMetamodel<T6> propertyMetamodel6,
+      PropertyMetamodel<T7> propertyMetamodel7) {
     declaration.select(
-        propertyDef1,
-        propertyDef2,
-        propertyDef3,
-        propertyDef4,
-        propertyDef5,
-        propertyDef6,
-        propertyDef7);
+        propertyMetamodel1,
+        propertyMetamodel2,
+        propertyMetamodel3,
+        propertyMetamodel4,
+        propertyMetamodel5,
+        propertyMetamodel6,
+        propertyMetamodel7);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
-              T5 item5 = row.get(propertyDef5);
-              T6 item6 = row.get(propertyDef6);
-              T7 item7 = row.get(propertyDef7);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
+              T5 item5 = row.get(propertyMetamodel5);
+              T6 item6 = row.get(propertyMetamodel6);
+              T7 item7 = row.get(propertyMetamodel7);
               return new Tuple7<>(item1, item2, item3, item4, item5, item6, item7);
             }));
   }
 
   public <T1, T2, T3, T4, T5, T6, T7, T8> SetOperand<Tuple8<T1, T2, T3, T4, T5, T6, T7, T8>> select(
-      PropertyDef<T1> propertyDef1,
-      PropertyDef<T2> propertyDef2,
-      PropertyDef<T3> propertyDef3,
-      PropertyDef<T4> propertyDef4,
-      PropertyDef<T5> propertyDef5,
-      PropertyDef<T6> propertyDef6,
-      PropertyDef<T7> propertyDef7,
-      PropertyDef<T8> propertyDef8) {
+      PropertyMetamodel<T1> propertyMetamodel1,
+      PropertyMetamodel<T2> propertyMetamodel2,
+      PropertyMetamodel<T3> propertyMetamodel3,
+      PropertyMetamodel<T4> propertyMetamodel4,
+      PropertyMetamodel<T5> propertyMetamodel5,
+      PropertyMetamodel<T6> propertyMetamodel6,
+      PropertyMetamodel<T7> propertyMetamodel7,
+      PropertyMetamodel<T8> propertyMetamodel8) {
     declaration.select(
-        propertyDef1,
-        propertyDef2,
-        propertyDef3,
-        propertyDef4,
-        propertyDef5,
-        propertyDef6,
-        propertyDef7,
-        propertyDef8);
+        propertyMetamodel1,
+        propertyMetamodel2,
+        propertyMetamodel3,
+        propertyMetamodel4,
+        propertyMetamodel5,
+        propertyMetamodel6,
+        propertyMetamodel7,
+        propertyMetamodel8);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
-              T5 item5 = row.get(propertyDef5);
-              T6 item6 = row.get(propertyDef6);
-              T7 item7 = row.get(propertyDef7);
-              T8 item8 = row.get(propertyDef8);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
+              T5 item5 = row.get(propertyMetamodel5);
+              T6 item6 = row.get(propertyMetamodel6);
+              T7 item7 = row.get(propertyMetamodel7);
+              T8 item8 = row.get(propertyMetamodel8);
               return new Tuple8<>(item1, item2, item3, item4, item5, item6, item7, item8);
             }));
   }
 
   public <T1, T2, T3, T4, T5, T6, T7, T8, T9>
       SetOperand<Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9>> select(
-          PropertyDef<T1> propertyDef1,
-          PropertyDef<T2> propertyDef2,
-          PropertyDef<T3> propertyDef3,
-          PropertyDef<T4> propertyDef4,
-          PropertyDef<T5> propertyDef5,
-          PropertyDef<T6> propertyDef6,
-          PropertyDef<T7> propertyDef7,
-          PropertyDef<T8> propertyDef8,
-          PropertyDef<T9> propertyDef9) {
+          PropertyMetamodel<T1> propertyMetamodel1,
+          PropertyMetamodel<T2> propertyMetamodel2,
+          PropertyMetamodel<T3> propertyMetamodel3,
+          PropertyMetamodel<T4> propertyMetamodel4,
+          PropertyMetamodel<T5> propertyMetamodel5,
+          PropertyMetamodel<T6> propertyMetamodel6,
+          PropertyMetamodel<T7> propertyMetamodel7,
+          PropertyMetamodel<T8> propertyMetamodel8,
+          PropertyMetamodel<T9> propertyMetamodel9) {
     declaration.select(
-        propertyDef1,
-        propertyDef2,
-        propertyDef3,
-        propertyDef4,
-        propertyDef5,
-        propertyDef6,
-        propertyDef7,
-        propertyDef8,
-        propertyDef9);
+        propertyMetamodel1,
+        propertyMetamodel2,
+        propertyMetamodel3,
+        propertyMetamodel4,
+        propertyMetamodel5,
+        propertyMetamodel6,
+        propertyMetamodel7,
+        propertyMetamodel8,
+        propertyMetamodel9);
     return new NativeSqlSelectIntermediate<>(
         config,
         declaration,
         createMappedResultProviderFactory(
             row -> {
-              T1 item1 = row.get(propertyDef1);
-              T2 item2 = row.get(propertyDef2);
-              T3 item3 = row.get(propertyDef3);
-              T4 item4 = row.get(propertyDef4);
-              T5 item5 = row.get(propertyDef5);
-              T6 item6 = row.get(propertyDef6);
-              T7 item7 = row.get(propertyDef7);
-              T8 item8 = row.get(propertyDef8);
-              T9 item9 = row.get(propertyDef9);
+              T1 item1 = row.get(propertyMetamodel1);
+              T2 item2 = row.get(propertyMetamodel2);
+              T3 item3 = row.get(propertyMetamodel3);
+              T4 item4 = row.get(propertyMetamodel4);
+              T5 item5 = row.get(propertyMetamodel5);
+              T6 item6 = row.get(propertyMetamodel6);
+              T7 item7 = row.get(propertyMetamodel7);
+              T8 item8 = row.get(propertyMetamodel8);
+              T9 item9 = row.get(propertyMetamodel9);
               return new Tuple9<>(item1, item2, item3, item4, item5, item6, item7, item8, item9);
             }));
   }
 
-  public SetOperand<List<Object>> select(PropertyDef<?>... propertyDefs) {
-    List<PropertyDef<?>> list;
-    if (propertyDefs.length == 0) {
+  public SetOperand<List<Object>> select(PropertyMetamodel<?>... propertyMetamodels) {
+    List<PropertyMetamodel<?>> list;
+    if (propertyMetamodels.length == 0) {
       SelectContext context = declaration.getContext();
-      list = context.allPropertyDefs();
+      list = context.allPropertyMetamodels();
     } else {
-      declaration.select(propertyDefs);
-      list = Arrays.asList(propertyDefs);
+      declaration.select(propertyMetamodels);
+      list = Arrays.asList(propertyMetamodels);
     }
     return new NativeSqlSelectIntermediate<>(
         config,
@@ -339,8 +352,8 @@ public class NativeSqlSelectStarting<ENTITY>
         createMappedResultProviderFactory(
             row -> {
               List<Object> results = new ArrayList<>();
-              for (PropertyDef<?> propertyDef : list) {
-                Object value = row.get(propertyDef);
+              for (PropertyMetamodel<?> propertyMetamodel : list) {
+                Object value = row.get(propertyMetamodel);
                 results.add(value);
               }
               return results;
@@ -374,6 +387,6 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   private Function<SelectQuery, ObjectProvider<ENTITY>> createEntityProviderFactory() {
-    return selectQuery -> new EntityProvider<>(entityDef.asType(), selectQuery, false);
+    return selectQuery -> new EntityProvider<>(entityMetamodel.asType(), selectQuery, false);
   }
 }

@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.entitydesc;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import java.time.LocalDate;
 import org.seasar.doma.Embeddable;

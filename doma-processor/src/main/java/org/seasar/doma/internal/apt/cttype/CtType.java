@@ -22,5 +22,7 @@ public interface CtType {
 
   boolean isSameType(CtType ctType);
 
+  boolean hasTypeParameter();
+
   <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH;
 }

@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.embeddabledesc;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,16 +14,22 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
-import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
+import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.EmbeddableDescProcessor;
+import org.seasar.doma.internal.apt.processor.EntityProcessor;
 
-class EmbeddableDescProcessorTest extends CompilerSupport {
+class MetamodelOptionTest extends CompilerSupport {
+
+  private static final String PREFIX = "Q";
+  private static final String SUFFIX = "Def";
 
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addOption("-Adoma.criteria.enabled=true");
+    addOption("-Adoma.criteria.prefix=" + PREFIX);
+    addOption("-Adoma.criteria.suffix=" + SUFFIX);
   }
 
   @TestTemplate
@@ -31,7 +37,7 @@ class EmbeddableDescProcessorTest extends CompilerSupport {
   void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EmbeddableDescProcessor());
+    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -47,7 +53,7 @@ class EmbeddableDescProcessorTest extends CompilerSupport {
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
-      return Stream.of(invocationContext(_Address.class));
+      return Stream.of(invocationContext(Emp.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -63,7 +69,7 @@ class EmbeddableDescProcessorTest extends CompilerSupport {
           return Arrays.asList(
               new SimpleParameterResolver(compilationUnit),
               new ResourceParameterResolver(compilationUnit),
-              new GeneratedClassNameParameterResolver(compilationUnit),
+              new CriteriaGeneratedClassNameParameterResolver(compilationUnit, PREFIX, SUFFIX),
               new SimpleParameterResolver(options));
         }
       };

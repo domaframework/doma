@@ -1,8 +1,8 @@
-package org.seasar.doma.jdbc.criteria.def;
+package org.seasar.doma.jdbc.criteria.metamodel;
 
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 
-public interface PropertyDef<PROPERTY> {
+public interface PropertyMetamodel<PROPERTY> {
 
   Class<?> asClass();
 

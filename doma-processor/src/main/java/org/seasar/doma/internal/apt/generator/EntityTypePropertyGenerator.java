@@ -70,7 +70,7 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 3 */ propertyMeta.getType(),
         /* 4 */ null,
         /* 5 */ propertyMeta.getName(),
-        /* 6 */ embeddableCtType.getDescCode());
+        /* 6 */ embeddableCtType.getTypeCode());
   }
 
   private void printGeneratedIdPropertyTypeField(ScalarMeta scalarMeta) {

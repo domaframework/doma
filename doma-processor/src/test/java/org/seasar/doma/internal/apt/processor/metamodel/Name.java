@@ -1,12 +1,12 @@
-package org.seasar.doma.internal.apt.processor.embeddabledesc;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Domain;
 
 @Domain(valueType = String.class)
-public class City {
+public class Name {
   private final String value;
 
-  public City(String value) {
+  public Name(String value) {
     this.value = value;
   }
 

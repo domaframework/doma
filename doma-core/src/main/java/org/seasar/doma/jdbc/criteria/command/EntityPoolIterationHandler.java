@@ -5,20 +5,20 @@ import java.util.Objects;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
 import org.seasar.doma.jdbc.ObjectProvider;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class EntityPoolIterationHandler
     extends AbstractIterationHandler<EntityPool, List<EntityPool>> {
-  private final List<EntityDef<?>> entityDefs;
+  private final List<EntityMetamodel<?>> entityMetamodels;
 
-  public EntityPoolIterationHandler(List<EntityDef<?>> entityDefs) {
+  public EntityPoolIterationHandler(List<EntityMetamodel<?>> entityMetamodels) {
     super(new ResultListCallback<>());
-    this.entityDefs = Objects.requireNonNull(entityDefs);
+    this.entityMetamodels = Objects.requireNonNull(entityMetamodels);
   }
 
   @Override
   protected ObjectProvider<EntityPool> createObjectProvider(SelectQuery query) {
-    return new EntityPoolProvider(entityDefs, query);
+    return new EntityPoolProvider(entityMetamodels, query);
   }
 }

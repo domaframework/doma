@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Settings;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 class AliasManagerTest {
   private Emp_ e = new Emp_();
@@ -19,15 +19,15 @@ class AliasManagerTest {
 
   private static class ContextImpl implements Context {
 
-    private final List<EntityDef<?>> entityDefs;
+    private final List<EntityMetamodel<?>> entityMetamodels;
 
-    public ContextImpl(List<EntityDef<?>> entityDefs) {
-      this.entityDefs = entityDefs;
+    public ContextImpl(List<EntityMetamodel<?>> entityMetamodels) {
+      this.entityMetamodels = entityMetamodels;
     }
 
     @Override
-    public List<EntityDef<?>> getEntityDefs() {
-      return entityDefs;
+    public List<EntityMetamodel<?>> getEntityMetamodels() {
+      return entityMetamodels;
     }
 
     @Override

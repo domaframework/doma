@@ -12,13 +12,13 @@ public class EntityCtType extends AbstractCtType {
 
   private final boolean immutable;
 
-  private final ClassName descClassName;
+  private final ClassName typeClassName;
 
-  EntityCtType(Context ctx, TypeMirror type, boolean immutable, ClassName descClassName) {
+  EntityCtType(Context ctx, TypeMirror type, boolean immutable, ClassName typeClassName) {
     super(ctx, type);
-    assertNotNull(descClassName);
+    assertNotNull(typeClassName);
     this.immutable = immutable;
-    this.descClassName = descClassName;
+    this.typeClassName = typeClassName;
   }
 
   public boolean isImmutable() {
@@ -29,8 +29,8 @@ public class EntityCtType extends AbstractCtType {
     return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
-  public Code getDescCode() {
-    return new Code(p -> p.print("%1$s.getSingletonInternal()", descClassName));
+  public Code getTypeCode() {
+    return new Code(p -> p.print("%1$s.getSingletonInternal()", typeClassName));
   }
 
   @Override

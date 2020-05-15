@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-@org.seasar.doma.internal.EntityDesc(org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity.class)
 public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity> {
 
     static {
