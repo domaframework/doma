@@ -25,7 +25,7 @@ class MetamodelTest extends CompilerSupport {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true", "-Adoma.criteria.enabled=false");
+    addOption("-Adoma.test=true");
   }
 
   @TestTemplate

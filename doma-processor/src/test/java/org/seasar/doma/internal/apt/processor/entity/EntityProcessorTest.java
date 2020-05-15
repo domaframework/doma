@@ -29,8 +29,7 @@ class EntityProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption(
         "-Adoma.test=true",
-        "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider",
-        "-Adoma.criteria.enabled=false");
+        "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
   }
 
   @TestTemplate

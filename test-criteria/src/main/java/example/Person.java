@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.seasar.doma.Entity;
+import org.seasar.doma.Metamodel;
 import org.seasar.doma.Table;
 
-@Entity
+@Entity(metamodel = @Metamodel)
 @Table(name = "EMPLOYEE")
 public class Person {
 

@@ -3,11 +3,12 @@ package example;
 import java.time.LocalDate;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.Metamodel;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Transient;
 import org.seasar.doma.Version;
 
-@Entity
+@Entity(metamodel = @Metamodel)
 public class Employee {
 
   @Id private Integer employeeId;

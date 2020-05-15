@@ -26,9 +26,9 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
   Options.TEST,
   Options.DEBUG,
   Options.CONFIG_PATH,
-  Options.CRITERIA_ENABLED,
-  Options.CRITERIA_PREFIX,
-  Options.CRITERIA_SUFFIX
+  Options.METAMODEL_ENABLED,
+  Options.METAMODEL_PREFIX,
+  Options.METAMODEL_SUFFIX
 })
 public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableMeta> {
 

@@ -22,14 +22,14 @@ import org.seasar.doma.internal.apt.processor.EntityProcessor;
 class MetamodelOptionTest extends CompilerSupport {
 
   private static final String PREFIX = "Q";
-  private static final String SUFFIX = "Def";
+  private static final String SUFFIX = "Metamodel";
 
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
-    addOption("-Adoma.criteria.enabled=true");
-    addOption("-Adoma.criteria.prefix=" + PREFIX);
-    addOption("-Adoma.criteria.suffix=" + SUFFIX);
+    addOption("-Adoma.metamodel.enabled=true");
+    addOption("-Adoma.metamodel.prefix=" + PREFIX);
+    addOption("-Adoma.metamodel.suffix=" + SUFFIX);
   }
 
   @TestTemplate
@@ -53,7 +53,7 @@ class MetamodelOptionTest extends CompilerSupport {
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
-      return Stream.of(invocationContext(Emp.class));
+      return Stream.of(invocationContext(Emp.class), invocationContext(Person.class));
     }
 
     private TestTemplateInvocationContext invocationContext(

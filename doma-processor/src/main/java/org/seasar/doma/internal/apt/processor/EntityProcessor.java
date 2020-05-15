@@ -34,9 +34,9 @@ import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
   Options.TEST,
   Options.DEBUG,
   Options.CONFIG_PATH,
-  Options.CRITERIA_ENABLED,
-  Options.CRITERIA_PREFIX,
-  Options.CRITERIA_SUFFIX
+  Options.METAMODEL_ENABLED,
+  Options.METAMODEL_PREFIX,
+  Options.METAMODEL_SUFFIX
 })
 public class EntityProcessor extends AbstractProcessor {
 
@@ -72,7 +72,7 @@ public class EntityProcessor extends AbstractProcessor {
   private boolean isMetamodelEnabled(EntityMeta meta) {
     EntityAnnot entityAnnot = meta.getEntityAnnot();
     MetamodelAnnot metamodelAnnot = entityAnnot.getMetamodelValue();
-    return metamodelAnnot != null || ctx.getOptions().isCriteriaEnabled();
+    return metamodelAnnot != null || ctx.getOptions().isMetamodelEnabled();
   }
 
   private void generateEntityType(TypeElement typeElement, EntityMeta meta) {
@@ -106,8 +106,8 @@ public class EntityProcessor extends AbstractProcessor {
     EntityAnnot entityAnnot = meta.getEntityAnnot();
     MetamodelAnnot metamodelAnnot = entityAnnot.getMetamodelValue();
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    String prefix = ctx.getOptions().getCriteriaPrefix();
-    String suffix = ctx.getOptions().getCriteriaSuffix();
+    String prefix = ctx.getOptions().getMetamodelPrefix();
+    String suffix = ctx.getOptions().getMetamodelSuffix();
     if (metamodelAnnot != null) {
       String prefixValue = metamodelAnnot.getPrefixValue();
       String suffixValue = metamodelAnnot.getSuffixValue();
