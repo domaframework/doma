@@ -2,15 +2,21 @@ package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Mssql2008PagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.query.AliasManager;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
 
 /** A dialect for Microsoft SQL Server 2008 and below. */
 public class Mssql2008Dialect extends StandardDialect {
@@ -124,8 +130,8 @@ public class Mssql2008Dialect extends StandardDialect {
   }
 
   @Override
-  public ColumnExpressions getColumnExpressions() {
-    return new Mssql2008ColumnExpressions();
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new Mssql2008CriteriaBuilder();
   }
 
   public static class Mssql2008JdbcMappingVisitor extends StandardJdbcMappingVisitor {}
@@ -163,10 +169,44 @@ public class Mssql2008Dialect extends StandardDialect {
     }
   }
 
-  public static class Mssql2008ColumnExpressions extends StandardColumnExpressions {
-    @Override
-    public ConcatKind getConcatKind() {
-      return ConcatKind.PLUS;
+  public static class Mssql2008CriteriaBuilder extends StandardCriteriaBuilder {
+
+    public void concat(PreparedSqlBuilder buf, Runnable leftOperand, Runnable rightOperand) {
+      buf.appendSql("(");
+      leftOperand.run();
+      buf.appendSql(" + ");
+      rightOperand.run();
+      buf.appendSql(")");
     }
+
+    @Override
+    public void lockWithTableHint(
+        PreparedSqlBuilder buf, ForUpdateOption option, Consumer<PropertyMetamodel<?>> column) {
+      option.accept(
+          new ForUpdateOption.Visitor() {
+
+            @Override
+            public void visit(ForUpdateOption.Basic basic) {
+              buf.appendSql(" with (updlock, rowlock)");
+            }
+
+            @Override
+            public void visit(ForUpdateOption.NoWait noWait) {
+              buf.appendSql(" with (updlock, rowlock, nowait)");
+            }
+
+            @Override
+            public void visit(ForUpdateOption.Wait wait) {
+              buf.appendSql(" with (updlock, rowlock)");
+            }
+          });
+    }
+
+    @Override
+    public void forUpdate(
+        PreparedSqlBuilder buf,
+        ForUpdateOption option,
+        Consumer<PropertyMetamodel<?>> column,
+        AliasManager aliasManager) {}
   }
 }

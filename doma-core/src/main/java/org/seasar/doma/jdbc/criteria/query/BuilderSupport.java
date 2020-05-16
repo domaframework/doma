@@ -20,7 +20,6 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
-import org.seasar.doma.jdbc.dialect.ColumnExpressions;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
@@ -32,7 +31,7 @@ public class BuilderSupport {
   private final PreparedSqlBuilder buf;
   private final AliasManager aliasManager;
   private final Operand.Visitor<Void> operandVisitor;
-  private final PropertyExpressionVisitor propertyExpressionVisitor;
+  private final PropertyMetamodelVisitor propertyMetamodelVisitor;
 
   public BuilderSupport(
       Config config,
@@ -44,7 +43,7 @@ public class BuilderSupport {
     this.buf = Objects.requireNonNull(buf);
     this.aliasManager = Objects.requireNonNull(aliasManager);
     this.operandVisitor = new OperandVisitor();
-    this.propertyExpressionVisitor = new PropertyExpressionVisitor();
+    this.propertyMetamodelVisitor = new PropertyMetamodelVisitor();
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {
@@ -69,7 +68,7 @@ public class BuilderSupport {
   }
 
   public void column(PropertyMetamodel<?> propertyMetamodel) {
-    propertyMetamodel.accept(propertyExpressionVisitor);
+    propertyMetamodel.accept(propertyMetamodelVisitor);
   }
 
   public void param(Operand.Param param) {
@@ -280,42 +279,49 @@ public class BuilderSupport {
       }
       buf.appendSql(" like ");
       right.accept(
-          new Operand.Visitor<Void>() {
+          new OperandVisitor() {
             @Override
             public Void visit(Operand.Param param) {
               InParameter<?> parameter = param.createInParameter(config);
               Object value = parameter.getWrapper().get();
-              if (value == null || option == LikeOption.NONE) {
-                param(parameter);
-              } else {
-                char escapeChar = '$';
-                BiFunction<String, Character, String> transformer = getTransformer(option);
-                String newValue = transformer.apply(value.toString(), escapeChar);
-                param(new BasicInParameter<>(() -> new StringWrapper(newValue)));
-                buf.appendSql(" escape '" + escapeChar + "'");
+              if (value == null) {
+                return super.visit(param);
               }
-              return null;
-            }
-
-            private BiFunction<String, Character, String> getTransformer(LikeOption option) {
               ExpressionFunctions functions = config.getDialect().getExpressionFunctions();
-              switch (option) {
-                case ESCAPE:
-                  return functions::escape;
-                case PREFIX:
-                  return functions::prefix;
-                case INFIX:
-                  return functions::infix;
-                case SUFFIX:
-                  return functions::suffix;
-                default:
-                  throw new AssertionError("unreachable. " + option);
-              }
-            }
+              option.accept(
+                  new LikeOption.Visitor() {
+                    @Override
+                    public void visit(LikeOption.None none) {
+                      param(param);
+                    }
 
-            @Override
-            public Void visit(Operand.Prop prop) {
-              column(prop);
+                    @Override
+                    public void visit(LikeOption.Escape escape) {
+                      appendNewValue(functions::escape, escape.escapeChar);
+                    }
+
+                    @Override
+                    public void visit(LikeOption.Prefix prefix) {
+                      appendNewValue(functions::prefix, prefix.escapeChar);
+                    }
+
+                    @Override
+                    public void visit(LikeOption.Infix infix) {
+                      appendNewValue(functions::infix, infix.escapeChar);
+                    }
+
+                    @Override
+                    public void visit(LikeOption.Suffix suffix) {
+                      appendNewValue(functions::suffix, suffix.escapeChar);
+                    }
+
+                    private void appendNewValue(
+                        BiFunction<String, Character, String> function, char escapeChar) {
+                      String newValue = function.apply(value.toString(), escapeChar);
+                      param(new BasicInParameter<>(() -> new StringWrapper(newValue)));
+                      buf.appendSql(" escape '" + escapeChar + "'");
+                    }
+                  });
               return null;
             }
           });
@@ -458,7 +464,7 @@ public class BuilderSupport {
     }
   }
 
-  class PropertyExpressionVisitor
+  class PropertyMetamodelVisitor
       implements PropertyMetamodel.Visitor,
           AggregateFunction.Visitor,
           ArithmeticExpression.Visitor,
@@ -504,24 +510,9 @@ public class BuilderSupport {
 
     @Override
     public void visit(StringExpression.Concat<?> concat) {
-      ColumnExpressions columnExpressions = config.getDialect().getColumnExpressions();
-      ColumnExpressions.ConcatKind concatKind = columnExpressions.getConcatKind();
-
-      switch (concatKind) {
-        case FUNCTION:
-          buf.appendSql("concat(");
-          concat.left.accept(operandVisitor);
-          buf.appendSql(", ");
-          concat.right.accept(operandVisitor);
-          buf.appendSql(")");
-          break;
-        case PIPES:
-          binaryOperator("||", concat.left, concat.right);
-          break;
-        case PLUS:
-          binaryOperator("+", concat.left, concat.right);
-          break;
-      }
+      CriteriaBuilder criteriaBuilder = config.getDialect().getCriteriaBuilder();
+      criteriaBuilder.concat(
+          buf, () -> concat.left.accept(operandVisitor), () -> concat.right.accept(operandVisitor));
     }
 
     @Override

@@ -109,19 +109,19 @@ public class SelectFromDeclaration {
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
-      AssociationOption kind) {
+      AssociationOption option) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
-    Objects.requireNonNull(kind);
+    Objects.requireNonNull(option);
     if (!context.getEntityMetamodels().contains(first)) {
-      if (kind == AssociationOption.MANDATORY) {
+      if (option == AssociationOption.Kind.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "first");
       }
       return;
     }
     if (!context.getEntityMetamodels().contains(second)) {
-      if (kind == AssociationOption.MANDATORY) {
+      if (option == AssociationOption.Kind.MANDATORY) {
         throw new DomaException(Message.DOMA6001, "second");
       }
       return;

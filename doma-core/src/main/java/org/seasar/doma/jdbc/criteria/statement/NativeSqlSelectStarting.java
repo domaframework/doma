@@ -58,7 +58,7 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public NativeSqlSelectStarting<ENTITY> distinct() {
-    declaration.distinct(DistinctOption.ENABLED);
+    declaration.distinct(DistinctOption.basic());
     return this;
   }
 
@@ -119,7 +119,7 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   public NativeSqlSelectStarting<ENTITY> forUpdate() {
-    declaration.forUpdate(ForUpdateOption.WAIT);
+    declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 

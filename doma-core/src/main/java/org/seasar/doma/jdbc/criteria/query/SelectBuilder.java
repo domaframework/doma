@@ -21,11 +21,14 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class SelectBuilder {
+  private final Config config;
   private final SelectContext context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
+  private final AliasManager aliasManager;
   private final BuilderSupport support;
 
   public SelectBuilder(
@@ -48,10 +51,11 @@ public class SelectBuilder {
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
     Objects.requireNonNull(config);
+    this.config = Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
     this.buf = Objects.requireNonNull(buf);
-    Objects.requireNonNull(aliasManager);
+    this.aliasManager = Objects.requireNonNull(aliasManager);
     support = new BuilderSupport(config, commenter, buf, aliasManager);
   }
 
@@ -63,6 +67,7 @@ public class SelectBuilder {
   void interpret() {
     select();
     from();
+    join();
     where();
     groupBy();
     having();
@@ -75,7 +80,7 @@ public class SelectBuilder {
   private void select() {
     buf.appendSql("select ");
 
-    if (context.distinct == DistinctOption.ENABLED) {
+    if (context.distinct == DistinctOption.Kind.BASIC) {
       buf.appendSql("distinct ");
     }
 
@@ -94,6 +99,15 @@ public class SelectBuilder {
   private void from() {
     buf.appendSql(" from ");
     table(context.entityMetamodel);
+    if (context.forUpdate != null) {
+      ForUpdateOption option = context.forUpdate.option;
+      Dialect dialect = config.getDialect();
+      CriteriaBuilder criteriaBuilder = dialect.getCriteriaBuilder();
+      criteriaBuilder.lockWithTableHint(buf, option, this::column);
+    }
+  }
+
+  private void join() {
     if (!context.joins.isEmpty()) {
       for (Join join : context.joins) {
         if (join.kind == JoinKind.INNER) {
@@ -202,12 +216,9 @@ public class SelectBuilder {
   private void forUpdate() {
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
-      if (option != ForUpdateOption.DISABLED) {
-        buf.appendSql(" for update");
-        if (option == ForUpdateOption.NOWAIT) {
-          buf.appendSql(" nowait");
-        }
-      }
+      Dialect dialect = config.getDialect();
+      CriteriaBuilder criteriaBuilder = dialect.getCriteriaBuilder();
+      criteriaBuilder.forUpdate(buf, option, this::column, aliasManager);
     }
   }
 

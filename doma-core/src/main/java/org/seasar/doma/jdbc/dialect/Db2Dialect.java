@@ -3,10 +3,12 @@ package org.seasar.doma.jdbc.dialect;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.Consumer;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -16,6 +18,10 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.query.AliasManager;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
 
 /** A dialect for Db2. */
 public class Db2Dialect extends StandardDialect {
@@ -127,6 +133,11 @@ public class Db2Dialect extends StandardDialect {
     return new Db2ScriptBlockContext();
   }
 
+  @Override
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new Db2CriteriaBuilder();
+  }
+
   public static class Db2JdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
   public static class Db2SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
@@ -157,6 +168,37 @@ public class Db2Dialect extends StandardDialect {
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
+    }
+  }
+
+  public static class Db2CriteriaBuilder extends StandardCriteriaBuilder {
+    @Override
+    public void forUpdate(
+        PreparedSqlBuilder buf,
+        ForUpdateOption option,
+        Consumer<PropertyMetamodel<?>> column,
+        AliasManager aliasManager) {
+      option.accept(
+          new ForUpdateOption.Visitor() {
+            @Override
+            public void visit(ForUpdateOption.Basic basic) {
+              appendSql();
+            }
+
+            @Override
+            public void visit(ForUpdateOption.NoWait wait) {
+              appendSql();
+            }
+
+            @Override
+            public void visit(ForUpdateOption.Wait noWait) {
+              appendSql();
+            }
+
+            private void appendSql() {
+              buf.appendSql(" for update with rs");
+            }
+          });
     }
   }
 }

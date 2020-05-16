@@ -117,7 +117,7 @@ class EntityqlSelectTest {
         entityql
             .from(e)
             .innerJoin(d, on -> {})
-            .associate(e, d, (emp, dept) -> {}, AssociationOption.OPTIONAL);
+            .associate(e, d, (emp, dept) -> {}, AssociationOption.optional());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -208,9 +208,9 @@ class EntityqlSelectTest {
   }
 
   @Test
-  void distinct_enabled() {
+  void distinct_basic() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.ENABLED);
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.basic());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -219,9 +219,9 @@ class EntityqlSelectTest {
   }
 
   @Test
-  void distinct_disabled() {
+  void distinct_none() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.DISABLED);
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.none());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

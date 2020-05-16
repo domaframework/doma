@@ -33,7 +33,7 @@ public class EntityqlSelectStatement<ENTITY>
   }
 
   public EntityqlSelectStatement<ENTITY> distinct() {
-    declaration.distinct(DistinctOption.ENABLED);
+    declaration.distinct(DistinctOption.basic());
     return this;
   }
 
@@ -66,7 +66,7 @@ public class EntityqlSelectStatement<ENTITY>
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
-    declaration.associate(first, second, associator, AssociationOption.MANDATORY);
+    declaration.associate(first, second, associator, AssociationOption.mandatory());
     return this;
   }
 
@@ -74,12 +74,12 @@ public class EntityqlSelectStatement<ENTITY>
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
-      AssociationOption kind) {
+      AssociationOption option) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
-    Objects.requireNonNull(kind);
-    declaration.associate(first, second, associator, kind);
+    Objects.requireNonNull(option);
+    declaration.associate(first, second, associator, option);
     return this;
   }
 
@@ -106,7 +106,7 @@ public class EntityqlSelectStatement<ENTITY>
   }
 
   public EntityqlSelectStatement<ENTITY> forUpdate() {
-    declaration.forUpdate(ForUpdateOption.WAIT);
+    declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 

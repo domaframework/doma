@@ -28,8 +28,12 @@ import org.seasar.doma.jdbc.criteria.statement.Buildable;
 import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.dialect.Db2Dialect;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
+import org.seasar.doma.jdbc.dialect.MssqlDialect;
+import org.seasar.doma.jdbc.dialect.OracleDialect;
+import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
 class NativeSqlSelectTest {
 
@@ -196,7 +200,7 @@ class NativeSqlSelectTest {
   void where_like_escape() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.ESCAPE)).select(e.id);
+        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.escape())).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -204,10 +208,21 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void where_like_escape_escapeChar() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql.from(e).where(c -> c.like(e.name, "a¥", LikeOption.escape('¥'))).select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like 'a¥¥' escape '¥'", sql.getFormattedSql());
+  }
+
+  @Test
   void where_like_prefix() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.PREFIX)).select(e.id);
+        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.prefix())).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -218,7 +233,7 @@ class NativeSqlSelectTest {
   void where_like_infix() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.INFIX)).select(e.id);
+        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.infix())).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -229,7 +244,7 @@ class NativeSqlSelectTest {
   void where_like_suffix() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.SUFFIX)).select(e.id);
+        nativeSql.from(e).where(c -> c.like(e.name, "a$", LikeOption.suffix())).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -680,18 +695,169 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void forUpdate_nowait() {
+  void forUpdate_db2() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new Db2Dialect();
+              }
+            });
+
     Emp_ e = new Emp_();
-    Buildable<?> stmt = nativeSql.from(e).forUpdate(ForUpdateOption.NOWAIT).select(e.id);
+    Buildable<?> stmt = nativeSql.from(e).where(c -> c.eq(e.id, 1)).forUpdate().select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.ID = 1 for update with rs", sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_mssql() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new MssqlDialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).where(c -> c.eq(e.id, 1)).forUpdate().select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ with (updlock, rowlock) where t0_.ID = 1",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_mssql_nowait() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new MssqlDialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(c -> c.eq(e.id, 1))
+            .forUpdate(ForUpdateOption.noWait())
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ with (updlock, rowlock, nowait) where t0_.ID = 1",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_oracle_nowait() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new OracleDialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).forUpdate(ForUpdateOption.noWait()).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ for update nowait", sql.getFormattedSql());
   }
 
   @Test
-  void forUpdate_disabled() {
+  void forUpdate_oracle_nowait_withColumn() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new OracleDialect();
+              }
+            });
+
     Emp_ e = new Emp_();
-    Buildable<?> stmt = nativeSql.from(e).forUpdate(ForUpdateOption.DISABLED).select(e.id);
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.id, d.id))
+            .forUpdate(ForUpdateOption.noWait(e.id, d.id))
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID nowait",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_oracle_wait_withColumn() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new OracleDialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.id, d.id))
+            .forUpdate(ForUpdateOption.wait(5, e.id, d.id))
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID wait 5",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_postgres_nowait_withTable() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new PostgresDialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.id, d.id))
+            .forUpdate(ForUpdateOption.noWait(e.id, d.id))
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_, t1_ nowait",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void forUpdate_none() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).forUpdate(ForUpdateOption.none()).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
@@ -910,10 +1076,10 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void distinct_enabled() {
+  void distinct_normal() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).distinct(DistinctOption.ENABLED).where(c -> c.eq(e.name, "a"));
+        nativeSql.from(e).distinct(DistinctOption.basic()).where(c -> c.eq(e.name, "a"));
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
@@ -921,10 +1087,10 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void distinct_disabled() {
+  void distinct_none() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).distinct(DistinctOption.DISABLED).where(c -> c.eq(e.name, "a"));
+        nativeSql.from(e).distinct(DistinctOption.none()).where(c -> c.eq(e.name, "a"));
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
@@ -932,7 +1098,7 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void expression_concat_function() {
+  void expression_concat() {
     Emp_ e = new Emp_();
     Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
     Sql<?> sql = stmt.asSql();
@@ -940,7 +1106,7 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void expression_concat_plus() {
+  void expression_concat_mssql2008() {
     NativeSql nativeSql =
         new NativeSql(
             new MockConfig() {

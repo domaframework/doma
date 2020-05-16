@@ -304,7 +304,7 @@ public class EntityqlSelectTest {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
                 },
-                AssociationOption.OPTIONAL)
+                AssociationOption.optional())
             .fetch();
 
     return list;

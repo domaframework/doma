@@ -46,7 +46,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
     Objects.requireNonNull(left);
     add(
         new Criterion.Like(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
   }
 
   public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
@@ -58,7 +58,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
     Objects.requireNonNull(left);
     add(
         new Criterion.NotLike(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
   }
 
   public <PROPERTY> void notLike(
