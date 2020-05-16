@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.Entityql;
 
 @ExtendWith(Env.class)
@@ -27,8 +28,8 @@ public class EntityqlInsertTest {
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    Department result = entityql.insert(d, department).execute();
-    assertEquals(department, result);
+    Result<Department> result = entityql.insert(d, department).execute();
+    assertEquals(department, result.getEntity());
 
     Department department2 =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();

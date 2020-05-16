@@ -8,7 +8,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
+import org.seasar.doma.jdbc.criteria.statement.Buildable;
 
 class EntityqlInsertTest {
 
@@ -23,7 +23,7 @@ class EntityqlInsertTest {
     emp.setVersion(1);
 
     Emp_ e = new Emp_();
-    Statement<Emp> stmt = entityql.insert(e, emp);
+    Buildable<?> stmt = entityql.insert(e, emp);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

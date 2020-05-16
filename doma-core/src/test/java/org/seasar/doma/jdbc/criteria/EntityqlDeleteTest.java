@@ -8,7 +8,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
+import org.seasar.doma.jdbc.criteria.statement.Buildable;
 
 class EntityqlDeleteTest {
 
@@ -23,9 +23,24 @@ class EntityqlDeleteTest {
     emp.setVersion(1);
 
     Emp_ e = new Emp_();
-    Statement<Emp> stmt = entityql.delete(e, emp);
+    Buildable<?> stmt = entityql.delete(e, emp);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("delete from EMP where ID = 1 and VERSION = 1", sql.getFormattedSql());
+  }
+
+  @Test
+  void ignoreVersion() {
+    Emp emp = new Emp();
+    emp.setId(1);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal("1000"));
+    emp.setVersion(1);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = entityql.delete(e, emp, settings -> settings.setIgnoreVersion(true));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("delete from EMP where ID = 1", sql.getFormattedSql());
   }
 }

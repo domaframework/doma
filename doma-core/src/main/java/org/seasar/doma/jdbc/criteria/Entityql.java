@@ -3,7 +3,9 @@ package org.seasar.doma.jdbc.criteria;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -43,13 +45,14 @@ public class Entityql {
     return new EntityqlSelectStatement<>(config, declaration);
   }
 
-  public <ENTITY> Statement<ENTITY> update(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
+  public <ENTITY> Statement<Result<ENTITY>> update(
+      EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
     return update(entityMetamodel, entity, settings -> {});
   }
 
-  public <ENTITY> Statement<ENTITY> update(
+  public <ENTITY> Statement<Result<ENTITY>> update(
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       Consumer<UpdateSettings> settingsConsumer) {
@@ -61,13 +64,14 @@ public class Entityql {
     return new EntityqlUpdateStatement<>(config, entityMetamodel, entity, settings);
   }
 
-  public <ENTITY> Statement<ENTITY> delete(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
+  public <ENTITY> Statement<Result<ENTITY>> delete(
+      EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
     return delete(entityMetamodel, entity, settings -> {});
   }
 
-  public <ENTITY> Statement<ENTITY> delete(
+  public <ENTITY> Statement<Result<ENTITY>> delete(
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       Consumer<DeleteSettings> settingsConsumer) {
@@ -79,13 +83,14 @@ public class Entityql {
     return new EntityqlDeleteStatement<>(config, entityMetamodel, entity, settings);
   }
 
-  public <ENTITY> Statement<ENTITY> insert(EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
+  public <ENTITY> Statement<Result<ENTITY>> insert(
+      EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
     return insert(entityMetamodel, entity, settings -> {});
   }
 
-  public <ENTITY> Statement<ENTITY> insert(
+  public <ENTITY> Statement<Result<ENTITY>> insert(
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       Consumer<InsertSettings> settingsConsumer) {
@@ -97,14 +102,14 @@ public class Entityql {
     return new EntityqlInsertStatement<>(config, entityMetamodel, entity, settings);
   }
 
-  public <ENTITY> Statement<List<ENTITY>> update(
+  public <ENTITY> Statement<BatchResult<ENTITY>> update(
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
     return update(entityMetamodel, entities, settings -> {});
   }
 
-  public <ENTITY> Statement<List<ENTITY>> update(
+  public <ENTITY> Statement<BatchResult<ENTITY>> update(
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
       Consumer<UpdateSettings> settingsConsumer) {
@@ -116,14 +121,14 @@ public class Entityql {
     return new EntityqlBatchUpdateStatement<>(config, entityMetamodel, entities, settings);
   }
 
-  public <ENTITY> Statement<List<ENTITY>> delete(
+  public <ENTITY> Statement<BatchResult<ENTITY>> delete(
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
     return delete(entityMetamodel, entities, settings -> {});
   }
 
-  public <ENTITY> Statement<List<ENTITY>> delete(
+  public <ENTITY> Statement<BatchResult<ENTITY>> delete(
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
       Consumer<DeleteSettings> settingsConsumer) {
@@ -135,14 +140,14 @@ public class Entityql {
     return new EntityqlBatchDeleteStatement<>(config, entityMetamodel, entities, settings);
   }
 
-  public <ENTITY> Statement<List<ENTITY>> insert(
+  public <ENTITY> Statement<BatchResult<ENTITY>> insert(
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
     return insert(entityMetamodel, entities, settings -> {});
   }
 
-  public <ENTITY> Statement<List<ENTITY>> insert(
+  public <ENTITY> Statement<BatchResult<ENTITY>> insert(
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
       Consumer<InsertSettings> settingsConsumer) {

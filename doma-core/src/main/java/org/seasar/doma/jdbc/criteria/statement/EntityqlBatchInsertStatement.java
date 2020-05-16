@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
@@ -14,7 +15,7 @@ import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlBatchInsertStatement<ENTITY>
-    extends AbstractStatement<EntityqlBatchInsertStatement<ENTITY>, List<ENTITY>> {
+    extends AbstractStatement<EntityqlBatchInsertStatement<ENTITY>, BatchResult<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_INSERT);
   private final EntityMetamodel<ENTITY> entityMetamodel;
@@ -33,7 +34,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
   }
 
   @Override
-  protected Command<List<ENTITY>> createCommand() {
+  protected Command<BatchResult<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoBatchInsertQuery<ENTITY> query =
         config.getQueryImplementors().createAutoBatchInsertQuery(EXECUTE_METHOD, entityType);
@@ -51,17 +52,17 @@ public class EntityqlBatchInsertStatement<ENTITY>
     query.prepare();
     BatchInsertCommand command =
         config.getCommandImplementors().createBatchInsertCommand(EXECUTE_METHOD, query);
-    return new Command<List<ENTITY>>() {
+    return new Command<BatchResult<ENTITY>>() {
       @Override
       public Query getQuery() {
         return query;
       }
 
       @Override
-      public List<ENTITY> execute() {
-        command.execute();
+      public BatchResult<ENTITY> execute() {
+        int[] counts = command.execute();
         query.complete();
-        return query.getEntities();
+        return new BatchResult<>(counts, query.getEntities());
       }
     };
   }

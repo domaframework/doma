@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
@@ -11,7 +12,7 @@ import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlDeleteStatement<ENTITY>
-    extends AbstractStatement<EntityqlDeleteStatement<ENTITY>, ENTITY> {
+    extends AbstractStatement<EntityqlDeleteStatement<ENTITY>, Result<ENTITY>> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
@@ -29,7 +30,7 @@ public class EntityqlDeleteStatement<ENTITY>
   }
 
   @Override
-  protected Command<ENTITY> createCommand() {
+  protected Command<Result<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoDeleteQuery<ENTITY> query =
         config.getQueryImplementors().createAutoDeleteQuery(EXECUTE_METHOD, entityType);
@@ -40,23 +41,23 @@ public class EntityqlDeleteStatement<ENTITY>
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     query.setSqlLogType(settings.getSqlLogType());
-    query.setVersionIgnored(false);
-    query.setOptimisticLockExceptionSuppressed(false);
+    query.setVersionIgnored(settings.getIgnoreVersion());
+    query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
     query.prepare();
     DeleteCommand command =
         config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);
-    return new Command<ENTITY>() {
+    return new Command<Result<ENTITY>>() {
       @Override
       public Query getQuery() {
         return query;
       }
 
       @Override
-      public ENTITY execute() {
-        command.execute();
+      public Result<ENTITY> execute() {
+        int count = command.execute();
         query.complete();
-        return query.getEntity();
+        return new Result<>(count, query.getEntity());
       }
     };
   }
