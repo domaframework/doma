@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public class MysqlPagingTransformer extends StandardPagingTransformer {
 
-  protected static String MAXIMUM_LIMIT = "18446744073709551615";
+  public static String MAXIMUM_LIMIT = "18446744073709551615";
 
   public MysqlPagingTransformer(long offset, long limit) {
     super(offset, limit);

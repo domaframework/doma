@@ -10,11 +10,13 @@ import org.seasar.doma.internal.jdbc.dialect.MysqlCountCalculatingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlCountGettingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.ScriptBlockContext;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
 
 /** A dialect for MySQL. */
 public class MysqlDialect extends StandardDialect {
@@ -130,6 +132,11 @@ public class MysqlDialect extends StandardDialect {
     return OPEN_QUOTE + name + CLOSE_QUOTE;
   }
 
+  @Override
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new MysqlCriteriaBuilder();
+  }
+
   public static class MysqlJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
   public static class MysqlSqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
@@ -160,6 +167,20 @@ public class MysqlDialect extends StandardDialect {
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
       sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
       sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+    }
+  }
+
+  public static class MysqlCriteriaBuilder extends StandardCriteriaBuilder {
+    @Override
+    public void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit) {
+      buf.appendSql(" limit ");
+      if (limit > 0) {
+        buf.appendSql(Integer.toString(limit));
+      } else {
+        buf.appendSql(MysqlPagingTransformer.MAXIMUM_LIMIT);
+      }
+      buf.appendSql(" offset ");
+      buf.appendSql(Integer.toString(offset));
     }
   }
 }

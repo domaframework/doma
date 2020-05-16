@@ -655,7 +655,8 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).limit(10).select(e.id);
 
     Sql<?> sql = stmt.asSql();
-    assertEquals("select t0_.ID from EMP t0_ limit 10", sql.getFormattedSql());
+    assertEquals(
+        "select t0_.ID from EMP t0_ offset 0 rows fetch first 10 rows only", sql.getFormattedSql());
   }
 
   @Test
@@ -673,7 +674,7 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).offset(10).select(e.id);
 
     Sql<?> sql = stmt.asSql();
-    assertEquals("select t0_.ID from EMP t0_ offset 10", sql.getFormattedSql());
+    assertEquals("select t0_.ID from EMP t0_ offset 10 rows", sql.getFormattedSql());
   }
 
   @Test

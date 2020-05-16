@@ -1080,6 +1080,18 @@ public class StandardDialect implements Dialect {
     }
 
     @Override
+    public void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit) {
+      buf.appendSql(" offset ");
+      buf.appendSql(Integer.toString(offset));
+      buf.appendSql(" rows");
+      if (limit > 0) {
+        buf.appendSql(" fetch first ");
+        buf.appendSql(Integer.toString(limit));
+        buf.appendSql(" rows only");
+      }
+    }
+
+    @Override
     public void lockWithTableHint(
         PreparedSqlBuilder buf, ForUpdateOption option, Consumer<PropertyMetamodel<?>> column) {}
 

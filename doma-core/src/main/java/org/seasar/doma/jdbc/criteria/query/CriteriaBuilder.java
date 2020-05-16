@@ -9,6 +9,8 @@ public interface CriteriaBuilder {
 
   void concat(PreparedSqlBuilder buf, Runnable leftOperand, Runnable rightOperand);
 
+  void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit);
+
   void lockWithTableHint(
       PreparedSqlBuilder buf, ForUpdateOption option, Consumer<PropertyMetamodel<?>> column);
 

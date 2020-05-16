@@ -161,7 +161,7 @@ class EntityqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 5",
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 0 rows fetch first 5 rows only",
         sql.getFormattedSql());
   }
 
@@ -182,7 +182,7 @@ class EntityqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5",
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5 rows",
         sql.getFormattedSql());
   }
 

@@ -21,7 +21,6 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
-import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class SelectBuilder {
   private final Config config;
@@ -30,6 +29,7 @@ public class SelectBuilder {
   private final PreparedSqlBuilder buf;
   private final AliasManager aliasManager;
   private final BuilderSupport support;
+  private final CriteriaBuilder criteriaBuilder;
 
   public SelectBuilder(
       Config config,
@@ -57,6 +57,7 @@ public class SelectBuilder {
     this.buf = Objects.requireNonNull(buf);
     this.aliasManager = Objects.requireNonNull(aliasManager);
     support = new BuilderSupport(config, commenter, buf, aliasManager);
+    criteriaBuilder = config.getDialect().getCriteriaBuilder();
   }
 
   public PreparedSql build() {
@@ -72,8 +73,7 @@ public class SelectBuilder {
     groupBy();
     having();
     orderBy();
-    limit();
-    offset();
+    offsetAndFetch();
     forUpdate();
   }
 
@@ -101,8 +101,6 @@ public class SelectBuilder {
     table(context.entityMetamodel);
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
-      Dialect dialect = config.getDialect();
-      CriteriaBuilder criteriaBuilder = dialect.getCriteriaBuilder();
       criteriaBuilder.lockWithTableHint(buf, option, this::column);
     }
   }
@@ -199,25 +197,18 @@ public class SelectBuilder {
     }
   }
 
-  private void limit() {
-    if (context.limit != null) {
-      buf.appendSql(" limit ");
-      buf.appendSql(context.limit.toString());
+  private void offsetAndFetch() {
+    if (context.offset == null && context.limit == null) {
+      return;
     }
-  }
-
-  private void offset() {
-    if (context.offset != null) {
-      buf.appendSql(" offset ");
-      buf.appendSql(context.offset.toString());
-    }
+    int offset = (context.offset == null || context.offset < 0) ? 0 : context.offset;
+    int limit = (context.limit == null || context.limit < 0) ? 0 : context.limit;
+    criteriaBuilder.offsetAndFetch(buf, offset, limit);
   }
 
   private void forUpdate() {
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
-      Dialect dialect = config.getDialect();
-      CriteriaBuilder criteriaBuilder = dialect.getCriteriaBuilder();
       criteriaBuilder.forUpdate(buf, option, this::column, aliasManager);
     }
   }
