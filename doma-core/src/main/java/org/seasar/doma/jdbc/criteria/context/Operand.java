@@ -13,7 +13,7 @@ public interface Operand {
 
   <R> R accept(Visitor<R> visitor);
 
-  class Param implements Operand {
+  final class Param implements Operand {
     private final PropertyMetamodel<?> propertyMetamodel;
     private final Object value;
 
@@ -32,9 +32,23 @@ public interface Operand {
     public <R> R accept(Visitor<R> visitor) {
       return visitor.visit(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Param)) return false;
+      Param param = (Param) o;
+      return propertyMetamodel.equals(param.propertyMetamodel)
+          && Objects.equals(value, param.value);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(propertyMetamodel, value);
+    }
   }
 
-  class Prop implements Operand {
+  final class Prop implements Operand {
     public final PropertyMetamodel<?> value;
 
     public Prop(PropertyMetamodel<?> value) {
@@ -44,6 +58,19 @@ public interface Operand {
     @Override
     public <R> R accept(Visitor<R> visitor) {
       return visitor.visit(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Prop)) return false;
+      Prop prop = (Prop) o;
+      return value.equals(prop.value);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(value);
     }
   }
 

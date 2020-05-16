@@ -17,4 +17,11 @@ public class SetDeclaration {
     Objects.requireNonNull(left);
     context.set.put(new Operand.Prop(left), new Operand.Param(left, right));
   }
+
+  public <PROPERTY> void value(
+      PropertyMetamodel<PROPERTY> left, PropertyMetamodel<PROPERTY> right) {
+    Objects.requireNonNull(left);
+    Objects.requireNonNull(right);
+    context.set.put(new Operand.Prop(left), new Operand.Prop(right));
+  }
 }

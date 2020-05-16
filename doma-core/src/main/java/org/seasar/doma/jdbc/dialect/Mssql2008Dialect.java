@@ -123,6 +123,11 @@ public class Mssql2008Dialect extends StandardDialect {
     return new Mssql2008ScriptBlockContext();
   }
 
+  @Override
+  public ColumnExpressions getColumnExpressions() {
+    return new Mssql2008ColumnExpressions();
+  }
+
   public static class Mssql2008JdbcMappingVisitor extends StandardJdbcMappingVisitor {}
 
   public static class Mssql2008SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {}
@@ -155,6 +160,13 @@ public class Mssql2008Dialect extends StandardDialect {
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
       sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
       sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+    }
+  }
+
+  public static class Mssql2008ColumnExpressions extends StandardColumnExpressions {
+    @Override
+    public ConcatKind getConcatKind() {
+      return ConcatKind.PLUS;
     }
   }
 }

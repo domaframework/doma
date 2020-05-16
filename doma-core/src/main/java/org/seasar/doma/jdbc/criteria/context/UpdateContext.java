@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 public class UpdateContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
   public final List<EntityMetamodel<?>> entityMetamodels;
-  public final Map<Operand.Prop, Operand.Param> set = new LinkedHashMap<>();
+  public final Map<Operand.Prop, Operand> set = new LinkedHashMap<>();
   public List<Criterion> where = new ArrayList<>();
   public final UpdateSettings settings = new UpdateSettings();
 

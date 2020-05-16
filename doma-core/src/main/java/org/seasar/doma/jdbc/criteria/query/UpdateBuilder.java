@@ -52,12 +52,12 @@ public class UpdateBuilder {
     table(context.entityMetamodel);
     if (!context.set.isEmpty()) {
       buf.appendSql(" set ");
-      Set<Map.Entry<Operand.Prop, Operand.Param>> entries = context.set.entrySet();
+      Set<Map.Entry<Operand.Prop, Operand>> entries = context.set.entrySet();
       entries.forEach(
           entry -> {
             column(entry.getKey());
             buf.appendSql(" = ");
-            param(entry.getValue());
+            operand(entry.getValue());
             buf.appendSql(", ");
           });
       buf.cutBackSql(2);
@@ -78,12 +78,12 @@ public class UpdateBuilder {
     support.table(entityMetamodel);
   }
 
-  private void column(Operand.Prop prop) {
-    support.column(prop);
+  private void operand(Operand operand) {
+    support.operand(operand);
   }
 
-  private void param(Operand.Param param) {
-    support.param(param);
+  private void column(Operand.Prop prop) {
+    support.column(prop);
   }
 
   private void visitCriterion(int index, Criterion criterion) {

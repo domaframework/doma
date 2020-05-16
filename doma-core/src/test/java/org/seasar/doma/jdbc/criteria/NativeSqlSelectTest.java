@@ -1,11 +1,12 @@
 package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.avg;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.count;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.max;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.min;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -27,6 +28,8 @@ import org.seasar.doma.jdbc.criteria.statement.Buildable;
 import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 
 class NativeSqlSelectTest {
 
@@ -926,5 +929,30 @@ class NativeSqlSelectTest {
     assertEquals(
         "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
         sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_concat_function() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select concat(t0_.NAME, 'a') from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_concat_plus() {
+    NativeSql nativeSql =
+        new NativeSql(
+            new MockConfig() {
+              @Override
+              public Dialect getDialect() {
+                return new Mssql2008Dialect();
+              }
+            });
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select (t0_.NAME + 'a') from EMP t0_", sql.getFormattedSql());
   }
 }

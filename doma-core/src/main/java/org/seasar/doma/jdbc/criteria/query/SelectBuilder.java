@@ -16,7 +16,7 @@ import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
-import org.seasar.doma.jdbc.criteria.declaration.AggregateFunction;
+import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
