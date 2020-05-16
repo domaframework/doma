@@ -2,11 +2,13 @@ package org.seasar.doma.jdbc.criteria.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
@@ -15,11 +17,31 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 
 class ExpressionsTest {
 
   private final Emp_ e = new Emp_();
+
+  @Test
+  void testStringLiteral() {
+    assertEquals(literal("abc"), literal("abc"));
+    assertNotEquals(literal("abc"), literal("def"));
+  }
+
+  @Test
+  void testStringLiteral_contains_single_quotation() {
+    DomaIllegalArgumentException ex =
+        assertThrows(DomaIllegalArgumentException.class, () -> literal("ab'c"));
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void testIntLiteral() {
+    assertEquals(literal(1), literal(1));
+    assertNotEquals(literal(1), literal(2));
+  }
 
   @Test
   void testAdd() {

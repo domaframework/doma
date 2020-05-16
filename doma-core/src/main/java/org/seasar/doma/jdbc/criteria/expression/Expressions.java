@@ -6,6 +6,16 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public class Expressions {
 
+  public static PropertyMetamodel<String> literal(String value) {
+    Objects.requireNonNull(value);
+    return new LiteralExpression.StringLiteral(value);
+  }
+
+  public static PropertyMetamodel<Integer> literal(int value) {
+    Objects.requireNonNull(value);
+    return new LiteralExpression.IntLiteral(value);
+  }
+
   public static <PROPERTY> ArithmeticExpression.Add<PROPERTY> add(
       PropertyMetamodel<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);

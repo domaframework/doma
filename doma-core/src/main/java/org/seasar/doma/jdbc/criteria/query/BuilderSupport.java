@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
+import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
 import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -466,9 +467,10 @@ public class BuilderSupport {
 
   class PropertyMetamodelVisitor
       implements PropertyMetamodel.Visitor,
-          AggregateFunction.Visitor,
           ArithmeticExpression.Visitor,
-          StringExpression.Visitor {
+          StringExpression.Visitor,
+          LiteralExpression.Visitor,
+          AggregateFunction.Visitor {
 
     @Override
     public void visit(PropertyMetamodel<?> propertyMetamodel) {
@@ -513,6 +515,16 @@ public class BuilderSupport {
       CriteriaBuilder criteriaBuilder = config.getDialect().getCriteriaBuilder();
       criteriaBuilder.concat(
           buf, () -> concat.left.accept(operandVisitor), () -> concat.right.accept(operandVisitor));
+    }
+
+    @Override
+    public void visit(LiteralExpression.StringLiteral stringLiteral) {
+      buf.appendSql(stringLiteral.toString());
+    }
+
+    @Override
+    public void visit(LiteralExpression.IntLiteral intLiteral) {
+      buf.appendSql(intLiteral.toString());
     }
 
     @Override

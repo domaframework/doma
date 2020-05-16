@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
@@ -1121,5 +1122,21 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
     Sql<?> sql = stmt.asSql();
     assertEquals("select (t0_.NAME + 'a') from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_stringLiteral() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(literal("a"));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select 'a' from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_intLiteral() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(literal(123));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select 123 from EMP t0_", sql.getRawSql());
   }
 }
