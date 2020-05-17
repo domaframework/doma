@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -379,5 +380,30 @@ public class EntityqlSelectTest {
         .orderBy(c -> c.asc(d.location))
         .peek(sql -> System.out.println(sql.getFormattedSql()))
         .fetch();
+  }
+
+  @Test
+  void tableName_replacement() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_("DEPARTMENT_ARCHIVE");
+
+    Department department = new Department();
+    department.setDepartmentId(1);
+    department.setDepartmentNo(1);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Result<Department> result = entityql.insert(d, department).execute();
+    assertEquals(1, result.getCount());
+
+    List<Department> list =
+        entityql
+            .from(d)
+            .innerJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+            .associate(d, e, (dept, employee) -> dept.getEmployeeList().add(employee))
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals(3, list.get(0).getEmployeeList().size());
   }
 }

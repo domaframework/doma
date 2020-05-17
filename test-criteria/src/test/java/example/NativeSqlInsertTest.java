@@ -101,4 +101,18 @@ public class NativeSqlInsertTest {
 
     assertEquals(2, count);
   }
+
+  @Test
+  void insert_select_using_same_entityMetamodel() {
+    Department_ da = new Department_("DEPARTMENT_ARCHIVE");
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(da)
+            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))).select())
+            .execute();
+
+    assertEquals(2, count);
+  }
 }
