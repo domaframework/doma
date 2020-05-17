@@ -1,21 +1,5 @@
 package example;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
-import org.seasar.doma.jdbc.criteria.tuple.Row;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,6 +18,21 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
+import org.seasar.doma.jdbc.criteria.tuple.Row;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 @ExtendWith(Env.class)
 public class NativeSqlSelectTest {

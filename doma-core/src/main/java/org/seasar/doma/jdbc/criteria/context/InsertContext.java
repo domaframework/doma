@@ -12,6 +12,7 @@ public class InsertContext implements Context {
   public final List<EntityMetamodel<?>> entityMetamodels;
   public final Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
   public final InsertSettings settings = new InsertSettings();
+  public SelectContext selectContext;
 
   public InsertContext(EntityMetamodel<?> entityMetamodel) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);

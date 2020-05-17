@@ -1,5 +1,9 @@
 package org.seasar.doma.jdbc.criteria.query;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
@@ -21,11 +25,6 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class BuilderSupport {
   private final Config config;

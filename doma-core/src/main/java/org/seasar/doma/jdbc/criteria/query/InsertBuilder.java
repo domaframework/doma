@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
@@ -43,29 +44,55 @@ public class InsertBuilder {
     buf.appendSql("insert into ");
     table(context.entityMetamodel);
     if (!context.values.isEmpty()) {
-      buf.appendSql(" (");
-      context
-          .values
-          .keySet()
-          .forEach(
-              key -> {
-                column(key);
-                buf.appendSql(", ");
-              });
-      buf.cutBackSql(2);
-      buf.appendSql(") values (");
-      context
-          .values
-          .values()
-          .forEach(
-              value -> {
-                param(value);
-                buf.appendSql(", ");
-              });
-      buf.cutBackSql(2);
-      buf.appendSql(")");
+      values();
+    } else {
+      if (context.selectContext != null) {
+        select();
+      }
     }
     return buf.build(commenter);
+  }
+
+  private void values() {
+    buf.appendSql(" (");
+    context
+        .values
+        .keySet()
+        .forEach(
+            key -> {
+              column(key);
+              buf.appendSql(", ");
+            });
+    buf.cutBackSql(2);
+    buf.appendSql(") values (");
+    context
+        .values
+        .values()
+        .forEach(
+            value -> {
+              param(value);
+              buf.appendSql(", ");
+            });
+    buf.cutBackSql(2);
+    buf.appendSql(")");
+  }
+
+  private void select() {
+    buf.appendSql(" (");
+    context
+        .entityMetamodel
+        .allPropertyMetamodels()
+        .forEach(
+            p -> {
+              column(p);
+              buf.appendSql(", ");
+            });
+    buf.cutBackSql(2);
+    buf.appendSql(") ");
+    AliasManager aliasManager = new AliasManager(context.selectContext);
+    SelectBuilder builder =
+        new SelectBuilder(config, context.selectContext, Function.identity(), buf, aliasManager);
+    builder.interpret();
   }
 
   private void table(EntityMetamodel<?> entityMetamodel) {
@@ -76,7 +103,11 @@ public class InsertBuilder {
   }
 
   private void column(Operand.Prop prop) {
-    EntityPropertyType<?, ?> propertyType = prop.value.asType();
+    column(prop.value);
+  }
+
+  private void column(PropertyMetamodel<?> propertyMetamodel) {
+    EntityPropertyType<?, ?> propertyType = propertyMetamodel.asType();
     buf.appendSql(
         propertyType.getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote));
   }
