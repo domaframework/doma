@@ -1,4 +1,4 @@
-package org.seasar.doma.jdbc.criteria.declaration;
+package org.seasar.doma.jdbc.criteria.expression;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -70,13 +70,28 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     public Avg(PropertyMetamodel<PROPERTY> argument) {
       super("avg", argument);
     }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
+    }
   }
 
   class Count extends AbstractFunction<Long> {
     private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
+    public final boolean distinct;
+
     public Count(PropertyMetamodel<?> argument) {
+      this(argument, false);
+    }
+
+    public Count(PropertyMetamodel<?> argument, boolean distinct) {
       super("count", argument);
+      this.distinct = distinct;
     }
 
     @Override
@@ -88,12 +103,28 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     public EntityPropertyType<?, Long> asType() {
       return propertyType;
     }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
+    }
   }
 
   class Max<PROPERTY> extends AbstractFunction<PROPERTY> {
 
     public Max(PropertyMetamodel<PROPERTY> argument) {
       super("max", argument);
+    }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
     }
   }
 
@@ -102,11 +133,27 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     public Min(PropertyMetamodel<PROPERTY> argument) {
       super("min", argument);
     }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
+    }
   }
 
   class Sum<PROPERTY> extends AbstractFunction<PROPERTY> {
     public Sum(PropertyMetamodel<PROPERTY> argument) {
       super("sum", argument);
+    }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
     }
   }
 
@@ -129,6 +176,28 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     public EntityPropertyType<?, ?> asType() {
       return propertyType;
     }
+
+    @Override
+    public void accept(Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
+    }
+  }
+
+  interface Visitor {
+    void visit(AggregateFunction.Avg<?> avg);
+
+    void visit(AggregateFunction.Count count);
+
+    void visit(AggregateFunction.Max<?> max);
+
+    void visit(AggregateFunction.Min<?> min);
+
+    void visit(AggregateFunction.Sum<?> sum);
+
+    void visit(AggregateFunction.Asterisk asterisk);
   }
 }
 

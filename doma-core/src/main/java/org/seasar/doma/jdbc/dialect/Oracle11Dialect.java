@@ -11,10 +11,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
@@ -29,6 +32,10 @@ import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.query.AliasManager;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.jdbc.type.JdbcTypes;
@@ -171,6 +178,11 @@ public class Oracle11Dialect extends StandardDialect {
   @Override
   public ScriptBlockContext createScriptBlockContext() {
     return new Oracle11ScriptBlockContext();
+  }
+
+  @Override
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new Oracle11CriteriaBuilder();
   }
 
   public static class OracleResultSetType extends AbstractResultSetType {
@@ -396,6 +408,51 @@ public class Oracle11Dialect extends StandardDialect {
       sqlBlockStartKeywordsList.add(Arrays.asList("create", "trigger"));
       sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
       sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+    }
+  }
+
+  public static class Oracle11CriteriaBuilder extends StandardCriteriaBuilder {
+    @Override
+    public void forUpdate(
+        PreparedSqlBuilder buf,
+        ForUpdateOption option,
+        Consumer<PropertyMetamodel<?>> column,
+        AliasManager aliasManager) {
+      option.accept(
+          new ForUpdateOption.Visitor() {
+
+            @Override
+            public void visit(ForUpdateOption.Basic basic) {
+              buf.appendSql(" for update");
+              of(basic.propertyMetamodels);
+            }
+
+            @Override
+            public void visit(ForUpdateOption.NoWait noWait) {
+              buf.appendSql(" for update");
+              of(noWait.propertyMetamodels);
+              buf.appendSql(" nowait");
+            }
+
+            @Override
+            public void visit(ForUpdateOption.Wait wait) {
+              buf.appendSql(" for update");
+              of(wait.propertyMetamodels);
+              buf.appendSql(" wait ");
+              buf.appendSql(String.valueOf(wait.second));
+            }
+
+            private void of(List<PropertyMetamodel<?>> propertyMetamodels) {
+              if (!propertyMetamodels.isEmpty()) {
+                buf.appendSql(" of ");
+                for (PropertyMetamodel<?> p : propertyMetamodels) {
+                  column.accept(p);
+                  buf.appendSql(", ");
+                }
+                buf.cutBackSql(2);
+              }
+            }
+          });
     }
   }
 }

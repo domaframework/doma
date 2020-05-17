@@ -8,6 +8,8 @@ public final class QPersonMetamodel implements org.seasar.doma.jdbc.criteria.met
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private final String __qualifiedTableName;
+
     private final org.seasar.doma.internal.apt.processor.metamodel._Person __entityType = org.seasar.doma.internal.apt.processor.metamodel._Person.getSingletonInternal();
 
     private final java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __allPropertyMetamodels;
@@ -17,6 +19,11 @@ public final class QPersonMetamodel implements org.seasar.doma.jdbc.criteria.met
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<org.seasar.doma.internal.apt.processor.metamodel.Name> name = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<org.seasar.doma.internal.apt.processor.metamodel.Name>(org.seasar.doma.internal.apt.processor.metamodel.Name.class, __entityType, "name");
 
     public QPersonMetamodel() {
+        this("");
+    }
+
+    public QPersonMetamodel(String qualifiedTableName) {
+        this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __list = new java.util.ArrayList<>(2);
         __list.add(id);
         __list.add(name);
@@ -24,8 +31,8 @@ public final class QPersonMetamodel implements org.seasar.doma.jdbc.criteria.met
     }
 
     @Override
-    public org.seasar.doma.internal.apt.processor.metamodel._Person asType() {
-        return __entityType;
+    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.metamodel.Person> asType() {
+        return __qualifiedTableName.isEmpty() ? __entityType : new org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy<>(__entityType, __qualifiedTableName);
     }
 
     @Override

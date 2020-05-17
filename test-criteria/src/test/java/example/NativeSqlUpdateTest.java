@@ -1,7 +1,9 @@
 package example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,5 +85,23 @@ public class NativeSqlUpdateTest {
             .execute();
 
     assertEquals(14, count);
+  }
+
+  @Test
+  void expression_add() {
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(c -> c.value(e.version, add(e.version, 10)))
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+    assertEquals(1, count);
+
+    Employee employee = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOne();
+    assertNotNull(employee);
+    assertEquals(11, employee.getVersion());
   }
 }

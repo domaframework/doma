@@ -16,8 +16,7 @@ import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class NativeSqlSelectIntermediate<ELEMENT>
-    extends AbstractSetOperand<NativeSqlSelectIntermediate<ELEMENT>, ELEMENT>
-    implements SetOperand<ELEMENT> {
+    extends AbstractSetOperand<NativeSqlSelectIntermediate<ELEMENT>, ELEMENT> {
 
   private final SelectFromDeclaration declaration;
 
@@ -36,6 +35,7 @@ public class NativeSqlSelectIntermediate<ELEMENT>
 
   @Override
   public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
+    Objects.requireNonNull(streamMapper);
     NativeSqlSelectTerminal<RESULT> terminal = createNativeSqlSelectTerminal(streamMapper);
     return terminal.execute();
   }

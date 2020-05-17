@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
@@ -11,7 +12,7 @@ import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlInsertStatement<ENTITY>
-    extends AbstractStatement<EntityqlInsertStatement<ENTITY>, ENTITY> {
+    extends AbstractStatement<EntityqlInsertStatement<ENTITY>, Result<ENTITY>> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
@@ -29,7 +30,7 @@ public class EntityqlInsertStatement<ENTITY>
   }
 
   @Override
-  protected Command<ENTITY> createCommand() {
+  protected Command<Result<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoInsertQuery<ENTITY> query =
         config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
@@ -47,17 +48,17 @@ public class EntityqlInsertStatement<ENTITY>
     query.prepare();
     InsertCommand command =
         config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
-    return new Command<ENTITY>() {
+    return new Command<Result<ENTITY>>() {
       @Override
       public Query getQuery() {
         return query;
       }
 
       @Override
-      public ENTITY execute() {
-        command.execute();
+      public Result<ENTITY> execute() {
+        int count = command.execute();
         query.complete();
-        return query.getEntity();
+        return new Result<>(count, query.getEntity());
       }
     };
   }

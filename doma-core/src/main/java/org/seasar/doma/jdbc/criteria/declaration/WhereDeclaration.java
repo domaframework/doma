@@ -2,23 +2,34 @@ package org.seasar.doma.jdbc.criteria.declaration;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
-import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
+import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 import org.seasar.doma.jdbc.criteria.context.Operand;
+import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
+import org.seasar.doma.jdbc.criteria.context.UpdateContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
-public class WhereDeclaration extends ComparisonDeclaration<Context> {
+public class WhereDeclaration extends ComparisonDeclaration {
 
-  public WhereDeclaration(Context context) {
-    super(context);
+  public WhereDeclaration(SelectContext context) {
+    super(() -> context.where, w -> context.where = w);
+    Objects.requireNonNull(context);
+  }
+
+  public WhereDeclaration(DeleteContext context) {
+    super(() -> context.where, w -> context.where = w);
+    Objects.requireNonNull(context);
+  }
+
+  public WhereDeclaration(UpdateContext context) {
+    super(() -> context.where, w -> context.where = w);
+    Objects.requireNonNull(context);
   }
 
   public <PROPERTY> void isNull(PropertyMetamodel<PROPERTY> propertyMetamodel) {
@@ -35,7 +46,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     Objects.requireNonNull(left);
     add(
         new Criterion.Like(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
   }
 
   public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
@@ -47,7 +58,7 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
     Objects.requireNonNull(left);
     add(
         new Criterion.NotLike(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.NONE));
+            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
   }
 
   public <PROPERTY> void notLike(
@@ -162,34 +173,5 @@ public class WhereDeclaration extends ComparisonDeclaration<Context> {
 
   public SubSelectFromDeclaration from(EntityMetamodel<?> entityMetamodel) {
     return new SubSelectFromDeclaration(entityMetamodel);
-  }
-
-  public void and(Runnable block) {
-    runBlock(block, Criterion.And::new);
-  }
-
-  public void or(Runnable block) {
-    runBlock(block, Criterion.Or::new);
-  }
-
-  public void not(Runnable block) {
-    runBlock(block, Criterion.Not::new);
-  }
-
-  @Override
-  protected void runBlock(Runnable block, Function<List<Criterion>, Criterion> newCriterion) {
-    List<Criterion> preservedWhere = context.getWhere();
-    List<Criterion> newWhere = new ArrayList<>();
-    context.setWhere(newWhere);
-    block.run();
-    context.setWhere(preservedWhere);
-    if (!newWhere.isEmpty()) {
-      add(newCriterion.apply(newWhere));
-    }
-  }
-
-  @Override
-  protected void add(Criterion criterion) {
-    context.getWhere().add(criterion);
   }
 }

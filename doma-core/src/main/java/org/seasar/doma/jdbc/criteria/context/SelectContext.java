@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 public class SelectContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
   public Projection projection = Projection.All;
-  public DistinctOption distinct = DistinctOption.DISABLED;
+  public DistinctOption distinct = DistinctOption.none();
   public final List<Join> joins = new ArrayList<>();
   public List<Criterion> where = new ArrayList<>();
   public final List<PropertyMetamodel<?>> groupBy = new ArrayList<>();
@@ -26,7 +26,7 @@ public class SelectContext implements Context {
   public final List<Pair<OrderByItem, String>> orderBy = new ArrayList<>();
   public Integer limit;
   public Integer offset;
-  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.DISABLED);
+  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.none());
   public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiConsumer<Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
@@ -43,16 +43,6 @@ public class SelectContext implements Context {
         joins.stream().map(j -> j.entityMetamodel).collect(toList());
     entityMetamodels.addAll(joinedEntityMetamodels);
     return entityMetamodels;
-  }
-
-  @Override
-  public List<Criterion> getWhere() {
-    return where;
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    this.where = where;
   }
 
   @Override

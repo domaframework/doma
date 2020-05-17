@@ -592,7 +592,7 @@ We support the following aggregate functions:
 * min(property)
 * sum(property)
 
-These are defined in the ``org.seasar.doma.jdbc.criteria.AggregateFunctions`` class.
+These are defined in the ``org.seasar.doma.jdbc.criteria.expression.Expressions`` class.
 Use them with static import.
 
 For example, you can pass the ``sum`` function to the select method:

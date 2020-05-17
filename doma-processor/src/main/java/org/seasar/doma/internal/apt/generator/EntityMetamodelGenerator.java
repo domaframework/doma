@@ -15,7 +15,9 @@ import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 public class EntityMetamodelGenerator extends AbstractGenerator {
 
@@ -57,13 +59,14 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     indent();
     printValidateVersionStaticInitializer();
     printFields();
-    printConstructor();
+    printConstructors();
     printMethods();
     unindent();
     iprint("}%n");
   }
 
   private void printFields() {
+    printQualifiedTableNameField();
     printEntityTypeField();
     printAllPropertyMetamodelsFields();
     printPropertyDefFields();
@@ -81,9 +84,29 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  private void printConstructor() {
+  private void printQualifiedTableNameField() {
+    iprint("private final String __qualifiedTableName;%n");
+    print("%n");
+  }
+
+  private void printConstructors() {
+    printNoArgsConstructor();
+    printOneArgConstructor();
+  }
+
+  private void printNoArgsConstructor() {
     iprint("public %1$s() {%n", simpleName);
     indent();
+    iprint("this(\"\");%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printOneArgConstructor() {
+    iprint("public %1$s(String qualifiedTableName) {%n", simpleName);
+    indent();
+    iprint("this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);%n");
     iprint(
         "java.util.ArrayList<%1$s<?>> __list = new java.util.ArrayList<>(%2$s);%n",
         PropertyMetamodel.class, entityMeta.getAllPropertyMetas().size());
@@ -138,8 +161,12 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printAsTypeMethod() {
     iprint("@Override%n");
-    iprint("public %1$s asType() {%n", entityTypeName);
-    iprint("    return __entityType;%n");
+    iprint("public %1$s<%2$s> asType() {%n", EntityType.class, entityMeta.getType());
+    indent();
+    iprint(
+        "return __qualifiedTableName.isEmpty() ? __entityType : new %1$s<>(__entityType, __qualifiedTableName);%n",
+        EntityTypeProxy.class);
+    unindent();
     iprint("}%n");
     print("%n");
   }

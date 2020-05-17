@@ -32,6 +32,7 @@ public class NativeSqlSetStarting<ELEMENT>
 
   @Override
   public SetOperand<ELEMENT> orderBy(Consumer<OrderByIndexDeclaration> block) {
+    Objects.requireNonNull(block);
     OrderByIndexDeclaration declaration = new OrderByIndexDeclaration(context);
     block.accept(declaration);
     return this;
@@ -44,6 +45,7 @@ public class NativeSqlSetStarting<ELEMENT>
 
   @Override
   public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
+    Objects.requireNonNull(streamMapper);
     NativeSqlSetTerminal<RESULT> terminal = createNativeSqlSetTerminal(streamMapper);
     return terminal.execute();
   }

@@ -2,6 +2,7 @@ package example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
@@ -62,5 +63,56 @@ public class NativeSqlInsertTest {
             .execute();
 
     assertEquals(1, count);
+  }
+
+  @Test
+  void insert_select_entity() {
+    DepartmentArchive_ da = new DepartmentArchive_();
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(da)
+            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))).select())
+            .execute();
+
+    assertEquals(2, count);
+  }
+
+  @Test
+  void insert_select_properties() {
+    DepartmentArchive_ da = new DepartmentArchive_();
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(da)
+            .select(
+                c ->
+                    c.from(d)
+                        .where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2)))
+                        .select(
+                            d.departmentId,
+                            d.departmentNo,
+                            d.departmentName,
+                            d.location,
+                            d.version))
+            .execute();
+
+    assertEquals(2, count);
+  }
+
+  @Test
+  void insert_select_using_same_entityMetamodel() {
+    Department_ da = new Department_("DEPARTMENT_ARCHIVE");
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(da)
+            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))).select())
+            .execute();
+
+    assertEquals(2, count);
   }
 }

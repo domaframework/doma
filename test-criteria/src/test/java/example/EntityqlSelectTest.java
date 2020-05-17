@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -12,10 +13,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.Entityql;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 import org.seasar.doma.jdbc.criteria.statement.Listable;
 
 @ExtendWith(Env.class)
@@ -39,11 +42,21 @@ public class EntityqlSelectTest {
                   settings.setComment("all employees");
                   settings.setSqlLogType(SqlLogType.RAW);
                   settings.setQueryTimeout(1000);
+                  settings.setAllowEmptyWhere(true);
                   settings.setFetchSize(100);
                   settings.setMaxRows(100);
                 })
             .fetch();
     assertEquals(14, list.size());
+  }
+
+  @Test
+  void allowEmptyWhere_disabled() {
+    Employee_ e = new Employee_();
+
+    assertThrows(
+        EmptyWhereClauseException.class,
+        () -> entityql.from(e, settings -> settings.setAllowEmptyWhere(false)).fetch());
   }
 
   @Test
@@ -262,9 +275,6 @@ public class EntityqlSelectTest {
 
   @Test
   void associate_dynamic() {
-    Employee_ e = new Employee_();
-    Department_ d = new Department_();
-
     List<Employee> list = associate_dynamic(true);
     assertEquals(14, list.size());
     assertTrue(list.stream().allMatch(emp -> emp.getDepartment() != null));
@@ -295,7 +305,7 @@ public class EntityqlSelectTest {
                   employee.setDepartment(department);
                   department.getEmployeeList().add(employee);
                 },
-                AssociationOption.OPTIONAL)
+                AssociationOption.optional())
             .fetch();
 
     return list;
@@ -370,5 +380,30 @@ public class EntityqlSelectTest {
         .orderBy(c -> c.asc(d.location))
         .peek(sql -> System.out.println(sql.getFormattedSql()))
         .fetch();
+  }
+
+  @Test
+  void tableName_replacement() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_("DEPARTMENT_ARCHIVE");
+
+    Department department = new Department();
+    department.setDepartmentId(1);
+    department.setDepartmentNo(1);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Result<Department> result = entityql.insert(d, department).execute();
+    assertEquals(1, result.getCount());
+
+    List<Department> list =
+        entityql
+            .from(d)
+            .innerJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+            .associate(d, e, (dept, employee) -> dept.getEmployeeList().add(employee))
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals(3, list.get(0).getEmployeeList().size());
   }
 }

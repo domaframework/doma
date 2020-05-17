@@ -2,37 +2,69 @@ package org.seasar.doma.jdbc.criteria.command;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
-import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.criteria.statement.Row;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
 public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT> {
-  private final Function<Row, RESULT> mapper;
-  private final JdbcMappingVisitor jdbcMappingVisitor;
+  private final FetchSupport fetchSupport;
+  private final Function<DataRow, RESULT> mapper;
 
-  public MappedResultProvider(Query query, Function<Row, RESULT> mapper) {
+  public MappedResultProvider(Query query, Function<DataRow, RESULT> mapper) {
     Objects.requireNonNull(query);
+    this.fetchSupport = new FetchSupport(query);
     this.mapper = Objects.requireNonNull(mapper);
-    this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public RESULT get(ResultSet resultSet) throws SQLException {
-    Row row =
-        new Row() {
+    DataRow dataRow =
+        new DataRow() {
           int index = 1;
+
+          @Override
+          public <ENTITY> ENTITY get(EntityMetamodel<ENTITY> entityMetamodel) {
+            List<PropertyMetamodel<?>> propertyDefs = entityMetamodel.allPropertyMetamodels();
+            Map<String, Property<ENTITY, ?>> states = new HashMap<>(propertyDefs.size());
+            List<Object> rawValues = new ArrayList<>(propertyDefs.size());
+            for (PropertyMetamodel<?> propertyDef : propertyDefs) {
+              EntityPropertyType<?, ?> propertyType = propertyDef.asType();
+              Property<ENTITY, ?> property = (Property<ENTITY, ?>) propertyType.createProperty();
+              try {
+                Object rawValue = fetchSupport.fetch(resultSet, property, index++);
+                rawValues.add(rawValue);
+              } catch (SQLException e) {
+                throw new UncheckedSQLException(e);
+              }
+              states.put(propertyType.getName(), property);
+            }
+            if (rawValues.stream().allMatch(Objects::isNull)) {
+              return null;
+            }
+            EntityType<ENTITY> entityType = entityMetamodel.asType();
+            ENTITY entity = entityType.newEntity(states);
+            if (!entityType.isImmutable()) {
+              entityType.saveCurrentStates(entity);
+            }
+            return entity;
+          }
 
           @Override
           public <PROPERTY> PROPERTY get(PropertyMetamodel<PROPERTY> propertyDef) {
             Property<?, ?> property = propertyDef.asType().createProperty();
             try {
-              fetch(resultSet, property, index++, jdbcMappingVisitor);
+              fetchSupport.fetch(resultSet, property, index++);
             } catch (SQLException e) {
               throw new UncheckedSQLException(e);
             }
@@ -40,7 +72,7 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
           }
         };
     try {
-      return mapper.apply(row);
+      return mapper.apply(dataRow);
     } catch (UncheckedSQLException e) {
       throw e.getCause();
     }

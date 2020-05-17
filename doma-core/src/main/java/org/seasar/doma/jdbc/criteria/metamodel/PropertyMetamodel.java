@@ -9,4 +9,10 @@ public interface PropertyMetamodel<PROPERTY> {
   EntityPropertyType<?, ?> asType();
 
   String getName();
+
+  void accept(Visitor visitor);
+
+  interface Visitor {
+    void visit(PropertyMetamodel<?> propertyMetamodel);
+  }
 }

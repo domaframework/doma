@@ -30,4 +30,9 @@ public class DefaultPropertyMetamodel<PROPERTY> implements PropertyMetamodel<PRO
   public String getName() {
     return name;
   }
+
+  public void accept(Visitor visitor) {
+    Objects.requireNonNull(visitor);
+    visitor.visit(this);
+  }
 }

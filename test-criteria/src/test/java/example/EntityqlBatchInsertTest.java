@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
 
@@ -39,8 +40,8 @@ public class EntityqlBatchInsertTest {
 
     List<Department> departments = Arrays.asList(department, department2);
 
-    List<Department> results = entityql.insert(d, departments).execute();
-    assertEquals(departments, results);
+    BatchResult<Department> result = entityql.insert(d, departments).execute();
+    assertEquals(departments, result.getEntities());
 
     List<Integer> ids = departments.stream().map(Department::getDepartmentId).collect(toList());
 
@@ -57,7 +58,7 @@ public class EntityqlBatchInsertTest {
   void empty() {
     Employee_ e = new Employee_();
 
-    List<Employee> results = entityql.insert(e, Collections.emptyList()).execute();
-    assertTrue(results.isEmpty());
+    BatchResult<Employee> result = entityql.insert(e, Collections.emptyList()).execute();
+    assertTrue(result.getEntities().isEmpty());
   }
 }
