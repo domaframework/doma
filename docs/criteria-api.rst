@@ -1295,7 +1295,7 @@ The above query issues the following SQL statement:
 
     update EMPLOYEE t0_ set t0_.EMPLOYEE_NAME = concat('[', concat(t0_.EMPLOYEE_NAME, ']')),
     t0_.VERSION = (t0_.VERSION + 1)
-    where t0_.EMPLOYEE_ID = 1
+    where t0_.EMPLOYEE_ID = ?
 
 Tips
 ====
