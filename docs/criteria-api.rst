@@ -8,12 +8,12 @@ Criteria API
 Introduction
 ============
 
-There are two kind of DSLs in the Criteria API:
+There are two kinds of DSLs in the Criteria API:
 
 * The Entityql DSL
 * The NativeSql DSL
 
-Both require predefined Entity classes and the metamodel classes.
+Both require predefined Entity classes and metamodel classes.
 
 We use the following Entity classes to show you some examples:
 
@@ -170,7 +170,7 @@ The above query issues the following SQL statement:
 The difference between two DSLs
 -------------------------------
 
-The biggest difference between two DSLs is that the Entityql DSL remove duplicated data
+The biggest difference between two DSLs is that the Entityql DSL removes duplicated data
 from the fetched results, but the NativeSQL DSL doesn't.
 
 See the following example:
