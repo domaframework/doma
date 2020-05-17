@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.util;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.lang.model.element.AnnotationMirror;
@@ -175,6 +173,20 @@ public final class AnnotationValueUtil {
           @Override
           public VariableElement visitEnumConstant(VariableElement c, Void p) {
             return c;
+          }
+        },
+        null);
+  }
+
+  public static AnnotationMirror toAnnotation(AnnotationValue value) {
+    if (value == null) {
+      return null;
+    }
+    return value.accept(
+        new SimpleAnnotationValueVisitor8<AnnotationMirror, Void>() {
+          @Override
+          public AnnotationMirror visitAnnotation(AnnotationMirror a, Void p) {
+            return a;
           }
         },
         null);

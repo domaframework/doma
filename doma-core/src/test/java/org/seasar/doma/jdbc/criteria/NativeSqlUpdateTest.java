@@ -22,7 +22,7 @@ class NativeSqlUpdateTest {
             .set(
                 c -> {
                   c.value(e.name, "bbb");
-                  c.value(e.salary, null);
+                  c.value(e.salary, (BigDecimal) null);
                 });
 
     Sql<?> sql = stmt.asSql();

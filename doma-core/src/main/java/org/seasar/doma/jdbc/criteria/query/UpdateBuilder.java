@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.UpdateContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class UpdateBuilder {
   private final UpdateContext context;
@@ -49,15 +49,15 @@ public class UpdateBuilder {
 
   public PreparedSql build() {
     buf.appendSql("update ");
-    table(context.entityDef);
+    table(context.entityMetamodel);
     if (!context.set.isEmpty()) {
       buf.appendSql(" set ");
-      Set<Map.Entry<Operand.Prop, Operand.Param>> entries = context.set.entrySet();
+      Set<Map.Entry<Operand.Prop, Operand>> entries = context.set.entrySet();
       entries.forEach(
           entry -> {
             column(entry.getKey());
             buf.appendSql(" = ");
-            param(entry.getValue());
+            operand(entry.getValue());
             buf.appendSql(", ");
           });
       buf.cutBackSql(2);
@@ -74,16 +74,16 @@ public class UpdateBuilder {
     return buf.build(commenter);
   }
 
-  private void table(EntityDef<?> entityDef) {
-    support.table(entityDef);
+  private void table(EntityMetamodel<?> entityMetamodel) {
+    support.table(entityMetamodel);
+  }
+
+  private void operand(Operand operand) {
+    support.operand(operand);
   }
 
   private void column(Operand.Prop prop) {
     support.column(prop);
-  }
-
-  private void param(Operand.Param param) {
-    support.param(param);
   }
 
   private void visitCriterion(int index, Criterion criterion) {

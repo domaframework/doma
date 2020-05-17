@@ -915,6 +915,7 @@ public enum Message implements MessageResource {
           + "The data type and its enclosing type must be a top level or member class."),
   DOMA4453("The public constructor whose parameter size is one is not found."),
   DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
+  DOMA4455("The combination of the prefix=\"{0}\" and the suffix=\"\" is not allowed."),
 
   // other
   DOMA5001(
@@ -930,9 +931,11 @@ public enum Message implements MessageResource {
           + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the associate method. "
           + "If the innerJoin or leftJoin method call is optional, pass the AssociationKind.OPTIONAL value to the associate method."),
   DOMA6002(
-      "The propertyDef \"{0}\" is unknown. Ensure that you have passed it to the select method."),
-  DOMA6003("The table alias is not found for the entityDef \"{0}\"."),
-  DOMA6004("The column alias is not found for the propertyDef \"{0}\"."),
+      "The propertyMetamodel \"{0}\" is unknown. Ensure that you have passed it to the select method."),
+  DOMA6003("The table alias is not found for the entityMetamodel \"{0}\"."),
+  DOMA6004(
+      "The column alias is not found for the propertyMetamodel \"{0}\". "
+          + "Ensure that you have passed its entityMetamodel to the from, the innerJoin, or the leftJoin method."),
   DOMA6005("The method \"{0}\" is not found."),
   DOMA6006(
       "Empty where clause is not allowed by default. To allow it, enable the \"allowEmptyWhere\" setting. SQL=[{0}]"),

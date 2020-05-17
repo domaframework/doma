@@ -34,6 +34,17 @@ public class BasicCtType extends AbstractCtType {
         });
   }
 
+  public Code getWrapperCode() {
+    return new Code(
+        p -> {
+          if (isEnum()) {
+            p.print("new %1$s(%2$s.class)", wrapperType, getQualifiedName());
+          } else {
+            p.print("new %1$s()", wrapperType);
+          }
+        });
+  }
+
   @Override
   public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
     return visitor.visitBasicCtType(this, p);

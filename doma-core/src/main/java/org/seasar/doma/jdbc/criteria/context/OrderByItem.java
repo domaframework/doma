@@ -1,16 +1,16 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.Objects;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public interface OrderByItem {
 
   void accept(Visitor visitor);
 
   class Name implements OrderByItem {
-    public final PropertyDef<?> value;
+    public final PropertyMetamodel<?> value;
 
-    public Name(PropertyDef<?> value) {
+    public Name(PropertyMetamodel<?> value) {
       this.value = Objects.requireNonNull(value);
     }
 

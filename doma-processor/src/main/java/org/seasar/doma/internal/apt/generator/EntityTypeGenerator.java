@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.EntityDesc;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
@@ -22,6 +21,7 @@ import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.jdbc.entity.EmbeddedPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -63,7 +63,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
-    printEntityDesc();
     iprint(
         "public final class %1$s extends %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ AbstractEntityType.class, /* 3 */ entityMeta.getType());
@@ -78,16 +77,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
     iprint("}%n");
   }
 
-  private void printEntityDesc() {
-    iprint("@%1$s(%2$s.class)%n", EntityDesc.class, entityMeta.getType());
-  }
-
   private void printFields() {
     printSingletonField();
     printOriginalStatesAccessorField();
     printNamingTypeField();
     printIdGeneratorField();
-    printPropertyTypeFields();
     printListenerSupplierField();
     printImmutableField();
     printCatalogNameField();
@@ -98,6 +92,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printIdPropertyTypesField();
     printEntityPropertyTypesField();
     printEntityPropertyTypeMapField();
+    printEmbeddedPropertyTypeMapField();
   }
 
   private void printSingletonField() {
@@ -123,15 +118,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
       EntityPropertyMeta propertyMeta = entityMeta.getGeneratedIdPropertyMeta();
       IdGeneratorMeta idGeneratorMeta = propertyMeta.getIdGeneratorMeta();
       idGeneratorMeta.accept(new IdGeneratorGenerator(), null);
-      print("%n");
-    }
-  }
-
-  private void printPropertyTypeFields() {
-    for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-      EntityTypePropertyGenerator propertyGenerator =
-          new EntityTypePropertyGenerator(ctx, className, printer, entityMeta, pm);
-      propertyGenerator.generate();
       print("%n");
     }
   }
@@ -210,6 +196,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
     print("%n");
   }
 
+  private void printEmbeddedPropertyTypeMapField() {
+    if (!entityMeta.hasEmbeddedProperties()) {
+      iprint("@SuppressWarnings(\"unused\")%n");
+    }
+    iprint(
+        "private final java.util.Map<String, %1$s<%2$s, ?>> __embeddedPropertyTypeMap;%n",
+        EmbeddedPropertyType.class, entityMeta.getType());
+    print("%n");
+  }
+
   private void printConstructor() {
     iprint("private %1$s() {%n", simpleName);
     iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
@@ -228,30 +224,31 @@ public class EntityTypeGenerator extends AbstractGenerator {
         /* 2 */ entityMeta.getType(),
         /* 3 */ entityMeta.getAllPropertyMetas().size());
     iprint(
-        "    java.util.Map<String, %1$s<%2$s, ?>> __map = new java.util.HashMap<>(%3$s);%n",
+        "    java.util.Map<String, %1$s<%2$s, ?>> __map = new java.util.LinkedHashMap<>(%3$s);%n",
         /* 1 */ EntityPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ entityMeta.getAllPropertyMetas().size());
-    for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-      if (pm.isEmbedded()) {
-        iprint("    __list.addAll(%1$s.getEmbeddablePropertyTypes());%n", pm.getFieldName());
-        iprint("    __map.putAll(%1$s.getEmbeddablePropertyTypeMap());%n", pm.getFieldName());
-      } else {
-        if (pm.isId()) {
-          iprint("    __idList.add(%1$s);%n", pm.getFieldName());
-        }
-        iprint("    __list.add(%1$s);%n", pm.getFieldName());
-        iprint("    __map.put(\"%1$s\", %2$s);%n", pm.getName(), pm.getFieldName());
-      }
-    }
+    iprint(
+        "    java.util.Map<String, %1$s<%2$s, ?>> __embeddedMap = new java.util.LinkedHashMap<>(%3$s);%n",
+        /* 1 */ EmbeddedPropertyType.class,
+        /* 2 */ entityMeta.getType(),
+        /* 3 */ entityMeta.getAllPropertyMetas().size());
+    iprint("    initializeMaps(__map, __embeddedMap);%n");
+    iprint("    initializeIdList(__map, __idList);%n");
+    iprint("    initializeList(__map, __list);%n");
     iprint("    __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);%n");
     iprint("    __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);%n");
     iprint("    __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);%n");
+    iprint(
+        "    __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);%n");
     iprint("}%n");
     print("%n");
   }
 
   private void printMethods() {
+    printInitializeMapsMethod();
+    printInitializeIdListMethod();
+    printInitializeListMethod();
     printGetNamingTypeMethod();
     printIsImmutableMethod();
     printGetNameMethod();
@@ -277,6 +274,58 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printSaveCurrentStatesMethod();
     printGetSingletonInternalMethod();
     printNewInstanceMethod();
+  }
+
+  private void printInitializeMapsMethod() {
+    iprint(
+        "private void initializeMaps(java.util.Map<String, %1$s<%2$s, ?>> __map, java.util.Map<String, %3$s<%2$s, ?>> __embeddedMap) {%n",
+        /* 1 */ EntityPropertyType.class,
+        /* 2 */ entityMeta.getType(),
+        /* 3 */ EmbeddedPropertyType.class);
+    indent();
+    for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
+      EntityTypePropertyGenerator propertyGenerator =
+          new EntityTypePropertyGenerator(ctx, className, printer, entityMeta, pm);
+      if (pm.isEmbedded()) {
+        iprint("__embeddedMap.put(\"%1$s\", ", pm.getName());
+        propertyGenerator.generate();
+        print(");%n");
+        iprint(
+            "__map.putAll(__embeddedMap.get(\"%1$s\").getEmbeddablePropertyTypeMap());%n",
+            pm.getName());
+      } else {
+        iprint("__map.put(\"%1$s\", ", pm.getName());
+        propertyGenerator.generate();
+        print(");%n");
+      }
+    }
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printInitializeIdListMethod() {
+    iprint(
+        "private void initializeIdList(java.util.Map<String, %1$s<%2$s, ?>> __map, java.util.List<%1$s<%2$s, ?>> __idList) {%n",
+        EntityPropertyType.class, entityMeta.getType());
+    indent();
+    for (EntityPropertyMeta pm : entityMeta.getIdPropertyMetas()) {
+      iprint("__idList.add(__map.get(\"%1$s\"));%n", pm.getName());
+    }
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printInitializeListMethod() {
+    iprint(
+        "private void initializeList(java.util.Map<String, %1$s<%2$s, ?>> __map, java.util.List<%1$s<%2$s, ?>> __list) {%n",
+        EntityPropertyType.class, entityMeta.getType());
+    indent();
+    iprint("__list.addAll(__map.values());%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
   }
 
   private void printGetNamingTypeMethod() {
@@ -451,13 +500,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
     String idName = "null";
     if (entityMeta.hasGeneratedIdPropertyMeta()) {
       EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
-      idName = pm.getFieldName();
+      idName = pm.getName();
     }
+    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getGeneratedIdPropertyType() {%n",
         GeneratedIdPropertyType.class, entityMeta.getType());
-    iprint("    return %1$s;%n", idName);
+    iprint(
+        "    return (%1$s<%2$s, ?, ?>)__entityPropertyTypeMap.get(\"%3$s\");%n",
+        GeneratedIdPropertyType.class, entityMeta.getType(), idName);
     iprint("}%n");
     print("%n");
   }
@@ -466,13 +518,16 @@ public class EntityTypeGenerator extends AbstractGenerator {
     String versionName = "null";
     if (entityMeta.hasVersionPropertyMeta()) {
       EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
-      versionName = pm.getFieldName();
+      versionName = pm.getName();
     }
+    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getVersionPropertyType() {%n",
         VersionPropertyType.class, entityMeta.getType());
-    iprint("    return %1$s;%n", versionName);
+    iprint(
+        "    return (%1$s<%2$s, ?, ?>)__entityPropertyTypeMap.get(\"%3$s\");%n",
+        VersionPropertyType.class, entityMeta.getType(), versionName);
     iprint("}%n");
     print("%n");
   }
@@ -481,19 +536,23 @@ public class EntityTypeGenerator extends AbstractGenerator {
     String tenantIdName = "null";
     if (entityMeta.hasTenantIdPropertyMeta()) {
       EntityPropertyMeta pm = entityMeta.getTenantIdPropertyMeta();
-      tenantIdName = pm.getFieldName();
+      tenantIdName = pm.getName();
     }
+    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getTenantIdPropertyType() {%n",
         TenantIdPropertyType.class, entityMeta.getType());
-    iprint("    return %1$s;%n", tenantIdName);
+    iprint(
+        "    return (%1$s<%2$s, ?, ?>)__entityPropertyTypeMap.get(\"%3$s\");%n",
+        TenantIdPropertyType.class, entityMeta.getType(), tenantIdName);
     iprint("}%n");
     print("%n");
   }
 
   private void printNewEntityMethod() {
-    if (hasGenericTypeProperty()) {
+    if (hasGenericTypeProperty()
+        || (!entityMeta.isImmutable() && entityMeta.hasEmbeddedProperties())) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
     iprint("@Override%n");
@@ -517,7 +576,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
                         throws RuntimeException {
                       iprint(
                           "        %1$s.newEmbeddable(\"%2$s\", __args)",
-                          ctType.getDescCode(), propertyMeta.getName());
+                          ctType.getTypeCode(), propertyMeta.getName());
                       return null;
                     }
 
@@ -547,10 +606,13 @@ public class EntityTypeGenerator extends AbstractGenerator {
                     public Void visitEmbeddableCtType(EmbeddableCtType ctType, Void aVoid)
                         throws RuntimeException {
                       iprint(
-                          "    %1$s.save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
-                          propertyMeta.getFieldName(),
-                          ctType.getDescCode(),
-                          propertyMeta.getName());
+                          "    ((%4$s<%5$s, %6$s>)__embeddedPropertyTypeMap.get(\"%1$s\")).save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
+                          /* 1 */ propertyMeta.getName(),
+                          /* 2 */ ctType.getTypeCode(),
+                          /* 3 */ propertyMeta.getName(),
+                          /* 4 */ EmbeddedPropertyType.class,
+                          /* 5 */ entityMeta.getType(),
+                          /* 6 */ ctType.getType());
                       return null;
                     }
 
@@ -612,7 +674,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
     if (!entityMeta.isAbstract() && entityMeta.hasOriginalStatesMeta()) {
       iprint("    %1$s __currentStates = new %1$s();%n", entityMeta.getType());
       for (EntityPropertyMeta pm : entityMeta.getAllPropertyMetas()) {
-        iprint("    %1$s.copy(__currentStates, __entity);%n", pm.getFieldName());
+        iprint(
+            "    (__entityPropertyTypeMap.get(\"%1$s\")).copy(__currentStates, __entity);%n",
+            pm.getName());
       }
       iprint("    __originalStatesAccessor.set(__entity, __currentStates);%n");
     }

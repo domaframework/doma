@@ -5,32 +5,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class InsertContext implements Context {
-  public final EntityDef<?> entityDef;
-  public final List<EntityDef<?>> entityDefs;
+  public final EntityMetamodel<?> entityMetamodel;
+  public final List<EntityMetamodel<?>> entityMetamodels;
   public final Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
   public final InsertSettings settings = new InsertSettings();
+  public SelectContext selectContext;
 
-  public InsertContext(EntityDef<?> entityDef) {
-    this.entityDef = Objects.requireNonNull(entityDef);
-    this.entityDefs = Collections.singletonList(entityDef);
+  public InsertContext(EntityMetamodel<?> entityMetamodel) {
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.entityMetamodels = Collections.singletonList(entityMetamodel);
   }
 
   @Override
-  public List<EntityDef<?>> getEntityDefs() {
-    return entityDefs;
-  }
-
-  @Override
-  public List<Criterion> getWhere() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    throw new UnsupportedOperationException();
+  public List<EntityMetamodel<?>> getEntityMetamodels() {
+    return entityMetamodels;
   }
 
   @Override

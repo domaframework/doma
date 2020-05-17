@@ -4,13 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
-import org.seasar.doma.jdbc.criteria.statement.Statement;
+import org.seasar.doma.jdbc.criteria.statement.Buildable;
 
 class EntityqlBatchInsertTest {
 
@@ -25,7 +24,7 @@ class EntityqlBatchInsertTest {
     emp.setVersion(1);
 
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.insert(e, Collections.singletonList(emp));
+    Buildable<?> stmt = entityql.insert(e, Collections.singletonList(emp));
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -36,7 +35,7 @@ class EntityqlBatchInsertTest {
   @Test
   void empty() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.insert(e, Collections.emptyList());
+    Buildable<?> stmt = entityql.insert(e, Collections.emptyList());
 
     Sql<?> sql = stmt.asSql();
     assertEquals("This SQL is empty because target entities are empty.", sql.getFormattedSql());

@@ -13,7 +13,7 @@ class NativeSqlInsertTest {
   private final NativeSql nativeSql = new NativeSql(new MockConfig());
 
   @Test
-  void insertInto() {
+  void insert() {
     Emp_ e = new Emp_();
     Statement<Integer> stmt =
         nativeSql
@@ -29,6 +29,29 @@ class NativeSqlInsertTest {
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "insert into EMP (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void insert_select_entity() {
+    Emp_ e = new Emp_();
+    Statement<Integer> stmt = nativeSql.insert(e).select(c -> c.from(e).select());
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void insert_select_properties() {
+    Emp_ e = new Emp_();
+    Statement<Integer> stmt =
+        nativeSql.insert(e).select(c -> c.from(e).select(e.id, e.name, e.salary, e.version));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
         sql.getFormattedSql());
   }
 }

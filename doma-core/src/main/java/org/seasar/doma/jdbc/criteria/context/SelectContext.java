@@ -10,48 +10,39 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectContext implements Context {
-  public final EntityDef<?> entityDef;
+  public final EntityMetamodel<?> entityMetamodel;
   public Projection projection = Projection.All;
-  public DistinctOption distinct = DistinctOption.DISABLED;
+  public DistinctOption distinct = DistinctOption.none();
   public final List<Join> joins = new ArrayList<>();
   public List<Criterion> where = new ArrayList<>();
-  public final List<PropertyDef<?>> groupBy = new ArrayList<>();
+  public final List<PropertyMetamodel<?>> groupBy = new ArrayList<>();
   public List<Criterion> having = new ArrayList<>();
   public final List<Pair<OrderByItem, String>> orderBy = new ArrayList<>();
   public Integer limit;
   public Integer offset;
-  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.DISABLED);
-  public final Map<Pair<EntityDef<?>, EntityDef<?>>, BiConsumer<Object, Object>> associations =
-      new LinkedHashMap<>();
+  public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.none());
+  public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiConsumer<Object, Object>>
+      associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
 
-  public SelectContext(EntityDef<?> entityDef) {
-    this.entityDef = Objects.requireNonNull(entityDef);
+  public SelectContext(EntityMetamodel<?> entityMetamodel) {
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
   @Override
-  public List<EntityDef<?>> getEntityDefs() {
-    List<EntityDef<?>> entityDefs = new ArrayList<>();
-    entityDefs.add(entityDef);
-    List<EntityDef<?>> joinedEntityDefs = joins.stream().map(j -> j.entityDef).collect(toList());
-    entityDefs.addAll(joinedEntityDefs);
-    return entityDefs;
-  }
-
-  @Override
-  public List<Criterion> getWhere() {
-    return where;
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    this.where = where;
+  public List<EntityMetamodel<?>> getEntityMetamodels() {
+    List<EntityMetamodel<?>> entityMetamodels = new ArrayList<>();
+    entityMetamodels.add(entityMetamodel);
+    List<EntityMetamodel<?>> joinedEntityMetamodels =
+        joins.stream().map(j -> j.entityMetamodel).collect(toList());
+    entityMetamodels.addAll(joinedEntityMetamodels);
+    return entityMetamodels;
   }
 
   @Override
@@ -59,29 +50,29 @@ public class SelectContext implements Context {
     return settings;
   }
 
-  public List<EntityDef<?>> allEntityDefs() {
-    Stream<EntityDef<?>> a = Stream.of(entityDef);
-    Stream<EntityDef<?>> b =
+  public List<EntityMetamodel<?>> allEntityDefs() {
+    Stream<EntityMetamodel<?>> a = Stream.of(entityMetamodel);
+    Stream<EntityMetamodel<?>> b =
         associations.keySet().stream().flatMap(pair -> Stream.of(pair.fst, pair.snd));
     return Stream.concat(a, b).distinct().collect(toList());
   }
 
-  public List<PropertyDef<?>> allPropertyDefs() {
+  public List<PropertyMetamodel<?>> allPropertyMetamodels() {
     return projection.accept(
-        new Projection.Visitor<List<PropertyDef<?>>>() {
+        new Projection.Visitor<List<PropertyMetamodel<?>>>() {
           @Override
-          public List<PropertyDef<?>> visit(Projection.All all) {
+          public List<PropertyMetamodel<?>> visit(Projection.All all) {
             return allEntityDefs().stream()
-                .flatMap(it -> it.allPropertyDefs().stream())
+                .flatMap(it -> it.allPropertyMetamodels().stream())
                 .collect(toList());
           }
 
           @Override
-          public List<PropertyDef<?>> visit(Projection.List list) {
-            if (list.propertyDefs.isEmpty()) {
+          public List<PropertyMetamodel<?>> visit(Projection.List list) {
+            if (list.propertyMetamodels.isEmpty()) {
               return visit(Projection.All);
             }
-            return list.propertyDefs;
+            return list.propertyMetamodels;
           }
         });
   }

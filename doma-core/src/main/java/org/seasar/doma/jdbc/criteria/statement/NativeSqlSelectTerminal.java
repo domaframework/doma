@@ -37,6 +37,16 @@ public class NativeSqlSelectTerminal<RESULT>
     query.setFetchSize(settings.getQueryTimeout());
     query.setMaxRows(settings.getMaxRows());
     query.setQueryTimeout(settings.getQueryTimeout());
-    return new SelectCommand<>(query, resultSetHandler);
+    return new SelectCommand<RESULT>(query, resultSetHandler) {
+      @Override
+      public RESULT execute() {
+        if (!settings.getAllowEmptyWhere()) {
+          if (context.where.isEmpty()) {
+            throw new EmptyWhereClauseException(sql);
+          }
+        }
+        return super.execute();
+      }
+    };
   }
 }

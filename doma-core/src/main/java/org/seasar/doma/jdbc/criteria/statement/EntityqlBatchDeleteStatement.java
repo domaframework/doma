@@ -2,36 +2,40 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlBatchDeleteStatement<ENTITY>
-    extends AbstractStatement<EntityqlBatchDeleteStatement<ENTITY>, List<ENTITY>> {
+    extends AbstractStatement<EntityqlBatchDeleteStatement<ENTITY>, BatchResult<ENTITY>> {
 
   private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_DELETE);
-  private final EntityDef<ENTITY> entityDef;
+  private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final DeleteSettings settings;
 
   public EntityqlBatchDeleteStatement(
-      Config config, EntityDef<ENTITY> entityDef, List<ENTITY> entities, DeleteSettings settings) {
+      Config config,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      List<ENTITY> entities,
+      DeleteSettings settings) {
     super(Objects.requireNonNull(config));
-    this.entityDef = Objects.requireNonNull(entityDef);
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
   }
 
   @Override
-  protected Command<List<ENTITY>> createCommand() {
-    EntityType<ENTITY> entityType = entityDef.asType();
+  protected Command<BatchResult<ENTITY>> createCommand() {
+    EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoBatchDeleteQuery<ENTITY> query =
         config.getQueryImplementors().createAutoBatchDeleteQuery(EXECUTE_METHOD, entityType);
     query.setMethod(EXECUTE_METHOD);
@@ -42,23 +46,23 @@ public class EntityqlBatchDeleteStatement<ENTITY>
     query.setQueryTimeout(settings.getQueryTimeout());
     query.setBatchSize(settings.getBatchSize());
     query.setSqlLogType(settings.getSqlLogType());
-    query.setVersionIgnored(false);
-    query.setOptimisticLockExceptionSuppressed(false);
+    query.setVersionIgnored(settings.getIgnoreVersion());
+    query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
     query.prepare();
     BatchDeleteCommand command =
         config.getCommandImplementors().createBatchDeleteCommand(EXECUTE_METHOD, query);
-    return new Command<List<ENTITY>>() {
+    return new Command<BatchResult<ENTITY>>() {
       @Override
       public Query getQuery() {
         return query;
       }
 
       @Override
-      public List<ENTITY> execute() {
-        command.execute();
+      public BatchResult<ENTITY> execute() {
+        int[] counts = command.execute();
         query.complete();
-        return query.getEntities();
+        return new BatchResult<>(counts, query.getEntities());
       }
     };
   }

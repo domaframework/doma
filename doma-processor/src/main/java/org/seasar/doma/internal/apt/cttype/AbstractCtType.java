@@ -74,4 +74,9 @@ public abstract class AbstractCtType implements CtType {
   public boolean isSameType(CtType other) {
     return ctx.getMoreTypes().isSameTypeWithErasure(type, other.getType());
   }
+
+  @Override
+  public boolean hasTypeParameter() {
+    return typeElement != null && !typeElement.getTypeParameters().isEmpty();
+  }
 }

@@ -20,11 +20,11 @@ public final class Options {
 
   public static final String TEST = "doma.test";
 
-  public static final String CRITERIA_ENABLED = "doma.criteria.enabled";
+  public static final String METAMODEL_ENABLED = "doma.metamodel.enabled";
 
-  public static final String CRITERIA_PREFIX = "doma.criteria.prefix";
+  public static final String METAMODEL_PREFIX = "doma.metamodel.prefix";
 
-  public static final String CRITERIA_SUFFIX = "doma.criteria.suffix";
+  public static final String METAMODEL_SUFFIX = "doma.metamodel.suffix";
 
   public static final String DEBUG = "doma.debug";
 
@@ -78,19 +78,19 @@ public final class Options {
     return Artifact.getVersion();
   }
 
-  public boolean isCriteriaEnabled() {
-    String enabled = getOption(CRITERIA_ENABLED);
-    return enabled != null ? Boolean.valueOf(enabled) : true;
+  public boolean isMetamodelEnabled() {
+    String enabled = getOption(METAMODEL_ENABLED);
+    return enabled != null ? Boolean.valueOf(enabled) : false;
   }
 
-  public String getCriteriaPrefix() {
-    String prefix = getOption(CRITERIA_PREFIX);
-    return prefix != null ? prefix : Constants.DEFAULT_CRITERIA_PREFIX;
+  public String getMetamodelPrefix() {
+    String prefix = getOption(METAMODEL_PREFIX);
+    return prefix != null ? prefix : Constants.DEFAULT_METAMODEL_PREFIX;
   }
 
-  public String getCriteriaSuffix() {
-    String suffix = getOption(CRITERIA_SUFFIX);
-    return suffix != null ? suffix : Constants.DEFAULT_CRITERIA_SUFFIX;
+  public String getMetamodelSuffix() {
+    String suffix = getOption(METAMODEL_SUFFIX);
+    return suffix != null ? suffix : Constants.DEFAULT_METAMODEL_SUFFIX;
   }
 
   public Date getDate() {
@@ -211,9 +211,9 @@ public final class Options {
 
   public static class Constants {
 
-    public static final String DEFAULT_CRITERIA_PREFIX = "";
+    public static final String DEFAULT_METAMODEL_PREFIX = "";
 
-    public static final String DEFAULT_CRITERIA_SUFFIX = "_";
+    public static final String DEFAULT_METAMODEL_SUFFIX = "_";
 
     public static final String DEFAULT_DAO_SUFFIX = "Impl";
 

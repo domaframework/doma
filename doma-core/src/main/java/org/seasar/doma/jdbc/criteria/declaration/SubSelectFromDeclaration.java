@@ -1,33 +1,36 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class SubSelectFromDeclaration {
 
   private final SelectFromDeclaration declaration;
 
-  public SubSelectFromDeclaration(EntityDef<?> entityDef) {
-    Objects.requireNonNull(entityDef);
-    SelectContext context = new SelectContext(entityDef);
+  public SubSelectFromDeclaration(EntityMetamodel<?> entityMetamodel) {
+    Objects.requireNonNull(entityMetamodel);
+    SelectContext context = new SelectContext(entityMetamodel);
     this.declaration = new SelectFromDeclaration(context);
   }
 
   public SubSelectFromDeclaration innerJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    declaration.innerJoin(entityDef, block);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    declaration.innerJoin(entityMetamodel, block);
     return this;
   }
 
   public SubSelectFromDeclaration leftJoin(
-      EntityDef<?> entityDef, Consumer<JoinDeclaration> block) {
-    declaration.leftJoin(entityDef, block);
+      EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
+    declaration.leftJoin(entityMetamodel, block);
     return this;
   }
 
@@ -41,16 +44,41 @@ public class SubSelectFromDeclaration {
     return this;
   }
 
-  public <PROPERTY> SubSelectContext<PROPERTY> select(PropertyDef<PROPERTY> propertyDef) {
+  public <PROPERTY> SubSelectContext<PROPERTY> select() {
     SelectContext context = declaration.getContext();
-    context.projection = new Projection.List(propertyDef);
+    return new SubSelectContext<>(context);
+  }
+
+  public <PROPERTY> SubSelectContext<PROPERTY> select(EntityMetamodel<?> entityMetamodel) {
+    SelectContext context = declaration.getContext();
+    context.projection = new Projection.List(entityMetamodel.allPropertyMetamodels());
+    return new SubSelectContext<>(context);
+  }
+
+  public <PROPERTY> SubSelectContext<PROPERTY> select(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    SelectContext context = declaration.getContext();
+    context.projection = new Projection.List(propertyMetamodel);
     return new SubSelectContext<>(context);
   }
 
   public <PROPERTY1, PROPERTY2> SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> select(
-      PropertyDef<PROPERTY1> first, PropertyDef<PROPERTY2> second) {
+      PropertyMetamodel<PROPERTY1> first, PropertyMetamodel<PROPERTY2> second) {
     SelectContext context = declaration.getContext();
     context.projection = new Projection.List(first, second);
+    return new SubSelectContext<>(context);
+  }
+
+  public SubSelectContext<List<?>> select(
+      PropertyMetamodel<?> propertyMetamodel1,
+      PropertyMetamodel<?> propertyMetamodel2,
+      PropertyMetamodel<?>... propertyMetamodels) {
+    SelectContext context = declaration.getContext();
+    List<PropertyMetamodel<?>> list = new ArrayList<>(2 + propertyMetamodels.length);
+    list.add(propertyMetamodel1);
+    list.add(propertyMetamodel2);
+    list.addAll(Arrays.asList(propertyMetamodels));
+    context.projection = new Projection.List(list);
     return new SubSelectContext<>(context);
   }
 }

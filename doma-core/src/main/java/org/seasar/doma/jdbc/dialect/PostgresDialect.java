@@ -4,11 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -20,6 +25,10 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.query.AliasManager;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -242,6 +251,11 @@ public class PostgresDialect extends StandardDialect {
     return new PostgresScriptBlockContext();
   }
 
+  @Override
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new PostgresCriteriaBuilder();
+  }
+
   public static class PostgresResultSetType extends AbstractResultSetType {
 
     public PostgresResultSetType() {
@@ -282,6 +296,54 @@ public class PostgresDialect extends StandardDialect {
     @Override
     public boolean isInBlock() {
       return inBlock;
+    }
+  }
+
+  public static class PostgresCriteriaBuilder extends StandardCriteriaBuilder {
+    @Override
+    public void forUpdate(
+        PreparedSqlBuilder buf,
+        ForUpdateOption option,
+        Consumer<PropertyMetamodel<?>> column,
+        AliasManager aliasManager) {
+      option.accept(
+          new ForUpdateOption.Visitor() {
+
+            @Override
+            public void visit(ForUpdateOption.Basic basic) {
+              buf.appendSql(" for update");
+              of(basic.propertyMetamodels);
+            }
+
+            @Override
+            public void visit(ForUpdateOption.NoWait noWait) {
+              buf.appendSql(" for update");
+              of(noWait.propertyMetamodels);
+              buf.appendSql(" nowait");
+            }
+
+            @Override
+            public void visit(ForUpdateOption.Wait wait) {
+              buf.appendSql(" for update");
+              of(wait.propertyMetamodels);
+            }
+
+            private void of(List<PropertyMetamodel<?>> propertyMetamodels) {
+              Set<String> aliases = new LinkedHashSet<>();
+              for (PropertyMetamodel<?> p : propertyMetamodels) {
+                String alias = aliasManager.getAlias(p);
+                aliases.add(alias);
+              }
+              if (!aliases.isEmpty()) {
+                buf.appendSql(" of ");
+                for (String alias : aliases) {
+                  buf.appendSql(alias);
+                  buf.appendSql(", ");
+                }
+                buf.cutBackSql(2);
+              }
+            }
+          });
     }
   }
 }

@@ -43,16 +43,10 @@ public class ClassNames {
     return new ExternalDomainClassNameBuilder(externalDomainClassName).build();
   }
 
-  public static ClassName newEntityDefClassNameBuilder(
-      CharSequence entityClassName, String criteriaPrefix, String criteriaSuffix) {
-    assertNotNull(entityClassName, criteriaPrefix, criteriaSuffix);
-    return new DefClassNameBuilder(entityClassName, criteriaPrefix, criteriaSuffix).build();
-  }
-
-  public static ClassName newEmbeddableDefClassNameBuilder(
-      CharSequence entityClassName, String criteriaPrefix, String criteriaSuffix) {
-    assertNotNull(entityClassName, criteriaPrefix, criteriaSuffix);
-    return new DefClassNameBuilder(entityClassName, criteriaPrefix, criteriaSuffix).build();
+  public static ClassName newEntityMetamodelClassNameBuilder(
+      CharSequence entityClassName, String metamodelPrefix, String metamodelSuffix) {
+    assertNotNull(entityClassName, metamodelPrefix, metamodelSuffix);
+    return new MetamodelClassNameBuilder(entityClassName, metamodelPrefix, metamodelSuffix).build();
   }
 
   private static class ClassNameBuilder {
@@ -101,11 +95,11 @@ public class ClassNames {
     }
   }
 
-  private static class DefClassNameBuilder extends ClassNameBuilder {
+  private static class MetamodelClassNameBuilder extends ClassNameBuilder {
     private final String criteriaPrefix;
     private final String criteriaSuffix;
 
-    public DefClassNameBuilder(
+    public MetamodelClassNameBuilder(
         CharSequence binaryName, String criteriaPrefix, String criteriaSuffix) {
       super(binaryName);
       this.criteriaPrefix = criteriaPrefix;

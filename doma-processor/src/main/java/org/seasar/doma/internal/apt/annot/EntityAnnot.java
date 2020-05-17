@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
@@ -19,17 +19,25 @@ public class EntityAnnot extends AbstractAnnot {
 
   private static final String IMMUTABLE = "immutable";
 
+  static final String METAMODEL = "metamodel";
+
   private final AnnotationValue listener;
 
   private final AnnotationValue naming;
 
   private final AnnotationValue immutable;
 
-  EntityAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+  private final MetamodelAnnot metamodelAnnot;
+
+  EntityAnnot(
+      AnnotationMirror annotationMirror,
+      MetamodelAnnot metamodelAnnot,
+      Map<String, AnnotationValue> values) {
     super(annotationMirror);
     this.listener = assertNonNullValue(values, LISTENER);
     this.naming = assertNonNullValue(values, NAMING);
     this.immutable = assertNonNullValue(values, IMMUTABLE);
+    this.metamodelAnnot = metamodelAnnot;
   }
 
   public AnnotationValue getListener() {
@@ -66,5 +74,9 @@ public class EntityAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(IMMUTABLE);
     }
     return result.booleanValue();
+  }
+
+  public MetamodelAnnot getMetamodelValue() {
+    return metamodelAnnot;
   }
 }

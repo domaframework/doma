@@ -63,7 +63,7 @@ public class EntityMeta implements TypeElementMeta {
     this.entityName = entityName;
   }
 
-  EntityAnnot getEntityAnnot() {
+  public EntityAnnot getEntityAnnot() {
     return entityAnnot;
   }
 

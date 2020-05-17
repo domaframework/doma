@@ -9,16 +9,16 @@ import org.seasar.doma.internal.apt.generator.Code;
 
 public class EmbeddableCtType extends AbstractCtType {
 
-  private final ClassName descClassName;
+  private final ClassName typeClassName;
 
-  EmbeddableCtType(Context ctx, TypeMirror type, ClassName descClassName) {
+  EmbeddableCtType(Context ctx, TypeMirror type, ClassName typeClassName) {
     super(ctx, type);
-    assertNotNull(descClassName);
-    this.descClassName = descClassName;
+    assertNotNull(typeClassName);
+    this.typeClassName = typeClassName;
   }
 
-  public Code getDescCode() {
-    return new Code(p -> p.print("%1$s.getSingletonInternal()", descClassName));
+  public Code getTypeCode() {
+    return new Code(p -> p.print("%1$s.getSingletonInternal()", typeClassName));
   }
 
   @Override

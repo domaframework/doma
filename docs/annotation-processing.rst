@@ -13,18 +13,6 @@ and show you how to pass them to build tools.
 Options
 =======
 
-doma.criteria.enabled
-  Whether to generate meta classes for the Criteria API.
-  The default value is ``true``.
-
-doma.criteria.prefix
-  The name prefix of the meta classes for the Criteria API.
-  The default value is an empty string.
-
-doma.criteria.suffix
-  The name suffix of the meta classes for the Criteria API.
-  The default value is ``_``.
-
 doma.dao.package
   The package that the generated implementation classes of interfaces annotated with ``@Dao`` belong to.
   The specified value overrides the value of doma.dao.subpackage.
@@ -61,6 +49,20 @@ doma.expr.functions
   The full qualified name of the class that implements ``org.seasar.doma.expr.ExpressionFunctions``.
   The default value is ``org.seasar.doma.expr.ExpressionFunctions``.
   This value are used to determine which functions are available in expression comments.
+
+doma.metamodel.enabled
+  Whether to generate meta classes for the Criteria API.
+  When the value is ``true``, metamodels are generated for all entity classes
+  even if they are not specified with ``metamodel = @Metamodel``.
+  The default value is ``false``.
+
+doma.metamodel.prefix
+  The name prefix of the metamodel classes for the Criteria API.
+  The default value is an empty string.
+
+doma.metamodel.suffix
+  The name suffix of the metamodel classes for the Criteria API.
+  The default value is ``_``.
 
 doma.resources.dir
   The resource directory that contains the resource files such as a doma.compile.config file and sql files.

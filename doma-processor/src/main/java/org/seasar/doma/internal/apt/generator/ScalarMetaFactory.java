@@ -83,11 +83,9 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
               if (optional) {
                 p.print(
                     "() -> new %1$s<>(%2$s)",
-                    OptionalBasicScalar.class, basicCtType.getWrapperSupplierCode());
+                    OptionalBasicScalar.class, basicCtType.getWrapperCode());
               } else {
-                p.print(
-                    "() -> new %1$s<>(%2$s)",
-                    BasicScalar.class, basicCtType.getWrapperSupplierCode());
+                p.print("() -> new %1$s<>(%2$s)", BasicScalar.class, basicCtType.getWrapperCode());
               }
             });
     return defaultAction(basicCtType, optional);
@@ -109,9 +107,9 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
         new Code(
             p -> {
               if (optional) {
-                p.print("%1$s::createOptionalScalar", domainCtType.getDescCode());
+                p.print("%1$s::createOptionalScalar", domainCtType.getTypeCode());
               } else {
-                p.print("%1$s::createScalar", domainCtType.getDescCode());
+                p.print("%1$s::createScalar", domainCtType.getTypeCode());
               }
             });
     return defaultAction(domainCtType, optional);

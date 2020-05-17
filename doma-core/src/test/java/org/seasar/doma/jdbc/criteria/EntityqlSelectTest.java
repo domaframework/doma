@@ -117,7 +117,7 @@ class EntityqlSelectTest {
         entityql
             .from(e)
             .innerJoin(d, on -> {})
-            .associate(e, d, (emp, dept) -> {}, AssociationOption.OPTIONAL);
+            .associate(e, d, (emp, dept) -> {}, AssociationOption.optional());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -161,7 +161,7 @@ class EntityqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ limit 5",
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 0 rows fetch first 5 rows only",
         sql.getFormattedSql());
   }
 
@@ -182,7 +182,7 @@ class EntityqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5",
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5 rows",
         sql.getFormattedSql());
   }
 
@@ -208,9 +208,9 @@ class EntityqlSelectTest {
   }
 
   @Test
-  void distinct_enabled() {
+  void distinct_basic() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.ENABLED);
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.basic());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
@@ -219,9 +219,9 @@ class EntityqlSelectTest {
   }
 
   @Test
-  void distinct_disabled() {
+  void distinct_none() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.DISABLED);
+    Statement<List<Emp>> stmt = entityql.from(e).distinct(DistinctOption.none());
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

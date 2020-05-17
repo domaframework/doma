@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.criteria.AggregateFunctions.count
 import org.seasar.doma.jdbc.criteria.Entityql
 import org.seasar.doma.jdbc.criteria.NativeSql
+import org.seasar.doma.jdbc.criteria.expression.Expressions.count
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3
 

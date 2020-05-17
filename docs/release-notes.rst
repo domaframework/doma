@@ -2,6 +2,20 @@
 Release notes
 =============
 
+v2.35.0: 2020-05-17
+======================
+
+* `GH426 <https://github.com/domaframework/doma/pull/426>`_
+  Improve the Criteria API documents
+* `GH425 <https://github.com/domaframework/doma/pull/425>`_
+  Enhance the Criteria API
+* `GH424 <https://github.com/domaframework/doma/pull/424>`_
+  Generate Metamodel classes effectively
+* `GH423 <https://github.com/domaframework/doma/pull/423>`_
+  Reload a typeElement with its canonical name to avoid the eclipse bug
+* `GH422 <https://github.com/domaframework/doma/pull/422>`_
+  Optimize generation code
+
 v2.34.0: 2020-05-10
 ======================
 

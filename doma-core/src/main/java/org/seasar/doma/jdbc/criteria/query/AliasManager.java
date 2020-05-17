@@ -3,15 +3,17 @@ package org.seasar.doma.jdbc.criteria.query;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import org.seasar.doma.jdbc.criteria.context.Context;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public class AliasManager {
   private final AliasManager parent;
-  private final Map<EntityDef<?>, String> entityAliasMap = new HashMap<>();
-  private final Map<PropertyDef<?>, String> propertyAliasMap = new HashMap<>();
-  private int index;
+  private final Map<EntityMetamodel<?>, String> entityAliasMap = new HashMap<>();
+  private final Map<PropertyMetamodel<?>, String> propertyAliasMap = new HashMap<>();
+  private final int index;
 
   public AliasManager(Context context) {
     this(context, null);
@@ -20,34 +22,36 @@ public class AliasManager {
   public AliasManager(Context context, AliasManager parent) {
     Objects.requireNonNull(context);
     this.parent = parent;
-    index = parent != null ? parent.index : 0;
-    for (EntityDef<?> entityDef : context.getEntityDefs()) {
+    int index = parent != null ? parent.index : 0;
+    for (EntityMetamodel<?> entityMetamodel : context.getEntityMetamodels()) {
       String alias = "t" + index + "_";
       index++;
-      entityAliasMap.put(entityDef, alias);
-      for (PropertyDef<?> propertyDef : entityDef.allPropertyDefs()) {
-        propertyAliasMap.put(propertyDef, alias);
+      entityAliasMap.put(entityMetamodel, alias);
+      for (PropertyMetamodel<?> propertyMetamodel : entityMetamodel.allPropertyMetamodels()) {
+        propertyAliasMap.put(propertyMetamodel, alias);
       }
     }
+    this.index = index;
   }
 
-  public String getAlias(EntityDef<?> entityDef) {
+  public String getAlias(EntityMetamodel<?> entityMetamodel) {
+    return getAlias(entityMetamodel, AliasManager::getAlias, entityAliasMap::get);
+  }
+
+  public String getAlias(PropertyMetamodel<?> propertyMetamodel) {
+    return getAlias(propertyMetamodel, AliasManager::getAlias, propertyAliasMap::get);
+  }
+
+  private <KEY> String getAlias(
+      KEY key,
+      BiFunction<AliasManager, KEY, String> getParentAlias,
+      Function<KEY, String> getCurrentAlias) {
     if (parent != null) {
-      String alias = parent.getAlias(entityDef);
+      String alias = getParentAlias.apply(parent, key);
       if (alias != null) {
         return alias;
       }
     }
-    return entityAliasMap.get(entityDef);
-  }
-
-  public String getAlias(PropertyDef<?> propertyDef) {
-    if (parent != null) {
-      String alias = parent.getAlias(propertyDef);
-      if (alias != null) {
-        return alias;
-      }
-    }
-    return propertyAliasMap.get(propertyDef);
+    return getCurrentAlias.apply(key);
   }
 }

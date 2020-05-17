@@ -6,33 +6,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.seasar.doma.jdbc.criteria.def.EntityDef;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class UpdateContext implements Context {
-  public final EntityDef<?> entityDef;
-  public final List<EntityDef<?>> entityDefs;
-  public final Map<Operand.Prop, Operand.Param> set = new LinkedHashMap<>();
+  public final EntityMetamodel<?> entityMetamodel;
+  public final List<EntityMetamodel<?>> entityMetamodels;
+  public final Map<Operand.Prop, Operand> set = new LinkedHashMap<>();
   public List<Criterion> where = new ArrayList<>();
   public final UpdateSettings settings = new UpdateSettings();
 
-  public UpdateContext(EntityDef<?> entityDef) {
-    this.entityDef = Objects.requireNonNull(entityDef);
-    this.entityDefs = Collections.singletonList(entityDef);
+  public UpdateContext(EntityMetamodel<?> entityMetamodel) {
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.entityMetamodels = Collections.singletonList(entityMetamodel);
   }
 
   @Override
-  public List<EntityDef<?>> getEntityDefs() {
-    return entityDefs;
-  }
-
-  @Override
-  public List<Criterion> getWhere() {
-    return where;
-  }
-
-  @Override
-  public void setWhere(List<Criterion> where) {
-    this.where = where;
+  public List<EntityMetamodel<?>> getEntityMetamodels() {
+    return entityMetamodels;
   }
 
   @Override

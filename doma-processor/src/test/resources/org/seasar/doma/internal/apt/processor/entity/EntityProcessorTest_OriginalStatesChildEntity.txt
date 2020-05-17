@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-@org.seasar.doma.internal.EntityDesc(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class)
 public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity> {
 
     static {
@@ -14,15 +13,6 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity> __originalStatesAccessor = new org.seasar.doma.jdbc.entity.OriginalStatesAccessor<>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesParentEntity.class, "states");
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
-
-    /** the aaa */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.Integer, java.lang.Integer> $aaa = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.IntegerWrapper::new), "aaa", "", __namingType, true, true, false);
-
-    /** the bbb */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.math.BigDecimal, java.math.BigDecimal> $bbb = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.BigDecimalWrapper::new), "bbb", "", __namingType, true, true, false);
-
-    /** the ccc */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.String, java.lang.String> $ccc = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), "ccc", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity>> __listenerSupplier;
 
@@ -44,6 +34,9 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __entityPropertyTypeMap;
 
+    @SuppressWarnings("unused")
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __embeddedPropertyTypeMap;
+
     private _OriginalStatesChildEntity() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = false;
@@ -54,16 +47,28 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __list = new java.util.ArrayList<>(3);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map = new java.util.HashMap<>(3);
-        __list.add($aaa);
-        __map.put("aaa", $aaa);
-        __list.add($bbb);
-        __map.put("bbb", $bbb);
-        __list.add($ccc);
-        __map.put("ccc", $ccc);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map = new java.util.LinkedHashMap<>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __embeddedMap = new java.util.LinkedHashMap<>(3);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __embeddedMap) {
+        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "aaa", "", __namingType, true, true, false));
+        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.math.BigDecimal, java.math.BigDecimal>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper()), "bbb", "", __namingType, true, true, false));
+        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "ccc", "", __namingType, true, true, false));
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __idList) {
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __list) {
+        __list.addAll(__map.values());
     }
 
     @Override
@@ -172,19 +177,22 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
         return __idPropertyTypes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?> getGeneratedIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?> getVersionPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?> getTenantIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
     @Override
@@ -209,9 +217,9 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     @Override
     public void saveCurrentStates(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity __entity) {
         org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity __currentStates = new org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity();
-        $aaa.copy(__currentStates, __entity);
-        $bbb.copy(__currentStates, __entity);
-        $ccc.copy(__currentStates, __entity);
+        (__entityPropertyTypeMap.get("aaa")).copy(__currentStates, __entity);
+        (__entityPropertyTypeMap.get("bbb")).copy(__currentStates, __entity);
+        (__entityPropertyTypeMap.get("ccc")).copy(__currentStates, __entity);
         __originalStatesAccessor.set(__entity, __currentStates);
     }
 

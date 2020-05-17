@@ -3,9 +3,21 @@ package example;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.count;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.min;
-import static org.seasar.doma.jdbc.criteria.AggregateFunctions.sum;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,9 +26,13 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.def.PropertyDef;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
+import org.seasar.doma.jdbc.criteria.tuple.Row;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 @ExtendWith(Env.class)
 public class NativeSqlSelectTest {
@@ -25,6 +41,35 @@ public class NativeSqlSelectTest {
 
   public NativeSqlSelectTest(Config config) {
     this.nativeSql = new NativeSql(config);
+  }
+
+  @Test
+  void settings() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        nativeSql
+            .from(
+                e,
+                settings -> {
+                  settings.setComment("all employees");
+                  settings.setSqlLogType(SqlLogType.RAW);
+                  settings.setQueryTimeout(1000);
+                  settings.setAllowEmptyWhere(true);
+                  settings.setFetchSize(100);
+                  settings.setMaxRows(100);
+                })
+            .fetch();
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void fetch_allowEmptyWhere_disabled() {
+    Employee_ e = new Employee_();
+
+    assertThrows(
+        EmptyWhereClauseException.class,
+        () -> nativeSql.from(e, settings -> settings.setAllowEmptyWhere(false)).fetch());
   }
 
   @Test
@@ -62,6 +107,69 @@ public class NativeSqlSelectTest {
   void select() {
     Employee_ e = new Employee_();
 
+    List<Employee> list = nativeSql.from(e).select().fetch();
+
+    assertEquals(14, list.size());
+    Employee employee = list.get(0);
+    assertEquals("SMITH", employee.getEmployeeName());
+  }
+
+  @Test
+  void select_entity() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list = nativeSql.from(e).select(e).fetch();
+
+    assertEquals(14, list.size());
+    Employee employee = list.get(0);
+    assertEquals("SMITH", employee.getEmployeeName());
+  }
+
+  @Test
+  void select_entities_tuple2() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Tuple2<Employee, Department>> list =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .select(e, d)
+            .fetch();
+
+    assertEquals(14, list.size());
+    Tuple2<Employee, Department> tuple2 = list.get(0);
+    Employee employee = tuple2.getItem1();
+    Department department = tuple2.getItem2();
+    assertEquals("SMITH", employee.getEmployeeName());
+    assertEquals("RESEARCH", department.getDepartmentName());
+  }
+
+  @Test
+  void select_entities_tuple2_emptyEntity() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Tuple2<Department, Employee>> list =
+        nativeSql
+            .from(d)
+            .leftJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+            .where(c -> c.eq(d.departmentId, 4))
+            .select(d, e)
+            .fetch();
+
+    assertEquals(1, list.size());
+    Tuple2<Department, Employee> tuple2 = list.get(0);
+    Department department = tuple2.getItem1();
+    assertEquals("OPERATIONS", department.getDepartmentName());
+    Employee employee = tuple2.getItem2();
+    assertNull(employee);
+  }
+
+  @Test
+  void select_property() {
+    Employee_ e = new Employee_();
+
     List<String> list = nativeSql.from(e).select(e.employeeName).fetch();
 
     assertEquals(14, list.size());
@@ -69,7 +177,7 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void select_tuple2() {
+  void select_properties_tuple2() {
     Employee_ e = new Employee_();
 
     List<Tuple2<String, Integer>> list =
@@ -98,35 +206,26 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void selectAsList() {
+  void selectAsRow() {
     Employee_ e = new Employee_();
 
-    List<List<Object>> list =
+    List<Row> list =
         nativeSql
             .from(e)
             .orderBy(c -> c.asc(e.employeeId))
-            .select(new PropertyDef<?>[] {e.employeeId, e.employeeName})
+            .select(e.employeeId, new PropertyMetamodel<?>[] {e.employeeName})
             .fetch();
 
     assertEquals(14, list.size());
-    List<Object> row = list.get(0);
+    Row row = list.get(0);
     assertEquals(2, row.size());
-    assertEquals(1, row.get(0));
-    assertEquals("SMITH", row.get(1));
-  }
-
-  @Test
-  void selectAsList_emptySelect() {
-    Employee_ e = new Employee_();
-
-    List<List<Object>> list = nativeSql.from(e).orderBy(c -> c.asc(e.employeeId)).select().fetch();
-
-    assertEquals(14, list.size());
-    List<Object> row = list.get(0);
-    assertEquals(9, row.size());
-    assertEquals(1, row.get(0));
-    assertEquals(7369, row.get(1));
-    assertEquals("SMITH", row.get(2));
+    assertTrue(row.containsKey(e.employeeId));
+    assertEquals(1, row.get(e.employeeId));
+    assertTrue(row.containsKey(e.employeeName));
+    assertEquals("SMITH", row.get(e.employeeName));
+    assertFalse(row.containsKey(e.hiredate));
+    assertNotNull(row.keySet());
+    assertNotNull(row.values());
   }
 
   @Test
@@ -145,6 +244,14 @@ public class NativeSqlSelectTest {
     Salary salary = nativeSql.from(e).select(sum(e.salary)).fetchOne();
 
     assertEquals(0, salary.getValue().compareTo(new BigDecimal("29025")));
+  }
+
+  @Test
+  void aggregate_countDistinct() {
+    Employee_ e = new Employee_();
+
+    Long count = nativeSql.from(e).select(countDistinct(e.departmentId)).fetchOne();
+    assertEquals(3, count);
   }
 
   @Test
@@ -332,5 +439,86 @@ public class NativeSqlSelectTest {
             .select(d.location)
             .peek(sql -> System.out.println(sql.getFormattedSql()))
             .fetch();
+  }
+
+  @Test
+  void expressions_add() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<Integer, Integer, Integer>> list =
+        nativeSql
+            .from(e)
+            .select(add(e.version, 1), add(1, e.version), add(e.departmentId, e.version))
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_sub() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<Integer, Integer, Integer>> list =
+        nativeSql
+            .from(e)
+            .select(sub(e.version, 1), sub(1, e.version), sub(e.departmentId, e.version))
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_mul() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<Integer, Integer, Integer>> list =
+        nativeSql
+            .from(e)
+            .select(mul(e.version, 1), mul(1, e.version), mul(e.departmentId, e.version))
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_div() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<Integer, Integer, Integer>> list =
+        nativeSql
+            .from(e)
+            .select(div(e.version, 1), div(1, e.version), div(e.departmentId, e.version))
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_mod() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<Integer, Integer, Integer>> list =
+        nativeSql
+            .from(e)
+            .select(mod(e.version, 1), mod(1, e.version), mod(e.departmentId, e.version))
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_concat() {
+    Employee_ e = new Employee_();
+
+    List<Tuple3<String, String, String>> list =
+        nativeSql
+            .from(e)
+            .select(
+                concat(e.employeeName, "a"),
+                concat("b", e.employeeName),
+                concat(e.employeeName, e.employeeName))
+            .fetch();
+
+    assertEquals(14, list.size());
   }
 }

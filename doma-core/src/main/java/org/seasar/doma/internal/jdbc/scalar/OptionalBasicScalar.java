@@ -9,6 +9,12 @@ public class OptionalBasicScalar<BASIC> implements Scalar<BASIC, Optional<BASIC>
 
   protected final Wrapper<BASIC> wrapper;
 
+  public OptionalBasicScalar(Wrapper<BASIC> wrapper) {
+    AssertionUtil.assertNotNull(wrapper);
+    this.wrapper = wrapper;
+    AssertionUtil.assertNotNull(wrapper);
+  }
+
   public OptionalBasicScalar(Supplier<Wrapper<BASIC>> supplier) {
     AssertionUtil.assertNotNull(supplier);
     this.wrapper = supplier.get();

@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-@org.seasar.doma.internal.EntityDesc(org.seasar.doma.internal.apt.processor.entity.LombokValue.class)
 public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.processor.entity.LombokValue> {
 
     static {
@@ -12,12 +11,6 @@ public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEnti
     private static final _LombokValue __singleton = new _LombokValue();
 
     private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
-
-    /** the id */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, java.lang.Integer, java.lang.Integer> $id = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokValue.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.PrimitiveIntWrapper::new), "id", "", __namingType, true, true, false);
-
-    /** the name */
-    public final org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, java.lang.String, java.lang.String> $name = new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(org.seasar.doma.internal.apt.processor.entity.LombokValue.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(org.seasar.doma.wrapper.StringWrapper::new), "name", "", __namingType, true, true, false);
 
     private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.LombokValue>> __listenerSupplier;
 
@@ -39,6 +32,9 @@ public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEnti
 
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __entityPropertyTypeMap;
 
+    @SuppressWarnings("unused")
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __embeddedPropertyTypeMap;
+
     private _LombokValue() {
         __listenerSupplier = () -> ListenerHolder.listener;
         __immutable = true;
@@ -49,14 +45,27 @@ public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEnti
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __idList = new java.util.ArrayList<>();
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __list = new java.util.ArrayList<>(2);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __map = new java.util.HashMap<>(2);
-        __list.add($id);
-        __map.put("id", $id);
-        __list.add($name);
-        __map.put("name", $name);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __map = new java.util.LinkedHashMap<>(2);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __embeddedMap = new java.util.LinkedHashMap<>(2);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
         __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
         __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
         __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __embeddedMap) {
+        __map.put("id", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.LombokValue.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.PrimitiveIntWrapper()), "id", "", __namingType, true, true, false));
+        __map.put("name", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.LombokValue.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "name", "", __namingType, true, true, false));
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __idList) {
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?>> __list) {
+        __list.addAll(__map.values());
     }
 
     @Override
@@ -165,19 +174,22 @@ public final class _LombokValue extends org.seasar.doma.jdbc.entity.AbstractEnti
         return __idPropertyTypes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?> getGeneratedIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?> getVersionPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?> getTenantIdPropertyType() {
-        return null;
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.LombokValue, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
     @Override

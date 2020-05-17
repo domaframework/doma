@@ -190,8 +190,8 @@ public class CtTypes {
         return null;
       }
       Name name = ctx.getNames().createExternalDomainName(type);
-      ClassName descClassName = ClassNames.newExternalDomainTypeClassName(name);
-      return new DomainCtType(ctx, type, basicCtType, Collections.emptyList(), descClassName);
+      ClassName typeClassName = ClassNames.newExternalDomainTypeClassName(name);
+      return new DomainCtType(ctx, type, basicCtType, Collections.emptyList(), typeClassName);
     }
 
     TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
@@ -216,14 +216,14 @@ public class CtTypes {
             .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
             .collect(toList());
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    ClassName descClassName;
+    ClassName typeClassName;
     if (info.external) {
       Name name = ctx.getNames().createExternalDomainName(type);
-      descClassName = ClassNames.newExternalDomainTypeClassName(name);
+      typeClassName = ClassNames.newExternalDomainTypeClassName(name);
     } else {
-      descClassName = ClassNames.newDomainTypeClassName(binaryName);
+      typeClassName = ClassNames.newDomainTypeClassName(binaryName);
     }
-    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, descClassName);
+    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, typeClassName);
   }
 
   private DomainInfo getDomainInfo(TypeElement typeElement) {
@@ -348,8 +348,8 @@ public class CtTypes {
       return null;
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    ClassName descClassName = ClassNames.newEmbeddableTypeClassName(binaryName);
-    return new EmbeddableCtType(ctx, type, descClassName);
+    ClassName typeClassName = ClassNames.newEmbeddableTypeClassName(binaryName);
+    return new EmbeddableCtType(ctx, type, typeClassName);
   }
 
   private EntityCtType newEntityCtType(TypeMirror type) {
@@ -362,9 +362,9 @@ public class CtTypes {
       return null;
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    ClassName descClassName = ClassNames.newEntityTypeClassName(binaryName);
+    ClassName typeClassName = ClassNames.newEntityTypeClassName(binaryName);
     boolean immutable = ElementKindUtil.isRecord(typeElement.getKind()) || entity.immutable();
-    return new EntityCtType(ctx, type, immutable, descClassName);
+    return new EntityCtType(ctx, type, immutable, typeClassName);
   }
 
   private FunctionCtType newFunctionCtType(TypeMirror type) {
