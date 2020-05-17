@@ -1,17 +1,5 @@
 package org.seasar.doma.jdbc.criteria;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.CommentContext;
@@ -35,6 +23,20 @@ import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 import org.seasar.doma.jdbc.dialect.MssqlDialect;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 
 class NativeSqlSelectTest {
 
@@ -931,6 +933,16 @@ class NativeSqlSelectTest {
     assertEquals(
         "select avg(t0_.ID), count(t0_.ID), count(*), max(t0_.ID), min(t0_.ID), sum(t0_.ID) from EMP t0_",
         sql.getFormattedSql());
+  }
+
+  @Test
+  void aggregateFunction_countDistinct() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(countDistinct(e.id));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select count(distinct t0_.ID) from EMP t0_", sql.getFormattedSql());
   }
 
   @Test

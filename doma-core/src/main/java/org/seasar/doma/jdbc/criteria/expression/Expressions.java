@@ -157,6 +157,11 @@ public class Expressions {
     return new AggregateFunction.Count(propertyMetamodel);
   }
 
+  public static AggregateFunction.Count countDistinct(PropertyMetamodel<?> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new AggregateFunction.Count(propertyMetamodel, true);
+  }
+
   public static <PROPERTY> AggregateFunction.Max<PROPERTY> max(
       PropertyMetamodel<PROPERTY> propertyMetamodel) {
     Objects.requireNonNull(propertyMetamodel);

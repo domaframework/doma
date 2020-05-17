@@ -1,9 +1,5 @@
 package org.seasar.doma.jdbc.criteria.expression;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
@@ -14,6 +10,11 @@ import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.Wrapper;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY> {
   Asterisk Asterisk = new Asterisk();
@@ -83,8 +84,15 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
   class Count extends AbstractFunction<Long> {
     private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
+    public final boolean distinct;
+
     public Count(PropertyMetamodel<?> argument) {
+      this(argument, false);
+    }
+
+    public Count(PropertyMetamodel<?> argument, boolean distinct) {
       super("count", argument);
+      this.distinct = distinct;
     }
 
     @Override

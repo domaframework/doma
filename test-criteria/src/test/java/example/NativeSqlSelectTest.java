@@ -1,5 +1,21 @@
 package example;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
+import org.seasar.doma.jdbc.criteria.tuple.Row;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,27 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
-import org.seasar.doma.jdbc.criteria.tuple.Row;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 @ExtendWith(Env.class)
 public class NativeSqlSelectTest {
@@ -243,6 +245,14 @@ public class NativeSqlSelectTest {
     Salary salary = nativeSql.from(e).select(sum(e.salary)).fetchOne();
 
     assertEquals(0, salary.getValue().compareTo(new BigDecimal("29025")));
+  }
+
+  @Test
+  void aggregate_countDistinct() {
+    Employee_ e = new Employee_();
+
+    Long count = nativeSql.from(e).select(countDistinct(e.departmentId)).fetchOne();
+    assertEquals(3, count);
   }
 
   @Test
