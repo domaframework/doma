@@ -47,8 +47,8 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
   class Add<PROPERTY> extends AbstractArithmeticExpression<PROPERTY> {
 
-    public Add(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Add(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override
@@ -67,8 +67,8 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
   class Sub<PROPERTY> extends AbstractArithmeticExpression<PROPERTY> {
 
-    public Sub(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Sub(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override
@@ -87,8 +87,8 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
   class Mul<PROPERTY> extends AbstractArithmeticExpression<PROPERTY> {
 
-    public Mul(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Mul(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override
@@ -107,8 +107,8 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
   class Div<PROPERTY> extends AbstractArithmeticExpression<PROPERTY> {
 
-    public Div(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Div(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override
@@ -127,8 +127,8 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
   class Mod<PROPERTY> extends AbstractArithmeticExpression<PROPERTY> {
 
-    public Mod(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Mod(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override
@@ -154,6 +154,6 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
 
     void visit(Div<?> div);
 
-    void visit(Mod<?> div);
+    void visit(Mod<?> mod);
   }
 }
