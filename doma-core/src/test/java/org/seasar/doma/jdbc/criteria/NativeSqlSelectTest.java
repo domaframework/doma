@@ -6,9 +6,14 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.lower;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.ltrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.rtrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -1132,6 +1137,46 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
     Sql<?> sql = stmt.asSql();
     assertEquals("select (t0_.NAME + 'a') from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_lower() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(lower(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select lower(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_ltrim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(ltrim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select ltrim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_rtrim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(rtrim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select rtrim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_trim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(trim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select trim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_upper() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(upper(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select upper(t0_.NAME) from EMP t0_", sql.getFormattedSql());
   }
 
   @Test
