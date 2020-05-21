@@ -939,6 +939,16 @@ public enum Message implements MessageResource {
   DOMA6005("The method \"{0}\" is not found."),
   DOMA6006(
       "Empty where clause is not allowed by default. To allow it, enable the \"allowEmptyWhere\" setting. SQL=[{0}]"),
+  DOMA6007(
+      "The parameter c{0}\" is unknown. "
+          + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the selectTo method."),
+  DOMA6008(
+      "The propertyMetamodels[{0}] is illegal. "
+          + "Ensure that the propertyMetamodel is a part of the entityMetamodel. "
+          + "Any expressions such as a sum and a concat are not supported in the selectTo method."),
+  DOMA6009(
+      "The parameter \"{0}\" is unknown. "
+          + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the select method."),
   ;
 
   private final String messagePattern;

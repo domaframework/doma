@@ -12,17 +12,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityPoolProvider implements ObjectProvider<EntityPool> {
-  private final List<EntityMetamodel<?>> entityMetamodels;
+  private final Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels;
   private final FetchSupport fetchSupport;
 
-  public EntityPoolProvider(List<EntityMetamodel<?>> entityMetamodels, Query query) {
-    this.entityMetamodels = Objects.requireNonNull(entityMetamodels);
+  public EntityPoolProvider(
+      Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels, Query query) {
+    this.projectionEntityMetamodels = Objects.requireNonNull(projectionEntityMetamodels);
     Objects.requireNonNull(query);
     this.fetchSupport = new FetchSupport(query);
   }
@@ -33,9 +35,13 @@ public class EntityPoolProvider implements ObjectProvider<EntityPool> {
     Objects.requireNonNull(resultSet);
     EntityPool entityPool = new EntityPool();
     int index = 1;
-    for (EntityMetamodel<?> entityMetamodel : entityMetamodels) {
+    for (Map.Entry<EntityMetamodel<?>, List<PropertyMetamodel<?>>> entry :
+        projectionEntityMetamodels.entrySet()) {
+      EntityMetamodel<?> entityMetamodel = entry.getKey();
+      List<PropertyMetamodel<?>> projectionTargets = entry.getValue();
       EntityType<?> entityType = entityMetamodel.asType();
-      List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
+      List<? extends EntityPropertyType<?, ?>> propertyTypes =
+          projectionTargets.stream().map(PropertyMetamodel::asType).collect(toList());
       List<Prop> props = new ArrayList<>(propertyTypes.size());
       for (EntityPropertyType<?, ?> propertyType : propertyTypes) {
         Property<Object, ?> property = (Property<Object, ?>) propertyType.createProperty();

@@ -2,16 +2,32 @@ package org.seasar.doma.jdbc.criteria.context;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public interface Projection {
-  All All = new All() {};
 
   <R> R accept(Visitor<R> visitor);
 
-  class All implements Projection {
-    private All() {}
+  class EntityMetamodels implements Projection {
+    public final Map<EntityMetamodel<?>, java.util.List<PropertyMetamodel<?>>> map =
+        new LinkedHashMap<>();
+
+    public EntityMetamodels(EntityMetamodel<?> entityMetamodel) {
+      Objects.requireNonNull(entityMetamodel);
+      map.put(entityMetamodel, entityMetamodel.allPropertyMetamodels());
+    }
+
+    public EntityMetamodels(
+        EntityMetamodel<?> entityMetamodel,
+        java.util.List<PropertyMetamodel<?>> propertyMetamodels) {
+      Objects.requireNonNull(entityMetamodel);
+      Objects.requireNonNull(propertyMetamodels);
+      map.put(entityMetamodel, Collections.unmodifiableList(propertyMetamodels));
+    }
 
     @Override
     public <R> R accept(Visitor<R> visitor) {
@@ -19,14 +35,14 @@ public interface Projection {
     }
   }
 
-  class List implements Projection {
+  class PropertyMetamodels implements Projection {
     public final java.util.List<PropertyMetamodel<?>> propertyMetamodels;
 
-    public List(PropertyMetamodel<?>... propertyMetamodels) {
+    public PropertyMetamodels(PropertyMetamodel<?>... propertyMetamodels) {
       this(Arrays.asList(propertyMetamodels));
     }
 
-    public List(java.util.List<PropertyMetamodel<?>> propertyMetamodels) {
+    public PropertyMetamodels(java.util.List<PropertyMetamodel<?>> propertyMetamodels) {
       Objects.requireNonNull(propertyMetamodels);
       this.propertyMetamodels = Collections.unmodifiableList(propertyMetamodels);
     }
@@ -38,8 +54,8 @@ public interface Projection {
   }
 
   interface Visitor<R> {
-    R visit(All all);
+    R visit(EntityMetamodels entityMetamodels);
 
-    R visit(List list);
+    R visit(PropertyMetamodels propertyMetamodels);
   }
 }

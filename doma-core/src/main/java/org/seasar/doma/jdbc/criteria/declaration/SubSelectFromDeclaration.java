@@ -51,21 +51,21 @@ public class SubSelectFromDeclaration {
 
   public <PROPERTY> SubSelectContext<PROPERTY> select(EntityMetamodel<?> entityMetamodel) {
     SelectContext context = declaration.getContext();
-    context.projection = new Projection.List(entityMetamodel.allPropertyMetamodels());
+    context.projection = new Projection.PropertyMetamodels(entityMetamodel.allPropertyMetamodels());
     return new SubSelectContext<>(context);
   }
 
   public <PROPERTY> SubSelectContext<PROPERTY> select(
       PropertyMetamodel<PROPERTY> propertyMetamodel) {
     SelectContext context = declaration.getContext();
-    context.projection = new Projection.List(propertyMetamodel);
+    context.projection = new Projection.PropertyMetamodels(propertyMetamodel);
     return new SubSelectContext<>(context);
   }
 
   public <PROPERTY1, PROPERTY2> SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> select(
       PropertyMetamodel<PROPERTY1> first, PropertyMetamodel<PROPERTY2> second) {
     SelectContext context = declaration.getContext();
-    context.projection = new Projection.List(first, second);
+    context.projection = new Projection.PropertyMetamodels(first, second);
     return new SubSelectContext<>(context);
   }
 
@@ -78,7 +78,7 @@ public class SubSelectFromDeclaration {
     list.add(propertyMetamodel1);
     list.add(propertyMetamodel2);
     list.addAll(Arrays.asList(propertyMetamodels));
-    context.projection = new Projection.List(list);
+    context.projection = new Projection.PropertyMetamodels(list);
     return new SubSelectContext<>(context);
   }
 }
