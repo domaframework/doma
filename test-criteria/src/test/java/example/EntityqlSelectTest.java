@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -405,5 +406,55 @@ public class EntityqlSelectTest {
 
     assertEquals(1, list.size());
     assertEquals(3, list.get(0).getEmployeeList().size());
+  }
+
+  @Test
+  void select() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list = entityql.from(e).select(e).fetch();
+    assertEquals(14, list.size());
+  }
+
+  @Test
+  void select_join() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Department> list =
+        entityql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .select(d)
+            .fetch();
+    assertEquals(3, list.size());
+  }
+
+  @Test
+  void selectTo() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list = entityql.from(e).selectTo(e, e.employeeName).fetch();
+    assertEquals(14, list.size());
+    assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));
+    assertTrue(list.stream().map(Employee::getEmployeeName).allMatch(Objects::nonNull));
+  }
+
+  @Test
+  void selectTo_associate() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .associate(e, d, Employee::setDepartment)
+            .selectTo(e, e.employeeName)
+            .fetch();
+    assertEquals(14, list.size());
+    assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));
+    assertTrue(list.stream().map(Employee::getEmployeeName).allMatch(Objects::nonNull));
+    assertTrue(list.stream().map(Employee::getDepartment).allMatch(Objects::nonNull));
   }
 }

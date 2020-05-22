@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.criteria.entity.Dept;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
@@ -226,5 +228,74 @@ class EntityqlSelectTest {
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void select() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).select(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void select_join() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Statement<List<Dept>> stmt = entityql.from(e).innerJoin(d, on -> on.eq(e.id, d.id)).select(d);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t1_.ID, t1_.NAME from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void select_illegal_entityMetamodel() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    DomaException ex = assertThrows(DomaException.class, () -> entityql.from(e).select(d));
+    assertEquals(Message.DOMA6009, ex.getMessageResource());
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void selectTo() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).selectTo(e, e.name);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID, t0_.NAME from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void selectTo_no_propertyMetamodels() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = entityql.from(e).selectTo(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void selectTo_illegal_entityMetamodel() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+
+    DomaException ex = assertThrows(DomaException.class, () -> entityql.from(e).selectTo(d, d.id));
+    assertEquals(Message.DOMA6007, ex.getMessageResource());
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void selectTo_illegal_propertyMetamodel() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+
+    DomaException ex = assertThrows(DomaException.class, () -> entityql.from(e).selectTo(e, d.id));
+    assertEquals(Message.DOMA6008, ex.getMessageResource());
+    System.out.println(ex.getMessage());
   }
 }

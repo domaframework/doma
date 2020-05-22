@@ -1,8 +1,11 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.seasar.doma.DomaException;
@@ -17,6 +20,8 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 
 public class SelectFromDeclaration {
@@ -99,9 +104,41 @@ public class SelectFromDeclaration {
     Objects.requireNonNull(propertyMetamodels);
     int i = 0;
     for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-      Objects.requireNonNull(propertyMetamodels, "propertyMetamodels: " + i);
+      Objects.requireNonNull(propertyMetamodel, "propertyMetamodels: " + i);
     }
-    context.projection = new Projection.List(propertyMetamodels);
+    context.projection = new Projection.PropertyMetamodels(propertyMetamodels);
+  }
+
+  public void select(EntityMetamodel<?> entityMetamodel) {
+    Objects.requireNonNull(entityMetamodel);
+    if (!context.getEntityMetamodels().contains(entityMetamodel)) {
+      throw new DomaException(Message.DOMA6009, "entityMetamodel");
+    }
+    context.projection = new Projection.EntityMetamodels(entityMetamodel);
+  }
+
+  public void selectTo(
+      EntityMetamodel<?> entityMetamodel, List<PropertyMetamodel<?>> propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodels);
+    if (!context.getEntityMetamodels().contains(entityMetamodel)) {
+      throw new DomaException(Message.DOMA6007, "entityMetamodel");
+    }
+    int i = 0;
+    for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+      Objects.requireNonNull(propertyMetamodel, "propertyMetamodels: " + i);
+      if (!entityMetamodel.allPropertyMetamodels().contains(propertyMetamodel)) {
+        throw new DomaException(Message.DOMA6008, i);
+      }
+    }
+    Set<PropertyMetamodel<?>> projectionTargets = new LinkedHashSet<>();
+    EntityType<?> entityType = entityMetamodel.asType();
+    List<? extends EntityPropertyType<?, ?>> idPropertyTypes = entityType.getIdPropertyTypes();
+    entityMetamodel.allPropertyMetamodels().stream()
+        .filter(it -> idPropertyTypes.contains(it.asType()))
+        .forEach(projectionTargets::add);
+    projectionTargets.addAll(propertyMetamodels);
+    context.projection =
+        new Projection.EntityMetamodels(entityMetamodel, new ArrayList<>(projectionTargets));
   }
 
   @SuppressWarnings("unchecked")

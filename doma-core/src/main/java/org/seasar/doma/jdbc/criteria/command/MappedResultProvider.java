@@ -35,7 +35,13 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
 
           @Override
           public <ENTITY> ENTITY get(EntityMetamodel<ENTITY> entityMetamodel) {
-            List<PropertyMetamodel<?>> propertyMetamodels = entityMetamodel.allPropertyMetamodels();
+            return get(entityMetamodel, entityMetamodel.allPropertyMetamodels());
+          }
+
+          @Override
+          public <ENTITY> ENTITY get(
+              EntityMetamodel<ENTITY> entityMetamodel,
+              List<PropertyMetamodel<?>> propertyMetamodels) {
             Map<String, Property<ENTITY, ?>> states = new HashMap<>(propertyMetamodels.size());
             List<Object> rawValues = new ArrayList<>(propertyMetamodels.size());
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
