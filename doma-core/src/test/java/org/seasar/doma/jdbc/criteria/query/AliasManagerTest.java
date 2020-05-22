@@ -49,20 +49,20 @@ class AliasManagerTest {
   }
 
   @Test
-  void propertyDef() {
+  void propertyMetamodel() {
     AliasManager manager = new AliasManager(new ContextImpl(Arrays.asList(e, d)));
     Assertions.assertEquals("t0_", manager.getAlias(e.name));
     Assertions.assertEquals("t1_", manager.getAlias(d.name));
   }
 
   @Test
-  void propertyDef_notFound() {
+  void propertyMetamodel_notFound() {
     AliasManager manager = new AliasManager(new ContextImpl(Arrays.asList(e, d)));
     Assertions.assertNull(manager.getAlias(e2.name));
   }
 
   @Test
-  void entityDef_parent() {
+  void entityMetamodel_parent() {
     AliasManager parent = new AliasManager(new ContextImpl(Arrays.asList(e, d)));
     AliasManager child = new AliasManager(new ContextImpl(Arrays.asList(e2, d2)), parent);
     Assertions.assertEquals("t0_", child.getAlias(e));
@@ -72,7 +72,7 @@ class AliasManagerTest {
   }
 
   @Test
-  void propertyDef_parent() {
+  void propertyMetamodel_parent() {
     AliasManager parent = new AliasManager(new ContextImpl(Arrays.asList(e, d)));
     AliasManager child = new AliasManager(new ContextImpl(Arrays.asList(e2, d2)), parent);
     Assertions.assertEquals("t0_", child.getAlias(e.name));

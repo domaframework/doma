@@ -43,7 +43,7 @@ public class EmbeddableMetamodelGenerator extends AbstractGenerator {
 
   private void printFields() {
     printAllPropertyModelFields();
-    printPropertyDefFields();
+    printPropertyMetamodelFields();
   }
 
   private void printAllPropertyModelFields() {
@@ -53,7 +53,7 @@ public class EmbeddableMetamodelGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  private void printPropertyDefFields() {
+  private void printPropertyMetamodelFields() {
     UnwrapOptionalVisitor visitor = new UnwrapOptionalVisitor();
     for (EmbeddablePropertyMeta p : embeddableMeta.getEmbeddablePropertyMetas()) {
       Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);

@@ -47,8 +47,8 @@ public interface StringExpression<PROPERTY> extends PropertyMetamodel<PROPERTY> 
 
   class Concat<PROPERTY> extends AbstractStringExpression<PROPERTY> {
 
-    public Concat(PropertyMetamodel<?> propertyDef, Operand left, Operand right) {
-      super(propertyDef, left, right);
+    public Concat(PropertyMetamodel<?> propertyMetamodel, Operand left, Operand right) {
+      super(propertyMetamodel, left, right);
     }
 
     @Override

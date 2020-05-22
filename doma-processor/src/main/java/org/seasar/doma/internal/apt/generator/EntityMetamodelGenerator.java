@@ -69,7 +69,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     printQualifiedTableNameField();
     printEntityTypeField();
     printAllPropertyMetamodelsFields();
-    printPropertyDefFields();
+    printPropertyMetamodelFields();
   }
 
   private void printEntityTypeField() {
@@ -123,7 +123,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  private void printPropertyDefFields() {
+  private void printPropertyMetamodelFields() {
     UnwrapOptionalVisitor visitor = new UnwrapOptionalVisitor();
     for (EntityPropertyMeta p : entityMeta.getAllPropertyMetas()) {
       if (p.isEmbedded()) {
