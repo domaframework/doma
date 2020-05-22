@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchInsertStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchUpdateStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlDeleteStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertStatement;
-import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStatement;
+import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlUpdateStatement;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 
@@ -30,19 +30,19 @@ public class Entityql {
     this.config = Objects.requireNonNull(config);
   }
 
-  public <ENTITY> EntityqlSelectStatement<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
+  public <ENTITY> EntityqlSelectStarting<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     return from(entityMetamodel, settings -> {});
   }
 
-  public <ENTITY> EntityqlSelectStatement<ENTITY> from(
+  public <ENTITY> EntityqlSelectStarting<ENTITY> from(
       EntityMetamodel<ENTITY> entityMetamodel, Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
     SelectContext context = new SelectContext(entityMetamodel);
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
-    return new EntityqlSelectStatement<>(config, declaration);
+    return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);
   }
 
   public <ENTITY> Statement<Result<ENTITY>> update(

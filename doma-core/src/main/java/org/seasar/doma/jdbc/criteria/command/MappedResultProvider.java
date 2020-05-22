@@ -35,11 +35,17 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
 
           @Override
           public <ENTITY> ENTITY get(EntityMetamodel<ENTITY> entityMetamodel) {
-            List<PropertyMetamodel<?>> propertyDefs = entityMetamodel.allPropertyMetamodels();
-            Map<String, Property<ENTITY, ?>> states = new HashMap<>(propertyDefs.size());
-            List<Object> rawValues = new ArrayList<>(propertyDefs.size());
-            for (PropertyMetamodel<?> propertyDef : propertyDefs) {
-              EntityPropertyType<?, ?> propertyType = propertyDef.asType();
+            return get(entityMetamodel, entityMetamodel.allPropertyMetamodels());
+          }
+
+          @Override
+          public <ENTITY> ENTITY get(
+              EntityMetamodel<ENTITY> entityMetamodel,
+              List<PropertyMetamodel<?>> propertyMetamodels) {
+            Map<String, Property<ENTITY, ?>> states = new HashMap<>(propertyMetamodels.size());
+            List<Object> rawValues = new ArrayList<>(propertyMetamodels.size());
+            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+              EntityPropertyType<?, ?> propertyType = propertyMetamodel.asType();
               Property<ENTITY, ?> property = (Property<ENTITY, ?>) propertyType.createProperty();
               try {
                 Object rawValue = fetchSupport.fetch(resultSet, property, index++);
@@ -61,8 +67,8 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
           }
 
           @Override
-          public <PROPERTY> PROPERTY get(PropertyMetamodel<PROPERTY> propertyDef) {
-            Property<?, ?> property = propertyDef.asType().createProperty();
+          public <PROPERTY> PROPERTY get(PropertyMetamodel<PROPERTY> propertyMetamodel) {
+            Property<?, ?> property = propertyMetamodel.asType().createProperty();
             try {
               fetchSupport.fetch(resultSet, property, index++);
             } catch (SQLException e) {

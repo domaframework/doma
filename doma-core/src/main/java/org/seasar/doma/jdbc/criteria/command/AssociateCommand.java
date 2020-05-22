@@ -19,19 +19,22 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
   private final SelectContext context;
   private final SelectQuery query;
+  private final EntityMetamodel<ENTITY> entityMetamodel;
 
-  public AssociateCommand(SelectContext context, SelectQuery query) {
+  public AssociateCommand(
+      SelectContext context, SelectQuery query, EntityMetamodel<ENTITY> entityMetamodel) {
     this.context = Objects.requireNonNull(context);
     this.query = Objects.requireNonNull(query);
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public List<ENTITY> execute() {
     Map<EntityKey, Object> cache = new LinkedHashMap<>();
-    List<EntityMetamodel<?>> entityMetamodels = context.allEntityDefs();
     SelectCommand<List<EntityPool>> command =
-        new SelectCommand<>(query, new EntityPoolIterationHandler(entityMetamodels));
+        new SelectCommand<>(
+            query, new EntityPoolIterationHandler(context.getProjectionEntityMetamodels()));
     List<EntityPool> entityPools = command.execute();
     for (EntityPool entityPool : entityPools) {
       Map<EntityMetamodel<?>, Object> associationCandidate = new LinkedHashMap<>();
@@ -56,7 +59,7 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
     }
     return (List<ENTITY>)
         cache.entrySet().stream()
-            .filter(e -> e.getKey().getEntityMetamodel() == context.entityMetamodel)
+            .filter(e -> e.getKey().getEntityMetamodel() == entityMetamodel)
             .map(Map.Entry::getValue)
             .collect(toList());
   }

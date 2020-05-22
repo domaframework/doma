@@ -142,6 +142,36 @@ public class Expressions {
     return new StringExpression.Concat<>(left, new Operand.Prop(left), new Operand.Prop(right));
   }
 
+  public static <PROPERTY> StringExpression.Lower<PROPERTY> lower(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new StringExpression.Lower<>(propertyMetamodel);
+  }
+
+  public static <PROPERTY> StringExpression.Ltrim<PROPERTY> ltrim(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new StringExpression.Ltrim<>(propertyMetamodel);
+  }
+
+  public static <PROPERTY> StringExpression.Rtrim<PROPERTY> rtrim(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new StringExpression.Rtrim<>(propertyMetamodel);
+  }
+
+  public static <PROPERTY> StringExpression.Trim<PROPERTY> trim(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new StringExpression.Trim<>(propertyMetamodel);
+  }
+
+  public static <PROPERTY> StringExpression.Upper<PROPERTY> upper(
+      PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new StringExpression.Upper<>(propertyMetamodel);
+  }
+
   public static <PROPERTY> AggregateFunction.Avg<PROPERTY> avg(
       PropertyMetamodel<PROPERTY> propertyMetamodel) {
     Objects.requireNonNull(propertyMetamodel);

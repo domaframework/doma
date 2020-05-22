@@ -22,6 +22,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -185,6 +186,19 @@ public class NativeSqlSelectTest {
 
     assertEquals(14, list.size());
     assertEquals("SMITH", list.get(0).getItem1());
+  }
+
+  @Test
+  void selectTo() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list = nativeSql.from(e).selectTo(e, e.employeeNo).fetch();
+
+    assertEquals(14, list.size());
+    list.stream().map(Employee::getEmployeeId).forEach(System.out::println);
+    assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));
+    assertTrue(list.stream().map(Employee::getEmployeeNo).allMatch(Objects::nonNull));
+    assertTrue(list.stream().map(Employee::getEmployeeName).allMatch(Objects::isNull));
   }
 
   @Test

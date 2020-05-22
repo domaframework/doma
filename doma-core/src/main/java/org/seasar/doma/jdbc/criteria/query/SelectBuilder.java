@@ -84,7 +84,7 @@ public class SelectBuilder {
       buf.appendSql("distinct ");
     }
 
-    List<PropertyMetamodel<?>> propertyMetamodels = context.allPropertyMetamodels();
+    List<PropertyMetamodel<?>> propertyMetamodels = context.getProjectionPropertyMetamodels();
     if (propertyMetamodels.isEmpty()) {
       buf.appendSql("*");
     } else {
@@ -143,7 +143,7 @@ public class SelectBuilder {
 
   private void groupBy() {
     if (context.groupBy.isEmpty()) {
-      List<PropertyMetamodel<?>> propertyMetamodels = context.allPropertyMetamodels();
+      List<PropertyMetamodel<?>> propertyMetamodels = context.getProjectionPropertyMetamodels();
       if (propertyMetamodels.stream().anyMatch(p -> p instanceof AggregateFunction<?>)) {
         List<PropertyMetamodel<?>> groupKeys =
             propertyMetamodels.stream()

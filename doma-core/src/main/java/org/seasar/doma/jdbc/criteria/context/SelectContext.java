@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc.criteria.context;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
-  public Projection projection = Projection.All;
+  public Projection projection;
   public DistinctOption distinct = DistinctOption.none();
   public final List<Join> joins = new ArrayList<>();
   public List<Criterion> where = new ArrayList<>();
@@ -33,6 +34,7 @@ public class SelectContext implements Context {
 
   public SelectContext(EntityMetamodel<?> entityMetamodel) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.projection = new Projection.EntityMetamodels(entityMetamodel);
   }
 
   @Override
@@ -50,29 +52,48 @@ public class SelectContext implements Context {
     return settings;
   }
 
-  public List<EntityMetamodel<?>> allEntityDefs() {
-    Stream<EntityMetamodel<?>> a = Stream.of(entityMetamodel);
-    Stream<EntityMetamodel<?>> b =
-        associations.keySet().stream().flatMap(pair -> Stream.of(pair.fst, pair.snd));
-    return Stream.concat(a, b).distinct().collect(toList());
+  public Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> getProjectionEntityMetamodels() {
+    return projection.accept(
+        new Projection.Visitor<Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>>>() {
+          @Override
+          public Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> visit(
+              Projection.EntityMetamodels entityMetamodels) {
+            Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> map =
+                new LinkedHashMap<>(entityMetamodels.map);
+            associations.keySet().stream()
+                .flatMap(pair -> Stream.of(pair.fst, pair.snd))
+                .forEach(
+                    it -> {
+                      if (!map.containsKey(it)) {
+                        map.put(it, it.allPropertyMetamodels());
+                      }
+                    });
+            return map;
+          }
+
+          @Override
+          public Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> visit(
+              Projection.PropertyMetamodels propertyMetamodels) {
+            throw new IllegalStateException();
+          }
+        });
   }
 
-  public List<PropertyMetamodel<?>> allPropertyMetamodels() {
+  public List<PropertyMetamodel<?>> getProjectionPropertyMetamodels() {
     return projection.accept(
         new Projection.Visitor<List<PropertyMetamodel<?>>>() {
+
           @Override
-          public List<PropertyMetamodel<?>> visit(Projection.All all) {
-            return allEntityDefs().stream()
-                .flatMap(it -> it.allPropertyMetamodels().stream())
+          public List<PropertyMetamodel<?>> visit(Projection.EntityMetamodels entityMetamodels) {
+            return getProjectionEntityMetamodels().values().stream()
+                .flatMap(Collection::stream)
                 .collect(toList());
           }
 
           @Override
-          public List<PropertyMetamodel<?>> visit(Projection.List list) {
-            if (list.propertyMetamodels.isEmpty()) {
-              return visit(Projection.All);
-            }
-            return list.propertyMetamodels;
+          public List<PropertyMetamodel<?>> visit(
+              Projection.PropertyMetamodels propertyMetamodels) {
+            return propertyMetamodels.propertyMetamodels;
           }
         });
   }

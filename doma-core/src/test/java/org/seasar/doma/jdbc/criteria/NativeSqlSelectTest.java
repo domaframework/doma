@@ -1,19 +1,26 @@
 package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.lower;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.ltrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.rtrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.CommentContext;
 import org.seasar.doma.jdbc.Commenter;
@@ -36,6 +43,7 @@ import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 import org.seasar.doma.jdbc.dialect.MssqlDialect;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
+import org.seasar.doma.message.Message;
 
 class NativeSqlSelectTest {
 
@@ -923,6 +931,43 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void selectTo() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).selectTo(e, e.name);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID, t0_.NAME from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void selectTo_no_propertyMetamodels() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).selectTo(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void selectTo_illegal_entityMetamodel() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    DomaException ex = assertThrows(DomaException.class, () -> nativeSql.from(e).selectTo(d));
+    assertEquals(Message.DOMA6007, ex.getMessageResource());
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void selectTo_illegal_propertyMetamodel() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    DomaException ex =
+        assertThrows(DomaException.class, () -> nativeSql.from(e).selectTo(e, d.name));
+    assertEquals(Message.DOMA6008, ex.getMessageResource());
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
   void aggregateFunctions() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
@@ -1132,6 +1177,46 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(concat(e.name, "a"));
     Sql<?> sql = stmt.asSql();
     assertEquals("select (t0_.NAME + 'a') from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_lower() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(lower(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select lower(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_ltrim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(ltrim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select ltrim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_rtrim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(rtrim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select rtrim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_trim() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(trim(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select trim(t0_.NAME) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_upper() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(upper(e.name));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select upper(t0_.NAME) from EMP t0_", sql.getFormattedSql());
   }
 
   @Test

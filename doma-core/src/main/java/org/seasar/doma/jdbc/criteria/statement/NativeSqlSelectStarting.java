@@ -796,6 +796,21 @@ public class NativeSqlSelectStarting<ENTITY>
             }));
   }
 
+  public <RESULT> SetOperand<RESULT> selectTo(
+      EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(propertyMetamodels);
+    List<PropertyMetamodel<?>> projectionTargets = Arrays.asList(propertyMetamodels);
+    declaration.selectTo(entityMetamodel, projectionTargets);
+    return new NativeSqlSelectIntermediate<>(
+        config,
+        declaration,
+        createMappedResultProviderFactory(
+            dataRow ->
+                dataRow.get(
+                    entityMetamodel, declaration.getContext().getProjectionPropertyMetamodels())));
+  }
+
   private <RESULT> Function<SelectQuery, ObjectProvider<RESULT>> createMappedResultProviderFactory(
       Function<DataRow, RESULT> rowMapper) {
     return query -> new MappedResultProvider<>(query, rowMapper);

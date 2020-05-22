@@ -514,7 +514,34 @@ public class BuilderSupport {
     public void visit(StringExpression.Concat<?> concat) {
       CriteriaBuilder criteriaBuilder = config.getDialect().getCriteriaBuilder();
       criteriaBuilder.concat(
-          buf, () -> concat.left.accept(operandVisitor), () -> concat.right.accept(operandVisitor));
+          buf,
+          () -> concat.first.accept(operandVisitor),
+          () -> concat.second.accept(operandVisitor));
+    }
+
+    @Override
+    public void visit(StringExpression.Lower<?> lower) {
+      oneArgumentFunction(lower.getName(), lower.argument);
+    }
+
+    @Override
+    public void visit(StringExpression.Ltrim<?> ltrim) {
+      oneArgumentFunction(ltrim.getName(), ltrim.argument);
+    }
+
+    @Override
+    public void visit(StringExpression.Rtrim<?> rtrim) {
+      oneArgumentFunction(rtrim.getName(), rtrim.argument);
+    }
+
+    @Override
+    public void visit(StringExpression.Trim<?> trim) {
+      oneArgumentFunction(trim.getName(), trim.argument);
+    }
+
+    @Override
+    public void visit(StringExpression.Upper<?> upper) {
+      oneArgumentFunction(upper.getName(), upper.argument);
     }
 
     @Override
@@ -529,7 +556,7 @@ public class BuilderSupport {
 
     @Override
     public void visit(AggregateFunction.Avg<?> avg) {
-      aggregateFunction(avg.getName(), avg.argument());
+      oneArgumentFunction(avg.getName(), avg.argument());
     }
 
     @Override
@@ -545,17 +572,17 @@ public class BuilderSupport {
 
     @Override
     public void visit(AggregateFunction.Max<?> max) {
-      aggregateFunction(max.getName(), max.argument());
+      oneArgumentFunction(max.getName(), max.argument());
     }
 
     @Override
     public void visit(AggregateFunction.Min<?> min) {
-      aggregateFunction(min.getName(), min.argument());
+      oneArgumentFunction(min.getName(), min.argument());
     }
 
     @Override
     public void visit(AggregateFunction.Sum<?> sum) {
-      aggregateFunction(sum.getName(), sum.argument());
+      oneArgumentFunction(sum.getName(), sum.argument());
     }
 
     @Override
@@ -571,7 +598,7 @@ public class BuilderSupport {
       buf.appendSql(")");
     }
 
-    private void aggregateFunction(String name, PropertyMetamodel<?> argument) {
+    private void oneArgumentFunction(String name, PropertyMetamodel<?> argument) {
       buf.appendSql(name);
       buf.appendSql("(");
       argument.accept(this);
