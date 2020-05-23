@@ -23,6 +23,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -568,5 +569,14 @@ public class NativeSqlSelectTest {
 
     assertEquals(14, list.size());
     assertEquals(14, list.stream().filter(it -> it.equals("_")).count());
+  }
+
+  @Test
+  void expressions_literal_localDate() {
+    Employee_ e = new Employee_();
+
+    LocalDate date = nativeSql.from(e).select(literal(LocalDate.of(2020, 5, 23))).fetchOne();
+
+    assertEquals(LocalDate.of(2020, 5, 23), date);
   }
 }

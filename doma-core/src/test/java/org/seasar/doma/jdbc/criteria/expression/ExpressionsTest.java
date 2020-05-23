@@ -16,6 +16,11 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
@@ -23,6 +28,76 @@ import org.seasar.doma.jdbc.criteria.entity.Emp_;
 class ExpressionsTest {
 
   private final Emp_ e = new Emp_();
+
+  @Test
+  void testBigDecimalLiteral() {
+    assertEquals(literal(new BigDecimal(100)), literal(new BigDecimal(100)));
+    assertNotEquals(literal(new BigDecimal(100)), literal(new BigDecimal(200)));
+  }
+
+  @Test
+  void testBigIntegerLiteral() {
+    assertEquals(literal(new BigInteger("100")), literal(new BigInteger("100")));
+    assertNotEquals(literal(new BigInteger("100")), literal(new BigInteger("200")));
+  }
+
+  @Test
+  void testBooleanLiteral() {
+    assertEquals(literal(true), literal(true));
+    assertNotEquals(literal(true), literal(false));
+  }
+
+  @Test
+  void testByteLiteral() {
+    assertEquals(literal((byte) 1), literal((byte) 1));
+    assertNotEquals(literal((byte) 1), literal((byte) 2));
+  }
+
+  @Test
+  void testDoubleLiteral() {
+    assertEquals(literal(1D), literal(1D));
+    assertNotEquals(literal(1D), literal(2D));
+  }
+
+  @Test
+  void testFloatLiteral() {
+    assertEquals(literal(1F), literal(1F));
+    assertNotEquals(literal(1F), literal(2F));
+  }
+
+  @Test
+  void testIntegerLiteral() {
+    assertEquals(literal(1), literal(1));
+    assertNotEquals(literal(1), literal(2));
+  }
+
+  @Test
+  void testLocalDateLiteral() {
+    assertEquals(literal(LocalDate.of(2020, 5, 23)), literal(LocalDate.of(2020, 5, 23)));
+    assertNotEquals(literal(LocalDate.of(2020, 5, 23)), literal(LocalDate.of(2021, 5, 23)));
+  }
+
+  @Test
+  void testLocalDateTimeLiteral() {
+    assertEquals(
+        literal(LocalDateTime.of(2020, 5, 23, 10, 11, 12)),
+        literal(LocalDateTime.of(2020, 5, 23, 10, 11, 12)));
+    assertNotEquals(
+        literal(LocalDateTime.of(2020, 5, 23, 10, 11, 12)),
+        literal(LocalDateTime.of(2021, 5, 23, 10, 11, 12)));
+  }
+
+  @Test
+  void testLocalTimeLiteral() {
+    assertEquals(literal(LocalTime.of(10, 11, 12)), literal(LocalTime.of(10, 11, 12)));
+    assertNotEquals(literal(LocalTime.of(10, 11, 12)), literal(LocalTime.of(5, 11, 12)));
+  }
+
+  @Test
+  void testLongLiteral() {
+    assertEquals(literal(1L), literal(1L));
+    assertNotEquals(literal(1L), literal(2L));
+  }
 
   @Test
   void testStringLiteral() {
@@ -38,9 +113,9 @@ class ExpressionsTest {
   }
 
   @Test
-  void testIntLiteral() {
-    assertEquals(literal(1), literal(1));
-    assertNotEquals(literal(1), literal(2));
+  void testShortLiteral() {
+    assertEquals(literal((short) 1), literal((short) 1));
+    assertNotEquals(literal((short) 1), literal((short) 2));
   }
 
   @Test

@@ -89,7 +89,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
     @Override
     public EntityPropertyType<?, Long> asType() {
-      return LongPropertyType.INSTANCE;
+      return new LongPropertyType(null);
     }
 
     @Override
@@ -161,7 +161,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
     @Override
     public EntityPropertyType<?, ?> asType() {
-      return LongPropertyType.INSTANCE;
+      return new LongPropertyType(null);
     }
 
     @Override
