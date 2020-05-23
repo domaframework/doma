@@ -1,109 +1,60 @@
 package org.seasar.doma.jdbc.criteria.expression;
 
 import java.util.Objects;
-import org.seasar.doma.DomaIllegalArgumentException;
+import java.util.function.Function;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 
-public interface LiteralExpression<PROPERTY> extends PropertyMetamodel<PROPERTY> {
+public class LiteralExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
 
-  String toString();
+  private final PROPERTY value;
+  private final BasicPropertyType<PROPERTY> propertyType;
 
-  abstract class AbstractLiteralExpression<PROPERTY> implements LiteralExpression<PROPERTY> {
-    protected final PROPERTY value;
+  public LiteralExpression(
+      PROPERTY value, Function<PROPERTY, BasicPropertyType<PROPERTY>> factory) {
+    this.value = Objects.requireNonNull(value);
+    Objects.requireNonNull(factory);
+    this.propertyType = factory.apply(value);
+  }
 
-    protected AbstractLiteralExpression(PROPERTY value) {
-      this.value = Objects.requireNonNull(value);
-    }
+  @Override
+  public EntityPropertyType<?, ?> asType() {
+    return propertyType;
+  }
 
-    @Override
-    public Class<?> asClass() {
-      return value.getClass();
-    }
+  @Override
+  public Class<?> asClass() {
+    return value.getClass();
+  }
 
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof AbstractLiteralExpression)) return false;
-      AbstractLiteralExpression<?> that = (AbstractLiteralExpression<?>) o;
-      return value.equals(that.value);
-    }
+  @Override
+  public String getName() {
+    return value.toString();
+  }
 
-    @Override
-    public int hashCode() {
-      return Objects.hash(value);
+  @Override
+  public void accept(PropertyMetamodel.Visitor visitor) {
+    if (visitor instanceof LiteralExpression.Visitor) {
+      LiteralExpression.Visitor v = (LiteralExpression.Visitor) visitor;
+      v.visit(this);
     }
   }
 
-  class StringLiteral extends AbstractLiteralExpression<String> {
-
-    private static final char QUOTATION = '\'';
-
-    public StringLiteral(String value) {
-      super(Objects.requireNonNull(value));
-      if (value.indexOf(QUOTATION) > -1) {
-        throw new DomaIllegalArgumentException(
-            "value", "The value must not contain the single quotation.");
-      }
-    }
-
-    @Override
-    public EntityPropertyType<?, ?> asType() {
-      return StringPropertyType.INSTANCE;
-    }
-
-    @Override
-    public String toString() {
-      return QUOTATION + value + QUOTATION;
-    }
-
-    @Override
-    public String getName() {
-      return value;
-    }
-
-    @Override
-    public void accept(PropertyMetamodel.Visitor visitor) {
-      if (visitor instanceof LiteralExpression.Visitor) {
-        LiteralExpression.Visitor v = (LiteralExpression.Visitor) visitor;
-        v.visit(this);
-      }
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    LiteralExpression<?> that = (LiteralExpression<?>) o;
+    return value.equals(that.value);
   }
 
-  class IntLiteral extends AbstractLiteralExpression<Integer> {
-
-    public IntLiteral(int value) {
-      super(value);
-    }
-
-    @Override
-    public EntityPropertyType<?, ?> asType() {
-      return IntegerPropertyType.INSTANCE;
-    }
-
-    @Override
-    public String toString() {
-      return Integer.toString(value);
-    }
-
-    @Override
-    public String getName() {
-      return Integer.toString(value);
-    }
-
-    @Override
-    public void accept(PropertyMetamodel.Visitor visitor) {
-      if (visitor instanceof LiteralExpression.Visitor) {
-        LiteralExpression.Visitor v = (LiteralExpression.Visitor) visitor;
-        v.visit(this);
-      }
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 
-  interface Visitor {
-    void visit(StringLiteral stringLiteral);
+  public interface Visitor {
 
-    void visit(IntLiteral intLiteral);
+    void visit(LiteralExpression<?> expression);
   }
 }

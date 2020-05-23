@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.ConvertToLogFormatFunction;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
@@ -26,6 +27,7 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 public class BuilderSupport {
   private final Config config;
@@ -547,13 +549,14 @@ public class BuilderSupport {
     }
 
     @Override
-    public void visit(LiteralExpression.StringLiteral stringLiteral) {
-      buf.appendSql(stringLiteral.toString());
-    }
-
-    @Override
-    public void visit(LiteralExpression.IntLiteral intLiteral) {
-      buf.appendSql(intLiteral.toString());
+    public void visit(LiteralExpression<?> expression) {
+      Wrapper<?> wrapper = expression.asType().createProperty().getWrapper();
+      String text =
+          wrapper.accept(
+              config.getDialect().getSqlLogFormattingVisitor(),
+              new ConvertToLogFormatFunction(),
+              null);
+      buf.appendSql(text);
     }
 
     @Override

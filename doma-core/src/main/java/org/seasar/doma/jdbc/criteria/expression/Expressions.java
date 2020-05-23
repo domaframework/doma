@@ -1,20 +1,78 @@
 package org.seasar.doma.jdbc.criteria.expression;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public class Expressions {
 
-  public static PropertyMetamodel<String> literal(String value) {
+  public static PropertyMetamodel<BigDecimal> literal(BigDecimal value) {
     Objects.requireNonNull(value);
-    return new LiteralExpression.StringLiteral(value);
+    return new LiteralExpression<>(value, BigDecimalPropertyType::new);
+  }
+
+  public static PropertyMetamodel<BigInteger> literal(BigInteger value) {
+    Objects.requireNonNull(value);
+    return new LiteralExpression<>(value, BigIntegerPropertyType::new);
+  }
+
+  public static PropertyMetamodel<Boolean> literal(boolean value) {
+    return new LiteralExpression<>(value, BooleanPropertyType::new);
+  }
+
+  public static PropertyMetamodel<Byte> literal(byte value) {
+    return new LiteralExpression<>(value, BytePropertyType::new);
+  }
+
+  public static PropertyMetamodel<Double> literal(double value) {
+    return new LiteralExpression<>(value, DoublePropertyType::new);
+  }
+
+  public static PropertyMetamodel<Float> literal(float value) {
+    return new LiteralExpression<>(value, FloatPropertyType::new);
   }
 
   public static PropertyMetamodel<Integer> literal(int value) {
+    return new LiteralExpression<>(value, IntegerPropertyType::new);
+  }
+
+  public static PropertyMetamodel<LocalDate> literal(LocalDate value) {
     Objects.requireNonNull(value);
-    return new LiteralExpression.IntLiteral(value);
+    return new LiteralExpression<>(value, LocalDatePropertyType::new);
+  }
+
+  public static PropertyMetamodel<LocalDateTime> literal(LocalDateTime value) {
+    Objects.requireNonNull(value);
+    return new LiteralExpression<>(value, LocalDateTimePropertyType::new);
+  }
+
+  public static PropertyMetamodel<LocalTime> literal(LocalTime value) {
+    Objects.requireNonNull(value);
+    return new LiteralExpression<>(value, LocalTimePropertyType::new);
+  }
+
+  public static PropertyMetamodel<Long> literal(long value) {
+    return new LiteralExpression<>(value, LongPropertyType::new);
+  }
+
+  public static PropertyMetamodel<Short> literal(short value) {
+    return new LiteralExpression<>(value, ShortPropertyType::new);
+  }
+
+  public static PropertyMetamodel<String> literal(String value) {
+    Objects.requireNonNull(value);
+    if (value.indexOf('\'') > -1) {
+      throw new DomaIllegalArgumentException(
+          "value", "The value must not contain the single quotation.");
+    }
+    return new LiteralExpression<>(value, StringPropertyType::new);
   }
 
   public static <PROPERTY> ArithmeticExpression.Add<PROPERTY> add(
