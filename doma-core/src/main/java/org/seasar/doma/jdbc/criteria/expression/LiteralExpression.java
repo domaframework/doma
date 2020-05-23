@@ -22,11 +22,6 @@ public interface LiteralExpression<PROPERTY> extends PropertyMetamodel<PROPERTY>
     }
 
     @Override
-    public EntityPropertyType<?, ?> asType() {
-      return null;
-    }
-
-    @Override
     public boolean equals(Object o) {
       if (this == o) return true;
       if (!(o instanceof AbstractLiteralExpression)) return false;
@@ -53,6 +48,11 @@ public interface LiteralExpression<PROPERTY> extends PropertyMetamodel<PROPERTY>
     }
 
     @Override
+    public EntityPropertyType<?, ?> asType() {
+      return StringPropertyType.INSTANCE;
+    }
+
+    @Override
     public String toString() {
       return QUOTATION + value + QUOTATION;
     }
@@ -75,6 +75,11 @@ public interface LiteralExpression<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
     public IntLiteral(int value) {
       super(value);
+    }
+
+    @Override
+    public EntityPropertyType<?, ?> asType() {
+      return IntegerPropertyType.INSTANCE;
     }
 
     @Override

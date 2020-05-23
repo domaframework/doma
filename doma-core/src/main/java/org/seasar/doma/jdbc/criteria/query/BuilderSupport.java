@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
+import org.seasar.doma.jdbc.criteria.expression.CaseExpression;
 import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
 import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
@@ -470,7 +471,8 @@ public class BuilderSupport {
           ArithmeticExpression.Visitor,
           StringExpression.Visitor,
           LiteralExpression.Visitor,
-          AggregateFunction.Visitor {
+          AggregateFunction.Visitor,
+          CaseExpression.Visitor {
 
     @Override
     public void visit(PropertyMetamodel<?> propertyMetamodel) {
@@ -588,6 +590,27 @@ public class BuilderSupport {
     @Override
     public void visit(AggregateFunction.Asterisk asterisk) {
       buf.appendSql(asterisk.getName());
+    }
+
+    @Override
+    public void visit(CaseExpression<?> expression) {
+      if (expression.criterionList.isEmpty()) {
+        expression.otherwise.accept(this);
+      } else {
+        buf.appendSql("case");
+        expression.criterionList.forEach(
+            pair -> {
+              buf.appendSql(" when ");
+              Criterion criterion = pair.fst;
+              Operand operand = pair.snd;
+              criterion.accept(new CriterionVisitor(0));
+              buf.appendSql(" then ");
+              operand.accept(operandVisitor);
+            });
+        buf.appendSql(" else ");
+        expression.otherwise.accept(this);
+        buf.appendSql(" end");
+      }
     }
 
     private void binaryOperator(String operator, Operand left, Operand right) {
