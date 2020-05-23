@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria.expression;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
@@ -208,5 +209,14 @@ public class Expressions {
       PropertyMetamodel<PROPERTY> propertyMetamodel) {
     Objects.requireNonNull(propertyMetamodel);
     return new AggregateFunction.Sum<>(propertyMetamodel);
+  }
+
+  public static <PROPERTY> CaseExpression<PROPERTY> when(
+      Consumer<CaseExpression<PROPERTY>.Declaration> block, PropertyMetamodel<PROPERTY> otherwise) {
+    Objects.requireNonNull(block);
+    Objects.requireNonNull(otherwise);
+    CaseExpression<PROPERTY> caseExpression = new CaseExpression<>(otherwise);
+    block.accept(caseExpression.new Declaration());
+    return caseExpression;
   }
 }

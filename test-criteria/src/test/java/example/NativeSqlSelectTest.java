@@ -13,11 +13,14 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.lower;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -534,5 +537,36 @@ public class NativeSqlSelectTest {
             .fetch();
 
     assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_when() {
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.employeeName, literal("SMITH"), lower(e.employeeName));
+                      c.eq(e.employeeName, literal("KING"), lower(e.employeeName));
+                    },
+                    literal("_")))
+            .fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(1, list.stream().filter(it -> it.equals("smith")).count());
+    assertEquals(1, list.stream().filter(it -> it.equals("king")).count());
+  }
+
+  @Test
+  void expressions_when_empty() {
+    Employee_ e = new Employee_();
+
+    List<String> list = nativeSql.from(e).select(when(c -> {}, literal("_"))).fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(14, list.stream().filter(it -> it.equals("_")).count());
   }
 }
