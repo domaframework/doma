@@ -4,7 +4,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class InsertSelectDeclaration {
 
-  public SubSelectFromDeclaration from(EntityMetamodel<?> entityMetamodel) {
-    return new SubSelectFromDeclaration(entityMetamodel);
+  public <ENTITY> SubSelectFromDeclaration<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
+    return new SubSelectFromDeclaration<>(entityMetamodel);
   }
 }

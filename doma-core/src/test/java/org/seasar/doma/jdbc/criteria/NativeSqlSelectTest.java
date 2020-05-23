@@ -407,6 +407,18 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void where_exist_without_select() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt = nativeSql.from(e).where(c -> c.exists(c.from(d))).select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where exists (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void where_notExist() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();

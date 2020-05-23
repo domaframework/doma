@@ -27,6 +27,6 @@ public class InsertDeclaration {
   public void select(Function<InsertSelectDeclaration, SubSelectContext<?>> block) {
     InsertSelectDeclaration declaration = new InsertSelectDeclaration();
     SubSelectContext<?> subSelectContext = block.apply(declaration);
-    context.selectContext = subSelectContext.context;
+    context.selectContext = subSelectContext.get();
   }
 }
