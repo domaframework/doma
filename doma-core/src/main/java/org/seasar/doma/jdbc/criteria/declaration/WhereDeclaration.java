@@ -95,13 +95,15 @@ public class WhereDeclaration extends ComparisonDeclaration {
             right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
-  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void in(
+      PropertyMetamodel<PROPERTY> left, SubSelectContext<PropertyMetamodel<PROPERTY>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(new Criterion.InSubQuery(new Operand.Prop(left), right.get()));
   }
 
-  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void notIn(
+      PropertyMetamodel<PROPERTY> left, SubSelectContext<PropertyMetamodel<PROPERTY>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     add(new Criterion.NotInSubQuery(new Operand.Prop(left), right.get()));
@@ -143,7 +145,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
 
   public <PROPERTY1, PROPERTY2> void in(
       Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
-      SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
+      SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());
@@ -153,7 +155,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
 
   public <PROPERTY1, PROPERTY2> void notIn(
       Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
-      SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
+      SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());

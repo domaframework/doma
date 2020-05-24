@@ -72,6 +72,7 @@ public class SelectFromDeclaration {
   }
 
   public void groupBy(PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodels);
     context.groupBy.addAll(Arrays.asList(propertyMetamodels));
   }
 
