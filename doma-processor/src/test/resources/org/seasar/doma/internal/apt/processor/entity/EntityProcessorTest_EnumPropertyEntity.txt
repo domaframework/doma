@@ -36,7 +36,7 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __embeddedPropertyTypeMap;
 
     private _EnumPropertyEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "EnumPropertyEntity";
         __catalogName = "";
@@ -57,8 +57,8 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __embeddedMap) {
-        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge.class)), "id", "", __namingType, false));
-        __map.put("hoge", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge.class)), "hoge", "", __namingType, true, true, false));
+        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofEnum(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge.class), "id", "", __namingType, false));
+        __map.put("hoge", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge, org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge>(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofEnum(org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity.Hoge.class), "hoge", "", __namingType, true, true, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity, ?>> __idList) {
@@ -96,7 +96,7 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -227,10 +227,6 @@ public final class _EnumPropertyEntity extends org.seasar.doma.jdbc.entity.Abstr
      */
     public static _EnumPropertyEntity newInstance() {
         return new _EnumPropertyEntity();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.EnumPropertyEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

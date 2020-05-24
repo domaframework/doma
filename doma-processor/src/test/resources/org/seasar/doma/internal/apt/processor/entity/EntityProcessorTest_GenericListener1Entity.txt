@@ -36,7 +36,7 @@ public final class _GenericListener1Entity extends org.seasar.doma.jdbc.entity.A
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.GenericListener1Entity, ?>> __embeddedPropertyTypeMap;
 
     private _GenericListener1Entity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = new java.util.function.Supplier<org.seasar.doma.internal.apt.processor.entity.GenericListener1<org.seasar.doma.internal.apt.processor.entity.GenericListener1Entity>>() { @Override public org.seasar.doma.internal.apt.processor.entity.GenericListener1<org.seasar.doma.internal.apt.processor.entity.GenericListener1Entity> get() { return ListenerHolder.listener; } };
         __immutable = false;
         __name = "GenericListener1Entity";
         __catalogName = "";
@@ -93,7 +93,7 @@ public final class _GenericListener1Entity extends org.seasar.doma.jdbc.entity.A
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override

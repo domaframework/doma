@@ -11,6 +11,7 @@ import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 public class EntityMeta implements TypeElementMeta {
 
@@ -177,6 +178,12 @@ public class EntityMeta implements TypeElementMeta {
 
   public void setGenericEntityListener(boolean genericEntityListener) {
     this.genericEntityListener = genericEntityListener;
+  }
+
+  public boolean isNullEntityListener() {
+    return entityListenerElement
+        .getQualifiedName()
+        .contentEquals(NullEntityListener.class.getName());
   }
 
   public String getCatalogName() {

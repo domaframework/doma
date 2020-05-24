@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.domain;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
@@ -59,4 +60,12 @@ public interface DomainType<BASIC, DOMAIN> {
    * @return the optional scalar
    */
   Scalar<BASIC, Optional<DOMAIN>> createOptionalScalar(DOMAIN value);
+
+  default Supplier<Scalar<BASIC, DOMAIN>> createScalarSupplier() {
+    return this::createScalar;
+  }
+
+  default Supplier<Scalar<BASIC, Optional<DOMAIN>>> createOptionalScalarSupplier() {
+    return this::createOptionalScalar;
+  }
 }

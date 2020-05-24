@@ -14,7 +14,7 @@ public final class _IntersectionParameterizedDomain<T extends java.lang.Number&j
     private static final _IntersectionParameterizedDomain singleton = new _IntersectionParameterizedDomain();
 
     private _IntersectionParameterizedDomain() {
-        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofInteger());
     }
 
     @Override

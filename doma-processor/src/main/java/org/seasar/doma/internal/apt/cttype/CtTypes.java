@@ -55,6 +55,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
 import org.seasar.doma.internal.apt.util.ElementKindUtil;
+import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -123,14 +124,14 @@ public class CtTypes {
 
   public BasicCtType newBasicCtType(TypeMirror type) {
     assertNotNull(type);
-    TypeMirror wrapperType = getWrapperType(type);
-    if (wrapperType == null) {
+    Pair<TypeElement, TypeMirror> wrapperElementAndType = getWrapperElementAndType(type);
+    if (wrapperElementAndType == null) {
       return null;
     }
-    return new BasicCtType(ctx, type, wrapperType);
+    return new BasicCtType(ctx, type, wrapperElementAndType);
   }
 
-  private TypeMirror getWrapperType(TypeMirror type) {
+  private Pair<TypeElement, TypeMirror> getWrapperElementAndType(TypeMirror type) {
     Class<?> wrapperClass = type.accept(new WrapperClassResolver(), null);
     if (wrapperClass == null) {
       return null;
@@ -140,9 +141,10 @@ public class CtTypes {
       return null;
     }
     if (wrapperClass == EnumWrapper.class) {
-      return ctx.getMoreTypes().getDeclaredType(wrapperTypeElement, type);
+      TypeMirror declaredType = ctx.getMoreTypes().getDeclaredType(wrapperTypeElement, type);
+      return new Pair<>(wrapperTypeElement, declaredType);
     }
-    return wrapperTypeElement.asType();
+    return new Pair<>(wrapperTypeElement, wrapperTypeElement.asType());
   }
 
   private BiFunctionCtType newBiFunctionCtType(TypeMirror type) {

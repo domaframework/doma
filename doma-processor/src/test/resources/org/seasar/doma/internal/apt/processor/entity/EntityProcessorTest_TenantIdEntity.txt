@@ -36,7 +36,7 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __embeddedPropertyTypeMap;
 
     private _TenantIdEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "TenantIdEntity";
         __catalogName = "";
@@ -57,7 +57,7 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __embeddedMap) {
-        __map.put("tenantDiscriminator", new org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.TenantIdEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "tenantDiscriminator", "", __namingType, false));
+        __map.put("tenantDiscriminator", new org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.TenantIdEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), "tenantDiscriminator", "", __namingType, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity, ?>> __idList) {
@@ -94,7 +94,7 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -224,10 +224,6 @@ public final class _TenantIdEntity extends org.seasar.doma.jdbc.entity.AbstractE
      */
     public static _TenantIdEntity newInstance() {
         return new _TenantIdEntity();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.TenantIdEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

@@ -16,11 +16,9 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
-import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
+import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalarSuppliers;
+import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalarSuppliers;
+import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalarSuppliers;
 
 class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, RuntimeException> {
 
@@ -45,7 +43,7 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
   public ScalarMeta visitOptionalIntCtType(OptionalIntCtType ctType, Boolean optional) {
     basicCtType = ctType.getElementCtType();
     containerTypeCode = new Code(p -> p.print("%1$s", OptionalInt.class));
-    supplierCode = new Code(p -> p.print("%1$s::new", OptionalIntScalar.class));
+    supplierCode = new Code(p -> p.print("%1$s.of()", OptionalIntScalarSuppliers.class));
     return defaultAction(ctType, optional);
   }
 
@@ -53,7 +51,7 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
   public ScalarMeta visitOptionalLongCtType(OptionalLongCtType ctType, Boolean optional) {
     basicCtType = ctType.getElementCtType();
     containerTypeCode = new Code(p -> p.print("%1$s", OptionalLong.class));
-    supplierCode = new Code(p -> p.print("%1$s::new", OptionalLongScalar.class));
+    supplierCode = new Code(p -> p.print("%1$s.of()", OptionalLongScalarSuppliers.class));
     return defaultAction(ctType, optional);
   }
 
@@ -61,7 +59,7 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
   public ScalarMeta visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean optional) {
     basicCtType = ctType.getElementCtType();
     containerTypeCode = new Code(p -> p.print("%1$s", OptionalDouble.class));
-    supplierCode = new Code(p -> p.print("%1$s::new", OptionalDoubleScalar.class));
+    supplierCode = new Code(p -> p.print("%1$s.of()", OptionalDoubleScalarSuppliers.class));
     return defaultAction(ctType, optional);
   }
 
@@ -77,17 +75,7 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
                 p.print("%1$s", basicCtType.getBoxedType());
               }
             });
-    supplierCode =
-        new Code(
-            p -> {
-              if (optional) {
-                p.print(
-                    "() -> new %1$s<>(%2$s)",
-                    OptionalBasicScalar.class, basicCtType.getWrapperCode());
-              } else {
-                p.print("() -> new %1$s<>(%2$s)", BasicScalar.class, basicCtType.getWrapperCode());
-              }
-            });
+    supplierCode = new Code(p -> p.print("%s", basicCtType.getScalarSupplierCode(optional)));
     return defaultAction(basicCtType, optional);
   }
 
@@ -107,9 +95,9 @@ class ScalarMetaFactory extends SimpleCtTypeVisitor<ScalarMeta, Boolean, Runtime
         new Code(
             p -> {
               if (optional) {
-                p.print("%1$s::createOptionalScalar", domainCtType.getTypeCode());
+                p.print("%1$s.createOptionalScalarSupplier()", domainCtType.getTypeCode());
               } else {
-                p.print("%1$s::createScalar", domainCtType.getTypeCode());
+                p.print("%1$s.createScalarSupplier()", domainCtType.getTypeCode());
               }
             });
     return defaultAction(domainCtType, optional);

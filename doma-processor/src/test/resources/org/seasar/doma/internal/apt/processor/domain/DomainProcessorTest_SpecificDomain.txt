@@ -11,7 +11,7 @@ public final class _SpecificDomain extends org.seasar.doma.jdbc.domain.AbstractD
     private static final _SpecificDomain singleton = new _SpecificDomain();
 
     private _SpecificDomain() {
-        super(org.seasar.doma.wrapper.IntegerWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofInteger());
     }
 
     @Override

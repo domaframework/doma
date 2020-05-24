@@ -13,7 +13,7 @@ public final class _NestingValueObjectConverter__NestingValueObject extends org.
     private static final org.seasar.doma.internal.apt.processor.domain.NestingValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.NestingValueObjectConverter();
 
     private _NestingValueObjectConverter__NestingValueObject() {
-        super(org.seasar.doma.wrapper.StringWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());
     }
 
     @Override

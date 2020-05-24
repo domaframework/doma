@@ -141,7 +141,7 @@ public class ResultStreamDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, java.util.stream.Stream<java.lang.String>>(org.seasar.doma.wrapper.StringWrapper::new, java.util.function.Function.identity()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<java.lang.String>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.BasicStreamHandler<java.lang.String, java.util.stream.Stream<java.lang.String>>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString(), java.util.function.Function.identity()));
             java.util.stream.Stream<java.lang.String> __result = __command.execute();
             __query.complete();
             exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "select", __result);

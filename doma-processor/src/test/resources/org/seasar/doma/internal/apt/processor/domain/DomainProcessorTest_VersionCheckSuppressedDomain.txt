@@ -7,7 +7,7 @@ public final class _VersionCheckSuppressedDomain extends org.seasar.doma.jdbc.do
     private static final _VersionCheckSuppressedDomain singleton = new _VersionCheckSuppressedDomain();
 
     private _VersionCheckSuppressedDomain() {
-        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofBigDecimal());
     }
 
     @Override

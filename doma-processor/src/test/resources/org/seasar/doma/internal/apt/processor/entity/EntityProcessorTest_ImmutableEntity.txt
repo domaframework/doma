@@ -36,7 +36,7 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __embeddedPropertyTypeMap;
 
     private _ImmutableEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = true;
         __name = "ImmutableEntity";
         __catalogName = "";
@@ -57,9 +57,9 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __embeddedMap) {
-        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "aaa", "", __namingType, true, true, false));
-        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.PrimitiveIntWrapper()), "bbb", "", __namingType, true, true, false));
-        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "ccc", "", __namingType, true, true, false));
+        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), "aaa", "", __namingType, true, true, false));
+        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofPrimitiveInt(), "bbb", "", __namingType, true, true, false));
+        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.ImmutableEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofInteger(), "ccc", "", __namingType, true, true, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity, ?>> __idList) {
@@ -96,7 +96,7 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -227,10 +227,6 @@ public final class _ImmutableEntity extends org.seasar.doma.jdbc.entity.Abstract
      */
     public static _ImmutableEntity newInstance() {
         return new _ImmutableEntity();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.ImmutableEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }
