@@ -18,6 +18,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.lower;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
@@ -109,7 +110,7 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void select() {
+  void test_select() {
     Employee_ e = new Employee_();
 
     List<Employee> list = nativeSql.from(e).select().fetch();
@@ -578,5 +579,16 @@ public class NativeSqlSelectTest {
     LocalDate date = nativeSql.from(e).select(literal(LocalDate.of(2020, 5, 23))).fetchOne();
 
     assertEquals(LocalDate.of(2020, 5, 23), date);
+  }
+
+  @Test
+  void expressions_select() {
+    Employee_ e = new Employee_();
+    Employee_ e2 = new Employee_();
+
+    Long count =
+        nativeSql.from(e).select(select(c -> c.from(e2).select(count(e2.employeeId)))).fetchOne();
+
+    assertEquals(14L, count);
   }
 }

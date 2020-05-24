@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.context.Operand;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public class Expressions {
@@ -276,5 +278,13 @@ public class Expressions {
     CaseExpression<PROPERTY> caseExpression = new CaseExpression<>(otherwise);
     block.accept(caseExpression.new Declaration());
     return caseExpression;
+  }
+
+  public static <PROPERTY> SelectExpression<PROPERTY> select(
+      Function<SelectExpression.Declaration, SubSelectContext.Single<PROPERTY>> block) {
+    Objects.requireNonNull(block);
+    SubSelectContext.Single<PROPERTY> subSelectContext =
+        block.apply(new SelectExpression.Declaration());
+    return new SelectExpression<>(subSelectContext);
   }
 }

@@ -18,6 +18,7 @@ import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
 import org.seasar.doma.jdbc.criteria.expression.CaseExpression;
 import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
+import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -474,7 +475,8 @@ public class BuilderSupport {
           StringExpression.Visitor,
           LiteralExpression.Visitor,
           AggregateFunction.Visitor,
-          CaseExpression.Visitor {
+          CaseExpression.Visitor,
+          SelectExpression.Visitor {
 
     @Override
     public void visit(PropertyMetamodel<?> propertyMetamodel) {
@@ -614,6 +616,15 @@ public class BuilderSupport {
         expression.otherwise.accept(this);
         buf.appendSql(" end");
       }
+    }
+
+    @Override
+    public void visit(SelectExpression<?> expression) {
+      buf.appendSql("(");
+      AliasManager child = new AliasManager(expression.context, aliasManager);
+      SelectBuilder builder = new SelectBuilder(config, expression.context, commenter, buf, child);
+      builder.interpret();
+      buf.appendSql(")");
     }
 
     private void binaryOperator(String operator, Operand left, Operand right) {

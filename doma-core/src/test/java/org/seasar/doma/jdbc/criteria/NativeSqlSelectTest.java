@@ -12,6 +12,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.ltrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.rtrim;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
@@ -31,6 +32,7 @@ import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.entity.NoIdEmp_;
+import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
@@ -935,7 +937,7 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void select() {
+  void test_select() {
     Emp_ e = new Emp_();
     Buildable<?> stmt = nativeSql.from(e).select(e.id, e.name);
 
@@ -1308,5 +1310,15 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(when(c -> {}, literal("c")));
     Sql<?> sql = stmt.asSql();
     assertEquals("select 'c' from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_select() {
+    Emp_ e = new Emp_();
+    Emp_ e2 = new Emp_();
+    SelectExpression<Integer> expression = select(c -> c.from(e2).select(e2.id));
+    Buildable<?> stmt = nativeSql.from(e).select(expression);
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select (select t1_.ID from EMP t1_) from EMP t0_", sql.getRawSql());
   }
 }
