@@ -18,6 +18,8 @@ public abstract class AbstractCtType implements CtType {
 
   private final String qualifiedName;
 
+  protected final String simpleName;
+
   protected AbstractCtType(Context ctx, TypeMirror type) {
     assertNotNull(ctx, type);
     this.ctx = ctx;
@@ -25,8 +27,10 @@ public abstract class AbstractCtType implements CtType {
     this.typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement != null) {
       qualifiedName = typeElement.getQualifiedName().toString();
+      simpleName = typeElement.getSimpleName().toString();
     } else {
       qualifiedName = ctx.getMoreTypes().getTypeName(type);
+      simpleName = qualifiedName;
     }
   }
 

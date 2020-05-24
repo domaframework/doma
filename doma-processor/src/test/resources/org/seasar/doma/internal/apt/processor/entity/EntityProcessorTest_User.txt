@@ -35,7 +35,7 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.User, ?>> __embeddedPropertyTypeMap;
 
     private _User() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "User";
         __catalogName = "";
@@ -56,7 +56,7 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.User, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.User, ?>> __embeddedMap) {
-        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.User, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.User.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "id", "", __namingType, false));
+        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.User, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.User.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofInteger(), "id", "", __namingType, false));
         __embeddedMap.put("address", new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.User, org.seasar.doma.internal.apt.processor.entity.UserAddress>("address", org.seasar.doma.internal.apt.processor.entity.User.class, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().getEmbeddablePropertyTypes("address", org.seasar.doma.internal.apt.processor.entity.User.class, __namingType)));
         __map.putAll(__embeddedMap.get("address").getEmbeddablePropertyTypeMap());
     }
@@ -96,7 +96,7 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -228,10 +228,6 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
      */
     public static _User newInstance() {
         return new _User();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.User> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

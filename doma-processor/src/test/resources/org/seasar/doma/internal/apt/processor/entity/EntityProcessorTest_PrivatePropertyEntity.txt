@@ -36,7 +36,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __embeddedPropertyTypeMap;
 
     private _PrivatePropertyEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "PrivatePropertyEntity";
         __catalogName = "";
@@ -57,7 +57,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __embeddedMap) {
-        __map.put("name", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "name", "", __namingType, true, true, false));
+        __map.put("name", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), "name", "", __namingType, true, true, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity, ?>> __idList) {
@@ -94,7 +94,7 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -224,10 +224,6 @@ public final class _PrivatePropertyEntity extends org.seasar.doma.jdbc.entity.Ab
      */
     public static _PrivatePropertyEntity newInstance() {
         return new _PrivatePropertyEntity();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.PrivatePropertyEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

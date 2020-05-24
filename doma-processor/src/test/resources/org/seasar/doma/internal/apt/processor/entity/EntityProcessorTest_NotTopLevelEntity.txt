@@ -36,7 +36,7 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?>> __embeddedPropertyTypeMap;
 
     private _NotTopLevelEntity__Hoge() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "Hoge";
         __catalogName = "";
@@ -93,7 +93,7 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -222,10 +222,6 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
      */
     public static _NotTopLevelEntity__Hoge newInstance() {
         return new _NotTopLevelEntity__Hoge();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

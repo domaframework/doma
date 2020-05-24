@@ -11,7 +11,7 @@ public final class _LombokValue extends org.seasar.doma.jdbc.domain.AbstractDoma
     private static final _LombokValue singleton = new _LombokValue();
 
     private _LombokValue() {
-        super(org.seasar.doma.wrapper.StringWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());
     }
 
     @Override

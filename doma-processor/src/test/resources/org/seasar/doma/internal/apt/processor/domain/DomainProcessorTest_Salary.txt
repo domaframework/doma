@@ -11,7 +11,7 @@ public final class _Salary extends org.seasar.doma.jdbc.domain.AbstractDomainTyp
     private static final _Salary singleton = new _Salary();
 
     private _Salary() {
-        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofBigDecimal());
     }
 
     @Override

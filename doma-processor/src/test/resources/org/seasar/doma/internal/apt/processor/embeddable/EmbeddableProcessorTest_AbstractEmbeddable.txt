@@ -13,7 +13,7 @@ public final class _AbstractEmbeddable implements org.seasar.doma.jdbc.entity.Em
     @Override
     public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
         return java.util.Arrays.asList(
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), embeddedPropertyName + ".aaa", "", namingType, true, true, false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".aaa", "", namingType, true, true, false));
     }
 
     @Override
