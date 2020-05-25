@@ -95,16 +95,18 @@ public class WhereDeclaration extends ComparisonDeclaration {
             right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
   }
 
-  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void in(
+      PropertyMetamodel<PROPERTY> left, SubSelectContext<PropertyMetamodel<PROPERTY>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    add(new Criterion.InSubQuery(new Operand.Prop(left), right.context));
+    add(new Criterion.InSubQuery(new Operand.Prop(left), right.get()));
   }
 
-  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, SubSelectContext<PROPERTY> right) {
+  public <PROPERTY> void notIn(
+      PropertyMetamodel<PROPERTY> left, SubSelectContext<PropertyMetamodel<PROPERTY>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
-    add(new Criterion.NotInSubQuery(new Operand.Prop(left), right.context));
+    add(new Criterion.NotInSubQuery(new Operand.Prop(left), right.get()));
   }
 
   public <PROPERTY1, PROPERTY2> void in(
@@ -143,35 +145,35 @@ public class WhereDeclaration extends ComparisonDeclaration {
 
   public <PROPERTY1, PROPERTY2> void in(
       Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
-      SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
+      SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());
     Operand.Prop prop2 = new Operand.Prop(left.getItem2());
-    add(new Criterion.InTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
+    add(new Criterion.InTuple2SubQuery(new Tuple2<>(prop1, prop2), right.get()));
   }
 
   public <PROPERTY1, PROPERTY2> void notIn(
       Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
-      SubSelectContext<Tuple2<PROPERTY1, PROPERTY2>> right) {
+      SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> right) {
     Objects.requireNonNull(left);
     Objects.requireNonNull(right);
     Operand.Prop prop1 = new Operand.Prop(left.getItem1());
     Operand.Prop prop2 = new Operand.Prop(left.getItem2());
-    add(new Criterion.NotInTuple2SubQuery(new Tuple2<>(prop1, prop2), right.context));
+    add(new Criterion.NotInTuple2SubQuery(new Tuple2<>(prop1, prop2), right.get()));
   }
 
   public void exists(SubSelectContext<?> subSelectContext) {
     Objects.requireNonNull(subSelectContext);
-    add(new Criterion.Exists(subSelectContext.context));
+    add(new Criterion.Exists(subSelectContext.get()));
   }
 
   public void notExists(SubSelectContext<?> subSelectContext) {
     Objects.requireNonNull(subSelectContext);
-    add(new Criterion.NotExists(subSelectContext.context));
+    add(new Criterion.NotExists(subSelectContext.get()));
   }
 
-  public SubSelectFromDeclaration from(EntityMetamodel<?> entityMetamodel) {
-    return new SubSelectFromDeclaration(entityMetamodel);
+  public <ENTITY> SubSelectFromDeclaration<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
+    return new SubSelectFromDeclaration<>(entityMetamodel);
   }
 }

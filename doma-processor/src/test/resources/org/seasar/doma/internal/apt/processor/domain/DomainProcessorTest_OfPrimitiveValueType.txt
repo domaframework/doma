@@ -11,7 +11,7 @@ public final class _OfPrimitiveValueType extends org.seasar.doma.jdbc.domain.Abs
     private static final _OfPrimitiveValueType singleton = new _OfPrimitiveValueType();
 
     private _OfPrimitiveValueType() {
-        super(org.seasar.doma.wrapper.PrimitiveIntWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofPrimitiveInt());
     }
 
     @Override

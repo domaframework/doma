@@ -1,19 +1,8 @@
 package org.seasar.doma.jdbc.criteria.expression;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
-import org.seasar.doma.internal.jdbc.scalar.Scalar;
-import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.wrapper.LongWrapper;
-import org.seasar.doma.wrapper.Wrapper;
 
 public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY> {
   Asterisk Asterisk = new Asterisk();
@@ -81,7 +70,6 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
   }
 
   class Count extends AbstractFunction<Long> {
-    private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
     public final boolean distinct;
 
@@ -101,7 +89,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
     @Override
     public EntityPropertyType<?, Long> asType() {
-      return propertyType;
+      return new LongPropertyType(null);
     }
 
     @Override
@@ -158,7 +146,6 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
   }
 
   class Asterisk implements PropertyMetamodel<Long> {
-    private final LongEntityPropertyType propertyType = new LongEntityPropertyType();
 
     private Asterisk() {}
 
@@ -174,7 +161,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
     @Override
     public EntityPropertyType<?, ?> asType() {
-      return propertyType;
+      return new LongPropertyType(null);
     }
 
     @Override
@@ -198,108 +185,5 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     void visit(AggregateFunction.Sum<?> sum);
 
     void visit(AggregateFunction.Asterisk asterisk);
-  }
-}
-
-class LongEntityPropertyType implements EntityPropertyType<Object, Long> {
-  @Override
-  public String getName() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getColumnName() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getColumnName(Function<String, String> quoteFunction) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getColumnName(BiFunction<NamingType, String, String> namingFunction) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getColumnName(
-      BiFunction<NamingType, String, String> namingFunction,
-      Function<String, String> quoteFunction) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isQuoteRequired() {
-    return false;
-  }
-
-  @Override
-  public boolean isId() {
-    return false;
-  }
-
-  @Override
-  public boolean isVersion() {
-    return false;
-  }
-
-  @Override
-  public boolean isTenantId() {
-    return false;
-  }
-
-  @Override
-  public boolean isInsertable() {
-    return false;
-  }
-
-  @Override
-  public boolean isUpdatable() {
-    return false;
-  }
-
-  @Override
-  public Property<Object, Long> createProperty() {
-    return new LongProperty();
-  }
-
-  @Override
-  public void copy(Object dest, Object src) {
-    throw new UnsupportedOperationException();
-  }
-}
-
-class LongProperty implements Property<Object, Long> {
-  private final Scalar<Long, Long> scalar = new BasicScalar<>(LongWrapper::new);
-
-  @Override
-  public Object get() {
-    return scalar.get();
-  }
-
-  @Override
-  public Property<Object, Long> load(Object o) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Property<Object, Long> save(Object o) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public InParameter<Long> asInParameter() {
-    return new ScalarInParameter<>(scalar);
-  }
-
-  @Override
-  public Wrapper<Long> getWrapper() {
-    return scalar.getWrapper();
-  }
-
-  @Override
-  public Optional<Class<?>> getDomainClass() {
-    return scalar.getDomainClass();
   }
 }

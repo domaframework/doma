@@ -13,13 +13,18 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.lower;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -105,7 +110,7 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void select() {
+  void test_select() {
     Employee_ e = new Employee_();
 
     List<Employee> list = nativeSql.from(e).select().fetch();
@@ -124,6 +129,21 @@ public class NativeSqlSelectTest {
     assertEquals(14, list.size());
     Employee employee = list.get(0);
     assertEquals("SMITH", employee.getEmployeeName());
+  }
+
+  @Test
+  void select_joined_entity() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Department> list =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .select(d)
+            .fetch();
+
+    assertEquals(14, list.size());
   }
 
   @Test
@@ -534,5 +554,56 @@ public class NativeSqlSelectTest {
             .fetch();
 
     assertEquals(14, list.size());
+  }
+
+  @Test
+  void expressions_when() {
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.employeeName, literal("SMITH"), lower(e.employeeName));
+                      c.eq(e.employeeName, literal("KING"), lower(e.employeeName));
+                    },
+                    literal("_")))
+            .fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(1, list.stream().filter(it -> it.equals("smith")).count());
+    assertEquals(1, list.stream().filter(it -> it.equals("king")).count());
+  }
+
+  @Test
+  void expressions_when_empty() {
+    Employee_ e = new Employee_();
+
+    List<String> list = nativeSql.from(e).select(when(c -> {}, literal("_"))).fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(14, list.stream().filter(it -> it.equals("_")).count());
+  }
+
+  @Test
+  void expressions_literal_localDate() {
+    Employee_ e = new Employee_();
+
+    LocalDate date = nativeSql.from(e).select(literal(LocalDate.of(2020, 5, 23))).fetchOne();
+
+    assertEquals(LocalDate.of(2020, 5, 23), date);
+  }
+
+  @Test
+  void expressions_select() {
+    Employee_ e = new Employee_();
+    Employee_ e2 = new Employee_();
+
+    Long count =
+        nativeSql.from(e).select(select(c -> c.from(e2).select(count(e2.employeeId)))).fetchOne();
+
+    assertEquals(14L, count);
   }
 }

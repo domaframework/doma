@@ -11,7 +11,7 @@ public final class _OfEnumDomain extends org.seasar.doma.jdbc.domain.AbstractDom
     private static final _OfEnumDomain singleton = new _OfEnumDomain();
 
     private _OfEnumDomain() {
-        super(() -> new org.seasar.doma.wrapper.EnumWrapper<org.seasar.doma.internal.apt.processor.domain.OfEnumDomain.JobType>(org.seasar.doma.internal.apt.processor.domain.OfEnumDomain.JobType.class));
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofEnum(org.seasar.doma.internal.apt.processor.domain.OfEnumDomain.JobType.class));
     }
 
     @Override

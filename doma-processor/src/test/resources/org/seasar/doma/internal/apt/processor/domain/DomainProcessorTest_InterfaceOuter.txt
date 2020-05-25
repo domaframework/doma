@@ -11,7 +11,7 @@ public final class _InterfaceOuter__Inner extends org.seasar.doma.jdbc.domain.Ab
     private static final _InterfaceOuter__Inner singleton = new _InterfaceOuter__Inner();
 
     private _InterfaceOuter__Inner() {
-        super(org.seasar.doma.wrapper.BigDecimalWrapper::new);
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofBigDecimal());
     }
 
     @Override

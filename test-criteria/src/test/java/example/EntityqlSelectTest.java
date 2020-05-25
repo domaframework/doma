@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -456,5 +457,14 @@ public class EntityqlSelectTest {
     assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));
     assertTrue(list.stream().map(Employee::getEmployeeName).allMatch(Objects::nonNull));
     assertTrue(list.stream().map(Employee::getDepartment).allMatch(Objects::nonNull));
+  }
+
+  @Test
+  void expressions_literal_int() {
+    Employee_ e = new Employee_();
+
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, literal(1))).fetchOne();
+
+    assertNotNull(employee);
   }
 }

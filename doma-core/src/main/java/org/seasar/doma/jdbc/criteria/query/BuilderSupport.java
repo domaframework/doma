@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
+import org.seasar.doma.internal.jdbc.sql.ConvertToLogFormatFunction;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
@@ -15,7 +16,9 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
+import org.seasar.doma.jdbc.criteria.expression.CaseExpression;
 import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
+import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -25,6 +28,7 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
+import org.seasar.doma.wrapper.Wrapper;
 
 public class BuilderSupport {
   private final Config config;
@@ -470,7 +474,9 @@ public class BuilderSupport {
           ArithmeticExpression.Visitor,
           StringExpression.Visitor,
           LiteralExpression.Visitor,
-          AggregateFunction.Visitor {
+          AggregateFunction.Visitor,
+          CaseExpression.Visitor,
+          SelectExpression.Visitor {
 
     @Override
     public void visit(PropertyMetamodel<?> propertyMetamodel) {
@@ -545,13 +551,14 @@ public class BuilderSupport {
     }
 
     @Override
-    public void visit(LiteralExpression.StringLiteral stringLiteral) {
-      buf.appendSql(stringLiteral.toString());
-    }
-
-    @Override
-    public void visit(LiteralExpression.IntLiteral intLiteral) {
-      buf.appendSql(intLiteral.toString());
+    public void visit(LiteralExpression<?> expression) {
+      Wrapper<?> wrapper = expression.asType().createProperty().getWrapper();
+      String text =
+          wrapper.accept(
+              config.getDialect().getSqlLogFormattingVisitor(),
+              new ConvertToLogFormatFunction(),
+              null);
+      buf.appendSql(text);
     }
 
     @Override
@@ -588,6 +595,36 @@ public class BuilderSupport {
     @Override
     public void visit(AggregateFunction.Asterisk asterisk) {
       buf.appendSql(asterisk.getName());
+    }
+
+    @Override
+    public void visit(CaseExpression<?> expression) {
+      if (expression.criterionList.isEmpty()) {
+        expression.otherwise.accept(this);
+      } else {
+        buf.appendSql("case");
+        expression.criterionList.forEach(
+            pair -> {
+              buf.appendSql(" when ");
+              Criterion criterion = pair.fst;
+              Operand operand = pair.snd;
+              criterion.accept(new CriterionVisitor(0));
+              buf.appendSql(" then ");
+              operand.accept(operandVisitor);
+            });
+        buf.appendSql(" else ");
+        expression.otherwise.accept(this);
+        buf.appendSql(" end");
+      }
+    }
+
+    @Override
+    public void visit(SelectExpression<?> expression) {
+      buf.appendSql("(");
+      AliasManager child = new AliasManager(expression.context, aliasManager);
+      SelectBuilder builder = new SelectBuilder(config, expression.context, commenter, buf, child);
+      builder.interpret();
+      buf.appendSql(")");
     }
 
     private void binaryOperator(String operator, Operand left, Operand right) {

@@ -73,7 +73,7 @@ public class NativeSqlInsertTest {
     int count =
         nativeSql
             .insert(da)
-            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))).select())
+            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))))
             .execute();
 
     assertEquals(2, count);
@@ -107,7 +107,7 @@ public class NativeSqlInsertTest {
     Department_ da = new Department_("DEPARTMENT_ARCHIVE");
     Department_ d = new Department_();
 
-    int count = nativeSql.insert(da).select(c -> c.from(d).select()).execute();
+    int count = nativeSql.insert(da).select(c -> c.from(d)).execute();
 
     assertEquals(4, count);
   }

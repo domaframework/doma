@@ -2,6 +2,28 @@
 Release notes
 =============
 
+v2.36.0: 2020-05-25
+======================
+
+* `GH440 <https://github.com/domaframework/doma/pull/440>`_
+  Update the Criteria API document
+* `GH439 <https://github.com/domaframework/doma/pull/439>`_
+  Remove lambda expressions from generated code to reduce compilation time
+* `GH438 <https://github.com/domaframework/doma/pull/438>`_
+  Support the select expression
+* `GH437 <https://github.com/domaframework/doma/pull/437>`_
+  Support the literal expression for the following data types
+* `GH436 <https://github.com/domaframework/doma/pull/436>`_
+  Support the case expression
+* `GH435 <https://github.com/domaframework/doma/pull/435>`_
+  Make a select method call optional in a sub-select
+* `GH432 <https://github.com/domaframework/doma/pull/432>`_
+  Add the select and the selectTo methods to the Entityql and NativeSql DSLs
+* `GH431 <https://github.com/domaframework/doma/pull/431>`_
+  Add some string expressions
+* `GH430 <https://github.com/domaframework/doma/pull/430>`_
+  Polish
+
 v2.35.0: 2020-05-17
 ======================
 

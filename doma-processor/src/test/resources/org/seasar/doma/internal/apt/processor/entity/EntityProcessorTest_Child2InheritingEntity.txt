@@ -36,7 +36,7 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __embeddedPropertyTypeMap;
 
     private _Child2InheritingEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = new java.util.function.Supplier<org.seasar.doma.internal.apt.processor.entity.Parent2EntityListener<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity>>() { @Override public org.seasar.doma.internal.apt.processor.entity.Parent2EntityListener<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity> get() { return ListenerHolder.listener; } };
         __immutable = false;
         __name = "Child2InheritingEntity";
         __catalogName = "";
@@ -57,9 +57,9 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __embeddedMap) {
-        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "aaa", "", __namingType, true, true, false));
-        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.math.BigDecimal, java.math.BigDecimal>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper()), "bbb", "", __namingType, true, true, false));
-        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "ccc", "", __namingType, true, true, false));
+        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofInteger(), "aaa", "", __namingType, true, true, false));
+        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.math.BigDecimal, java.math.BigDecimal>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofBigDecimal(), "bbb", "", __namingType, true, true, false));
+        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), "ccc", "", __namingType, true, true, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2InheritingEntity, ?>> __idList) {
@@ -96,7 +96,7 @@ public final class _Child2InheritingEntity extends org.seasar.doma.jdbc.entity.A
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override

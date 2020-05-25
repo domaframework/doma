@@ -19,7 +19,8 @@ import org.seasar.doma.internal.apt.meta.id.IdGeneratorMetaVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
-import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers;
+import org.seasar.doma.internal.jdbc.entity.TableNames;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EmbeddedPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -208,7 +209,21 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
   private void printConstructor() {
     iprint("private %1$s() {%n", simpleName);
-    iprint("    __listenerSupplier = () -> ListenerHolder.listener;%n");
+    if (entityMeta.isNullEntityListener()) {
+      iprint("    __listenerSupplier = %1$s.of();%n", NullEntityListenerSuppliers.class);
+    } else {
+      if (entityMeta.isGenericEntityListener()) {
+        iprint(
+            "    __listenerSupplier = new java.util.function.Supplier<%1$s<%2$s>>() { "
+                + "@Override public %1$s<%2$s> get() { return ListenerHolder.listener; } };%n",
+            entityMeta.getEntityListenerElement(), entityMeta.getType());
+      } else {
+        iprint(
+            "    __listenerSupplier = new java.util.function.Supplier<%1$s>() { "
+                + "@Override public %1$s get() { return ListenerHolder.listener; } };%n",
+            entityMeta.getEntityListenerElement());
+      }
+    }
     iprint("    __immutable = %1$s;%n", entityMeta.isImmutable());
     iprint("    __name = \"%1$s\";%n", entityMeta.getEntityName());
     iprint("    __catalogName = \"%1$s\";%n", entityMeta.getCatalogName());
@@ -371,7 +386,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
   private void printGetTableNameMethod() {
     iprint("@Override%n");
     iprint("public String getTableName() {%n");
-    iprint("    return getTableName(%1$s.DEFAULT::apply);%n", Naming.class);
+    iprint("    return getTableName(%1$s.namingFunction);%n", TableNames.class);
     iprint("}%n");
     print("%n");
     iprint("@Override%n");
@@ -705,6 +720,9 @@ public class EntityTypeGenerator extends AbstractGenerator {
   }
 
   private void printListenerHolder() {
+    if (entityMeta.isNullEntityListener()) {
+      return;
+    }
     iprint("private static class ListenerHolder {%n");
     if (entityMeta.isGenericEntityListener()) {
       iprint(

@@ -38,7 +38,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __embeddedPropertyTypeMap;
 
     private _OriginalStatesChildEntity() {
-        __listenerSupplier = () -> ListenerHolder.listener;
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
         __immutable = false;
         __name = "OriginalStatesChildEntity";
         __catalogName = "";
@@ -59,9 +59,9 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
     }
 
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __embeddedMap) {
-        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.IntegerWrapper()), "aaa", "", __namingType, true, true, false));
-        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.math.BigDecimal, java.math.BigDecimal>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.BigDecimalWrapper()), "bbb", "", __namingType, true, true, false));
-        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(new org.seasar.doma.wrapper.StringWrapper()), "ccc", "", __namingType, true, true, false));
+        __map.put("aaa", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofInteger(), "aaa", "", __namingType, true, true, false));
+        __map.put("bbb", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.math.BigDecimal, java.math.BigDecimal>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofBigDecimal(), "bbb", "", __namingType, true, true, false));
+        __map.put("ccc", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, java.lang.String, java.lang.String>(org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), "ccc", "", __namingType, true, true, false));
     }
 
     private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity, ?>> __idList) {
@@ -98,7 +98,7 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
 
     @Override
     public String getTableName() {
-        return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
+        return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }
 
     @Override
@@ -235,10 +235,6 @@ public final class _OriginalStatesChildEntity extends org.seasar.doma.jdbc.entit
      */
     public static _OriginalStatesChildEntity newInstance() {
         return new _OriginalStatesChildEntity();
-    }
-
-    private static class ListenerHolder {
-        private static org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.OriginalStatesChildEntity> listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
     }
 
 }

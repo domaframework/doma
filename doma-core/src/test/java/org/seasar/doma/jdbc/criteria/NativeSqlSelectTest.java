@@ -12,9 +12,11 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.ltrim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.max;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.min;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.rtrim;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -30,6 +32,7 @@ import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.entity.NoIdEmp_;
+import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
@@ -403,6 +406,18 @@ class NativeSqlSelectTest {
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select t0_.ID from EMP t0_ where exists (select t1_.ID from CATA.DEPT t1_)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_exist_without_select() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt = nativeSql.from(e).where(c -> c.exists(c.from(d))).select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where exists (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
         sql.getFormattedSql());
   }
 
@@ -922,7 +937,7 @@ class NativeSqlSelectTest {
   }
 
   @Test
-  void select() {
+  void test_select() {
     Emp_ e = new Emp_();
     Buildable<?> stmt = nativeSql.from(e).select(e.id, e.name);
 
@@ -1233,5 +1248,77 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(literal(123));
     Sql<?> sql = stmt.asSql();
     assertEquals("select 123 from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_when_returns_same_type_with_comparison_type() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql.from(e).select(when(c -> c.eq(e.name, literal("a"), literal("b")), literal("z")));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select case when t0_.NAME = 'a' then 'b' else 'z' end from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_when_returns_different_type_with_comparison_type() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql.from(e).select(when(c -> c.eq(e.name, literal("a"), literal(1)), literal(0)));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select case " + "when t0_.NAME = 'a' then 1 else 0 end from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_when_operators() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.name, literal("a"), literal("b"));
+                      c.ne(e.name, literal("c"), literal("d"));
+                      c.ge(e.name, literal("e"), literal("f"));
+                      c.gt(e.name, literal("g"), literal("h"));
+                      c.le(e.name, literal("i"), literal("j"));
+                      c.lt(e.name, literal("k"), literal("l"));
+                      c.isNull(e.name, literal("m"));
+                      c.isNotNull(e.name, literal("n"));
+                    },
+                    literal("z")));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select case "
+            + "when t0_.NAME = 'a' then 'b' "
+            + "when t0_.NAME <> 'c' then 'd' "
+            + "when t0_.NAME >= 'e' then 'f' "
+            + "when t0_.NAME > 'g' then 'h' "
+            + "when t0_.NAME <= 'i' then 'j' "
+            + "when t0_.NAME < 'k' then 'l' "
+            + "when t0_.NAME is null then 'm' "
+            + "when t0_.NAME is not null then 'n' "
+            + "else 'z' end from EMP t0_",
+        sql.getRawSql());
+  }
+
+  @Test
+  void expression_when_empty() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(when(c -> {}, literal("c")));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select 'c' from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_select() {
+    Emp_ e = new Emp_();
+    Emp_ e2 = new Emp_();
+    SelectExpression<Integer> expression = select(c -> c.from(e2).select(e2.id));
+    Buildable<?> stmt = nativeSql.from(e).select(expression);
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select (select t1_.ID from EMP t1_) from EMP t0_", sql.getRawSql());
   }
 }
