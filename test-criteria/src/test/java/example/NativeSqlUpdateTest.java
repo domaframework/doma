@@ -112,6 +112,20 @@ public class NativeSqlUpdateTest {
   }
 
   @Test
+  void expression_concat() {
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(c -> c.value(e.employeeName, concat("[", concat(e.employeeName, "]"))))
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+    assertEquals(1, count);
+  }
+
+  @Test
   void expressions() {
     Employee_ e = new Employee_();
 
@@ -149,6 +163,7 @@ public class NativeSqlUpdateTest {
             .update(e)
             .set(c -> c.value(e.salary, subSelect))
             .where(c -> c.eq(e.employeeId, 1))
+            .peek(System.out::println)
             .execute();
 
     assertEquals(1, count);
