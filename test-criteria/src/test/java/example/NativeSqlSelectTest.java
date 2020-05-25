@@ -132,6 +132,21 @@ public class NativeSqlSelectTest {
   }
 
   @Test
+  void select_joined_entity() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Department> list =
+        nativeSql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .select(d)
+            .fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Test
   void select_entities_tuple2() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();

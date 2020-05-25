@@ -294,10 +294,92 @@ The NativeSql DSL supports the following methods:
 These methods handle the stream that wraps a JDBC ResultSet.
 So they are useful to process a large ResultSet effectively.
 
-Select expression (NativeSql)
+Select expression
 -----------------------------
 
-To project columns, use the select method.
+Entity selection (Entityql, NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, the result entity type is the same as the one specified at the ``from`` method.
+See the following code:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NO, t0_.EMPLOYEE_NAME, t0_.MANAGER_ID,
+    t0_.HIREDATE, t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
+    from EMPLOYEE t0_
+    inner join DEPARTMENT t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
+
+To choose a joined entity type as the result entity type,
+call the ``select`` method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Department> list =
+        entityql
+            .from(e)
+            .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+            .select(d)
+            .fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t1_.DEPARTMENT_ID, t1_.DEPARTMENT_NO, t1_.DEPARTMENT_NAME, t1_.LOCATION, t1_.VERSION
+    from EMPLOYEE t0_
+    inner join DEPARTMENT t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
+
+Multiple entity selection (NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can specify multiple entity types and fetch them as a tuple as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    List<Tuple2<Department, Employee>> list =
+        nativeSql
+            .from(d)
+            .leftJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+            .where(c -> c.eq(d.departmentId, 4))
+            .select(d, e)
+            .fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION,
+    t0_.VERSION, t1_.EMPLOYEE_ID, t1_.EMPLOYEE_NO, t1_.EMPLOYEE_NAME, t1_.MANAGER_ID,
+    t1_.HIREDATE, t1_.SALARY, t1_.DEPARTMENT_ID, t1_.ADDRESS_ID, t1_.VERSION
+    from DEPARTMENT t0_ left outer join EMPLOYEE t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
+    where t0_.DEPARTMENT_ID = ?
+
+The entity included in the tuple may be null when the all properties of the entity are null.
+
+Column projection (NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To project columns, use the ``select`` method:
 
 To project one column, pass one property to the select method as follows:
 
@@ -331,7 +413,27 @@ The above query issues the following SQL statement:
 Up to 9 numbers, the column results are held by ``Tuple2`` to ``Tuple9``.
 For more than 9 numbers, the results are held by ``Row``.
 
+Column projection and mapping (Entityql, NativeSql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To project columns and map them to an entity, use the ``selectTo`` method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list = entityql.from(e).selectTo(e, e.employeeName).fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NAME from EMPLOYEE t0_
+
 .. _criteria_where:
+
+Note that the select clause of the above SQL statement contains the primary key "EMPLOYEE_ID".
+The ``selectTo`` method always includes the id properties of the entity, even if you don't.
 
 Where expression (Entityql, NativeSql)
 --------------------------------------
@@ -500,8 +602,8 @@ The above query issues the following SQL statement:
 
 .. _criteria_associate:
 
-associate (Entityql)
-~~~~~~~~~~~~~~~~~~~~
+association (Entityql)
+~~~~~~~~~~~~~~~~~~~~~~
 
 You can associate entities with the ``associate`` operation in the Entityql DSL.
 You have to use the ``associate`` operation with join expression.
@@ -595,8 +697,8 @@ The above query issues the following SQL statement:
     t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
     from EMPLOYEE t0_
 
-Dynamic associate (Entityql)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dynamic association (Entityql)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you use the above dynamic join expression, the association must be optional.
 To do it, pass the result of ``AssociationOption.optional()`` to the associate method:
@@ -625,37 +727,6 @@ To do it, pass the result of ``AssociationOption.optional()`` to the associate m
                 },
                 AssociationOption.optional())
             .fetch();
-
-Fetch multiple entities at once (NativeSql)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When the select method accepts multiple metamodels,
-the fetch method returns the tuple of the corresponding entities:
-
-.. code-block:: java
-
-    Employee_ e = new Employee_();
-    Department_ d = new Department_();
-
-    List<Tuple2<Department, Employee>> list =
-        nativeSql
-            .from(d)
-            .leftJoin(e, on -> on.eq(d.departmentId, e.departmentId))
-            .where(c -> c.eq(d.departmentId, 4))
-            .select(d, e)
-            .fetch();
-
-The above query issues the following SQL statement:
-
-.. code-block:: sql
-
-    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION,
-    t0_.VERSION, t1_.EMPLOYEE_ID, t1_.EMPLOYEE_NO, t1_.EMPLOYEE_NAME, t1_.MANAGER_ID,
-    t1_.HIREDATE, t1_.SALARY, t1_.DEPARTMENT_ID, t1_.ADDRESS_ID, t1_.VERSION
-    from DEPARTMENT t0_ left outer join EMPLOYEE t1_ on (t0_.DEPARTMENT_ID = t1_.DEPARTMENT_ID)
-    where t0_.DEPARTMENT_ID = ?
-
-The entity included in the tuple should be null when the all properties of the entity are null.
 
 Aggregate Functions (NativeSql)
 -------------------------------
@@ -1127,7 +1198,7 @@ We also support the INSERT SELECT syntax as follows:
     int count =
         nativeSql
             .insert(da)
-            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))).select())
+            .select(c -> c.from(d).where(cc -> cc.in(d.departmentId, Arrays.asList(1, 2))))
             .execute();
 
 The above query issues the following SQL statement:
@@ -1248,12 +1319,18 @@ The execute method may throw following exceptions:
 
 * UniqueConstraintException: if an unique constraint is violated
 
-Property Expressions (Entityql, NativeSql)
+Property expressions (Entityql, NativeSql)
 ==========================================
 
-We support the following expressions:
+All expression methods are defined
+in the ``org.seasar.doma.jdbc.criteria.expression.Expressions`` class.
 
-Arithmetic Expressions:
+Use them with static import.
+
+Arithmetic expressions
+----------------------
+
+We provide the following methods:
 
 * add - (+)
 * sub - (-)
@@ -1261,18 +1338,7 @@ Arithmetic Expressions:
 * div - (/)
 * mod - (%)
 
-String Expression:
-
-* concat
-
-Literal Expression:
-
-* literal (for String and int)
-
-These are defined in the ``org.seasar.doma.jdbc.criteria.expression.Expressions`` class.
-Use them with static import.
-
-The expressions are useful to update a column relative to current column value:
+You can use the ``add`` method as follows:
 
 .. code-block:: java
 
@@ -1281,11 +1347,7 @@ The expressions are useful to update a column relative to current column value:
     int count =
         nativeSql
             .update(e)
-            .set(
-                c -> {
-                  c.value(e.employeeName, concat("[", concat(e.employeeName, "]")));
-                  c.value(e.version, add(e.version, literal(1)));
-                })
+            .set(c -> c.value(e.version, add(e.version, 10)))
             .where(c -> c.eq(e.employeeId, 1))
             .execute();
 
@@ -1293,8 +1355,148 @@ The above query issues the following SQL statement:
 
 .. code-block:: sql
 
-    update EMPLOYEE t0_ set t0_.EMPLOYEE_NAME = concat('[', concat(t0_.EMPLOYEE_NAME, ']')),
-    t0_.VERSION = (t0_.VERSION + 1)
+    update EMPLOYEE t0_
+    set t0_.VERSION = (t0_.VERSION + ?)
+    where t0_.EMPLOYEE_ID = ?
+
+String functions
+----------------
+
+We provide the following method:
+
+* concat
+* lower
+* upper
+* trim
+* ltrim
+* rtrim
+
+You can use the ``concat`` method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(c -> c.value(e.employeeName, concat("[", concat(e.employeeName, "]"))))
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    update EMPLOYEE t0_
+    set t0_.EMPLOYEE_NAME = concat(?, concat(t0_.EMPLOYEE_NAME, ?))
+    where t0_.EMPLOYEE_ID = ?
+
+Literal expression
+------------------
+
+We provide the following method:
+
+* literal (for all basic data types)
+
+You can use the ``literal`` method as follows:
+
+.. code-block:: java
+
+    Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, literal(1))).fetchOne();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NO, t0_.EMPLOYEE_NAME, t0_.MANAGER_ID, t0_.HIREDATE,
+    t0_.SALARY, t0_.DEPARTMENT_ID, t0_.ADDRESS_ID, t0_.VERSION
+    from EMPLOYEE t0_
+    where t0_.EMPLOYEE_ID = 1
+
+.. note::
+
+    Note that the literal expressions are not recognized as bind variables.
+
+Case expression
+---------------
+
+We support the following method:
+
+* when
+
+You can use the ``when`` method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.employeeName, literal("SMITH"), lower(e.employeeName));
+                      c.eq(e.employeeName, literal("KING"), lower(e.employeeName));
+                    },
+                    literal("_")))
+            .fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select case
+            when t0_.EMPLOYEE_NAME = 'SMITH' then lower(t0_.EMPLOYEE_NAME)
+            when t0_.EMPLOYEE_NAME = 'KING' then lower(t0_.EMPLOYEE_NAME)
+            else '_' end
+    from EMPLOYEE t0_
+
+Subquery select expression
+--------------------------
+
+We support the following method:
+
+* select
+
+You can use the ``select`` method as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    Employee_ e = new Employee_();
+    Employee_ e2 = new Employee_();
+    Department_ d = new Department_();
+
+    SelectExpression<Salary> subSelect =
+        select(
+            c ->
+                c.from(e2)
+                    .innerJoin(d, on -> on.eq(e2.departmentId, d.departmentId))
+                    .where(cc -> cc.eq(e.departmentId, d.departmentId))
+                    .groupBy(d.departmentId)
+                    .select(max(e2.salary)));
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(c -> c.value(e.salary, subSelect))
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    update EMPLOYEE t0_
+    set t0_.SALARY = (
+        select max(t1_.SALARY)
+        from EMPLOYEE t1_
+        inner join DEPARTMENT t2_ on (t1_.DEPARTMENT_ID = t2_.DEPARTMENT_ID)
+        where t0_.DEPARTMENT_ID = t2_.DEPARTMENT_ID group by t2_.DEPARTMENT_ID
+    )
     where t0_.EMPLOYEE_ID = ?
 
 Tips
@@ -1335,7 +1537,7 @@ It is useful to handle two tables that have the same data structure:
     int count =
         nativeSql
             .insert(da)
-            .select(c -> c.from(d).select())
+            .select(c -> c.from(d))
             .execute();
 
 .. code-block:: sql
@@ -1399,4 +1601,5 @@ Sample projects
 ===============
 
 * `simple-examples <https://github.com/domaframework/simple-examples>`_
+* `spring-boot-jpetstore <https://github.com/domaframework/spring-boot-jpetstore>`_
 * `test-criteria <https://github.com/domaframework/doma/tree/master/test-criteria>`_
