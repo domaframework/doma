@@ -3,7 +3,7 @@ package org.seasar.doma.internal.apt.processor.domain;
 /**
  * @param <T> T
  */
-@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+// Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 public final class _UpperBoundParameterizedDomain<T extends java.lang.Number> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedDomain<T>> {
 
     static {

@@ -2,8 +2,6 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Artifact;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
@@ -30,15 +28,11 @@ public abstract class AbstractGenerator implements Generator {
   }
 
   protected void printGenerated() {
-    String annotationElements =
+    String generationInformation =
         String.format(
             "value = { \"%s\", \"%s\" }, date = \"%tFT%<tT.%<tL%<tz\"",
             Artifact.getName(), ctx.getOptions().getVersion(), ctx.getOptions().getDate());
-    TypeMirror generatedTypeMirror = getGeneratedTypeMirror();
-    if (generatedTypeMirror == null) {
-      iprint("// %s%n", annotationElements);
-    }
-    iprint("@%s(%s)%n", generatedTypeMirror, annotationElements);
+    iprint("// Generated(%s)%n", generationInformation);
   }
 
   protected void printValidateVersionStaticInitializer() {
@@ -65,20 +59,5 @@ public abstract class AbstractGenerator implements Generator {
 
   protected void unindent() {
     printer.unindent();
-  }
-
-  private TypeMirror getGeneratedTypeMirror() {
-    TypeElement java8 =
-        ctx.getMoreElements().getTypeElement((CharSequence) "javax.annotation.Generated");
-    if (java8 != null) {
-      return java8.asType();
-    }
-    TypeElement java9 =
-        ctx.getMoreElements()
-            .getTypeElement((CharSequence) "javax.annotation.processing.Generated");
-    if (java9 != null) {
-      return java9.asType();
-    }
-    return null;
   }
 }

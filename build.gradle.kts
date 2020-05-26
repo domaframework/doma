@@ -8,6 +8,7 @@ plugins {
     id("net.researchgate.release") version "2.8.1"
 }
 
+val javaVersion = JavaVersion.VERSION_1_8;
 val encoding: String by project
 val isSnapshot = version.toString().endsWith("SNAPSHOT")
 val releaseVersion = properties["release.releaseVersion"].toString()
@@ -56,11 +57,12 @@ subprojects {
     val compileJava by tasks.existing(JavaCompile::class) {
         dependsOn(replaceVersionInJava)
         options.encoding = encoding
+        options.compilerArgs.addAll(listOf("--release", javaVersion.majorVersion))
     }
 
     val compileTestJava by tasks.existing(JavaCompile::class) {
         options.encoding = encoding
-        options.compilerArgs = listOf("-proc:none")
+        options.compilerArgs.addAll(listOf("--release", javaVersion.majorVersion, "-proc:none"))
     }
 
     val test by tasks.existing(Test::class) {
@@ -74,8 +76,8 @@ subprojects {
     }
 
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
@@ -114,8 +116,33 @@ subprojects {
 }
 
 configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") }) {
+
+    configure<JavaPluginExtension> {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    val mainSourceSet = project.the<SourceSetContainer>()["main"]
+    val moduleSourceDir = file("src/module")
+    val moduleOutputDir = file(mainSourceSet.java.destinationDirectory)
+
+    val compileModule by tasks.registering(JavaCompile::class) {
+        dependsOn(tasks.named("classes"))
+        source = fileTree(moduleSourceDir)
+        destinationDir = moduleOutputDir
+        sourceCompatibility = "9"
+        targetCompatibility = sourceCompatibility
+        classpath = files()
+        options.compilerArgs.addAll(listOf(
+                "--release", sourceCompatibility,
+                "--module-version", "${project.version}",
+                "--module-path", configurations["compileClasspath"].asPath
+        ))
+    }
+
     val javadoc by tasks.existing(Javadoc::class) {
         options.encoding = encoding
+        options.source = javaVersion.majorVersion
         (options as StandardJavadocDocletOptions).apply {
             charSet = encoding
             docEncoding = encoding
@@ -126,19 +153,21 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
     }
 
     val jar by tasks.existing(Jar::class) {
+        dependsOn(compileModule)
         manifest {
             attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+        }
+    }
+
+    val sourcesJar by tasks.existing(Jar::class) {
+        from(moduleSourceDir) {
+            include("module-info.java")
         }
     }
 
     val build by tasks.existing {
         val publishToMavenLocal by tasks.existing
         dependsOn(publishToMavenLocal)
-    }
-
-    configure<JavaPluginExtension> {
-        withJavadocJar()
-        withSourcesJar()
     }
 
     configure<de.marcphilipp.gradle.nexus.NexusPublishExtension> {
@@ -213,7 +242,7 @@ rootProject.apply {
 
     val beforeReleaseBuild by tasks.existing {
         dependsOn(replaceVersion)
-     }
+    }
 
     val updateVersion by tasks.existing {
         doLast {
