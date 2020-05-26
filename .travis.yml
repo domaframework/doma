@@ -1,7 +1,7 @@
 sudo: false
 dist: trusty
 language: java
-jdk: oraclejdk8
+jdk: openjdk11
 branches:
   only:
     - master
