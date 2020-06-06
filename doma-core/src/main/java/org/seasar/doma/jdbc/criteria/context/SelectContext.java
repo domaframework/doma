@@ -28,9 +28,7 @@ public class SelectContext implements Context {
   public Integer limit;
   public Integer offset;
   public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.none());
-  public final Map<
-          Pair<EntityMetamodel<?>, EntityMetamodel<?>>,
-          BiFunction<Object, Object, AssociationPair<?, ?>>>
+  public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
 

@@ -73,6 +73,36 @@ public class Emp {
     this.manager = manager;
   }
 
+  public Emp withDept(Dept dept) {
+    return new Emp(
+        this.getEmployeeId(),
+        this.getEmployeeNo(),
+        this.getEmployeeName(),
+        this.getManagerId(),
+        this.getHiredate(),
+        this.getSalary(),
+        this.getDepartmentId(),
+        this.getAddressId(),
+        this.getVersion(),
+        dept,
+        this.getManager());
+  }
+
+  public Emp withManager(Emp manager) {
+    return new Emp(
+        this.getEmployeeId(),
+        this.getEmployeeNo(),
+        this.getEmployeeName(),
+        this.getManagerId(),
+        this.getHiredate(),
+        this.getSalary(),
+        this.getDepartmentId(),
+        this.getAddressId(),
+        this.getVersion(),
+        this.getDepartment(),
+        manager);
+  }
+
   public Integer getEmployeeId() {
     return employeeId;
   }

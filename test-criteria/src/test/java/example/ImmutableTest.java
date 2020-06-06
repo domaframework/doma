@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
-import org.seasar.doma.jdbc.criteria.context.AssociationPair;
 
 @ExtendWith(Env.class)
 public class ImmutableTest {
@@ -29,7 +28,7 @@ public class ImmutableTest {
   }
 
   @Test
-  void associateAndReplace() {
+  void associateWith() {
     Emp_ e = new Emp_();
     Emp_ m = new Emp_();
     Dept_ d = new Dept_();
@@ -40,44 +39,8 @@ public class ImmutableTest {
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
             .leftJoin(m, on -> on.eq(e.managerId, m.employeeId))
             .where(c -> c.eq(d.departmentName, "SALES"))
-            .associateAndReplace(
-                e,
-                d,
-                (emp, dept) -> {
-                  Emp newEmp =
-                      new Emp(
-                          emp.getEmployeeId(),
-                          emp.getEmployeeNo(),
-                          emp.getEmployeeName(),
-                          emp.getManagerId(),
-                          emp.getHiredate(),
-                          emp.getSalary(),
-                          emp.getDepartmentId(),
-                          emp.getAddressId(),
-                          emp.getVersion(),
-                          dept,
-                          emp.getManager());
-                  return new AssociationPair<>(newEmp, dept);
-                })
-            .associateAndReplace(
-                e,
-                m,
-                (emp, manager) -> {
-                  Emp newEmp =
-                      new Emp(
-                          emp.getEmployeeId(),
-                          emp.getEmployeeNo(),
-                          emp.getEmployeeName(),
-                          emp.getManagerId(),
-                          emp.getHiredate(),
-                          emp.getSalary(),
-                          emp.getDepartmentId(),
-                          emp.getAddressId(),
-                          emp.getVersion(),
-                          emp.getDepartment(),
-                          manager);
-                  return new AssociationPair<>(newEmp, manager);
-                })
+            .associateWith(e, d, Emp::withDept)
+            .associateWith(e, m, Emp::withManager)
             .fetch();
 
     assertEquals(6, list.size());
