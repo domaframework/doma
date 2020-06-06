@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
@@ -79,6 +80,30 @@ public class EntityqlSelectStarting<ENTITY>
     Objects.requireNonNull(associator);
     Objects.requireNonNull(option);
     declaration.associate(first, second, associator, option);
+    return this;
+  }
+
+  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associateWith(
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
+      BiFunction<ENTITY1, ENTITY2, ENTITY1> associator) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
+    declaration.associateWith(first, second, associator, AssociationOption.mandatory());
+    return this;
+  }
+
+  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associateWith(
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
+      BiFunction<ENTITY1, ENTITY2, ENTITY1> associator,
+      AssociationOption option) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
+    Objects.requireNonNull(option);
+    declaration.associateWith(first, second, associator, option);
     return this;
   }
 

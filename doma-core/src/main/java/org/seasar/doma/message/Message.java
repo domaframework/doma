@@ -949,6 +949,10 @@ public enum Message implements MessageResource {
   DOMA6009(
       "The parameter \"{0}\" is unknown. "
           + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the select method."),
+  DOMA6010(
+      "The parameter \"{0}\" is unknown. "
+          + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the associateWith method. "
+          + "If the innerJoin or leftJoin method call is optional, pass the AssociationKind.OPTIONAL value to the associateWith method."),
   ;
 
   private final String messagePattern;

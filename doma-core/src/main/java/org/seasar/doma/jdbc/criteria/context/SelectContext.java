@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
@@ -28,7 +28,7 @@ public class SelectContext implements Context {
   public Integer limit;
   public Integer offset;
   public ForUpdate forUpdate = new ForUpdate(ForUpdateOption.none());
-  public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiConsumer<Object, Object>>
+  public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
 
