@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.criteria.context.AssociationPair;
 import org.seasar.doma.jdbc.criteria.context.ForUpdate;
 import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
@@ -142,11 +144,30 @@ public class SelectFromDeclaration {
         new Projection.EntityMetamodels(entityMetamodel, new ArrayList<>(projectionTargets));
   }
 
-  @SuppressWarnings("unchecked")
   public <ENTITY1, ENTITY2> void associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
+      AssociationOption option) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
+    Objects.requireNonNull(option);
+    associateAndReplace(
+        first,
+        second,
+        (entity1, entity2) -> {
+          associator.accept(entity1, entity2);
+          return null;
+        },
+        option);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <ENTITY1, ENTITY2> void associateAndReplace(
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
+      BiFunction<ENTITY1, ENTITY2, AssociationPair<ENTITY1, ENTITY2>> associator,
       AssociationOption option) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
@@ -164,7 +185,8 @@ public class SelectFromDeclaration {
       }
       return;
     }
-    //noinspection unchecked
-    context.associations.put(new Pair<>(first, second), (BiConsumer<Object, Object>) associator);
+    context.associations.put(
+        new Pair<>(first, second),
+        (entity1, entity2) -> associator.apply((ENTITY1) entity1, (ENTITY2) entity2));
   }
 }
