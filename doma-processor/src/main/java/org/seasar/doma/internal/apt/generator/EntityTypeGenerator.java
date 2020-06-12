@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.EntityTypeImplementation;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -64,6 +65,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
+    printEntityTypeImplementation();
     iprint(
         "public final class %1$s extends %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ AbstractEntityType.class, /* 3 */ entityMeta.getType());
@@ -76,6 +78,10 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printListenerHolder();
     unindent();
     iprint("}%n");
+  }
+
+  private void printEntityTypeImplementation() {
+    iprint("@%1$s%n", EntityTypeImplementation.class);
   }
 
   private void printFields() {
