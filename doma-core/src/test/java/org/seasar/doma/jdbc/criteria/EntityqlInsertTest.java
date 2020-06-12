@@ -30,4 +30,20 @@ class EntityqlInsertTest {
         "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1)",
         sql.getFormattedSql());
   }
+
+  @Test
+  void excludeNull() {
+    Emp emp = new Emp();
+    emp.setId(1);
+    emp.setName(null);
+    emp.setSalary(new BigDecimal("1000"));
+    emp.setVersion(1);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = entityql.insert(e, emp, settings -> settings.setExcludeNull(true));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "insert into EMP (ID, SALARY, VERSION) values (1, 1000, 1)", sql.getFormattedSql());
+  }
 }

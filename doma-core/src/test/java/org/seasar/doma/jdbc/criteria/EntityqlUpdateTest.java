@@ -47,4 +47,21 @@ class EntityqlUpdateTest {
         "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 where ID = 1",
         sql.getFormattedSql());
   }
+
+  @Test
+  void excludeNull() {
+    Emp emp = new Emp();
+    emp.setId(1);
+    emp.setName(null);
+    emp.setSalary(new BigDecimal("1000"));
+    emp.setVersion(1);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = entityql.update(e, emp, settings -> settings.setExcludeNull(true));
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "update EMP set SALARY = 1000, VERSION = 1 + 1 where ID = 1 and VERSION = 1",
+        sql.getFormattedSql());
+  }
 }
