@@ -54,6 +54,15 @@ public interface Config {
   }
 
   /**
+   * Returns the Script file loader.
+   *
+   * @return the Script file loader
+   */
+  default ScriptFileLoader getScriptFileLoader() {
+    return ConfigSupport.defaultScriptFileLoader;
+  }
+
+  /**
    * Returns the JDBC logger.
    *
    * @return the JDBC logger
