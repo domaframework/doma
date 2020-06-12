@@ -10,6 +10,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
+import org.seasar.doma.DaoImplementation;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
@@ -58,6 +59,7 @@ public class DaoImplGenerator extends AbstractGenerator {
       iprint("@%1$s(%2$s)%n", annotation.getTypeValue(), annotation.getElementsValue());
     }
     printGenerated();
+    printDaoImplementation();
     iprint(
         "%4$s class %1$s extends %2$s implements %3$s {%n",
         /* 1 */ simpleName,
@@ -72,6 +74,10 @@ public class DaoImplGenerator extends AbstractGenerator {
     printMethods();
     unindent();
     print("}%n");
+  }
+
+  private void printDaoImplementation() {
+    iprint("@%1$s%n", DaoImplementation.class);
   }
 
   private CharSequence getParentClassName() {
