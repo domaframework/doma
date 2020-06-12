@@ -5,6 +5,7 @@ package __.org.seasar.doma.internal.apt.processor.domain;
  * @param <U> U
  */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.DomainTypeImplementation
 public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.String, org.seasar.doma.internal.apt.processor.domain.ParameterizedValueObject<T, U>> {
 
     static {

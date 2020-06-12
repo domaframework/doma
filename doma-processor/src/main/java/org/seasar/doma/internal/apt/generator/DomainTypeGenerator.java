@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import org.seasar.doma.DomainTypeImplementation;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
@@ -43,6 +44,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
       iprint("/** */%n");
     }
     printGenerated();
+    printDomainTypeImplementation();
     if (domainMeta.isParameterized()) {
       iprint(
           "public final class %1$s<%5$s> extends %2$s<%3$s, %4$s> {%n",
@@ -68,6 +70,10 @@ public class DomainTypeGenerator extends AbstractGenerator {
     unindent();
     unindent();
     iprint("}%n");
+  }
+
+  private void printDomainTypeImplementation() {
+    iprint("@%1$s%n", DomainTypeImplementation.class);
   }
 
   private void printFields() {
