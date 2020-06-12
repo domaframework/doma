@@ -41,7 +41,7 @@ public class EntityqlUpdateStatement<ENTITY>
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     query.setSqlLogType(settings.getSqlLogType());
-    query.setNullExcluded(false);
+    query.setNullExcluded(settings.getExcludeNull());
     query.setVersionIgnored(settings.getIgnoreVersion());
     query.setIncludedPropertyNames();
     query.setExcludedPropertyNames();
