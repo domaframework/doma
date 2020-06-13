@@ -13,13 +13,13 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 
 /** @author backpaper0 */
-public class AbstractDaoTest {
+public class DaoImplSupportTest {
 
   @Test
   public void testConstructorParameter1() throws Exception {
     Config config = null;
     try {
-      new AbstractDao(config) {};
+      new DaoImplSupport(config) {};
       fail();
     } catch (DomaNullPointerException expected) {
       assertEquals("config", expected.getParameterName());
@@ -31,7 +31,7 @@ public class AbstractDaoTest {
     Config config = null;
     Connection connection = mock(Connection.class);
     try {
-      new AbstractDao(config, connection) {};
+      new DaoImplSupport(config, connection) {};
       fail();
     } catch (DomaNullPointerException expected) {
       assertEquals("config", expected.getParameterName());
@@ -43,7 +43,7 @@ public class AbstractDaoTest {
     Config config = mock(Config.class);
     Connection connection = null;
     try {
-      new AbstractDao(config, connection) {};
+      new DaoImplSupport(config, connection) {};
       fail();
     } catch (DomaNullPointerException expected) {
       assertEquals("connection", expected.getParameterName());
@@ -55,7 +55,7 @@ public class AbstractDaoTest {
     Config config = null;
     DataSource dataSource = mock(DataSource.class);
     try {
-      new AbstractDao(config, dataSource) {};
+      new DaoImplSupport(config, dataSource) {};
       fail();
     } catch (DomaNullPointerException expected) {
       assertEquals("config", expected.getParameterName());
@@ -67,7 +67,7 @@ public class AbstractDaoTest {
     Config config = mock(Config.class);
     DataSource dataSource = null;
     try {
-      new AbstractDao(config, dataSource) {};
+      new DaoImplSupport(config, dataSource) {};
       fail();
     } catch (DomaNullPointerException expected) {
       assertEquals("dataSource", expected.getParameterName());

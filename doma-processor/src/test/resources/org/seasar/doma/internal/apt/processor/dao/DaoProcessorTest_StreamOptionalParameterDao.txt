@@ -3,40 +3,42 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class StreamOptionalParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao {
+public class StreamOptionalParameterDaoImpl implements org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao.class, "selectById", java.lang.Integer.class, java.util.function.Function.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao.class, "selectById", java.lang.Integer.class, java.util.function.Function.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao.class, "select", java.util.function.Function.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDao.class, "select", java.util.function.Function.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public StreamOptionalParameterDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public StreamOptionalParameterDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public StreamOptionalParameterDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected StreamOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -44,7 +46,7 @@ public class StreamOptionalParameterDaoImpl extends org.seasar.doma.internal.jdb
      * @param connection the connection
      */
     protected StreamOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -52,19 +54,24 @@ public class StreamOptionalParameterDaoImpl extends org.seasar.doma.internal.jdb
      * @param dataSource the dataSource
      */
     protected StreamOptionalParameterDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public <R> R selectById(java.lang.Integer id, java.util.function.Function<java.util.stream.Stream<java.util.Optional<example.domain.PhoneNumber>>, R> mapper) {
-        entering("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", id, mapper);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", id, mapper);
         try {
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamOptionalParameterDao/selectById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl");
@@ -77,27 +84,27 @@ public class StreamOptionalParameterDaoImpl extends org.seasar.doma.internal.jdb
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainStreamHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "selectById", __e);
             throw __e;
         }
     }
 
     @Override
     public <R extends java.lang.Number> R select(java.util.function.Function<java.util.stream.Stream<java.util.Optional<java.lang.String>>, R> mapper) {
-        entering("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", mapper);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", mapper);
         try {
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
             __query.setMethod(__method1);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/StreamOptionalParameterDao/select.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl");
             __query.setCallerMethodName("select");
@@ -109,13 +116,13 @@ public class StreamOptionalParameterDaoImpl extends org.seasar.doma.internal.jdb
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler<java.lang.String, R>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalBasicStreamHandler<java.lang.String, R>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString(), mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.StreamOptionalParameterDaoImpl", "select", __e);
             throw __e;
         }
     }

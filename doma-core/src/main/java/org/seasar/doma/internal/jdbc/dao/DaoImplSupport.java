@@ -15,15 +15,11 @@ import org.seasar.doma.jdbc.ConfigProvider;
 import org.seasar.doma.jdbc.DaoMethodNotFoundException;
 import org.seasar.doma.jdbc.QueryImplementors;
 
-public abstract class AbstractDao implements ConfigProvider {
+public class DaoImplSupport implements ConfigProvider {
 
-  protected final Config __config;
+  private final Config __config;
 
-  protected AbstractDao() {
-    __config = null;
-  }
-
-  protected AbstractDao(Config config) {
+  public DaoImplSupport(Config config) {
     if (config == null) {
       throw new DomaNullPointerException("config");
     }
@@ -31,7 +27,7 @@ public abstract class AbstractDao implements ConfigProvider {
     this.__config = new RuntimeConfig(config, config.getDataSource());
   }
 
-  protected AbstractDao(Config config, Connection connection) {
+  public DaoImplSupport(Config config, Connection connection) {
     if (config == null) {
       throw new DomaNullPointerException("config");
     }
@@ -48,7 +44,7 @@ public abstract class AbstractDao implements ConfigProvider {
     this.__config = new RuntimeConfig(config, dataSource);
   }
 
-  protected AbstractDao(Config config, DataSource dataSource) {
+  public DaoImplSupport(Config config, DataSource dataSource) {
     if (config == null) {
       throw new DomaNullPointerException("config");
     }
@@ -108,27 +104,27 @@ public abstract class AbstractDao implements ConfigProvider {
     return __config;
   }
 
-  protected DataSource getDataSource() {
+  public DataSource getDataSource() {
     return __config.getDataSource();
   }
 
-  protected CommandImplementors getCommandImplementors() {
+  public CommandImplementors getCommandImplementors() {
     return __config.getCommandImplementors();
   }
 
-  protected QueryImplementors getQueryImplementors() {
+  public QueryImplementors getQueryImplementors() {
     return __config.getQueryImplementors();
   }
 
-  protected void entering(String callerClassName, String callerMethodName, Object... args) {
+  public void entering(String callerClassName, String callerMethodName, Object... args) {
     __config.getJdbcLogger().logDaoMethodEntering(callerClassName, callerMethodName, args);
   }
 
-  protected void exiting(String callerClassName, String callerMethodName, Object result) {
+  public void exiting(String callerClassName, String callerMethodName, Object result) {
     __config.getJdbcLogger().logDaoMethodExiting(callerClassName, callerMethodName, result);
   }
 
-  protected void throwing(String callerClassName, String callerMethodName, RuntimeException e) {
+  public void throwing(String callerClassName, String callerMethodName, RuntimeException e) {
     __config.getJdbcLogger().logDaoMethodThrowing(callerClassName, callerMethodName, e);
   }
 

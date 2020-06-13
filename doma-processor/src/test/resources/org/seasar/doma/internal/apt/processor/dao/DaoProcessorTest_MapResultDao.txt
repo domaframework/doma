@@ -3,44 +3,46 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.MapResultDao {
+public class MapResultDaoImpl implements org.seasar.doma.internal.apt.processor.dao.MapResultDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectSingleResult");
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectSingleResult");
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectOptionalSingleResult");
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectOptionalSingleResult");
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectResultList");
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "selectResultList");
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "stream", java.util.function.Function.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MapResultDao.class, "stream", java.util.function.Function.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public MapResultDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public MapResultDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public MapResultDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected MapResultDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -48,7 +50,7 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
      * @param connection the connection
      */
     protected MapResultDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -56,16 +58,21 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
      * @param dataSource the dataSource
      */
     protected MapResultDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public java.util.Map<java.lang.String, java.lang.Object> selectSingleResult() {
-        entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectSingleResult");
@@ -77,24 +84,24 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.NONE));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Map<java.lang.String, java.lang.Object>> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.MapSingleResultHandler(org.seasar.doma.MapKeyNamingType.NONE));
             java.util.Map<java.lang.String, java.lang.Object> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectSingleResult", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.Optional<java.util.Map<java.lang.String, java.lang.Object>> selectOptionalSingleResult() {
-        entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
             __query.setMethod(__method1);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectOptionalSingleResult.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectOptionalSingleResult");
@@ -106,24 +113,24 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler(org.seasar.doma.MapKeyNamingType.NONE));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<java.util.Map<java.lang.String, java.lang.Object>>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalMapSingleResultHandler(org.seasar.doma.MapKeyNamingType.NONE));
             java.util.Optional<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectOptionalSingleResult", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> selectResultList() {
-        entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
             __query.setMethod(__method2);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/selectResultList.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("selectResultList");
@@ -135,27 +142,27 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Map<java.lang.String, java.lang.Object>>> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.MapResultListHandler(org.seasar.doma.MapKeyNamingType.NONE));
             java.util.List<java.util.Map<java.lang.String, java.lang.Object>> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "selectResultList", __e);
             throw __e;
         }
     }
 
     @Override
     public <R> R stream(java.util.function.Function<java.util.stream.Stream<java.util.Map<java.lang.String, java.lang.Object>>, R> mapper) {
-        entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", mapper);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", mapper);
         try {
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method3);
             __query.setMethod(__method3);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/MapResultDao/stream.sql");
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl");
             __query.setCallerMethodName("stream");
@@ -167,13 +174,13 @@ public class MapResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstract
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<R>(org.seasar.doma.MapKeyNamingType.NONE, mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.MapStreamHandler<R>(org.seasar.doma.MapKeyNamingType.NONE, mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.MapResultDaoImpl", "stream", __e);
             throw __e;
         }
     }

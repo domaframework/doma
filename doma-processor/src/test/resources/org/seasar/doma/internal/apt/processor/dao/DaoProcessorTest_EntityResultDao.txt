@@ -3,46 +3,48 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.EntityResultDao {
+public class EntityResultDaoImpl implements org.seasar.doma.internal.apt.processor.dao.EntityResultDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectSingleResult");
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectSingleResult");
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectOptionalSingleResult");
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectOptionalSingleResult");
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectOptionalSingleResultWithExpansion");
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectOptionalSingleResultWithExpansion");
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectResultList");
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "selectResultList");
 
-    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "stream", java.util.function.Function.class);
+    private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EntityResultDao.class, "stream", java.util.function.Function.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public EntityResultDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public EntityResultDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public EntityResultDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected EntityResultDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -50,7 +52,7 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
      * @param connection the connection
      */
     protected EntityResultDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -58,16 +60,21 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
      * @param dataSource the dataSource
      */
     protected EntityResultDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public org.seasar.doma.internal.apt.processor.entity.Emp selectSingleResult() {
-        entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EntityResultDao/selectSingleResult.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl");
@@ -80,24 +87,24 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.entity.Emp> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
             org.seasar.doma.internal.apt.processor.entity.Emp __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectSingleResult", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp> selectOptionalSingleResult() {
-        entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
             __query.setMethod(__method1);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EntityResultDao/selectOptionalSingleResult.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl");
@@ -110,24 +117,24 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
             java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResult", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp> selectOptionalSingleResultWithExpansion() {
-        entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
             __query.setMethod(__method2);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EntityResultDao/selectOptionalSingleResultWithExpansion.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl");
@@ -140,24 +147,24 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
             java.util.Optional<org.seasar.doma.internal.apt.processor.entity.Emp> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectOptionalSingleResultWithExpansion", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> selectResultList() {
-        entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList");
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method3);
             __query.setMethod(__method3);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EntityResultDao/selectResultList.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl");
@@ -170,27 +177,27 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntityResultListHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
             java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "selectResultList", __e);
             throw __e;
         }
     }
 
     @Override
     public <R> R stream(java.util.function.Function<java.util.stream.Stream<org.seasar.doma.internal.apt.processor.entity.Emp>, R> mapper) {
-        entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", mapper);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", mapper);
         try {
             if (mapper == null) {
                 throw new org.seasar.doma.DomaNullPointerException("mapper");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method4);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method4);
             __query.setMethod(__method4);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EntityResultDao/stream.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl");
@@ -203,13 +210,13 @@ public class EntityResultDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<org.seasar.doma.internal.apt.processor.entity.Emp, R>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.EntityStreamHandler<org.seasar.doma.internal.apt.processor.entity.Emp, R>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EntityResultDaoImpl", "stream", __e);
             throw __e;
         }
     }

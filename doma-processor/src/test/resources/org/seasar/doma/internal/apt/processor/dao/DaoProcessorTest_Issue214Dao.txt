@@ -3,31 +3,38 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class Issue214DaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.Issue214Dao {
+public class Issue214DaoImpl implements org.seasar.doma.internal.apt.processor.dao.Issue214Dao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.Issue214Dao.class, "select", org.seasar.doma.internal.apt.processor.dao.Issue214Entity.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.Issue214Dao.class, "select", org.seasar.doma.internal.apt.processor.dao.Issue214Entity.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /**
      * @param config the config
      */
     public Issue214DaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public org.seasar.doma.internal.apt.processor.dao.Issue214Entity select(org.seasar.doma.internal.apt.processor.dao.Issue214Entity entity) {
-        entering("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", entity);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", entity);
         try {
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/Issue214Dao/select.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.dao._Issue214Entity.getSingletonInternal());
             __query.addParameter("entity", org.seasar.doma.internal.apt.processor.dao.Issue214Entity.class, entity);
@@ -41,13 +48,13 @@ public class Issue214DaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractD
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.Issue214Entity> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.dao.Issue214Entity>(org.seasar.doma.internal.apt.processor.dao._Issue214Entity.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.Issue214Entity> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.dao.Issue214Entity>(org.seasar.doma.internal.apt.processor.dao._Issue214Entity.getSingletonInternal()));
             org.seasar.doma.internal.apt.processor.dao.Issue214Entity __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.Issue214DaoImpl", "select", __e);
             throw __e;
         }
     }

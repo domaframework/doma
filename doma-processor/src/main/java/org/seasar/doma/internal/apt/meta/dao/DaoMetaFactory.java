@@ -251,7 +251,12 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       if (daoMeta.getParentDaoMeta() != null) {
         throw new AptException(Message.DOMA4188, daoMeta.getTypeElement(), new Object[] {});
       }
-      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement);
+      List<ExecutableElement> methods =
+          ElementFilter.methodsIn(typeElement.getEnclosedElements()).stream()
+              .filter(it -> it.getModifiers().contains(Modifier.PUBLIC))
+              .filter(it -> !it.getModifiers().contains(Modifier.STATIC))
+              .collect(toList());
+      ParentDaoMeta parentDaoMeta = new ParentDaoMeta(daoAnnot, typeElement, methods);
       daoMeta.setParentDaoMeta(parentDaoMeta);
     }
   }
@@ -300,6 +305,13 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     QueryMeta queryMeta = createQueryMeta(daoMeta, methodElement);
     validateQueryMeta(queryMeta, methodElement);
     daoMeta.addQueryMeta(queryMeta);
+
+    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
+    if (parentDaoMeta != null) {
+      parentDaoMeta
+          .getMethods()
+          .removeIf(it -> ctx.getMoreElements().overrides(methodElement, it, interfaceElement));
+    }
   }
 
   private void validateMethod(TypeElement interfaceElement, ExecutableElement methodElement) {

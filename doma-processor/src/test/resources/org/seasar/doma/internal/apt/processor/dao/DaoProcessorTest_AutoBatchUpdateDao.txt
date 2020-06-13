@@ -3,38 +3,40 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDao {
+public class AutoBatchUpdateDaoImpl implements org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDao.class, "update", java.util.List.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDao.class, "update", java.util.List.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public AutoBatchUpdateDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public AutoBatchUpdateDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public AutoBatchUpdateDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected AutoBatchUpdateDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -42,7 +44,7 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param connection the connection
      */
     protected AutoBatchUpdateDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -50,19 +52,24 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param dataSource the dataSource
      */
     protected AutoBatchUpdateDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public int[] update(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> entities) {
-        entering("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", entities);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", entities);
         try {
             if (entities == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entities");
             }
-            org.seasar.doma.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = getQueryImplementors().createAutoBatchUpdateQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoBatchUpdateQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl");
             __query.setCallerMethodName("update");
@@ -74,13 +81,13 @@ public class AutoBatchUpdateDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setExcludedPropertyNames();
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
-            org.seasar.doma.jdbc.command.BatchUpdateCommand __command = getCommandImplementors().createBatchUpdateCommand(__method0, __query);
+            org.seasar.doma.jdbc.command.BatchUpdateCommand __command = __support.getCommandImplementors().createBatchUpdateCommand(__method0, __query);
             int[] __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoBatchUpdateDaoImpl", "update", __e);
             throw __e;
         }
     }

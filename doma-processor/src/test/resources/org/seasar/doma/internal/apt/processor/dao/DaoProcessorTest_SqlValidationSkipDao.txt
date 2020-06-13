@@ -3,38 +3,40 @@ package org.seasar.doma.internal.apt.processor.dao;
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
-public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao {
+public class SqlValidationSkipDaoImpl implements org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDao.class, "selectById", java.lang.String.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public SqlValidationSkipDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public SqlValidationSkipDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public SqlValidationSkipDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected SqlValidationSkipDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -42,7 +44,7 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
      * @param connection the connection
      */
     protected SqlValidationSkipDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -50,16 +52,21 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
      * @param dataSource the dataSource
      */
     protected SqlValidationSkipDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public java.lang.String selectById(java.lang.String name) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", name);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", name);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlValidationSkipDao/selectById.sql");
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl");
@@ -72,13 +79,13 @@ public class SqlValidationSkipDaoImpl extends org.seasar.doma.internal.jdbc.dao.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.lang.String> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<java.lang.String>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString()));
             java.lang.String __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlValidationSkipDaoImpl", "selectById", __e);
             throw __e;
         }
     }

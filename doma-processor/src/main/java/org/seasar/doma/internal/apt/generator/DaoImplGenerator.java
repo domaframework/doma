@@ -1,12 +1,15 @@
 package org.seasar.doma.internal.apt.generator;
 
+import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.function.Function;
-import javax.lang.model.element.Name;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
@@ -19,14 +22,17 @@ import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryKind;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryParameterMeta;
-import org.seasar.doma.internal.jdbc.dao.AbstractDao;
+import org.seasar.doma.internal.jdbc.dao.DaoImplSupport;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigProvider;
 
 public class DaoImplGenerator extends AbstractGenerator {
 
   private final DaoMeta daoMeta;
 
-  private final Function<TypeElement, ClassName> classNameProvider;
+  private final ParentDaoMeta parentDaoMeta;
+
+  private final CharSequence parentDaoClassName;
 
   public DaoImplGenerator(
       Context ctx,
@@ -37,7 +43,12 @@ public class DaoImplGenerator extends AbstractGenerator {
     super(ctx, className, printer);
     assertNotNull(daoMeta, classNameProvider);
     this.daoMeta = daoMeta;
-    this.classNameProvider = classNameProvider;
+    parentDaoMeta = daoMeta.getParentDaoMeta();
+    if (parentDaoMeta == null) {
+      parentDaoClassName = null;
+    } else {
+      parentDaoClassName = classNameProvider.apply(parentDaoMeta.getTypeElement());
+    }
   }
 
   @Override
@@ -61,15 +72,16 @@ public class DaoImplGenerator extends AbstractGenerator {
     printGenerated();
     printDaoImplementation();
     iprint(
-        "%4$s class %1$s extends %2$s implements %3$s {%n",
+        "%4$s class %1$s implements %2$s, %3$s {%n",
         /* 1 */ simpleName,
-        /* 2 */ getParentClassName(),
-        /* 3 */ daoMeta.getType(),
+        /* 2 */ daoMeta.getType(),
+        /* 3 */ ConfigProvider.class,
         /* 4 */ daoMeta.getAccessLevel().getModifier());
     print("%n");
     indent();
     printValidateVersionStaticInitializer();
     printStaticFields();
+    printFields();
     printConstructors();
     printMethods();
     unindent();
@@ -78,13 +90,6 @@ public class DaoImplGenerator extends AbstractGenerator {
 
   private void printDaoImplementation() {
     iprint("@%1$s%n", DaoImplementation.class);
-  }
-
-  private CharSequence getParentClassName() {
-    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    return parentDaoMeta == null
-        ? AbstractDao.class.getName()
-        : classNameProvider.apply(parentDaoMeta.getTypeElement());
   }
 
   private void printStaticFields() {
@@ -96,7 +101,7 @@ public class DaoImplGenerator extends AbstractGenerator {
             "private static final %1$s __method%2$s = %3$s.getDeclaredMethod(%4$s.class, \"%5$s\"",
             /* 1 */ Method.class,
             /* 2 */ index,
-            /* 3 */ AbstractDao.class,
+            /* 3 */ DaoImplSupport.class,
             /* 4 */ daoMeta.getTypeElement(),
             /* 5 */ queryMeta.getName());
         for (QueryParameterMeta parameterMeta : queryMeta.getParameterMetas()) {
@@ -106,6 +111,21 @@ public class DaoImplGenerator extends AbstractGenerator {
         print("%n");
       }
       index++;
+    }
+  }
+
+  private void printFields() {
+    printSupportField();
+    printParentField();
+  }
+
+  private void printSupportField() {
+    iprint("private final %1$s __support;%n%n", DaoImplSupport.class);
+  }
+
+  private void printParentField() {
+    if (hasParentDao()) {
+      iprint("private final %1$s __parent;%n%n", parentDaoClassName);
     }
   }
 
@@ -128,9 +148,6 @@ public class DaoImplGenerator extends AbstractGenerator {
         printAnnotatedConstructor();
       }
     } else {
-      if (isNoArgConstructorRequired()) {
-        printNoArgConstructor();
-      }
       printAnnotatedConstructor();
     }
   }
@@ -138,20 +155,6 @@ public class DaoImplGenerator extends AbstractGenerator {
   private boolean areJdbcConstructorsRequired() {
     ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
     return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
-  }
-
-  private boolean isNoArgConstructorRequired() {
-    String applicationScoped = ctx.getOptions().getCdiApplicationScoped();
-    for (AnnotationAnnot annotation : daoMeta.getAnnotationMirrors(AnnotationTarget.CLASS)) {
-      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(annotation.getTypeValue());
-      if (typeElement != null) {
-        Name name = typeElement.getQualifiedName();
-        if (name.contentEquals(applicationScoped)) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   private Code createConfigCode() {
@@ -172,17 +175,13 @@ public class DaoImplGenerator extends AbstractGenerator {
         });
   }
 
-  private void printNoArgConstructor() {
-    iprint("/** */%n");
-    iprint("%1$s() {%n", simpleName);
-    iprint("}%n");
-    print("%n");
-  }
-
   private void printNoArgConstructor(Code configCode) {
     iprint("/** */%n");
     iprint("public %1$s() {%n", simpleName);
-    iprint("    super(%1$s);%n", configCode);
+    iprint("    __support = new %1$s(%2$s);%n", DaoImplSupport.class, configCode);
+    if (hasParentDao()) {
+      iprint("    __parent = new %1$s(%2$s);%n", parentDaoClassName, configCode);
+    }
     iprint("}%n");
     print("%n");
   }
@@ -192,7 +191,10 @@ public class DaoImplGenerator extends AbstractGenerator {
     iprint(" * @param connection the connection%n");
     iprint(" */%n");
     iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class);
-    iprint("    super(%1$s, connection);%n", configCode);
+    iprint("    __support = new %1$s(%2$s, connection);%n", DaoImplSupport.class, configCode);
+    if (hasParentDao()) {
+      iprint("    __parent = new %1$s(%2$s, connection);%n", parentDaoClassName, configCode);
+    }
     iprint("}%n");
     print("%n");
   }
@@ -202,7 +204,10 @@ public class DaoImplGenerator extends AbstractGenerator {
     iprint(" * @param dataSource the dataSource%n");
     iprint(" */%n");
     iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class);
-    iprint("    super(%1$s, dataSource);%n", configCode);
+    iprint("    __support = new %1$s(%2$s, dataSource);%n", DaoImplSupport.class, configCode);
+    if (hasParentDao()) {
+      iprint("    __parent = new %1$s(%2$s, dataSource);%n", parentDaoClassName, configCode);
+    }
     iprint("}%n");
     print("%n");
   }
@@ -212,7 +217,10 @@ public class DaoImplGenerator extends AbstractGenerator {
     iprint(" * @param config the configuration%n");
     iprint(" */%n");
     iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class);
-    iprint("    super(config);%n");
+    iprint("    __support = new %1$s(config);%n", DaoImplSupport.class);
+    if (hasParentDao()) {
+      iprint("    __parent = new %1$s(config);%n", parentDaoClassName);
+    }
     iprint("}%n");
     print("%n");
   }
@@ -226,7 +234,10 @@ public class DaoImplGenerator extends AbstractGenerator {
         "protected %1$s(%2$s config, %3$s connection) {%n",
         simpleName, Config.class, Connection.class);
     indent();
-    iprint("super(config, connection);%n");
+    iprint("__support = new %1$s(config, connection);%n", DaoImplSupport.class);
+    if (hasParentDao()) {
+      iprint("__parent = new %1$s(config, connection);%n", parentDaoClassName);
+    }
     unindent();
     iprint("}%n");
     print("%n");
@@ -241,7 +252,10 @@ public class DaoImplGenerator extends AbstractGenerator {
         "protected %1$s(%2$s config, %3$s dataSource) {%n",
         simpleName, Config.class, DataSource.class);
     indent();
-    iprint("super(config, dataSource);%n");
+    iprint("__support = new %1$s(config, dataSource);%n", DaoImplSupport.class);
+    if (hasParentDao()) {
+      iprint("__parent = new %1$s(config, dataSource);%n", parentDaoClassName);
+    }
     unindent();
     iprint("}%n");
     print("%n");
@@ -261,19 +275,83 @@ public class DaoImplGenerator extends AbstractGenerator {
     }
     print("%1$s config) {%n", Config.class);
     indent();
-    iprint("super(config);%n");
+    iprint("__support = new %1$s(config);%n", DaoImplSupport.class);
+    if (hasParentDao()) {
+      iprint("__parent = new %1$s(config);%n", parentDaoClassName);
+    }
     unindent();
     iprint("}%n");
     print("%n");
   }
 
   private void printMethods() {
+    printGetConfigMethod();
+    printDelegateMethods();
+    printQueryMethods();
+  }
+
+  private void printGetConfigMethod() {
+    iprint("@Override%n");
+    iprint("public %1$s getConfig() {%n", Config.class);
+    indent();
+    iprint("return __support.getConfig();%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printDelegateMethods() {
+    if (hasParentDao()) {
+      for (ExecutableElement method : parentDaoMeta.getMethods()) {
+        printDelegateMethod(method);
+      }
+    }
+  }
+
+  private void printDelegateMethod(ExecutableElement method) {
+    iprint("/** */%n");
+    iprint("@Override%n");
+    iprint("public ");
+    if (!method.getTypeParameters().isEmpty()) {
+      print("<%1$s> ", method.getTypeParameters());
+    }
+    print("%1$s ", method.getReturnType());
+    print(
+        "%1$s(%2$s) ",
+        method.getSimpleName(),
+        method.getParameters().stream()
+            .map(it -> it.asType() + " " + it.getSimpleName())
+            .collect(toList()));
+    if (!method.getThrownTypes().isEmpty()) {
+      print("throws %1$s", method.getThrownTypes());
+    }
+    print("{%n");
+    indent();
+    if (method.getReturnType().getKind() == TypeKind.VOID) {
+      iprint("");
+    } else {
+      iprint("return ");
+    }
+    print(
+        "__parent.%1$s(%2$s);%n",
+        method.getSimpleName(),
+        method.getParameters().stream().map(VariableElement::getSimpleName).collect(toList()));
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printQueryMethods() {
     int index = 0;
     for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-      DaoImplMethodGenerator generator =
-          new DaoImplMethodGenerator(ctx, className, printer, daoMeta, queryMeta, index);
+      DaoImplQueryMethodGenerator generator =
+          new DaoImplQueryMethodGenerator(ctx, className, printer, daoMeta, queryMeta, index);
       generator.generate();
       index++;
     }
+  }
+
+  private boolean hasParentDao() {
+    return parentDaoMeta != null;
   }
 }
