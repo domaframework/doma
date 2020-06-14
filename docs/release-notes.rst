@@ -2,6 +2,18 @@
 Release notes
 =============
 
+v2.37.0: 2020-06-14
+======================
+
+* `GH449 <https://github.com/domaframework/doma/pull/449>`_
+  Update a document about the Criteria API
+* `GH448 <https://github.com/domaframework/doma/pull/448>`_
+  Support Quarkus
+* `GH447 <https://github.com/domaframework/doma/pull/447>`_
+  Support the excludeNull setting for the INSERT and the UPDATE queries in the Criteria API
+* `GH444 <https://github.com/domaframework/doma/pull/444>`_
+  Support to associate immutable entities in the Criteria API
+
 v2.36.0: 2020-05-25
 ======================
 
