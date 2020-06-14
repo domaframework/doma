@@ -3,10 +3,10 @@ package org.seasar.doma.internal.apt.processor.dao;
 import example.entity.Emp;
 import java.math.BigDecimal;
 import java.util.List;
-import org.seasar.doma.internal.jdbc.dao.AbstractDao;
+import org.seasar.doma.internal.jdbc.dao.DaoImplSupport;
 import org.seasar.doma.jdbc.SelectOptions;
 
-public class EmpDaoImpl extends AbstractDao implements EmpDao {
+public class EmpDaoImpl extends DaoImplSupport implements EmpDao {
 
   /** */
   public EmpDaoImpl() {

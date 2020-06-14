@@ -4,12 +4,17 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.function.Supplier;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
-import org.seasar.doma.internal.util.ResourceUtil;
+import org.seasar.doma.jdbc.ScriptFileLoader;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -52,14 +57,15 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
     if (sqlAnnotation == null) {
       assertTrue(scriptFilePath.startsWith(Constants.SCRIPT_PATH_PREFIX));
       assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
+      ScriptFileLoader loader = config.getScriptFileLoader();
 
       String dbmsSpecificPath =
           ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath, config.getDialect());
-      scriptFileUrl = ResourceUtil.getResource(dbmsSpecificPath);
+      scriptFileUrl = loader.loadAsURL(dbmsSpecificPath);
       if (scriptFileUrl != null) {
         scriptFilePath = dbmsSpecificPath;
       } else {
-        scriptFileUrl = ResourceUtil.getResource(scriptFilePath);
+        scriptFileUrl = loader.loadAsURL(scriptFilePath);
         if (scriptFileUrl == null) {
           throw new ScriptFileNotFoundException(scriptFilePath);
         }

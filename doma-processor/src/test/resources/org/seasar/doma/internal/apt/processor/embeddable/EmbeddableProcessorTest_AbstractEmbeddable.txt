@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.processor.embeddable;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.EmbeddableTypeImplementation
 public final class _AbstractEmbeddable implements org.seasar.doma.jdbc.entity.EmbeddableType<org.seasar.doma.internal.apt.processor.embeddable.AbstractEmbeddable> {
 
     static {

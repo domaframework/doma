@@ -2,38 +2,41 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.NClobFactoryDao {
+@org.seasar.doma.DaoImplementation
+public class NClobFactoryDaoImpl implements org.seasar.doma.internal.apt.processor.dao.NClobFactoryDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NClobFactoryDao.class, "create");
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NClobFactoryDao.class, "create");
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public NClobFactoryDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public NClobFactoryDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public NClobFactoryDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -41,7 +44,7 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
      * @param connection the connection
      */
     protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -49,26 +52,31 @@ public class NClobFactoryDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstr
      * @param dataSource the dataSource
      */
     protected NClobFactoryDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public java.sql.NClob create() {
-        entering("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create");
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create");
         try {
-            org.seasar.doma.jdbc.query.NClobCreateQuery __query = getQueryImplementors().createNClobCreateQuery(__method0);
+            org.seasar.doma.jdbc.query.NClobCreateQuery __query = __support.getQueryImplementors().createNClobCreateQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl");
             __query.setCallerMethodName("create");
             __query.prepare();
-            org.seasar.doma.jdbc.command.CreateCommand<java.sql.NClob> __command = getCommandImplementors().createCreateCommand(__method0, __query);
+            org.seasar.doma.jdbc.command.CreateCommand<java.sql.NClob> __command = __support.getCommandImplementors().createCreateCommand(__method0, __query);
             java.sql.NClob __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.NClobFactoryDaoImpl", "create", __e);
             throw __e;
         }
     }
