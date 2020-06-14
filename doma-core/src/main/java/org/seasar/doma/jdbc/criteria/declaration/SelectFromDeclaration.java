@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.util.Pair;
@@ -164,7 +165,38 @@ public class SelectFromDeclaration {
       }
       return;
     }
-    //noinspection unchecked
-    context.associations.put(new Pair<>(first, second), (BiConsumer<Object, Object>) associator);
+    context.associations.put(
+        new Pair<>(first, second),
+        (entity1, entity2) -> {
+          associator.accept((ENTITY1) entity1, (ENTITY2) entity2);
+          return null;
+        });
+  }
+
+  @SuppressWarnings("unchecked")
+  public <ENTITY1, ENTITY2> void associateWith(
+      EntityMetamodel<ENTITY1> first,
+      EntityMetamodel<ENTITY2> second,
+      BiFunction<ENTITY1, ENTITY2, ENTITY1> associator,
+      AssociationOption option) {
+    Objects.requireNonNull(first);
+    Objects.requireNonNull(second);
+    Objects.requireNonNull(associator);
+    Objects.requireNonNull(option);
+    if (!context.getEntityMetamodels().contains(first)) {
+      if (option == AssociationOption.Kind.MANDATORY) {
+        throw new DomaException(Message.DOMA6010, "first");
+      }
+      return;
+    }
+    if (!context.getEntityMetamodels().contains(second)) {
+      if (option == AssociationOption.Kind.MANDATORY) {
+        throw new DomaException(Message.DOMA6010, "second");
+      }
+      return;
+    }
+    context.associations.put(
+        new Pair<>(first, second),
+        (entity1, entity2) -> associator.apply((ENTITY1) entity1, (ENTITY2) entity2));
   }
 }

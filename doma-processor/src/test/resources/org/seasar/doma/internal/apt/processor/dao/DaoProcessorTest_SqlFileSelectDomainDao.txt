@@ -2,44 +2,47 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao {
+@org.seasar.doma.DaoImplementation
+public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberById", java.lang.Integer.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberById", java.lang.Integer.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectPhoneNumberByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
 
-    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectJobTypeById", java.lang.Integer.class);
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectJobTypeById", java.lang.Integer.class);
 
-    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectJobTypeByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+    private static final java.lang.reflect.Method __method3 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDao.class, "selectJobTypeByNameAndSalary", java.lang.String.class, java.math.BigDecimal.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public SqlFileSelectDomainDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public SqlFileSelectDomainDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public SqlFileSelectDomainDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected SqlFileSelectDomainDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -47,7 +50,7 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
      * @param connection the connection
      */
     protected SqlFileSelectDomainDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -55,16 +58,21 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
      * @param dataSource the dataSource
      */
     protected SqlFileSelectDomainDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public example.domain.PhoneNumber selectPhoneNumberById(java.lang.Integer id) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", id);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", id);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectDomainDao/selectPhoneNumberById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl");
@@ -77,27 +85,27 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
             example.domain.PhoneNumber __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.List<example.domain.PhoneNumber> selectPhoneNumberByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", name, salary, options);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", name, salary, options);
         try {
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method1);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
             __query.setMethod(__method1);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectDomainDao/selectPhoneNumberByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -112,24 +120,24 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
             java.util.List<example.domain.PhoneNumber> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __e);
             throw __e;
         }
     }
 
     @Override
     public example.domain.JobType selectJobTypeById(java.lang.Integer id) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", id);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", id);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method2);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
             __query.setMethod(__method2);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectDomainDao/selectJobTypeById.sql");
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl");
@@ -142,27 +150,27 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.domain.JobType> __command = getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<example.domain.JobType> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
             example.domain.JobType __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __e);
             throw __e;
         }
     }
 
     @Override
     public java.util.List<example.domain.JobType> selectJobTypeByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", name, salary, options);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", name, salary, options);
         try {
             if (options == null) {
                 throw new org.seasar.doma.DomaNullPointerException("options");
             }
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method3);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method3);
             __query.setMethod(__method3);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileSelectDomainDao/selectJobTypeByNameAndSalary.sql");
             __query.setOptions(options);
             __query.addParameter("name", java.lang.String.class, name);
@@ -177,13 +185,13 @@ public class SqlFileSelectDomainDaoImpl extends org.seasar.doma.internal.jdbc.da
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>> __command = getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
             java.util.List<example.domain.JobType> __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __e);
             throw __e;
         }
     }

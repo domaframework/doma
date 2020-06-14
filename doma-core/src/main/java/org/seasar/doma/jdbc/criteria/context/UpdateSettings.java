@@ -5,6 +5,7 @@ public class UpdateSettings extends Settings {
   private boolean allowEmptyWhere;
   private boolean ignoreVersion;
   private boolean suppressOptimisticLockException;
+  private boolean excludeNull;
 
   public int getBatchSize() {
     return batchSize;
@@ -36,5 +37,13 @@ public class UpdateSettings extends Settings {
 
   public void setSuppressOptimisticLockException(boolean suppressOptimisticLockException) {
     this.suppressOptimisticLockException = suppressOptimisticLockException;
+  }
+
+  public boolean getExcludeNull() {
+    return excludeNull;
+  }
+
+  public void setExcludeNull(boolean excludeNull) {
+    this.excludeNull = excludeNull;
   }
 }

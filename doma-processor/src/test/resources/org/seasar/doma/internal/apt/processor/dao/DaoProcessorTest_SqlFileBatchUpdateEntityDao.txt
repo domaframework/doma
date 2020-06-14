@@ -2,38 +2,41 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDao {
+@org.seasar.doma.DaoImplementation
+public class SqlFileBatchUpdateEntityDaoImpl implements org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDao.class, "update", java.util.List.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDao.class, "update", java.util.List.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public SqlFileBatchUpdateEntityDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public SqlFileBatchUpdateEntityDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public SqlFileBatchUpdateEntityDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected SqlFileBatchUpdateEntityDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -41,7 +44,7 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
      * @param connection the connection
      */
     protected SqlFileBatchUpdateEntityDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -49,19 +52,24 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
      * @param dataSource the dataSource
      */
     protected SqlFileBatchUpdateEntityDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public int[] update(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> entities) {
-        entering("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", entities);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", entities);
         try {
             if (entities == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entities");
             }
-            org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = getQueryImplementors().createSqlFileBatchUpdateQuery(__method0, org.seasar.doma.internal.apt.processor.entity.Emp.class);
+            org.seasar.doma.jdbc.query.SqlFileBatchUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createSqlFileBatchUpdateQuery(__method0, org.seasar.doma.internal.apt.processor.entity.Emp.class);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setElements(entities);
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/SqlFileBatchUpdateEntityDao/update.sql");
             __query.setParameterName("entities");
@@ -76,13 +84,13 @@ public class SqlFileBatchUpdateEntityDaoImpl extends org.seasar.doma.internal.jd
             __query.setExcludedPropertyNames();
             __query.setOptimisticLockExceptionSuppressed(false);
             __query.prepare();
-            org.seasar.doma.jdbc.command.BatchUpdateCommand __command = getCommandImplementors().createBatchUpdateCommand(__method0, __query);
+            org.seasar.doma.jdbc.command.BatchUpdateCommand __command = __support.getCommandImplementors().createBatchUpdateCommand(__method0, __query);
             int[] __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.SqlFileBatchUpdateEntityDaoImpl", "update", __e);
             throw __e;
         }
     }

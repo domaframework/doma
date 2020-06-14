@@ -109,7 +109,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
    * @param path the SQL file path
    * @return the SQL string
    */
-  protected final String getSql(String path) {
+  protected String getSql(String path) {
     try {
       return ResourceUtil.getResourceAsString(path);
     } catch (WrapException e) {

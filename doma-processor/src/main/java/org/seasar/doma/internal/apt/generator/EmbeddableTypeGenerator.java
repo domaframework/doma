@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.seasar.doma.EmbeddableTypeImplementation;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
@@ -44,6 +45,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   private void printClass() {
     iprint("/** */%n");
     printGenerated();
+    printEmbeddableTypeImplementation();
     iprint(
         "public final class %1$s implements %2$s<%3$s> {%n",
         /* 1 */ simpleName, /* 2 */ EmbeddableType.class, /* 3 */ embeddableMeta.getType());
@@ -55,6 +57,10 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     printNestedClass();
     unindent();
     iprint("}%n");
+  }
+
+  private void printEmbeddableTypeImplementation() {
+    iprint("@%1$s%n", EmbeddableTypeImplementation.class);
   }
 
   private void printFields() {

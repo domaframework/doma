@@ -21,7 +21,8 @@ import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.command.*;
 import org.seasar.doma.internal.jdbc.sql.*;
 
-public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMetaVisitor<Void> {
+public class DaoImplQueryMethodGenerator extends AbstractGenerator
+    implements QueryMetaVisitor<Void> {
 
   private final DaoMeta daoMeta;
 
@@ -29,7 +30,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
   private final String methodName;
 
-  DaoImplMethodGenerator(
+  DaoImplQueryMethodGenerator(
       Context ctx,
       ClassName className,
       Printer printer,
@@ -85,10 +86,10 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
     if (m.getSelectOptionsCtType() != null) {
       iprint("__query.setOptions(%1$s);%n", m.getSelectOptionsParameterName());
@@ -124,7 +125,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       returnCtType.accept(new SqlFileSelectQueryReturnCtTypeVisitor(m), false);
       iprint("%1$s __result = __command.execute();%n", returnMeta.getType());
       iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+      iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
       iprint("return __result;%n");
     } else {
       if (m.getSelectStrategyType() == SelectType.STREAM) {
@@ -141,11 +142,11 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       if (returnMeta.getType().getKind() == TypeKind.VOID) {
         iprint("__command.execute();%n");
         iprint("__query.complete();%n");
-        iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+        iprint("__support.exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
       } else {
         iprint("%1$s __result = __command.execute();%n", returnMeta.getType());
         iprint("__query.complete();%n");
-        iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+        iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
         iprint("return __result;%n");
       }
     }
@@ -160,10 +161,10 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setScriptFilePath(\"%1$s\");%n", m.getPath());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -172,13 +173,13 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType().getClass(), m.getSqlLogType());
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getCommandClass().getSimpleName(),
         /* 3 */ methodName);
     iprint("__command.execute();%n");
     iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
 
     printThrowingStatements(m);
     return null;
@@ -190,14 +191,14 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s);%n",
+        "%1$s<%2$s> __query = __support.getQueryImplementors().create%4$s(%5$s, %3$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getEntityCtType().getType(),
         /* 3 */ m.getEntityCtType().getTypeCode(),
         /* 4 */ m.getQueryClass().getSimpleName(),
         /* 5 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -237,7 +238,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
 
     EntityCtType entityCtType = m.getEntityCtType();
@@ -251,7 +252,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint("__query.complete();%n");
     }
 
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -264,12 +265,12 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getQueryClass().getSimpleName(),
         /* 3 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
 
     printAddParameterStatements(m.getParameterMetas());
@@ -320,7 +321,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getCommandClass().getSimpleName(),
         /* 3 */ methodName);
@@ -337,7 +338,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint("__query.complete();%n");
     }
 
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -350,14 +351,14 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s);%n",
+        "%1$s<%2$s> __query = __support.getQueryImplementors().create%4$s(%5$s, %3$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getEntityCtType().getType(),
         /* 3 */ m.getEntityCtType().getTypeCode(),
         /* 4 */ m.getQueryClass().getSimpleName(),
         /* 5 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -388,7 +389,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getCommandClass().getSimpleName(),
         /* 3 */ methodName);
@@ -405,7 +406,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint("__query.complete();%n");
     }
 
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -418,14 +419,14 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s<%2$s> __query = getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
+        "%1$s<%2$s> __query = __support.getQueryImplementors().create%4$s(%5$s, %3$s.class);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getElementCtType().getType(),
         /* 3 */ m.getElementCtType().getQualifiedName(),
         /* 4 */ m.getQueryClass().getSimpleName(),
         /* 5 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setElements(%1$s);%n", m.getElementsParameterName());
     iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
     iprint("__query.setParameterName(\"%1$s\");%n", m.getElementsParameterName());
@@ -462,7 +463,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getCommandClass().getSimpleName(),
         /* 3 */ methodName);
@@ -479,7 +480,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       iprint("__query.complete();%n");
     }
 
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -493,13 +494,13 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     QueryReturnMeta returnMeta = m.getReturnMeta();
     iprint(
-        "%1$s<%2$s> __query = getQueryImplementors().create%3$s(%4$s);%n",
+        "%1$s<%2$s> __query = __support.getQueryImplementors().create%3$s(%4$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ returnMeta.getBoxedType(),
         /* 3 */ m.getQueryClass().getSimpleName(),
         /* 4 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
     iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
     iprint("__query.setFunctionName(\"%1$s\");%n", m.getFunctionName());
@@ -516,14 +517,14 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType().getClass(), m.getSqlLogType());
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        "%1$s<%2$s> __command = __support.getCommandImplementors().create%3$s(%4$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ returnMeta.getBoxedType(),
         /* 3 */ m.getCommandClass().getSimpleName(),
         /* 4 */ methodName);
     iprint("%1$s __result = __command.execute();%n", returnMeta.getType());
     iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -536,10 +537,10 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setCatalogName(\"%1$s\");%n", m.getCatalogName());
     iprint("__query.setSchemaName(\"%1$s\");%n", m.getSchemaName());
     iprint("__query.setProcedureName(\"%1$s\");%n", m.getProcedureName());
@@ -555,13 +556,13 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType().getClass(), m.getSqlLogType());
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s __command = getCommandImplementors().create%2$s(%3$s, __query);%n",
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getCommandClass().getSimpleName(),
         /* 3 */ methodName);
     iprint("__command.execute();%n");
     iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
 
     printThrowingStatements(m);
     return null;
@@ -574,26 +575,26 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     QueryReturnMeta resultMeta = m.getReturnMeta();
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getQueryClass().getSimpleName(),
         /* 3 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
     iprint("__query.setTypeName(\"%1$s\");%n", m.getArrayTypeName());
     iprint("__query.setElements(%1$s);%n", m.getParameterName());
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        "%1$s<%2$s> __command = __support.getCommandImplementors().create%3$s(%4$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ resultMeta.getBoxedType(),
         /* 3 */ m.getCommandClass().getSimpleName(),
         /* 4 */ methodName);
     iprint("%1$s __result = __command.execute();%n", resultMeta.getType());
     iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -626,24 +627,24 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     QueryReturnMeta resultMeta = m.getReturnMeta();
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         /* 1 */ m.getQueryClass().getName(),
         /* 2 */ m.getQueryClass().getSimpleName(),
         /* 3 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
     iprint("__query.prepare();%n");
     iprint(
-        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query);%n",
+        "%1$s<%2$s> __command = __support.getCommandImplementors().create%3$s(%4$s, __query);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ resultMeta.getType(),
         /* 3 */ m.getCommandClass().getSimpleName(),
         /* 4 */ methodName);
     iprint("%1$s __result = __command.execute();%n", resultMeta.getType());
     iprint("__query.complete();%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     iprint("return __result;%n");
 
     printThrowingStatements(m);
@@ -677,7 +678,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
       }
     }
     print(");%n");
-    iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
     if (resultMeta.getType().getKind() != TypeKind.VOID) {
       iprint("return __result;%n");
     }
@@ -692,10 +693,10 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     printPrerequisiteStatements(m);
 
     iprint(
-        "%1$s __query = getQueryImplementors().create%2$s(%3$s);%n",
+        "%1$s __query = __support.getQueryImplementors().create%2$s(%3$s);%n",
         m.getQueryClass().getName(), m.getQueryClass().getSimpleName(), methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
-    iprint("__query.setConfig(__config);%n");
+    iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setSqlFilePath(\"%1$s\");%n", m.getPath());
 
     printAddParameterStatements(m.getParameterMetas());
@@ -706,7 +707,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
     QueryReturnMeta returnMeta = m.getReturnMeta();
     iprint(
-        "%1$s<%2$s> __command = getCommandImplementors().create%3$s(%4$s, __query, %5$s);%n",
+        "%1$s<%2$s> __command = __support.getCommandImplementors().create%3$s(%4$s, __query, %5$s);%n",
         /* 1 */ m.getCommandClass().getName(),
         /* 2 */ m.getBiFunctionCtType().getResultCtType().getType(),
         /* 3 */ m.getCommandClass().getSimpleName(),
@@ -716,11 +717,11 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     if (returnMeta.getType().getKind() == TypeKind.VOID) {
       iprint("__command.execute();%n");
       iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
+      iprint("__support.exiting(\"%1$s\", \"%2$s\", null);%n", className, m.getName());
     } else {
       iprint("%1$s __result = __command.execute();%n", returnMeta.getType());
       iprint("__query.complete();%n");
-      iprint("exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+      iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
       iprint("return __result;%n");
     }
 
@@ -729,7 +730,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
   }
 
   private void printEnteringStatements(QueryMeta m) {
-    iprint("entering(\"%1$s\", \"%2$s\"", className, m.getName());
+    iprint("__support.entering(\"%1$s\", \"%2$s\"", className, m.getName());
     for (QueryParameterMeta parameterMeta : m.getParameterMetas()) {
       if (parameterMeta.getType().getKind() != TypeKind.ARRAY) {
         print(", %1$s", parameterMeta.getName());
@@ -744,7 +745,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
 
   private void printArrayCreateEnteringStatements(ArrayCreateQueryMeta m) {
     iprint(
-        "entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
+        "__support.entering(\"%1$s\", \"%2$s\", (Object)%3$s);%n",
         className, m.getName(), m.getParameterName());
     iprint("try {%n");
     indent();
@@ -754,7 +755,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     unindent();
     iprint("} catch (%1$s __e) {%n", RuntimeException.class);
     indent();
-    iprint("throwing(\"%1$s\", \"%2$s\", __e);%n", className, m.getName());
+    iprint("__support.throwing(\"%1$s\", \"%2$s\", __e);%n", className, m.getName());
     iprint("throw __e;%n");
     unindent();
     iprint("}%n");
@@ -1426,7 +1427,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitBasicCtType(BasicCtType basicCtType, final Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getBasicStreamHandler(optional),
@@ -1441,7 +1442,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitDomainCtType(DomainCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getDomainStreamHandler(optional),
@@ -1458,7 +1459,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     public Void visitMapCtType(MapCtType ctType, Boolean optional) {
       MapKeyNamingType namingType = m.getMapKeyNamingType();
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ MapStreamHandler.class,
@@ -1473,7 +1474,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ EntityStreamHandler.class,
@@ -1493,7 +1494,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalIntStreamHandler.class,
@@ -1506,7 +1507,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalLongStreamHandler.class,
@@ -1519,7 +1520,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalDoubleStreamHandler.class,
@@ -1568,7 +1569,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitBasicCtType(BasicCtType basicCtType, final Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ getBasicCollectorHandler(optional),
@@ -1583,7 +1584,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitDomainCtType(DomainCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%9$s, %4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ getDomainCollectorHandler(optional),
@@ -1600,7 +1601,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     public Void visitMapCtType(MapCtType ctType, Boolean optional) {
       MapKeyNamingType namingType = m.getMapKeyNamingType();
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%2$s>(%4$s.%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ MapCollectorHandler.class,
@@ -1615,7 +1616,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%7$s(%8$s, __query, new %3$s<%4$s, %2$s>(%5$s, %6$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ EntityCollectorHandler.class,
@@ -1635,7 +1636,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ OptionalIntCollectorHandler.class,
@@ -1648,7 +1649,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ OptionalLongCollectorHandler.class,
@@ -1661,7 +1662,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%5$s(%6$s, __query, new %3$s<%2$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultMeta.getBoxedType(),
           /* 3 */ OptionalDoubleCollectorHandler.class,
@@ -1707,7 +1708,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitBasicCtType(final BasicCtType basicCtType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getBasicSingleResultHandler(optional),
@@ -1721,7 +1722,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitDomainCtType(DomainCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %5$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %5$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getDomainSingleResultHandler(optional),
@@ -1737,7 +1738,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     public Void visitMapCtType(MapCtType ctType, Boolean optional) {
       MapKeyNamingType namingType = m.getMapKeyNamingType();
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getMapSingleResultHandler(optional),
@@ -1751,7 +1752,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ getEntitySingleResultHandler(optional),
@@ -1770,7 +1771,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalIntSingleResultHandler.class,
@@ -1782,7 +1783,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalLongSingleResultHandler.class,
@@ -1794,7 +1795,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
     @Override
     public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p) {
       iprint(
-          "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+          "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
           /* 1 */ commandClass,
           /* 2 */ resultBoxedType,
           /* 3 */ OptionalDoubleSingleResultHandler.class,
@@ -1813,7 +1814,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitBasicCtType(BasicCtType basicCtType, Boolean optional) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ getBasicResultListHandler(optional),
@@ -1827,7 +1828,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitDomainCtType(DomainCtType ctType, Boolean optional) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %4$s>(%5$s));%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%8$s, %4$s>(%5$s));%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ getDomainResultListHandler(optional),
@@ -1843,7 +1844,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 public Void visitMapCtType(MapCtType ctType, Boolean optional) {
                   MapKeyNamingType namingType = m.getMapKeyNamingType();
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s(%4$s.%5$s));%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ MapResultListHandler.class,
@@ -1857,7 +1858,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ EntityResultListHandler.class,
@@ -1876,7 +1877,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitOptionalIntCtType(OptionalIntCtType ctType, Boolean p) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ OptionalIntResultListHandler.class,
@@ -1888,7 +1889,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitOptionalLongCtType(OptionalLongCtType ctType, Boolean p) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ OptionalLongResultListHandler.class,
@@ -1900,7 +1901,7 @@ public class DaoImplMethodGenerator extends AbstractGenerator implements QueryMe
                 @Override
                 public Void visitOptionalDoubleCtType(OptionalDoubleCtType ctType, Boolean p) {
                   iprint(
-                      "%1$s<%2$s> __command = getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
+                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%4$s(%5$s, __query, new %3$s());%n",
                       /* 1 */ commandClass,
                       /* 2 */ resultBoxedType,
                       /* 3 */ OptionalDoubleResultListHandler.class,

@@ -2,38 +2,41 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.DomainParameterDao {
+@org.seasar.doma.DaoImplementation
+public class DomainParameterDaoImpl implements org.seasar.doma.internal.apt.processor.dao.DomainParameterDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.DomainParameterDao.class, "select", example.domain.PhoneNumber.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.DomainParameterDao.class, "select", example.domain.PhoneNumber.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public DomainParameterDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public DomainParameterDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public DomainParameterDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected DomainParameterDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -41,7 +44,7 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param connection the connection
      */
     protected DomainParameterDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -49,16 +52,21 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param dataSource the dataSource
      */
     protected DomainParameterDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public org.seasar.doma.internal.apt.processor.entity.Emp select(example.domain.PhoneNumber phoneNumber) {
-        entering("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", phoneNumber);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", phoneNumber);
         try {
-            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = getQueryImplementors().createSqlFileSelectQuery(__method0);
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/DomainParameterDao/select.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
@@ -72,13 +80,13 @@ public class DomainParameterDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.entity.Emp> __command = getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.entity.Emp> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()));
             org.seasar.doma.internal.apt.processor.entity.Emp __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", __e);
             throw __e;
         }
     }

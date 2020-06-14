@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.SelectCommand;
@@ -37,7 +37,7 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
             query, new EntityPoolIterationHandler(context.getProjectionEntityMetamodels()));
     List<EntityPool> entityPools = command.execute();
     for (EntityPool entityPool : entityPools) {
-      Map<EntityMetamodel<?>, Object> associationCandidate = new LinkedHashMap<>();
+      Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate = new LinkedHashMap<>();
       for (Map.Entry<EntityKey, EntityData> e : entityPool.entrySet()) {
         EntityKey key = e.getKey();
         EntityData data = e.getValue();
@@ -53,9 +53,9 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
                   }
                   return newEntity;
                 });
-        associationCandidate.put(key.getEntityMetamodel(), entity);
+        associationCandidate.put(key.getEntityMetamodel(), new Pair<>(key, entity));
       }
-      associate(associationCandidate);
+      associate(cache, associationCandidate);
     }
     return (List<ENTITY>)
         cache.entrySet().stream()
@@ -64,17 +64,23 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
             .collect(toList());
   }
 
-  private void associate(Map<EntityMetamodel<?>, Object> associationCandidate) {
-    for (Map.Entry<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiConsumer<Object, Object>> e :
-        context.associations.entrySet()) {
-      Pair<EntityMetamodel<?>, EntityMetamodel<?>> pair = e.getKey();
-      BiConsumer<Object, Object> associator = e.getValue();
-      Object entity1 = associationCandidate.get(pair.fst);
-      Object entity2 = associationCandidate.get(pair.snd);
-      if (entity1 == null || entity2 == null) {
+  private void associate(
+      Map<EntityKey, Object> cache,
+      Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate) {
+    for (Map.Entry<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
+        e : context.associations.entrySet()) {
+      Pair<EntityMetamodel<?>, EntityMetamodel<?>> metamodelPair = e.getKey();
+      BiFunction<Object, Object, Object> associator = e.getValue();
+      Pair<EntityKey, Object> keyAndEntity1 = associationCandidate.get(metamodelPair.fst);
+      Pair<EntityKey, Object> keyAndEntity2 = associationCandidate.get(metamodelPair.snd);
+      if (keyAndEntity1 == null || keyAndEntity2 == null) {
         continue;
       }
-      associator.accept(entity1, entity2);
+      Object newEntity = associator.apply(keyAndEntity1.snd, keyAndEntity2.snd);
+      if (newEntity != null) {
+        cache.replace(keyAndEntity1.fst, newEntity);
+        associationCandidate.replace(metamodelPair.fst, new Pair<>(keyAndEntity1.fst, newEntity));
+      }
     }
   }
 

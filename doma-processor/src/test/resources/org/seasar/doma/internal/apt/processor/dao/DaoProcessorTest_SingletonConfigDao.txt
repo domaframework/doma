@@ -2,36 +2,39 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class SingletonConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.SingletonConfigDao {
+@org.seasar.doma.DaoImplementation
+public class SingletonConfigDaoImpl implements org.seasar.doma.internal.apt.processor.dao.SingletonConfigDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
+
     /** */
     public SingletonConfigDaoImpl() {
-        super(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton());
     }
 
     /**
      * @param connection the connection
      */
     public SingletonConfigDaoImpl(java.sql.Connection connection) {
-        super(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public SingletonConfigDaoImpl(javax.sql.DataSource dataSource) {
-        super(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(org.seasar.doma.internal.apt.processor.dao.SingletonConfigAnnotatedConfig.singleton(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected SingletonConfigDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -39,7 +42,7 @@ public class SingletonConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param connection the connection
      */
     protected SingletonConfigDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -47,7 +50,12 @@ public class SingletonConfigDaoImpl extends org.seasar.doma.internal.jdbc.dao.Ab
      * @param dataSource the dataSource
      */
     protected SingletonConfigDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
 }

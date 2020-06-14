@@ -5,6 +5,8 @@ public final class ConfigSupport {
 
   public static SqlFileRepository defaultSqlFileRepository = new GreedyCacheSqlFileRepository();
 
+  public static ScriptFileLoader defaultScriptFileLoader = new ScriptFileLoader() {};
+
   public static JdbcLogger defaultJdbcLogger = new UtilLoggingJdbcLogger();
 
   public static RequiresNewController defaultRequiresNewController = new RequiresNewController() {};

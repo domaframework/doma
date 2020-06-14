@@ -2,38 +2,41 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public class AutoInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.AbstractDao implements org.seasar.doma.internal.apt.processor.dao.AutoInsertDao {
+@org.seasar.doma.DaoImplementation
+public class AutoInsertDaoImpl implements org.seasar.doma.internal.apt.processor.dao.AutoInsertDao, org.seasar.doma.jdbc.ConfigProvider {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.AbstractDao.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoInsertDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoInsertDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
     public AutoInsertDaoImpl() {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
     }
 
     /**
      * @param connection the connection
      */
     public AutoInsertDaoImpl(java.sql.Connection connection) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
     }
 
     /**
      * @param dataSource the dataSource
      */
     public AutoInsertDaoImpl(javax.sql.DataSource dataSource) {
-        super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
     }
 
     /**
      * @param config the configuration
      */
     protected AutoInsertDaoImpl(org.seasar.doma.jdbc.Config config) {
-        super(config);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
     }
 
     /**
@@ -41,7 +44,7 @@ public class AutoInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
      * @param connection the connection
      */
     protected AutoInsertDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        super(config, connection);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
     }
 
     /**
@@ -49,19 +52,24 @@ public class AutoInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
      * @param dataSource the dataSource
      */
     protected AutoInsertDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        super(config, dataSource);
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
     }
 
     @Override
     public int insert(org.seasar.doma.internal.apt.processor.entity.Emp entity) {
-        entering("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", entity);
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", entity);
         try {
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = getQueryImplementors().createAutoInsertQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoInsertQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method0);
-            __query.setConfig(__config);
+            __query.setConfig(__support.getConfig());
             __query.setEntity(entity);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl");
             __query.setCallerMethodName("insert");
@@ -71,13 +79,13 @@ public class AutoInsertDaoImpl extends org.seasar.doma.internal.jdbc.dao.Abstrac
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.prepare();
-            org.seasar.doma.jdbc.command.InsertCommand __command = getCommandImplementors().createInsertCommand(__method0, __query);
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method0, __query);
             int __result = __command.execute();
             __query.complete();
-            exiting("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", __result);
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {
-            throwing("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", __e);
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", __e);
             throw __e;
         }
     }
