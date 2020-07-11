@@ -112,12 +112,12 @@ public class BuilderSupport {
 
     @Override
     public void visit(Criterion.Eq c) {
-      equality(c.left, c.right, "=");
+      comparison(c.left, c.right, "=");
     }
 
     @Override
     public void visit(Criterion.Ne c) {
-      equality(c.left, c.right, "<>");
+      comparison(c.left, c.right, "<>");
     }
 
     @Override
@@ -228,37 +228,6 @@ public class BuilderSupport {
     @Override
     public void visit(Criterion.Not criterion) {
       not(criterion.criterionList);
-    }
-
-    private void equality(Operand.Prop left, Operand right, String op) {
-      if (isParamNull(right)) {
-        if (op.equals("=")) {
-          isNull(left);
-        } else if (op.equals("<>")) {
-          isNotNull(left);
-        } else {
-          throw new IllegalStateException("The operator is illegal. " + op);
-        }
-      } else {
-        comparison(left, right, op);
-      }
-    }
-
-    private boolean isParamNull(Operand operand) {
-      return operand.accept(
-          new Operand.Visitor<Boolean>() {
-
-            @Override
-            public Boolean visit(Operand.Param operand) {
-              InParameter<?> parameter = operand.createInParameter(config);
-              return parameter.getWrapper().get() == null;
-            }
-
-            @Override
-            public Boolean visit(Operand.Prop operand) {
-              return false;
-            }
-          });
     }
 
     private void comparison(Operand.Prop left, Operand right, String op) {

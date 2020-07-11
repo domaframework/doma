@@ -132,7 +132,7 @@ public interface Criterion {
 
     public Like(Operand.Prop left, CharSequence right, LikeOption option) {
       this.left = Objects.requireNonNull(left);
-      this.right = right;
+      this.right = Objects.requireNonNull(right);
       this.option = Objects.requireNonNull(option);
     }
 
@@ -149,7 +149,7 @@ public interface Criterion {
 
     public NotLike(Operand.Prop left, CharSequence right, LikeOption option) {
       this.left = Objects.requireNonNull(left);
-      this.right = right;
+      this.right = Objects.requireNonNull(right);
       this.option = Objects.requireNonNull(option);
     }
 

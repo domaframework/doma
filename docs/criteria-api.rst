@@ -494,9 +494,16 @@ We support the following operators and predicates:
 
 .. note::
 
-    The ``eq`` operator generates the ``is null`` predicate if the second operand is ``null``.
-    Also, the ``ne`` operator generates the ``is not null`` predicate if the second operand is ``null``.
+    If the right hand operand is ``null``, the WHERE or the HAVING clause doesn't include the operator.
+    See WhereDeclaration_ and HavingDeclaration_ javadoc for more details.
 
+.. _WhereDeclaration: https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/org/seasar/doma/jdbc/criteria/declaration/WhereDeclaration.html
+.. _HavingDeclaration: https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/org/seasar/doma/jdbc/criteria/declaration/HavingDeclaration.html
+
+We also support the following utility operators:
+
+* eqOrIsNull - ("=" or "is null")
+* neOrIsNotNull - ("<>" or "is not null")
 
 We also support the following logical operators:
 
@@ -579,13 +586,13 @@ For example, suppose that a where expression contains a conditional expression a
             .where(
                 c -> {
                   c.eq(e.departmentId, 1);
-                  if (name != null) {
+                  if (enableNameCondition) {
                     c.like(e.employeeName, name);
                   }
                 })
             .fetch();
 
-In the case that the ``name`` variable is ``null``, the ``like`` expression is ignored.
+In the case that the ``enableNameCondition`` variable is ``false``, the ``like`` expression is ignored.
 The above query issues the following SQL statement:
 
 .. code-block:: sql
