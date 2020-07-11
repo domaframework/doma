@@ -127,10 +127,10 @@ public interface Criterion {
 
   class Like implements Criterion {
     public final Operand.Prop left;
-    public final Operand right;
+    public final CharSequence right;
     public final LikeOption option;
 
-    public Like(Operand.Prop left, Operand right, LikeOption option) {
+    public Like(Operand.Prop left, CharSequence right, LikeOption option) {
       this.left = Objects.requireNonNull(left);
       this.right = Objects.requireNonNull(right);
       this.option = Objects.requireNonNull(option);
@@ -144,10 +144,10 @@ public interface Criterion {
 
   class NotLike implements Criterion {
     public final Operand.Prop left;
-    public final Operand right;
+    public final CharSequence right;
     public final LikeOption option;
 
-    public NotLike(Operand.Prop left, Operand right, LikeOption option) {
+    public NotLike(Operand.Prop left, CharSequence right, LikeOption option) {
       this.left = Objects.requireNonNull(left);
       this.right = Objects.requireNonNull(right);
       this.option = Objects.requireNonNull(option);

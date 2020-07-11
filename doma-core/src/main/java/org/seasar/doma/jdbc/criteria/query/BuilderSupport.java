@@ -112,12 +112,12 @@ public class BuilderSupport {
 
     @Override
     public void visit(Criterion.Eq c) {
-      equality(c.left, c.right, "=");
+      comparison(c.left, c.right, "=");
     }
 
     @Override
     public void visit(Criterion.Ne c) {
-      equality(c.left, c.right, "<>");
+      comparison(c.left, c.right, "<>");
     }
 
     @Override
@@ -230,37 +230,6 @@ public class BuilderSupport {
       not(criterion.criterionList);
     }
 
-    private void equality(Operand.Prop left, Operand right, String op) {
-      if (isParamNull(right)) {
-        if (op.equals("=")) {
-          isNull(left);
-        } else if (op.equals("<>")) {
-          isNotNull(left);
-        } else {
-          throw new IllegalStateException("The operator is illegal. " + op);
-        }
-      } else {
-        comparison(left, right, op);
-      }
-    }
-
-    private boolean isParamNull(Operand operand) {
-      return operand.accept(
-          new Operand.Visitor<Boolean>() {
-
-            @Override
-            public Boolean visit(Operand.Param operand) {
-              InParameter<?> parameter = operand.createInParameter(config);
-              return parameter.getWrapper().get() == null;
-            }
-
-            @Override
-            public Boolean visit(Operand.Prop operand) {
-              return false;
-            }
-          });
-    }
-
     private void comparison(Operand.Prop left, Operand right, String op) {
       column(left);
       buf.appendSql(" " + op + " ");
@@ -277,57 +246,50 @@ public class BuilderSupport {
       buf.appendSql(" is not null");
     }
 
-    private void like(Operand.Prop left, Operand right, LikeOption option, boolean not) {
+    private void like(Operand.Prop left, CharSequence right, LikeOption option, boolean not) {
       column(left);
       if (not) {
         buf.appendSql(" not");
       }
       buf.appendSql(" like ");
-      right.accept(
-          new OperandVisitor() {
+      String value = right == null ? null : right.toString();
+      ExpressionFunctions functions = config.getDialect().getExpressionFunctions();
+      option.accept(
+          new LikeOption.Visitor() {
             @Override
-            public Void visit(Operand.Param param) {
-              InParameter<?> parameter = param.createInParameter(config);
-              Object value = parameter.getWrapper().get();
-              if (value == null) {
-                return super.visit(param);
-              }
-              ExpressionFunctions functions = config.getDialect().getExpressionFunctions();
-              option.accept(
-                  new LikeOption.Visitor() {
-                    @Override
-                    public void visit(LikeOption.None none) {
-                      param(param);
-                    }
+            public void visit(LikeOption.None none) {
+              addParam(value);
+            }
 
-                    @Override
-                    public void visit(LikeOption.Escape escape) {
-                      appendNewValue(functions::escape, escape.escapeChar);
-                    }
+            @Override
+            public void visit(LikeOption.Escape escape) {
+              appendNewValue(functions::escape, escape.escapeChar);
+            }
 
-                    @Override
-                    public void visit(LikeOption.Prefix prefix) {
-                      appendNewValue(functions::prefix, prefix.escapeChar);
-                    }
+            @Override
+            public void visit(LikeOption.Prefix prefix) {
+              appendNewValue(functions::prefix, prefix.escapeChar);
+            }
 
-                    @Override
-                    public void visit(LikeOption.Infix infix) {
-                      appendNewValue(functions::infix, infix.escapeChar);
-                    }
+            @Override
+            public void visit(LikeOption.Infix infix) {
+              appendNewValue(functions::infix, infix.escapeChar);
+            }
 
-                    @Override
-                    public void visit(LikeOption.Suffix suffix) {
-                      appendNewValue(functions::suffix, suffix.escapeChar);
-                    }
+            @Override
+            public void visit(LikeOption.Suffix suffix) {
+              appendNewValue(functions::suffix, suffix.escapeChar);
+            }
 
-                    private void appendNewValue(
-                        BiFunction<String, Character, String> function, char escapeChar) {
-                      String newValue = function.apply(value.toString(), escapeChar);
-                      param(new BasicInParameter<>(() -> new StringWrapper(newValue)));
-                      buf.appendSql(" escape '" + escapeChar + "'");
-                    }
-                  });
-              return null;
+            private void appendNewValue(
+                BiFunction<String, Character, String> function, char escapeChar) {
+              String newValue = function.apply(value, escapeChar);
+              addParam(newValue);
+              buf.appendSql(" escape '" + escapeChar + "'");
+            }
+
+            private void addParam(String value) {
+              param(new BasicInParameter<>(() -> new StringWrapper(value)));
             }
           });
     }

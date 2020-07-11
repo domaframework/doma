@@ -2,6 +2,16 @@
 Release notes
 =============
 
+v2.38.0: 2020-07-11
+======================
+
+* `GH454 <https://github.com/domaframework/doma/pull/454>`_
+  Change the semantics of condition operators
+* `GH453 <https://github.com/domaframework/doma/pull/453>`_
+  Accept a CharSequence value as a LIKE predicate operand
+* `GH452 <https://github.com/domaframework/doma/pull/452>`_
+  Use Gradle 6.5
+
 v2.37.0: 2020-06-14
 ======================
 

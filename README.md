@@ -55,8 +55,8 @@ Build with Gradle
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-core:2.37.0"
-    annotationProcessor "org.seasar.doma:doma-processor:2.37.0"
+    implementation "org.seasar.doma:doma-core:2.38.0"
+    annotationProcessor "org.seasar.doma:doma-processor:2.38.0"
 }
 ```
 
@@ -71,6 +71,7 @@ Related projects
 ---------------------
 
 - [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) : Supports integration with Spring Boot
+- [doma-quarkus](https://github.com/domaframework/doma-quarkus) : Supports integration with Quarkus
 - [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) : Makes compilation easy
 - [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) : Generates Java and SQL files
 

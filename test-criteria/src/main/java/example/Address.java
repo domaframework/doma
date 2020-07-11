@@ -7,7 +7,7 @@ import org.seasar.doma.Metamodel;
 @Entity(metamodel = @Metamodel)
 public class Address {
   @Id private Integer addressId;
-  private String street;
+  private Street street;
   private Integer version;
 
   public Integer getAddressId() {
@@ -18,11 +18,11 @@ public class Address {
     this.addressId = addressId;
   }
 
-  public String getStreet() {
+  public Street getStreet() {
     return street;
   }
 
-  public void setStreet(String street) {
+  public void setStreet(Street street) {
     this.street = street;
   }
 
