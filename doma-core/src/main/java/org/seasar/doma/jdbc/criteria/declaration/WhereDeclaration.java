@@ -42,29 +42,24 @@ public class WhereDeclaration extends ComparisonDeclaration {
     add(new Criterion.IsNotNull(new Operand.Prop(propertyMetamodel)));
   }
 
-  public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
+  public void like(PropertyMetamodel<?> left, CharSequence right) {
     Objects.requireNonNull(left);
-    add(
-        new Criterion.Like(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
+    add(new Criterion.Like(new Operand.Prop(left), right, LikeOption.none()));
   }
 
-  public <PROPERTY> void like(PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
+  public void like(PropertyMetamodel<?> left, CharSequence right, LikeOption option) {
     Objects.requireNonNull(left);
-    add(new Criterion.Like(new Operand.Prop(left), new Operand.Param(left, right), option));
+    add(new Criterion.Like(new Operand.Prop(left), right, option));
   }
 
-  public <PROPERTY> void notLike(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
+  public void notLike(PropertyMetamodel<?> left, CharSequence right) {
     Objects.requireNonNull(left);
-    add(
-        new Criterion.NotLike(
-            new Operand.Prop(left), new Operand.Param(left, right), LikeOption.none()));
+    add(new Criterion.NotLike(new Operand.Prop(left), right, LikeOption.none()));
   }
 
-  public <PROPERTY> void notLike(
-      PropertyMetamodel<PROPERTY> left, PROPERTY right, LikeOption option) {
+  public void notLike(PropertyMetamodel<?> left, CharSequence right, LikeOption option) {
     Objects.requireNonNull(left);
-    add(new Criterion.NotLike(new Operand.Prop(left), new Operand.Param(left, right), option));
+    add(new Criterion.NotLike(new Operand.Prop(left), right, option));
   }
 
   public <PROPERTY> void between(
