@@ -127,15 +127,15 @@ public class EntityqlSelectTest {
 
   @Test
   void where_dynamic() {
-    List<Employee> list = where_dynamic(null);
+    List<Employee> list = where_dynamic("C%", false);
     assertEquals(3, list.size());
 
-    List<Employee> list2 = where_dynamic("C%");
+    List<Employee> list2 = where_dynamic("C%", true);
     assertEquals(1, list2.size());
   }
 
   @SuppressWarnings("UnnecessaryLocalVariable")
-  private List<Employee> where_dynamic(String name) {
+  private List<Employee> where_dynamic(String name, boolean enableNameCondition) {
     Employee_ e = new Employee_();
     List<Employee> list =
         entityql
@@ -143,7 +143,7 @@ public class EntityqlSelectTest {
             .where(
                 c -> {
                   c.eq(e.departmentId, 1);
-                  if (name != null) {
+                  if (enableNameCondition) {
                     c.like(e.employeeName, name);
                   }
                 })
@@ -213,7 +213,7 @@ public class EntityqlSelectTest {
     Address_ a = new Address_();
 
     List<Address> list = entityql.from(a).where(c -> c.like(a.street, null)).fetch();
-    assertEquals(0, list.size());
+    assertEquals(15, list.size());
   }
 
   @Test

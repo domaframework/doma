@@ -78,8 +78,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID = t0_.ID and t0_.ID = 1 and t0_.ID is null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID = t0_.ID and t0_.ID = 1", sql.getFormattedSql());
   }
 
   @Test
@@ -98,8 +97,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID <> t0_.ID and t0_.ID <> 1 and t0_.ID is not null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID <> t0_.ID and t0_.ID <> 1", sql.getFormattedSql());
   }
 
   @Test
@@ -118,8 +116,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID >= t0_.ID and t0_.ID >= 1 and t0_.ID >= null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID >= t0_.ID and t0_.ID >= 1", sql.getFormattedSql());
   }
 
   @Test
@@ -138,8 +135,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID > t0_.ID and t0_.ID > 1 and t0_.ID > null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID > t0_.ID and t0_.ID > 1", sql.getFormattedSql());
   }
 
   @Test
@@ -158,8 +154,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID <= t0_.ID and t0_.ID <= 1 and t0_.ID <= null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID <= t0_.ID and t0_.ID <= 1", sql.getFormattedSql());
   }
 
   @Test
@@ -178,8 +173,7 @@ class NativeSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "select t0_.ID from EMP t0_ where t0_.ID < t0_.ID and t0_.ID < 1 and t0_.ID < null",
-        sql.getFormattedSql());
+        "select t0_.ID from EMP t0_ where t0_.ID < t0_.ID and t0_.ID < 1", sql.getFormattedSql());
   }
 
   @Test
@@ -201,9 +195,54 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void where_eqOrIsNull() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.eqOrIsNull(e.id, 1);
+                  c.eqOrIsNull(e.id, null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.ID is null", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_neOrIsNotNull() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.neOrIsNotNull(e.id, 1);
+                  c.neOrIsNotNull(e.id, null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.ID <> 1 and t0_.ID is not null",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void where_like() {
     Emp_ e = new Emp_();
-    Buildable<?> stmt = nativeSql.from(e).where(c -> c.like(e.name, "a$")).select(e.id);
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.like(e.name, "a$");
+                  c.like(e.name, null);
+                })
+            .select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ where t0_.NAME like 'a$'", sql.getFormattedSql());
@@ -276,7 +315,17 @@ class NativeSqlSelectTest {
   @Test
   void where_between() {
     Emp_ e = new Emp_();
-    Buildable<?> stmt = nativeSql.from(e).where(c -> c.between(e.id, 1, 10)).select(e.id);
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.between(e.id, 1, 10);
+                  c.between(e.id, null, 10);
+                  c.between(e.id, 1, null);
+                  c.between(e.id, null, null);
+                })
+            .select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ where t0_.ID between 1 and 10", sql.getFormattedSql());
@@ -285,7 +334,15 @@ class NativeSqlSelectTest {
   @Test
   void where_in() {
     Emp_ e = new Emp_();
-    Buildable<?> stmt = nativeSql.from(e).where(c -> c.in(e.id, Arrays.asList(1, 2))).select(e.id);
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.in(e.id, Arrays.asList(1, 2));
+                  c.in(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (1, 2)", sql.getFormattedSql());
@@ -295,7 +352,14 @@ class NativeSqlSelectTest {
   void where_notIn() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
-        nativeSql.from(e).where(c -> c.notIn(e.id, Arrays.asList(1, 2))).select(e.id);
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.notIn(e.id, Arrays.asList(1, 2));
+                  c.notIn(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ where t0_.ID not in (1, 2)", sql.getFormattedSql());
@@ -308,10 +372,12 @@ class NativeSqlSelectTest {
         nativeSql
             .from(e)
             .where(
-                c ->
-                    c.in(
-                        new Tuple2<>(e.id, e.name),
-                        Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b"))))
+                c -> {
+                  c.in(
+                      new Tuple2<>(e.id, e.name),
+                      Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b")));
+                  c.in(new Tuple2<>(e.id, e.name), (List<Tuple2<Integer, String>>) null);
+                })
             .select(e.id);
 
     Sql<?> sql = stmt.asSql();
@@ -327,10 +393,12 @@ class NativeSqlSelectTest {
         nativeSql
             .from(e)
             .where(
-                c ->
-                    c.notIn(
-                        new Tuple2<>(e.id, e.name),
-                        Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b"))))
+                c -> {
+                  c.notIn(
+                      new Tuple2<>(e.id, e.name),
+                      Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b")));
+                  c.notIn(new Tuple2<>(e.id, e.name), (List<Tuple2<Integer, String>>) null);
+                })
             .select(e.id);
 
     Sql<?> sql = stmt.asSql();
