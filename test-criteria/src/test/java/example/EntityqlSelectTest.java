@@ -201,6 +201,22 @@ public class EntityqlSelectTest {
   }
 
   @Test
+  void where_like() {
+    Address_ a = new Address_();
+
+    List<Address> list = entityql.from(a).where(c -> c.like(a.street, "%1")).fetch();
+    assertEquals(2, list.size());
+  }
+
+  @Test
+  void where_like_null() {
+    Address_ a = new Address_();
+
+    List<Address> list = entityql.from(a).where(c -> c.like(a.street, null)).fetch();
+    assertEquals(0, list.size());
+  }
+
+  @Test
   void innerJoin() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
