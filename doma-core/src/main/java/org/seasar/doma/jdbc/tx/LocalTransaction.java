@@ -351,7 +351,6 @@ public class LocalTransaction {
       rollbackInternal("releaseSavepoint");
       throw new JdbcException(Message.DOMA2060, e, savepointName, e);
     }
-    jdbcLogger.logTransactionSavepointRolledback(className, "setSavepoint", id, savepointName);
   }
 
   /**
