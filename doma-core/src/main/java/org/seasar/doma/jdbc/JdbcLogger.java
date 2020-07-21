@@ -134,8 +134,11 @@ public interface JdbcLogger {
    * @param transactionId the transaction id
    * @param savepointName the save point name
    */
-  void logTransactionSavepointReleased(
-      String callerClassName, String callerMethodName, String transactionId, String savepointName);
+  default void logTransactionSavepointReleased(
+      String callerClassName,
+      String callerMethodName,
+      String transactionId,
+      String savepointName) {}
 
   /**
    * Logs a failure of a transaction rollback.
