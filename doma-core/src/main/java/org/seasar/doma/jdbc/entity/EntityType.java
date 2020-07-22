@@ -47,7 +47,9 @@ public interface EntityType<ENTITY> {
    * Returns the table name.
    *
    * @return the table name
+   * @deprecated Use {@link #getTableName(BiFunction)}
    */
+  @Deprecated
   String getTableName();
 
   /**
@@ -62,7 +64,9 @@ public interface EntityType<ENTITY> {
    * Returns the qualified table name.
    *
    * @return the qualified table name
+   * @deprecated Use {@link #getQualifiedTableName(BiFunction, Function)}
    */
+  @Deprecated
   String getQualifiedTableName();
 
   /**
@@ -70,7 +74,9 @@ public interface EntityType<ENTITY> {
    *
    * @param quoteFunction the function that applies quotation marks
    * @return the qualified table name
+   * @deprecated Use {@link #getQualifiedTableName(BiFunction, Function)}
    */
+  @Deprecated
   String getQualifiedTableName(Function<String, String> quoteFunction);
 
   /**

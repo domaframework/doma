@@ -94,6 +94,7 @@ public final class _ParameterizedPropertyEntity extends org.seasar.doma.jdbc.ent
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

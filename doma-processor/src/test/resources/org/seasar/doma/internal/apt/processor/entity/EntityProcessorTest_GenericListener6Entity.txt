@@ -93,6 +93,7 @@ public final class _GenericListener6Entity extends org.seasar.doma.jdbc.entity.A
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

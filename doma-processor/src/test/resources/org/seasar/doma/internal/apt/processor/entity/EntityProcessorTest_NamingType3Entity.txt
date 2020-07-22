@@ -93,6 +93,7 @@ public final class _NamingType3Entity extends org.seasar.doma.jdbc.entity.Abstra
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

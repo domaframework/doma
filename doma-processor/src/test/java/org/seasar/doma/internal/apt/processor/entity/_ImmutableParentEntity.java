@@ -100,6 +100,7 @@ public class _ImmutableParentEntity extends AbstractEntityType<ImmutableParentEn
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
 
     return null;

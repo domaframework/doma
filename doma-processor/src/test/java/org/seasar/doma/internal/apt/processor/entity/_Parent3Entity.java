@@ -100,6 +100,7 @@ public class _Parent3Entity extends AbstractEntityType<Parent3Entity> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
 
     return null;

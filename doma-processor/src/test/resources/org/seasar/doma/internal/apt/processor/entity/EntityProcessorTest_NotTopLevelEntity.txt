@@ -93,6 +93,7 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

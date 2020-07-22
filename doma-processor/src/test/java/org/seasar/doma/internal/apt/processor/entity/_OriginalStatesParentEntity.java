@@ -100,6 +100,7 @@ public class _OriginalStatesParentEntity extends AbstractEntityType<OriginalStat
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
 
     return null;

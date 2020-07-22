@@ -391,6 +391,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
 
   private void printGetTableNameMethod() {
     iprint("@Override%n");
+    iprint("@Deprecated%n");
     iprint("public String getTableName() {%n");
     iprint("    return getTableName(%1$s.namingFunction);%n", TableNames.class);
     iprint("}%n");
