@@ -19,6 +19,12 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+        restore-keys: ${{ runner.os }}-gradle
     - name: Build with Gradle
       run: ./gradlew assemble check
     - name: Upload libs
@@ -37,10 +43,10 @@ jobs:
           doma-processor/build/reports
           test-criteria/build/reports
     - name: Publish package
+      if: "github.event_name != 'pull_request'"
       run: ./gradlew publish -s
       env:
         ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
         ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
-      if: "github.event_name != 'pull_request'"
