@@ -12,11 +12,6 @@ val encoding: String by project
 val isSnapshot = version.toString().endsWith("SNAPSHOT")
 val releaseVersion = properties["release.releaseVersion"].toString()
 val newVersion = properties["release.newVersion"].toString()
-val secretKeyRingFile: String? =
-        findProperty("signing.secretKeyRingFile")?.toString()?.let {
-            if (it.isEmpty()) null
-            else file(it).absolutePath
-        }
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
@@ -44,8 +39,6 @@ subprojects {
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "de.marcphilipp.nexus-publish")
-
-    extra["signing.secretKeyRingFile"] = secretKeyRingFile
 
     val replaceVersionInJava by tasks.registering {
         doLast {
@@ -181,6 +174,9 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
     }
 
     configure<SigningExtension> {
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
         val publishing = convention.findByType(PublishingExtension::class)!!
         sign(publishing.publications)
         isRequired = !isSnapshot
