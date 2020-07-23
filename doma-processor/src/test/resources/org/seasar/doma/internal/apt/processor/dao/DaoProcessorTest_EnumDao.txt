@@ -1,0 +1,134 @@
+package org.seasar.doma.internal.apt.processor.dao;
+
+/** */
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.DaoImplementation
+public class EnumDaoImpl implements org.seasar.doma.internal.apt.processor.dao.EnumDao, org.seasar.doma.jdbc.ConfigProvider {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EnumDao.class, "selectById", org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.EnumDao.class, "selectByNameAndSalary", org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, org.seasar.doma.jdbc.SelectOptions.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
+
+    /** */
+    public EnumDaoImpl() {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
+    }
+
+    /**
+     * @param connection the connection
+     */
+    public EnumDaoImpl(java.sql.Connection connection) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
+    }
+
+    /**
+     * @param dataSource the dataSource
+     */
+    public EnumDaoImpl(javax.sql.DataSource dataSource) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
+    }
+
+    /**
+     * @param config the configuration
+     */
+    protected EnumDaoImpl(org.seasar.doma.jdbc.Config config) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
+    }
+
+    /**
+     * @param config the configuration
+     * @param connection the connection
+     */
+    protected EnumDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
+    }
+
+    /**
+     * @param config the configuration
+     * @param dataSource the dataSource
+     */
+    protected EnumDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum selectById(org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum id, org.seasar.doma.jdbc.SelectOptions options) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectById", id, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__support.getConfig());
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnumDao/selectById.sql");
+            __query.setOptions(options);
+            __query.addParameter("id", org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl");
+            __query.setCallerMethodName("selectById");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofEnum(org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class)));
+            org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectById", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum> selectByNameAndSalary(org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum name, org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum salary, org.seasar.doma.jdbc.SelectOptions options) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectByNameAndSalary", name, salary, options);
+        try {
+            if (options == null) {
+                throw new org.seasar.doma.DomaNullPointerException("options");
+            }
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__support.getConfig());
+            __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/EnumDao/selectByNameAndSalary.sql");
+            __query.setOptions(options);
+            __query.addParameter("name", org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, name);
+            __query.addParameter("salary", org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class, salary);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl");
+            __query.setCallerMethodName("selectByNameAndSalary");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.BasicResultListHandler<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum>(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofEnum(org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum.class)));
+            java.util.List<org.seasar.doma.internal.apt.processor.dao.EnumDao.MyEnum> __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectByNameAndSalary", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.EnumDaoImpl", "selectByNameAndSalary", __e);
+            throw __e;
+        }
+    }
+
+}
