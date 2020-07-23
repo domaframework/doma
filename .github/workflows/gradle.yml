@@ -24,6 +24,21 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew assemble check
+    - name: Upload libs
+      uses: actions/upload-artifact@v2
+      with:
+        name: libs
+        path: |
+          doma-core/build/libs
+          doma-processor/build/libs
+    - name: Upload reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: reports
+        path: |
+          doma-core/build/reports
+          doma-processor/build/reports
+          test-criteria/build/reports
     - name: Publish package
       run: ./gradlew publish -s
       env:
