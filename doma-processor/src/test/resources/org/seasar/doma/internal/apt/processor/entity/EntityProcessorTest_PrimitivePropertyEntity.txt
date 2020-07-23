@@ -97,6 +97,7 @@ public final class _PrimitivePropertyEntity extends org.seasar.doma.jdbc.entity.
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

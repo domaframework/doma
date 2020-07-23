@@ -213,6 +213,7 @@ public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
     return getTableName((namingType, text) -> namingType.apply(text));
   }

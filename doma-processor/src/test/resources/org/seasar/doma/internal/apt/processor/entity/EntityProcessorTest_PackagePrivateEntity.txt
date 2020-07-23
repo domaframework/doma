@@ -106,6 +106,7 @@ public final class _PackagePrivateEntity extends org.seasar.doma.jdbc.entity.Abs
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

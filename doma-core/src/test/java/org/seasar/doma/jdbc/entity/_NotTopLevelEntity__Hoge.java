@@ -81,6 +81,7 @@ public final class _NotTopLevelEntity__Hoge
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
     return getTableName(org.seasar.doma.jdbc.Naming.DEFAULT::apply);
   }

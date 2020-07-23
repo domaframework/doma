@@ -74,6 +74,7 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
 
     return null;

@@ -109,6 +109,7 @@ public final class _Emp extends org.seasar.doma.jdbc.entity.AbstractEntityType<o
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

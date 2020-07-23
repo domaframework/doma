@@ -74,6 +74,7 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
 
     return null;

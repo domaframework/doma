@@ -94,6 +94,7 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

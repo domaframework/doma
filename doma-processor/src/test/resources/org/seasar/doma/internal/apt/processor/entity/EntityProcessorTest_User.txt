@@ -96,6 +96,7 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
     }
 
     @Override
+    @Deprecated
     public String getTableName() {
         return getTableName(org.seasar.doma.internal.jdbc.entity.TableNames.namingFunction);
     }

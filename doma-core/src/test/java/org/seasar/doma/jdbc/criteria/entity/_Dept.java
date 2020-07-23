@@ -170,6 +170,7 @@ public class _Dept extends AbstractEntityType<Dept> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
     return getTableName((namingType, text) -> namingType.apply(text));
   }
