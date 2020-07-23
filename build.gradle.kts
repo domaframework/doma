@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.3.72" apply false
     kotlin("kapt") version "1.3.72" apply false
     id("com.diffplug.eclipse.apt") version "3.22.0" apply false
-    id("com.diffplug.gradle.spotless") version "3.27.2"
+    id("com.diffplug.spotless") version "5.1.0"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("net.researchgate.release") version "2.8.1"
 }
@@ -42,7 +42,7 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "com.diffplug.gradle.spotless")
+    apply(plugin = "com.diffplug.spotless")
     apply(plugin = "de.marcphilipp.nexus-publish")
 
     extra["signing.secretKeyRingFile"] = secretKeyRingFile
