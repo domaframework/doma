@@ -64,4 +64,4 @@ jobs:
             "pull_request_title": "${{ (github.event.pull_request && github.event.pull_request.title) || null }}",
             "pull_request_number": "${{ (github.event.pull_request && github.event.pull_request.number) || null }}",
             "pull_request_sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || null }}",
-            "messages": "${{ toJSON(github.event.commits.*.message) }}" }
+            "message": "${{ github.event.commits[0] }}" }
