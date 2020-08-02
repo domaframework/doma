@@ -23,18 +23,10 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
     - name: Build with Gradle
       run: ./gradlew assemble check
-    - name: Upload libs
-      if: always()
-      uses: actions/upload-artifact@v2
-      with:
-        name: libs
-        path: |
-          doma-core/build/libs
-          doma-processor/build/libs
     - name: Upload reports
       if: always()
       uses: actions/upload-artifact@v2
@@ -64,4 +56,4 @@ jobs:
             "pull_request_title": "${{ (github.event.pull_request && github.event.pull_request.title) || null }}",
             "pull_request_number": "${{ (github.event.pull_request && github.event.pull_request.number) || null }}",
             "pull_request_sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || null }}",
-            "messages": "${{ toJSON(github.event.commits.*.message) }}" }
+            "message": "${{ github.event.commits[0] }}" }
