@@ -28,6 +28,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assemble check
     - name: Upload libs
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: libs
@@ -35,6 +36,7 @@ jobs:
           doma-core/build/libs
           doma-processor/build/libs
     - name: Upload reports
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: reports
@@ -42,11 +44,24 @@ jobs:
           doma-core/build/reports
           doma-processor/build/reports
           test-criteria/build/reports
-    - name: Publish package
-      if: "github.event_name != 'pull_request'"
-      run: ./gradlew publish -s
+    - name: Publish packages
+      if: "github.event_name == 'push'"
+      run: ./gradlew publish
       env:
         ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
         ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+    - name: Run integaration test
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Java CI with Gradle
+        repo: domaframework/doma-it
+        ref: master
+        token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
+        inputs: |
+          { "ref": "${{ github.sha }}",
+            "pull_request_title": "${{ (github.event.pull_request && github.event.pull_request.title) || null }}",
+            "pull_request_number": "${{ (github.event.pull_request && github.event.pull_request.number) || null }}",
+            "pull_request_sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || null }}",
+            "messages": "${{ toJSON(github.event.commits.*.message) }}" }

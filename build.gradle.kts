@@ -209,7 +209,7 @@ rootProject.apply {
 
     val beforeReleaseBuild by tasks.existing {
         dependsOn(replaceVersion)
-     }
+    }
 
     val updateVersion by tasks.existing {
         doLast {
