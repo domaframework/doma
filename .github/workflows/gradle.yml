@@ -61,8 +61,7 @@ jobs:
         token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
         inputs: |
           { "ref": "${{ github.sha }}",
-            "pull_request": "${{ toJSON({
-                title: (github.event.pull_request && github.event.pull_request.title) || null,
-                number: (github.event.pull_request && github.event.pull_request.number) || null,
-                sha: (github.event.pull_request && github.event.pull_request.head.sha) || null }) }}",
+            "pull_request_title": "${{ (github.event.pull_request && github.event.pull_request.title) || null }}",
+            "pull_request_number": "${{ (github.event.pull_request && github.event.pull_request.number) || null }}",
+            "pull_request_sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || null }}",
             "messages": "${{ toJSON(github.event.commits.*.message) }}" }
