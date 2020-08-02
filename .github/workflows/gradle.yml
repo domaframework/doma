@@ -62,7 +62,7 @@ jobs:
         inputs: |
           { "ref": "${{ github.sha }}",
             "pull_request": {
-              "title": "${{ (github.event.pull_request && github.event.pull_request.title) || null }}",
-              "number": "${{ (github.event.pull_request && github.event.pull_request.number) || null }}",
-              "sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || null }}" },
+              "title": "${{ (github.event.pull_request && github.event.pull_request.title) || '' }}",
+              "number": "${{ (github.event.pull_request && github.event.pull_request.number) || '' }}",
+              "sha": "${{ (github.event.pull_request && github.event.pull_request.head.sha) || '' }}" },
             "messages": "${{ toJSON(github.event.commits.*.message) }}" }
