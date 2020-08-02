@@ -59,4 +59,6 @@ jobs:
         repo: domaframework/doma-it
         ref: master
         token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
-        inputs: '{ "ref": "${{ github.sha }}", "pull_request": "${{ toJSON(github.event.pull_request) }}", "messages": "${{ toJSON(github.event.commits.*.message) }}" }'
+        inputs: '{ "ref": "${{ github.sha }}",
+                   "title": "${{ (github.event.pull_request && github.event.pull_request.title) || '' }}",
+                   "messages": "${{ toJSON(github.event.commits.*.message) }}" }'
