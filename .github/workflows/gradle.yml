@@ -27,14 +27,6 @@ jobs:
         restore-keys: ${{ runner.os }}-gradle
     - name: Build with Gradle
       run: ./gradlew assemble check
-    - name: Upload libs
-      if: always()
-      uses: actions/upload-artifact@v2
-      with:
-        name: libs
-        path: |
-          doma-core/build/libs
-          doma-processor/build/libs
     - name: Upload reports
       if: always()
       uses: actions/upload-artifact@v2
