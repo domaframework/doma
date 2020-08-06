@@ -45,6 +45,7 @@ jobs:
         ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
         ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
     - name: Run integaration test
+      if: "github.repository == 'domaframework/doma'"
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: Java CI with Gradle
