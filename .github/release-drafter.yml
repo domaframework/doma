@@ -1,5 +1,9 @@
 name-template: '$RESOLVED_VERSION'
 tag-template: '$RESOLVED_VERSION'
+template: |
+  # What's Changed
+
+  $CHANGES
 categories:
   - title: 'New Features'
     labels:
