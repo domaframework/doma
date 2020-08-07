@@ -1,0 +1,22 @@
+name-template: '$RESOLVED_VERSION'
+tag-template: '$RESOLVED_VERSION'
+categories:
+  - title: 'New Features'
+    labels:
+      - 'feat'
+      - 'feature'
+  - title: 'Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+  - title: 'Maintenance'
+    label:
+      - 'ci'
+      - 'chore'
+      - 'perf'
+      - 'refactor'
+      - 'test'
+  - title: 'Documentation'
+    label: 'docs'
+  - title: 'Dependency Upgrades'
+    label: 'dependencies'
