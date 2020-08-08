@@ -24,6 +24,8 @@ categories:
     label: 'docs'
   - title: 'Dependency Upgrades'
     label: 'dependencies'
+exclude-labels:
+  - 'skip-changelog'
 version-resolver:
   major:
     labels:
