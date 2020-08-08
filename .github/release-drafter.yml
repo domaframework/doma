@@ -19,6 +19,7 @@ categories:
       - 'chore'
       - 'perf'
       - 'refactor'
+      - 'security'
       - 'test'
   - title: 'Documentation'
     label: 'docs'
