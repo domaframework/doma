@@ -109,7 +109,7 @@ the `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`
 .. code-block:: groovy
 
   plugins {
-    id 'org.seasar.doma.compile' version '1.0.0'
+    id 'org.seasar.doma.compile' version '1.1.0'
   }
 
 For more details, see this `build.gradle <https://github.com/domaframework/kotlin-sample/blob/master/build.gradle>`_.
