@@ -27,6 +27,13 @@ fun replaceVersionInArtifact(ver: String) {
 }
 
 allprojects {
+    apply(plugin = "com.diffplug.spotless")
+
+    val build by tasks.existing {
+        val spotlessApply by tasks.existing
+        dependsOn(spotlessApply)
+    }
+
     repositories {
         mavenCentral()
     }
@@ -37,7 +44,6 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "com.diffplug.spotless")
     apply(plugin = "de.marcphilipp.nexus-publish")
 
     val replaceVersionInJava by tasks.registering {
@@ -59,11 +65,6 @@ subprojects {
     val test by tasks.existing(Test::class) {
         maxHeapSize = "1g"
         useJUnitPlatform()
-    }
-
-    val build by tasks.existing {
-        val spotlessApply by tasks.existing
-        dependsOn(spotlessApply)
     }
 
     dependencies {
