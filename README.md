@@ -55,8 +55,8 @@ Build with Gradle
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-core:2.39.0"
-    annotationProcessor "org.seasar.doma:doma-processor:2.39.0"
+    implementation "org.seasar.doma:doma-core:2.40.0"
+    annotationProcessor "org.seasar.doma:doma-processor:2.40.0"
 }
 ```
 
