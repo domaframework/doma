@@ -4,6 +4,7 @@ dependencies: dependencies/*
 docs: docs/*
 feature: ['feature/*', 'feat/*']
 fix: fix/*
-refactor: refactor/*
 perf: perf/*
+refactor: refactor/*
+skip-changelog: ['release', 'working']
 test: test/*
