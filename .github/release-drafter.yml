@@ -24,3 +24,16 @@ categories:
     label: 'docs'
   - title: 'Dependency Upgrades'
     label: 'dependencies'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+      - 'feat'
+      - 'feature'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
