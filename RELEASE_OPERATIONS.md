@@ -17,12 +17,12 @@ The value of `release.releaseVersion` is decided by the draft name of
 
 The GitHub Action workflow [Java CI with Gradle](.github/workflows/ci.yml) handles the above push event.
 
-The workflow builds the "doma-core" and the "doma-processor" artifacts 
+The workflow builds the "doma-core" and the "doma-processor" artifacts
 and pushes them to [Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html).
 
 ## Publish documentation to ReadTheDocs
 
-[Documentation](https://doma.readthedocs.io/en/latest/) 
+[Documentation](https://doma.readthedocs.io/en/latest/)
 is published with a [webhook](https://docs.readthedocs.io/en/stable/webhooks.html).
 
 ## Publish artifacts to Maven Central from Sonatype OSSRH
