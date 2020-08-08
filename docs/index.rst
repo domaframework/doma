@@ -76,7 +76,6 @@ About Doma
 .. toctree::
    :maxdepth: 1
 
-   release-notes
    faq
 
 Links
@@ -84,6 +83,7 @@ Links
 
 * `News and announcements <https://twitter.com/domaframework>`_
 * `GitHub repository <https://github.com/domaframework/doma>`_
+* `Release Notes <https://github.com/domaframework/doma/releases>`_
 * `JavaDoc <https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/index.html>`_
 * `Boilerplate <https://github.com/domaframework/simple-boilerplate>`_
 * `Examples <https://github.com/domaframework/simple-examples>`_
