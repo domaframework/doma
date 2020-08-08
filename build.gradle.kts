@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.3.72" apply false
     kotlin("kapt") version "1.3.72" apply false
     id("com.diffplug.eclipse.apt") version "3.22.0" apply false
-    id("com.diffplug.gradle.spotless") version "3.27.2"
+    id("com.diffplug.spotless") version "5.1.0"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("net.researchgate.release") version "2.8.1"
 }
@@ -12,11 +12,6 @@ val encoding: String by project
 val isSnapshot = version.toString().endsWith("SNAPSHOT")
 val releaseVersion = properties["release.releaseVersion"].toString()
 val newVersion = properties["release.newVersion"].toString()
-val secretKeyRingFile: String? =
-        findProperty("signing.secretKeyRingFile")?.toString()?.let {
-            if (it.isEmpty()) null
-            else file(it).absolutePath
-        }
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
@@ -42,10 +37,8 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "com.diffplug.gradle.spotless")
+    apply(plugin = "com.diffplug.spotless")
     apply(plugin = "de.marcphilipp.nexus-publish")
-
-    extra["signing.secretKeyRingFile"] = secretKeyRingFile
 
     val replaceVersionInJava by tasks.registering {
         doLast {
@@ -181,6 +174,9 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
     }
 
     configure<SigningExtension> {
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
         val publishing = convention.findByType(PublishingExtension::class)!!
         sign(publishing.publications)
         isRequired = !isSnapshot
@@ -213,7 +209,7 @@ rootProject.apply {
 
     val beforeReleaseBuild by tasks.existing {
         dependsOn(replaceVersion)
-     }
+    }
 
     val updateVersion by tasks.existing {
         doLast {

@@ -280,6 +280,28 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   }
 
   @Override
+  public void logTransactionSavepointReleased(
+      String callerClassName, String callerMethodName, String transactionId, String savepointName) {
+    logTransactionSavepointReleased(
+        callerClassName,
+        callerMethodName,
+        transactionId,
+        savepointName,
+        defaultLevel,
+        () -> Message.DOMA2234.getMessage(transactionId, savepointName));
+  }
+
+  protected void logTransactionSavepointReleased(
+      String callerClassName,
+      String callerMethodName,
+      String transactionId,
+      String savepointName,
+      LEVEL level,
+      Supplier<String> messageSupplier) {
+    log(level, callerClassName, callerMethodName, null, messageSupplier);
+  }
+
+  @Override
   public void logTransactionRollbackFailure(
       String callerClassName, String callerMethodName, String transactionId, SQLException e) {
     logTransactionRollbackFailure(

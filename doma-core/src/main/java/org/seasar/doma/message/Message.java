@@ -255,6 +255,7 @@ public enum Message implements MessageResource {
   DOMA2231("The number of parameters is different between batched queries."),
   DOMA2232("The parameter is empty."),
   DOMA2233("The key \"{0}\" is not found in the map that is an element of Iterable."),
+  DOMA2234("The savepoint \"{1}\" of the local transaction \"{0}\" is released."),
 
   // expression
   DOMA3001(

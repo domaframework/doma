@@ -196,6 +196,7 @@ public class _NoIdEmp extends AbstractEntityType<NoIdEmp> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
     return getTableName((namingType, text) -> namingType.apply(text));
   }

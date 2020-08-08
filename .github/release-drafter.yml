@@ -1,0 +1,41 @@
+name-template: '$RESOLVED_VERSION'
+tag-template: '$RESOLVED_VERSION'
+template: |
+  # What's Changed
+
+  $CHANGES
+categories:
+  - title: 'New Features'
+    labels:
+      - 'feat'
+      - 'feature'
+  - title: 'Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+  - title: 'Maintenance'
+    label:
+      - 'ci'
+      - 'chore'
+      - 'perf'
+      - 'refactor'
+      - 'test'
+  - title: 'Documentation'
+    label: 'docs'
+  - title: 'Dependency Upgrades'
+    label: 'dependencies'
+exclude-labels:
+  - 'skip-changelog'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+      - 'feat'
+      - 'feature'
+  patch:
+    labels:
+      - 'patch'
+  default: patch

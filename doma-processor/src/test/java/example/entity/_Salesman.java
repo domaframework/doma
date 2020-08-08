@@ -207,6 +207,7 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   }
 
   @Override
+  @Deprecated
   public String getTableName() {
     return getTableName((namingType, text) -> namingType.apply(text));
   }

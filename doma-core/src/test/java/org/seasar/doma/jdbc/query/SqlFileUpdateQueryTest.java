@@ -351,10 +351,12 @@ public class SqlFileUpdateQueryTest {
 
     protected final _Emp emp;
 
+    @Deprecated
     public String getQualifiedTableName() {
       return emp.getQualifiedTableName();
     }
 
+    @Deprecated
     public String getQualifiedTableName(Function<String, String> quoteFunction) {
       return emp.getQualifiedTableName(quoteFunction);
     }
@@ -446,6 +448,7 @@ public class SqlFileUpdateQueryTest {
       return emp.getSchemaName();
     }
 
+    @Deprecated
     public String getTableName() {
       return emp.getTableName();
     }
