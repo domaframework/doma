@@ -25,7 +25,6 @@ Doma has various strengths:
 This document consists of following sections:
 
 * `User Documentation`_
-* `Developer Documentation`_
 * `About Doma`_
 * `Links`_
 
@@ -61,14 +60,6 @@ User Documentation
    annotation-processing
    lombok-support
    kotlin-support
-
-Developer Documentation
-=======================
-
-.. toctree::
-   :maxdepth: 2
-
-   development
 
 About Doma
 ==========
