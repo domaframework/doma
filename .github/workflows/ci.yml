@@ -9,42 +9,51 @@ on:
 
 jobs:
   build:
-    if: contains(toJSON(github.event.commits.*.message), '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up JDK 8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 8
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Cache Gradle packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
-        restore-keys: ${{ runner.os }}-gradle
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
+          restore-keys: ${{ runner.os }}-gradle
 
-    - name: Build with Gradle
-      run: ./gradlew assemble check
+      - name: Build with Gradle
+        run: ./gradlew assemble check
 
-    - name: Upload reports
-      if: always()
-      uses: actions/upload-artifact@v2
-      with:
-        name: reports (build)
-        path: |
-          doma-core/build/reports
-          doma-processor/build/reports
-          test-criteria/build/reports
+      - name: Publish packages
+        if: github.event_name == 'push'
+        run: ./gradlew publish -x check
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: reports
+          path: |
+            doma-core/build/reports
+            doma-processor/build/reports
+            test-criteria/build/reports
 
   integration-test:
-    if: contains(toJSON(github.event.commits.*.message), '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
     name: JDK ${{ matrix.java }} and ${{ matrix.db }}
     runs-on: ubuntu-latest
 
@@ -152,43 +161,3 @@ jobs:
         with:
           name: jdk${{ matrix.java }}-${{ matrix.db }}
           path: ./doma-it/build/reports
-
-  publish:
-    if: github.event_name == 'push' && contains(toJSON(github.event.commits.*.message), '[skip ci]') == false
-    needs: [build, integration-test]
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up JDK 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 8
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Publish packages
-        run: ./gradlew build publish
-        env:
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
-
-      - name: Upload reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports (publish)
-          path: |
-            doma-core/build/reports
-            doma-processor/build/reports

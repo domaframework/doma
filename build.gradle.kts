@@ -184,8 +184,6 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
 }
 
 rootProject.apply {
-    apply(from = "release.gradle")
-
     fun replaceVersionInDocs(ver: String) {
         ant.withGroovyBuilder {
             "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
@@ -215,6 +213,10 @@ rootProject.apply {
         doLast {
             replaceVersionInArtifact(newVersion)
         }
+    }
+
+    configure<net.researchgate.release.ReleaseExtension> {
+        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
