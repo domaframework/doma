@@ -38,6 +38,16 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assemble check
 
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: reports
+          path: |
+            doma-core/build/reports
+            doma-processor/build/reports
+            test-criteria/build/reports
+
       - name: Install packages
         run: ./gradlew publishToMavenLocal
         env:
@@ -52,16 +62,6 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports
-          path: |
-            doma-core/build/reports
-            doma-processor/build/reports
-            test-criteria/build/reports
 
       - name: Tar Maven Repository
         shell: bash
@@ -118,17 +118,17 @@ jobs:
         shell: bash
         run: tar -xzf maven-repository.tgz -C ~
 
-      - name: Checkout (doma-it)
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           repository: domaframework/doma-it
 
-      - name: Set up JDK (doma-it)
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
 
-      - name: Grant execute permission for gradlew (doma-it)
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Cache Gradle wrapper
@@ -143,10 +143,10 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
-      - name: Build with Gradle (doma-it)
+      - name: Build with Gradle
         run: ./gradlew assemble
 
-      - name: Test with h2 (doma-it)
+      - name: Test with h2
         if: matrix.db == 'h2'
         run: ./gradlew check -s
         env:
@@ -154,7 +154,7 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcUser: ''
           ORG_GRADLE_PROJECT_jdbcPassword: ''
 
-      - name: Test with postgres (doma-it)
+      - name: Test with postgres
         if: matrix.db == 'postgres'
         run: ./gradlew check -s
         env:
@@ -162,7 +162,7 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcUser: postgres
           ORG_GRADLE_PROJECT_jdbcPassword: postgres
 
-      - name: Test with mysql (doma-it)
+      - name: Test with mysql
         if: matrix.db == 'mysql'
         run: ./gradlew check -s
         env:
@@ -170,7 +170,7 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcUser: root
           ORG_GRADLE_PROJECT_jdbcPassword: root
 
-      - name: Upload reports (doma-it)
+      - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v1
         with:
