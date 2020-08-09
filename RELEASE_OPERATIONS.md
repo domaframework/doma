@@ -7,7 +7,7 @@ The Gradle release task creates a release commit and push it to the origin/maste
 ```
 $ git checkout master
 $ git pull
-$ ./gradlew release -Prelease.releaseVersion=1.0.0
+$ ./gradlew release -Prelease.releaseVersion=1.0.0 -Prelease.newVersion=1.1.0-SNAPSHOT
 ```
 
 The value of `release.releaseVersion` is decided by the draft name of
