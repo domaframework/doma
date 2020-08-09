@@ -52,3 +52,10 @@ and publish release notes.
 
 Announce the release of new version using Twitter.
 - [@domaframework](https://twitter.com/domaframework)
+
+## Release related projects
+
+- doma-it
+- simple-boilerplate
+- simple-example
+- spring-boot-jpetstore
