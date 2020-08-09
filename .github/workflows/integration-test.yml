@@ -5,7 +5,6 @@ on:
     workflows: [ "Java CI with Gradle" ]
     types:
       - completed
-  workflow_dispatch:
 
 jobs:
   integration-test:
@@ -42,41 +41,32 @@ jobs:
           sudo /etc/init.d/mysql start
           mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Cache local Maven repository
-        id: maven-repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - name: Checkout (doma)
-        if: steps.maven-repository.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           path: doma
 
       - name: Set up JDK (doma)
-        if: steps.maven-repository.outputs.cache-hit != 'true'
         uses: actions/setup-java@v1
         with:
           java-version: 8
 
       - name: Grant execute permission for gradlew (doma)
-        if: steps.maven-repository.outputs.cache-hit != 'true'
         working-directory: ./doma
         run: chmod +x gradlew
 
+      - name: Cache Gradle packages
+        working-directory: ./doma
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.m2/repository
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
+
       - name: Build with Gradle (doma)
-        if: steps.maven-repository.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         working-directory: ./doma
         run: ./gradlew build -x check
         env:

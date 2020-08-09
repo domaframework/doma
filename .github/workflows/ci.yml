@@ -26,21 +26,13 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Cache local Maven repository
-        id: maven-repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          path: |
+            ~/.gradle/caches
+            ~/.m2/repository
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
       - name: Build with Gradle
-        run: ./gradlew assemble check
+        run: ./gradlew assemble check publishToMavenLocal
 
       - name: Publish packages
         if: github.event_name == 'push'
