@@ -23,6 +23,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
@@ -124,6 +130,12 @@ jobs:
 
       - name: Grant execute permission for gradlew (doma-it)
         run: chmod +x gradlew
+
+      - name: Cache Gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
