@@ -1,0 +1,139 @@
+name: Integration Test
+
+on:
+  workflow_run:
+    workflows: [ "Java CI with Gradle" ]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  integration-test:
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    name: JDK ${{ matrix.java }} and ${{ matrix.db }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ 8, 11, 14 ]
+        db: [ h2, postgres, mysql ]
+
+    services:
+      postgres:
+        image: postgres:10.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: doma_it
+        ports:
+          - 127.0.0.1:5432:5432
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: doma_it
+        ports:
+          - 3306
+
+    steps:
+      - name: Start the MySQL service
+        if: matrix.db == 'mysql'
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Cache local Maven repository
+        id: maven-repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Checkout (doma)
+        if: steps.maven-repository.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          path: doma
+
+      - name: Set up JDK (doma)
+        if: steps.maven-repository.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Grant execute permission for gradlew (doma)
+        if: steps.maven-repository.outputs.cache-hit != 'true'
+        working-directory: ./doma
+        run: chmod +x gradlew
+
+      - name: Build with Gradle (doma)
+        if: steps.maven-repository.outputs.cache-hit != 'true'
+        working-directory: ./doma
+        run: ./gradlew build -x check
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Checkout (doma-it)
+        uses: actions/checkout@v2
+        with:
+          repository: domaframework/doma-it
+          path: doma-it
+
+      - name: Set up JDK (doma-it)
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for gradlew (doma-it)
+        working-directory: ./doma-it
+        run: chmod +x gradlew
+
+      - name: Build with Gradle (doma-it)
+        working-directory: ./doma-it
+        run: ./gradlew assemble
+
+      - name: Test with h2 (doma-it)
+        if: matrix.db == 'h2'
+        working-directory: ./doma-it
+        run: ./gradlew check -s
+        env:
+          ORG_GRADLE_PROJECT_jdbcUrl: ''
+          ORG_GRADLE_PROJECT_jdbcUser: ''
+          ORG_GRADLE_PROJECT_jdbcPassword: ''
+
+      - name: Test with postgres (doma-it)
+        if: matrix.db == 'postgres'
+        working-directory: ./doma-it
+        run: ./gradlew check -s
+        env:
+          ORG_GRADLE_PROJECT_jdbcUrl: jdbc:postgresql://127.0.0.1/doma_it
+          ORG_GRADLE_PROJECT_jdbcUser: postgres
+          ORG_GRADLE_PROJECT_jdbcPassword: postgres
+
+      - name: Test with mysql (doma-it)
+        if: matrix.db == 'mysql'
+        working-directory: ./doma-it
+        run: ./gradlew check -s
+        env:
+          ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
+          ORG_GRADLE_PROJECT_jdbcUser: root
+          ORG_GRADLE_PROJECT_jdbcPassword: root
+
+      - name: Upload reports (doma-it)
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: jdk${{ matrix.java }}-${{ matrix.db }}
+          path: ./doma-it/build/reports
