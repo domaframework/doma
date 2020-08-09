@@ -38,16 +38,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assemble check
 
-      - name: Upload reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports
-          path: |
-            doma-core/build/reports
-            doma-processor/build/reports
-            test-criteria/build/reports
-
       - name: Install packages
         run: ./gradlew publishToMavenLocal
         env:
@@ -64,7 +54,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Upload reports
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: reports
@@ -181,7 +171,7 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcPassword: root
 
       - name: Upload reports (doma-it)
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v1
         with:
           name: jdk${{ matrix.java }}-${{ matrix.db }}
