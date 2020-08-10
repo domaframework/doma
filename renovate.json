@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "ignorePaths": [
+    "docs/**"
+  ],
+  "labels": [
+    "dependencies"
+  ]
+}
