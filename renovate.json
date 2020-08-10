@@ -4,5 +4,8 @@
   ],
   "ignorePaths": [
     "docs/**"
+  ],
+  "labels": [
+    "dependencies"
   ]
 }
