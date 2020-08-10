@@ -7,7 +7,7 @@ dependencies {
     kapt(project(":doma-processor"))
     implementation(project(":doma-core"))
     implementation(kotlin("stdlib-jdk8"))
-    testRuntimeOnly("com.h2database:h2:1.4.199")
+    testRuntimeOnly("com.h2database:h2:1.4.200")
 }
 
 tasks {
