@@ -35,21 +35,8 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
-      - name: Build with Gradle
-        run: ./gradlew assemble check
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports
-          path: |
-            doma-core/build/reports
-            doma-processor/build/reports
-            test-criteria/build/reports
-
-      - name: Install packages
-        run: ./gradlew publishToMavenLocal
+      - name: Build and Install packages
+        run: ./gradlew assemble check publishToMavenLocal
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
@@ -62,6 +49,16 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: reports
+          path: |
+            doma-core/build/reports
+            doma-processor/build/reports
+            test-criteria/build/reports
 
       - name: Tar Maven Repository
         shell: bash
