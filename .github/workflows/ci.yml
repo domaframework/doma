@@ -35,21 +35,8 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
-      - name: Build with Gradle
-        run: ./gradlew assemble check
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: reports
-          path: |
-            doma-core/build/reports
-            doma-processor/build/reports
-            test-criteria/build/reports
-
-      - name: Install packages
-        run: ./gradlew publishToMavenLocal
+      - name: Build and Install packages
+        run: ./gradlew assemble check publishToMavenLocal
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
@@ -63,6 +50,16 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
 
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: reports
+          path: |
+            doma-core/build/reports
+            doma-processor/build/reports
+            test-criteria/build/reports
+
       - name: Tar Maven Repository
         shell: bash
         run: tar -czf maven-repository.tgz -C ~ .m2/repository
@@ -75,14 +72,13 @@ jobs:
 
   integration-test:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
-    name: JDK ${{ matrix.java }} and ${{ matrix.db }}
+    name: JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     needs: build
 
     strategy:
       matrix:
         java: [ 8, 11, 14 ]
-        db: [ h2, postgres, mysql ]
 
     services:
       postgres:
@@ -103,7 +99,6 @@ jobs:
 
     steps:
       - name: Start the MySQL service
-        if: matrix.db == 'mysql'
         run: |
           sudo /etc/init.d/mysql start
           mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
@@ -147,7 +142,6 @@ jobs:
         run: ./gradlew assemble
 
       - name: Test with h2
-        if: matrix.db == 'h2'
         run: ./gradlew check -s
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: ''
@@ -155,7 +149,6 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcPassword: ''
 
       - name: Test with postgres
-        if: matrix.db == 'postgres'
         run: ./gradlew check -s
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:postgresql://127.0.0.1/doma_it
@@ -163,7 +156,6 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcPassword: postgres
 
       - name: Test with mysql
-        if: matrix.db == 'mysql'
         run: ./gradlew check -s
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
@@ -174,5 +166,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v1
         with:
-          name: jdk${{ matrix.java }}-${{ matrix.db }}
+          name: jdk${{ matrix.java }}
           path: build/reports
