@@ -10,8 +10,6 @@ plugins {
 
 val encoding: String by project
 val isSnapshot = version.toString().endsWith("SNAPSHOT")
-val releaseVersion = properties["release.releaseVersion"].toString()
-val newVersion = properties["release.newVersion"].toString()
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
@@ -206,6 +204,8 @@ rootProject.apply {
 
     val replaceVersion by tasks.registering {
         doLast {
+            val releaseVersion = properties["release.releaseVersion"]?.toString()
+            checkNotNull(releaseVersion)
             replaceVersionInArtifact(releaseVersion)
             replaceVersionInDocs(releaseVersion)
         }
@@ -217,6 +217,8 @@ rootProject.apply {
 
     val updateVersion by tasks.existing {
         doLast {
+            val newVersion = properties["release.newVersion"]?.toString()
+            checkNotNull(newVersion)
             replaceVersionInArtifact(newVersion)
         }
     }
