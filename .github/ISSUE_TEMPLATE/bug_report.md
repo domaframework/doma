@@ -18,17 +18,17 @@ assignees: ''
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 **Screenshots**
 (If applicable, add screenshots to help explain your problem.)
 
 **Environment (please complete the following information):**
- - Doma version or git rev: 
- - Output of `java -version`: 
- - Build tool (ie. output of `mvnw --version` or `gradlew --version`): 
+- Doma version or git rev:
+- Output of `java -version`:
+- Build tool (ie. output of `mvnw --version` or `gradlew --version`):
 
 **Additional context**
 (Add any other context about the problem here.)
