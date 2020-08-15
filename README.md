@@ -1,8 +1,14 @@
 Doma 
 ====
 
-Doma is a database access framework for Java.
-Doma uses [Pluggable Annotation Processing API][apt] to generate source code and validate sql mappings **at compile time**.
+Doma 2 is a database access framework for Java 8+. 
+Doma has various strengths:
+
+- Verifies and generates source code **at compile time** using [annotation processing][apt].
+- Maps database columns to user-defined Java objects.
+- Uses SQL templates, called “two-way SQL”.
+- Supports classes introduced in Java 8, such as `java.time.LocalDate`, `java.util.Optional`, and `java.util.stream.Stream`.
+- Has no dependence on other libraries.
 
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![docs](https://readthedocs.org/projects/doma/badge/?version=latest)](https://doma.readthedocs.io/en/latest/)
