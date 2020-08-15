@@ -1,10 +1,23 @@
-Doma [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22) [![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-========================================
+Doma
+====
 
-Doma is a database access framework for Java.
-Doma uses [Pluggable Annotation Processing API][apt] to generate source code and validate sql mappings **at compile time**.
+Doma 2 is a database access framework for Java 8+.
+Doma has various strengths:
 
-Example
+- Verifies and generates source code **at compile time** using [annotation processing][apt].
+- Maps database columns to user-defined Java objects.
+- Uses SQL templates, called “two-way SQL”.
+- Supports classes introduced in Java 8, such as `java.time.LocalDate`, `java.util.Optional`, and `java.util.stream.Stream`.
+- Has no dependence on other libraries.
+
+[![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
+[![docs](https://readthedocs.org/projects/doma/badge/?version=latest)](https://doma.readthedocs.io/en/latest/)
+[![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
+[![Join the chat at https://gitter.im/domaframework/doma](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/domaframework/doma?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Google group : doma-user](https://img.shields.io/badge/Google%20Group-doma--user-orange.svg)](https://groups.google.com/g/doma-user)
+[![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
+
+Examples
 ---------------------
 
 Define an entity class:
@@ -48,7 +61,13 @@ public class App {
 }
 ```
 
-For more complete examples, see [domaframework/simple-examples](https://github.com/domaframework/simple-examples).
+Try following getting started examples:
+- [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
+- [Get started! (Eclipse)](https://doma.readthedocs.io/en/latest/getting-started-eclipse/)
+
+For more complete examples,
+see [simple-examples](https://github.com/domaframework/simple-examples)
+and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetstore).
 
 Build with Gradle
 -----------------
@@ -66,6 +85,11 @@ Documentation
 ---------------------
 
 https://doma.readthedocs.io/
+
+Google Group
+---------------------
+
+https://groups.google.com/g/doma-user
 
 Related projects
 ---------------------
@@ -98,24 +122,5 @@ Major versions
 | Java 12 |        |   v    |
 | Java 13 |        |   v    |
 | Java 14 |        |   v    |
-
-License
--------
-
-```
-Copyright 2019 domaframework.org
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
