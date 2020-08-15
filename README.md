@@ -17,7 +17,7 @@ Doma has various strengths:
 [![Google group : doma-user](https://img.shields.io/badge/Google%20Group-doma--user-orange.svg)](https://groups.google.com/g/doma-user)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
 
-Example
+Examples
 ---------------------
 
 Define an entity class:
@@ -61,7 +61,13 @@ public class App {
 }
 ```
 
-For more complete examples, see [domaframework/simple-examples](https://github.com/domaframework/simple-examples).
+Try following getting started examples:
+- [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
+- [Get started! (Eclipse)](https://doma.readthedocs.io/en/latest/getting-started-eclipse/)
+
+For more complete examples, 
+see [simple-examples](https://github.com/domaframework/simple-examples)
+and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetstore).
 
 Build with Gradle
 -----------------
