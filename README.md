@@ -1,7 +1,7 @@
-Doma 
+Doma
 ====
 
-Doma 2 is a database access framework for Java 8+. 
+Doma 2 is a database access framework for Java 8+.
 Doma has various strengths:
 
 - Verifies and generates source code **at compile time** using [annotation processing][apt].
@@ -65,7 +65,7 @@ Try following getting started examples:
 - [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
 - [Get started! (Eclipse)](https://doma.readthedocs.io/en/latest/getting-started-eclipse/)
 
-For more complete examples, 
+For more complete examples,
 see [simple-examples](https://github.com/domaframework/simple-examples)
 and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetstore).
 
@@ -85,6 +85,11 @@ Documentation
 ---------------------
 
 https://doma.readthedocs.io/
+
+Google Group
+---------------------
+
+https://groups.google.com/g/doma-user
 
 Related projects
 ---------------------
