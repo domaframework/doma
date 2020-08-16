@@ -21,6 +21,17 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
     this.declaration = declaration;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public Integer execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();

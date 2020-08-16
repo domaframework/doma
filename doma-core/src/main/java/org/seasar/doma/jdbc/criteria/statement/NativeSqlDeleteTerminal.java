@@ -21,6 +21,18 @@ public class NativeSqlDeleteTerminal extends AbstractStatement<NativeSqlDeleteTe
     this.declaration = declaration;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws EmptyWhereClauseException if {@link DeleteSettings#getAllowEmptyWhere()} returns
+   *     {@literal false} and the WHERE clause is empty
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public Integer execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<Integer> createCommand() {
     DeleteContext context = declaration.getContext();

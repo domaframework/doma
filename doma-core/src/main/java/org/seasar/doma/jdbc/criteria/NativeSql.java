@@ -25,6 +25,10 @@ import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlUpdateStarting;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * Provides the ways to issue more complex SQL statements rather than {@link Entityql} does. But
+ * note that this class doesn't support to associate entities.
+ */
 public class NativeSql {
 
   protected final Config config;

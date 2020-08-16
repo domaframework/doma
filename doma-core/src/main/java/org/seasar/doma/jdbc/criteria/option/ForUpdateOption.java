@@ -6,27 +6,57 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
+/** Represents the option that decides whether to append the FOR UPDATE clause or not. */
 public interface ForUpdateOption {
 
+  /**
+   * Indicates that the option does nothing.
+   *
+   * @return the option
+   */
   static ForUpdateOption none() {
     return None.INSTANCE;
   }
 
+  /**
+   * Indicate that the option append the FOR UPDATE clause.
+   *
+   * @param propertyMetamodels properties to be locked
+   * @return the option
+   */
   static ForUpdateOption basic(PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodels);
     return new Basic(Arrays.asList(propertyMetamodels));
   }
 
+  /**
+   * Indicate that the option append the FOR UPDATE ... NO WAIT clause.
+   *
+   * @param propertyMetamodels properties to be locked
+   * @return the option
+   */
   static ForUpdateOption noWait(PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodels);
     return new NoWait(Arrays.asList(propertyMetamodels));
   }
 
+  /**
+   * Indicate that the option append the FOR UPDATE ... WAIT clause.
+   *
+   * @param seconds wait time in seconds
+   * @param propertyMetamodels properties to be locked
+   * @return the option
+   */
   static ForUpdateOption wait(int seconds, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodels);
     return new Wait(seconds, Arrays.asList(propertyMetamodels));
   }
 
+  /**
+   * Accepts a visitor.
+   *
+   * @param visitor a visitor.
+   */
   void accept(Visitor visitor);
 
   class None implements ForUpdateOption {

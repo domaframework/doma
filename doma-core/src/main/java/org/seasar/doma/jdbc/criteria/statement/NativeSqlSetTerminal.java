@@ -24,6 +24,16 @@ public class NativeSqlSetTerminal<RESULT>
     this.resultSetHandler = Objects.requireNonNull(resultSetHandler);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public RESULT execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<RESULT> createCommand() {
     SelectSettings settings = findSettings();

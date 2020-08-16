@@ -33,6 +33,17 @@ public class EntityqlBatchInsertStatement<ENTITY>
     this.settings = Objects.requireNonNull(settings);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public BatchResult<ENTITY> execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<BatchResult<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();

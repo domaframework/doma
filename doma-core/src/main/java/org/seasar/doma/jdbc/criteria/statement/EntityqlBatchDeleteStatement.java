@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
@@ -31,6 +32,18 @@ public class EntityqlBatchDeleteStatement<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws OptimisticLockException if the entity has a version property and an update count is
+   *     {@literal 0}
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public BatchResult<ENTITY> execute() {
+    return super.execute();
   }
 
   @Override
