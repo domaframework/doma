@@ -27,6 +27,18 @@ public class EntityqlSelectTerminal<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws EmptyWhereClauseException if {@link SelectSettings#getAllowEmptyWhere()} returns
+   *     {@literal false} and the WHERE clause is empty
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public List<ENTITY> execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<List<ENTITY>> createCommand() {
     SelectContext context = declaration.getContext();

@@ -22,6 +22,10 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlUpdateStatement;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 
+/**
+ * Provides the ways to query and associate entities. Use {@link NativeSql} to issue more complex
+ * SQL statements than this class does.
+ */
 public class Entityql {
 
   protected final Config config;

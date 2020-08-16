@@ -29,6 +29,19 @@ public class NativeSqlUpdateTerminal extends AbstractStatement<NativeSqlUpdateTe
     return this;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws EmptyWhereClauseException if {@link UpdateSettings#getAllowEmptyWhere()} returns
+   *     {@literal false} and the WHERE clause is empty
+   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public Integer execute() {
+    return super.execute();
+  }
+
   @Override
   protected Command<Integer> createCommand() {
     UpdateContext context = declaration.getContext();

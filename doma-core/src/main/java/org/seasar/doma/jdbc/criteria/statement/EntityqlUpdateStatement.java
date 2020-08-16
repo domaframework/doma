@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.UpdateCommand;
@@ -27,6 +28,21 @@ public class EntityqlUpdateStatement<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws EmptyWhereClauseException if {@link UpdateSettings#getAllowEmptyWhere()} returns
+   *     {@literal false} and the WHERE clause is empty
+   * @throws OptimisticLockException if the entity has a version property and an update count is
+   *     {@literal 0}
+   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @Override
+  public Result<ENTITY> execute() {
+    return super.execute();
   }
 
   @Override
