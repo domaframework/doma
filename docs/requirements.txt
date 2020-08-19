@@ -3,7 +3,7 @@ argh==0.26.2
 Babel==2.6.0
 certifi==2018.11.29
 chardet==3.0.4
-docutils==0.14
+docutils==0.16
 idna==2.8
 imagesize==1.1.0
 Jinja2==2.10
