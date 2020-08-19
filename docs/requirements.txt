@@ -18,7 +18,7 @@ pytz==2018.7
 PyYAML==3.13
 requests==2.21.0
 six==1.12.0
-snowballstemmer==1.2.1
+snowballstemmer==1.9.1
 Sphinx==1.8.2
 sphinx-autobuild==0.7.1
 sphinx-rtd-theme==0.4.2
