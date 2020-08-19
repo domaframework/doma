@@ -5,7 +5,7 @@ certifi==2018.11.29
 chardet==3.0.4
 docutils==0.14
 idna==2.8
-imagesize==1.1.0
+imagesize==1.2.0
 Jinja2==2.10
 livereload==2.6.0
 MarkupSafe==1.1.0
