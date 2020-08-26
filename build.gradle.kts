@@ -1,7 +1,5 @@
 plugins {
     base
-    kotlin("jvm") version "1.3.72" apply false
-    kotlin("kapt") version "1.3.72" apply false
     id("com.diffplug.eclipse.apt") version "3.24.0" apply false
     id("com.diffplug.spotless") version "5.2.0"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
