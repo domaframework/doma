@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.query;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.seasar.doma.DomaException;
@@ -74,6 +75,20 @@ public class BuilderSupport {
 
   public void column(PropertyMetamodel<?> propertyMetamodel) {
     propertyMetamodel.accept(propertyMetamodelVisitor);
+  }
+
+  public void columnWithoutAlias(Operand.Prop prop) {
+    columnWithoutAlias(prop.value);
+  }
+
+  public void columnWithoutAlias(PropertyMetamodel<?> propertyMetamodel) {
+    propertyMetamodel.accept(
+        new PropertyMetamodelVisitor() {
+          @Override
+          protected Optional<String> getAlias(PropertyMetamodel<?> propertyMetamodel) {
+            return Optional.empty();
+          }
+        });
   }
 
   public void param(Operand.Param param) {
@@ -442,15 +457,23 @@ public class BuilderSupport {
 
     @Override
     public void visit(PropertyMetamodel<?> propertyMetamodel) {
+      Optional<String> alias = getAlias(propertyMetamodel);
+      alias.ifPresent(
+          it -> {
+            buf.appendSql(it);
+            buf.appendSql(".");
+          });
+      EntityPropertyType<?, ?> propertyType = propertyMetamodel.asType();
+      buf.appendSql(
+          propertyType.getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote));
+    }
+
+    protected Optional<String> getAlias(PropertyMetamodel<?> propertyMetamodel) {
       String alias = aliasManager.getAlias(propertyMetamodel);
       if (alias == null) {
         throw new DomaException(Message.DOMA6004, propertyMetamodel.getName());
       }
-      buf.appendSql(alias);
-      buf.appendSql(".");
-      EntityPropertyType<?, ?> propertyType = propertyMetamodel.asType();
-      buf.appendSql(
-          propertyType.getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote));
+      return Optional.of(alias);
     }
 
     @Override

@@ -26,7 +26,7 @@ class NativeSqlUpdateTest {
                 });
 
     Sql<?> sql = stmt.asSql();
-    assertEquals("update EMP t0_ set t0_.NAME = 'bbb', t0_.SALARY = null", sql.getFormattedSql());
+    assertEquals("update EMP t0_ set NAME = 'bbb', SALARY = null", sql.getFormattedSql());
   }
 
   @Test
@@ -44,7 +44,6 @@ class NativeSqlUpdateTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
-        "update EMP t0_ set t0_.NAME = 'bbb', t0_.SALARY = 1000 where t0_.ID = 1",
-        sql.getFormattedSql());
+        "update EMP t0_ set NAME = 'bbb', SALARY = 1000 where t0_.ID = 1", sql.getFormattedSql());
   }
 }
