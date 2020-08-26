@@ -83,7 +83,7 @@ public class UpdateBuilder {
   }
 
   private void column(Operand.Prop prop) {
-    support.column(prop);
+    support.columnWithoutAlias(prop);
   }
 
   private void visitCriterion(int index, Criterion criterion) {
