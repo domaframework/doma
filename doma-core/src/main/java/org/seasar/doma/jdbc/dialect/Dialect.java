@@ -124,6 +124,19 @@ public interface Dialect {
   boolean supportsIdentityReservation();
 
   /**
+   * Whether this object supports alias reference in DELETE clause as follows:
+   *
+   * <pre>
+   * DELETE t FROM employee t
+   * </pre>
+   *
+   * @return {@code true}, if this object supports it
+   */
+  default boolean supportsAliasInDeleteClause() {
+    return false;
+  }
+
+  /**
    * Returns an SQL object to get IDENTITY values that are generated in the database.
    *
    * <p>This method is available, only if {@link #supportsIdentity()} returns {@code true}.

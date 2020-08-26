@@ -115,6 +115,11 @@ public class Mssql2008Dialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsAliasInDeleteClause() {
+    return true;
+  }
+
+  @Override
   public String getScriptBlockDelimiter() {
     return "GO";
   }

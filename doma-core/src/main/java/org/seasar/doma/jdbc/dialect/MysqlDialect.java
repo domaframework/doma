@@ -92,6 +92,11 @@ public class MysqlDialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsAliasInDeleteClause() {
+    return true;
+  }
+
+  @Override
   protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
     MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
     return transformer.transform(sqlNode);

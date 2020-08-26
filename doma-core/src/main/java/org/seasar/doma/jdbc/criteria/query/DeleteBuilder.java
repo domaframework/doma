@@ -12,6 +12,7 @@ import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class DeleteBuilder {
+  private final Config config;
   private final DeleteContext context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
@@ -37,6 +38,7 @@ public class DeleteBuilder {
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
     Objects.requireNonNull(config);
+    this.config = Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
     this.buf = Objects.requireNonNull(buf);
@@ -45,7 +47,12 @@ public class DeleteBuilder {
   }
 
   public PreparedSql build() {
-    buf.appendSql("delete from ");
+    buf.appendSql("delete");
+    if (config.getDialect().supportsAliasInDeleteClause()) {
+      buf.appendSql(" ");
+      alias(context.entityMetamodel);
+    }
+    buf.appendSql(" from ");
     table(context.entityMetamodel);
     if (!context.where.isEmpty()) {
       buf.appendSql(" where ");
@@ -57,6 +64,10 @@ public class DeleteBuilder {
       buf.cutBackSql(5);
     }
     return buf.build(commenter);
+  }
+
+  private void alias(EntityMetamodel<?> entityMetamodel) {
+    support.alias(entityMetamodel);
   }
 
   private void table(EntityMetamodel<?> entityMetamodel) {
