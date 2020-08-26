@@ -8,6 +8,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
+import org.seasar.doma.jdbc.dialect.MysqlDialect;
 
 class NativeSqlDeleteTest {
 
@@ -20,6 +21,19 @@ class NativeSqlDeleteTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals("delete from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void aliasInDeleteClause() {
+    MockConfig config = new MockConfig();
+    config.dialect = new MysqlDialect();
+    NativeSql nativeSql = new NativeSql(config);
+
+    Emp_ e = new Emp_();
+    Statement<Integer> stmt = nativeSql.delete(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("delete t0_ from EMP t0_", sql.getFormattedSql());
   }
 
   @Test

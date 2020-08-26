@@ -58,11 +58,22 @@ public class BuilderSupport {
         entityType.getQualifiedTableName(
             config.getNaming()::apply, config.getDialect()::applyQuote));
     buf.appendSql(" ");
+    String alias = getAlias(entityMetamodel);
+    buf.appendSql(alias);
+  }
+
+  public void alias(EntityMetamodel<?> entityMetamodel) {
+    String alias = getAlias(entityMetamodel);
+    buf.appendSql(alias);
+  }
+
+  public String getAlias(EntityMetamodel<?> entityMetamodel) {
+    EntityType<?> entityType = entityMetamodel.asType();
     String alias = aliasManager.getAlias(entityMetamodel);
     if (alias == null) {
       throw new DomaException(Message.DOMA6003, entityType.getName());
     }
-    buf.appendSql(alias);
+    return alias;
   }
 
   public void operand(Operand operand) {
