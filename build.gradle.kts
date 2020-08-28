@@ -80,11 +80,6 @@ subprojects {
         java {
             googleJavaFormat("1.7")
         }
-        kotlin {
-            ktlint("0.36.0")
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
     }
 
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
