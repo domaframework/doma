@@ -25,9 +25,10 @@ fun replaceVersionInArtifact(ver: String) {
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
-    val build by tasks.existing {
-        val spotlessApply by tasks.existing
-        dependsOn(spotlessApply)
+    tasks {
+        named("build") {
+            dependsOn(spotlessApply)
+        }
     }
 
     repositories {
@@ -42,25 +43,27 @@ subprojects {
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "de.marcphilipp.nexus-publish")
 
-    val replaceVersionInJava by tasks.registering {
-        doLast {
-            replaceVersionInArtifact(version.toString())
+    tasks {
+        val replaceVersionInJava by registering {
+            doLast {
+                replaceVersionInArtifact(version.toString())
+            }
         }
-    }
 
-    val compileJava by tasks.existing(JavaCompile::class) {
-        dependsOn(replaceVersionInJava)
-        options.encoding = encoding
-    }
+        named<JavaCompile>("compileJava") {
+            dependsOn(replaceVersionInJava)
+            options.encoding = encoding
+        }
 
-    val compileTestJava by tasks.existing(JavaCompile::class) {
-        options.encoding = encoding
-        options.compilerArgs = listOf("-proc:none")
-    }
+        named<JavaCompile>("compileTestJava") {
+            options.encoding = encoding
+            options.compilerArgs = listOf("-proc:none")
+        }
 
-    val test by tasks.existing(Test::class) {
-        maxHeapSize = "1g"
-        useJUnitPlatform()
+        named<Test>("test") {
+            maxHeapSize = "1g"
+            useJUnitPlatform()
+        }
     }
 
     dependencies {
@@ -109,26 +112,28 @@ subprojects {
 }
 
 configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") }) {
-    val javadoc by tasks.existing(Javadoc::class) {
-        options.encoding = encoding
-        (options as StandardJavadocDocletOptions).apply {
-            charSet = encoding
-            docEncoding = encoding
-            links("https://docs.oracle.com/javase/8/docs/api/")
-            use()
-            exclude("**/internal/**")
-        }
-    }
 
-    val jar by tasks.existing(Jar::class) {
-        manifest {
-            attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+    tasks {
+        named<Javadoc>("javadoc") {
+            options.encoding = encoding
+            (options as StandardJavadocDocletOptions).apply {
+                charSet = encoding
+                docEncoding = encoding
+                links("https://docs.oracle.com/javase/8/docs/api/")
+                use()
+                exclude("**/internal/**")
+            }
         }
-    }
 
-    val build by tasks.existing {
-        val publishToMavenLocal by tasks.existing
-        dependsOn(publishToMavenLocal)
+        named<Jar>("jar") {
+            manifest {
+                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+            }
+        }
+
+        named("build") {
+            dependsOn("publishToMavenLocal")
+        }
     }
 
     configure<JavaPluginExtension> {
@@ -186,38 +191,41 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
 }
 
 rootProject.apply {
-    fun replaceVersionInDocs(ver: String) {
-        ant.withGroovyBuilder {
-            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
-                    "replace" to "\\1${ver}\\3",
-                    "encoding" to encoding,
-                    "flags" to "g") {
-                "fileset"("dir" to ".") {
-                    "include"("name" to "README.md")
-                    "include"("name" to "docs/**/*.rst")
+
+    tasks {
+        fun replaceVersionInDocs(ver: String) {
+            ant.withGroovyBuilder {
+                "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
+                        "replace" to "\\1${ver}\\3",
+                        "encoding" to encoding,
+                        "flags" to "g") {
+                    "fileset"("dir" to ".") {
+                        "include"("name" to "README.md")
+                        "include"("name" to "docs/**/*.rst")
+                    }
                 }
             }
         }
-    }
 
-    val replaceVersion by tasks.registering {
-        doLast {
-            val releaseVersion = properties["release.releaseVersion"]?.toString()
-            checkNotNull(releaseVersion)
-            replaceVersionInArtifact(releaseVersion)
-            replaceVersionInDocs(releaseVersion)
+        val replaceVersion by registering {
+            doLast {
+                val releaseVersion = project.properties["release.releaseVersion"]?.toString()
+                checkNotNull(releaseVersion)
+                replaceVersionInArtifact(releaseVersion)
+                replaceVersionInDocs(releaseVersion)
+            }
         }
-    }
 
-    val beforeReleaseBuild by tasks.existing {
-        dependsOn(replaceVersion)
-    }
+        named("beforeReleaseBuild") {
+            dependsOn(replaceVersion)
+        }
 
-    val updateVersion by tasks.existing {
-        doLast {
-            val newVersion = properties["release.newVersion"]?.toString()
-            checkNotNull(newVersion)
-            replaceVersionInArtifact(newVersion)
+        named("updateVersion") {
+            doLast {
+                val newVersion = project.properties["release.newVersion"]?.toString()
+                checkNotNull(newVersion)
+                replaceVersionInArtifact(newVersion)
+            }
         }
     }
 
