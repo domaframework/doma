@@ -55,60 +55,12 @@ subprojects {
             options.encoding = encoding
         }
 
-        named<JavaCompile>("compileTestJava") {
-            options.encoding = encoding
-            options.compilerArgs = listOf("-proc:none")
-        }
-
-        named<Test>("test") {
-            maxHeapSize = "1g"
-            useJUnitPlatform()
-        }
-    }
-
-    dependencies {
-        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.6.2")
-        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-    }
-
-    configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        java {
-            googleJavaFormat("1.7")
-        }
-    }
-
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
-                }
+        named<Jar>("jar") {
+            manifest {
+                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
             }
         }
-        jdt {
-            javaRuntimeName = "JavaSE-1.8"
-        }
-    }
-}
 
-configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") }) {
-
-    tasks {
         named<Javadoc>("javadoc") {
             options.encoding = encoding
             (options as StandardJavadocDocletOptions).apply {
@@ -120,18 +72,30 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
             }
         }
 
-        named<Jar>("jar") {
-            manifest {
-                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
-            }
+        named<JavaCompile>("compileTestJava") {
+            options.encoding = encoding
+            options.compilerArgs = listOf("-proc:none")
+        }
+
+        named<Test>("test") {
+            maxHeapSize = "1g"
+            useJUnitPlatform()
         }
 
         named("build") {
             dependsOn("publishToMavenLocal")
         }
+
+    }
+
+    dependencies {
+        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.6.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     }
 
     configure<JavaPluginExtension> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
         withJavadocJar()
         withSourcesJar()
     }
@@ -182,6 +146,35 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
         val publishing = convention.findByType(PublishingExtension::class)!!
         sign(publishing.publications)
         isRequired = !isSnapshot
+    }
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        java {
+            googleJavaFormat("1.7")
+        }
+    }
+
+    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
+        classpath {
+            file {
+                whenMerged {
+                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                    classpath.entries.removeAll {
+                        when (it) {
+                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                            else -> false
+                        }
+                    }
+                }
+                withXml {
+                    val node = asNode()
+                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
+                }
+            }
+        }
+        jdt {
+            javaRuntimeName = "JavaSE-1.8"
+        }
     }
 }
 
