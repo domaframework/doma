@@ -223,7 +223,7 @@ rootProject.apply {
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         format("misc") {
-            target("**/*.gradle", "**/*.gradle.kts", "**/*.gitignore")
+            target("**/*.gradle.kts", "**/*.gitignore")
             targetExclude("**/bin/**", "**/build/**")
             indentWithSpaces()
             trimTrailingWhitespace()
