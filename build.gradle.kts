@@ -85,7 +85,6 @@ subprojects {
         named("build") {
             dependsOn("publishToMavenLocal")
         }
-
     }
 
     dependencies {
@@ -180,21 +179,21 @@ subprojects {
 
 rootProject.apply {
 
-    tasks {
-        fun replaceVersionInDocs(ver: String) {
-            ant.withGroovyBuilder {
-                "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
-                        "replace" to "\\1${ver}\\3",
-                        "encoding" to encoding,
-                        "flags" to "g") {
-                    "fileset"("dir" to ".") {
-                        "include"("name" to "README.md")
-                        "include"("name" to "docs/**/*.rst")
-                    }
+    fun replaceVersionInDocs(ver: String) {
+        ant.withGroovyBuilder {
+            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
+                    "replace" to "\\1${ver}\\3",
+                    "encoding" to encoding,
+                    "flags" to "g") {
+                "fileset"("dir" to ".") {
+                    "include"("name" to "README.md")
+                    "include"("name" to "docs/**/*.rst")
                 }
             }
         }
+    }
 
+    tasks {
         val replaceVersion by registering {
             doLast {
                 val releaseVersion = project.properties["release.releaseVersion"]?.toString()
