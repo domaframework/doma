@@ -25,9 +25,10 @@ fun replaceVersionInArtifact(ver: String) {
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
-    val build by tasks.existing {
-        val spotlessApply by tasks.existing
-        dependsOn(spotlessApply)
+    tasks {
+        named("build") {
+            dependsOn(spotlessApply)
+        }
     }
 
     repositories {
@@ -42,25 +43,48 @@ subprojects {
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "de.marcphilipp.nexus-publish")
 
-    val replaceVersionInJava by tasks.registering {
-        doLast {
-            replaceVersionInArtifact(version.toString())
+    tasks {
+        val replaceVersionInJava by registering {
+            doLast {
+                replaceVersionInArtifact(version.toString())
+            }
         }
-    }
 
-    val compileJava by tasks.existing(JavaCompile::class) {
-        dependsOn(replaceVersionInJava)
-        options.encoding = encoding
-    }
+        named<JavaCompile>("compileJava") {
+            dependsOn(replaceVersionInJava)
+            options.encoding = encoding
+        }
 
-    val compileTestJava by tasks.existing(JavaCompile::class) {
-        options.encoding = encoding
-        options.compilerArgs = listOf("-proc:none")
-    }
+        named<Jar>("jar") {
+            manifest {
+                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+            }
+        }
 
-    val test by tasks.existing(Test::class) {
-        maxHeapSize = "1g"
-        useJUnitPlatform()
+        named<Javadoc>("javadoc") {
+            options.encoding = encoding
+            (options as StandardJavadocDocletOptions).apply {
+                charSet = encoding
+                docEncoding = encoding
+                links("https://docs.oracle.com/javase/8/docs/api/")
+                use()
+                exclude("**/internal/**")
+            }
+        }
+
+        named<JavaCompile>("compileTestJava") {
+            options.encoding = encoding
+            options.compilerArgs = listOf("-proc:none")
+        }
+
+        named<Test>("test") {
+            maxHeapSize = "1g"
+            useJUnitPlatform()
+        }
+
+        named("build") {
+            dependsOn("publishToMavenLocal")
+        }
     }
 
     dependencies {
@@ -71,67 +95,6 @@ subprojects {
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        java {
-            googleJavaFormat("1.7")
-        }
-        kotlin {
-            ktlint("0.36.0")
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-    }
-
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-1.8"
-        }
-    }
-}
-
-configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") }) {
-    val javadoc by tasks.existing(Javadoc::class) {
-        options.encoding = encoding
-        (options as StandardJavadocDocletOptions).apply {
-            charSet = encoding
-            docEncoding = encoding
-            links("https://docs.oracle.com/javase/8/docs/api/")
-            use()
-            exclude("**/internal/**")
-        }
-    }
-
-    val jar by tasks.existing(Jar::class) {
-        manifest {
-            attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
-        }
-    }
-
-    val build by tasks.existing {
-        val publishToMavenLocal by tasks.existing
-        dependsOn(publishToMavenLocal)
-    }
-
-    configure<JavaPluginExtension> {
         withJavadocJar()
         withSourcesJar()
     }
@@ -183,9 +146,39 @@ configure(subprojects.filter { it.name in listOf("doma-core", "doma-processor") 
         sign(publishing.publications)
         isRequired = !isSnapshot
     }
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        java {
+            googleJavaFormat("1.7")
+        }
+    }
+
+    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
+        classpath {
+            file {
+                whenMerged {
+                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                    classpath.entries.removeAll {
+                        when (it) {
+                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                            else -> false
+                        }
+                    }
+                }
+                withXml {
+                    val node = asNode()
+                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
+                }
+            }
+        }
+        jdt {
+            javaRuntimeName = "JavaSE-1.8"
+        }
+    }
 }
 
 rootProject.apply {
+
     fun replaceVersionInDocs(ver: String) {
         ant.withGroovyBuilder {
             "replaceregexp"("match" to """("org.seasar.doma:doma-(core|processor)?:)[^"]*(")""",
@@ -200,24 +193,26 @@ rootProject.apply {
         }
     }
 
-    val replaceVersion by tasks.registering {
-        doLast {
-            val releaseVersion = properties["release.releaseVersion"]?.toString()
-            checkNotNull(releaseVersion)
-            replaceVersionInArtifact(releaseVersion)
-            replaceVersionInDocs(releaseVersion)
+    tasks {
+        val replaceVersion by registering {
+            doLast {
+                val releaseVersion = project.properties["release.releaseVersion"]?.toString()
+                checkNotNull(releaseVersion)
+                replaceVersionInArtifact(releaseVersion)
+                replaceVersionInDocs(releaseVersion)
+            }
         }
-    }
 
-    val beforeReleaseBuild by tasks.existing {
-        dependsOn(replaceVersion)
-    }
+        named("beforeReleaseBuild") {
+            dependsOn(replaceVersion)
+        }
 
-    val updateVersion by tasks.existing {
-        doLast {
-            val newVersion = properties["release.newVersion"]?.toString()
-            checkNotNull(newVersion)
-            replaceVersionInArtifact(newVersion)
+        named("updateVersion") {
+            doLast {
+                val newVersion = project.properties["release.newVersion"]?.toString()
+                checkNotNull(newVersion)
+                replaceVersionInArtifact(newVersion)
+            }
         }
     }
 
@@ -227,7 +222,7 @@ rootProject.apply {
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         format("misc") {
-            target("**/*.gradle", "**/*.gradle.kts", "**/*.gitignore")
+            target("**/*.gradle.kts", "**/*.gitignore")
             targetExclude("**/bin/**", "**/build/**")
             indentWithSpaces()
             trimTrailingWhitespace()
