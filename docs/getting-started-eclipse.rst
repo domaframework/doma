@@ -13,7 +13,7 @@ Introduce how to setting up development environment and how to executing basic d
 Install JDK
 ============
 
-.. _JDK 8: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+.. _JDK 8: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 You install `JDK 8`_ .
 
@@ -25,7 +25,7 @@ You install `JDK 8`_ .
 Install Eclipse
 ===============
 
-.. _Eclipse: http://www.eclipse.org/downloads/
+.. _Eclipse: https://www.eclipse.org/downloads/
 
 You install `Eclipse`_ .
 
@@ -46,7 +46,7 @@ input next url to 'Work With' textbox.
 
 ::
 
-  http://dl.bintray.com/domaframework/eclipse/
+  https://dl.bintray.com/domaframework/eclipse/
 
 Install enable plugin candidate is shown like below
 then you check to Doma tool latest version
@@ -78,8 +78,8 @@ Similarly you associate file that has ``.script`` extensions to Text Editor.
    if you use Eclipse IDE for Java EE Developers
    because SQL file is associated to specialized editor by default.
 
-.. _Oracle SQL Developer: http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html
-.. _pgAdmin: http://www.pgadmin.org/
+.. _Oracle SQL Developer: https://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html
+.. _pgAdmin: https://www.pgadmin.org/
 
 .. note::
 
