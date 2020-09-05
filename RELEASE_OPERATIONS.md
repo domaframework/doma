@@ -20,12 +20,7 @@ The GitHub Action workflow [Java CI with Gradle](.github/workflows/ci.yml) handl
 The workflow builds the "doma-core" and the "doma-processor" artifacts
 and pushes them to [Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html).
 
-## Publish documentation to ReadTheDocs
-
-[Documentation](https://doma.readthedocs.io/en/latest/)
-is published with a [webhook](https://docs.readthedocs.io/en/stable/webhooks.html).
-
-## Publish artifacts to Maven Central from Sonatype OSSRH
+## Publish artifacts to Maven Central
 
 Follow the instructions below:
 
@@ -43,6 +38,11 @@ Each artifact is listed in the following directories:
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-core/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-processor/
 
+## Publish documentation to ReadTheDocs
+
+[Documentation](https://doma.readthedocs.io/en/latest/)
+is published with a [webhook](https://docs.readthedocs.io/en/stable/webhooks.html).
+
 ## Publish release notes
 
 Open [Releases](https://github.com/domaframework/doma/releases)
@@ -52,10 +52,3 @@ and publish release notes.
 
 Announce the release of new version using Twitter.
 - [@domaframework](https://twitter.com/domaframework)
-
-## Release related projects
-
-- doma-it
-- simple-boilerplate
-- simple-example
-- spring-boot-jpetstore
