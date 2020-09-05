@@ -85,6 +85,10 @@ subprojects {
         named("build") {
             dependsOn("publishToMavenLocal")
         }
+
+        withType<Sign>().configureEach {
+            onlyIf { !isSnapshot }
+        }
     }
 
     dependencies {
