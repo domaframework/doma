@@ -26,6 +26,7 @@ categories:
     label: 'dependencies'
 exclude-labels:
   - 'skip-changelog'
+change-template: '* $TITLE (#$NUMBER)'
 version-resolver:
   major:
     labels:
