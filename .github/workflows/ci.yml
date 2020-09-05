@@ -36,10 +36,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
       - name: Build and Install packages
-        run: ./gradlew assemble check publishToMavenLocal
-        env:
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+        run: ./gradlew assemble check publishToMavenLocal -x signMavenPublication
 
       - name: Publish packages
         if: github.event_name == 'push'
