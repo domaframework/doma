@@ -8,7 +8,7 @@ plugins {
 }
 
 val encoding: String by project
-val isSnapshot = version.toString().endsWith("SNAPSHOT")
+val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
@@ -88,7 +88,7 @@ subprojects {
         }
 
         withType<Sign>().configureEach {
-            onlyIf { !isSnapshot }
+            onlyIf { isReleaseVersion }
         }
     }
 
@@ -144,12 +144,12 @@ subprojects {
     }
 
     configure<SigningExtension> {
-//        val signingKey: String? by project
-//        val signingPassword: String? by project
-//        useInMemoryPgpKeys(signingKey, signingPassword)
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
         val publishing = convention.findByType(PublishingExtension::class)!!
         sign(publishing.publications)
-        isRequired = !isSnapshot
+        isRequired = isReleaseVersion
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
@@ -218,6 +218,14 @@ rootProject.apply {
                 checkNotNull(newVersion)
                 replaceVersionInArtifact(newVersion)
             }
+        }
+
+        named("closeRepository") {
+            onlyIf { isReleaseVersion }
+        }
+
+        named("releaseRepository") {
+            onlyIf { isReleaseVersion }
         }
     }
 
