@@ -3,6 +3,7 @@ plugins {
     id("com.diffplug.eclipse.apt") version "3.24.0" apply false
     id("com.diffplug.spotless") version "5.3.0"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
+    id("io.codearte.nexus-staging") version "0.22.0"
     id("net.researchgate.release") version "2.8.1"
 }
 
@@ -143,9 +144,9 @@ subprojects {
     }
 
     configure<SigningExtension> {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKey, signingPassword)
+//        val signingKey: String? by project
+//        val signingPassword: String? by project
+//        useInMemoryPgpKeys(signingKey, signingPassword)
         val publishing = convention.findByType(PublishingExtension::class)!!
         sign(publishing.publications)
         isRequired = !isSnapshot
@@ -222,6 +223,14 @@ rootProject.apply {
 
     configure<net.researchgate.release.ReleaseExtension> {
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+    }
+
+    configure<io.codearte.gradle.nexus.NexusStagingExtension> {
+        val sonatypeUsername: String by project
+        val sonatypePassword: String by project
+        username = sonatypeUsername
+        password = sonatypePassword
+        packageGroup = "org.seasar"
     }
 
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {

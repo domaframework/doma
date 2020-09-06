@@ -13,35 +13,27 @@ $ ./gradlew release -Prelease.releaseVersion=1.0.0 -Prelease.newVersion=1.1.0-SN
 The value of `release.releaseVersion` is decided by the draft name of
 [Releases](https://github.com/domaframework/doma/releases).
 
-## Build with GitHub Action
+## Build and Publish with GitHub Action
+
+(No operation required)
 
 The GitHub Action workflow [Java CI with Gradle](.github/workflows/ci.yml) handles the above push event.
 
 The workflow builds the "doma-core" and the "doma-processor" artifacts
-and pushes them to [Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html).
+and publishes them to the [Maven Central Repository](https://repo1.maven.org/).
 
-## Publish artifacts to Maven Central
-
-Follow the instructions below:
-
-- Open [Nexus Repository Manager](https://oss.sonatype.org/).
-- Log in to the manager.
-- Select "Staging Repositories" from the side menu.
-- Check the repository of Doma.
-- "Close" and "Release".
-
-In a few minutes, the "doma-core" and the "doma-processor" artifacts
-are copied to the [Maven Central Repository](https://repo1.maven.org/).
-
-Each artifact is listed in the following directories:
+After about 30 minutes, each artifact is listed in the following directories:
 
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-core/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-processor/
 
-## Publish documentation to ReadTheDocs
+## Publish documentation
 
-[Documentation](https://doma.readthedocs.io/en/latest/)
-is published with a [webhook](https://docs.readthedocs.io/en/stable/webhooks.html).
+(No operation required)
+
+The webhook publishes documentation to the [ReadTheDocs](https://doma.readthedocs.io/en/latest/).
+
+See also [Incoming Webhooks and Automation](https://docs.readthedocs.io/en/stable/webhooks.html).
 
 ## Publish release notes
 
