@@ -40,7 +40,7 @@ jobs:
 
       - name: Publish packages
         if: github.event_name == 'push'
-        run: ./gradlew publish
+        run: ./gradlew publish closeAndReleaseRepository
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
