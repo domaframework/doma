@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: ''
 labels: ''
-assignees: ''
+assignees: nakamura-to
 
 ---
 
@@ -27,8 +27,11 @@ Steps to reproduce the behavior:
 
 **Environment (please complete the following information):**
 - Doma version or git rev:
+- IDE version (ie. Eclipse or IntelliJ IDEA):
 - Output of `java -version`:
 - Build tool (ie. output of `mvnw --version` or `gradlew --version`):
+- Database version:
+- JDBC Driver version:
 
 **Additional context**
 (Add any other context about the problem here.)
