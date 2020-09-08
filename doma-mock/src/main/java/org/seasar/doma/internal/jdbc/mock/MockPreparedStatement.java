@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
-
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -25,7 +23,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 @SuppressWarnings({"all", "deprecation"})
 public class MockPreparedStatement extends MockStatement implements PreparedStatement {
@@ -59,7 +56,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public ResultSet executeQuery() throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     if (resultSet == null) {
       resultSet = new MockResultSet();
     }
@@ -68,7 +65,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public int executeUpdate() throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     return updatedRows;
   }
 
@@ -106,7 +103,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setBigDecimal(int parameterIndex, BigDecimal x) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     bindValues.add(new BindValue("BigDecimal", parameterIndex, x));
   }
 
@@ -210,13 +207,13 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setInt(int parameterIndex, int x) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     bindValues.add(new BindValue("Int", parameterIndex, x));
   }
 
   @Override
   public void setLong(int parameterIndex, long x) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     bindValues.add(new BindValue("Long", parameterIndex, x));
   }
 
@@ -258,7 +255,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setNull(int parameterIndex, int sqlType) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     bindValues.add(new BindValue(sqlType, parameterIndex));
   }
 
@@ -300,7 +297,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setString(int parameterIndex, String x) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     bindValues.add(new BindValue("String", parameterIndex, x));
   }
 

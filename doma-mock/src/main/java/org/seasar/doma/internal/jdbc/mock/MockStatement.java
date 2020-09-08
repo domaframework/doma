@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.Arrays;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 public class MockStatement extends MockWrapper implements Statement {
 

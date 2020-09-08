@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
-
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 @SuppressWarnings({"all", "deprecation"})
 public class MockResultSet extends MockWrapper implements ResultSet {
@@ -48,7 +45,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
   }
 
   protected RowData getRowData() {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     return rows.get(rowIndex);
   }
 
@@ -132,7 +129,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public BigDecimal getBigDecimal(int columnIndex) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     Object value = getObject(columnIndex);
     if (value == null) {
       return null;
@@ -316,7 +313,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public int getInt(int columnIndex) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     wasNull = false;
     Object value = getObject(columnIndex);
     if (value == null) {
@@ -334,7 +331,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public long getLong(int columnIndex) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     wasNull = false;
     Object value = getObject(columnIndex);
     if (value == null) {
@@ -352,7 +349,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public ResultSetMetaData getMetaData() throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     if (metaData == null) {
       metaData = new MockResultSetMetaData();
     }
@@ -403,7 +400,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public Object getObject(int columnIndex) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     wasNull = false;
     Object result = getRowData().get(columnIndex);
     if (result == null) {
@@ -636,7 +633,7 @@ public class MockResultSet extends MockWrapper implements ResultSet {
 
   @Override
   public boolean next() throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     rowIndex++;
     return rowIndex < rows.size();
   }

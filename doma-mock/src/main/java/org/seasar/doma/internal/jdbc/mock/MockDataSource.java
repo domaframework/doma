@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 public class MockDataSource extends MockWrapper implements DataSource {
 

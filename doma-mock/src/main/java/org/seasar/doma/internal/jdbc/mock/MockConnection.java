@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.jdbc.mock;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 public class MockConnection extends MockWrapper implements Connection {
 
@@ -256,7 +253,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public PreparedStatement prepareStatement(String sql) throws SQLException {
-    assertTrue(!closed);
+    AssertionUtil.assertTrue(!closed);
     preparedStatement.sql = sql;
     return preparedStatement;
   }

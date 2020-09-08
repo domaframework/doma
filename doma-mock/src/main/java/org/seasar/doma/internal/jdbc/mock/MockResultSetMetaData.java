@@ -4,7 +4,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.seasar.doma.internal.util.AssertionUtil;
 
 public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaData {
 
