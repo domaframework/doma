@@ -7,18 +7,16 @@ import java.util.List;
 
 public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaData {
 
-  public final List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();
+  public final List<ColumnMetaData> columns = new ArrayList<>();
 
   @Override
   public String getCatalogName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public String getColumnClassName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -28,8 +26,7 @@ public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaD
 
   @Override
   public int getColumnDisplaySize(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
@@ -39,97 +36,81 @@ public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaD
 
   @Override
   public String getColumnName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public int getColumnType(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public String getColumnTypeName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public int getPrecision(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public int getScale(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public String getSchemaName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public String getTableName(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isAutoIncrement(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isCaseSensitive(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isCurrency(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isDefinitelyWritable(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public int isNullable(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isReadOnly(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isSearchable(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isSigned(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isWritable(int column) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 }

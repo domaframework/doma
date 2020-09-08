@@ -24,35 +24,31 @@ public class MockDataSource extends MockWrapper implements DataSource {
 
   @Override
   public Connection getConnection(String username, String password) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public int getLoginTimeout() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public PrintWriter getLogWriter() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public void setLoginTimeout(int seconds) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setLogWriter(PrintWriter out) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 }

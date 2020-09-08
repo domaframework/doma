@@ -1,16 +1,15 @@
 package org.seasar.doma.internal.jdbc.mock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RowData {
 
-  protected final List<Object> values = new ArrayList<Object>();
+  protected final List<Object> values = new ArrayList<>();
 
   public RowData(Object... values) {
-    for (Object object : values) {
-      this.values.add(object);
-    }
+    this.values.addAll(Arrays.asList(values));
   }
 
   public Object get(int index) {

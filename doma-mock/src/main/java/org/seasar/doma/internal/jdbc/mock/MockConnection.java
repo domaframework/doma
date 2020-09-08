@@ -37,7 +37,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   public boolean autoCommit = true;
 
-  public List<String> savepointNames = new ArrayList<String>();
+  public List<String> savepointNames = new ArrayList<>();
 
   public int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
 
@@ -54,7 +54,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public void clearWarnings() throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -69,32 +69,27 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public Blob createBlob() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public Clob createClob() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public NClob createNClob() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public SQLXML createSQLXML() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -105,21 +100,18 @@ public class MockConnection extends MockWrapper implements Connection {
   @Override
   public Statement createStatement(
       int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public Statement createStatement(int resultSetType, int resultSetConcurrency)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -129,32 +121,27 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public String getCatalog() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public Properties getClientInfo() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public String getClientInfo(String name) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public int getHoldability() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @Override
   public DatabaseMetaData getMetaData() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -164,14 +151,12 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public Map<String, Class<?>> getTypeMap() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public SQLWarning getWarnings() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -181,28 +166,24 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public boolean isReadOnly() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public boolean isValid(int timeout) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @Override
   public String nativeSQL(String sql) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public CallableStatement prepareCall(
       String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -222,33 +203,28 @@ public class MockConnection extends MockWrapper implements Connection {
   public PreparedStatement prepareStatement(
       String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -286,33 +262,32 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public void setCatalog(String catalog) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setClientInfo(Properties properties) throws SQLClientInfoException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setClientInfo(String name, String value) throws SQLClientInfoException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setHoldability(int holdability) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setReadOnly(boolean readOnly) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public Savepoint setSavepoint() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
@@ -339,33 +314,31 @@ public class MockConnection extends MockWrapper implements Connection {
 
   @Override
   public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void setSchema(String schema) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public String getSchema() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void abort(Executor executor) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public int getNetworkTimeout() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 }

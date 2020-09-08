@@ -46,7 +46,7 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void clearParameters() throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -71,34 +71,32 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public ResultSetMetaData getMetaData() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public ParameterMetaData getParameterMetaData() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @Override
   public void setArray(int parameterIndex, Array x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, InputStream x, int length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, InputStream x, long length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setAsciiStream(int parameterIndex, InputStream x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -109,100 +107,100 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setBinaryStream(int parameterIndex, InputStream x, int length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBinaryStream(int parameterIndex, InputStream x, long length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBinaryStream(int parameterIndex, InputStream x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBlob(int parameterIndex, Blob x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBlob(int parameterIndex, InputStream inputStream, long length)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBlob(int parameterIndex, InputStream inputStream) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBoolean(int parameterIndex, boolean x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setByte(int parameterIndex, byte x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setBytes(int parameterIndex, byte[] x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, Reader reader, int length)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, Reader reader, long length)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setCharacterStream(int parameterIndex, Reader reader) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setClob(int parameterIndex, Clob x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setClob(int parameterIndex, Reader reader, long length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setClob(int parameterIndex, Reader reader) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setDate(int parameterIndex, Date x, Calendar cal) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setDate(int parameterIndex, Date x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setDouble(int parameterIndex, double x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setFloat(int parameterIndex, float x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -220,37 +218,37 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
   @Override
   public void setNCharacterStream(int parameterIndex, Reader value, long length)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNCharacterStream(int parameterIndex, Reader value) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNClob(int parameterIndex, NClob value) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNClob(int parameterIndex, Reader reader, long length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNClob(int parameterIndex, Reader reader) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNString(int parameterIndex, String value) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setNull(int parameterIndex, int sqlType, String typeName) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -262,37 +260,37 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
   @Override
   public void setObject(int parameterIndex, Object x, int targetSqlType, int scaleOrLength)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setObject(int parameterIndex, Object x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setRef(int parameterIndex, Ref x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setRowId(int parameterIndex, RowId x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setShort(int parameterIndex, short x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setSQLXML(int parameterIndex, SQLXML xmlObject) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
@@ -303,106 +301,97 @@ public class MockPreparedStatement extends MockStatement implements PreparedStat
 
   @Override
   public void setTime(int parameterIndex, Time x, Calendar cal) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setTime(int parameterIndex, Time x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setTimestamp(int parameterIndex, Timestamp x, Calendar cal) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setTimestamp(int parameterIndex, Timestamp x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setUnicodeStream(int parameterIndex, InputStream x, int length) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @Override
   public void setURL(int parameterIndex, URL x) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void closeOnCompletion() throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public boolean isCloseOnCompletion() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return false;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long getLargeUpdateCount() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void setLargeMaxRows(long max) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long getLargeMaxRows() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long[] executeLargeBatch() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return null;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long executeLargeUpdate(String sql) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long executeLargeUpdate(String sql, int autoGeneratedKeys) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long executeLargeUpdate(String sql, int[] columnIndexes) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long executeLargeUpdate(String sql, String[] columnNames) throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void setObject(int parameterIndex, Object x, SQLType targetSqlType, int scaleOrLength)
       throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public void setObject(int parameterIndex, Object x, SQLType targetSqlType) throws SQLException {
-    AssertionUtil.notYetImplemented();
+    throw new AssertionError();
   }
 
   @SuppressWarnings("all")
   public long executeLargeUpdate() throws SQLException {
-    AssertionUtil.notYetImplemented();
-    return 0;
+    throw new AssertionError();
   }
 }

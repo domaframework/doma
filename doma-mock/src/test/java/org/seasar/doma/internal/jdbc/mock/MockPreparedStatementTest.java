@@ -27,8 +27,8 @@ public class MockPreparedStatementTest {
     ps.setInt(1, 100);
     ps.setInt(2, 200);
 
-    assertEquals(new Integer(100), ps.bindValues.get(0).getValue());
-    assertEquals(new Integer(200), ps.bindValues.get(1).getValue());
+    assertEquals(100, ps.bindValues.get(0).getValue());
+    assertEquals(200, ps.bindValues.get(1).getValue());
   }
 
   @Test
