@@ -139,21 +139,21 @@ jobs:
         run: ./gradlew assemble
 
       - name: Test with h2
-        run: ./gradlew check -s
+        run: ./gradlew check -x spotlessCheck
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: ''
           ORG_GRADLE_PROJECT_jdbcUser: ''
           ORG_GRADLE_PROJECT_jdbcPassword: ''
 
       - name: Test with postgres
-        run: ./gradlew check -s
+        run: ./gradlew check -x spotlessCheck
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:postgresql://127.0.0.1/doma_it
           ORG_GRADLE_PROJECT_jdbcUser: postgres
           ORG_GRADLE_PROJECT_jdbcPassword: postgres
 
       - name: Test with mysql
-        run: ./gradlew check -s
+        run: ./gradlew check -x spotlessCheck
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
           ORG_GRADLE_PROJECT_jdbcUser: root
