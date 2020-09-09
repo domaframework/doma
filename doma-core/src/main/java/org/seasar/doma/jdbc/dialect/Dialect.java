@@ -137,6 +137,19 @@ public interface Dialect {
   }
 
   /**
+   * Whether this object supports alias reference in UPDATE clause as follows:
+   *
+   * <pre>
+   * UPDATE t SET t.age = 30 FROM employee t
+   * </pre>
+   *
+   * @return {@code true}, if this object supports it
+   */
+  default boolean supportsAliasInUpdateClause() {
+    return false;
+  }
+
+  /**
    * Returns an SQL object to get IDENTITY values that are generated in the database.
    *
    * <p>This method is available, only if {@link #supportsIdentity()} returns {@code true}.

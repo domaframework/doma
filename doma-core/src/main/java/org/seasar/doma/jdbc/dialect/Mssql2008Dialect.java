@@ -120,6 +120,11 @@ public class Mssql2008Dialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsAliasInUpdateClause() {
+    return true;
+  }
+
+  @Override
   public String getScriptBlockDelimiter() {
     return "GO";
   }
