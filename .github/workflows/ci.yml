@@ -93,12 +93,25 @@ jobs:
           MYSQL_DATABASE: doma_it
         ports:
           - 3306
+      sqlserver:
+        image: docker://mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04
+        options: --name "mssqlcontainer" --health-cmd "/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P P@ssw0rd -Q \"SELECT * FROM sys.objects;\"" --health-interval 20s --health-timeout 30s --health-retries 128
+        ports:
+          - "1433:1433"
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: "P@ssw0rd"
 
     steps:
       - name: Start the MySQL service
         run: |
           sudo /etc/init.d/mysql start
           mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
+
+      - name: Setup MS-SQL service
+        run: |
+          docker exec mssqlcontainer /opt/mssql-tools/bin/sqlcmd \
+            -S 127.0.0.1 -U sa -P 'P@ssw0rd' -Q 'CREATE DATABASE doma_it'
 
       - name: Download Maven Repository
         uses: actions/download-artifact@v1
@@ -158,6 +171,13 @@ jobs:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
           ORG_GRADLE_PROJECT_jdbcUser: root
           ORG_GRADLE_PROJECT_jdbcPassword: root
+
+      - name: Test with mssql
+        run: ./gradlew check -x spotlessCheck
+        env:
+          ORG_GRADLE_PROJECT_jdbcUrl: jdbc:sqlserver://127.0.0.1;database=doma_it
+          ORG_GRADLE_PROJECT_jdbcUser: sa
+          ORG_GRADLE_PROJECT_jdbcPassword: P@ssw0rd
 
       - name: Upload reports
         if: failure()
