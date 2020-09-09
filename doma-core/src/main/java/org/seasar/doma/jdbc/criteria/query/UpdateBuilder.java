@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.criteria.context.UpdateContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public class UpdateBuilder {
+  private final Config config;
   private final UpdateContext context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
@@ -39,7 +40,7 @@ public class UpdateBuilder {
       Function<String, String> commenter,
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
-    Objects.requireNonNull(config);
+    this.config = Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
     this.buf = Objects.requireNonNull(buf);
@@ -49,7 +50,11 @@ public class UpdateBuilder {
 
   public PreparedSql build() {
     buf.appendSql("update ");
-    table(context.entityMetamodel);
+    if (config.getDialect().supportsAliasInUpdateClause()) {
+      alias(context.entityMetamodel);
+    } else {
+      table(context.entityMetamodel);
+    }
     if (!context.set.isEmpty()) {
       buf.appendSql(" set ");
       Set<Map.Entry<Operand.Prop, Operand>> entries = context.set.entrySet();
@@ -61,6 +66,10 @@ public class UpdateBuilder {
             buf.appendSql(", ");
           });
       buf.cutBackSql(2);
+    }
+    if (config.getDialect().supportsAliasInUpdateClause()) {
+      buf.appendSql(" from ");
+      table(context.entityMetamodel);
     }
     if (!context.where.isEmpty()) {
       buf.appendSql(" where ");
@@ -76,6 +85,10 @@ public class UpdateBuilder {
 
   private void table(EntityMetamodel<?> entityMetamodel) {
     support.table(entityMetamodel);
+  }
+
+  private void alias(EntityMetamodel<?> entityMetamodel) {
+    support.alias(entityMetamodel);
   }
 
   private void operand(Operand operand) {
