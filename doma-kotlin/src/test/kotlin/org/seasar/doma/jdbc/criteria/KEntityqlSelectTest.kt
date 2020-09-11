@@ -22,7 +22,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -32,8 +34,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).innerJoin(d) { eq(e.id, d.id) }
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -43,7 +46,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).innerJoin(d) {}
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -53,8 +58,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).leftJoin(d) { eq(e.id, d.id) }
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ left outer join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ left outer join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -64,7 +70,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).leftJoin(d) {}
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -76,8 +84,9 @@ internal class KEntityqlSelectTest {
         }.associate(e, d) { _, _ -> }
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -93,18 +102,19 @@ internal class KEntityqlSelectTest {
         }
     }
 
-
     @Test
     fun associate_optional() {
         val e = Emp_()
         val d = Dept_()
         val stmt = entityql
-                .from(e)
-                .innerJoin(d) { }
-                .associate(e, d, { _, _ -> }, AssociationOption.optional())
+            .from(e)
+            .innerJoin(d) { }
+            .associate(e, d, { _, _ -> }, AssociationOption.optional())
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -114,26 +124,26 @@ internal class KEntityqlSelectTest {
         val e2 = Emp_()
         val d2 = Dept_()
         val stmt = entityql
-                .from(e)
-                .innerJoin(d) { eq(e.id, d.id) }
-                .leftJoin(e2) { eq(e.id, e2.id) }
-                .leftJoin(d2) { eq(d.id, d2.id) }
-                .associate(e, d) { _, _ -> }
-                .associate(e, e2) { _, _ -> }
-                .associate(d, d2) { _, _ -> }
+            .from(e)
+            .innerJoin(d) { eq(e.id, d.id) }
+            .leftJoin(e2) { eq(e.id, e2.id) }
+            .leftJoin(d2) { eq(d.id, d2.id) }
+            .associate(e, d) { _, _ -> }
+            .associate(e, e2) { _, _ -> }
+            .associate(d, d2) { _, _ -> }
         val sql = stmt.asSql()
         assertEquals(
-                "select "
-                        + "t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, "
-                        + "t1_.ID, t1_.NAME, "
-                        + "t2_.ID, t2_.NAME, t2_.SALARY, t2_.VERSION, "
-                        + "t3_.ID, t3_.NAME from EMP t0_ "
-                        + "inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) "
-                        + "left outer join EMP t2_ on (t0_.ID = t2_.ID) "
-                        + "left outer join CATA.DEPT t3_ on (t1_.ID = t3_.ID)",
-                sql.formattedSql)
+            "select " +
+                "t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, " +
+                "t1_.ID, t1_.NAME, " +
+                "t2_.ID, t2_.NAME, t2_.SALARY, t2_.VERSION, " +
+                "t3_.ID, t3_.NAME from EMP t0_ " +
+                "inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) " +
+                "left outer join EMP t2_ on (t0_.ID = t2_.ID) " +
+                "left outer join CATA.DEPT t3_ on (t1_.ID = t3_.ID)",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun limit() {
@@ -141,8 +151,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).limit(5)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 0 rows fetch first 5 rows only",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 0 rows fetch first 5 rows only",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -151,7 +162,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).limit(null)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -160,8 +173,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).offset(5)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5 rows",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ offset 5 rows",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -170,7 +184,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).offset(null)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -179,8 +195,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).distinct()
         val sql = stmt.asSql()
         assertEquals(
-                "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-                sql.formattedSql)
+            "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -189,8 +206,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).distinct(DistinctOption.basic())
         val sql = stmt.asSql()
         assertEquals(
-                "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-                sql.formattedSql)
+            "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -199,9 +217,10 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).distinct(DistinctOption.none())
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun select() {
@@ -209,7 +228,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).select(e)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -219,8 +240,9 @@ internal class KEntityqlSelectTest {
         val stmt = entityql.from(e).innerJoin(d) { eq(e.id, d.id) }.select(d)
         val sql = stmt.asSql()
         assertEquals(
-                "select t1_.ID, t1_.NAME from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t1_.ID, t1_.NAME from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test

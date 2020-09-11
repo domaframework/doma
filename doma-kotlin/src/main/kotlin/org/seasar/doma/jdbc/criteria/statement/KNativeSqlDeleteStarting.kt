@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.criteria.statement
 
 import org.seasar.doma.jdbc.Sql
 import org.seasar.doma.jdbc.criteria.declaration.KWhereDeclaration
-import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration
 
 class KNativeSqlDeleteStarting(private val statement: NativeSqlDeleteStarting) : KStatement<Int> {
 

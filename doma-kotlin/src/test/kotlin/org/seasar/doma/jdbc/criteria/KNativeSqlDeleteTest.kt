@@ -35,14 +35,16 @@ internal class KNativeSqlDeleteTest {
     fun where() {
         val e = Emp_()
         val stmt = nativeSql
-                .delete(e)
-                .where {
-                    eq(e.name, "a")
-                    eq(e.version, 1)
-                }
+            .delete(e)
+            .where {
+                eq(e.name, "a")
+                eq(e.version, 1)
+            }
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "delete from EMP t0_ where t0_.NAME = 'a' and t0_.VERSION = 1", sql.formattedSql)
+            "delete from EMP t0_ where t0_.NAME = 'a' and t0_.VERSION = 1",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -52,7 +54,8 @@ internal class KNativeSqlDeleteTest {
         val stmt = nativeSql.delete(e).where { `in`(e.id, from(d).select(d.id)) }
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "delete from EMP t0_ where t0_.ID in (select t1_.ID from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "delete from EMP t0_ where t0_.ID in (select t1_.ID from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 }

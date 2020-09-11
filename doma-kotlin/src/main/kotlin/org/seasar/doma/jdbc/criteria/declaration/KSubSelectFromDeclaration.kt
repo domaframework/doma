@@ -13,13 +13,17 @@ class KSubSelectFromDeclaration<ENTITY>(private val declaration: SubSelectFromDe
     }
 
     fun innerJoin(
-            entityMetamodel: EntityMetamodel<*>, block: KJoinDeclaration.() -> Unit): KSubSelectFromDeclaration<ENTITY> {
+        entityMetamodel: EntityMetamodel<*>,
+        block: KJoinDeclaration.() -> Unit
+    ): KSubSelectFromDeclaration<ENTITY> {
         declaration.innerJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
     }
 
     fun leftJoin(
-            entityMetamodel: EntityMetamodel<*>, block: KJoinDeclaration.() -> Unit): KSubSelectFromDeclaration<ENTITY> {
+        entityMetamodel: EntityMetamodel<*>,
+        block: KJoinDeclaration.() -> Unit
+    ): KSubSelectFromDeclaration<ENTITY> {
         declaration.leftJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
     }
@@ -57,15 +61,17 @@ class KSubSelectFromDeclaration<ENTITY>(private val declaration: SubSelectFromDe
     }
 
     fun <PROPERTY1, PROPERTY2> select(
-            first: PropertyMetamodel<PROPERTY1>, second: PropertyMetamodel<PROPERTY2>): SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> {
+        first: PropertyMetamodel<PROPERTY1>,
+        second: PropertyMetamodel<PROPERTY2>
+    ): SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> {
         return declaration.select(first, second)
     }
 
     fun select(
-            propertyMetamodel1: PropertyMetamodel<*>,
-            propertyMetamodel2: PropertyMetamodel<*>,
-            vararg propertyMetamodels: PropertyMetamodel<*>): SubSelectContext<List<PropertyMetamodel<*>>> {
+        propertyMetamodel1: PropertyMetamodel<*>,
+        propertyMetamodel2: PropertyMetamodel<*>,
+        vararg propertyMetamodels: PropertyMetamodel<*>
+    ): SubSelectContext<List<PropertyMetamodel<*>>> {
         return declaration.select(propertyMetamodel1, propertyMetamodel2, *propertyMetamodels)
     }
-
 }

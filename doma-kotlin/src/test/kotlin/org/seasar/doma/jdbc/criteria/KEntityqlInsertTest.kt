@@ -22,8 +22,9 @@ internal class KEntityqlInsertTest {
         val stmt = entityql.insert(e, emp)
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1)",
-                sql.formattedSql)
+            "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -37,6 +38,8 @@ internal class KEntityqlInsertTest {
         val stmt = entityql.insert(e, emp) { excludeNull = true }
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "insert into EMP (ID, SALARY, VERSION) values (1, 1000, 1)", sql.formattedSql)
+            "insert into EMP (ID, SALARY, VERSION) values (1, 1000, 1)",
+            sql.formattedSql
+        )
     }
 }

@@ -4,7 +4,8 @@ import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.Sql
 
 class KEntityqlInsertStatement<ENTITY>(
-        private val statement: Statement<Result<ENTITY>>) : KStatement<Result<ENTITY>> {
+    private val statement: Statement<Result<ENTITY>>
+) : KStatement<Result<ENTITY>> {
 
     override fun execute(): Result<ENTITY> {
         return statement.execute()

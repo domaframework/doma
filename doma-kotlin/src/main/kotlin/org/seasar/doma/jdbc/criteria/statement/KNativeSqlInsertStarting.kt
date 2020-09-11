@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.criteria.statement
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext
 import org.seasar.doma.jdbc.criteria.declaration.KInsertSelectDeclaration
 import org.seasar.doma.jdbc.criteria.declaration.KValuesDeclaration
-import org.seasar.doma.jdbc.criteria.declaration.ValuesDeclaration
 
 class KNativeSqlInsertStarting(private val statement: NativeSqlInsertStarting) {
 

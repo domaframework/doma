@@ -2,7 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement
 
 import org.seasar.doma.jdbc.Sql
 
-class KEntityqlSelectTerminal<ENTITY>(val statement : EntityqlSelectTerminal<ENTITY>) : KListable<ENTITY> {
+class KEntityqlSelectTerminal<ENTITY>(val statement: EntityqlSelectTerminal<ENTITY>) : KListable<ENTITY> {
 
     override fun peek(block: (Sql<*>) -> Unit): KListable<ENTITY> {
         statement.peek(block)
@@ -16,5 +16,4 @@ class KEntityqlSelectTerminal<ENTITY>(val statement : EntityqlSelectTerminal<ENT
     override fun asSql(): Sql<*> {
         return statement.asSql()
     }
-
 }

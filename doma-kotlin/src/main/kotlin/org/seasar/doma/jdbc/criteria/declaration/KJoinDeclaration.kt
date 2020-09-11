@@ -1,14 +1,6 @@
 package org.seasar.doma.jdbc.criteria.declaration
 
-import org.seasar.doma.jdbc.criteria.context.Criterion
-import org.seasar.doma.jdbc.criteria.context.Criterion.Eq
-import org.seasar.doma.jdbc.criteria.context.Criterion.Ge
-import org.seasar.doma.jdbc.criteria.context.Criterion.Le
-import org.seasar.doma.jdbc.criteria.context.Criterion.Ne
-import org.seasar.doma.jdbc.criteria.context.Join
-import org.seasar.doma.jdbc.criteria.context.Operand
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
-import java.util.Objects
 
 class KJoinDeclaration(private val declaration: JoinDeclaration) {
 

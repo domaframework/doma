@@ -22,8 +22,9 @@ internal class KEntityqlBatchUpdateTest {
         val stmt = entityql.update(e, listOf(emp))
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 + 1 where ID = 1 and VERSION = 1",
-                sql.formattedSql)
+            "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 + 1 where ID = 1 and VERSION = 1",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -37,8 +38,9 @@ internal class KEntityqlBatchUpdateTest {
         val stmt = entityql.update(e, listOf(emp)) { ignoreVersion = true }
         val sql = stmt.asSql()
         Assertions.assertEquals(
-                "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 where ID = 1",
-                sql.formattedSql)
+            "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 where ID = 1",
+            sql.formattedSql
+        )
     }
 
     @Test

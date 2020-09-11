@@ -74,122 +74,164 @@ object KExpressions {
     }
 
     fun <PROPERTY> add(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): Add<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): Add<PROPERTY> {
         return Expressions.add(left, right)
     }
 
     fun <PROPERTY> add(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): Add<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): Add<PROPERTY> {
         return Expressions.add(left, right)
     }
 
     fun <PROPERTY> add(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>): Add<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ): Add<PROPERTY> {
         return Expressions.add(left, right)
     }
 
     fun <PROPERTY> sub(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): Sub<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): Sub<PROPERTY> {
         return Expressions.sub(left, right)
     }
 
     fun <PROPERTY> sub(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): Sub<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): Sub<PROPERTY> {
         return Expressions.sub(left, right)
     }
 
     fun <PROPERTY> sub(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>): Sub<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ): Sub<PROPERTY> {
         return Expressions.sub(left, right)
     }
 
     fun <PROPERTY> mul(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): Mul<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): Mul<PROPERTY> {
         return Expressions.mul(left, right)
     }
 
     fun <PROPERTY> mul(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): Mul<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): Mul<PROPERTY> {
         return Expressions.mul(left, right)
     }
 
     fun <PROPERTY> mul(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>): Mul<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ): Mul<PROPERTY> {
         return Expressions.mul(left, right)
     }
 
     fun <PROPERTY> div(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): ArithmeticExpression.Div<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): ArithmeticExpression.Div<PROPERTY> {
         return Expressions.div(left, right)
     }
 
     fun <PROPERTY> div(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): ArithmeticExpression.Div<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): ArithmeticExpression.Div<PROPERTY> {
         return Expressions.div(left, right)
     }
 
     fun <PROPERTY> div(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>): ArithmeticExpression.Div<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ): ArithmeticExpression.Div<PROPERTY> {
         return Expressions.div(left, right)
     }
 
     fun <PROPERTY> mod(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): ArithmeticExpression.Mod<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): ArithmeticExpression.Mod<PROPERTY> {
         return Expressions.mod(left, right)
     }
 
     fun <PROPERTY> mod(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): ArithmeticExpression.Mod<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): ArithmeticExpression.Mod<PROPERTY> {
         return Expressions.mod(left, right)
     }
 
     fun <PROPERTY> mod(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>): ArithmeticExpression.Mod<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ): ArithmeticExpression.Mod<PROPERTY> {
         return Expressions.mod(left, right)
     }
 
     fun <PROPERTY> concat(
-            left: PropertyMetamodel<PROPERTY>, right: PROPERTY): Concat<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PROPERTY
+    ): Concat<PROPERTY> {
         return Expressions.concat(left, right)
     }
 
     fun <PROPERTY> concat(
-            left: PROPERTY, right: PropertyMetamodel<PROPERTY>): Concat<PROPERTY> {
+        left: PROPERTY,
+        right: PropertyMetamodel<PROPERTY>
+    ): Concat<PROPERTY> {
         return Expressions.concat(left, right)
     }
 
     fun <PROPERTY> concat(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>?): Concat<PROPERTY> {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>?
+    ): Concat<PROPERTY> {
         return Expressions.concat(left, right)
     }
 
     fun <PROPERTY> lower(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): StringExpression.Lower<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): StringExpression.Lower<PROPERTY> {
         return Expressions.lower(propertyMetamodel)
     }
 
     fun <PROPERTY> ltrim(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Ltrim<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Ltrim<PROPERTY> {
         return Expressions.ltrim(propertyMetamodel)
     }
 
     fun <PROPERTY> rtrim(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Rtrim<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Rtrim<PROPERTY> {
         return Expressions.rtrim(propertyMetamodel)
     }
 
     fun <PROPERTY> trim(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Trim<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Trim<PROPERTY> {
         return Expressions.trim(propertyMetamodel)
     }
 
     fun <PROPERTY> upper(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Upper<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Upper<PROPERTY> {
         return Expressions.upper(propertyMetamodel)
     }
 
     fun <PROPERTY> avg(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Avg<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Avg<PROPERTY> {
         return Expressions.avg(propertyMetamodel)
     }
 
@@ -206,27 +248,33 @@ object KExpressions {
     }
 
     fun <PROPERTY> max(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>): Max<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>
+    ): Max<PROPERTY> {
         return Expressions.max(propertyMetamodel)
     }
 
     fun <PROPERTY> min(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>?): Min<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>?
+    ): Min<PROPERTY> {
         return Expressions.min(propertyMetamodel)
     }
 
     fun <PROPERTY> sum(
-            propertyMetamodel: PropertyMetamodel<PROPERTY>?): Sum<PROPERTY> {
+        propertyMetamodel: PropertyMetamodel<PROPERTY>?
+    ): Sum<PROPERTY> {
         return Expressions.sum(propertyMetamodel)
     }
 
     fun <PROPERTY> case(
-            block: CaseExpression<PROPERTY>.Declaration.() -> Unit, otherwise: PropertyMetamodel<PROPERTY>): CaseExpression<PROPERTY> {
+        block: CaseExpression<PROPERTY>.Declaration.() -> Unit,
+        otherwise: PropertyMetamodel<PROPERTY>
+    ): CaseExpression<PROPERTY> {
         return Expressions.`when`(block, otherwise)
     }
 
     fun <PROPERTY> select(
-            block: KSelectExpression.Declaration.() -> SubSelectContext.Single<PROPERTY>): SelectExpression<PROPERTY> {
+        block: KSelectExpression.Declaration.() -> SubSelectContext.Single<PROPERTY>
+    ): SelectExpression<PROPERTY> {
         return Expressions.select { block(KSelectExpression.Declaration()) }
     }
 }

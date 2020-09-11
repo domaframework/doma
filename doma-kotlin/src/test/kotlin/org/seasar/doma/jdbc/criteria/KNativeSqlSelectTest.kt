@@ -49,103 +49,117 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_eq() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, e.id)
-                    eq(e.id, 1)
-                    eq(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                eq(e.id, e.id)
+                eq(e.id, 1)
+                eq(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = t0_.ID and t0_.ID = 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = t0_.ID and t0_.ID = 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_ne() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    ne(e.id, e.id)
-                    ne(e.id, 1)
-                    ne(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                ne(e.id, e.id)
+                ne(e.id, 1)
+                ne(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID <> t0_.ID and t0_.ID <> 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID <> t0_.ID and t0_.ID <> 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_ge() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    ge(e.id, e.id)
-                    ge(e.id, 1)
-                    ge(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                ge(e.id, e.id)
+                ge(e.id, 1)
+                ge(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID >= t0_.ID and t0_.ID >= 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID >= t0_.ID and t0_.ID >= 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_gt() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    gt(e.id, e.id)
-                    gt(e.id, 1)
-                    gt(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                gt(e.id, e.id)
+                gt(e.id, 1)
+                gt(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID > t0_.ID and t0_.ID > 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID > t0_.ID and t0_.ID > 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_le() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    le(e.id, e.id)
-                    le(e.id, 1)
-                    le(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                le(e.id, e.id)
+                le(e.id, 1)
+                le(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID <= t0_.ID and t0_.ID <= 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID <= t0_.ID and t0_.ID <= 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_lt() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    lt(e.id, e.id)
-                    lt(e.id, 1)
-                    lt(e.id, null as Int?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                lt(e.id, e.id)
+                lt(e.id, 1)
+                lt(e.id, null as Int?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID < t0_.ID and t0_.ID < 1", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID < t0_.ID and t0_.ID < 1",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -168,44 +182,46 @@ internal class KNativeSqlSelectTest {
     fun where_eqOrIsNull() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eqOrIsNull(e.id, 1)
-                    eqOrIsNull(e.id, null)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                eqOrIsNull(e.id, 1)
+                eqOrIsNull(e.id, null)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.ID is null", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.ID is null",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_neOrIsNotNull() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    neOrIsNotNull(e.id, 1)
-                    neOrIsNotNull(e.id, null)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                neOrIsNotNull(e.id, 1)
+                neOrIsNotNull(e.id, null)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID <> 1 and t0_.ID is not null",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID <> 1 and t0_.ID is not null",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun where_like() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    like(e.name, "a$")
-                    like(e.name, null)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                like(e.name, "a$")
+                like(e.name, null)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals("select t0_.ID from EMP t0_ where t0_.NAME like 'a$'", sql.formattedSql)
     }
@@ -216,7 +232,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { like(e.name, "a$", LikeOption.escape()) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$' escape '$'", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$' escape '$'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -225,7 +243,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { like(e.name, "a¥", LikeOption.escape('¥')) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.NAME like 'a¥¥' escape '¥'", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.NAME like 'a¥¥' escape '¥'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -234,7 +254,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { like(e.name, "a$", LikeOption.prefix()) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$%' escape '$'", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.NAME like 'a$$%' escape '$'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -243,7 +265,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { like(e.name, "a$", LikeOption.infix()) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$%' escape '$'", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$%' escape '$'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -252,7 +276,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { like(e.name, "a$", LikeOption.suffix()) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$' escape '$'", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.NAME like '%a$$' escape '$'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -267,14 +293,14 @@ internal class KNativeSqlSelectTest {
     fun where_between() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    between(e.id, 1, 10)
-                    between(e.id, null, 10)
-                    between(e.id, 1, null)
-                    between(e.id, null, null)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                between(e.id, 1, 10)
+                between(e.id, null, 10)
+                between(e.id, 1, null)
+                between(e.id, null, null)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals("select t0_.ID from EMP t0_ where t0_.ID between 1 and 10", sql.formattedSql)
     }
@@ -283,12 +309,12 @@ internal class KNativeSqlSelectTest {
     fun where_in() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    `in`(e.id, listOf(1, 2))
-                    `in`(e.id, null as List<Int>?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                `in`(e.id, listOf(1, 2))
+                `in`(e.id, null as List<Int>?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (1, 2)", sql.formattedSql)
     }
@@ -297,12 +323,12 @@ internal class KNativeSqlSelectTest {
     fun where_notIn() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    notIn(e.id, listOf(1, 2))
-                    notIn(e.id, null as List<Int>?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                notIn(e.id, listOf(1, 2))
+                notIn(e.id, null as List<Int>?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals("select t0_.ID from EMP t0_ where t0_.ID not in (1, 2)", sql.formattedSql)
     }
@@ -311,32 +337,34 @@ internal class KNativeSqlSelectTest {
     fun where_in_tuple2() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    `in`(Tuple2(e.id, e.name), listOf(Tuple2(1, "a"), Tuple2(2, "b")))
-                    `in`(Tuple2(e.id, e.name), null as List<Tuple2<Int, String>>?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                `in`(Tuple2(e.id, e.name), listOf(Tuple2(1, "a"), Tuple2(2, "b")))
+                `in`(Tuple2(e.id, e.name), null as List<Tuple2<Int, String>>?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) in ((1, 'a'), (2, 'b'))",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) in ((1, 'a'), (2, 'b'))",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_notIn_tuple2() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    notIn(Tuple2(e.id, e.name), listOf(Tuple2(1, "a"), Tuple2(2, "b")))
-                    notIn(Tuple2(e.id, e.name), null as List<Tuple2<Int, String>>?)
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                notIn(Tuple2(e.id, e.name), listOf(Tuple2(1, "a"), Tuple2(2, "b")))
+                notIn(Tuple2(e.id, e.name), null as List<Tuple2<Int, String>>?)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in ((1, 'a'), (2, 'b'))",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in ((1, 'a'), (2, 'b'))",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -346,8 +374,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { `in`(e.id, from(d).select(d.id)) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID in (select t1_.ID from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID in (select t1_.ID from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -357,8 +386,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { notIn(e.id, from(d).select(d.id)) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID not in (select t1_.ID from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID not in (select t1_.ID from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -366,13 +396,14 @@ internal class KNativeSqlSelectTest {
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .where { `in`(Tuple2(e.id, e.name), from(d).select(d.id, d.name)) }
-                .select(e.id)
+            .from(e)
+            .where { `in`(Tuple2(e.id, e.name), from(d).select(d.id, d.name)) }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) in (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) in (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -380,13 +411,14 @@ internal class KNativeSqlSelectTest {
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .where { notIn(Tuple2(e.id, e.name), from(d).select(d.id, d.name)) }
-                .select(e.id)
+            .from(e)
+            .where { notIn(Tuple2(e.id, e.name), from(d).select(d.id, d.name)) }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -396,8 +428,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { exists(from(d).select(d.id)) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where exists (select t1_.ID from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where exists (select t1_.ID from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -407,8 +440,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { exists(from(d)) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where exists (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where exists (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -418,79 +452,82 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).where { notExists(from(d).select(d.id)) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where not exists (select t1_.ID from CATA.DEPT t1_)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where not exists (select t1_.ID from CATA.DEPT t1_)",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_and() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                and {
+                    eq(e.name, "a")
+                    eq(e.version, 1)
                     and {
-                        eq(e.name, "a")
-                        eq(e.version, 1)
-                        and {
-                            eq(e.salary, BigDecimal("20"))
-                        }
+                        eq(e.salary, BigDecimal("20"))
                     }
-                    eq(e.salary, BigDecimal("10"))
                 }
-                .select(e.id)
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and (t0_.NAME = 'a' and t0_.VERSION = 1 and (t0_.SALARY = 20)) and t0_.SALARY = 10",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and (t0_.NAME = 'a' and t0_.VERSION = 1 and (t0_.SALARY = 20)) and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_or() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                or {
+                    eq(e.name, "a")
+                    eq(e.version, 1)
                     or {
-                        eq(e.name, "a")
-                        eq(e.version, 1)
-                        or {
-                            eq(e.salary, BigDecimal("20"))
-                        }
+                        eq(e.salary, BigDecimal("20"))
                     }
-                    eq(e.salary, BigDecimal("10"))
                 }
-                .select(e.id)
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 or (t0_.NAME = 'a' and t0_.VERSION = 1 or (t0_.SALARY = 20)) and t0_.SALARY = 10",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 or (t0_.NAME = 'a' and t0_.VERSION = 1 or (t0_.SALARY = 20)) and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_not() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                not {
+                    eq(e.name, "a")
+                    eq(e.version, 1)
                     not {
-                        eq(e.name, "a")
-                        eq(e.version, 1)
-                        not {
-                            eq(e.salary, BigDecimal("20"))
-                        }
+                        eq(e.salary, BigDecimal("20"))
                     }
-                    eq(e.salary, BigDecimal("10"))
                 }
-                .select(e.id)
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and not (t0_.NAME = 'a' and t0_.VERSION = 1 and not (t0_.SALARY = 20)) and t0_.SALARY = 10",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and not (t0_.NAME = 'a' and t0_.VERSION = 1 and not (t0_.SALARY = 20)) and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun where_empty_empty() {
@@ -504,48 +541,54 @@ internal class KNativeSqlSelectTest {
     fun where_empty_and() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
-                    and {}
-                    eq(e.salary, BigDecimal("10"))
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                and {}
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_empty_or() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
-                    or {}
-                    eq(e.salary, BigDecimal("10"))
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                or {}
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun where_empty_not() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where {
-                    eq(e.id, 1)
-                    not {}
-                    eq(e.salary, BigDecimal("10"))
-                }
-                .select(e.id)
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                not {}
+                eq(e.salary, BigDecimal("10"))
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.SALARY = 10",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -555,8 +598,9 @@ internal class KNativeSqlSelectTest {
         val stmt: KSetOperand<Int> = nativeSql.from(e).innerJoin(d) { eq(e.id, d.id) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -575,8 +619,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).leftJoin(d) { eq(e.id, d.id) }.select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ left outer join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ left outer join CATA.DEPT t1_ on (t0_.ID = t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -593,38 +638,40 @@ internal class KNativeSqlSelectTest {
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .innerJoin(d) {
-                    eq(e.id, d.id)
-                    ne(e.id, d.id)
-                    ge(e.id, d.id)
-                    gt(e.id, d.id)
-                    le(e.id, d.id)
-                    lt(e.id, d.id)
-                }
-                .select(e.id)
+            .from(e)
+            .innerJoin(d) {
+                eq(e.id, d.id)
+                ne(e.id, d.id)
+                ge(e.id, d.id)
+                gt(e.id, d.id)
+                le(e.id, d.id)
+                lt(e.id, d.id)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID and t0_.ID <> t1_.ID and t0_.ID >= t1_.ID and t0_.ID > t1_.ID and t0_.ID <= t1_.ID and t0_.ID < t1_.ID)",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID and t0_.ID <> t1_.ID and t0_.ID >= t1_.ID and t0_.ID > t1_.ID and t0_.ID <= t1_.ID and t0_.ID < t1_.ID)",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun orderBy() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .orderBy {
-                    asc(e.id)
-                    desc(e.name)
-                    asc(e.salary)
-                    desc(e.version)
-                }
-                .select(e.id)
+            .from(e)
+            .orderBy {
+                asc(e.id)
+                desc(e.name)
+                asc(e.salary)
+                desc(e.version)
+            }
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ order by t0_.ID asc, t0_.NAME desc, t0_.SALARY asc, t0_.VERSION desc",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ order by t0_.ID asc, t0_.NAME desc, t0_.SALARY asc, t0_.VERSION desc",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -641,7 +688,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).limit(10).select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ offset 0 rows fetch first 10 rows only", sql.formattedSql)
+            "select t0_.ID from EMP t0_ offset 0 rows fetch first 10 rows only",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -668,7 +717,6 @@ internal class KNativeSqlSelectTest {
         assertEquals("select t0_.ID from EMP t0_", sql.formattedSql)
     }
 
-
     @Test
     fun forUpdate() {
         val e = Emp_()
@@ -680,62 +728,70 @@ internal class KNativeSqlSelectTest {
     @Test
     fun forUpdate_db2() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return Db2Dialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return Db2Dialect()
+                }
+            }
+        )
         val e = Emp_()
         val stmt = nativeSql.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ where t0_.ID = 1 for update with rs", sql.formattedSql)
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 for update with rs",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun forUpdate_mssql() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return MssqlDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return MssqlDialect()
+                }
+            }
+        )
         val e = Emp_()
         val stmt = nativeSql.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ with (updlock, rowlock) where t0_.ID = 1",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ with (updlock, rowlock) where t0_.ID = 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun forUpdate_mssql_nowait() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return MssqlDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return MssqlDialect()
+                }
+            }
+        )
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .where { eq(e.id, 1) }
-                .forUpdate(ForUpdateOption.noWait())
-                .select(e.id)
+            .from(e)
+            .where { eq(e.id, 1) }
+            .forUpdate(ForUpdateOption.noWait())
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ with (updlock, rowlock, nowait) where t0_.ID = 1",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ with (updlock, rowlock, nowait) where t0_.ID = 1",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun forUpdate_oracle_nowait() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return OracleDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return OracleDialect()
+                }
+            }
+        )
         val e = Emp_()
         val stmt = nativeSql.from(e).forUpdate(ForUpdateOption.noWait()).select(e.id)
         val sql = stmt.asSql()
@@ -745,64 +801,70 @@ internal class KNativeSqlSelectTest {
     @Test
     fun forUpdate_oracle_nowait_withColumn() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return OracleDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return OracleDialect()
+                }
+            }
+        )
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .innerJoin(d) { eq(e.id, d.id) }
-                .forUpdate(ForUpdateOption.noWait(e.id, d.id))
-                .select(e.id)
+            .from(e)
+            .innerJoin(d) { eq(e.id, d.id) }
+            .forUpdate(ForUpdateOption.noWait(e.id, d.id))
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID nowait",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID nowait",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun forUpdate_oracle_wait_withColumn() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return OracleDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return OracleDialect()
+                }
+            }
+        )
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .innerJoin(d) { eq(e.id, d.id) }
-                .forUpdate(ForUpdateOption.wait(5, e.id, d.id))
-                .select(e.id)
+            .from(e)
+            .innerJoin(d) { eq(e.id, d.id) }
+            .forUpdate(ForUpdateOption.wait(5, e.id, d.id))
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID wait 5",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_.ID, t1_.ID wait 5",
+            sql.formattedSql
+        )
     }
 
     @Test
     fun forUpdate_postgres_nowait_withTable() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return PostgresDialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return PostgresDialect()
+                }
+            }
+        )
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
-                .from(e)
-                .innerJoin(d) { eq(e.id, d.id) }
-                .forUpdate(ForUpdateOption.noWait(e.id, d.id))
-                .select(e.id)
+            .from(e)
+            .innerJoin(d) { eq(e.id, d.id) }
+            .forUpdate(ForUpdateOption.noWait(e.id, d.id))
+            .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_, t1_ nowait",
-                sql.formattedSql)
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) for update of t0_, t1_ nowait",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -835,10 +897,10 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).select(e.id, e.salary, count(e.name), max(e.id))
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.SALARY, count(t0_.NAME), max(t0_.ID) from EMP t0_ group by t0_.ID, t0_.SALARY",
-                sql.formattedSql)
+            "select t0_.ID, t0_.SALARY, count(t0_.NAME), max(t0_.ID) from EMP t0_ group by t0_.ID, t0_.SALARY",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun having() {
@@ -904,8 +966,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).select(avg(e.id), count(e.id), count(), max(e.id), min(e.id), sum(e.id))
         val sql = stmt.asSql()
         assertEquals(
-                "select avg(t0_.ID), count(t0_.ID), count(*), max(t0_.ID), min(t0_.ID), sum(t0_.ID) from EMP t0_",
-                sql.formattedSql)
+            "select avg(t0_.ID), count(t0_.ID), count(*), max(t0_.ID), min(t0_.ID), sum(t0_.ID) from EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -915,7 +978,6 @@ internal class KNativeSqlSelectTest {
         val sql = stmt.asSql()
         assertEquals("select count(distinct t0_.ID) from EMP t0_", sql.formattedSql)
     }
-
 
     @Test
     fun union() {
@@ -930,8 +992,9 @@ internal class KNativeSqlSelectTest {
         assertEquals("select t0_.NAME from CATA.DEPT t0_", sql2.formattedSql)
         val sql3 = stmt3.asSql()
         assertEquals(
-                "select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_",
-                sql3.formattedSql)
+            "select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_",
+            sql3.formattedSql
+        )
     }
 
     @Test
@@ -947,8 +1010,9 @@ internal class KNativeSqlSelectTest {
         assertEquals("select t0_.NAME from CATA.DEPT t0_", sql2.formattedSql)
         val sql3 = stmt3.asSql()
         assertEquals(
-                "(select t0_.NAME from EMP t0_) union (select t0_.NAME from CATA.DEPT t0_) order by 1 asc",
-                sql3.formattedSql)
+            "(select t0_.NAME from EMP t0_) union (select t0_.NAME from CATA.DEPT t0_) order by 1 asc",
+            sql3.formattedSql
+        )
     }
 
     @Test
@@ -962,8 +1026,9 @@ internal class KNativeSqlSelectTest {
         val stmt4 = stmt1.union(stmt2).union(stmt3)
         val sql = stmt4.asSql()
         assertEquals(
-                "select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_ union select t0_.NAME from NO_ID_EMP t0_",
-                sql.formattedSql)
+            "select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_ union select t0_.NAME from NO_ID_EMP t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -977,8 +1042,9 @@ internal class KNativeSqlSelectTest {
         val stmt4 = stmt1.union(stmt2).union(stmt3).orderBy { desc(1) }
         val sql = stmt4.asSql()
         assertEquals(
-                "(select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_) union (select t0_.NAME from NO_ID_EMP t0_) order by 1 desc",
-                sql.formattedSql)
+            "(select t0_.NAME from EMP t0_ union select t0_.NAME from CATA.DEPT t0_) union (select t0_.NAME from NO_ID_EMP t0_) order by 1 desc",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -990,8 +1056,9 @@ internal class KNativeSqlSelectTest {
         val stmt3 = stmt1.unionAll(stmt2)
         val sql = stmt3.asSql()
         assertEquals(
-                "select t0_.NAME from EMP t0_ union all select t0_.NAME from CATA.DEPT t0_",
-                sql.formattedSql)
+            "select t0_.NAME from EMP t0_ union all select t0_.NAME from CATA.DEPT t0_",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -1014,23 +1081,22 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e) { comment = "hello" }
         val sql = stmt.asSql()
         assertEquals(
-                "// hello\nselect t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-                sql.formattedSql)
+            "// hello\nselect t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun peek() {
         val e = Emp_()
         val d = Dept_()
         @Suppress("UNUSED_VARIABLE") val stmt = nativeSql
-                .from(e)
-                .select(e.name)
-                .peek { println(it) }
-                .union(nativeSql.from(d).select(d.name).peek { println(it) })
-                .peek { println(it) }
+            .from(e)
+            .select(e.name)
+            .peek { println(it) }
+            .union(nativeSql.from(d).select(d.name).peek { println(it) })
+            .peek { println(it) }
     }
-
 
     @Test
     fun distinct() {
@@ -1038,8 +1104,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).distinct().where { eq(e.name, "a") }
         val sql = stmt.asSql()
         assertEquals(
-                "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
-                sql.formattedSql)
+            "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -1048,8 +1115,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).distinct(DistinctOption.basic()).where { eq(e.name, "a") }
         val sql = stmt.asSql()
         assertEquals(
-                "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
-                sql.formattedSql)
+            "select distinct t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+            sql.formattedSql
+        )
     }
 
     @Test
@@ -1058,10 +1126,10 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).distinct(DistinctOption.none()).where { eq(e.name, "a") }
         val sql = stmt.asSql()
         assertEquals(
-                "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
-                sql.formattedSql)
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_ where t0_.NAME = 'a'",
+            sql.formattedSql
+        )
     }
-
 
     @Test
     fun expression_concat() {
@@ -1074,11 +1142,12 @@ internal class KNativeSqlSelectTest {
     @Test
     fun expression_concat_mssql2008() {
         val nativeSql = KNativeSql(
-                object : MockConfig() {
-                    override fun getDialect(): Dialect {
-                        return Mssql2008Dialect()
-                    }
-                })
+            object : MockConfig() {
+                override fun getDialect(): Dialect {
+                    return Mssql2008Dialect()
+                }
+            }
+        )
         val e = Emp_()
         val stmt = nativeSql.from(e).select(concat(e.name, "a"))
         val sql = stmt.asSql()
@@ -1147,7 +1216,9 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).select(case({ eq(e.name, literal("a"), literal("b")) }, literal("z")))
         val sql = stmt.asSql()
         assertEquals(
-                "select case when t0_.NAME = 'a' then 'b' else 'z' end from EMP t0_", sql.rawSql)
+            "select case when t0_.NAME = 'a' then 'b' else 'z' end from EMP t0_",
+            sql.rawSql
+        )
     }
 
     @Test
@@ -1156,38 +1227,47 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).select(case({ eq(e.name, literal("a"), literal(1)) }, literal(0)))
         val sql = stmt.asSql()
         assertEquals(
-                "select case " + "when t0_.NAME = 'a' then 1 else 0 end from EMP t0_", sql.rawSql)
+            "select case " + "when t0_.NAME = 'a' then 1 else 0 end from EMP t0_",
+            sql.rawSql
+        )
     }
 
     @Test
     fun expression_when_operators() {
         val e = Emp_()
         val stmt = nativeSql
-                .from(e)
-                .select(
-                        case({
-                            eq(e.name, literal("a"), literal("b"))
-                            ne(e.name, literal("c"), literal("d"))
-                            ge(e.name, literal("e"), literal("f"))
-                            gt(e.name, literal("g"), literal("h"))
-                            le(e.name, literal("i"), literal("j"))
-                            lt(e.name, literal("k"), literal("l"))
-                            isNull(e.name, literal("m"))
-                            isNotNull(e.name, literal("n"))
-                        }, literal("z")))
+            .from(e)
+            .select(
+                case(
+                    {
+                        eq(e.name, literal("a"), literal("b"))
+                        ne(e.name, literal("c"), literal("d"))
+                        ge(e.name, literal("e"), literal("f"))
+                        gt(e.name, literal("g"), literal("h"))
+                        le(e.name, literal("i"), literal("j"))
+                        lt(e.name, literal("k"), literal("l"))
+                        isNull(e.name, literal("m"))
+                        isNotNull(e.name, literal("n"))
+                    },
+                    literal("z")
+                )
+            )
         val sql = stmt.asSql()
         assertEquals(
-                ("select case "
-                        + "when t0_.NAME = 'a' then 'b' "
-                        + "when t0_.NAME <> 'c' then 'd' "
-                        + "when t0_.NAME >= 'e' then 'f' "
-                        + "when t0_.NAME > 'g' then 'h' "
-                        + "when t0_.NAME <= 'i' then 'j' "
-                        + "when t0_.NAME < 'k' then 'l' "
-                        + "when t0_.NAME is null then 'm' "
-                        + "when t0_.NAME is not null then 'n' "
-                        + "else 'z' end from EMP t0_"),
-                sql.rawSql)
+            (
+                "select case " +
+                    "when t0_.NAME = 'a' then 'b' " +
+                    "when t0_.NAME <> 'c' then 'd' " +
+                    "when t0_.NAME >= 'e' then 'f' " +
+                    "when t0_.NAME > 'g' then 'h' " +
+                    "when t0_.NAME <= 'i' then 'j' " +
+                    "when t0_.NAME < 'k' then 'l' " +
+                    "when t0_.NAME is null then 'm' " +
+                    "when t0_.NAME is not null then 'n' " +
+                    "else 'z' end from EMP t0_"
+                ),
+            sql.rawSql
+        )
     }
 
     @Test

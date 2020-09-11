@@ -9,7 +9,9 @@ class KSetDeclaration(private val declaration: SetDeclaration) {
     }
 
     fun <PROPERTY> value(
-            left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>
+    ) {
         declaration.value(left, right)
     }
 }

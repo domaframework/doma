@@ -16,25 +16,33 @@ class KNativeSql(config: Config?) {
     protected val nativeSql = NativeSql(config)
 
     fun <ENTITY> from(
-            entityMetamodel: EntityMetamodel<ENTITY>, block: SelectSettings.() -> Unit = {}): KNativeSqlSelectStarting<ENTITY> {
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        block: SelectSettings.() -> Unit = {}
+    ): KNativeSqlSelectStarting<ENTITY> {
         val statement = nativeSql.from(entityMetamodel, block)
         return KNativeSqlSelectStarting(statement)
     }
 
     fun <ENTITY> update(
-            entityMetamodel: EntityMetamodel<ENTITY>, block: UpdateSettings.() -> Unit = {}): KNativeSqlUpdateStarting {
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        block: UpdateSettings.() -> Unit = {}
+    ): KNativeSqlUpdateStarting {
         val statement = nativeSql.update(entityMetamodel, block)
         return KNativeSqlUpdateStarting(statement)
     }
 
     fun <ENTITY> delete(
-            entityMetamodel: EntityMetamodel<ENTITY>, block: DeleteSettings.() -> Unit = {}): KNativeSqlDeleteStarting {
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        block: DeleteSettings.() -> Unit = {}
+    ): KNativeSqlDeleteStarting {
         val statement = nativeSql.delete(entityMetamodel, block)
         return KNativeSqlDeleteStarting(statement)
     }
 
     fun <ENTITY> insert(
-            entityMetamodel: EntityMetamodel<ENTITY>, block: InsertSettings.() -> Unit = {}): KNativeSqlInsertStarting {
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        block: InsertSettings.() -> Unit = {}
+    ): KNativeSqlInsertStarting {
         val statement = nativeSql.insert(entityMetamodel, block)
         return KNativeSqlInsertStarting(statement)
     }
