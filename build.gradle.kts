@@ -5,6 +5,7 @@ plugins {
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("io.codearte.nexus-staging") version "0.22.0"
     id("net.researchgate.release") version "2.8.1"
+    kotlin("jvm") version "1.4.0" apply false
 }
 
 val encoding: String by project
@@ -155,6 +156,11 @@ subprojects {
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         java {
             googleJavaFormat("1.7")
+        }
+        kotlin {
+            ktlint("0.38.1")
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 
