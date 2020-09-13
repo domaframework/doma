@@ -99,6 +99,8 @@ and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetsto
 Build with Gradle
 -----------------
 
+For Java projects:
+
 ```groovy
 dependencies {
     implementation "org.seasar.doma:doma-core:2.42.0"
@@ -106,7 +108,15 @@ dependencies {
 }
 ```
 
-For Kotlin projects, use kapt in place of annotationProcessor.
+For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place of annotationProcessor:
+
+```groovy
+dependencies {
+    implementation "org.seasar.doma:doma-kotlin:2.42.0"
+    kapt "org.seasar.doma:doma-processor:2.42.0"
+}
+```
+
 
 Documentation
 ---------------------
