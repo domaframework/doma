@@ -8,7 +8,11 @@ interface KListable<ELEMENT> : KStatement<List<ELEMENT>> {
         return execute()
     }
 
-    fun fetchOne(): ELEMENT? {
+    fun fetchOne(): ELEMENT {
+        return execute().first()
+    }
+
+    fun fetchOneOrNull(): ELEMENT? {
         return execute().firstOrNull()
     }
 
