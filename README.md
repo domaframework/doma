@@ -101,8 +101,8 @@ Build with Gradle
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-core:2.41.0"
-    annotationProcessor "org.seasar.doma:doma-processor:2.41.0"
+    implementation "org.seasar.doma:doma-core:2.42.0"
+    annotationProcessor "org.seasar.doma:doma-processor:2.42.0"
 }
 ```
 

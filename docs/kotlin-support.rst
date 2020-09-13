@@ -179,7 +179,7 @@ For example, you can write build.gradle.kts as follows:
 .. code-block:: kotlin
 
     dependencies {
-        kapt("org.seasar.doma:doma-processor:2.41.0")
+        kapt("org.seasar.doma:doma-processor:2.42.0")
         implementation("org.seasar.doma:doma-kotlin:2.41.0")
     }
 
