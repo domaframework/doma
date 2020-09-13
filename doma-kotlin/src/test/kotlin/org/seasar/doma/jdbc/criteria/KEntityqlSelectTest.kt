@@ -287,4 +287,17 @@ internal class KEntityqlSelectTest {
         assertEquals(Message.DOMA6008, ex.messageResource)
         println(ex.message)
     }
+
+    @Test
+    fun peek() {
+        val e = Emp_()
+        entityql
+            .from(e)
+            .peek { println(it) }
+            .where { eq(e.name, "SMITH") }
+            .peek { println(it) }
+            .orderBy { asc(e.salary) }
+            .peek { println(it.formattedSql) }
+            .fetch()
+    }
 }

@@ -109,7 +109,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
         return KEntityqlSelectTerminal(terminal)
     }
 
-    override fun peek(block: (Sql<*>) -> Unit): KListable<ENTITY> {
+    override fun peek(block: (Sql<*>) -> Unit): KEntityqlSelectStarting<ENTITY> {
         statement.peek(block)
         return this
     }
