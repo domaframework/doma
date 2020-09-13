@@ -149,7 +149,7 @@ On the other hand, when you use ``KEntityql``, the parameter is gone.
         }
         .fetch()
 
-You can see a lot of sample code `here<https://github.com/domaframework/doma-it/tree/master/kotlin/src/test/kotlin/org/seasar/doma/it/criteria>`_.
+You can see a lot of sample code `here <https://github.com/domaframework/doma-it/tree/master/kotlin/src/test/kotlin/org/seasar/doma/it/criteria>`_.
 
 The ``KEntityql`` and ``KNativeQl`` DSLs are included in doma-kotlin.jar.
 Note that you should depend on doma-kotlin instead of doma-core in your build script.
