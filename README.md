@@ -20,7 +20,7 @@ Doma has various strengths:
 Examples
 ---------------------
 
-## type-safe Criteria API
+### type-safe Criteria API
 
 Written in Java 8:
 
