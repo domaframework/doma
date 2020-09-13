@@ -8,12 +8,17 @@ Criteria API
 Introduction
 ============
 
+.. note::
+
+    In Kotlin environment, use Kotlin specific DSLs instead of the following DSLs.
+    See :ref:`kotlin-specific-criteria-api`.
+
 There are two kinds of DSLs in the Criteria API:
 
 * The Entityql DSL
 * The NativeSql DSL
 
-Both require predefined Entity classes and metamodel classes.
+Both requires predefined Entity classes and metamodel classes.
 
 We use the following Entity classes to show you some examples:
 
