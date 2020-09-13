@@ -17,4 +17,9 @@ class KNativeSqlUpdateTerminal(val statement: NativeSqlUpdateTerminal) : KStatem
     override fun asSql(): Sql<*> {
         return statement.asSql()
     }
+
+    override fun peek(block: (Sql<*>) -> Unit): KStatement<Int> {
+        statement.peek(block)
+        return this
+    }
 }

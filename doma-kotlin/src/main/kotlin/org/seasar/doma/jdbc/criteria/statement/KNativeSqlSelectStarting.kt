@@ -328,7 +328,7 @@ class KNativeSqlSelectStarting<ENTITY>(private val statement: NativeSqlSelectSta
         return KNativeSqlSetStarting(setOperator)
     }
 
-    override fun peek(block: (Sql<*>) -> Unit): KSetOperand<ENTITY> {
+    override fun peek(block: (Sql<*>) -> Unit): KNativeSqlSelectStarting<ENTITY> {
         statement.peek(block)
         return this
     }

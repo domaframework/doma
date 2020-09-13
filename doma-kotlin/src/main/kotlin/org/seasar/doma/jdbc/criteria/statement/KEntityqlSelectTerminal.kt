@@ -4,7 +4,7 @@ import org.seasar.doma.jdbc.Sql
 
 class KEntityqlSelectTerminal<ENTITY>(val statement: EntityqlSelectTerminal<ENTITY>) : KListable<ENTITY> {
 
-    override fun peek(block: (Sql<*>) -> Unit): KListable<ENTITY> {
+    override fun peek(block: (Sql<*>) -> Unit): KEntityqlSelectTerminal<ENTITY> {
         statement.peek(block)
         return this
     }

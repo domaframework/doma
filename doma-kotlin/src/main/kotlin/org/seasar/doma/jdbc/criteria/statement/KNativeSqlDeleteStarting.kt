@@ -17,4 +17,9 @@ class KNativeSqlDeleteStarting(private val statement: NativeSqlDeleteStarting) :
     override fun asSql(): Sql<*> {
         return statement.asSql()
     }
+
+    override fun peek(block: (Sql<*>) -> Unit): KNativeSqlDeleteStarting {
+        statement.peek(block)
+        return this
+    }
 }
