@@ -16,10 +16,9 @@ Doma 2 is a database access framework for Java 8+.
 Doma has various strengths:
 
 * Verifies and generates source code at compile time using annotation processing.
-* Maps database columns to user-defined Java objects.
+* Provides type-safe Criteria API.
+* Supports Kotlin.
 * Uses SQL templates, called "two-way SQL".
-* Supports classes introduced in Java 8, such as ``java.time.LocalDate``,
-  ``java.util.Optional``, and ``java.util.stream.Stream``.
 * Has no dependence on other libraries.
 
 This document consists of following sections:

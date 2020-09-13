@@ -5,9 +5,9 @@ Doma 2 is a database access framework for Java 8+.
 Doma has various strengths:
 
 - Verifies and generates source code **at compile time** using [annotation processing][apt].
-- Maps database columns to user-defined Java objects.
-- Uses SQL templates, called “two-way SQL”.
-- Supports classes introduced in Java 8, such as `java.time.LocalDate`, `java.util.Optional`, and `java.util.stream.Stream`.
+- Provides type-safe Criteria API.
+- Supports Kotlin.
+- Uses SQL templates, called "two-way SQL".
 - Has no dependence on other libraries.
 
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
@@ -20,46 +20,73 @@ Doma has various strengths:
 Examples
 ---------------------
 
-Define an entity class:
+## type-safe Criteria API
+
+Written in Java 8:
+
 ```java
-@Entity
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(sequence = "EMPLOYEE_SEQ")
-    public Integer id;
-    public String name;
-    public Integer age;
-    @Version
-    public Integer version;
-}
+Entityql entityql = new Entityql(config);
+Employee_ e = new Employee_();
+Department_ d = new Department_();
+
+List<Employee> list =
+    entityql
+        .from(e)
+        .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+        .where(c -> c.eq(d.departmentName, "SALES"))
+        .associate(
+            e,
+            d,
+            (employee, department) -> {
+              employee.setDepartment(department);
+              department.getEmployeeList().add(employee);
+            })
+        .fetch();
 ```
 
-Define a DAO interface:
-```java
-@Dao(config = AppConfig.class)
-public interface EmployeeDao {
-    @Select
-    Employee selectById(Integer id);
-    @Update
-    int update(Employee employee);
-}
-```
+Written in Kotlin:
 
-Execute queries:
-```java
-public class App {
-    public static void main(String[] args) {
-        TransactionManager tm = AppConfig.singleton().getTransactionManager();
-        tm.required(() -> {
-            EmployeeDao dao = new EmployeeDaoImpl();
-            Employee employee = dao.selectById(1);
-            employee.age++;
-            dao.update(employee);
-        });
+```kotlin
+val entityql = KEntityql(config)
+val e = Employee_()
+val d = Department_()
+
+val list = entityql
+    .from(e)
+    .innerJoin(d) { eq(e.departmentId, d.departmentId) }
+    .where { eq(d.departmentName, "SALES") }
+    .associate(e, d) { employee, department ->
+        employee.department = department
+        department.employeeList += employee
     }
+    .fetch()
+```
+
+## two-way SQL
+
+DAO interface written in Java 8:
+
+```java
+@Dao
+public interface EmployeeDao {
+
+  @Select
+  List<Employee> selectByExample(Employee e);
 }
 ```
+
+selectByExample.sql:
+
+```sql
+select * from EMPLOYEE where
+/*%if e.employeeNo > 7800*/
+  /*%if e.managerId != null*/
+    salary >= /*e.salary*/9999
+  /*%end*/
+/*%end*/
+```
+
+## Other Examples
 
 Try following getting started examples:
 - [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
