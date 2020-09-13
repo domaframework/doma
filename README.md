@@ -62,18 +62,7 @@ val list = entityql
     .fetch()
 ```
 
-## two-way SQL
-
-DAO interface written in Java 8:
-
-```java
-@Dao
-public interface EmployeeDao {
-
-  @Select
-  List<Employee> selectByExample(Employee e);
-}
-```
+### two-way SQL
 
 selectByExample.sql:
 
@@ -86,7 +75,18 @@ select * from EMPLOYEE where
 /*%end*/
 ```
 
-## Other Examples
+Doma maps the above SQL template to the following DAO interface:
+
+```java
+@Dao
+public interface EmployeeDao {
+
+  @Select
+  List<Employee> selectByExample(Employee e);
+}
+```
+
+### Other Examples
 
 Try following getting started examples:
 - [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
