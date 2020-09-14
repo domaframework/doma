@@ -29,19 +29,15 @@ Entityql entityql = new Entityql(config);
 Employee_ e = new Employee_();
 Department_ d = new Department_();
 
-List<Employee> list =
-    entityql
-        .from(e)
-        .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
-        .where(c -> c.eq(d.departmentName, "SALES"))
-        .associate(
-            e,
-            d,
-            (employee, department) -> {
-              employee.setDepartment(department);
-              department.getEmployeeList().add(employee);
-            })
-        .fetch();
+List<Employee> list = entityql
+    .from(e)
+    .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
+    .where(c -> c.eq(d.departmentName, "SALES"))
+    .associate(e, d, (employee, department) -> {
+        employee.setDepartment(department);
+        department.getEmployeeList().add(employee);
+    })
+    .fetch();
 ```
 
 Written in Kotlin:
