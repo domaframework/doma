@@ -155,5 +155,6 @@ Major versions
 | Java 12 |        |   v    |
 | Java 13 |        |   v    |
 | Java 14 |        |   v    |
+| Java 15 |        |   v    |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
