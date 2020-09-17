@@ -12,6 +12,8 @@ jobs:
     if: contains(github.event.head_commit.message, '[skip ci]') == false
     name: Build And Install Doma
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v2
@@ -57,6 +59,13 @@ jobs:
             doma-core/build/reports
             doma-processor/build/reports
             test-criteria/build/reports
+
+      - name: Set version
+        id: set-version
+        run: ./gradlew properties | grep "^version:" | awk '{print $2}' | { read v; echo "::set-output name=version::$v"; }
+
+      - name: Print version
+        run: echo ${{ steps.set-version.outputs.version }}
 
       - name: Tar Maven Repository
         shell: bash
@@ -151,31 +160,31 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
 
       - name: Build with Gradle
-        run: ./gradlew :${{ matrix.module }}:assemble
+        run: ./gradlew :${{ matrix.module }}:assemble -PdomaVersion=${{ needs.build.outputs.version }}
 
       - name: Test with h2
-        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck
+        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: ''
           ORG_GRADLE_PROJECT_jdbcUser: ''
           ORG_GRADLE_PROJECT_jdbcPassword: ''
 
       - name: Test with postgres
-        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck
+        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:postgresql://127.0.0.1/doma_it
           ORG_GRADLE_PROJECT_jdbcUser: postgres
           ORG_GRADLE_PROJECT_jdbcPassword: postgres
 
       - name: Test with mysql
-        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck
+        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
           ORG_GRADLE_PROJECT_jdbcUser: root
           ORG_GRADLE_PROJECT_jdbcPassword: root
 
       - name: Test with mssql
-        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck
+        run: ./gradlew :${{ matrix.module }}:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
         env:
           ORG_GRADLE_PROJECT_jdbcUrl: jdbc:sqlserver://127.0.0.1;database=doma_it
           ORG_GRADLE_PROJECT_jdbcUser: sa
