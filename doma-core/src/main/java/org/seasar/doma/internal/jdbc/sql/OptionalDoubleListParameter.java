@@ -7,6 +7,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
 public class OptionalDoubleListParameter extends ScalarListParameter<Double, OptionalDouble> {
 
   public OptionalDoubleListParameter(List<OptionalDouble> list, String name) {
-    super(() -> new OptionalDoubleScalar(), list, name);
+    super(OptionalDoubleScalar::new, list, name);
   }
 }

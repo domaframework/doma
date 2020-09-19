@@ -37,8 +37,7 @@ public class FunctionCommandTest {
     query.setCatalogName("xxx");
     query.setSchemaName("yyy");
     query.setFunctionName("aaa");
-    query.setResultParameter(
-        new BasicSingleResultParameter<>(() -> new org.seasar.doma.wrapper.IntegerWrapper()));
+    query.setResultParameter(new BasicSingleResultParameter<>(IntegerWrapper::new));
     query.addParameter(new BasicInParameter<>(() -> aaa));
     query.addParameter(new BasicOutParameter<>(() -> bbb, new Reference<>()));
     query.addParameter(new BasicInOutParameter<>(() -> ccc, new Reference<>()));

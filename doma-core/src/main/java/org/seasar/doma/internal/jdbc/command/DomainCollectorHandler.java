@@ -8,6 +8,6 @@ public class DomainCollectorHandler<BASIC, DOMAIN, RESULT>
 
   public DomainCollectorHandler(
       DomainType<BASIC, DOMAIN> domainType, Collector<DOMAIN, ?, RESULT> collector) {
-    super(() -> domainType.createScalar(), collector);
+    super(domainType::createScalar, collector);
   }
 }

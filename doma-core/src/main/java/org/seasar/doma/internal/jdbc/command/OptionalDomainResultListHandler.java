@@ -9,7 +9,7 @@ public class OptionalDomainResultListHandler<BASIC, DOMAIN>
     extends ScalarResultListHandler<BASIC, Optional<DOMAIN>> {
 
   public OptionalDomainResultListHandler(DomainType<BASIC, DOMAIN> domainType) {
-    super(() -> domainType.createOptionalScalar());
+    super(domainType::createOptionalScalar);
     assertNotNull(domainType);
   }
 }

@@ -112,8 +112,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     query.addParameters(parameters);
     query.prepare();
     SelectCommand<Long> command =
-        new SelectCommand<>(
-            query, new BasicSingleResultHandler<>(() -> new PrimitiveLongWrapper()));
+        new SelectCommand<>(query, new BasicSingleResultHandler<>(PrimitiveLongWrapper::new));
     long count = command.execute();
     query.complete();
     SelectOptionsAccessor.setCountSize(options, count);

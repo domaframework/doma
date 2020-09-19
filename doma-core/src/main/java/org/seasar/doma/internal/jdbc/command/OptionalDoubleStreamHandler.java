@@ -13,6 +13,6 @@ public class OptionalDoubleStreamHandler<RESULT>
     extends ScalarStreamHandler<Double, OptionalDouble, RESULT> {
 
   public OptionalDoubleStreamHandler(Function<Stream<OptionalDouble>, RESULT> mapper) {
-    super(() -> new OptionalDoubleScalar(), mapper);
+    super(OptionalDoubleScalar::new, mapper);
   }
 }

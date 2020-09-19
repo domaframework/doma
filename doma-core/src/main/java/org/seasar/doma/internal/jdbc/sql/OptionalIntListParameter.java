@@ -7,6 +7,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalIntScalar;
 public class OptionalIntListParameter extends ScalarListParameter<Integer, OptionalInt> {
 
   public OptionalIntListParameter(List<OptionalInt> list, String name) {
-    super(() -> new OptionalIntScalar(), list, name);
+    super(OptionalIntScalar::new, list, name);
   }
 }

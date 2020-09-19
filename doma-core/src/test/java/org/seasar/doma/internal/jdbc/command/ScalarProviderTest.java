@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class ScalarProviderTest {
 
@@ -34,9 +35,7 @@ public class ScalarProviderTest {
 
     ScalarProvider<String, String> provider =
         new ScalarProvider<>(
-            () ->
-                new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
-                    () -> new org.seasar.doma.wrapper.StringWrapper()),
+            () -> new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(StringWrapper::new),
             new MySelectQuery());
     String result = provider.get(resultSet);
 
@@ -54,8 +53,7 @@ public class ScalarProviderTest {
     ScalarProvider<String, Optional<String>> provider =
         new ScalarProvider<>(
             () ->
-                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
-                    () -> new org.seasar.doma.wrapper.StringWrapper()),
+                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(StringWrapper::new),
             new MySelectQuery());
     Optional<String> result = provider.get(resultSet);
 
@@ -73,7 +71,7 @@ public class ScalarProviderTest {
     DomainType<String, PhoneNumber> domainType = _PhoneNumber.getSingletonInternal();
 
     ScalarProvider<String, PhoneNumber> provider =
-        new ScalarProvider<>(() -> domainType.createScalar(), new MySelectQuery());
+        new ScalarProvider<>(domainType::createScalar, new MySelectQuery());
     PhoneNumber result = provider.get(resultSet);
 
     assertEquals("hoge", result.getValue());
@@ -90,7 +88,7 @@ public class ScalarProviderTest {
     DomainType<String, PhoneNumber> domainType = _PhoneNumber.getSingletonInternal();
 
     ScalarProvider<String, Optional<PhoneNumber>> provider =
-        new ScalarProvider<>(() -> domainType.createOptionalScalar(), new MySelectQuery());
+        new ScalarProvider<>(domainType::createOptionalScalar, new MySelectQuery());
     Optional<PhoneNumber> result = provider.get(resultSet);
 
     assertEquals("hoge", result.get().getValue());

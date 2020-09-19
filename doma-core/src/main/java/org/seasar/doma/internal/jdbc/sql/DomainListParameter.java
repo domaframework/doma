@@ -19,6 +19,6 @@ public class DomainListParameter<BASIC, DOMAIN> extends AbstractListParameter<DO
 
   @Override
   public ScalarProvider<BASIC, DOMAIN> createObjectProvider(Query query) {
-    return new ScalarProvider<>(() -> domainType.createScalar(), query);
+    return new ScalarProvider<>(domainType::createScalar, query);
   }
 }

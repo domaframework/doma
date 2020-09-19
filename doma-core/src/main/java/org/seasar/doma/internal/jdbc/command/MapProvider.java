@@ -42,7 +42,7 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
     for (Map.Entry<Integer, String> entry : indexMap.entrySet()) {
       Integer index = entry.getKey();
       String key = entry.getValue();
-      BasicScalar<Object> scalar = new BasicScalar<>(() -> new ObjectWrapper());
+      BasicScalar<Object> scalar = new BasicScalar<>(ObjectWrapper::new);
       fetch(resultSet, scalar, index, jdbcMappingVisitor);
       map.put(key, scalar.get());
     }

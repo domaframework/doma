@@ -6,6 +6,6 @@ public class DomainResultListParameter<BASIC, DOMAIN>
     extends ScalarResultListParameter<BASIC, DOMAIN> {
 
   public DomainResultListParameter(DomainType<BASIC, DOMAIN> domainType) {
-    super(() -> domainType.createScalar());
+    super(domainType::createScalar);
   }
 }

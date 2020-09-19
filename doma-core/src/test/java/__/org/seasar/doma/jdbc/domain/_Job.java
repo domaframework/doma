@@ -1,13 +1,14 @@
 package __.org.seasar.doma.jdbc.domain;
 
 import org.seasar.doma.jdbc.domain.Job;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public final class _Job extends org.seasar.doma.jdbc.domain.AbstractDomainType<String, Job> {
 
   private static final _Job singleton = new _Job();
 
   private _Job() {
-    super(() -> new org.seasar.doma.wrapper.StringWrapper());
+    super(StringWrapper::new);
   }
 
   @Override

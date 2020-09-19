@@ -10,6 +10,6 @@ public class OptionalDomainStreamHandler<BASIC, DOMAIN, RESULT>
 
   public OptionalDomainStreamHandler(
       DomainType<BASIC, DOMAIN> domainType, Function<Stream<Optional<DOMAIN>>, RESULT> mapper) {
-    super(() -> domainType.createOptionalScalar(), mapper);
+    super(domainType::createOptionalScalar, mapper);
   }
 }

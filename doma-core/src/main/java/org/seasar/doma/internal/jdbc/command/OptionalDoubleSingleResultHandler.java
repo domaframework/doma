@@ -7,6 +7,6 @@ public class OptionalDoubleSingleResultHandler
     extends ScalarSingleResultHandler<Double, OptionalDouble> {
 
   public OptionalDoubleSingleResultHandler() {
-    super(() -> new OptionalDoubleScalar());
+    super(OptionalDoubleScalar::new);
   }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.BasicSingleResultParameter;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class AutoFunctionQueryTest {
 
@@ -16,8 +17,7 @@ public class AutoFunctionQueryTest {
     AutoFunctionQuery<Integer> query = new AutoFunctionQuery<>();
     query.setConfig(runtimeConfig);
     query.setFunctionName("aaa");
-    query.setResultParameter(
-        new BasicSingleResultParameter<>(() -> new org.seasar.doma.wrapper.IntegerWrapper()));
+    query.setResultParameter(new BasicSingleResultParameter<>(IntegerWrapper::new));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);

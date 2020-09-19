@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class BasicSingleResultHandlerTest {
 
@@ -45,8 +46,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     String result = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals("aaa", result);
   }
@@ -68,8 +68,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();
@@ -94,8 +93,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

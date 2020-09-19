@@ -7,6 +7,6 @@ public class OptionalIntResultListParameter
     extends ScalarResultListParameter<Integer, OptionalInt> {
 
   public OptionalIntResultListParameter() {
-    super(() -> new OptionalIntScalar());
+    super(OptionalIntScalar::new);
   }
 }

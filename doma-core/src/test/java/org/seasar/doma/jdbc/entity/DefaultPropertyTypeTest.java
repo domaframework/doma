@@ -69,7 +69,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false);
-    assertEquals("foo", propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
+    assertEquals("foo", propertyType.getColumnName(NamingType::apply));
   }
 
   @Test
@@ -159,7 +159,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false);
-    assertEquals("HOGE", propertyType.getColumnName((namingType, text) -> namingType.apply(text)));
+    assertEquals("HOGE", propertyType.getColumnName(NamingType::apply));
   }
 
   @Test
@@ -174,10 +174,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             true);
-    assertEquals(
-        "[HOGE]",
-        propertyType.getColumnName(
-            (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
+    assertEquals("[HOGE]", propertyType.getColumnName(NamingType::apply, text -> "[" + text + "]"));
   }
 
   @Test
@@ -192,10 +189,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false);
-    assertEquals(
-        "HOGE",
-        propertyType.getColumnName(
-            (namingType, text) -> namingType.apply(text), text -> "[" + text + "]"));
+    assertEquals("HOGE", propertyType.getColumnName(NamingType::apply, text -> "[" + text + "]"));
   }
 
   @Test

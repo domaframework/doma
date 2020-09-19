@@ -8,7 +8,7 @@ public class DomainSingleResultHandler<BASIC, DOMAIN>
     extends ScalarSingleResultHandler<BASIC, DOMAIN> {
 
   public DomainSingleResultHandler(DomainType<BASIC, DOMAIN> domainType) {
-    super(() -> domainType.createScalar());
+    super(domainType::createScalar);
     assertNotNull(domainType);
   }
 }

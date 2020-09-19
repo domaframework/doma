@@ -9,6 +9,6 @@ public class OptionalLongStreamHandler<RESULT>
     extends ScalarStreamHandler<Long, OptionalLong, RESULT> {
 
   public OptionalLongStreamHandler(Function<Stream<OptionalLong>, RESULT> mapper) {
-    super(() -> new OptionalLongScalar(), mapper);
+    super(OptionalLongScalar::new, mapper);
   }
 }

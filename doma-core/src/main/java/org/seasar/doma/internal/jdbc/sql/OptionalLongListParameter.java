@@ -7,6 +7,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 public class OptionalLongListParameter extends ScalarListParameter<Long, OptionalLong> {
 
   public OptionalLongListParameter(List<OptionalLong> list, String name) {
-    super(() -> new OptionalLongScalar(), list, name);
+    super(OptionalLongScalar::new, list, name);
   }
 }

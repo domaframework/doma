@@ -9,6 +9,6 @@ public class OptionalDomainCollectorHandler<BASIC, DOMAIN, RESULT>
 
   public OptionalDomainCollectorHandler(
       DomainType<BASIC, DOMAIN> domainType, Collector<Optional<DOMAIN>, ?, RESULT> collector) {
-    super(() -> domainType.createOptionalScalar(), collector);
+    super(domainType::createOptionalScalar, collector);
   }
 }

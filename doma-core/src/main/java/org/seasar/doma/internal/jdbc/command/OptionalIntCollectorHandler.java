@@ -8,6 +8,6 @@ public class OptionalIntCollectorHandler<RESULT>
     extends ScalarCollectorHandler<Integer, OptionalInt, RESULT> {
 
   public OptionalIntCollectorHandler(Collector<OptionalInt, ?, RESULT> mapper) {
-    super(() -> new OptionalIntScalar(), mapper);
+    super(OptionalIntScalar::new, mapper);
   }
 }

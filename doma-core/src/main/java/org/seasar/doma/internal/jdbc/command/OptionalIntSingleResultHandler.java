@@ -7,6 +7,6 @@ public class OptionalIntSingleResultHandler
     extends ScalarSingleResultHandler<Integer, OptionalInt> {
 
   public OptionalIntSingleResultHandler() {
-    super(() -> new OptionalIntScalar());
+    super(OptionalIntScalar::new);
   }
 }

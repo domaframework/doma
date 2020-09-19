@@ -8,6 +8,6 @@ public class OptionalDoubleCollectorHandler<RESULT>
     extends ScalarCollectorHandler<Double, OptionalDouble, RESULT> {
 
   public OptionalDoubleCollectorHandler(Collector<OptionalDouble, ?, RESULT> collector) {
-    super(() -> new OptionalDoubleScalar(), collector);
+    super(OptionalDoubleScalar::new, collector);
   }
 }

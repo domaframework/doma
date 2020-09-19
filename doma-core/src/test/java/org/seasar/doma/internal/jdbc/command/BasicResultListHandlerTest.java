@@ -17,6 +17,7 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class BasicResultListHandlerTest {
 
@@ -46,8 +47,7 @@ public class BasicResultListHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicResultListHandler<String> handler =
-        new BasicResultListHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicResultListHandler<String> handler = new BasicResultListHandler<>(StringWrapper::new);
     List<String> results = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("aaa", results.get(0));
@@ -72,8 +72,7 @@ public class BasicResultListHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicResultListHandler<String> handler =
-        new BasicResultListHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicResultListHandler<String> handler = new BasicResultListHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

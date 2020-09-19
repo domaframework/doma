@@ -8,6 +8,6 @@ public class OptionalLongCollectorHandler<RESULT>
     extends ScalarCollectorHandler<Long, OptionalLong, RESULT> {
 
   public OptionalLongCollectorHandler(Collector<OptionalLong, ?, RESULT> collector) {
-    super(() -> new OptionalLongScalar(), collector);
+    super(OptionalLongScalar::new, collector);
   }
 }
