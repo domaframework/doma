@@ -172,7 +172,7 @@ class DomainProcessorTest extends CompilerSupport {
               LombokValueAccessorMethod_boolean.class,
               Message.DOMA4429,
               "-Adoma.lombok.Value=" + Value.class.getName()),
-          invocationContext(ConstrutorNotFoundDomain.class, Message.DOMA4103));
+          invocationContext(ConstructorNotFoundDomain.class, Message.DOMA4103));
     }
 
     private TestTemplateInvocationContext invocationContext(

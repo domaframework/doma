@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import org.seasar.doma.Domain;
 
 @Domain(valueType = BigDecimal.class)
-public class ConstrutorNotFoundDomain {
+public class ConstructorNotFoundDomain {
 
   private BigDecimal value;
 

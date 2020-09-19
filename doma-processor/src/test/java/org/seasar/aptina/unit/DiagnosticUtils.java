@@ -38,10 +38,10 @@ class DiagnosticUtils {
     assertNotNull("className", className);
     final String name = className.replace('.', '/') + ".java";
     final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
-      final JavaFileObject source = diagnositc.getSource();
+    for (final Diagnostic<? extends JavaFileObject> diagnostic : diagnostics) {
+      final JavaFileObject source = diagnostic.getSource();
       if (source != null && source.toUri().toString().endsWith(name)) {
-        result.add(diagnositc);
+        result.add(diagnostic);
       }
     }
     return result;
@@ -52,9 +52,9 @@ class DiagnosticUtils {
       final javax.tools.Diagnostic.Kind kind) {
     assertNotNull("kind", kind);
     final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
-      if (diagnositc.getKind().equals(kind)) {
-        result.add(diagnositc);
+    for (final Diagnostic<? extends JavaFileObject> diagnostic : diagnostics) {
+      if (diagnostic.getKind().equals(kind)) {
+        result.add(diagnostic);
       }
     }
     return result;
@@ -77,12 +77,12 @@ class DiagnosticUtils {
     assertNotNull("kind", kind);
     final String name = className.replace('.', '/') + ".java";
     final List<Diagnostic<? extends JavaFileObject>> result = new ArrayList<>();
-    for (final Diagnostic<? extends JavaFileObject> diagnositc : diagnostics) {
-      final JavaFileObject source = diagnositc.getSource();
+    for (final Diagnostic<? extends JavaFileObject> diagnostic : diagnostics) {
+      final JavaFileObject source = diagnostic.getSource();
       if (source != null
           && source.toUri().toString().endsWith(name)
-          && diagnositc.getKind().equals(kind)) {
-        result.add(diagnositc);
+          && diagnostic.getKind().equals(kind)) {
+        result.add(diagnostic);
       }
     }
     return result;

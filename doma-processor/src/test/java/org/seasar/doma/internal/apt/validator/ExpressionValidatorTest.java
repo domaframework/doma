@@ -442,7 +442,7 @@ class ExpressionValidatorTest extends CompilerSupport {
   }
 
   @Test
-  void testCustomFunction_classNotfound() throws Exception {
+  void testCustomFunction_classNotFound() throws Exception {
     Class<?> target = ExpressionValidationDao.class;
     addCompilationUnit(target);
     addProcessor(

@@ -104,7 +104,7 @@ class ExternalDomainProcessorTest extends CompilerSupport {
           invocationContext(NotDomainConverter.class, Message.DOMA4191),
           invocationContext(IllegalParameterizedValueObjectConverter.class, Message.DOMA4203),
           invocationContext(NotPersistentValueObjectConverter.class, Message.DOMA4194),
-          invocationContext(ConstrutorNotFoundDomainConverter.class, Message.DOMA4193),
+          invocationContext(ConstructorNotFoundDomainConverter.class, Message.DOMA4193),
           invocationContext(AbstractDomainConverter.class, Message.DOMA4192),
           invocationContext(MultidimensionalArrayConverter.class, Message.DOMA4447),
           invocationContext(ListArrayConverter.class, Message.DOMA4448));
