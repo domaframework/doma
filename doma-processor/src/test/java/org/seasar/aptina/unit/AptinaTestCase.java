@@ -418,7 +418,7 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   static class LoggingDiagnosticListener implements DiagnosticListener<JavaFileObject> {
 
-    DiagnosticListener<JavaFileObject> listener;
+    final DiagnosticListener<JavaFileObject> listener;
 
     LoggingDiagnosticListener(final DiagnosticListener<JavaFileObject> listener) {
       this.listener = listener;
@@ -440,7 +440,7 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   class FileCompilationUnit implements CompilationUnit {
 
-    String className;
+    final String className;
 
     public FileCompilationUnit(final String className) {
       this.className = className;
@@ -456,9 +456,9 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   class InMemoryCompilationUnit implements CompilationUnit {
 
-    String className;
+    final String className;
 
-    String source;
+    final String source;
 
     public InMemoryCompilationUnit(final String className, final String source) {
       this.className = className;

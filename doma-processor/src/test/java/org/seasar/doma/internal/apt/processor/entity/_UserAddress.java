@@ -11,7 +11,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 
 public class _UserAddress implements EmbeddableType<UserAddress> {
 
-  private static _UserAddress singleton = new _UserAddress();
+  private static final _UserAddress singleton = new _UserAddress();
 
   @Override
   public <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
