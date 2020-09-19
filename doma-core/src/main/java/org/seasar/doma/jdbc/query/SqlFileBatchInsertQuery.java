@@ -77,7 +77,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
   protected class EntityHandler {
 
-    protected EntityType<ELEMENT> entityType;
+    protected final EntityType<ELEMENT> entityType;
 
     protected EntityHandler(EntityType<ELEMENT> entityType) {
       assertNotNull(entityType);

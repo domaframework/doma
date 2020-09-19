@@ -9,7 +9,7 @@ import org.seasar.doma.internal.expr.Value;
 
 public class MethodOperatorNodeTest {
 
-  protected ExpressionLocation location = new ExpressionLocation("", 0);
+  protected final ExpressionLocation location = new ExpressionLocation("", 0);
 
   @Test
   public void testOneParameter() throws Exception {

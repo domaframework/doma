@@ -125,9 +125,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
   protected class EntityHandler {
 
-    protected EntityType<ELEMENT> entityType;
+    protected final EntityType<ELEMENT> entityType;
 
-    protected VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
 
     protected List<EntityPropertyType<ELEMENT, ?>> targetPropertyTypes;
 

@@ -10,8 +10,8 @@ import org.seasar.doma.jdbc.query.Query;
 
 public class EntityResultListParameter<ENTITY> extends AbstractResultListParameter<ENTITY> {
 
-  EntityType<ENTITY> entityType;
-  boolean resultMappingEnsured;
+  final EntityType<ENTITY> entityType;
+  final boolean resultMappingEnsured;
 
   public EntityResultListParameter(EntityType<ENTITY> entityType, boolean resultMappingEnsured) {
     super(new ArrayList<>());

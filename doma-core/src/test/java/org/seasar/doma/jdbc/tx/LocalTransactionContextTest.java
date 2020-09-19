@@ -37,7 +37,7 @@ public class LocalTransactionContextTest {
 
   static class MySavepoint implements Savepoint {
 
-    String name;
+    final String name;
 
     public MySavepoint(String name) {
       this.name = name;

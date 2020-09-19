@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _IdGeneratedEmp extends AbstractEntityType<IdGeneratedEmp> {
 
-  private static _IdGeneratedEmp singleton = new _IdGeneratedEmp();
+  private static final _IdGeneratedEmp singleton = new _IdGeneratedEmp();
 
   private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<IdGeneratedEmp>
       __originalStatesAccessor =

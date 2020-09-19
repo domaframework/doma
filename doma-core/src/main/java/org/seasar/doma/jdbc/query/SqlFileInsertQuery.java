@@ -71,11 +71,11 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
 
   protected class EntityHandler<E> {
 
-    protected String name;
+    protected final String name;
 
     protected E entity;
 
-    protected EntityType<E> entityType;
+    protected final EntityType<E> entityType;
 
     protected EntityHandler(String name, E entity, EntityType<E> entityType) {
       assertNotNull(name, entity, entityType);

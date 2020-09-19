@@ -8,9 +8,9 @@ import org.seasar.doma.jdbc.dialect.StandardDialect;
 
 public class ExampleConfig implements Config {
 
-  protected MockDataSource dataSource = new MockDataSource();
+  protected final MockDataSource dataSource = new MockDataSource();
 
-  protected StandardDialect dialect = new StandardDialect();
+  protected final StandardDialect dialect = new StandardDialect();
 
   @Override
   public DataSource getDataSource() {

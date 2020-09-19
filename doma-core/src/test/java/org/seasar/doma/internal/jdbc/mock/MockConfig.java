@@ -20,17 +20,17 @@ public class MockConfig implements Config {
 
   public Dialect dialect = new StandardDialect();
 
-  protected SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
+  protected final SqlFileRepository sqlFileRepository = new GreedyCacheSqlFileRepository();
 
-  protected JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
+  protected final JdbcLogger sqlLogger = new UtilLoggingJdbcLogger();
 
-  protected RequiresNewController requiresNewController = new RequiresNewController() {};
+  protected final RequiresNewController requiresNewController = new RequiresNewController() {};
 
-  protected ClassHelper classHelper = new ClassHelper() {};
+  protected final ClassHelper classHelper = new ClassHelper() {};
 
-  protected CommandImplementors commandImplementors = new CommandImplementors() {};
+  protected final CommandImplementors commandImplementors = new CommandImplementors() {};
 
-  protected QueryImplementors queryImplementors = new QueryImplementors() {};
+  protected final QueryImplementors queryImplementors = new QueryImplementors() {};
 
   protected SqlLogType exceptionSqlLogType = SqlLogType.FORMATTED;
 

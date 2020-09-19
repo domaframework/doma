@@ -5,7 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 public class ScriptTokenizer {
 
-  protected String blockDelimiter;
+  protected final String blockDelimiter;
 
   protected String line;
 

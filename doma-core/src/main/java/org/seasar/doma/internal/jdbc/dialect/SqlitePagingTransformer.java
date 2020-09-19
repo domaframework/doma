@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public class SqlitePagingTransformer extends StandardPagingTransformer {
 
-  protected static String MAXIMUM_LIMIT = String.valueOf(Long.MAX_VALUE);
+  protected static final String MAXIMUM_LIMIT = String.valueOf(Long.MAX_VALUE);
 
   public SqlitePagingTransformer(long offset, long limit) {
     super(offset, limit);

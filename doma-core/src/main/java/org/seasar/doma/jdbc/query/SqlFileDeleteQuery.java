@@ -81,13 +81,13 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
 
   protected class EntityHandler<E> {
 
-    protected String name;
+    protected final String name;
 
     protected E entity;
 
-    protected EntityType<E> entityType;
+    protected final EntityType<E> entityType;
 
-    protected VersionPropertyType<E, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<E, ?, ?> versionPropertyType;
 
     protected EntityHandler(String name, E entity, EntityType<E> entityType) {
       assertNotNull(name, entity, entityType);

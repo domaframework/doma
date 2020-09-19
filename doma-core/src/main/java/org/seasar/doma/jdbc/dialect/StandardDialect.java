@@ -1024,10 +1024,10 @@ public class StandardDialect implements Dialect {
   public static class StandardScriptBlockContext implements ScriptBlockContext {
 
     /** the key wards that represents the start of a block */
-    protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<>();
+    protected final List<List<String>> sqlBlockStartKeywordsList = new ArrayList<>();
 
     /** the key words */
-    protected List<String> keywords = new ArrayList<>();
+    protected final List<String> keywords = new ArrayList<>();
 
     /** {@code true} if this context is inside of a block */
     protected boolean inBlock;

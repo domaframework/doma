@@ -9,13 +9,14 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 
 public class AndOperatorNodeTest {
 
-  protected ExpressionLocation location = new ExpressionLocation("", 0);
+  protected final ExpressionLocation location = new ExpressionLocation("", 0);
 
-  protected LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
+  protected final LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
 
-  protected LiteralNode falseLiteral = new LiteralNode(location, "false", false, boolean.class);
+  protected final LiteralNode falseLiteral =
+      new LiteralNode(location, "false", false, boolean.class);
 
-  protected LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
+  protected final LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
   @Test
   public void test_true_true() throws Exception {

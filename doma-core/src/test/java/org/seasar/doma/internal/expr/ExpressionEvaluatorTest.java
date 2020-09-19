@@ -19,7 +19,7 @@ import org.seasar.doma.internal.expr.node.ExpressionLocation;
 
 public class ExpressionEvaluatorTest {
 
-  protected ExpressionLocation location = new ExpressionLocation("dummy expression", 0);
+  protected final ExpressionLocation location = new ExpressionLocation("dummy expression", 0);
 
   @Test
   public void testInvokeMethod() throws Exception {

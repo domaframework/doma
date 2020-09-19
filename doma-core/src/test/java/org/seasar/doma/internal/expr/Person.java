@@ -10,11 +10,11 @@ public class Person {
 
   public String name;
 
-  public static String staticName = "hoge";
+  public static final String staticName = "hoge";
 
   public Optional<String> optionalName;
 
-  public static Optional<String> staticOptionalName = Optional.of("foo");
+  public static final Optional<String> staticOptionalName = Optional.of("foo");
 
   public Optional<String> getOptionalName() {
     return optionalName;

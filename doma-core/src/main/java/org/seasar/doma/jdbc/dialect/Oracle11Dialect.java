@@ -181,7 +181,7 @@ public class Oracle11Dialect extends StandardDialect {
 
   public static class OracleResultSetType extends AbstractResultSetType {
 
-    protected static int CURSOR = -10;
+    protected static final int CURSOR = -10;
 
     public OracleResultSetType() {
       super(CURSOR);
@@ -200,26 +200,26 @@ public class Oracle11Dialect extends StandardDialect {
   public static class Oracle11SqlLogFormattingVisitor extends StandardSqlLogFormattingVisitor {
 
     /** the formatter for {@link Date} */
-    protected DateFormatter dateFormatter = new DateFormatter();
+    protected final DateFormatter dateFormatter = new DateFormatter();
 
     /** the formatter for {@link Time} */
-    protected TimeFormatter timeFormatter = new TimeFormatter();
+    protected final TimeFormatter timeFormatter = new TimeFormatter();
 
     /** the formatter for {@link Timestamp} */
-    protected TimestampFormatter timestampFormatter = new TimestampFormatter();
+    protected final TimestampFormatter timestampFormatter = new TimestampFormatter();
 
     /** the formatter for {@link java.util.Date} */
-    protected UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
+    protected final UtilDateFormatter utilDateFormatter = new UtilDateFormatter();
 
     /** the formatter for {@link LocalDate} */
-    protected LocalDateFormatter localDateFormatter = new LocalDateFormatter(dateFormatter);
+    protected final LocalDateFormatter localDateFormatter = new LocalDateFormatter(dateFormatter);
 
     /** the formatter for {@link LocalDateTime} */
-    protected LocalDateTimeFormatter localDateTimeFormatter =
+    protected final LocalDateTimeFormatter localDateTimeFormatter =
         new LocalDateTimeFormatter(timestampFormatter);
 
     /** the formatter for {@link LocalTime} */
-    protected LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(timeFormatter);
+    protected final LocalTimeFormatter localTimeFormatter = new LocalTimeFormatter(timeFormatter);
 
     @Override
     public String visitBooleanWrapper(BooleanWrapper wrapper, SqlLogFormattingFunction p, Void q)

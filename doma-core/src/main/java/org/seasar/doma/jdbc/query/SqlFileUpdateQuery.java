@@ -128,13 +128,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
   protected class EntityHandler<E> {
 
-    protected String name;
+    protected final String name;
 
     protected E entity;
 
-    protected EntityType<E> entityType;
+    protected final EntityType<E> entityType;
 
-    protected VersionPropertyType<E, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<E, ?, ?> versionPropertyType;
 
     protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
