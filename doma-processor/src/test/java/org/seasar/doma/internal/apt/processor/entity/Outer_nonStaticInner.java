@@ -4,6 +4,7 @@ import org.seasar.doma.Entity;
 
 public class Outer_nonStaticInner {
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   @Entity
   public class Inner {}
 }
