@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.dialect;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.seasar.doma.DomaNullPointerException;
@@ -170,8 +171,8 @@ public class MysqlDialect extends StandardDialect {
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "procedure"));
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "function"));
       sqlBlockStartKeywordsList.add(Arrays.asList("alter", "trigger"));
-      sqlBlockStartKeywordsList.add(Arrays.asList("declare"));
-      sqlBlockStartKeywordsList.add(Arrays.asList("begin"));
+      sqlBlockStartKeywordsList.add(Collections.singletonList("declare"));
+      sqlBlockStartKeywordsList.add(Collections.singletonList("begin"));
     }
   }
 

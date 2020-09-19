@@ -7,6 +7,7 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -69,7 +70,7 @@ public class BatchUpdateCommandTest {
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setEntities(Arrays.asList(emp));
+    query.setEntities(Collections.singletonList(emp));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -94,7 +95,7 @@ public class BatchUpdateCommandTest {
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setEntities(Arrays.asList(emp));
+    query.setEntities(Collections.singletonList(emp));
     query.setOptimisticLockExceptionSuppressed(true);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");

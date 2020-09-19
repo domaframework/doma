@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -88,7 +89,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             createSelectRawSql(),
             createSelectFormattedSql(),
             null,
-            Arrays.asList(new BasicInParameter<>(() -> pkColumnValueWrapper)),
+            Collections.singletonList(new BasicInParameter<>(() -> pkColumnValueWrapper)),
             SqlLogType.FORMATTED);
   }
 
