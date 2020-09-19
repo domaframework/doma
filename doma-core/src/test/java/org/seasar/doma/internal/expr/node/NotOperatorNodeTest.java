@@ -19,7 +19,7 @@ public class NotOperatorNodeTest {
   protected final LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
   @Test
-  public void test_true() throws Exception {
+  public void test_true() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(trueLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -28,7 +28,7 @@ public class NotOperatorNodeTest {
   }
 
   @Test
-  public void test_false() throws Exception {
+  public void test_false() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(falseLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -37,7 +37,7 @@ public class NotOperatorNodeTest {
   }
 
   @Test
-  public void test_null() throws Exception {
+  public void test_null() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(nullLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();

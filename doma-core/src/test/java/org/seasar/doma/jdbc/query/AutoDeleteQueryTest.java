@@ -25,12 +25,12 @@ public class AutoDeleteQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp = new Emp();
 
     AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
@@ -46,7 +46,7 @@ public class AutoDeleteQueryTest {
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -70,7 +70,7 @@ public class AutoDeleteQueryTest {
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -94,7 +94,7 @@ public class AutoDeleteQueryTest {
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman salesman = new Salesman();
     salesman.setId(10);
     salesman.setName("aaa");

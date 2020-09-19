@@ -12,7 +12,7 @@ public class ScriptTokenizerTest {
   private ScriptTokenizer tokenizer;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  public void setUp() {
     tokenizer = new ScriptTokenizer("/");
   }
 
@@ -99,7 +99,7 @@ public class ScriptTokenizerTest {
   }
 
   @Test
-  public void testGetToken_statementDelimiter() throws Exception {
+  public void testGetToken_statementDelimiter() {
     tokenizer.addLine("select * from aaa; ");
     assertEquals(WORD, tokenizer.nextToken());
     assertEquals("select", tokenizer.getToken());
@@ -119,7 +119,7 @@ public class ScriptTokenizerTest {
   }
 
   @Test
-  public void testGetToken_blockDelimiter() throws Exception {
+  public void testGetToken_blockDelimiter() {
     tokenizer.addLine("aaa go");
     assertEquals(WORD, tokenizer.nextToken());
     assertEquals("aaa", tokenizer.getToken());
@@ -137,7 +137,7 @@ public class ScriptTokenizerTest {
   }
 
   @Test
-  public void testGetToken_wordAndOther() throws Exception {
+  public void testGetToken_wordAndOther() {
     tokenizer.addLine("select,");
     assertEquals(WORD, tokenizer.nextToken());
     assertEquals("select", tokenizer.getToken());
@@ -153,7 +153,7 @@ public class ScriptTokenizerTest {
   }
 
   @Test
-  public void testGetToken_quote() throws Exception {
+  public void testGetToken_quote() {
     tokenizer.addLine("'aaa'");
     assertEquals(QUOTE, tokenizer.nextToken());
     assertEquals("'aaa'", tokenizer.getToken());
@@ -161,7 +161,7 @@ public class ScriptTokenizerTest {
   }
 
   @Test
-  public void testGetToken_quoteNotClosed() throws Exception {
+  public void testGetToken_quoteNotClosed() {
     tokenizer.addLine("'aaa");
     assertEquals(QUOTE, tokenizer.nextToken());
     assertEquals("'aaa", tokenizer.getToken());

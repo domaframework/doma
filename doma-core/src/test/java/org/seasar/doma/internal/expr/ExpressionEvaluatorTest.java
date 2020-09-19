@@ -121,7 +121,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod() throws Exception {
+  public void testFindMethod() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {Object.class});
@@ -130,7 +130,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_String_is_subtype_of_Object() throws Exception {
+  public void testFindMethod_String_is_subtype_of_Object() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {String.class});
@@ -139,7 +139,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_List_is_subtype_of_Object() throws Exception {
+  public void testFindMethod_List_is_subtype_of_Object() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {List.class});
@@ -148,7 +148,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_List_is_subtype_of_Collection() throws Exception {
+  public void testFindMethod_List_is_subtype_of_Collection() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod(
@@ -158,7 +158,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_overload_int() throws Exception {
+  public void testFindMethod_overload_int() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("indexOf", "string", String.class, new Class[] {int.class});
@@ -167,7 +167,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_overload_string() throws Exception {
+  public void testFindMethod_overload_string() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("indexOf", "string", String.class, new Class[] {String.class});
@@ -176,7 +176,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_autoBoxing() throws Exception {
+  public void testFindMethod_autoBoxing() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method = evaluator.findMethod("compareTo", 1, Integer.class, new Class[] {int.class});
     assertNotNull(method);
@@ -184,7 +184,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindMethod_notFound() throws Exception {
+  public void testFindMethod_notFound() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod("inexistentMethod", "aaa", String.class, new Class[] {String.class});
@@ -192,14 +192,14 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testForClassName() throws Exception {
+  public void testForClassName() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Class<?> clazz = evaluator.forClassName(location, "java.lang.String");
     assertNotNull(clazz);
   }
 
   @Test
-  public void testForClassName_notFound() throws Exception {
+  public void testForClassName_notFound() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     try {
       evaluator.forClassName(location, "inexistentClass");
@@ -209,7 +209,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindConstructor() throws Exception {
+  public void testFindConstructor() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
         evaluator.findConstructor(location, String.class, char[].class, int.class, int.class);
@@ -217,7 +217,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testFindConstructor_notFound() throws Exception {
+  public void testFindConstructor_notFound() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
         evaluator.findConstructor(location, String.class, int.class, int.class);
@@ -225,7 +225,7 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testInvokeConstructor() throws Exception {
+  public void testInvokeConstructor() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Constructor<?> constructor =
         evaluator.findConstructor(location, String.class, char[].class, int.class, int.class);

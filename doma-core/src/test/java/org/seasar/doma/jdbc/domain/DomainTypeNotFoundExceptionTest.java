@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class DomainTypeNotFoundExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     DomainTypeNotFoundException e = new DomainTypeNotFoundException(new Exception(), "aaa", "bbb");
     System.out.println(e.getMessage());
     assertEquals("aaa", e.getDomainClassName());

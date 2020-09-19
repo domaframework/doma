@@ -18,7 +18,7 @@ import org.seasar.doma.message.Message;
 public class StandardPagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
     StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
@@ -31,7 +31,7 @@ public class StandardPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_ifNode() throws Exception {
+  public void testOffsetLimit_ifNode() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.name desc, temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
     StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
@@ -45,7 +45,7 @@ public class StandardPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_forNode() throws Exception {
+  public void testOffsetLimit_forNode() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.name1, temp_.name2, temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
     StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
@@ -63,7 +63,7 @@ public class StandardPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
     StandardPagingTransformer transformer = new StandardPagingTransformer(5, -1);
@@ -76,7 +76,7 @@ public class StandardPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ <= 10";
     StandardPagingTransformer transformer = new StandardPagingTransformer(-1, 10);
@@ -89,7 +89,7 @@ public class StandardPagingTransformerTest {
   }
 
   @Test
-  public void testOrderByClauseUnspecified() throws Exception {
+  public void testOrderByClauseUnspecified() {
     StandardPagingTransformer transformer = new StandardPagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp");
     try {

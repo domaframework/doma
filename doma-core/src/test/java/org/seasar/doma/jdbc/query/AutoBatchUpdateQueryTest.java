@@ -29,12 +29,12 @@ public class AutoBatchUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -58,7 +58,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -104,7 +104,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -145,7 +145,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testOption_include() throws Exception {
+  public void testOption_include() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -188,7 +188,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testOption_exclude() throws Exception {
+  public void testOption_exclude() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -231,7 +231,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testIsExecutable() throws Exception {
+  public void testIsExecutable() {
     AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
@@ -243,7 +243,7 @@ public class AutoBatchUpdateQueryTest {
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman s1 = new Salesman();
     s1.setId(10);
     s1.setName("aaa");

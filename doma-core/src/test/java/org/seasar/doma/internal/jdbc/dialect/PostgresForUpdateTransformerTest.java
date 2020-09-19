@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class PostgresForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp order by emp.id for update";
     PostgresForUpdateTransformer transformer =
         new PostgresForUpdateTransformer(SelectForUpdateType.NORMAL, 0);
@@ -28,7 +28,7 @@ public class PostgresForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNormal_alias() throws Exception {
+  public void testForUpdateNormal_alias() {
     String expected = "select * from emp order by emp.id for update of emp";
     PostgresForUpdateTransformer transformer =
         new PostgresForUpdateTransformer(SelectForUpdateType.NORMAL, 0, "emp");
@@ -41,7 +41,7 @@ public class PostgresForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNowait() throws Exception {
+  public void testForUpdateNowait() {
     String expected = "select * from emp order by emp.id for update nowait";
     PostgresForUpdateTransformer transformer =
         new PostgresForUpdateTransformer(SelectForUpdateType.NOWAIT, 0);
@@ -54,7 +54,7 @@ public class PostgresForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNowait_alias() throws Exception {
+  public void testForUpdateNowait_alias() {
     String expected = "select * from emp order by emp.id for update of emp nowait";
     PostgresForUpdateTransformer transformer =
         new PostgresForUpdateTransformer(SelectForUpdateType.NOWAIT, 0, "emp");

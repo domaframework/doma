@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 public class MessageTest {
 
   @Test
-  public void testDOMA0001() throws Exception {
+  public void testDOMA0001() {
     String message = Message.DOMA0001.getMessage("aaa", "bbb");
     assertNotNull(message);
     System.out.println(message);
   }
 
   @Test
-  public void testDOMA4019() throws Exception {
+  public void testDOMA4019() {
     String message = Message.DOMA4019.getMessage("aaa", "bbb");
     assertNotNull(message);
     System.out.println(message);
   }
 
   @Test
-  public void testDOMA4021() throws Exception {
+  public void testDOMA4021() {
     String message = Message.DOMA4021.getMessage("aaa", "bbb");
     assertNotNull(message);
     System.out.println(message);

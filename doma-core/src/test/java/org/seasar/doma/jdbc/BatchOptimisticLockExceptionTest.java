@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class BatchOptimisticLockExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     BatchOptimisticLockException e =
         new BatchOptimisticLockException(SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb");
     System.out.println(e.getMessage());

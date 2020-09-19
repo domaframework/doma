@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class Db2ForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp order by emp.id for update with rs";
     Db2ForUpdateTransformer transformer =
         new Db2ForUpdateTransformer(SelectForUpdateType.NORMAL, 0);

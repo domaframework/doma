@@ -29,12 +29,12 @@ public class SqlFileBatchUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -60,7 +60,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -100,7 +100,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testIsExecutable() throws Exception {
+  public void testIsExecutable() {
     SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
@@ -114,7 +114,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate() throws Exception {
+  public void testPopulate() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -144,7 +144,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_include() throws Exception {
+  public void testPopulate_include() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -174,7 +174,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_exclude() throws Exception {
+  public void testPopulate_exclude() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -204,7 +204,7 @@ public class SqlFileBatchUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_ignoreVersion() throws Exception {
+  public void testPopulate_ignoreVersion() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");

@@ -12,7 +12,7 @@ public class SelectOptionsTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testForUpdateParameter() throws Exception {
+  public void testForUpdateParameter() {
     String[] aliases = null;
     try {
       SelectOptions.get().forUpdate(aliases);
@@ -24,7 +24,7 @@ public class SelectOptionsTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testForUpdateNowaitParameter() throws Exception {
+  public void testForUpdateNowaitParameter() {
     String[] aliases = null;
     try {
       SelectOptions.get().forUpdateNowait(aliases);
@@ -35,7 +35,7 @@ public class SelectOptionsTest {
   }
 
   @Test
-  public void testForUpdateWaitParameter1() throws Exception {
+  public void testForUpdateWaitParameter1() {
     int waitSeconds = -1;
     try {
       SelectOptions.get().forUpdateWait(waitSeconds);
@@ -47,7 +47,7 @@ public class SelectOptionsTest {
   }
 
   @Test
-  public void testForUpdateWaitParameter2() throws Exception {
+  public void testForUpdateWaitParameter2() {
     int waitSeconds = -1;
     String[] aliases = {"a"};
     try {
@@ -61,7 +61,7 @@ public class SelectOptionsTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testForUpdateWaitParameter3() throws Exception {
+  public void testForUpdateWaitParameter3() {
     int waitSeconds = 1;
     String[] aliases = null;
     try {
@@ -73,7 +73,7 @@ public class SelectOptionsTest {
   }
 
   @Test
-  public void testOffsetParameter() throws Exception {
+  public void testOffsetParameter() {
     int offset = -1;
     try {
       SelectOptions.get().offset(offset);
@@ -85,7 +85,7 @@ public class SelectOptionsTest {
   }
 
   @Test
-  public void testLimitParameter() throws Exception {
+  public void testLimitParameter() {
     int limit = -1;
     try {
       SelectOptions.get().limit(limit);

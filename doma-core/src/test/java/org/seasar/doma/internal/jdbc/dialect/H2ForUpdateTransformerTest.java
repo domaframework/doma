@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class H2ForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp order by emp.id for update";
     H2ForUpdateTransformer transformer = new H2ForUpdateTransformer(SelectForUpdateType.NORMAL, 0);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

@@ -13,14 +13,14 @@ public class DomainTypeFactoryTest {
   private final ClassHelper classHelper = new ClassHelper() {};
 
   @Test
-  public void testGetDomainType() throws Exception {
+  public void testGetDomainType() {
     DomainType<String, PhoneNumber> type =
         DomainTypeFactory.getDomainType(PhoneNumber.class, classHelper);
     assertNotNull(type);
   }
 
   @Test
-  public void testGetDomainType_DomaIllegalArgumentException() throws Exception {
+  public void testGetDomainType_DomaIllegalArgumentException() {
     try {
       DomainTypeFactory.getDomainType(Object.class, classHelper);
       fail();
@@ -30,7 +30,7 @@ public class DomainTypeFactoryTest {
   }
 
   @Test
-  public void testGetDomainType_DomainTypeNotFoundException() throws Exception {
+  public void testGetDomainType_DomainTypeNotFoundException() {
     try {
       DomainTypeFactory.getDomainType(Money.class, classHelper);
       fail();
@@ -40,13 +40,13 @@ public class DomainTypeFactoryTest {
   }
 
   @Test
-  public void testGetExternalDomainType() throws Exception {
+  public void testGetExternalDomainType() {
     DomainType<String, Job> type = DomainTypeFactory.getExternalDomainType(Job.class, classHelper);
     assertNotNull(type);
   }
 
   @Test
-  public void testGetExternalDomainType_array() throws Exception {
+  public void testGetExternalDomainType_array() {
     DomainType<Object, String[]> type =
         DomainTypeFactory.getExternalDomainType(String[].class, classHelper);
     assertNotNull(type);

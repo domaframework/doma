@@ -16,7 +16,7 @@ public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter1() throws Exception {
+  public void testConstructorParameter1() {
     Config config = null;
     try {
       new DaoImplSupport(config) {};
@@ -28,7 +28,7 @@ public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter2() throws Exception {
+  public void testConstructorParameter2() {
     Config config = null;
     Connection connection = mock(Connection.class);
     try {
@@ -41,7 +41,7 @@ public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter3() throws Exception {
+  public void testConstructorParameter3() {
     Config config = mock(Config.class);
     Connection connection = null;
     try {
@@ -54,7 +54,7 @@ public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter4() throws Exception {
+  public void testConstructorParameter4() {
     Config config = null;
     DataSource dataSource = mock(DataSource.class);
     try {
@@ -67,7 +67,7 @@ public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter5() throws Exception {
+  public void testConstructorParameter5() {
     Config config = mock(Config.class);
     DataSource dataSource = null;
     try {

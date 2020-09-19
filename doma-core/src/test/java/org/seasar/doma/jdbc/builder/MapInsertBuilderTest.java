@@ -13,7 +13,7 @@ public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void test() throws Exception {
+  public void test() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
         new LinkedHashMap<String, Object>() {
@@ -26,7 +26,7 @@ public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
     builder.execute(
@@ -48,7 +48,7 @@ public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testNullValue() throws Exception {
+  public void testNullValue() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
         new LinkedHashMap<String, Object>() {
@@ -69,7 +69,7 @@ public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testLastNullValue() throws Exception {
+  public void testLastNullValue() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
         new LinkedHashMap<String, Object>() {

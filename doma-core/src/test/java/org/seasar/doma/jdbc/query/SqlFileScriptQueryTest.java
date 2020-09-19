@@ -25,12 +25,12 @@ public class SqlFileScriptQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setMethod(method);
@@ -52,7 +52,7 @@ public class SqlFileScriptQueryTest {
   }
 
   @Test
-  public void testPrepare_dbmsSpecific() throws Exception {
+  public void testPrepare_dbmsSpecific() {
     config.dialect = new Mssql2008Dialect();
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
@@ -75,7 +75,7 @@ public class SqlFileScriptQueryTest {
   }
 
   @Test
-  public void testPrepare_ScriptFileNotFoundException() throws Exception {
+  public void testPrepare_ScriptFileNotFoundException() {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(config);
     query.setMethod(method);

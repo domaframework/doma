@@ -28,12 +28,12 @@ public class AutoUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -52,7 +52,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -81,7 +81,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testOption_excludeNull() throws Exception {
+  public void testOption_excludeNull() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
@@ -106,7 +106,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -133,7 +133,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testOption_include() throws Exception {
+  public void testOption_include() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -162,7 +162,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testOption_exclude() throws Exception {
+  public void testOption_exclude() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -191,7 +191,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testIsExecutable() throws Exception {
+  public void testIsExecutable() {
     Emp emp = new Emp();
     emp.originalStates = new Emp();
 
@@ -208,7 +208,7 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman salesman = new Salesman();
     salesman.setId(10);
     salesman.setName("aaa");

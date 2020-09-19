@@ -28,7 +28,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testBuilder() throws Exception {
+  public void testBuilder() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -48,7 +48,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -83,7 +83,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testLiteral() throws Exception {
+  public void testLiteral() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -119,7 +119,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testNotEqualParamCall() throws Exception {
+  public void testNotEqualParamCall() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -144,7 +144,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testChangeType() throws Exception {
+  public void testChangeType() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -168,7 +168,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testParamToLiteral() throws Exception {
+  public void testParamToLiteral() {
     SqlBatchInsertQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("insert into Emp");
@@ -202,7 +202,7 @@ public class BatchInsertExecutorTest {
   }
 
   @Test
-  public void testExecutor() throws Exception {
+  public void testExecutor() {
     List<Employee> employees =
         Arrays.asList(new Employee("SMITH", 100), new Employee("ALLEN", 200));
     BatchInsertExecutor executor = BatchInsertExecutor.newInstance(new MockConfig());
@@ -219,7 +219,7 @@ public class BatchInsertExecutorTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testExecutorByMap() throws Exception {
+  public void testExecutorByMap() {
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {
           {

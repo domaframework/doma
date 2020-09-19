@@ -36,12 +36,12 @@ public class LocalTransactionManagerTest {
   private final LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
   @BeforeEach
-  protected void setUp() throws Exception {
+  protected void setUp() {
     LocalTransactionManagerTest.counter = 0;
   }
 
   @Test
-  public void testRequired_blcok() throws Exception {
+  public void testRequired_blcok() {
     TransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
@@ -59,14 +59,14 @@ public class LocalTransactionManagerTest {
   }
 
   @Test
-  public void testRequired_supplier() throws Exception {
+  public void testRequired_supplier() {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
     String result = manager.required(() -> "aaa");
     assertEquals("aaa", result);
   }
 
   @Test
-  public void testRequiresNew_blcok() throws Exception {
+  public void testRequiresNew_blcok() {
     TransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
@@ -84,14 +84,14 @@ public class LocalTransactionManagerTest {
   }
 
   @Test
-  public void testRequiresNew_supplier() throws Exception {
+  public void testRequiresNew_supplier() {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
     String result = manager.requiresNew(() -> "aaa");
     assertEquals("aaa", result);
   }
 
   @Test
-  public void testNotSupported_block() throws Exception {
+  public void testNotSupported_block() {
     TransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
@@ -109,14 +109,14 @@ public class LocalTransactionManagerTest {
   }
 
   @Test
-  public void testNotSupported_supplier() throws Exception {
+  public void testNotSupported_supplier() {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
     String result = manager.notSupported(() -> "aaa");
     assertEquals("aaa", result);
   }
 
   @Test
-  public void testNotSupported_in_tx() throws Exception {
+  public void testNotSupported_in_tx() {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);

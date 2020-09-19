@@ -22,7 +22,7 @@ public class PreparedSqlBuilderTest {
   private final MockConfig config = new MockConfig();
 
   @Test
-  public void testAppend() throws Exception {
+  public void testAppend() {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
     builder.appendSql("select * from aaa where name = ");
@@ -37,7 +37,7 @@ public class PreparedSqlBuilderTest {
   }
 
   @Test
-  public void testAppendParameter_domain() throws Exception {
+  public void testAppendParameter_domain() {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
     builder.appendSql("select * from aaa where phoneNumber = ");

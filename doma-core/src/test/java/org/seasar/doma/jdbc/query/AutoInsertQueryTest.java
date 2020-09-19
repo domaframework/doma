@@ -25,12 +25,12 @@ public class AutoInsertQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -48,7 +48,7 @@ public class AutoInsertQueryTest {
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -74,7 +74,7 @@ public class AutoInsertQueryTest {
   }
 
   @Test
-  public void testOption_excludeNull() throws Exception {
+  public void testOption_excludeNull() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -99,7 +99,7 @@ public class AutoInsertQueryTest {
   }
 
   @Test
-  public void testOption_include() throws Exception {
+  public void testOption_include() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -125,7 +125,7 @@ public class AutoInsertQueryTest {
   }
 
   @Test
-  public void testOption_exclude() throws Exception {
+  public void testOption_exclude() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");

@@ -23,7 +23,7 @@ import org.seasar.doma.message.Message;
 public class SelectBuilderTest {
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
@@ -53,7 +53,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testRmoveLast() throws Exception {
+  public void testRmoveLast() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("aaa").sql("bbb");
     builder.removeLast();
@@ -61,7 +61,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSingleResult_Entity() throws Exception {
+  public void testSingleResult_Entity() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
@@ -77,7 +77,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSingleResult_Map() throws Exception {
+  public void testSingleResult_Map() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
@@ -93,7 +93,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSingleResult_Domain() throws Exception {
+  public void testSingleResult_Domain() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -105,7 +105,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSingleResult_Basic() throws Exception {
+  public void testSingleResult_Basic() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -117,7 +117,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSingleResult_DomaIllegalArgumentException() throws Exception {
+  public void testSingleResult_DomaIllegalArgumentException() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("aaa").sql(",");
@@ -136,7 +136,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetResultList_Entity() throws Exception {
+  public void testGetResultList_Entity() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
     builder.sql("where");
@@ -148,7 +148,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetResultList_Map() throws Exception {
+  public void testGetResultList_Map() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select * from Emp");
     builder.sql("where");
@@ -160,7 +160,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetResultList_Domain() throws Exception {
+  public void testGetResultList_Domain() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -172,7 +172,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetResultList_Basic() throws Exception {
+  public void testGetResultList_Basic() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -184,7 +184,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testLiteral() throws Exception {
+  public void testLiteral() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
@@ -210,7 +210,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testLiteral_singleQuoteIncluded() throws Exception {
+  public void testLiteral_singleQuoteIncluded() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select");
     builder.sql("id").sql(",");
@@ -229,7 +229,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testParams() throws Exception {
+  public void testParams() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -246,7 +246,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testParams_empty() throws Exception {
+  public void testParams_empty() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -260,7 +260,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testLiterals() throws Exception {
+  public void testLiterals() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");
@@ -274,7 +274,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testLiterals_empty() throws Exception {
+  public void testLiterals_empty() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("select ccc from Emp");
     builder.sql("where");

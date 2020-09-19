@@ -13,7 +13,7 @@ public class AutoFunctionQueryTest {
   private final MockConfig runtimeConfig = new MockConfig();
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     AutoFunctionQuery<Integer> query = new AutoFunctionQuery<>();
     query.setConfig(runtimeConfig);
     query.setFunctionName("aaa");

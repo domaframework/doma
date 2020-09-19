@@ -12,37 +12,37 @@ import org.junit.jupiter.api.Test;
 public class PropertyFieldTest {
 
   @Test
-  public void testConstructor_simplePath() throws Exception {
+  public void testConstructor_simplePath() {
     PropertyField<Person> path = new PropertyField<>("name", Person.class);
     assertEquals(1, path.fields.size());
   }
 
   @Test
-  public void testConstructor_parentPath() throws Exception {
+  public void testConstructor_parentPath() {
     PropertyField<Person> path = new PropertyField<>("kind", Person.class);
     assertEquals(1, path.fields.size());
   }
 
   @Test
-  public void testConstructor_grandParentPath() throws Exception {
+  public void testConstructor_grandParentPath() {
     PropertyField<Person> path = new PropertyField<>("weight", Person.class);
     assertEquals(1, path.fields.size());
   }
 
   @Test
-  public void testConstructor_nestedPath() throws Exception {
+  public void testConstructor_nestedPath() {
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
     assertEquals(2, path.fields.size());
   }
 
   @Test
-  public void testConstructor_nestedParentPath() throws Exception {
+  public void testConstructor_nestedParentPath() {
     PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
     assertEquals(2, path.fields.size());
   }
 
   @Test
-  public void testGetValue_simplePath() throws Exception {
+  public void testGetValue_simplePath() {
     Person person = new Person();
     person.name = "hoge";
     PropertyField<Person> path = new PropertyField<>("name", Person.class);
@@ -50,7 +50,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testGetValue_parentPath() throws Exception {
+  public void testGetValue_parentPath() {
     Person person = new Person();
     person.kind = "hoge";
     PropertyField<Person> path = new PropertyField<>("kind", Person.class);
@@ -58,7 +58,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testGetValue_nestedPath() throws Exception {
+  public void testGetValue_nestedPath() {
     Person person = new Person();
     person.address = new Address("island", "Tokyo", "Yaesu");
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
@@ -66,14 +66,14 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testGetValue_nestedPath_null() throws Exception {
+  public void testGetValue_nestedPath_null() {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
     assertNull(path.getValue(person));
   }
 
   @Test
-  public void testGetValue_nestedParentPath() throws Exception {
+  public void testGetValue_nestedParentPath() {
     Person person = new Person();
     person.address = new Address("island", "Tokyo", "Yaesu");
     PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
@@ -81,7 +81,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testSetValue_simplePath() throws Exception {
+  public void testSetValue_simplePath() {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("name", Person.class);
     path.setValue(person, "foo");
@@ -89,7 +89,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testSetValue_parentPath() throws Exception {
+  public void testSetValue_parentPath() {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("kind", Person.class);
     path.setValue(person, "foo");
@@ -97,7 +97,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testSetValue_nestedPath() throws Exception {
+  public void testSetValue_nestedPath() {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.city", Person.class);
     try {
@@ -108,7 +108,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testSetValue_nestedParentPath() throws Exception {
+  public void testSetValue_nestedParentPath() {
     Person person = new Person();
     PropertyField<Person> path = new PropertyField<>("address.kind", Person.class);
     try {
@@ -119,7 +119,7 @@ public class PropertyFieldTest {
   }
 
   @Test
-  public void testIsPrimitive() throws Exception {
+  public void testIsPrimitive() {
     PropertyField<Person> age = new PropertyField<>("age", Person.class);
     assertTrue(age.isPrimitive());
     PropertyField<Person> name = new PropertyField<>("name", Person.class);

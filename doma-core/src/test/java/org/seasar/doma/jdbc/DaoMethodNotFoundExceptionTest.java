@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class DaoMethodNotFoundExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     Exception cause = new Exception("hoge");
     DaoMethodNotFoundException e = new DaoMethodNotFoundException(cause, "aaa", "bbb");
     System.out.println(e.getMessage());

@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class Mssql2008PagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5 and doma_rownumber_ <= 15";
     Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(5, 10);
@@ -27,7 +27,7 @@ public class Mssql2008PagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected =
         "select * from ( select temp_.*, row_number() over( order by temp_.id ) as doma_rownumber_ from ( select emp.id from emp ) as temp_ ) as temp2_ where doma_rownumber_ > 5";
     Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(5, -1);
@@ -40,7 +40,7 @@ public class Mssql2008PagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected = "select top (10) emp.id from emp order by emp.id";
     Mssql2008PagingTransformer transformer = new Mssql2008PagingTransformer(-1, 10);
     SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");

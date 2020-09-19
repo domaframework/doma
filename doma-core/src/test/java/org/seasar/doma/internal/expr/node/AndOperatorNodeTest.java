@@ -19,7 +19,7 @@ public class AndOperatorNodeTest {
   protected final LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
   @Test
-  public void test_true_true() throws Exception {
+  public void test_true_true() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(trueLiteral);
     node.setRightNode(trueLiteral);
@@ -29,7 +29,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_true_false() throws Exception {
+  public void test_true_false() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(trueLiteral);
     node.setRightNode(falseLiteral);
@@ -39,7 +39,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_false_true() throws Exception {
+  public void test_false_true() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(falseLiteral);
     node.setRightNode(trueLiteral);
@@ -49,7 +49,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_false_false() throws Exception {
+  public void test_false_false() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(falseLiteral);
     node.setRightNode(falseLiteral);
@@ -59,7 +59,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_null_null() throws Exception {
+  public void test_null_null() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(nullLiteral);
     node.setRightNode(nullLiteral);
@@ -69,7 +69,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_null_notNull() throws Exception {
+  public void test_null_notNull() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(nullLiteral);
     node.setRightNode(trueLiteral);
@@ -79,7 +79,7 @@ public class AndOperatorNodeTest {
   }
 
   @Test
-  public void test_notNull_null() throws Exception {
+  public void test_notNull_null() {
     AndOperatorNode node = new AndOperatorNode(location, "&&");
     node.setLeftNode(trueLiteral);
     node.setRightNode(nullLiteral);

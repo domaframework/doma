@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.dialect.PostgresDialect;
 public class BuiltinSequenceIdGeneratorTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     MockConfig config = new MockConfig();
     config.setDialect(new PostgresDialect());
     MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;

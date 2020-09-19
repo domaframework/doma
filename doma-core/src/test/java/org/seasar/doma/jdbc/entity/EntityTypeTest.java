@@ -17,13 +17,13 @@ import org.junit.jupiter.api.Test;
 public class EntityTypeTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     EntityType<Emp> entityType = _Emp.getSingletonInternal();
     entityType.getName();
   }
 
   @Test
-  public void testImmutable_newEntity() throws Exception {
+  public void testImmutable_newEntity() {
     ImmutableEmp emp = new ImmutableEmp(99, "hoge", BigDecimal.ONE, 1);
     EntityType<ImmutableEmp> entityType = _ImmutableEmp.getSingletonInternal();
     Map<String, Property<ImmutableEmp, ?>> args = new HashMap<>();
@@ -48,33 +48,33 @@ public class EntityTypeTest {
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testGetTableName() throws Exception {
+  public void testGetTableName() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals("DEPT", entityType.getTableName());
   }
 
   @Test
-  public void testGetTableName_naming() throws Exception {
+  public void testGetTableName_naming() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals("dept", entityType.getTableName((namingType, text) -> text.toLowerCase()));
   }
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testGetQualifiedName() throws Exception {
+  public void testGetQualifiedName() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals("CATA.DEPT", entityType.getQualifiedTableName());
   }
 
   @SuppressWarnings("deprecation")
   @Test
-  public void testGetQualifiedName_quote() throws Exception {
+  public void testGetQualifiedName_quote() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals("[CATA].[DEPT]", entityType.getQualifiedTableName(text -> "[" + text + "]"));
   }
 
   @Test
-  public void testGetQualifiedName_naming_quote() throws Exception {
+  public void testGetQualifiedName_naming_quote() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals(
         "[CATA].[dept]",

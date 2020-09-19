@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class NonUniqueResultExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     NonUniqueResultException e =
         new NonUniqueResultException(SqlLogType.FORMATTED, SqlKind.SELECT, "aaa", "bbb", "ccc");
     System.out.println(e.getMessage());

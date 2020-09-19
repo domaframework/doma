@@ -27,7 +27,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testBuilder() throws Exception {
+  public void testBuilder() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -47,7 +47,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -84,7 +84,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testLiteral() throws Exception {
+  public void testLiteral() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -120,7 +120,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testNotEqualParamCall() throws Exception {
+  public void testNotEqualParamCall() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -144,7 +144,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testChangeType() throws Exception {
+  public void testChangeType() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -170,7 +170,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testParamToLiteral() throws Exception {
+  public void testParamToLiteral() {
     SqlBatchDeleteQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("delete from Emp");
@@ -207,7 +207,7 @@ public class BatchDeleteExecutorTest {
   }
 
   @Test
-  public void testExecutor() throws Exception {
+  public void testExecutor() {
     List<Employee> employees =
         Arrays.asList(
             new Employee(10, "SMITH", new BigDecimal("1001")),

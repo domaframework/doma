@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class UnknownColumnExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     UnknownColumnException e =
         new UnknownColumnException(
             SqlLogType.FORMATTED, "aaa", "bbb", "ccc", SqlKind.SELECT, "ddd", "eee", "fff");

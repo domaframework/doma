@@ -17,7 +17,7 @@ public class BatchInsertCommandTest {
   private final MockConfig runtimeConfig = new MockConfig();
 
   @Test
-  public void testExecute(TestInfo testInfo) throws Exception {
+  public void testExecute(TestInfo testInfo) {
     Emp emp1 = new Emp();
     emp1.setId(1);
     emp1.setName("hoge");

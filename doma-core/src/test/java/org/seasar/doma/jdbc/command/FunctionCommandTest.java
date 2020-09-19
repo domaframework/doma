@@ -20,7 +20,7 @@ public class FunctionCommandTest {
   private final MockConfig runtimeConfig = new MockConfig();
 
   @Test
-  public void testExecute() throws Exception {
+  public void testExecute() {
     List<Object> outParameters =
         runtimeConfig.dataSource.connection.callableStatement.outParameters;
     outParameters.add(10);

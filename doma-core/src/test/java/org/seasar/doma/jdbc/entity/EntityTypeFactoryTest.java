@@ -13,20 +13,20 @@ public class EntityTypeFactoryTest {
   private final ClassHelper classHelper = new ClassHelper() {};
 
   @Test
-  public void testGetEntityType() throws Exception {
+  public void testGetEntityType() {
     EntityType<Emp> type = EntityTypeFactory.getEntityType(Emp.class, classHelper);
     assertNotNull(type);
   }
 
   @Test
-  public void testGetEntityType_forNestedEntity() throws Exception {
+  public void testGetEntityType_forNestedEntity() {
     EntityType<NotTopLevelEntity.Hoge> type =
         EntityTypeFactory.getEntityType(NotTopLevelEntity.Hoge.class, classHelper);
     assertNotNull(type);
   }
 
   @Test
-  public void testGetEntityType_DomaIllegalArgumentException() throws Exception {
+  public void testGetEntityType_DomaIllegalArgumentException() {
     try {
       EntityTypeFactory.getEntityType(Object.class, classHelper);
       fail();
@@ -36,7 +36,7 @@ public class EntityTypeFactoryTest {
   }
 
   @Test
-  public void testGetEntityType_EntityTypeNotFoundException() throws Exception {
+  public void testGetEntityType_EntityTypeNotFoundException() {
     try {
       EntityTypeFactory.getEntityType(Dept.class, classHelper);
       fail();

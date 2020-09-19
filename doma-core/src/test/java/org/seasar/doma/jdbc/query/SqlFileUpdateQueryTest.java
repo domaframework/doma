@@ -42,12 +42,12 @@ public class SqlFileUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPopulate() throws Exception {
+  public void testPopulate() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -81,7 +81,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_states() throws Exception {
+  public void testPopulate_states() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -112,7 +112,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_excludeNull() throws Exception {
+  public void testPopulate_excludeNull() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("hoge");
@@ -142,7 +142,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_excludeNull_updateNullableInPreUpdate() throws Exception {
+  public void testPopulate_excludeNull_updateNullableInPreUpdate() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
@@ -171,7 +171,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_ignoreVersion() throws Exception {
+  public void testPopulate_ignoreVersion() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -202,7 +202,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_include() throws Exception {
+  public void testPopulate_include() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -233,7 +233,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_exclude() throws Exception {
+  public void testPopulate_exclude() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -265,7 +265,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testPopulate_IsExecutable() throws Exception {
+  public void testPopulate_IsExecutable() {
     Emp emp = new Emp();
     emp.originalStates = new Emp();
 
@@ -285,7 +285,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testNonEntity() throws Exception {
+  public void testNonEntity() {
     SqlFileUpdateQuery query = new SqlFileUpdateQuery();
     query.setMethod(method);
     query.setSqlFilePath(
@@ -312,7 +312,7 @@ public class SqlFileUpdateQueryTest {
   }
 
   @Test
-  public void testOriginalStates_unchanged() throws Exception {
+  public void testOriginalStates_unchanged() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");

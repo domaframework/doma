@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.StringReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +34,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_delimiter() throws Exception {
+  public void testReadSql_delimiter() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "aaa;\nbbb\ngo\nccc\nddd\n";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
@@ -53,12 +52,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_delimiterInLine() throws Exception {
+  public void testReadSql_delimiterInLine() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             StringReader reader = new StringReader("aaa; bbb; ccc;\n");
             return new BufferedReader(reader);
           }
@@ -70,12 +69,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_sqlBlock() throws Exception {
+  public void testReadSql_sqlBlock() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "begin aaa; end\n" + "go\n";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
@@ -86,12 +85,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_sqlBlock_createTrigger() throws Exception {
+  public void testReadSql_sqlBlock_createTrigger() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "create trigger hoge begin aaa; end\n" + "go\n";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
@@ -102,11 +101,11 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_notSqlBlock() throws Exception {
+  public void testReadSql_notSqlBlock() {
     ScriptReader reader =
         new ScriptReader(query) {
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "start aaa; end\n" + "go\n";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
@@ -117,12 +116,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_commentBlock() throws Exception {
+  public void testReadSql_commentBlock() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "select 1 ; /* aaa\n" + "aaa */ select 2;";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
@@ -134,12 +133,12 @@ public class ScriptReaderTest {
   }
 
   @Test
-  public void testReadSql_lineNumber() throws Exception {
+  public void testReadSql_lineNumber() {
     ScriptReader reader =
         new ScriptReader(query) {
 
           @Override
-          protected BufferedReader createBufferedReader() throws IOException {
+          protected BufferedReader createBufferedReader() {
             String script = "/*\n *\n */\nselect 1\nfrom \nhoge\n";
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);

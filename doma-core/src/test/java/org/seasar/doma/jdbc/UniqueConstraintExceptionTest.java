@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class UniqueConstraintExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     Exception cause = new Exception();
     UniqueConstraintException e =
         new UniqueConstraintException(

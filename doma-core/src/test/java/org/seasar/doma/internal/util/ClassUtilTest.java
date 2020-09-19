@@ -28,19 +28,19 @@ public class ClassUtilTest {
   }
 
   @Test
-  public void testGetSimpleName() throws Exception {
+  public void testGetSimpleName() {
     String name = ClassUtil.getSimpleName("aaa.bbb.Ccc");
     assertEquals("Ccc", name);
   }
 
   @Test
-  public void testGetSimpleName_noPackage() throws Exception {
+  public void testGetSimpleName_noPackage() {
     String name = ClassUtil.getSimpleName("Aaa");
     assertEquals("Aaa", name);
   }
 
   @Test
-  public void testGetSimpleName_nestedClass() throws Exception {
+  public void testGetSimpleName_nestedClass() {
     String name = ClassUtil.getSimpleName("aaa.bbb.Ccc$Ddd$Eee");
     assertEquals("Eee", name);
   }
@@ -66,7 +66,7 @@ public class ClassUtilTest {
   }
 
   @Test
-  public void testTraverse() throws Exception {
+  public void testTraverse() {
     List<Class<?>> list = new ArrayList<>();
     ClassUtil.traverse(
         Ccc.class,

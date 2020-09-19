@@ -9,7 +9,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class UpdateBuilderTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
@@ -21,7 +21,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
@@ -39,7 +39,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testLiteral() throws Exception {
+  public void testLiteral() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");

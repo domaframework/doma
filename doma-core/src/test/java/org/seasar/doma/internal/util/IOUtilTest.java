@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class IOUtilTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     IOUtil.close(
         () -> {
           throw new IOException();
@@ -18,14 +18,14 @@ public class IOUtilTest {
   }
 
   @Test
-  public void testEndWith_true() throws Exception {
+  public void testEndWith_true() {
     File file = new File("/fuga/META-INF/piyo/HogeDao/selectById.sql");
     String pathname = "META-INF/piyo/HogeDao/selectById.sql";
     assertTrue(IOUtil.endsWith(file, pathname));
   }
 
   @Test
-  public void testEndWith_false() throws Exception {
+  public void testEndWith_false() {
     File file = new File("/fuga/META-INF/piyo/hogeDao/selectById.sql");
     String pathname = "META-INF/piyo/HogeDao/selectById.sql";
     assertFalse(IOUtil.endsWith(file, pathname));

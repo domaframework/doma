@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class SqlFileNotFoundExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     SqlFileNotFoundException e = new SqlFileNotFoundException("aaa");
     assertEquals("aaa", e.getPath());
     System.out.println(e.getMessage());

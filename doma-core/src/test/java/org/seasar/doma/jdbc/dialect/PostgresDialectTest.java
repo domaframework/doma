@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 public class PostgresDialectTest {
 
   @Test
-  public void testGetIdentitySelectSql_quoteNotRequired_idQuoteNotRequired() throws Exception {
+  public void testGetIdentitySelectSql_quoteNotRequired_idQuoteNotRequired() {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", false, false);
     assertEquals(
@@ -16,7 +16,7 @@ public class PostgresDialectTest {
   }
 
   @Test
-  public void testGetIdentitySelectSql_quoteRequired_idQuoteNotRequired() throws Exception {
+  public void testGetIdentitySelectSql_quoteRequired_idQuoteNotRequired() {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", true, false);
     assertEquals(
@@ -25,7 +25,7 @@ public class PostgresDialectTest {
   }
 
   @Test
-  public void testGetIdentitySelectSql_quoteNotRequired_idQuoteRequired() throws Exception {
+  public void testGetIdentitySelectSql_quoteNotRequired_idQuoteRequired() {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", false, true);
     assertEquals(
@@ -33,7 +33,7 @@ public class PostgresDialectTest {
   }
 
   @Test
-  public void testGetIdentitySelectSql_quoteRequired_idQuoteRequired() throws Exception {
+  public void testGetIdentitySelectSql_quoteRequired_idQuoteRequired() {
     PostgresDialect dialect = new PostgresDialect();
     PreparedSql sql = dialect.getIdentitySelectSql("aaa", "bbb", "ccc", "DDD", true, true);
     assertEquals(

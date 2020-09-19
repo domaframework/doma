@@ -54,7 +54,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testBegin_alreadyBegun() throws Exception {
+  public void testBegin_alreadyBegun() {
     transaction.begin();
     try {
       transaction.begin();
@@ -115,7 +115,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testSetSavepoint() throws Exception {
+  public void testSetSavepoint() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     assertTrue(transaction.isActive());
@@ -124,7 +124,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testSetSavepoint_alreadyExists() throws Exception {
+  public void testSetSavepoint_alreadyExists() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     try {
@@ -136,7 +136,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testSetSavepoint_notYetBegun() throws Exception {
+  public void testSetSavepoint_notYetBegun() {
     try {
       transaction.setSavepoint("hoge");
       fail();
@@ -146,7 +146,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testSetSavepoint_nullPointer() throws Exception {
+  public void testSetSavepoint_nullPointer() {
     transaction.begin();
     try {
       transaction.setSavepoint(null);
@@ -157,7 +157,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testHasSavepoint() throws Exception {
+  public void testHasSavepoint() {
     transaction.begin();
     assertFalse(transaction.hasSavepoint("hoge"));
     transaction.setSavepoint("hoge");
@@ -167,7 +167,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testHasSavepoint_notYetBegun() throws Exception {
+  public void testHasSavepoint_notYetBegun() {
     try {
       transaction.hasSavepoint("hoge");
       fail();
@@ -177,7 +177,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testHasSavepoint_nullPointer() throws Exception {
+  public void testHasSavepoint_nullPointer() {
     transaction.begin();
     try {
       transaction.hasSavepoint(null);
@@ -188,7 +188,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testReleaseSavepoint() throws Exception {
+  public void testReleaseSavepoint() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     transaction.setSavepoint("foo");
@@ -202,7 +202,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testReleaseSavepoint_notYetBegun() throws Exception {
+  public void testReleaseSavepoint_notYetBegun() {
     try {
       transaction.releaseSavepoint("hoge");
       fail();
@@ -212,7 +212,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testReleaseSavepoint_notFound() throws Exception {
+  public void testReleaseSavepoint_notFound() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     try {
@@ -224,7 +224,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testReleaseSavepoint_nullPointer() throws Exception {
+  public void testReleaseSavepoint_nullPointer() {
     transaction.begin();
     try {
       transaction.releaseSavepoint(null);
@@ -254,7 +254,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testCommit_notYetBegun() throws Exception {
+  public void testCommit_notYetBegun() {
     try {
       transaction.commit();
       fail();
@@ -274,7 +274,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testRollback_ConnectionUnused() throws Exception {
+  public void testRollback_ConnectionUnused() {
     transaction.begin();
     transaction.rollback();
     assertFalse(transaction.isActive());
@@ -283,12 +283,12 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testRollback_notYetBegun() throws Exception {
+  public void testRollback_notYetBegun() {
     transaction.rollback();
   }
 
   @Test
-  public void testRollbackSavepoint() throws Exception {
+  public void testRollbackSavepoint() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     transaction.rollback("hoge");
@@ -298,7 +298,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testRollbackSavepoint_notYetBegun() throws Exception {
+  public void testRollbackSavepoint_notYetBegun() {
     try {
       transaction.rollback("hoge");
     } catch (TransactionNotYetBegunException expected) {
@@ -307,7 +307,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testRollbackSavepoint_notFound() throws Exception {
+  public void testRollbackSavepoint_notFound() {
     transaction.begin();
     transaction.setSavepoint("hoge");
     try {

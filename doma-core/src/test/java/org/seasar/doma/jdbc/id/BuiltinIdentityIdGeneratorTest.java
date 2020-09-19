@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class BuiltinIdentityIdGeneratorTest {
 
   @Test
-  public void test_identitySelectSql() throws Exception {
+  public void test_identitySelectSql() {
     MockConfig config = new MockConfig();
     config.setDialect(new PostgresDialect());
     MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;
@@ -34,7 +34,7 @@ public class BuiltinIdentityIdGeneratorTest {
   }
 
   @Test
-  public void test_identityReservationSql() throws Exception {
+  public void test_identityReservationSql() {
     MockConfig config = new MockConfig();
     config.setDialect(new PostgresDialect());
     MockResultSet resultSet = config.dataSource.connection.preparedStatement.resultSet;

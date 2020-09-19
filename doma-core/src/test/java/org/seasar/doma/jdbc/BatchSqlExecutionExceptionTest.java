@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class BatchSqlExecutionExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     BatchSqlExecutionException e =
         new BatchSqlExecutionException(
             SqlLogType.FORMATTED,

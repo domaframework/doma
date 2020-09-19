@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class ConfigExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     ConfigException e = new ConfigException("aaa", "bbb");
     System.out.println(e.getMessage());
     assertEquals("aaa", e.getClassName());

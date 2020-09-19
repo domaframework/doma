@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.dialect.StandardDialect;
 public class AbstractSqlFileRepositoryTest {
 
   @Test
-  public void testGetSqlFile(TestInfo testInfo) throws Exception {
+  public void testGetSqlFile(TestInfo testInfo) {
     SqlFileRepository repository = new MySqlFileRepository();
     Method method = testInfo.getTestMethod().get();
     String path = String.format("META-INF/%s.sql", getClass().getName().replace(".", "/"));
@@ -25,7 +25,7 @@ public class AbstractSqlFileRepositoryTest {
   }
 
   @Test
-  public void testGetSqlFile_illegalPath(TestInfo testInfo) throws Exception {
+  public void testGetSqlFile_illegalPath(TestInfo testInfo) {
     SqlFileRepository repository = new MySqlFileRepository();
     Method method = testInfo.getTestMethod().get();
     String path = method.getName();
@@ -39,7 +39,7 @@ public class AbstractSqlFileRepositoryTest {
 
   @Sql("select * from address")
   @Test
-  public void testGetSqlFile_SqlAnnotation(TestInfo testInfo) throws Exception {
+  public void testGetSqlFile_SqlAnnotation(TestInfo testInfo) {
     SqlFileRepository repository = new MySqlFileRepository();
     Method method = testInfo.getTestMethod().get();
     String path = method.getName();

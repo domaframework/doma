@@ -21,7 +21,7 @@ public class DefaultPropertyTypeTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testIsQuoteRequired_true() throws Exception {
+  public void testIsQuoteRequired_true() {
     boolean isQuoteRequired = true;
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
@@ -39,7 +39,7 @@ public class DefaultPropertyTypeTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void testIsQuoteRequired_false() throws Exception {
+  public void testIsQuoteRequired_false() {
     boolean isQuoteRequired = false;
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
@@ -56,7 +56,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naming_columnNameDefined() throws Exception {
+  public void testGetColumnName_naming_columnNameDefined() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -71,7 +71,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_columnDefined() throws Exception {
+  public void testGetColumnName_columnDefined() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -86,7 +86,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_columnNotDefined() throws Exception {
+  public void testGetColumnName_columnNotDefined() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -101,7 +101,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_columnNotDefined_embeddableProeprty() throws Exception {
+  public void testGetColumnName_columnNotDefined_embeddableProeprty() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -116,7 +116,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_quote_quoteRequired() throws Exception {
+  public void testGetColumnName_quote_quoteRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -131,7 +131,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_quote_quoteNotRequired() throws Exception {
+  public void testGetColumnName_quote_quoteNotRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -146,7 +146,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_columnNotDefined() throws Exception {
+  public void testGetColumnName_naiming_columnNotDefined() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -161,7 +161,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_quote_quoteRequired() throws Exception {
+  public void testGetColumnName_naiming_quote_quoteRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -176,7 +176,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_quote_quoteNotRequired() throws Exception {
+  public void testGetColumnName_naiming_quote_quoteNotRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -191,7 +191,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testPrimitivePropertyDefaultValue() throws Exception {
+  public void testPrimitivePropertyDefaultValue() {
     DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -207,7 +207,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testWrapperPropertyDefaultValue() throws Exception {
+  public void testWrapperPropertyDefaultValue() {
     DefaultPropertyType<DefaultPropertyTypeTest, Integer, Integer> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,

@@ -38,7 +38,7 @@ public class NodePreparedSqlBuilderTest {
   private final MockConfig config = new MockConfig();
 
   @Test
-  public void testBindVariableNode() throws Exception {
+  public void testBindVariableNode() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -82,7 +82,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testIfNode_true() throws Exception {
+  public void testIfNode_true() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -116,7 +116,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testIfNode_false() throws Exception {
+  public void testIfNode_false() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -150,7 +150,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testElseNode() throws Exception {
+  public void testElseNode() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -190,7 +190,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testWhere() throws Exception {
+  public void testWhere() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */";
     SqlParser parser = new SqlParser(testSql);
@@ -203,7 +203,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testWhere_embeddedVariable() throws Exception {
+  public void testWhere_embeddedVariable() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "bbb = ccc"));
     String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */ /*#embedded*/";
@@ -217,7 +217,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testWhere_embeddedVariable_orderBy() throws Exception {
+  public void testWhere_embeddedVariable_orderBy() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "order by bbb"));
     String testSql = "select * from aaa where /*%if false*/ename = 'aaa'/*%end */ /*#embedded*/";
@@ -231,7 +231,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testWhere_embeddedVariable_orderBy_followedByForUpdate() throws Exception {
+  public void testWhere_embeddedVariable_orderBy_followedByForUpdate() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("embedded", new Value(String.class, "order by bbb"));
     String testSql =
@@ -246,7 +246,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testAndNode() throws Exception {
+  public void testAndNode() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -294,7 +294,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testAndNode_remove() throws Exception {
+  public void testAndNode_remove() {
     SelectClauseNode select = new SelectClauseNode("select");
     select.appendNode(OtherNode.of(" * "));
     FromClauseNode from = new FromClauseNode("from");
@@ -342,7 +342,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testEmbeddedVariable_containsSingleQuote() throws Exception {
+  public void testEmbeddedVariable_containsSingleQuote() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
@@ -363,7 +363,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testEmbeddedVariable_containsSemicolon() throws Exception {
+  public void testEmbeddedVariable_containsSemicolon() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
@@ -384,7 +384,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testEmbeddedVariable_lineComment() throws Exception {
+  public void testEmbeddedVariable_lineComment() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
@@ -405,7 +405,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testEmbeddedVariable_blockComment() throws Exception {
+  public void testEmbeddedVariable_blockComment() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hoge"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
@@ -426,7 +426,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testEmbeddedVariable_issue_95() throws Exception {
+  public void testEmbeddedVariable_issue_95() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("envPrefix", new Value(String.class, "prefix_"));
     String testSql = "select * from /*#envPrefix*/SCHEMA.TABLE";
@@ -440,7 +440,7 @@ public class NodePreparedSqlBuilderTest {
   }
 
   @Test
-  public void testLiteralVariable_containsSingleQuote() throws Exception {
+  public void testLiteralVariable_containsSingleQuote() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(String.class, "hog'e"));
     evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));

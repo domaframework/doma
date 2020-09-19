@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 public class DomaNullPointerExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     DomaNullPointerException e = new DomaNullPointerException("aaa");
     assertEquals("aaa", e.getParameterName());
   }
 
   @Test
-  public void testGenerics() throws Exception {
+  public void testGenerics() {
     hoge(new A());
     hoge(new B());
     hoge(new C());

@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class MssqlPagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected =
         "select emp.id from emp order by emp.id offset 5 rows fetch next 10 rows only";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, 10, false);
@@ -28,7 +28,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_forceOffsetFetch() throws Exception {
+  public void testOffsetLimit_forceOffsetFetch() {
     String expected =
         "select emp.id from emp order by emp.id offset 5 rows fetch next 10 rows only";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, 10, true);
@@ -41,7 +41,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_option() throws Exception {
+  public void testOffsetLimit_option() {
     String expected =
         "select emp.id from emp order by emp.id  offset 5 rows fetch next 10 rows only option (maxrecursion 0)";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, 10, false);
@@ -55,7 +55,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected = "select emp.id from emp order by emp.id offset 5 rows";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, -1, false);
     SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
@@ -67,7 +67,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly_forceOffsetFetch() throws Exception {
+  public void testOffsetOnly_forceOffsetFetch() {
     String expected = "select emp.id from emp order by emp.id offset 5 rows";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, -1, true);
     SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
@@ -79,7 +79,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly_option() throws Exception {
+  public void testOffsetOnly_option() {
     String expected =
         "select emp.id from emp order by emp.id  offset 5 rows option (maxrecursion 0)";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(5, -1, false);
@@ -93,7 +93,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected = "select top (10) emp.id from emp order by emp.id";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(-1, 10, false);
     SqlParser parser = new SqlParser("select emp.id from emp order by emp.id");
@@ -105,7 +105,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly_forceOffsetFetch() throws Exception {
+  public void testLimitOnly_forceOffsetFetch() {
     String expected =
         "select emp.id from emp order by emp.id offset 0 rows fetch next 10 rows only";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(-1, 10, true);
@@ -118,7 +118,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly_option() throws Exception {
+  public void testLimitOnly_option() {
     String expected = "select top (10) emp.id from emp order by emp.id option (maxrecursion 0)";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(-1, 10, false);
     SqlParser parser =
@@ -131,7 +131,7 @@ public class MssqlPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly_option_forceOffsetFetch() throws Exception {
+  public void testLimitOnly_option_forceOffsetFetch() {
     String expected =
         "select emp.id from emp order by emp.id  offset 0 rows fetch next 10 rows only option (maxrecursion 0)";
     MssqlPagingTransformer transformer = new MssqlPagingTransformer(-1, 10, true);

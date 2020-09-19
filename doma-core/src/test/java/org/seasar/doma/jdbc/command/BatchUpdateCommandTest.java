@@ -24,12 +24,12 @@ public class BatchUpdateCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testExecute() throws Exception {
+  public void testExecute() {
     Emp emp1 = new Emp();
     emp1.setId(1);
     emp1.setName("hoge");
@@ -60,7 +60,7 @@ public class BatchUpdateCommandTest {
   }
 
   @Test
-  public void testExecute_throwsOptimisticLockException() throws Exception {
+  public void testExecute_throwsOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(1);
     emp.setName("hoge");
@@ -85,7 +85,7 @@ public class BatchUpdateCommandTest {
   }
 
   @Test
-  public void testExecute_suppressesOptimisticLockException() throws Exception {
+  public void testExecute_suppressesOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(1);
     emp.setName("hoge");

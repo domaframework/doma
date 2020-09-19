@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class StandardCountGettingTransformerTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     String expected = "select count(*) from ( select * from emp) t_";
     StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
     SqlParser parser = new SqlParser("select * from emp");
@@ -26,7 +26,7 @@ public class StandardCountGettingTransformerTest {
   }
 
   @Test
-  public void testOrderBy() throws Exception {
+  public void testOrderBy() {
     String expected = "select count(*) from ( select * from emp ) t_";
     StandardCountGettingTransformer transformer = new StandardCountGettingTransformer();
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

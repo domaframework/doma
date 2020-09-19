@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class OriginalStatesAccessorTest {
 
   @Test
-  public void testGet() throws Exception {
+  public void testGet() {
     Hoge states = new Hoge();
     Hoge hoge = new Hoge();
     hoge.setOriginalStates(states);
@@ -17,7 +17,7 @@ public class OriginalStatesAccessorTest {
   }
 
   @Test
-  public void testSet() throws Exception {
+  public void testSet() {
     Hoge states = new Hoge();
     Hoge hoge = new Hoge();
     OriginalStatesAccessor<Hoge> accessor =

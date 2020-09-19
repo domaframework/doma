@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 public class ScalarInParameterTest {
 
   @Test
-  public void testGetDomainClass() throws Exception {
+  public void testGetDomainClass() {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     Scalar<String, PhoneNumber> scalar = domainType.createScalar();
@@ -24,7 +24,7 @@ public class ScalarInParameterTest {
   }
 
   @Test
-  public void testGetDomainClass_optional() throws Exception {
+  public void testGetDomainClass_optional() {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     Scalar<String, Optional<PhoneNumber>> scalar = domainType.createOptionalScalar();
