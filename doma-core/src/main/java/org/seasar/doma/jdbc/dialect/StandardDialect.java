@@ -1048,7 +1048,7 @@ public class StandardDialect implements Dialect {
         }
         Iterator<String> startKeywordsIt = startKeywords.iterator();
         Iterator<String> keywordsIt = keywords.iterator();
-        for (; startKeywordsIt.hasNext(); ) {
+        while (startKeywordsIt.hasNext()) {
           String word1 = startKeywordsIt.next();
           String word2 = keywordsIt.next();
           inBlock = word1.equalsIgnoreCase(word2);

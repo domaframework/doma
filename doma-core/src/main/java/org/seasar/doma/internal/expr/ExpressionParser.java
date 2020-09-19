@@ -412,7 +412,7 @@ public class ExpressionParser {
 
   protected void parseNewOperand() {
     StringBuilder buf = new StringBuilder();
-    for (; tokenizer.next() != OPENED_PARENS; ) {
+    while (tokenizer.next() != OPENED_PARENS) {
       if (tokenType != WHITESPACE) {
         buf.append(tokenizer.getToken());
       }
