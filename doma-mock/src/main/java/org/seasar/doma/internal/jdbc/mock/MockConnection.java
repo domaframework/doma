@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+@SuppressWarnings("RedundantThrows")
 public class MockConnection extends MockWrapper implements Connection {
 
   public MockStatement statement = new MockStatement();

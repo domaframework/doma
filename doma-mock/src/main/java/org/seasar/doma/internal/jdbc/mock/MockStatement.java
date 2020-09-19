@@ -7,6 +7,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.Arrays;
 
+@SuppressWarnings("RedundantThrows")
 public class MockStatement extends MockWrapper implements Statement {
 
   public boolean closed;

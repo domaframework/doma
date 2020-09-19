@@ -7,6 +7,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
+@SuppressWarnings("RedundantThrows")
 public class MockDataSource extends MockWrapper implements DataSource {
 
   public MockConnection connection = new MockConnection();

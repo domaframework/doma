@@ -3,6 +3,7 @@ package org.seasar.doma.internal.jdbc.mock;
 import java.sql.SQLException;
 import java.sql.Wrapper;
 
+@SuppressWarnings("RedundantThrows")
 public class MockWrapper implements Wrapper {
 
   @Override
