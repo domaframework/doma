@@ -1,23 +1,22 @@
 package org.seasar.doma.internal.apt.decl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.seasar.doma.internal.apt.CompilerSupport;
-import org.seasar.doma.internal.apt.TestProcessor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.TestProcessor;
 
 class TypeDeclarationTest extends CompilerSupport {
 
