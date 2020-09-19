@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.generator;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Formatter;
 import java.util.List;
 import javax.lang.model.element.TypeElement;
@@ -106,7 +107,11 @@ class PrinterTest extends CompilerSupport {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             TypeMirror typeMirror = typeElement.asType();
             List<Object> list =
-                Arrays.asList(String.class, typeElement, typeMirror, Arrays.asList(Integer.class));
+                Arrays.asList(
+                    String.class,
+                    typeElement,
+                    typeMirror,
+                    Collections.singletonList(Integer.class));
 
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
