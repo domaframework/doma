@@ -296,7 +296,7 @@ public class NodePreparedSqlBuilder
             location.getPosition(),
             node.getVariableName());
       }
-      if (fragment.indexOf("--") > -1) {
+      if (fragment.contains("--")) {
         throw new JdbcException(
             Message.DOMA2122,
             location.getSql(),
@@ -304,7 +304,7 @@ public class NodePreparedSqlBuilder
             location.getPosition(),
             node.getVariableName());
       }
-      if (fragment.indexOf("/*") > -1) {
+      if (fragment.contains("/*")) {
         throw new JdbcException(
             Message.DOMA2123,
             location.getSql(),
