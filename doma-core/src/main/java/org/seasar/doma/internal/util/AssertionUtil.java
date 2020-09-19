@@ -112,6 +112,7 @@ public final class AssertionUtil {
       if (actual != null) {
         throw new AssertionError("Not equals. expected is null, but actual is [" + actual + "]");
       }
+      return;
     }
     if (!expected.equals(actual)) {
       throw new AssertionError(
