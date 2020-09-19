@@ -146,6 +146,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     }
     NestingKind nestingKind = typeElement.getNestingKind();
     if (nestingKind == NestingKind.TOP_LEVEL) {
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (nestingKind == NestingKind.MEMBER) {
       Set<Modifier> modifiers = typeElement.getModifiers();
