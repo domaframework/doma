@@ -425,12 +425,8 @@ public class ExpressionParser {
 
   protected void parseOperator(OperatorNode currentNode) {
     OperatorNode first = operatorNodes.peek();
-    if (first == null) {
-      operatorNodes.push(currentNode);
-    } else {
-      if (currentNode.getPriority() > first.getPriority()) {
-        operatorNodes.push(currentNode);
-      } else {
+    if (first != null) {
+      if (currentNode.getPriority() <= first.getPriority()) {
         for (Iterator<OperatorNode> it = operatorNodes.iterator(); it.hasNext(); ) {
           OperatorNode operatorNode = it.next();
           if (operatorNode.getPriority() > currentNode.getPriority()) {
@@ -438,9 +434,9 @@ public class ExpressionParser {
             it.remove();
           }
         }
-        operatorNodes.push(currentNode);
       }
     }
+    operatorNodes.push(currentNode);
   }
 
   protected void reduceAll() {
