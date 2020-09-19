@@ -244,7 +244,7 @@ public class SelectCommandTest {
   @Test
   public void getGetQuery() {
     SqlFileSelectQuery query = new SqlFileSelectQuery();
-    SelectCommand command =
+    SelectCommand<List<Emp>> command =
         new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     assertEquals(query, command.getQuery());
   }
