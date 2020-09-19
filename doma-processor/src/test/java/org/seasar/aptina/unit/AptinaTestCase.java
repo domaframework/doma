@@ -77,7 +77,7 @@ public abstract class AptinaTestCase {
 
   protected AptinaTestCase() {}
 
-  public void tearDown() throws Exception {
+  public void tearDown() {
     if (testingJavaFileManager != null) {
       try {
         testingJavaFileManager.close();
