@@ -73,6 +73,7 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("SuspiciousInvocationHandlerImplementation")
   private <T> T mock(Class<T> aClass) {
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
     Class<?>[] interfaces = {aClass};
