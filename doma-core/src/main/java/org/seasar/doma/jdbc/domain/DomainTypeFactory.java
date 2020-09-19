@@ -117,8 +117,6 @@ public final class DomainTypeFactory {
     try {
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
       return MethodUtil.invoke(method, null);
-    } catch (WrapException e) {
-      return null;
     } catch (Exception e) {
       return null;
     }
@@ -128,8 +126,6 @@ public final class DomainTypeFactory {
     String domainTypeClassName = ClassNames.newExternalDomainTypeClassName(domainName).toString();
     try {
       return classHelper.forName(domainTypeClassName);
-    } catch (WrapException e) {
-      return null;
     } catch (Exception e) {
       return null;
     }

@@ -5,7 +5,6 @@ import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Entity;
 import org.seasar.doma.internal.ClassNames;
-import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
 import org.seasar.doma.internal.util.MethodUtil;
 import org.seasar.doma.jdbc.ClassHelper;
@@ -43,9 +42,6 @@ public final class EntityTypeFactory {
       Class<E> clazz = classHelper.forName(entityTypeClassName);
       Method method = ClassUtil.getMethod(clazz, "getSingletonInternal");
       return MethodUtil.invoke(method, null);
-    } catch (WrapException e) {
-      throw new EntityTypeNotFoundException(
-          e.getCause(), entityClass.getName(), entityTypeClassName);
     } catch (Exception e) {
       throw new EntityTypeNotFoundException(
           e.getCause(), entityClass.getName(), entityTypeClassName);

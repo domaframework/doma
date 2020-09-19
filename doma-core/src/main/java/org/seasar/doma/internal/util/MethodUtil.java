@@ -14,11 +14,7 @@ public final class MethodUtil {
       @SuppressWarnings("unchecked")
       T result = (T) method.invoke(target, params);
       return result;
-    } catch (IllegalArgumentException e) {
-      throw new WrapException(e);
-    } catch (IllegalAccessException e) {
-      throw new WrapException(e);
-    } catch (InvocationTargetException e) {
+    } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
       throw new WrapException(e);
     }
   }
