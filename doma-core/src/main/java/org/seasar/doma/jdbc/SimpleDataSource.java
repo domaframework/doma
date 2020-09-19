@@ -172,7 +172,6 @@ public class SimpleDataSource implements DataSource {
     throw new SQLException("cannot unwrap to " + iface.getName());
   }
 
-  @SuppressWarnings("all")
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
     throw new SQLFeatureNotSupportedException();
   }
