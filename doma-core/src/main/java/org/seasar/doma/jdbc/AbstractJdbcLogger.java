@@ -55,6 +55,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
         () -> Message.DOMA2220.getMessage(callerClassName, callerMethodName));
   }
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   protected void logDaoMethodEntering(
       String callerClassName,
       String callerMethodName,

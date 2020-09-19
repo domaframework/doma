@@ -561,6 +561,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     return findSuiteMethod(methods, target, targetClass, paramTypes);
   }
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   protected Method findSuiteMethod(
       List<Method> methods, Object target, Class<?> targetClass, Class<?>[] argTypes) {
     CandidateMethod candidate = null;
