@@ -1,11 +1,12 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _Height<T> extends AbstractDomainType<Integer, Height<T>> {
 
   private _Height() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

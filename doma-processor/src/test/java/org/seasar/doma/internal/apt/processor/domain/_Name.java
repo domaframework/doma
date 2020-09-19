@@ -1,11 +1,12 @@
 package org.seasar.doma.internal.apt.processor.domain;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class _Name extends AbstractDomainType<String, Name> {
 
   private _Name() {
-    super(() -> new org.seasar.doma.wrapper.StringWrapper());
+    super(StringWrapper::new);
   }
 
   @Override

@@ -1,11 +1,12 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public class _Weight<T> extends AbstractDomainType<Integer, Weight<T>> {
 
   private _Weight() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

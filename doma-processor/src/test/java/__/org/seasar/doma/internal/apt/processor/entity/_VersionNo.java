@@ -2,6 +2,7 @@ package __.org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.internal.apt.processor.entity.VersionNo;
 import org.seasar.doma.internal.apt.processor.entity.VersionNoConverter;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public final class _VersionNo
     extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Integer, VersionNo> {
@@ -15,7 +16,7 @@ public final class _VersionNo
   private static final VersionNoConverter converter = new VersionNoConverter();
 
   private _VersionNo() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override
