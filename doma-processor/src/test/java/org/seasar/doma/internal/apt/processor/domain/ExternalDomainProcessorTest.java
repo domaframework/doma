@@ -32,7 +32,8 @@ class ExternalDomainProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class clazz, URL expectedResourceUrl, String generatedClassName) throws Exception {
+  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName)
+      throws Exception {
     addProcessor(new ExternalDomainProcessor());
     addCompilationUnit(clazz);
     compile();
@@ -82,7 +83,7 @@ class ExternalDomainProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
-  void error(Class clazz, Message message, String... options) throws Exception {
+  void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
     addProcessor(new ExternalDomainProcessor());
     addCompilationUnit(clazz);

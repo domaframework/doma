@@ -40,7 +40,7 @@ class SqlTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
-  void error(Class clazz, Message message, String... options) throws Exception {
+  void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
     addProcessor(new DaoProcessor());
     addCompilationUnit(clazz);
