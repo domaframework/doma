@@ -777,6 +777,7 @@ public class NodePreparedSqlBuilder
 
     private boolean available;
 
+    @SuppressWarnings("CopyConstructorMissesField")
     protected Context(Context context) {
       this(context.config, context.evaluator);
     }
