@@ -61,10 +61,10 @@ public class ScalarsTest {
         Scalars.wrap(
             Timestamp.valueOf("2009-01-23 12:34:56"), Timestamp.class, false, classHelper));
     assertNotNull(Scalars.wrap(new java.util.Date(), java.util.Date.class, false, classHelper));
-    assertNotNull(Scalars.wrap(LocalDate.of(2009, 01, 23), LocalDate.class, false, classHelper));
+    assertNotNull(Scalars.wrap(LocalDate.of(2009, 1, 23), LocalDate.class, false, classHelper));
     assertNotNull(
         Scalars.wrap(
-            LocalDateTime.of(2009, 01, 23, 12, 34, 56), LocalDateTime.class, false, classHelper));
+            LocalDateTime.of(2009, 1, 23, 12, 34, 56), LocalDateTime.class, false, classHelper));
     assertNotNull(Scalars.wrap(LocalTime.of(12, 34, 56), LocalTime.class, false, classHelper));
     assertNotNull(Scalars.wrap(null, Array.class, false, classHelper));
     assertNotNull(Scalars.wrap(null, Blob.class, false, classHelper));
