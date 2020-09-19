@@ -7,6 +7,7 @@ import java.util.OptionalLong;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Entity(metamodel = @Metamodel)
 public class Emp {
   public Integer id;
