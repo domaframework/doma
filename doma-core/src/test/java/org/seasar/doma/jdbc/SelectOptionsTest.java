@@ -10,6 +10,7 @@ import org.seasar.doma.DomaNullPointerException;
 /** @author backpaper0 */
 public class SelectOptionsTest {
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testForUpdateParameter() throws Exception {
     String[] aliases = null;
@@ -21,6 +22,7 @@ public class SelectOptionsTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testForUpdateNowaitParameter() throws Exception {
     String[] aliases = null;
@@ -57,6 +59,7 @@ public class SelectOptionsTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testForUpdateWaitParameter3() throws Exception {
     int waitSeconds = 1;

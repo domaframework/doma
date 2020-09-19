@@ -14,6 +14,7 @@ import org.seasar.doma.jdbc.Config;
 /** @author backpaper0 */
 public class DaoImplSupportTest {
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testConstructorParameter1() throws Exception {
     Config config = null;
@@ -25,6 +26,7 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testConstructorParameter2() throws Exception {
     Config config = null;
@@ -37,6 +39,7 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testConstructorParameter3() throws Exception {
     Config config = mock(Config.class);
@@ -49,6 +52,7 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testConstructorParameter4() throws Exception {
     Config config = null;
@@ -61,6 +65,7 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testConstructorParameter5() throws Exception {
     Config config = mock(Config.class);

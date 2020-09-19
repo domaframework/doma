@@ -19,6 +19,7 @@ public class DefaultPropertyTypeTest {
 
   private Integer integer;
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testIsQuoteRequired_true() throws Exception {
     boolean isQuoteRequired = true;
@@ -36,6 +37,7 @@ public class DefaultPropertyTypeTest {
     assertEquals("[hoge]", propertyType.getColumnName((n, t) -> t, s -> "[" + s + "]"));
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
   public void testIsQuoteRequired_false() throws Exception {
     boolean isQuoteRequired = false;
