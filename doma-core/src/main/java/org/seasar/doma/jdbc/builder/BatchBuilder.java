@@ -218,7 +218,7 @@ public abstract class BatchBuilder {
     }
 
     @Override
-    <P extends Object> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
+    <P> BatchBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
       final String paramName = paramNameMap.get(paramIndex.getValue());
       if (paramName == null) {
         throw new JdbcException(Message.DOMA2231);
