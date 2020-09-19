@@ -20,6 +20,7 @@ public class Person {
     return optionalName;
   }
 
+  @SuppressWarnings("SameReturnValue")
   public static Optional<String> getStaticOptionalName() {
     return staticOptionalName;
   }
