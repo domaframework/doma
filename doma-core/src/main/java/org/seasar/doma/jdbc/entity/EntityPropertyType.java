@@ -87,6 +87,7 @@ public interface EntityPropertyType<ENTITY, BASIC> {
    *
    * @return {@code true} if included in SQL INSERT statements.
    */
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   boolean isInsertable();
 
   /**
@@ -94,6 +95,7 @@ public interface EntityPropertyType<ENTITY, BASIC> {
    *
    * @return {@code true} if included in SQL UPDATE statements.
    */
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   boolean isUpdatable();
 
   /**
