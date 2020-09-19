@@ -1,12 +1,13 @@
 package org.seasar.doma.internal;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public final class Constants {
 
   public static final String ROWNUMBER_COLUMN_NAME = "doma_rownumber_";
 
-  public static final Charset UTF_8 = Charset.forName("UTF-8");
+  public static final Charset UTF_8 = StandardCharsets.UTF_8;
 
   public static final String SQL_PATH_PREFIX = "META-INF/";
 
