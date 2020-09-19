@@ -58,7 +58,7 @@ public final class _NotTopLevelEntity__Hoge
 
   @Override
   public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
-    return __namingType;
+    return null;
   }
 
   @Override
@@ -92,7 +92,7 @@ public final class _NotTopLevelEntity__Hoge
       java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String>
           namingFunction) {
     if (__tableName.isEmpty()) {
-      return namingFunction.apply(__namingType, __name);
+      return namingFunction.apply(null, __name);
     }
     return __tableName;
   }
