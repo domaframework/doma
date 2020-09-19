@@ -11,7 +11,7 @@ public abstract class AbstractEntityType<ENTITY> implements EntityType<ENTITY> {
   @Override
   @Deprecated
   public String getQualifiedTableName() {
-    return getQualifiedTableName(Function.<String>identity());
+    return getQualifiedTableName(Function.identity());
   }
 
   @Override

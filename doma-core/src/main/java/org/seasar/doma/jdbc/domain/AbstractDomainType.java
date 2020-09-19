@@ -54,7 +54,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     @Override
     public Optional<Class<?>> getDomainClass() {
       Class<?> c = AbstractDomainType.this.getDomainClass();
-      return Optional.<Class<?>>of(c);
+      return Optional.of(c);
     }
 
     @Override
@@ -100,7 +100,7 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     @Override
     public Optional<Class<?>> getDomainClass() {
       Class<?> clazz = AbstractDomainType.this.getDomainClass();
-      return Optional.<Class<?>>of(clazz);
+      return Optional.of(clazz);
     }
 
     @SuppressWarnings("unchecked")

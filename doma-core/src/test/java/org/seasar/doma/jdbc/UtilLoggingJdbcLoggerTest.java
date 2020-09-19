@@ -9,12 +9,7 @@ public class UtilLoggingJdbcLoggerTest {
   public void testLogSql() throws Exception {
     PreparedSql sql =
         new PreparedSql(
-            SqlKind.SELECT,
-            "aaa",
-            "bbb",
-            "ccc",
-            Collections.<InParameter<?>>emptyList(),
-            SqlLogType.FORMATTED);
+            SqlKind.SELECT, "aaa", "bbb", "ccc", Collections.emptyList(), SqlLogType.FORMATTED);
     UtilLoggingJdbcLogger logger = new UtilLoggingJdbcLogger();
     logger.logSql("ddd", "eee", sql);
   }

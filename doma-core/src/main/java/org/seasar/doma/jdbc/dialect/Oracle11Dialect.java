@@ -19,7 +19,6 @@ import org.seasar.doma.internal.jdbc.dialect.OracleForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.OraclePagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.util.AssertionUtil;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingHint;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -137,12 +136,7 @@ public class Oracle11Dialect extends StandardDialect {
     }
     String rawSql = "select " + qualifiedSequenceName + ".nextval from dual";
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override

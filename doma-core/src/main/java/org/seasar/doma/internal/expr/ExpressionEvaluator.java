@@ -77,7 +77,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   public ExpressionEvaluator(ExpressionFunctions expressionFunctions, ClassHelper classHelper) {
-    this(Collections.<String, Value>emptyMap(), expressionFunctions, classHelper);
+    this(Collections.emptyMap(), expressionFunctions, classHelper);
   }
 
   public ExpressionEvaluator(

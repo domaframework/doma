@@ -108,7 +108,7 @@ public class SqlFileBatchUpdateQueryTest {
     query.setParameterName("e");
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setElements(Collections.<Emp>emptyList());
+    query.setElements(Collections.emptyList());
     query.prepare();
     assertFalse(query.isExecutable());
   }

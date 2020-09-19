@@ -5,7 +5,6 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.MssqlForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.MssqlPagingTransformer;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -101,12 +100,7 @@ public class MssqlDialect extends Mssql2008Dialect {
     }
     String rawSql = "select next value for " + qualifiedSequenceName;
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override

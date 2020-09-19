@@ -15,7 +15,6 @@ import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -137,12 +136,7 @@ public class PostgresDialect extends StandardDialect {
     buf.append(")");
     String rawSql = buf.toString();
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override
@@ -176,12 +170,7 @@ public class PostgresDialect extends StandardDialect {
     buf.append(")");
     String rawSql = buf.toString();
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   protected String createIdentitySequenceFunctionExpression(
@@ -208,12 +197,7 @@ public class PostgresDialect extends StandardDialect {
     }
     String rawSql = "select nextval('" + qualifiedSequenceName + "')";
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override

@@ -102,7 +102,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
 
   @Override
   public String getColumnName() {
-    return getColumnName(Function.<String>identity());
+    return getColumnName(Function.identity());
   }
 
   @Override

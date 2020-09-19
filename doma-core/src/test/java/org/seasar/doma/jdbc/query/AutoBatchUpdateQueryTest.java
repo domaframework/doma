@@ -237,7 +237,7 @@ public class AutoBatchUpdateQueryTest {
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setEntities(Collections.<Emp>emptyList());
+    query.setEntities(Collections.emptyList());
     query.prepare();
     assertFalse(query.isExecutable());
   }

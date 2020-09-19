@@ -9,7 +9,6 @@ import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.dialect.Db2ForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.Db2PagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -95,12 +94,7 @@ public class Db2Dialect extends StandardDialect {
     }
     String rawSql = "values nextval for " + qualifiedSequenceName;
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override
