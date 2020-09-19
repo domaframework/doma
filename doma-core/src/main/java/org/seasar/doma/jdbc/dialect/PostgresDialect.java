@@ -130,11 +130,7 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    StringBuilder buf = new StringBuilder(64);
-    buf.append("select currval(");
-    buf.append(identitySeqFuncExpr);
-    buf.append(")");
-    String rawSql = buf.toString();
+    String rawSql = "select currval(" + identitySeqFuncExpr + ")";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
@@ -162,13 +158,12 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    StringBuilder buf = new StringBuilder(64);
-    buf.append("select nextval(");
-    buf.append(identitySeqFuncExpr);
-    buf.append(") from generate_series(1, ");
-    buf.append(reservationSize);
-    buf.append(")");
-    String rawSql = buf.toString();
+    String rawSql =
+        "select nextval("
+            + identitySeqFuncExpr
+            + ") from generate_series(1, "
+            + reservationSize
+            + ")";
     return new PreparedSql(
         SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }

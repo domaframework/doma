@@ -94,35 +94,31 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
   }
 
   protected String createUpdateRawSql() {
-    StringBuilder buf = new StringBuilder(100);
-    buf.append("update ");
-    buf.append(qualifiedTableName);
-    buf.append(" set ");
-    buf.append(valueColumnName);
-    buf.append(" = ");
-    buf.append(valueColumnName);
-    buf.append(" + ? where ");
-    buf.append(pkColumnName);
-    buf.append(" = ?");
-    return buf.toString();
+    return "update "
+        + qualifiedTableName
+        + " set "
+        + valueColumnName
+        + " = "
+        + valueColumnName
+        + " + ? where "
+        + pkColumnName
+        + " = ?";
   }
 
   protected String createUpdateFormattedSql() {
-    StringBuilder buf = new StringBuilder(100);
-    buf.append("update ");
-    buf.append(qualifiedTableName);
-    buf.append(" set ");
-    buf.append(valueColumnName);
-    buf.append(" = ");
-    buf.append(valueColumnName);
-    buf.append(" + ");
-    buf.append(allocationSize);
-    buf.append(" where ");
-    buf.append(pkColumnName);
-    buf.append(" = '");
-    buf.append(pkColumnValue);
-    buf.append("'");
-    return buf.toString();
+    return "update "
+        + qualifiedTableName
+        + " set "
+        + valueColumnName
+        + " = "
+        + valueColumnName
+        + " + "
+        + allocationSize
+        + " where "
+        + pkColumnName
+        + " = '"
+        + pkColumnValue
+        + "'";
   }
 
   protected String createSelectRawSql() {
