@@ -96,7 +96,7 @@ public class EntityProviderTest {
     assertEquals(100, emp.getVersion());
   }
 
-  protected class MySelectQuery implements SelectQuery {
+  protected static class MySelectQuery implements SelectQuery {
 
     private final Config config;
 

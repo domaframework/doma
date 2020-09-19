@@ -24,7 +24,7 @@ public class ConstructorUtilTest {
     assertEquals("bcd", result);
   }
 
-  public class Hoge {
+  public static class Hoge {
     public Hoge(String name) {}
   }
 }

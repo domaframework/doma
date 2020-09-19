@@ -862,7 +862,7 @@ public class ExpressionParserTest {
     assertEquals("abcde", result.getValue());
   }
 
-  public class Hoge {
+  public static class Hoge {
 
     private final String foo = "abcdef";
 
