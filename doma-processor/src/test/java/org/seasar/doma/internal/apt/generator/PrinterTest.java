@@ -129,11 +129,7 @@ class PrinterTest extends CompilerSupport {
         new TestProcessor() {
           @Override
           protected void run() {
-            Code code =
-                new Code(
-                    p -> {
-                      p.print("%1$s", String.class);
-                    });
+            Code code = new Code(p -> p.print("%1$s", String.class));
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
             printer.print("<%1$s>", code);
