@@ -118,7 +118,8 @@ public class LocalTransaction {
   }
 
   protected void beginInternal(
-      TransactionIsolationLevel transactionIsolationLevel, String callerMethodName) {
+      TransactionIsolationLevel transactionIsolationLevel,
+      @SuppressWarnings("SameParameterValue") String callerMethodName) {
     assertNotNull(callerMethodName);
     LocalTransactionContext context = localTxContextHolder.get();
     if (isActiveInternal(context)) {

@@ -30,7 +30,10 @@ public class OptimisticLockException extends JdbcException {
   }
 
   protected OptimisticLockException(
-      MessageResource messageCode, SqlKind kind, String rawSql, String sqlFilePath) {
+      @SuppressWarnings("SameParameterValue") MessageResource messageCode,
+      SqlKind kind,
+      String rawSql,
+      String sqlFilePath) {
     super(messageCode, sqlFilePath, rawSql);
     this.kind = kind;
     this.rawSql = rawSql;

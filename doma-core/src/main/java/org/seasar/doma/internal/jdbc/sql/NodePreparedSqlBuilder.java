@@ -860,7 +860,7 @@ public class NodePreparedSqlBuilder
       return parameters;
     }
 
-    void setAvailable(boolean available) {
+    void setAvailable(@SuppressWarnings("SameParameterValue") boolean available) {
       this.available = available;
     }
 
