@@ -50,10 +50,10 @@ public class InsertCommandTest {
     assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
     assertEquals(new String("hoge"), bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(new Integer(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
   }
 
   @Test
@@ -81,9 +81,9 @@ public class InsertCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
     assertEquals(new String("hoge"), bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(new Integer(1), bindValues.get(3).getValue());
+    assertEquals(1, bindValues.get(3).getValue());
   }
 }

@@ -62,7 +62,7 @@ public class AutoBatchDeleteQueryTest {
     Emp emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(new Integer(10));
+    emp2.setVersion(10);
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
     query.setMethod(method);
@@ -77,15 +77,15 @@ public class AutoBatchDeleteQueryTest {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertTrue(parameters.get(1).getWrapper().get() == null);
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(1).getWrapper().get());
   }
 
   @Test
@@ -97,7 +97,7 @@ public class AutoBatchDeleteQueryTest {
     Emp emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(new Integer(10));
+    emp2.setVersion(10);
 
     AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
     query.setMethod(method);
@@ -113,13 +113,13 @@ public class AutoBatchDeleteQueryTest {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
   }
 
   @Test
@@ -149,8 +149,8 @@ public class AutoBatchDeleteQueryTest {
         "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(1), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(1, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
 
     sql = query.getSqls().get(1);
@@ -158,8 +158,8 @@ public class AutoBatchDeleteQueryTest {
         "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(2), parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
+    assertEquals(2, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
   }
 }

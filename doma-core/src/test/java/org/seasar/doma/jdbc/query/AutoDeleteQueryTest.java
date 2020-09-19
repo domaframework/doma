@@ -65,8 +65,8 @@ public class AutoDeleteQueryTest {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
   }
 
   @Test
@@ -90,7 +90,7 @@ public class AutoDeleteQueryTest {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
   }
 
   @Test
@@ -117,8 +117,8 @@ public class AutoDeleteQueryTest {
 
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
   }
 }

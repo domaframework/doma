@@ -54,9 +54,9 @@ public class UpdateCommandTest {
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
     assertEquals("hoge", bindValues.get(0).getValue());
-    assertEquals(new Integer(10), bindValues.get(1).getValue());
-    assertEquals(new Integer(1), bindValues.get(2).getValue());
-    assertEquals(new Integer(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(2).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
   }
 
   @Test
@@ -138,14 +138,14 @@ public class UpdateCommandTest {
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
     assertEquals("hoge", bindValues.get(0).getValue());
-    assertEquals(new Integer(10), bindValues.get(1).getValue());
-    assertEquals(new Integer(1), bindValues.get(2).getValue());
-    assertEquals(new Integer(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(2).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
 
     Emp updatedStates = emp.originalStates;
-    assertEquals(new Integer(1), updatedStates.getId());
+    assertEquals(1, updatedStates.getId());
     assertEquals("hoge", updatedStates.getName());
     assertNull(updatedStates.getSalary());
-    assertEquals(new Integer(11), updatedStates.getVersion());
+    assertEquals(11, updatedStates.getVersion());
   }
 }

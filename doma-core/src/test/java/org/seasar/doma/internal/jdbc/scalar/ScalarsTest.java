@@ -113,8 +113,7 @@ public class ScalarsTest {
   @SuppressWarnings("unchecked")
   @Test
   public void testWrapBasic_optional() throws Exception {
-    Supplier<Scalar<?, ?>> supplier =
-        Scalars.wrap(new Integer(10), Integer.class, true, classHelper);
+    Supplier<Scalar<?, ?>> supplier = Scalars.wrap(10, Integer.class, true, classHelper);
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
@@ -124,7 +123,7 @@ public class ScalarsTest {
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertEquals(new Integer(10), wrapper.get());
+    assertEquals(10, wrapper.get());
   }
 
   @SuppressWarnings("unchecked")

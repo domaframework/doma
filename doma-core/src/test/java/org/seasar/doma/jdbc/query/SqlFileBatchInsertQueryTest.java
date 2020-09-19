@@ -82,7 +82,7 @@ public class SqlFileBatchInsertQueryTest {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
 
@@ -90,7 +90,7 @@ public class SqlFileBatchInsertQueryTest {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
   }

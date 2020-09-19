@@ -762,11 +762,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       return new EvaluationResult(nullable, Integer.class);
     } else if (value instanceof OptionalLong) {
       OptionalLong optional = (OptionalLong) value;
-      Long nullable = optional.isPresent() ? Long.valueOf(optional.getAsLong()) : null;
+      Long nullable = optional.isPresent() ? optional.getAsLong() : null;
       return new EvaluationResult(nullable, Long.class);
     } else if (value instanceof OptionalDouble) {
       OptionalDouble optional = (OptionalDouble) value;
-      Double nullable = optional.isPresent() ? Double.valueOf(optional.getAsDouble()) : null;
+      Double nullable = optional.isPresent() ? optional.getAsDouble() : null;
       return new EvaluationResult(nullable, Double.class);
     }
     if (target != null) {

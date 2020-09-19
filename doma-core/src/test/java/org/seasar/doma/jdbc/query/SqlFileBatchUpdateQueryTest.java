@@ -88,7 +88,7 @@ public class SqlFileBatchUpdateQueryTest {
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("update emp set name = ?, salary = ? where id = ?", sql.getRawSql());
@@ -96,7 +96,7 @@ public class SqlFileBatchUpdateQueryTest {
     assertEquals(3, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
   }
 
   @Test

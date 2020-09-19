@@ -79,7 +79,7 @@ public class ExpressionEvaluatorTest {
     EvaluationResult result =
         evaluator.invokeMethod(
             location, method, person, Person.class, new Class[] {}, new Object[] {});
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -104,7 +104,7 @@ public class ExpressionEvaluatorTest {
     EvaluationResult result =
         evaluator.invokeMethod(
             location, method, null, Person.class, new Class[] {}, new Object[] {});
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -181,9 +181,7 @@ public class ExpressionEvaluatorTest {
   @Test
   public void testFindMethod_autoBoxing() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    Method method =
-        evaluator.findMethod(
-            "compareTo", Integer.valueOf(1), Integer.class, new Class[] {int.class});
+    Method method = evaluator.findMethod("compareTo", 1, Integer.class, new Class[] {int.class});
     assertNotNull(method);
     assertEquals(Integer.class, method.getDeclaringClass());
   }
@@ -298,7 +296,7 @@ public class ExpressionEvaluatorTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Field field = Person.class.getField("staticAge");
     EvaluationResult result = evaluator.getFieldValue(location, field, null);
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -319,7 +317,7 @@ public class ExpressionEvaluatorTest {
     Person person = new Person();
     person.age = OptionalInt.of(10);
     EvaluationResult result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Integer.valueOf(10), result.getValue());
+    assertEquals(10, result.getValue());
     assertEquals(Integer.class, result.getValueClass());
   }
 
@@ -341,7 +339,7 @@ public class ExpressionEvaluatorTest {
     Person person = new Person();
     person.salary = OptionalLong.of(10L);
     EvaluationResult result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Long.valueOf(10L), result.getValue());
+    assertEquals(10L, result.getValue());
     assertEquals(Long.class, result.getValueClass());
   }
 
@@ -363,7 +361,7 @@ public class ExpressionEvaluatorTest {
     Person person = new Person();
     person.temperature = OptionalDouble.of(10L);
     EvaluationResult result = evaluator.getFieldValue(location, field, person);
-    assertEquals(Double.valueOf(10d), result.getValue());
+    assertEquals(10d, result.getValue());
     assertEquals(Double.class, result.getValueClass());
   }
 

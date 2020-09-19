@@ -74,8 +74,8 @@ public class SqlFileUpdateQueryTest {
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertEquals(null, parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -105,8 +105,8 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -135,8 +135,8 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("hoge", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -164,8 +164,8 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("hoge", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -195,8 +195,8 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -226,8 +226,8 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -257,9 +257,9 @@ public class SqlFileUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -293,9 +293,9 @@ public class SqlFileUpdateQueryTest {
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
-    query.addParameter("id", Integer.class, Integer.valueOf(10));
+    query.addParameter("id", Integer.class, 10);
     query.addParameter("name", String.class, "aaa");
-    query.addParameter("version", Integer.class, Integer.valueOf(100));
+    query.addParameter("version", Integer.class, 100);
     query.prepare();
 
     UpdateQuery updateQuery = query;
@@ -306,8 +306,8 @@ public class SqlFileUpdateQueryTest {
     List<? extends InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
     assertTrue(query.isExecutable());
   }
 
@@ -342,8 +342,8 @@ public class SqlFileUpdateQueryTest {
     assertEquals("update aaa set VERSION = 100 + 1 where id = 10", sql.getFormattedSql());
     List<? extends InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(1).getWrapper().get());
     assertFalse(query.isExecutable());
   }
 

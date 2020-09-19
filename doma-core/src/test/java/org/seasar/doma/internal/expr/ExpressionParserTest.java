@@ -136,7 +136,7 @@ public class ExpressionParserTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   @Test
@@ -146,7 +146,7 @@ public class ExpressionParserTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   @Test
@@ -176,7 +176,7 @@ public class ExpressionParserTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   @Test
@@ -186,7 +186,7 @@ public class ExpressionParserTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   @Test
@@ -339,7 +339,7 @@ public class ExpressionParserTest {
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(10), evaluationResult.getValue());
+    assertEquals(10, evaluationResult.getValue());
   }
 
   @Test
@@ -673,19 +673,19 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("+2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Integer(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("-2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Integer(-2), result.getValue());
+    assertEquals(-2, result.getValue());
   }
 
   @Test
@@ -694,19 +694,19 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Long(2), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("+2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Long(2), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("-2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Long(-2), result.getValue());
+    assertEquals((long) -2, result.getValue());
   }
 
   @Test
@@ -715,19 +715,19 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Float(2.5), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("+2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Float(2.5), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("-2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Float(-2.5), result.getValue());
+    assertEquals((float) -2.5, result.getValue());
   }
 
   @Test
@@ -736,19 +736,19 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Double(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("+2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Double(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("-2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Double(-2.5), result.getValue());
+    assertEquals(-2.5, result.getValue());
   }
 
   @Test
@@ -778,7 +778,7 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Character('a'), result.getValue());
+    assertEquals('a', result.getValue());
   }
 
   @Test
@@ -832,7 +832,7 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   @Test
@@ -841,7 +841,7 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   @Test
@@ -850,7 +850,7 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(-3), result.getValue());
+    assertEquals(-3, result.getValue());
   }
 
   @Test

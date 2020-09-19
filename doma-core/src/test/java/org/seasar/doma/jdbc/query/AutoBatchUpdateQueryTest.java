@@ -87,9 +87,9 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(5, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertTrue(parameters.get(1).getWrapper().get() == null);
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -99,9 +99,9 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(5, parameters.size());
     assertTrue(parameters.get(0).getWrapper().get() == null);
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(4).getWrapper().get());
   }
 
   @Test
@@ -132,8 +132,8 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql.getRawSql());
@@ -141,8 +141,8 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
   }
 
   @Test
@@ -173,9 +173,9 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -183,9 +183,9 @@ public class AutoBatchUpdateQueryTest {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   @Test
@@ -216,9 +216,9 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -226,9 +226,9 @@ public class AutoBatchUpdateQueryTest {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   @Test
@@ -275,9 +275,9 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(6, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertTrue(parameters.get(1).getWrapper().get() == null);
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
     assertEquals("bbb", parameters.get(5).getWrapper().get());
 
     sql = query.getSqls().get(1);
@@ -288,9 +288,9 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(6, parameters.size());
     assertTrue(parameters.get(0).getWrapper().get() == null);
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(4).getWrapper().get());
     assertEquals("bbb", parameters.get(5).getWrapper().get());
   }
 }

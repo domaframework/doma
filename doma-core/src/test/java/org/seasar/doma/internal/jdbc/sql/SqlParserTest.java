@@ -655,7 +655,7 @@ public class SqlParserTest {
         sql.getFormattedSql());
     assertEquals(2, sql.getParameters().size());
     assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
-    assertEquals(new Integer(5), sql.getParameters().get(1).getWrapper().get());
+    assertEquals(5, sql.getParameters().get(1).getWrapper().get());
   }
 
   @Test
@@ -674,9 +674,9 @@ public class SqlParserTest {
     assertEquals("update aaa set no = ?, set name = ? where id = ?", sql.getRawSql());
     assertEquals("update aaa set no = 10, set name = 'hoge' where id = 100", sql.getFormattedSql());
     assertEquals(3, sql.getParameters().size());
-    assertEquals(new Integer(10), sql.getParameters().get(0).getWrapper().get());
+    assertEquals(10, sql.getParameters().get(0).getWrapper().get());
     assertEquals("hoge", sql.getParameters().get(1).getWrapper().get());
-    assertEquals(new Integer(100), sql.getParameters().get(2).getWrapper().get());
+    assertEquals(100, sql.getParameters().get(2).getWrapper().get());
   }
 
   @Test

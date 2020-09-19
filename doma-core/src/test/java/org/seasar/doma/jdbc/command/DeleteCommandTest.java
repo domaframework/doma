@@ -55,8 +55,8 @@ public class DeleteCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(2, bindValues.size());
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
-    assertEquals(new Integer(10), bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
   }
 
   @Test
