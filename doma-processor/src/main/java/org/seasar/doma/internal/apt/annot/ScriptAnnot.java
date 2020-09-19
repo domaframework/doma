@@ -48,7 +48,7 @@ public class ScriptAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException("haltOnError");
     }
-    return value.booleanValue();
+    return value;
   }
 
   public String getBlockDelimiterValue() {

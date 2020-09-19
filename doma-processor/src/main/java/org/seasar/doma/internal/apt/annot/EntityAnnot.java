@@ -73,7 +73,7 @@ public class EntityAnnot extends AbstractAnnot {
     if (result == null) {
       throw new AptIllegalStateException(IMMUTABLE);
     }
-    return result.booleanValue();
+    return result;
   }
 
   public MetamodelAnnot getMetamodelValue() {

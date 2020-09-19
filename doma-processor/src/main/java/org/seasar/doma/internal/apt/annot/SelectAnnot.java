@@ -105,7 +105,7 @@ public class SelectAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
-    return value.intValue();
+    return value;
   }
 
   public int getFetchSizeValue() {
@@ -113,7 +113,7 @@ public class SelectAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(FETCH_SIZE);
     }
-    return value.intValue();
+    return value;
   }
 
   public int getMaxRowsValue() {
@@ -121,7 +121,7 @@ public class SelectAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(MAX_ROWS);
     }
-    return value.intValue();
+    return value;
   }
 
   public SelectType getStrategyValue() {
@@ -145,7 +145,7 @@ public class SelectAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT);
     }
-    return value.booleanValue();
+    return value;
   }
 
   public boolean getEnsureResultMappingValue() {
@@ -153,7 +153,7 @@ public class SelectAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
-    return value.booleanValue();
+    return value;
   }
 
   public MapKeyNamingType getMapKeyNamingValue() {

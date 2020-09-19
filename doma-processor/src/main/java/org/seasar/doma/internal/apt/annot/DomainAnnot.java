@@ -80,6 +80,6 @@ public class DomainAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(ACCEPT_NULL);
     }
-    return value.booleanValue();
+    return value;
   }
 }

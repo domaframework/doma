@@ -28,6 +28,6 @@ public class ResultSetAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
-    return value.booleanValue();
+    return value;
   }
 }
