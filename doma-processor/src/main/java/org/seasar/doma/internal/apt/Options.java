@@ -80,7 +80,7 @@ public final class Options {
 
   public boolean isMetamodelEnabled() {
     String enabled = getOption(METAMODEL_ENABLED);
-    return enabled != null && Boolean.parseBoolean(enabled);
+    return Boolean.parseBoolean(enabled);
   }
 
   public String getMetamodelPrefix() {
