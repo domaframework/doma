@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.processor.domain;
 
 import org.seasar.doma.Domain;
 
+@SuppressWarnings("DefaultAnnotationParam")
 @Domain(valueType = String.class, acceptNull = false)
 public class NullRejectionDomain {
 
