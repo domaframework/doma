@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
@@ -66,7 +65,7 @@ public class MapInsertBuilder {
         .sql("insert into ")
         .sql(tableName)
         .sql(" (")
-        .sql(parameter.keySet().stream().collect(Collectors.joining(", ")))
+        .sql(String.join(", ", parameter.keySet()))
         .sql(")");
     builder.sql("values (");
     parameter.forEach(

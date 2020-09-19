@@ -5,20 +5,22 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class Person {
 
   public String name;
 
-  public static String staticName = "hoge";
+  public static final String staticName = "hoge";
 
   public Optional<String> optionalName;
 
-  public static Optional<String> staticOptionalName = Optional.of("foo");
+  public static final Optional<String> staticOptionalName = Optional.of("foo");
 
   public Optional<String> getOptionalName() {
     return optionalName;
   }
 
+  @SuppressWarnings("SameReturnValue")
   public static Optional<String> getStaticOptionalName() {
     return staticOptionalName;
   }

@@ -27,7 +27,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testBuilder() throws Exception {
+  public void testBuilder() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -49,7 +49,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -91,7 +91,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testLiteral() throws Exception {
+  public void testLiteral() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -141,7 +141,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testNotEqualParamCall() throws Exception {
+  public void testNotEqualParamCall() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -167,7 +167,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testChangeType() throws Exception {
+  public void testChangeType() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -193,7 +193,7 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testParamToLiteral() throws Exception {
+  public void testParamToLiteral() {
     SqlBatchUpdateQuery query = mockQuery();
     BatchBuilder builder = BatchBuilder.newInstance(query);
     builder.sql("update Emp");
@@ -230,13 +230,11 @@ public class BatchUpdateExecutorTest {
   }
 
   @Test
-  public void testExecutor() throws Exception {
+  public void testExecutor() {
     List<Employee> employees =
         Arrays.asList(
-            new Employee[] {
-              new Employee(10, "SMITH", new BigDecimal("1001")),
-              new Employee(20, "ALLEN", new BigDecimal("2001"))
-            });
+            new Employee(10, "SMITH", new BigDecimal("1001")),
+            new Employee(20, "ALLEN", new BigDecimal("2001")));
     BatchUpdateExecutor executor = BatchUpdateExecutor.newInstance(new MockConfig());
     executor.execute(
         employees,

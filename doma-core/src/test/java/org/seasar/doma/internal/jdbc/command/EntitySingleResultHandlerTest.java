@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class EntitySingleResultHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -26,7 +27,7 @@ public class EntitySingleResultHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -48,9 +49,9 @@ public class EntitySingleResultHandlerTest {
     query.prepare();
 
     EntitySingleResultHandler<Emp> handler =
-        new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+        new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     Emp emp = handler.handle(resultSet, query, (i, next) -> {}).get();
-    assertEquals(new Integer(1), emp.getId());
+    assertEquals(1, emp.getId());
     assertEquals("aaa", emp.getName());
   }
 
@@ -73,7 +74,7 @@ public class EntitySingleResultHandlerTest {
     query.prepare();
 
     EntitySingleResultHandler<Emp> handler =
-        new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+        new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

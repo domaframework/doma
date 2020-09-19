@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public class SqlitePagingTransformer extends StandardPagingTransformer {
 
-  protected static String MAXIMUM_LIMIT = String.valueOf(Long.MAX_VALUE);
+  protected static final String MAXIMUM_LIMIT = String.valueOf(Long.MAX_VALUE);
 
   public SqlitePagingTransformer(long offset, long limit) {
     super(offset, limit);
@@ -21,7 +21,7 @@ public class SqlitePagingTransformer extends StandardPagingTransformer {
     processed = true;
 
     OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
-    OrderByClauseNode orderBy = node.getOrderByClauseNode();
+    OrderByClauseNode orderBy;
     if (originalOrderBy != null) {
       orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
       for (SqlNode child : originalOrderBy.getChildren()) {

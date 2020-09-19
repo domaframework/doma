@@ -23,7 +23,6 @@ import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectBuilder {
-  private final Config config;
   private final SelectContext context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
@@ -51,7 +50,7 @@ public class SelectBuilder {
       PreparedSqlBuilder buf,
       AliasManager aliasManager) {
     Objects.requireNonNull(config);
-    this.config = Objects.requireNonNull(config);
+    Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
     this.buf = Objects.requireNonNull(buf);

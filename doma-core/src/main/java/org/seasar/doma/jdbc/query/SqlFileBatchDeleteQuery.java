@@ -88,9 +88,9 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
   protected class EntityHandler {
 
-    protected EntityType<ELEMENT> entityType;
+    protected final EntityType<ELEMENT> entityType;
 
-    protected VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
 
     protected EntityHandler(EntityType<ELEMENT> entityType) {
       assertNotNull(entityType);
@@ -100,7 +100,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void preDelete() {
       SqlFileBatchPreDeleteContext<ELEMENT> context =
-          new SqlFileBatchPreDeleteContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPreDeleteContext<>(entityType, method, config);
       entityType.preDelete(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -109,7 +109,7 @@ public class SqlFileBatchDeleteQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void postDelete() {
       SqlFileBatchPostDeleteContext<ELEMENT> context =
-          new SqlFileBatchPostDeleteContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPostDeleteContext<>(entityType, method, config);
       entityType.postDelete(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();

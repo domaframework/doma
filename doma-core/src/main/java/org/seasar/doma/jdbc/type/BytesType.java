@@ -25,6 +25,7 @@ public class BytesType extends AbstractJdbcType<byte[]> {
     return callableStatement.getBytes(index);
   }
 
+  @SuppressWarnings("ImplicitArrayToString")
   @Override
   protected String doConvertToLogFormat(byte[] value) {
     return value.toString();

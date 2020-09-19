@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import javax.sql.DataSource;
@@ -15,8 +14,9 @@ import org.seasar.doma.jdbc.Config;
 /** @author backpaper0 */
 public class DaoImplSupportTest {
 
+  @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter1() throws Exception {
+  public void testConstructorParameter1() {
     Config config = null;
     try {
       new DaoImplSupport(config) {};
@@ -26,8 +26,9 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter2() throws Exception {
+  public void testConstructorParameter2() {
     Config config = null;
     Connection connection = mock(Connection.class);
     try {
@@ -38,8 +39,9 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter3() throws Exception {
+  public void testConstructorParameter3() {
     Config config = mock(Config.class);
     Connection connection = null;
     try {
@@ -50,8 +52,9 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter4() throws Exception {
+  public void testConstructorParameter4() {
     Config config = null;
     DataSource dataSource = mock(DataSource.class);
     try {
@@ -62,8 +65,9 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Test
-  public void testConstructorParameter5() throws Exception {
+  public void testConstructorParameter5() {
     Config config = mock(Config.class);
     DataSource dataSource = null;
     try {
@@ -74,17 +78,11 @@ public class DaoImplSupportTest {
     }
   }
 
+  @SuppressWarnings("SuspiciousInvocationHandlerImplementation")
   private <T> T mock(Class<T> aClass) {
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
     Class<?>[] interfaces = {aClass};
-    InvocationHandler h =
-        new InvocationHandler() {
-
-          @Override
-          public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return null;
-          }
-        };
+    InvocationHandler h = (proxy, method, args) -> null;
     Object proxy = Proxy.newProxyInstance(loader, interfaces, h);
     return aClass.cast(proxy);
   }

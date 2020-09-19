@@ -18,6 +18,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoBatchInsertQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -25,12 +26,12 @@ public class AutoBatchInsertQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -39,7 +40,7 @@ public class AutoBatchInsertQueryTest {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -48,13 +49,12 @@ public class AutoBatchInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchInsertQuery batchInsertQuery = query;
-    assertTrue(batchInsertQuery.isBatchSupported());
-    assertEquals(2, batchInsertQuery.getSqls().size());
+    assertTrue(((BatchInsertQuery) query).isBatchSupported());
+    assertEquals(2, ((BatchInsertQuery) query).getSqls().size());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -62,9 +62,9 @@ public class AutoBatchInsertQueryTest {
     Emp emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(new Integer(10));
+    emp2.setVersion(10);
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -78,19 +78,19 @@ public class AutoBatchInsertQueryTest {
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(1), parameters.get(3).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
   }
 }

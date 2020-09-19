@@ -23,7 +23,7 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal>
     } else if (v instanceof BigInteger) {
       super.set(new BigDecimal((BigInteger) v));
     } else {
-      super.set(new BigDecimal(v.doubleValue()));
+      super.set(BigDecimal.valueOf(v.doubleValue()));
     }
   }
 

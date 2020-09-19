@@ -7,6 +7,6 @@ public class OptionalDoubleResultListParameter
     extends ScalarResultListParameter<Double, OptionalDouble> {
 
   public OptionalDoubleResultListParameter() {
-    super(() -> new OptionalDoubleScalar());
+    super(OptionalDoubleScalar::new);
   }
 }

@@ -33,6 +33,7 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SelectCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -40,7 +41,7 @@ public class SelectCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -67,8 +68,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Emp> command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     Emp entity = command.execute();
     query.complete();
 
@@ -111,8 +111,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<List<Emp>> command =
-        new SelectCommand<List<Emp>>(
-            query, new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     List<Emp> entities = command.execute();
     query.complete();
 
@@ -136,7 +135,6 @@ public class SelectCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     BindValue bindValue = bindValues.get(0);
-    bindValue = bindValues.get(0);
     assertEquals(new BigDecimal(5000), bindValue.getValue());
     assertEquals(1, bindValue.getIndex());
   }
@@ -164,8 +162,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Emp> command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     try {
       command.execute();
       fail();
@@ -199,10 +196,8 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Stream<Emp>> command =
-        new SelectCommand<Stream<Emp>>(
-            query,
-            new EntityStreamHandler<Emp, Stream<Emp>>(
-                _Emp.getSingletonInternal(), Function.identity()));
+        new SelectCommand<>(
+            query, new EntityStreamHandler<>(_Emp.getSingletonInternal(), Function.identity()));
     try (Stream<Emp> stream = command.execute()) {
       query.complete();
 
@@ -227,7 +222,6 @@ public class SelectCommandTest {
 
       List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
       BindValue bindValue = bindValues.get(0);
-      bindValue = bindValues.get(0);
       assertEquals(new BigDecimal(5000), bindValue.getValue());
       assertEquals(1, bindValue.getIndex());
 
@@ -244,7 +238,7 @@ public class SelectCommandTest {
   @Test
   public void getGetQuery() {
     SqlFileSelectQuery query = new SqlFileSelectQuery();
-    SelectCommand command =
+    SelectCommand<List<Emp>> command =
         new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     assertEquals(query, command.getQuery());
   }

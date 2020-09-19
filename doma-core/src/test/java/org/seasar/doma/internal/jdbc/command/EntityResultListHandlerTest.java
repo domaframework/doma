@@ -18,6 +18,7 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class EntityResultListHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -25,7 +26,7 @@ public class EntityResultListHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -48,7 +49,7 @@ public class EntityResultListHandlerTest {
     query.prepare();
 
     EntityResultListHandler<Emp> handler =
-        new EntityResultListHandler<Emp>(_Emp.getSingletonInternal());
+        new EntityResultListHandler<>(_Emp.getSingletonInternal());
     List<Emp> entities = handler.handle(resultSet, query, (i, next) -> {}).get();
 
     assertEquals(2, entities.size());

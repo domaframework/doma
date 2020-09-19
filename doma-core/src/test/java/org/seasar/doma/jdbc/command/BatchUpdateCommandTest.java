@@ -7,6 +7,7 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -15,6 +16,7 @@ import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BatchUpdateCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -22,12 +24,12 @@ public class BatchUpdateCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testExecute() throws Exception {
+  public void testExecute() {
     Emp emp1 = new Emp();
     emp1.setId(1);
     emp1.setName("hoge");
@@ -38,7 +40,7 @@ public class BatchUpdateCommandTest {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -58,7 +60,7 @@ public class BatchUpdateCommandTest {
   }
 
   @Test
-  public void testExecute_throwsOptimisticLockException() throws Exception {
+  public void testExecute_throwsOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(1);
     emp.setName("hoge");
@@ -66,10 +68,10 @@ public class BatchUpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setEntities(Arrays.asList(emp));
+    query.setEntities(Collections.singletonList(emp));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -83,7 +85,7 @@ public class BatchUpdateCommandTest {
   }
 
   @Test
-  public void testExecute_suppressesOptimisticLockException() throws Exception {
+  public void testExecute_suppressesOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(1);
     emp.setName("hoge");
@@ -91,10 +93,10 @@ public class BatchUpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
-    query.setEntities(Arrays.asList(emp));
+    query.setEntities(Collections.singletonList(emp));
     query.setOptimisticLockExceptionSuppressed(true);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");

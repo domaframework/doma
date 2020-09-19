@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class Mssql2008ForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp with (updlock, rowlock) order by emp.id";
     Mssql2008ForUpdateTransformer transformer =
         new Mssql2008ForUpdateTransformer(SelectForUpdateType.NORMAL, 0);
@@ -28,7 +28,7 @@ public class Mssql2008ForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNormal_originalSqlNodeUnchanged() throws Exception {
+  public void testForUpdateNormal_originalSqlNodeUnchanged() {
     String original = "select * from emp order by emp.id";
     Mssql2008ForUpdateTransformer transformer =
         new Mssql2008ForUpdateTransformer(SelectForUpdateType.NORMAL, 0);
@@ -44,7 +44,7 @@ public class Mssql2008ForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNowait() throws Exception {
+  public void testForUpdateNowait() {
     String expected = "select * from emp with (updlock, rowlock, nowait) order by emp.id";
     Mssql2008ForUpdateTransformer transformer =
         new Mssql2008ForUpdateTransformer(SelectForUpdateType.NOWAIT, 0);

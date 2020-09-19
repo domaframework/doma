@@ -52,7 +52,10 @@ public interface StringExpression<PROPERTY> extends PropertyMetamodel<PROPERTY> 
     public final Operand second;
 
     protected TwoArgumentsStringExpression(
-        String name, PropertyMetamodel<?> propertyMetamodel, Operand first, Operand second) {
+        @SuppressWarnings("SameParameterValue") String name,
+        PropertyMetamodel<?> propertyMetamodel,
+        Operand first,
+        Operand second) {
       this.name = Objects.requireNonNull(name);
       this.propertyMetamodel = Objects.requireNonNull(propertyMetamodel);
       this.first = Objects.requireNonNull(first);

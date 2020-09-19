@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.PrimitiveLongWrapper;
 
 public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
-  protected final Map<String, Value> parameters = new HashMap<String, Value>();
+  protected final Map<String, Value> parameters = new HashMap<>();
 
   protected SelectOptions options = SelectOptions.get();
 
@@ -112,8 +112,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     query.addParameters(parameters);
     query.prepare();
     SelectCommand<Long> command =
-        new SelectCommand<Long>(
-            query, new BasicSingleResultHandler<Long>(() -> new PrimitiveLongWrapper()));
+        new SelectCommand<>(query, new BasicSingleResultHandler<>(PrimitiveLongWrapper::new));
     long count = command.execute();
     query.complete();
     SelectOptionsAccessor.setCountSize(options, count);

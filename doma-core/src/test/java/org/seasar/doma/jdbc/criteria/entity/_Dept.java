@@ -29,7 +29,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _Dept extends AbstractEntityType<Dept> {
 
-  private static _Dept singleton = new _Dept();
+  private static final _Dept singleton = new _Dept();
 
   private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 

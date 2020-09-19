@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class SimpleDataSourceTest {
 
   @Test
-  public void testUrlIsNull() throws Exception {
+  public void testUrlIsNull() {
     SimpleDataSource dataSource = new SimpleDataSource();
     dataSource.setUser("user");
     dataSource.setPassword("password");
@@ -25,7 +25,7 @@ public class SimpleDataSourceTest {
   }
 
   @Test
-  public void testNoSuitableDriverFound() throws Exception {
+  public void testNoSuitableDriverFound() {
     SimpleDataSource dataSource = new SimpleDataSource();
     dataSource.setUser("user");
     dataSource.setPassword("password");

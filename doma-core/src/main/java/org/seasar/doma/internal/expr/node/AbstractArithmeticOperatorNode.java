@@ -15,10 +15,10 @@ public abstract class AbstractArithmeticOperatorNode implements ArithmeticOperat
   protected ExpressionNode rightNode;
 
   protected AbstractArithmeticOperatorNode(
-      ExpressionLocation location, String expreexpression, int priority) {
-    assertNotNull(location, expreexpression);
+      ExpressionLocation location, String expression, int priority) {
+    assertNotNull(location, expression);
     this.location = location;
-    this.expression = expreexpression;
+    this.expression = expression;
     this.priority = priority;
   }
 

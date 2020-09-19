@@ -15,6 +15,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class InsertCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -22,7 +23,7 @@ public class InsertCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -34,7 +35,7 @@ public class InsertCommandTest {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -50,10 +51,10 @@ public class InsertCommandTest {
     assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
-    assertEquals(new String("hoge"), bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
+    assertEquals("hoge", bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(new Integer(10), bindValues.get(3).getValue());
+    assertEquals(10, bindValues.get(3).getValue());
   }
 
   @Test
@@ -64,7 +65,7 @@ public class InsertCommandTest {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(null);
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -81,9 +82,9 @@ public class InsertCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
-    assertEquals(new String("hoge"), bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
+    assertEquals("hoge", bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
-    assertEquals(new Integer(1), bindValues.get(3).getValue());
+    assertEquals(1, bindValues.get(3).getValue());
   }
 }

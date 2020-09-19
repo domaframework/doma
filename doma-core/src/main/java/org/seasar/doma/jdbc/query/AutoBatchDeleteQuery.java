@@ -57,7 +57,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void preDelete() {
     AutoBatchPreDeleteContext<ENTITY> context =
-        new AutoBatchPreDeleteContext<ENTITY>(entityType, method, config);
+        new AutoBatchPreDeleteContext<>(entityType, method, config);
     entityType.preDelete(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -110,6 +110,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(" and ");
       } else {
         builder.appendSql(" where ");
+        //noinspection UnusedAssignment
         whereClauseAppended = true;
       }
       Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
@@ -134,7 +135,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void postDelete() {
     AutoBatchPostDeleteContext<ENTITY> context =
-        new AutoBatchPostDeleteContext<ENTITY>(entityType, method, config);
+        new AutoBatchPostDeleteContext<>(entityType, method, config);
     entityType.postDelete(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();

@@ -14,9 +14,9 @@ import org.seasar.doma.message.Message;
 
 public class ScriptReader {
 
-  protected ScriptQuery query;
+  protected final ScriptQuery query;
 
-  protected ScriptTokenizer tokenizer;
+  protected final ScriptTokenizer tokenizer;
 
   protected BufferedReader reader;
 
@@ -92,11 +92,11 @@ public class ScriptReader {
 
     protected boolean completed;
 
-    protected StringBuilder buf = new StringBuilder(300);
+    protected final StringBuilder buf = new StringBuilder(300);
 
-    protected List<String> wordList = new ArrayList<String>();
+    protected List<String> wordList = new ArrayList<>();
 
-    protected ScriptBlockContext sqlBlockContext;
+    protected final ScriptBlockContext sqlBlockContext;
 
     protected boolean lineChanged;
 

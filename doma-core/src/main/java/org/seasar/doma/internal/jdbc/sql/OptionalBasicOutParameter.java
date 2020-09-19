@@ -10,6 +10,6 @@ public class OptionalBasicOutParameter<BASIC> extends ScalarOutParameter<BASIC, 
 
   public OptionalBasicOutParameter(
       Supplier<Wrapper<BASIC>> supplier, Reference<Optional<BASIC>> reference) {
-    super(new OptionalBasicScalar<BASIC>(supplier), reference);
+    super(new OptionalBasicScalar<>(supplier), reference);
   }
 }

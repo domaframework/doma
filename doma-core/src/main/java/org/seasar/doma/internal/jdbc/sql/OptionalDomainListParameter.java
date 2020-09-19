@@ -9,6 +9,6 @@ public class OptionalDomainListParameter<BASIC, DOMAIN>
 
   public OptionalDomainListParameter(
       DomainType<BASIC, DOMAIN> domainType, List<Optional<DOMAIN>> list, String name) {
-    super(() -> domainType.createOptionalScalar(), list, name);
+    super(domainType::createOptionalScalar, list, name);
   }
 }

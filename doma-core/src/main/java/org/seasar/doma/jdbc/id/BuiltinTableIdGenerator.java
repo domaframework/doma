@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.util.JdbcUtil;
@@ -79,8 +80,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             createUpdateFormattedSql(),
             null,
             Arrays.asList(
-                new BasicInParameter<Long>(() -> allocationSizeWrapper),
-                new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+                new BasicInParameter<>(() -> allocationSizeWrapper),
+                new BasicInParameter<>(() -> pkColumnValueWrapper)),
             SqlLogType.FORMATTED);
     selectSql =
         new PreparedSql(
@@ -88,40 +89,36 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             createSelectRawSql(),
             createSelectFormattedSql(),
             null,
-            Arrays.asList(new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+            Collections.singletonList(new BasicInParameter<>(() -> pkColumnValueWrapper)),
             SqlLogType.FORMATTED);
   }
 
   protected String createUpdateRawSql() {
-    StringBuilder buf = new StringBuilder(100);
-    buf.append("update ");
-    buf.append(qualifiedTableName);
-    buf.append(" set ");
-    buf.append(valueColumnName);
-    buf.append(" = ");
-    buf.append(valueColumnName);
-    buf.append(" + ? where ");
-    buf.append(pkColumnName);
-    buf.append(" = ?");
-    return buf.toString();
+    return "update "
+        + qualifiedTableName
+        + " set "
+        + valueColumnName
+        + " = "
+        + valueColumnName
+        + " + ? where "
+        + pkColumnName
+        + " = ?";
   }
 
   protected String createUpdateFormattedSql() {
-    StringBuilder buf = new StringBuilder(100);
-    buf.append("update ");
-    buf.append(qualifiedTableName);
-    buf.append(" set ");
-    buf.append(valueColumnName);
-    buf.append(" = ");
-    buf.append(valueColumnName);
-    buf.append(" + ");
-    buf.append(allocationSize);
-    buf.append(" where ");
-    buf.append(pkColumnName);
-    buf.append(" = '");
-    buf.append(pkColumnValue);
-    buf.append("'");
-    return buf.toString();
+    return "update "
+        + qualifiedTableName
+        + " set "
+        + valueColumnName
+        + " = "
+        + valueColumnName
+        + " + "
+        + allocationSize
+        + " where "
+        + pkColumnName
+        + " = '"
+        + pkColumnValue
+        + "'";
   }
 
   protected String createSelectRawSql() {
@@ -156,13 +153,9 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     try {
       Long value =
           controller.requiresNew(
-              new RequiresNewController.Callback<Long>() {
-
-                @Override
-                public Long execute() {
-                  updateId(config, updateSql);
-                  return selectId(config, selectSql);
-                }
+              () -> {
+                updateId(config, updateSql);
+                return selectId(config, selectSql);
               });
       return value - allocationSize;
     } catch (Throwable t) {

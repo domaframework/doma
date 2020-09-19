@@ -116,11 +116,8 @@ public class NodePreparedSqlBuilder
         sqlFilePath,
         evaluator,
         sqlLogType,
-        new Function<ExpandNode, List<String>>() {
-          @Override
-          public List<String> apply(ExpandNode node) {
-            throw new UnsupportedOperationException();
-          }
+        node -> {
+          throw new UnsupportedOperationException();
         });
   }
 
@@ -138,11 +135,8 @@ public class NodePreparedSqlBuilder
         evaluator,
         sqlLogType,
         columnsExpander,
-        new BiConsumer<PopulateNode, SqlContext>() {
-          @Override
-          public void accept(PopulateNode node, SqlContext context) {
-            throw new UnsupportedOperationException();
-          }
+        (node, context) -> {
+          throw new UnsupportedOperationException();
         });
   }
 
@@ -238,6 +232,7 @@ public class NodePreparedSqlBuilder
     return visitValueNode(node, p, validator.andThen(p::addLiteralValue));
   }
 
+  @SuppressWarnings("SameReturnValue")
   protected Void visitValueNode(ValueNode node, Context p, Consumer<Scalar<?, ?>> valueHandler) {
     SqlLocation location = node.getLocation();
     String name = node.getVariableName();
@@ -296,7 +291,7 @@ public class NodePreparedSqlBuilder
             location.getPosition(),
             node.getVariableName());
       }
-      if (fragment.indexOf("--") > -1) {
+      if (fragment.contains("--")) {
         throw new JdbcException(
             Message.DOMA2122,
             location.getSql(),
@@ -304,7 +299,7 @@ public class NodePreparedSqlBuilder
             location.getPosition(),
             node.getVariableName());
       }
-      if (fragment.indexOf("/*") > -1) {
+      if (fragment.contains("/*")) {
         throw new JdbcException(
             Message.DOMA2123,
             location.getSql(),
@@ -329,6 +324,7 @@ public class NodePreparedSqlBuilder
     return matcher.lookingAt();
   }
 
+  @SuppressWarnings("SameReturnValue")
   protected Void handleSingleValueNode(
       ValueNode node,
       Context p,
@@ -781,6 +777,7 @@ public class NodePreparedSqlBuilder
 
     private boolean available;
 
+    @SuppressWarnings("CopyConstructorMissesField")
     protected Context(Context context) {
       this(context.config, context.evaluator);
     }
@@ -839,7 +836,7 @@ public class NodePreparedSqlBuilder
     }
 
     protected <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar) {
-      appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(scalar));
+      appendParameterInternal(new ScalarInParameter<>(scalar));
     }
 
     protected <BASIC> void appendParameter(InParameter<BASIC> parameter) {
@@ -864,7 +861,7 @@ public class NodePreparedSqlBuilder
       return parameters;
     }
 
-    void setAvailable(boolean available) {
+    void setAvailable(@SuppressWarnings("SameParameterValue") boolean available) {
       this.available = available;
     }
 

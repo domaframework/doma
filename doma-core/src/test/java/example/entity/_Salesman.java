@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _Salesman extends AbstractEntityType<Salesman> {
 
-  private static _Salesman singleton = new _Salesman();
+  private static final _Salesman singleton = new _Salesman();
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 

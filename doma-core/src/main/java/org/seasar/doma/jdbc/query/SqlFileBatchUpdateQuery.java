@@ -125,9 +125,9 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
   protected class EntityHandler {
 
-    protected EntityType<ELEMENT> entityType;
+    protected final EntityType<ELEMENT> entityType;
 
-    protected VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<ELEMENT, ?, ?> versionPropertyType;
 
     protected List<EntityPropertyType<ELEMENT, ?>> targetPropertyTypes;
 
@@ -152,7 +152,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void preUpdate() {
       SqlFileBatchPreUpdateContext<ELEMENT> context =
-          new SqlFileBatchPreUpdateContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPreUpdateContext<>(entityType, method, config);
       entityType.preUpdate(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -165,7 +165,7 @@ public class SqlFileBatchUpdateQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void postUpdate() {
       SqlFileBatchPostUpdateContext<ELEMENT> context =
-          new SqlFileBatchPostUpdateContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPostUpdateContext<>(entityType, method, config);
       entityType.postUpdate(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();

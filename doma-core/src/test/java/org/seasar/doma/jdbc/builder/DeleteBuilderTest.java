@@ -8,7 +8,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class DeleteBuilderTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
@@ -19,7 +19,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testGetSql() throws Exception {
+  public void testGetSql() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
@@ -35,7 +35,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testLiterall() throws Exception {
+  public void testLiteral() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");

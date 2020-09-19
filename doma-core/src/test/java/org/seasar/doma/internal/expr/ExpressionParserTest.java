@@ -13,7 +13,7 @@ import org.seasar.doma.message.Message;
 public class ExpressionParserTest {
 
   @Test
-  public void testTrue() throws Exception {
+  public void testTrue() {
     ExpressionParser parser = new ExpressionParser("true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -22,7 +22,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testFalse() throws Exception {
+  public void testFalse() {
     ExpressionParser parser = new ExpressionParser("false");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -31,7 +31,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNot() throws Exception {
+  public void testNot() {
     ExpressionParser parser = new ExpressionParser("!true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -40,7 +40,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNot2() throws Exception {
+  public void testNot2() {
     ExpressionParser parser = new ExpressionParser("!false");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -49,7 +49,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testAnd() throws Exception {
+  public void testAnd() {
     ExpressionParser parser = new ExpressionParser("!false && !false");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -58,7 +58,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testAnd2() throws Exception {
+  public void testAnd2() {
     ExpressionParser parser = new ExpressionParser("(true || false) && (true || false)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -67,7 +67,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testAnd3() throws Exception {
+  public void testAnd3() {
     ExpressionParser parser = new ExpressionParser("(true || false ) && !( true || false)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -76,7 +76,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testAnd4() throws Exception {
+  public void testAnd4() {
     ExpressionParser parser = new ExpressionParser("(true || false ) && true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -85,7 +85,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testOr() throws Exception {
+  public void testOr() {
     ExpressionParser parser = new ExpressionParser("false || true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -94,7 +94,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testOr2() throws Exception {
+  public void testOr2() {
     ExpressionParser parser = new ExpressionParser("false || false");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -103,7 +103,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testOr44() throws Exception {
+  public void testOr44() {
     ExpressionParser parser = new ExpressionParser("false || true && false");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -112,7 +112,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testOr3() throws Exception {
+  public void testOr3() {
     ExpressionParser parser = new ExpressionParser("true && true || true && true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -121,7 +121,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testOr4() throws Exception {
+  public void testOr4() {
     ExpressionParser parser = new ExpressionParser("true && false || true && true");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -130,27 +130,27 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNoParamMethod() throws Exception {
+  public void testNoParamMethod() {
     ExpressionParser parser = new ExpressionParser("hoge.length()");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   @Test
-  public void testMethod() throws Exception {
+  public void testMethod() {
     ExpressionParser parser = new ExpressionParser("hoge.length()");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(String.class, "aaa"));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(3), evaluationResult.getValue());
+    assertEquals(3, evaluationResult.getValue());
   }
 
   @Test
-  public void testMethod2() throws Exception {
+  public void testMethod2() {
     ExpressionParser parser = new ExpressionParser("hoge.substring(2, 4)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -160,7 +160,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testMethod3() throws Exception {
+  public void testMethod3() {
     ExpressionParser parser = new ExpressionParser("hoge.foo.substring(2, 4)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -170,27 +170,27 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testMethod4() throws Exception {
+  public void testMethod4() {
     ExpressionParser parser = new ExpressionParser("hoge.bar(2, 4).length()");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   @Test
-  public void testMethod5() throws Exception {
+  public void testMethod5() {
     ExpressionParser parser = new ExpressionParser("hoge.bar(hoge.bar(2, 4).length(), 4).length()");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("hoge", new Value(Hoge.class, new Hoge()));
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(2), evaluationResult.getValue());
+    assertEquals(2, evaluationResult.getValue());
   }
 
   @Test
-  public void testMethod6() throws Exception {
+  public void testMethod6() {
     ExpressionParser parser = new ExpressionParser("bbb.method(bbb.method(bbb.value))");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -203,7 +203,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testMethod_targetObjectIsNull() throws Exception {
+  public void testMethod_targetObjectIsNull() {
     ExpressionParser parser = new ExpressionParser("null.length()");
     try {
       ExpressionNode expression = parser.parse();
@@ -217,7 +217,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod() throws Exception {
+  public void testStaticMethod() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@valueOf(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -226,7 +226,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod_classNotFound() throws Exception {
+  public void testStaticMethod_classNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@valueOf(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -239,7 +239,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod_methodNotFound() throws Exception {
+  public void testStaticMethod_methodNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@xxx(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -252,7 +252,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testField() throws Exception {
+  public void testField() {
     ExpressionParser parser = new ExpressionParser("bbb.value");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -265,7 +265,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField() throws Exception {
+  public void testStaticField() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@CASE_INSENSITIVE_ORDER");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -274,7 +274,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField_classNotFound() throws Exception {
+  public void testStaticField_classNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@CASE_INSENSITIVE_ORDER");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -287,7 +287,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField_fieldNotFound() throws Exception {
+  public void testStaticField_fieldNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@hoge");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -300,7 +300,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testFunction() throws Exception {
+  public void testFunction() {
     ExpressionParser parser = new ExpressionParser("@prefix(\"aaa\")");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -309,7 +309,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testFunction_notFound() throws Exception {
+  public void testFunction_notFound() {
     ExpressionParser parser = new ExpressionParser("@hoge(\"aaa\")");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -322,7 +322,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testParens_notClosed() throws Exception {
+  public void testParens_notClosed() {
     ExpressionParser parser = new ExpressionParser("hoge.bar(2, 4");
     try {
       parser.parse();
@@ -334,16 +334,16 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNew() throws Exception {
+  public void testNew() {
     ExpressionParser parser = new ExpressionParser("new java.lang.Integer(10)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult evaluationResult = evaluator.evaluate(expression);
-    assertEquals(new Integer(10), evaluationResult.getValue());
+    assertEquals(10, evaluationResult.getValue());
   }
 
   @Test
-  public void testEq() throws Exception {
+  public void testEq() {
     ExpressionParser parser = new ExpressionParser("10 == 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -352,7 +352,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotEq() throws Exception {
+  public void testNotEq() {
     ExpressionParser parser = new ExpressionParser("11 == 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -361,7 +361,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testEq_null() throws Exception {
+  public void testEq_null() {
     ExpressionParser parser = new ExpressionParser("null == null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -382,7 +382,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNe() throws Exception {
+  public void testNe() {
     ExpressionParser parser = new ExpressionParser("1 != 2");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -391,7 +391,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotNe() throws Exception {
+  public void testNotNe() {
     ExpressionParser parser = new ExpressionParser("11 != 11");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -400,7 +400,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNe_null() throws Exception {
+  public void testNe_null() {
     ExpressionParser parser = new ExpressionParser("null != null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -421,7 +421,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testGe() throws Exception {
+  public void testGe() {
     ExpressionParser parser = new ExpressionParser("11 >= 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -435,7 +435,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotGe() throws Exception {
+  public void testNotGe() {
     ExpressionParser parser = new ExpressionParser("9 >= 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -444,7 +444,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testGe_null() throws Exception {
+  public void testGe_null() {
     ExpressionParser parser = new ExpressionParser("null >= null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -476,7 +476,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testLe() throws Exception {
+  public void testLe() {
     ExpressionParser parser = new ExpressionParser("10 <= 11");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -490,7 +490,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotLe() throws Exception {
+  public void testNotLe() {
     ExpressionParser parser = new ExpressionParser("10 <= 9");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -499,7 +499,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testLe_null() throws Exception {
+  public void testLe_null() {
     ExpressionParser parser = new ExpressionParser("null <= null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -532,7 +532,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testGt() throws Exception {
+  public void testGt() {
     ExpressionParser parser = new ExpressionParser("11 > 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -541,7 +541,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotGt() throws Exception {
+  public void testNotGt() {
     ExpressionParser parser = new ExpressionParser("10 > 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -556,7 +556,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testGt_null() throws Exception {
+  public void testGt_null() {
     ExpressionParser parser = new ExpressionParser("null > null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -589,7 +589,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testLt() throws Exception {
+  public void testLt() {
     ExpressionParser parser = new ExpressionParser("10 < 11");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -598,7 +598,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testNotLt() throws Exception {
+  public void testNotLt() {
     ExpressionParser parser = new ExpressionParser("10 < 10");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -613,7 +613,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testLt_null() throws Exception {
+  public void testLt_null() {
     ExpressionParser parser = new ExpressionParser("null < null");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -646,7 +646,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testUnsupportedToken() throws Exception {
+  public void testUnsupportedToken() {
     ExpressionParser parser = new ExpressionParser("5 ? 5");
     try {
       parser.parse();
@@ -657,7 +657,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testIllegalNumberLiteral() throws Exception {
+  public void testIllegalNumberLiteral() {
     ExpressionParser parser = new ExpressionParser("2.length");
     try {
       parser.parse();
@@ -668,121 +668,121 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testInt() throws Exception {
+  public void testInt() {
     ExpressionParser parser = new ExpressionParser("2");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("+2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Integer(2), result.getValue());
+    assertEquals(2, result.getValue());
 
     parser = new ExpressionParser("-2");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Integer(-2), result.getValue());
+    assertEquals(-2, result.getValue());
   }
 
   @Test
-  public void testLong() throws Exception {
+  public void testLong() {
     ExpressionParser parser = new ExpressionParser("2L");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Long(2), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("+2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Long(2), result.getValue());
+    assertEquals(2L, result.getValue());
 
     parser = new ExpressionParser("-2L");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Long(-2), result.getValue());
+    assertEquals((long) -2, result.getValue());
   }
 
   @Test
-  public void testFloat() throws Exception {
+  public void testFloat() {
     ExpressionParser parser = new ExpressionParser("2.5F");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Float(2.5), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("+2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Float(2.5), result.getValue());
+    assertEquals(2.5f, result.getValue());
 
     parser = new ExpressionParser("-2.5F");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Float(-2.5), result.getValue());
+    assertEquals((float) -2.5, result.getValue());
   }
 
   @Test
-  public void testDouble() throws Exception {
+  public void testDouble() {
     ExpressionParser parser = new ExpressionParser("2.5D");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Double(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("+2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Double(2.5), result.getValue());
+    assertEquals(2.5, result.getValue());
 
     parser = new ExpressionParser("-2.5D");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new Double(-2.5), result.getValue());
+    assertEquals(-2.5, result.getValue());
   }
 
   @Test
-  public void testBigDecimal() throws Exception {
+  public void testBigDecimal() {
     ExpressionParser parser = new ExpressionParser("2.5B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(2.5), result.getValue());
+    assertEquals(new BigDecimal("2.5"), result.getValue());
 
     parser = new ExpressionParser("+2.5B");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(2.5), result.getValue());
+    assertEquals(new BigDecimal("2.5"), result.getValue());
 
     parser = new ExpressionParser("-2.5B");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(-2.5), result.getValue());
+    assertEquals(BigDecimal.valueOf(-2.5), result.getValue());
   }
 
   @Test
-  public void testChar() throws Exception {
+  public void testChar() {
     ExpressionParser parser = new ExpressionParser("'a'");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Character('a'), result.getValue());
+    assertEquals('a', result.getValue());
   }
 
   @Test
-  public void testAdd() throws Exception {
+  public void testAdd() {
     ExpressionParser parser = new ExpressionParser("1 + 1B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -791,7 +791,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testSubtract() throws Exception {
+  public void testSubtract() {
     ExpressionParser parser = new ExpressionParser("10 - 2B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -800,7 +800,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testMultiply() throws Exception {
+  public void testMultiply() {
     ExpressionParser parser = new ExpressionParser("10 * 2B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -809,7 +809,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testDivide() throws Exception {
+  public void testDivide() {
     ExpressionParser parser = new ExpressionParser("10 / 2B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -818,7 +818,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testMod() throws Exception {
+  public void testMod() {
     ExpressionParser parser = new ExpressionParser("10 % 7B");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -827,34 +827,34 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testArithmeticOperators() throws Exception {
+  public void testArithmeticOperators() {
     ExpressionParser parser = new ExpressionParser("5 + 3 * 4 - 9 / 3");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   @Test
-  public void testArithmeticOperators2() throws Exception {
+  public void testArithmeticOperators2() {
     ExpressionParser parser = new ExpressionParser("5+3*4-9/3");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(14), result.getValue());
+    assertEquals(14, result.getValue());
   }
 
   @Test
-  public void testArithmeticOperators3() throws Exception {
+  public void testArithmeticOperators3() {
     ExpressionParser parser = new ExpressionParser("1+-2*+2");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new Integer(-3), result.getValue());
+    assertEquals(-3, result.getValue());
   }
 
   @Test
-  public void testConcat() throws Exception {
+  public void testConcat() {
     ExpressionParser parser = new ExpressionParser("\"ab\" + \"cd\" + 'e'");
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -862,7 +862,7 @@ public class ExpressionParserTest {
     assertEquals("abcde", result.getValue());
   }
 
-  public class Hoge {
+  public static class Hoge {
 
     private final String foo = "abcdef";
 

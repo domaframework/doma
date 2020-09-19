@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -27,18 +28,18 @@ public class AutoUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -47,19 +48,18 @@ public class AutoUpdateQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    UpdateQuery updateQuery = query;
-    assertNotNull(updateQuery.getSql());
+    assertNotNull(((UpdateQuery) query).getSql());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
     emp.originalStates = new Emp();
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -75,18 +75,18 @@ public class AutoUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
   }
 
   @Test
-  public void testOption_excludeNull() throws Exception {
+  public void testOption_excludeNull() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setVersion(100);
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -100,20 +100,20 @@ public class AutoUpdateQueryTest {
     assertEquals("update EMP set VERSION = ? + 1 where ID = ? and VERSION = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(100), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
     emp.originalStates = new Emp();
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -128,19 +128,19 @@ public class AutoUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
   }
 
   @Test
-  public void testOption_include() throws Exception {
+  public void testOption_include() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
     emp.setVersion(100);
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -156,20 +156,20 @@ public class AutoUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
   }
 
   @Test
-  public void testOption_exclude() throws Exception {
+  public void testOption_exclude() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
     emp.setVersion(100);
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -185,17 +185,17 @@ public class AutoUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
   }
 
   @Test
-  public void testIsExecutable() throws Exception {
+  public void testIsExecutable() {
     Emp emp = new Emp();
     emp.originalStates = new Emp();
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -208,15 +208,14 @@ public class AutoUpdateQueryTest {
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman salesman = new Salesman();
     salesman.setId(10);
     salesman.setName("aaa");
     salesman.setTenantId("bbb");
     salesman.setVersion(100);
 
-    AutoUpdateQuery<Salesman> query =
-        new AutoUpdateQuery<Salesman>(_Salesman.getSingletonInternal());
+    AutoUpdateQuery<Salesman> query = new AutoUpdateQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(salesman);
@@ -234,9 +233,9 @@ public class AutoUpdateQueryTest {
     assertEquals(6, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
     assertEquals("bbb", parameters.get(5).getWrapper().get());
   }
 }

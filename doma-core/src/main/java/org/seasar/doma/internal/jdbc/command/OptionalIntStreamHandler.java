@@ -9,6 +9,6 @@ public class OptionalIntStreamHandler<RESULT>
     extends ScalarStreamHandler<Integer, OptionalInt, RESULT> {
 
   public OptionalIntStreamHandler(Function<Stream<OptionalInt>, RESULT> mapper) {
-    super(() -> new OptionalIntScalar(), mapper);
+    super(OptionalIntScalar::new, mapper);
   }
 }

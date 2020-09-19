@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class H212126PagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected = "select * from emp order by emp.id limit 10 offset 5";
     H212126PagingTransformer transformer = new H212126PagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -26,7 +26,7 @@ public class H212126PagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_forUpdate() throws Exception {
+  public void testOffsetLimit_forUpdate() {
     String expected = "select * from emp order by emp.id  limit 10 offset 5 for update";
     H212126PagingTransformer transformer = new H212126PagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id for update");
@@ -38,7 +38,7 @@ public class H212126PagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected = "select * from emp order by emp.id limit 0 offset 5";
     H212126PagingTransformer transformer = new H212126PagingTransformer(5, -1);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -50,7 +50,7 @@ public class H212126PagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected = "select * from emp order by emp.id limit 10";
     H212126PagingTransformer transformer = new H212126PagingTransformer(-1, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

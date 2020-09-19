@@ -11,10 +11,11 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScalarInOutParameterTest {
 
   @Test
-  public void testGetDomainClass() throws Exception {
+  public void testGetDomainClass() {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     Scalar<String, PhoneNumber> scalar = domainType.createScalar();
@@ -25,7 +26,7 @@ public class ScalarInOutParameterTest {
   }
 
   @Test
-  public void testGetDomainClass_optional() throws Exception {
+  public void testGetDomainClass_optional() {
     DomainType<String, PhoneNumber> domainType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     Scalar<String, Optional<PhoneNumber>> scalar = domainType.createOptionalScalar();

@@ -14,17 +14,18 @@ import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScriptCommandTest {
 
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testExecute() throws Exception {
+  public void testExecute() {
     SqlFileScriptQuery query = new SqlFileScriptQuery();
     query.setConfig(new MockConfig());
     query.setMethod(method);
@@ -39,7 +40,7 @@ public class ScriptCommandTest {
   }
 
   @Test
-  public void testExecute_ScriptException() throws Exception {
+  public void testExecute_ScriptException() {
     MockConfig config = new MockConfig();
     config.dataSource.connection.statement =
         new MockStatement() {

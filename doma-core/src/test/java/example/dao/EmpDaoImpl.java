@@ -33,11 +33,11 @@ import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 @Generated("")
 public class EmpDaoImpl implements EmpDao, ConfigProvider {
 
-  private static Method method0 =
+  private static final Method method0 =
       DaoImplSupport.getDeclaredMethod(
           EmpDaoImpl.class, "selectById", Integer.class, SelectOptions.class);
 
-  private static Method method1 =
+  private static final Method method1 =
       DaoImplSupport.getDeclaredMethod(
           EmpDaoImpl.class,
           "selectByNameAndSalary",
@@ -45,22 +45,23 @@ public class EmpDaoImpl implements EmpDao, ConfigProvider {
           BigDecimal.class,
           SelectOptions.class);
 
-  private static Method method2 =
+  private static final Method method2 =
       DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "selectByExample", Emp.class);
 
-  private static Method method3 =
+  private static final Method method3 =
       DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "insert", Emp.class);
 
-  private static Method method4 =
+  private static final Method method4 =
       DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "update", Emp.class);
 
-  private static Method method5 =
+  private static final Method method5 =
       DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "delete", Emp.class);
 
-  private static Method method6 =
+  private static final Method method6 =
       DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "iterate", IterationCallback.class);
 
-  private static Method method7 = DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "execute");
+  private static final Method method7 =
+      DaoImplSupport.getDeclaredMethod(EmpDaoImpl.class, "execute");
 
   private final DaoImplSupport __support;
 

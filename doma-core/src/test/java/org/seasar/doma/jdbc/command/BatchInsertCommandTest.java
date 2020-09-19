@@ -11,12 +11,13 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BatchInsertCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
 
   @Test
-  public void testExecute(TestInfo testInfo) throws Exception {
+  public void testExecute(TestInfo testInfo) {
     Emp emp1 = new Emp();
     emp1.setId(1);
     emp1.setName("hoge");
@@ -27,7 +28,7 @@ public class BatchInsertCommandTest {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(testInfo.getTestMethod().get());
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));

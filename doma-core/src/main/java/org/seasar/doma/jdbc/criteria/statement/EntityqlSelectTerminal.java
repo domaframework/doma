@@ -34,6 +34,7 @@ public class EntityqlSelectTerminal<ENTITY>
    *     {@literal false} and the WHERE clause is empty
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
+  @SuppressWarnings("EmptyMethod")
   @Override
   public List<ENTITY> execute() {
     return super.execute();

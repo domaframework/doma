@@ -31,17 +31,14 @@ public class ExpressionTokenizer {
   }
 
   public ExpressionTokenType next() {
-    switch (type) {
-      case EOE:
-        token = null;
-        type = EOE;
-        return EOE;
-      default:
-        ExpressionTokenType currentType = type;
-        prepareToken();
-        peek();
-        return currentType;
+    if (type == EOE) {
+      token = null;
+      return EOE;
     }
+    ExpressionTokenType currentType = type;
+    prepareToken();
+    peek();
+    return currentType;
   }
 
   protected void prepareToken() {
@@ -204,19 +201,24 @@ public class ExpressionTokenizer {
     }
     if (Character.isWhitespace(c)) {
       type = WHITESPACE;
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == ',') {
       type = COMMA_OPERATOR;
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == '(') {
       type = OPENED_PARENS;
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == ')') {
       type = CLOSED_PARENS;
       binaryOpAvailable = true;
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == '!') {
       type = NOT_OPERATOR;
+      //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == '\'') {
       type = CHAR_LITERAL;
@@ -382,7 +384,8 @@ public class ExpressionTokenizer {
       char c2 = buf.get();
       if (Character.isDigit(c2)) {
         continue;
-      } else if (c2 == '.') {
+      }
+      if (c2 == '.') {
         if (decimal) {
           type = ILLEGAL_NUMBER_LITERAL;
           return;

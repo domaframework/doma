@@ -13,6 +13,7 @@ public class SelectSettings extends Settings {
    *
    * @return whether the empty WHERE clause is allowed or not. The default value is {@literal true}.
    */
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean getAllowEmptyWhere() {
     return allowEmptyWhere;
   }

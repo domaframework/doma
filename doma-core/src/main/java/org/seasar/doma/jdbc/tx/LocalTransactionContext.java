@@ -13,9 +13,9 @@ import org.seasar.doma.message.Message;
 /** A context for a local transaction. */
 public class LocalTransactionContext {
 
-  private final List<String> savepointNames = new ArrayList<String>();
+  private final List<String> savepointNames = new ArrayList<>();
 
-  private final Map<String, Savepoint> savepointMap = new HashMap<String, Savepoint>();
+  private final Map<String, Savepoint> savepointMap = new HashMap<>();
 
   private LocalTransactionConnection localTxConnection;
 

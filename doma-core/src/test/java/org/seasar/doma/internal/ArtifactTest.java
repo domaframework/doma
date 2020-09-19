@@ -11,22 +11,22 @@ import org.seasar.doma.DomaException;
 public class ArtifactTest {
 
   @Test
-  public void testGetName() throws Exception {
+  public void testGetName() {
     assertEquals("Doma", Artifact.getName());
   }
 
   @Test
-  public void testGetVersion() throws Exception {
+  public void testGetVersion() {
     assertNotNull(Artifact.getVersion());
   }
 
   @Test
-  public void testValidateVersion() throws Exception {
+  public void testValidateVersion() {
     Artifact.validateVersion(Artifact.getVersion());
   }
 
   @Test
-  public void testValidateVersion_conflicted() throws Exception {
+  public void testValidateVersion_conflicted() {
     try {
       Artifact.validateVersion("hoge");
       fail();

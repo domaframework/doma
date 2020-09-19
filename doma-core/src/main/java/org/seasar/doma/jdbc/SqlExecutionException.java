@@ -53,10 +53,10 @@ public class SqlExecutionException extends JdbcException {
   }
 
   protected SqlExecutionException(
-      MessageResource messageCode,
+      @SuppressWarnings("SameParameterValue") MessageResource messageCode,
       SqlKind kind,
       String rawSql,
-      String formattedSql,
+      @SuppressWarnings("SameParameterValue") String formattedSql,
       String sqlFilePath,
       Throwable cause,
       Throwable rootCause) {

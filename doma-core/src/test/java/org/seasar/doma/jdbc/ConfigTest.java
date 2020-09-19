@@ -10,18 +10,18 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 public class ConfigTest {
 
   @Test
-  public void testGet() throws Exception {
+  public void testGet() {
     Config config = Config.get(new Provider());
     assertNotNull(config);
   }
 
   @Test
-  public void testGet_IllegalArgument() throws Exception {
+  public void testGet_IllegalArgument() {
     try {
       Config.get("hoge");
       fail();
     } catch (DomaIllegalArgumentException e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
   }
 

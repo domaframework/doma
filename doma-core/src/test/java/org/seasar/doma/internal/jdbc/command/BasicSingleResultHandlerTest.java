@@ -17,7 +17,9 @@ import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BasicSingleResultHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -25,7 +27,7 @@ public class BasicSingleResultHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -45,8 +47,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     String result = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals("aaa", result);
   }
@@ -68,8 +69,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();
@@ -94,8 +94,7 @@ public class BasicSingleResultHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicSingleResultHandler<String> handler =
-        new BasicSingleResultHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicSingleResultHandler<String> handler = new BasicSingleResultHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

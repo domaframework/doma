@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class OracleForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp order by emp.id for update";
     OracleForUpdateTransformer transformer =
         new OracleForUpdateTransformer(SelectForUpdateType.NORMAL, 0);
@@ -28,7 +28,7 @@ public class OracleForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNormal_alias() throws Exception {
+  public void testForUpdateNormal_alias() {
     String expected = "select * from emp order by emp.id for update of emp.name, emp.salary";
     OracleForUpdateTransformer transformer =
         new OracleForUpdateTransformer(SelectForUpdateType.NORMAL, 0, "emp.name", "emp.salary");
@@ -41,7 +41,7 @@ public class OracleForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateNowait() throws Exception {
+  public void testForUpdateNowait() {
     String expected = "select * from emp order by emp.id for update nowait";
     OracleForUpdateTransformer transformer =
         new OracleForUpdateTransformer(SelectForUpdateType.NOWAIT, 0);
@@ -54,7 +54,7 @@ public class OracleForUpdateTransformerTest {
   }
 
   @Test
-  public void testForUpdateWait() throws Exception {
+  public void testForUpdateWait() {
     String expected = "select * from emp order by emp.id for update wait 10";
     OracleForUpdateTransformer transformer =
         new OracleForUpdateTransformer(SelectForUpdateType.WAIT, 10);

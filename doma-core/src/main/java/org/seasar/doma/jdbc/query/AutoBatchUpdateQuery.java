@@ -72,7 +72,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void preUpdate() {
     AutoBatchPreUpdateContext<ENTITY> context =
-        new AutoBatchPreUpdateContext<ENTITY>(entityType, method, config);
+        new AutoBatchPreUpdateContext<>(entityType, method, config);
     entityType.preUpdate(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -131,6 +131,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(" and ");
       } else {
         builder.appendSql(" where ");
+        //noinspection UnusedAssignment
         whereClauseAppended = true;
       }
       Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
@@ -165,7 +166,7 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void postUpdate() {
     AutoBatchPostUpdateContext<ENTITY> context =
-        new AutoBatchPostUpdateContext<ENTITY>(entityType, method, config);
+        new AutoBatchPostUpdateContext<>(entityType, method, config);
     entityType.postUpdate(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();

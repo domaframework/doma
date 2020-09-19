@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SqlFileBatchDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -22,12 +23,12 @@ public class SqlFileBatchDeleteQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -38,7 +39,7 @@ public class SqlFileBatchDeleteQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -49,19 +50,18 @@ public class SqlFileBatchDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchDeleteQuery batchDeleteQuery = query;
-    assertEquals(2, batchDeleteQuery.getSqls().size());
+    assertEquals(2, ((BatchDeleteQuery) query).getSqls().size());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setName("aaa");
 
     Emp emp2 = new Emp();
     emp2.setName("bbb");
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));

@@ -18,6 +18,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.Message;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class JdbcExceptionTest {
 
   private final MockConfig config = new MockConfig();
@@ -25,12 +26,12 @@ public class JdbcExceptionTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testSqlFileNotFound() throws Exception {
+  public void testSqlFileNotFound() {
     GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
     try {
       repository.getSqlFile(method, "META-INF/aaa/bbb.sql", new StandardDialect());
@@ -42,7 +43,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testQuotationNotClosed() throws Exception {
+  public void testQuotationNotClosed() {
     SqlParser parser = new SqlParser("select * from 'aaa");
     try {
       parser.parse();
@@ -54,7 +55,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testBlockCommentNotClosed() throws Exception {
+  public void testBlockCommentNotClosed() {
     SqlParser parser = new SqlParser("select * from aaa /*aaa");
     try {
       parser.parse();
@@ -66,7 +67,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testIfCommentNotFoundForEndComment() throws Exception {
+  public void testIfCommentNotFoundForEndComment() {
     SqlParser parser = new SqlParser("select * from aaa/*%end*/ ");
     try {
       parser.parse();
@@ -78,7 +79,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testIfCommentNotFoundForSecondEndComment() throws Exception {
+  public void testIfCommentNotFoundForSecondEndComment() {
     SqlParser parser = new SqlParser("select * from aaa where/*%if true*//*%end*/ /*%end*/");
     try {
       parser.parse();
@@ -90,7 +91,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testOpenedParensNotFound() throws Exception {
+  public void testOpenedParensNotFound() {
     SqlParser parser = new SqlParser("select * from aaa where )");
     try {
       parser.parse();
@@ -102,7 +103,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testTestLiteralNotFound() throws Exception {
+  public void testTestLiteralNotFound() {
     SqlParser parser = new SqlParser("select * from aaa where bbb = /*bbb*/ 'ccc')");
     try {
       parser.parse();
@@ -114,7 +115,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testSqlBuildingFailed() throws Exception {
+  public void testSqlBuildingFailed() {
     SqlParser parser = new SqlParser("select * from aaa where bbb = \n/*bbb*/'ccc'");
     SqlNode sqlNode = parser.parse();
     NodePreparedSqlBuilder builder =
@@ -129,7 +130,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testBindValueTypeNotIterable() throws Exception {
+  public void testBindValueTypeNotIterable() {
     SqlParser parser = new SqlParser("select * from aaa where bbb in /*bbb*/(1,2,3)");
     SqlNode sqlNode = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -147,7 +148,7 @@ public class JdbcExceptionTest {
   }
 
   @Test
-  public void testCollectionOfBindValueContainsNull() throws Exception {
+  public void testCollectionOfBindValueContainsNull() {
     SqlParser parser = new SqlParser("select * from aaa where bbb in /*bbb*/(1,2,3)");
     SqlNode sqlNode = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();

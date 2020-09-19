@@ -5,7 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
@@ -121,7 +120,7 @@ public class MapBatchInsertBuilder {
               .sql("insert into ")
               .sql(tableName)
               .sql(" (")
-              .sql(keySet.stream().collect(Collectors.joining(", ")))
+              .sql(String.join(", ", keySet))
               .sql(")");
           builder.sql("values (");
           keySet.forEach(

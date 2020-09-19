@@ -112,8 +112,8 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
     if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
       RESULT result = supplier.get();
       if (result instanceof Stream) {
-        @SuppressWarnings("resource")
         Stream<?> stream = (Stream<?>) result;
+        //noinspection ResultOfMethodCallIgnored
         stream.onClose(closeHandler);
       } else {
         closeHandler.run();

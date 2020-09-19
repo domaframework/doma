@@ -31,6 +31,7 @@ public class OracleForUpdateTransformer extends StandardForUpdateTransformer {
     }
     switch (forUpdateType) {
       case NORMAL:
+        //noinspection DuplicateBranchesInSwitch
         {
           break;
         }

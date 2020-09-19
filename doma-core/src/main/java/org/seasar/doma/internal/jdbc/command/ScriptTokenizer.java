@@ -5,7 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 public class ScriptTokenizer {
 
-  protected String blockDelimiter;
+  protected final String blockDelimiter;
 
   protected String line;
 
@@ -95,11 +95,9 @@ public class ScriptTokenizer {
     switch (type) {
       case END_OF_FILE:
         token = null;
-        type = END_OF_FILE;
         return END_OF_FILE;
       case END_OF_LINE:
         token = "";
-        type = END_OF_LINE;
         return END_OF_LINE;
       case BLOCK_DELIMITER:
         token = line;
@@ -164,12 +162,16 @@ public class ScriptTokenizer {
         return QUOTE;
       case WORD:
         int wordStartPos = pos;
-        for (; type == WORD && pos < length; peek(nextPos)) {}
+        while (type == WORD && pos < length) {
+          peek(nextPos);
+        }
         token = line.substring(wordStartPos, pos);
         return WORD;
       case OTHER:
         int otherStartPos = pos;
-        for (; type == OTHER && pos < length; peek(nextPos)) {}
+        while (type == OTHER && pos < length) {
+          peek(nextPos);
+        }
         token = line.substring(otherStartPos, pos);
         return OTHER;
       default:

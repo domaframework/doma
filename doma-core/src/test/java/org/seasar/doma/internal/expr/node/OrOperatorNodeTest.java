@@ -9,16 +9,17 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 
 public class OrOperatorNodeTest {
 
-  protected ExpressionLocation location = new ExpressionLocation("", 0);
+  protected final ExpressionLocation location = new ExpressionLocation("", 0);
 
-  protected LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
+  protected final LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
 
-  protected LiteralNode falseLiteral = new LiteralNode(location, "false", false, boolean.class);
+  protected final LiteralNode falseLiteral =
+      new LiteralNode(location, "false", false, boolean.class);
 
-  protected LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
+  protected final LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
   @Test
-  public void test_true_true() throws Exception {
+  public void test_true_true() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(trueLiteral);
     node.setRightNode(trueLiteral);
@@ -28,7 +29,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_true_false() throws Exception {
+  public void test_true_false() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(trueLiteral);
     node.setRightNode(falseLiteral);
@@ -38,7 +39,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_false_true() throws Exception {
+  public void test_false_true() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(falseLiteral);
     node.setRightNode(trueLiteral);
@@ -48,7 +49,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_false_false() throws Exception {
+  public void test_false_false() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(falseLiteral);
     node.setRightNode(falseLiteral);
@@ -58,7 +59,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_null_null() throws Exception {
+  public void test_null_null() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(nullLiteral);
     node.setRightNode(nullLiteral);
@@ -68,7 +69,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_null_true() throws Exception {
+  public void test_null_true() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(nullLiteral);
     node.setRightNode(trueLiteral);
@@ -78,7 +79,7 @@ public class OrOperatorNodeTest {
   }
 
   @Test
-  public void test_true_null() throws Exception {
+  public void test_true_null() {
     OrOperatorNode node = new OrOperatorNode(location, "||");
     node.setLeftNode(trueLiteral);
     node.setRightNode(nullLiteral);

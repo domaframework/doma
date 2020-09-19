@@ -10,7 +10,7 @@ import org.seasar.doma.ExternalDomain;
  * {@link DomainConverters}.
  *
  * <pre>
- * &#064;ExtenalDomain
+ * &#064;ExternalDomain
  * public class SalaryConverter implements DomainConverter&lt;Salary, BigDecimal&gt; {
  *
  *     public BigDecimal fromDomainToValue(Salary domain) {

@@ -1,7 +1,7 @@
 package org.seasar.doma.jdbc.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoBatchDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -26,12 +27,12 @@ public class AutoBatchDeleteQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -40,7 +41,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -49,12 +50,11 @@ public class AutoBatchDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchDeleteQuery batchDeleteQuery = query;
-    assertEquals(2, batchDeleteQuery.getSqls().size());
+    assertEquals(2, ((BatchDeleteQuery) query).getSqls().size());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -62,9 +62,9 @@ public class AutoBatchDeleteQueryTest {
     Emp emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(new Integer(10));
+    emp2.setVersion(10);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -77,19 +77,19 @@ public class AutoBatchDeleteQueryTest {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertNull(parameters.get(1).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(1).getWrapper().get());
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -97,9 +97,9 @@ public class AutoBatchDeleteQueryTest {
     Emp emp2 = new Emp();
     emp2.setId(20);
     emp2.setSalary(new BigDecimal(2000));
-    emp2.setVersion(new Integer(10));
+    emp2.setVersion(10);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -113,17 +113,17 @@ public class AutoBatchDeleteQueryTest {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman emp1 = new Salesman();
     emp1.setId(10);
     emp1.setTenantId("bbb");
@@ -135,7 +135,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setVersion(2);
 
     AutoBatchDeleteQuery<Salesman> query =
-        new AutoBatchDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
+        new AutoBatchDeleteQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -149,8 +149,8 @@ public class AutoBatchDeleteQueryTest {
         "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(1), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(1, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
 
     sql = query.getSqls().get(1);
@@ -158,8 +158,8 @@ public class AutoBatchDeleteQueryTest {
         "delete from SALESMAN where ID = ? and VERSION = ? and TENANT_ID = ?", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(2), parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
+    assertEquals(2, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
   }
 }

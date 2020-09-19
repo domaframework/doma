@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 public class ResourceUtilTest {
 
   @Test
-  public void testGetResourceAsStream() throws Exception {
+  public void testGetResourceAsStream() {
     String path = getClass().getName().replace(".", "/") + ".txt";
     InputStream inputStream = ResourceUtil.getResourceAsStream(path);
     assertNotNull(inputStream);
   }
 
   @Test
-  public void testGetResourceAsStream_nonexistentPath() throws Exception {
+  public void testGetResourceAsStream_nonexistentPath() {
     InputStream inputStream = ResourceUtil.getResourceAsStream("nonexistentPath");
     assertNull(inputStream);
   }

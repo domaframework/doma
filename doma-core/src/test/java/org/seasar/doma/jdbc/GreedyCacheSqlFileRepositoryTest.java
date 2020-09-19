@@ -13,17 +13,18 @@ import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class GreedyCacheSqlFileRepositoryTest {
 
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testGetSqlFile() throws Exception {
+  public void testGetSqlFile() {
     StandardDialect dialect = new StandardDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
     GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
@@ -35,7 +36,7 @@ public class GreedyCacheSqlFileRepositoryTest {
   }
 
   @Test
-  public void testGetSqlFile_oracle() throws Exception {
+  public void testGetSqlFile_oracle() {
     OracleDialect dialect = new OracleDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
     GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
@@ -45,7 +46,7 @@ public class GreedyCacheSqlFileRepositoryTest {
   }
 
   @Test
-  public void testGetSqlFile_postgres() throws Exception {
+  public void testGetSqlFile_postgres() {
     PostgresDialect dialect = new PostgresDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
     GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();
@@ -54,7 +55,7 @@ public class GreedyCacheSqlFileRepositoryTest {
   }
 
   @Test
-  public void testClearCache() throws Exception {
+  public void testClearCache() {
     StandardDialect dialect = new StandardDialect();
     String path = "META-INF/" + getClass().getName().replace(".", "/") + ".sql";
     GreedyCacheSqlFileRepository repository = new GreedyCacheSqlFileRepository();

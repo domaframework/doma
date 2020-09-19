@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class NonSingleColumnExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     NonSingleColumnException e =
         new NonSingleColumnException(SqlLogType.FORMATTED, SqlKind.SELECT, "aaa", "bbb", "ccc");
     System.out.println(e.getMessage());

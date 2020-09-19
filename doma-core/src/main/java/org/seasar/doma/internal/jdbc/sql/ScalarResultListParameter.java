@@ -15,7 +15,7 @@ public class ScalarResultListParameter<BASIC, CONTAINER>
   protected final Supplier<Scalar<BASIC, CONTAINER>> supplier;
 
   public ScalarResultListParameter(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
-    super(new ArrayList<CONTAINER>());
+    super(new ArrayList<>());
     assertNotNull(supplier);
     this.supplier = supplier;
   }

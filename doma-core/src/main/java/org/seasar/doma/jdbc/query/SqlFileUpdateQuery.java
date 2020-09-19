@@ -107,7 +107,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
   @Override
   public <E> void setEntityAndEntityType(String name, E entity, EntityType<E> entityType) {
-    entityHandler = new EntityHandler<E>(name, entity, entityType);
+    entityHandler = new EntityHandler<>(name, entity, entityType);
   }
 
   public void setNullExcluded(boolean nullExcluded) {
@@ -128,13 +128,13 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
   protected class EntityHandler<E> {
 
-    protected String name;
+    protected final String name;
 
     protected E entity;
 
-    protected EntityType<E> entityType;
+    protected final EntityType<E> entityType;
 
-    protected VersionPropertyType<E, ?, ?> versionPropertyType;
+    protected final VersionPropertyType<E, ?, ?> versionPropertyType;
 
     protected List<EntityPropertyType<E, ?>> targetPropertyTypes;
 
@@ -150,7 +150,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
     protected void init() {
       helper =
-          new UpdateQueryHelper<E>(
+          new UpdateQueryHelper<>(
               config,
               entityType,
               includedPropertyNames,
@@ -163,7 +163,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
     protected void preUpdate() {
       SqlFilePreUpdateContext<E> context =
-          new SqlFilePreUpdateContext<E>(entityType, method, config);
+          new SqlFilePreUpdateContext<>(entityType, method, config);
       entityType.preUpdate(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();
@@ -181,7 +181,7 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
 
     protected void postUpdate() {
       SqlFilePostUpdateContext<E> context =
-          new SqlFilePostUpdateContext<E>(entityType, method, config);
+          new SqlFilePostUpdateContext<>(entityType, method, config);
       entityType.postUpdate(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();

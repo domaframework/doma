@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class DomainSingleResultHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -26,7 +27,7 @@ public class DomainSingleResultHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -47,7 +48,7 @@ public class DomainSingleResultHandlerTest {
     query.prepare();
 
     DomainSingleResultHandler<String, PhoneNumber> handler =
-        new DomainSingleResultHandler<String, PhoneNumber>(_PhoneNumber.getSingletonInternal());
+        new DomainSingleResultHandler<>(_PhoneNumber.getSingletonInternal());
     PhoneNumber result = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals("01-2345-6789", result.getValue());
   }
@@ -70,7 +71,7 @@ public class DomainSingleResultHandlerTest {
     query.prepare();
 
     DomainSingleResultHandler<String, PhoneNumber> handler =
-        new DomainSingleResultHandler<String, PhoneNumber>(_PhoneNumber.getSingletonInternal());
+        new DomainSingleResultHandler<>(_PhoneNumber.getSingletonInternal());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

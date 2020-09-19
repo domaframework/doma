@@ -41,6 +41,7 @@ public class EntityqlBatchDeleteStatement<ENTITY>
    *     {@literal 0}
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
+  @SuppressWarnings("EmptyMethod")
   @Override
   public BatchResult<ENTITY> execute() {
     return super.execute();

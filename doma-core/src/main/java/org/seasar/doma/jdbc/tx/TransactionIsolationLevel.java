@@ -20,9 +20,9 @@ public enum TransactionIsolationLevel {
   /** the default level */
   DEFAULT(-1);
 
-  private int level;
+  private final int level;
 
-  private TransactionIsolationLevel(int level) {
+  TransactionIsolationLevel(int level) {
     this.level = level;
   }
 

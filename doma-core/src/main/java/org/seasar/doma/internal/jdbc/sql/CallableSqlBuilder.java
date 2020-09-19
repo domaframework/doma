@@ -82,7 +82,7 @@ public class CallableSqlBuilder
     }
     context.cutBackIfNecessary();
     context.append(")}");
-    LinkedList<SqlParameter> allParameters = new LinkedList<SqlParameter>(parameters);
+    LinkedList<SqlParameter> allParameters = new LinkedList<>(parameters);
     if (resultParameter != null) {
       allParameters.addFirst(resultParameter);
     }
@@ -150,7 +150,7 @@ public class CallableSqlBuilder
     return null;
   }
 
-  protected class Context {
+  protected static class Context {
 
     private final StringBuilder rawSqlBuf = new StringBuilder(200);
 

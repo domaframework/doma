@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class CharSequenceUtilTest {
 
   @Test
-  public void testIsEmpty() throws Exception {
+  public void testIsEmpty() {
     assertTrue(CharSequenceUtil.isEmpty(null));
     assertTrue(CharSequenceUtil.isEmpty(""));
     assertFalse(CharSequenceUtil.isEmpty(" "));
@@ -18,7 +18,7 @@ public class CharSequenceUtilTest {
   }
 
   @Test
-  public void testIsNotEmpty() throws Exception {
+  public void testIsNotEmpty() {
     assertFalse(CharSequenceUtil.isNotEmpty(null));
     assertFalse(CharSequenceUtil.isNotEmpty(""));
     assertTrue(CharSequenceUtil.isNotEmpty(" "));
@@ -28,7 +28,7 @@ public class CharSequenceUtilTest {
   }
 
   @Test
-  public void testIsBlank() throws Exception {
+  public void testIsBlank() {
     assertTrue(CharSequenceUtil.isBlank(null));
     assertTrue(CharSequenceUtil.isBlank(""));
     assertTrue(CharSequenceUtil.isBlank(" "));
@@ -38,7 +38,7 @@ public class CharSequenceUtilTest {
   }
 
   @Test
-  public void testIsNotBlank() throws Exception {
+  public void testIsNotBlank() {
     assertFalse(CharSequenceUtil.isNotBlank(null));
     assertFalse(CharSequenceUtil.isNotBlank(""));
     assertFalse(CharSequenceUtil.isNotBlank(" "));

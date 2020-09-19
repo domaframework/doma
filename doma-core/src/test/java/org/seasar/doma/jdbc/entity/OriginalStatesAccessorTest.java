@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 public class OriginalStatesAccessorTest {
 
   @Test
-  public void testGet() throws Exception {
+  public void testGet() {
     Hoge states = new Hoge();
     Hoge hoge = new Hoge();
     hoge.setOriginalStates(states);
     OriginalStatesAccessor<Hoge> accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+        new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     assertSame(states, accessor.get(hoge));
   }
 
   @Test
-  public void testSet() throws Exception {
+  public void testSet() {
     Hoge states = new Hoge();
     Hoge hoge = new Hoge();
     OriginalStatesAccessor<Hoge> accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+        new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     accessor.set(hoge, states);
     assertSame(states, hoge.getOriginalStates());
   }

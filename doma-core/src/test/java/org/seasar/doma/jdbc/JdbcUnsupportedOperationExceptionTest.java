@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class JdbcUnsupportedOperationExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     JdbcUnsupportedOperationException e = new JdbcUnsupportedOperationException("aaa", "bbb");
     System.out.println(e.getMessage());
     assertEquals("aaa", e.getClassName());

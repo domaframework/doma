@@ -31,7 +31,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
 
-  private static _ImmutableEmp singleton = new _ImmutableEmp();
+  private static final _ImmutableEmp singleton = new _ImmutableEmp();
 
   private final NamingType __namingType = NamingType.UPPER_CASE;
 

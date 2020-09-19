@@ -83,7 +83,7 @@ public class GenericUtilTest {
     T3 m3(T3 value);
   }
 
-  public class Bbb2<T1, T2> implements Aaa2<T1, T2, Boolean> {
+  public static class Bbb2<T1, T2> implements Aaa2<T1, T2, Boolean> {
     @Override
     public T1 m1(T1 value) {
       return value;
@@ -100,5 +100,5 @@ public class GenericUtilTest {
     }
   }
 
-  public class Ccc2<T2> extends Bbb2<String, T2> {}
+  public static class Ccc2<T2> extends Bbb2<String, T2> {}
 }

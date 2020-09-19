@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class ResultMappingExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     ResultMappingException e =
         new ResultMappingException(
             SqlLogType.FORMATTED,

@@ -39,9 +39,9 @@ import org.seasar.doma.message.Message;
 
 public class ExpressionParser {
 
-  protected final Deque<ExpressionNode> expressionNodes = new LinkedList<ExpressionNode>();
+  protected final Deque<ExpressionNode> expressionNodes = new LinkedList<>();
 
-  protected final Deque<OperatorNode> operatorNodes = new LinkedList<OperatorNode>();
+  protected final Deque<OperatorNode> operatorNodes = new LinkedList<>();
 
   protected final ExpressionReducer expressionReducer = new ExpressionReducer();
 
@@ -255,6 +255,7 @@ public class ExpressionParser {
                 Message.DOMA3011, location.getExpression(), location.getPosition(), token);
           }
         case EOE:
+          //noinspection DuplicateBranchesInSwitch
           {
             break outer;
           }
@@ -412,7 +413,7 @@ public class ExpressionParser {
 
   protected void parseNewOperand() {
     StringBuilder buf = new StringBuilder();
-    for (; tokenizer.next() != OPENED_PARENS; ) {
+    while (tokenizer.next() != OPENED_PARENS) {
       if (tokenType != WHITESPACE) {
         buf.append(tokenizer.getToken());
       }
@@ -423,12 +424,9 @@ public class ExpressionParser {
   }
 
   protected void parseOperator(OperatorNode currentNode) {
-    if (operatorNodes.peek() == null) {
-      operatorNodes.push(currentNode);
-    } else {
-      if (currentNode.getPriority() > operatorNodes.peek().getPriority()) {
-        operatorNodes.push(currentNode);
-      } else {
+    OperatorNode first = operatorNodes.peek();
+    if (first != null) {
+      if (currentNode.getPriority() <= first.getPriority()) {
         for (Iterator<OperatorNode> it = operatorNodes.iterator(); it.hasNext(); ) {
           OperatorNode operatorNode = it.next();
           if (operatorNode.getPriority() > currentNode.getPriority()) {
@@ -436,9 +434,9 @@ public class ExpressionParser {
             it.remove();
           }
         }
-        operatorNodes.push(currentNode);
       }
     }
+    operatorNodes.push(currentNode);
   }
 
   protected void reduceAll() {

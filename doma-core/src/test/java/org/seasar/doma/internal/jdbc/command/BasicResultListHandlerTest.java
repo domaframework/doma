@@ -17,7 +17,9 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.NonSingleColumnException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
+import org.seasar.doma.wrapper.StringWrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BasicResultListHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -25,7 +27,7 @@ public class BasicResultListHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -46,8 +48,7 @@ public class BasicResultListHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicResultListHandler<String> handler =
-        new BasicResultListHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicResultListHandler<String> handler = new BasicResultListHandler<>(StringWrapper::new);
     List<String> results = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("aaa", results.get(0));
@@ -72,8 +73,7 @@ public class BasicResultListHandlerTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BasicResultListHandler<String> handler =
-        new BasicResultListHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+    BasicResultListHandler<String> handler = new BasicResultListHandler<>(StringWrapper::new);
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

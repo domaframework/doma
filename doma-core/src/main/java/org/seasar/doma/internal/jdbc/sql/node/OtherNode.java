@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.SqlNodeVisitor;
 
 public class OtherNode extends AbstractSqlNode {
 
-  protected static final Map<String, OtherNode> otherNodeMap = new HashMap<String, OtherNode>();
+  protected static final Map<String, OtherNode> otherNodeMap = new HashMap<>();
 
   static {
     otherNodeMap.put(",", new OtherNode(","));

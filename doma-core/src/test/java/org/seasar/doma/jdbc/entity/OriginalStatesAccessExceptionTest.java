@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class OriginalStatesAccessExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     OriginalStatesAccessException e =
         new OriginalStatesAccessException(new Exception(), "aaa", "bbb");
     System.out.println(e.getMessage());

@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class DeleteCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -26,19 +27,19 @@ public class DeleteCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testExecute() throws Exception {
+  public void testExecute() {
     Emp emp = new Emp();
     emp.setId(1);
     emp.setName("hoge");
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -55,12 +56,12 @@ public class DeleteCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(2, bindValues.size());
-    assertEquals(new Integer(1), bindValues.get(0).getValue());
-    assertEquals(new Integer(10), bindValues.get(1).getValue());
+    assertEquals(1, bindValues.get(0).getValue());
+    assertEquals(10, bindValues.get(1).getValue());
   }
 
   @Test
-  public void testExecute_throwsOptimisticLockException() throws Exception {
+  public void testExecute_throwsOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
@@ -69,7 +70,7 @@ public class DeleteCommandTest {
     MockPreparedStatement ps = new MockPreparedStatement();
     ps.updatedRows = 0;
     runtimeConfig.dataSource.connection = new MockConnection(ps);
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -86,13 +87,13 @@ public class DeleteCommandTest {
   }
 
   @Test
-  public void testExecute_suppressesOptimisticLockException() throws Exception {
+  public void testExecute_suppressesOptimisticLockException() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

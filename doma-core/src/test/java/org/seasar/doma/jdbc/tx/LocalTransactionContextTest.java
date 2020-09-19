@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Savepoint;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConnection;
@@ -35,21 +34,21 @@ public class LocalTransactionContextTest {
     }
   }
 
-  class MySavepoint implements Savepoint {
+  static class MySavepoint implements Savepoint {
 
-    String name;
+    final String name;
 
     public MySavepoint(String name) {
       this.name = name;
     }
 
     @Override
-    public int getSavepointId() throws SQLException {
+    public int getSavepointId() {
       return 0;
     }
 
     @Override
-    public String getSavepointName() throws SQLException {
+    public String getSavepointName() {
       return name;
     }
   }

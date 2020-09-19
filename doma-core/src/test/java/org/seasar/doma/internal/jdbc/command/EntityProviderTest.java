@@ -44,10 +44,10 @@ public class EntityProviderTest {
         new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
     Emp emp = provider.get(resultSet);
 
-    assertEquals(new Integer(1), emp.getId());
+    assertEquals(1, emp.getId());
     assertEquals("aaa", emp.getName());
     assertEquals(new BigDecimal(10), emp.getSalary());
-    assertEquals(new Integer(100), emp.getVersion());
+    assertEquals(100, emp.getVersion());
   }
 
   @Test
@@ -90,13 +90,13 @@ public class EntityProviderTest {
             entityType, new MySelectQuery(new EmptyUnknownColumnHandlerConfig()), false);
     Emp emp = provider.get(resultSet);
 
-    assertEquals(new Integer(1), emp.getId());
+    assertEquals(1, emp.getId());
     assertEquals("aaa", emp.getName());
     assertEquals(new BigDecimal(10), emp.getSalary());
-    assertEquals(new Integer(100), emp.getVersion());
+    assertEquals(100, emp.getVersion());
   }
 
-  protected class MySelectQuery implements SelectQuery {
+  protected static class MySelectQuery implements SelectQuery {
 
     private final Config config;
 

@@ -77,7 +77,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   public ExpressionEvaluator(ExpressionFunctions expressionFunctions, ClassHelper classHelper) {
-    this(Collections.<String, Value>emptyMap(), expressionFunctions, classHelper);
+    this(Collections.emptyMap(), expressionFunctions, classHelper);
   }
 
   public ExpressionEvaluator(
@@ -85,7 +85,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       ExpressionFunctions expressionFunctions,
       ClassHelper classHelper) {
     assertNotNull(variableValues, expressionFunctions, classHelper);
-    this.variableValues = new HashMap<String, Value>(variableValues);
+    this.variableValues = new HashMap<>(variableValues);
     this.expressionFunctions = expressionFunctions;
     this.classHelper = classHelper;
   }
@@ -100,9 +100,9 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     return variableValues.remove(variableName);
   }
 
-  public void add(String varialbeName, Value value) {
-    assertNotNull(varialbeName, value);
-    variableValues.put(varialbeName, value);
+  public void add(String variableName, Value value) {
+    assertNotNull(variableName, value);
+    variableValues.put(variableName, value);
   }
 
   public EvaluationResult evaluate(ExpressionNode node) {
@@ -253,21 +253,21 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.add(rightNumber);
   }
 
   protected Text createText(
-      OperatorNode operatoNode, ExpressionNode operandNode, EvaluationResult evaluationResult) {
+      OperatorNode operatorNode, ExpressionNode operandNode, EvaluationResult evaluationResult) {
     if (!Text.isAcceptable(evaluationResult.getValueClass())) {
       return null;
     }
-    return new Text(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
+    return new Text(operatorNode, evaluationResult.getValue(), evaluationResult.getValueClass());
   }
 
   protected void throwNotTextException(
@@ -290,11 +290,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.subtract(rightNumber);
   }
@@ -307,11 +307,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.multiply(rightNumber);
   }
@@ -324,11 +324,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.divide(rightNumber);
   }
@@ -341,31 +341,31 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.mod(rightNumber);
   }
 
   protected Number createNumber(
-      ArithmeticOperatorNode operatoNode,
+      ArithmeticOperatorNode operatorNode,
       ExpressionNode operandNode,
       EvaluationResult evaluationResult) {
     if (!Number.isAcceptable(evaluationResult.getValueClass())) {
       return null;
     }
-    return new Number(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
+    return new Number(operatorNode, evaluationResult.getValue(), evaluationResult.getValueClass());
   }
 
-  protected void throwNotNumberException(
+  protected ExpressionException newNotNumberException(
       ArithmeticOperatorNode operatorNode,
       ExpressionNode operandNode,
       EvaluationResult evaluationResult) {
     ExpressionLocation location = operandNode.getLocation();
-    throw new ExpressionException(
+    return new ExpressionException(
         Message.DOMA3013,
         location.getExpression(),
         location.getPosition(),
@@ -449,7 +449,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected EvaluationResult invokeConstructor(
       ExpressionLocation location, Class<?> clazz, Constructor<?> constructor, Object... params) {
-    Object value = null;
+    Object value;
     try {
       value = ConstructorUtil.newInstance(constructor, params);
     } catch (WrapException e) {
@@ -531,7 +531,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected Method findMethodFromInterfaces(
       String methodName, Object target, Class<?> targetClass, Class<?>[] paramTypes) {
-    LinkedList<Method> methods = new LinkedList<Method>();
+    LinkedList<Method> methods = new LinkedList<>();
     for (Class<?> clazz = targetClass;
         clazz != null && clazz != Object.class;
         clazz = clazz.getSuperclass()) {
@@ -548,7 +548,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected Method findMethodFromClasses(
       String methodName, Object target, Class<?> targetClass, Class<?>[] paramTypes) {
-    LinkedList<Method> methods = new LinkedList<Method>();
+    LinkedList<Method> methods = new LinkedList<>();
     for (Class<?> clazz = targetClass;
         clazz != null && clazz != Object.class;
         clazz = clazz.getSuperclass()) {
@@ -561,6 +561,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     return findSuiteMethod(methods, target, targetClass, paramTypes);
   }
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   protected Method findSuiteMethod(
       List<Method> methods, Object target, Class<?> targetClass, Class<?>[] argTypes) {
     CandidateMethod candidate = null;
@@ -568,19 +569,19 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     for (Method method : methods) {
       Class<?> paramTypes[] = method.getParameterTypes();
       if (paramTypes.length == argTypes.length) {
-        int degreeOfcoincidence = 0;
+        int degreeOfCoincidence = 0;
         for (int i = 0; i < paramTypes.length; i++) {
           int difference = calculateHierarchyDifference(paramTypes[i], argTypes[i], 0);
           if (difference == -1) {
             continue outer;
           }
-          degreeOfcoincidence += difference;
+          degreeOfCoincidence += difference;
         }
-        if (degreeOfcoincidence == 0) {
+        if (degreeOfCoincidence == 0) {
           return method;
         }
-        if (candidate == null || degreeOfcoincidence < candidate.degreeOfcoincidence) {
-          candidate = new CandidateMethod(degreeOfcoincidence, method);
+        if (candidate == null || degreeOfCoincidence < candidate.degreeOfCoincidence) {
+          candidate = new CandidateMethod(degreeOfCoincidence, method);
         }
       }
     }
@@ -762,11 +763,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       return new EvaluationResult(nullable, Integer.class);
     } else if (value instanceof OptionalLong) {
       OptionalLong optional = (OptionalLong) value;
-      Long nullable = optional.isPresent() ? Long.valueOf(optional.getAsLong()) : null;
+      Long nullable = optional.isPresent() ? optional.getAsLong() : null;
       return new EvaluationResult(nullable, Long.class);
     } else if (value instanceof OptionalDouble) {
       OptionalDouble optional = (OptionalDouble) value;
-      Double nullable = optional.isPresent() ? Double.valueOf(optional.getAsDouble()) : null;
+      Double nullable = optional.isPresent() ? optional.getAsDouble() : null;
       return new EvaluationResult(nullable, Double.class);
     }
     if (target != null) {
@@ -831,7 +832,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected static class Number {
 
-    protected static final Map<Class<?>, Integer> priorityMap = new HashMap<Class<?>, Integer>();
+    protected static final Map<Class<?>, Integer> priorityMap = new HashMap<>();
 
     static {
       priorityMap.put(BigDecimal.class, 80);
@@ -954,6 +955,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     protected EvaluationResult divide(Number other) {
       BigDecimal newValue = null;
       try {
+        //noinspection BigDecimalMethodWithoutRoundingCalled
         newValue = numberValue.divide(other.numberValue);
       } catch (ArithmeticException e) {
         handleArithmeticException(e);
@@ -993,7 +995,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       implements ExpressionNodeVisitor<Void, List<EvaluationResult>> {
 
     public ParameterCollection collect(ExpressionNode node) {
-      List<EvaluationResult> evaluationResults = new ArrayList<EvaluationResult>();
+      List<EvaluationResult> evaluationResults = new ArrayList<>();
       node.accept(this, evaluationResults);
       return new ParameterCollection(evaluationResults);
     }
@@ -1186,11 +1188,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   protected static class CandidateMethod {
-    final int degreeOfcoincidence;
+    final int degreeOfCoincidence;
     final Method method;
 
-    CandidateMethod(int degreeOfcoincidence, Method method) {
-      this.degreeOfcoincidence = degreeOfcoincidence;
+    CandidateMethod(int degreeOfCoincidence, Method method) {
+      this.degreeOfCoincidence = degreeOfCoincidence;
       this.method = method;
     }
   }

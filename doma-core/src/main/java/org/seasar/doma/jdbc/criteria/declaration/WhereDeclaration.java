@@ -37,7 +37,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code LIKE} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @throws NullPointerException if {@code left} is null
    */
@@ -52,7 +52,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code LIKE} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param option the option
    * @throws NullPointerException if {@code left} is null
@@ -68,7 +68,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code NOT LIKE} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @throws NullPointerException if {@code left} is null
    */
@@ -83,7 +83,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code NOT LIKE} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param option the option
    * @throws NullPointerException if {@code left} is null
@@ -99,7 +99,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code BETWEEN} operator.
    *
    * <p>If either of the {@code start} parameter or the {@code end} parameter is null, the query
-   * condition does'nt include the operator.
+   * condition doesn't include the operator.
    *
    * @param propertyMetamodel the left hand operand
    * @param start the first argument of the right hand operand
@@ -123,7 +123,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code IN} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -142,7 +142,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code NOT IN} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -191,7 +191,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code IN} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param <PROPERTY1> the first property type
    * @param <PROPERTY2> the second property type
@@ -221,7 +221,7 @@ public class WhereDeclaration extends ComparisonDeclaration {
    * Adds a {@code NOT IN} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operator.
    * @param <PROPERTY1> the first property type
    * @param <PROPERTY2> the second property type

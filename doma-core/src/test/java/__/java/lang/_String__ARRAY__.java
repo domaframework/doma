@@ -18,9 +18,6 @@ public final class _String__ARRAY__
 
   @Override
   public Object getBasicValue(String[] domain) {
-    if (domain == null) {
-      return null;
-    }
     return null;
   }
 

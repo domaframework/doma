@@ -6,6 +6,6 @@ import org.seasar.doma.internal.jdbc.scalar.OptionalLongScalar;
 public class OptionalLongSingleResultHandler extends ScalarSingleResultHandler<Long, OptionalLong> {
 
   public OptionalLongSingleResultHandler() {
-    super(() -> new OptionalLongScalar());
+    super(OptionalLongScalar::new);
   }
 }

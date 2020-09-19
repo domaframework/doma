@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class SqlExecutionExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     SqlExecutionException e =
         new SqlExecutionException(
             SqlLogType.FORMATTED,

@@ -15,7 +15,6 @@ import org.seasar.doma.internal.jdbc.dialect.PostgresForUpdateTransformer;
 import org.seasar.doma.internal.jdbc.dialect.PostgresPagingTransformer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.util.DatabaseObjectUtil;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.ScriptBlockContext;
@@ -131,18 +130,9 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    StringBuilder buf = new StringBuilder(64);
-    buf.append("select currval(");
-    buf.append(identitySeqFuncExpr);
-    buf.append(")");
-    String rawSql = buf.toString();
+    String rawSql = "select currval(" + identitySeqFuncExpr + ")";
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override
@@ -168,20 +158,14 @@ public class PostgresDialect extends StandardDialect {
             columnName,
             isQuoteRequired,
             isIdColumnQuoteRequired);
-    StringBuilder buf = new StringBuilder(64);
-    buf.append("select nextval(");
-    buf.append(identitySeqFuncExpr);
-    buf.append(") from generate_series(1, ");
-    buf.append(reservationSize);
-    buf.append(")");
-    String rawSql = buf.toString();
+    String rawSql =
+        "select nextval("
+            + identitySeqFuncExpr
+            + ") from generate_series(1, "
+            + reservationSize
+            + ")";
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   protected String createIdentitySequenceFunctionExpression(
@@ -208,12 +192,7 @@ public class PostgresDialect extends StandardDialect {
     }
     String rawSql = "select nextval('" + qualifiedSequenceName + "')";
     return new PreparedSql(
-        SqlKind.SELECT,
-        rawSql,
-        rawSql,
-        null,
-        Collections.<InParameter<?>>emptyList(),
-        SqlLogType.FORMATTED);
+        SqlKind.SELECT, rawSql, rawSql, null, Collections.emptyList(), SqlLogType.FORMATTED);
   }
 
   @Override

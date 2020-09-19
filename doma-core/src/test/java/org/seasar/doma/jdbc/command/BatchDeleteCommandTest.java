@@ -13,6 +13,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BatchDeleteCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -20,7 +21,7 @@ public class BatchDeleteCommandTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -36,7 +37,7 @@ public class BatchDeleteCommandTest {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));

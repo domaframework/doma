@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class PostgresPagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected = "select * from emp order by emp.id limit 10 offset 5";
     PostgresPagingTransformer transformer = new PostgresPagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -26,7 +26,7 @@ public class PostgresPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_forUpdate() throws Exception {
+  public void testOffsetLimit_forUpdate() {
     String expected = "select * from emp order by emp.id  limit 10 offset 5 for update";
     PostgresPagingTransformer transformer = new PostgresPagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id for update");
@@ -38,7 +38,7 @@ public class PostgresPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected = "select * from emp order by emp.id offset 5";
     PostgresPagingTransformer transformer = new PostgresPagingTransformer(5, -1);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -50,7 +50,7 @@ public class PostgresPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected = "select * from emp order by emp.id limit 10";
     PostgresPagingTransformer transformer = new PostgresPagingTransformer(-1, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

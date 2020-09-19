@@ -13,7 +13,7 @@ public class ParensNode extends AbstractSqlNode {
 
   protected boolean empty = true;
 
-  protected OtherNode openedParensNode;
+  protected final OtherNode openedParensNode;
 
   protected OtherNode closedParensNode;
 

@@ -18,6 +18,7 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class DomainResultListHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -25,7 +26,7 @@ public class DomainResultListHandlerTest {
   private Method method;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) throws Exception {
+  void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
@@ -47,7 +48,7 @@ public class DomainResultListHandlerTest {
     query.prepare();
 
     DomainResultListHandler<String, PhoneNumber> handler =
-        new DomainResultListHandler<String, PhoneNumber>(_PhoneNumber.getSingletonInternal());
+        new DomainResultListHandler<>(_PhoneNumber.getSingletonInternal());
     List<PhoneNumber> results = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("01-2345-6789", results.get(0).getValue());

@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class MysqlPagingTransformerTest {
 
   @Test
-  public void testOffsetLimit() throws Exception {
+  public void testOffsetLimit() {
     String expected = "select * from emp order by emp.id limit 5, 10";
     MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -26,7 +26,7 @@ public class MysqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetLimit_forUpdate() throws Exception {
+  public void testOffsetLimit_forUpdate() {
     String expected = "select * from emp order by emp.id  limit 5, 10 for update";
     MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id for update");
@@ -38,7 +38,7 @@ public class MysqlPagingTransformerTest {
   }
 
   @Test
-  public void testOffsetOnly() throws Exception {
+  public void testOffsetOnly() {
     String expected = "select * from emp order by emp.id limit 5, 18446744073709551615";
     MysqlPagingTransformer transformer = new MysqlPagingTransformer(5, -1);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
@@ -50,7 +50,7 @@ public class MysqlPagingTransformerTest {
   }
 
   @Test
-  public void testLimitOnly() throws Exception {
+  public void testLimitOnly() {
     String expected = "select * from emp order by emp.id limit 0, 10";
     MysqlPagingTransformer transformer = new MysqlPagingTransformer(-1, 10);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");

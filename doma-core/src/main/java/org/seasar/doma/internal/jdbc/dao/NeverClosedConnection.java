@@ -38,7 +38,7 @@ class NeverClosedConnection implements Connection {
   }
 
   @Override
-  public void close() throws SQLException {
+  public void close() {
     // do nothing.
   }
 
@@ -126,6 +126,7 @@ class NeverClosedConnection implements Connection {
 
   @Override
   public int getTransactionIsolation() throws SQLException {
+    //noinspection MagicConstant
     return connection.getTransactionIsolation();
   }
 

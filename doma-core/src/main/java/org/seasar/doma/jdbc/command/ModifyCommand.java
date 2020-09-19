@@ -39,7 +39,7 @@ public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Comman
       JdbcLogger logger = query.getConfig().getJdbcLogger();
       logger.logSqlExecutionSkipping(
           query.getClassName(), query.getMethodName(), query.getSqlExecutionSkipCause());
-      return Integer.valueOf(0);
+      return 0;
     }
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {

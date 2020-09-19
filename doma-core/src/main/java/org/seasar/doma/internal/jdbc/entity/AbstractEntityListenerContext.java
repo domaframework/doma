@@ -24,6 +24,7 @@ public abstract class AbstractEntityListenerContext<E> {
     this.config = config;
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   protected boolean isPropertyDefinedInternal(String propertyName) {
     assertNotNull(propertyName);
     return entityType.getEntityPropertyType(propertyName) != null;

@@ -39,8 +39,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preDelete() {
-    AutoPreDeleteContext<ENTITY> context =
-        new AutoPreDeleteContext<ENTITY>(entityType, method, config);
+    AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<>(entityType, method, config);
     entityType.preDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -93,6 +92,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
         builder.appendSql(" and ");
       } else {
         builder.appendSql(" where ");
+        //noinspection UnusedAssignment
         whereClauseAppended = true;
       }
       Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
@@ -110,8 +110,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postDelete() {
-    AutoPostDeleteContext<ENTITY> context =
-        new AutoPostDeleteContext<ENTITY>(entityType, method, config);
+    AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<>(entityType, method, config);
     entityType.postDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();

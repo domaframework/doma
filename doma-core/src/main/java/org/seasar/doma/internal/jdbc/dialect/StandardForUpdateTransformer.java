@@ -11,9 +11,9 @@ public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, 
 
   protected final SelectForUpdateType forUpdateType;
 
-  protected int waitSeconds;
+  protected final int waitSeconds;
 
-  protected String[] aliases;
+  protected final String[] aliases;
 
   protected boolean processed;
 

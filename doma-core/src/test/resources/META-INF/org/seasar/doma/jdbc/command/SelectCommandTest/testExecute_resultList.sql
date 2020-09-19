@@ -1,1 +1,1 @@
-select * from aaa where sarary >= /*salary*/100
+select * from aaa where salary >= /*salary*/100

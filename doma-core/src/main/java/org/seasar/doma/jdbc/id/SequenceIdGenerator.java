@@ -31,5 +31,6 @@ public interface SequenceIdGenerator extends IdGenerator {
    *
    * @throws JdbcException if the initialization is failed
    */
+  @SuppressWarnings("EmptyMethod")
   void initialize();
 }

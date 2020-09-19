@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void test() throws Exception {
+  public void test() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.callerClassName(getClass().getName());
     builder.callerMethodName("test");
@@ -48,7 +49,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testGetSqls() throws Exception {
+  public void testGetSqls() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {
@@ -89,7 +90,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testNullValue() throws Exception {
+  public void testNullValue() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {
@@ -118,19 +119,19 @@ public class MapBatchInsertBuilderTest {
     assertEquals(expectedSql, sqls.get(0).getRawSql());
     List<? extends SqlParameter> parameters0 = sqls.get(0).getParameters();
     assertEquals(2, parameters0.size());
-    assertEquals(null, parameters0.get(0).getValue());
+    assertNull(parameters0.get(0).getValue());
     assertEquals(1000, parameters0.get(1).getValue());
 
     assertEquals(expectedSql, sqls.get(1).getRawSql());
     List<? extends SqlParameter> parameters1 = sqls.get(1).getParameters();
     assertEquals(2, parameters1.size());
     assertEquals("ALLEN", parameters1.get(0).getValue());
-    assertEquals(null, parameters1.get(1).getValue());
+    assertNull(parameters1.get(1).getValue());
   }
 
   @SuppressWarnings("serial")
   @Test
-  public void testChangeType() throws Exception {
+  public void testChangeType() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {
@@ -169,7 +170,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testNotEqualMapSize() throws Exception {
+  public void testNotEqualMapSize() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
         new ArrayList<LinkedHashMap<String, Object>>() {
@@ -200,7 +201,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testHashMap() throws Exception {
+  public void testHashMap() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<Map<String, Object>> employees =
         new ArrayList<Map<String, Object>>() {
@@ -240,9 +241,9 @@ public class MapBatchInsertBuilderTest {
   }
 
   @Test
-  public void testEmptyList() throws Exception {
+  public void testEmptyList() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-    List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>();
+    List<LinkedHashMap<String, Object>> employees = new ArrayList<>();
     try {
       builder.execute(employees);
     } catch (JdbcException e) {
@@ -254,7 +255,7 @@ public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")
   @Test
-  public void testDifferentKey() throws Exception {
+  public void testDifferentKey() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.callerClassName(getClass().getName());
     builder.callerMethodName("test");
@@ -272,7 +273,7 @@ public class MapBatchInsertBuilderTest {
                 new LinkedHashMap<String, Object>() {
                   {
                     put("name", "ALLEN");
-                    put("salaree", 2000);
+                    put("age", 20);
                   }
                 });
           }

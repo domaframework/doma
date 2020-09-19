@@ -9,16 +9,17 @@ import org.seasar.doma.internal.expr.ExpressionEvaluator;
 
 public class NotOperatorNodeTest {
 
-  protected ExpressionLocation location = new ExpressionLocation("", 0);
+  protected final ExpressionLocation location = new ExpressionLocation("", 0);
 
-  protected LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
+  protected final LiteralNode trueLiteral = new LiteralNode(location, "true", true, boolean.class);
 
-  protected LiteralNode falseLiteral = new LiteralNode(location, "false", false, boolean.class);
+  protected final LiteralNode falseLiteral =
+      new LiteralNode(location, "false", false, boolean.class);
 
-  protected LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
+  protected final LiteralNode nullLiteral = new LiteralNode(location, "null", null, Object.class);
 
   @Test
-  public void test_true() throws Exception {
+  public void test_true() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(trueLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -27,7 +28,7 @@ public class NotOperatorNodeTest {
   }
 
   @Test
-  public void test_false() throws Exception {
+  public void test_false() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(falseLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -36,7 +37,7 @@ public class NotOperatorNodeTest {
   }
 
   @Test
-  public void test_null() throws Exception {
+  public void test_null() {
     NotOperatorNode node = new NotOperatorNode(location, "!");
     node.setNode(nullLiteral);
     ExpressionEvaluator evaluator = new ExpressionEvaluator();

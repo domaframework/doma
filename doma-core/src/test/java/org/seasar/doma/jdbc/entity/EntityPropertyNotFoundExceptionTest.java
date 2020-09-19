@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class EntityPropertyNotFoundExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     EntityPropertyNotFoundException e = new EntityPropertyNotFoundException("aaa", "bbb");
     System.out.println(e.getMessage());
     assertEquals("aaa", e.getEntityClassName());

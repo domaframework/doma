@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 public final class StringUtil {
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   public static String capitalize(String text) {
     if (isNullOrEmpty(text)) {
       return text;
@@ -14,6 +15,7 @@ public final class StringUtil {
     return new String(chars);
   }
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   public static String decapitalize(String text) {
     if (isNullOrEmpty(text)) {
       return text;

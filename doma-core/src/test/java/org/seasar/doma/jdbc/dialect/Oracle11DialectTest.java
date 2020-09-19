@@ -18,28 +18,28 @@ import org.seasar.doma.wrapper.UtilDateWrapper;
 public class Oracle11DialectTest {
 
   @Test
-  public void testExpressionFunctions_prefix() throws Exception {
+  public void testExpressionFunctions_prefix() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a$$a$%a$_a$％a$＿%", functions.prefix("a$a%a_a％a＿"));
   }
 
   @Test
-  public void testExpressionFunctions_prefix_escape() throws Exception {
+  public void testExpressionFunctions_prefix_escape() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a!!a!%a!_a!％a!＿%", functions.prefix("a!a%a_a％a＿", '!'));
   }
 
   @Test
-  public void testExpressionFunctions_prefix_escapeWithBackslash() throws Exception {
+  public void testExpressionFunctions_prefix_escapeWithBackslash() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     assertEquals("a\\\\a\\%a\\_a\\％a\\＿%", functions.prefix("a\\a%a_a％a＿", '\\'));
   }
 
   @Test
-  public void testDateFormat() throws Exception {
+  public void testDateFormat() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
     DateWrapper wrapper = new DateWrapper(Date.valueOf("2009-01-23"));
@@ -48,7 +48,7 @@ public class Oracle11DialectTest {
   }
 
   @Test
-  public void testTimeFormat() throws Exception {
+  public void testTimeFormat() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
     TimeWrapper wrapper = new TimeWrapper(Time.valueOf("01:23:45"));
@@ -56,7 +56,7 @@ public class Oracle11DialectTest {
   }
 
   @Test
-  public void testTimestampFormat() throws Exception {
+  public void testTimestampFormat() {
     Oracle11Dialect dialect = new Oracle11Dialect();
     SqlLogFormattingVisitor visitor = dialect.getSqlLogFormattingVisitor();
     TimestampWrapper wrapper =

@@ -22,30 +22,29 @@ public class PreparedSqlBuilderTest {
   private final MockConfig config = new MockConfig();
 
   @Test
-  public void testAppend() throws Exception {
+  public void testAppend() {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
     builder.appendSql("select * from aaa where name = ");
     Wrapper<String> stringWrapper = new StringWrapper("hoge");
-    builder.appendParameter(new BasicInParameter<String>(() -> stringWrapper));
+    builder.appendParameter(new BasicInParameter<>(() -> stringWrapper));
 
     builder.appendSql(" and salary = ");
     Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper(new BigDecimal(100));
-    builder.appendParameter(new BasicInParameter<BigDecimal>(() -> bigDecimalWrapper));
+    builder.appendParameter(new BasicInParameter<>(() -> bigDecimalWrapper));
     PreparedSql sql = builder.build(Function.identity());
     assertEquals("select * from aaa where name = ? and salary = ?", sql.toString());
   }
 
   @Test
-  public void testAppendParameter_domain() throws Exception {
+  public void testAppendParameter_domain() {
     PreparedSqlBuilder builder =
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
     builder.appendSql("select * from aaa where phoneNumber = ");
     DomainType<String, PhoneNumber> phoneNumberType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     PhoneNumber phoneNumber = new PhoneNumber("03-1234-5678");
-    builder.appendParameter(
-        new DomainInParameter<String, PhoneNumber>(phoneNumberType, phoneNumber));
+    builder.appendParameter(new DomainInParameter<>(phoneNumberType, phoneNumber));
     PreparedSql sql = builder.build(Function.identity());
     assertEquals("select * from aaa where phoneNumber = ?", sql.toString());
   }

@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoDeleteQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -24,15 +25,15 @@ public class AutoDeleteQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp = new Emp();
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -41,18 +42,17 @@ public class AutoDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    DeleteQuery deleteQuery = query;
-    assertNotNull(deleteQuery.getSql());
+    assertNotNull(((DeleteQuery) query).getSql());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -65,18 +65,18 @@ public class AutoDeleteQueryTest {
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp = new Emp();
     emp.setId(10);
     emp.setName("aaa");
     emp.setVersion(100);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -90,19 +90,18 @@ public class AutoDeleteQueryTest {
     assertEquals("delete from EMP where ID = ?", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(1, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman salesman = new Salesman();
     salesman.setId(10);
     salesman.setName("aaa");
     salesman.setTenantId("bbb");
     salesman.setVersion(100);
 
-    AutoDeleteQuery<Salesman> query =
-        new AutoDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
+    AutoDeleteQuery<Salesman> query = new AutoDeleteQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(salesman);
@@ -117,8 +116,8 @@ public class AutoDeleteQueryTest {
 
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
   }
 }

@@ -16,7 +16,7 @@ public interface TransactionManager {
    *
    * @param block the code that is executed in the transaction
    */
-  public abstract void required(Runnable block);
+  void required(Runnable block);
 
   /**
    * Executes the transaction whose attribute is REQUIRED with the specified transaction isolation
@@ -25,7 +25,7 @@ public interface TransactionManager {
    * @param isolationLevel the transaction isolation level
    * @param block the code that is executed in the transaction
    */
-  public abstract void required(TransactionIsolationLevel isolationLevel, Runnable block);
+  void required(TransactionIsolationLevel isolationLevel, Runnable block);
 
   /**
    * Executes the transaction whose attribute is REQUIRED and returns the result.
@@ -34,7 +34,7 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT required(Supplier<RESULT> supplier);
+  <RESULT> RESULT required(Supplier<RESULT> supplier);
 
   /**
    * Executes the transaction whose attribute is REQUIRED with the specified transaction isolation
@@ -45,15 +45,14 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT required(
-      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  <RESULT> RESULT required(TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
   /**
    * Executes the transaction whose attribute is REQUIRES_NEW.
    *
    * @param block the code that is executed in the transaction
    */
-  public abstract void requiresNew(Runnable block);
+  void requiresNew(Runnable block);
 
   /**
    * Executes the transaction whose attribute is REQUIRES_NEW with the specified transaction
@@ -62,7 +61,7 @@ public interface TransactionManager {
    * @param isolationLevel the transaction isolation level
    * @param block the code that is executed in the transaction
    */
-  public abstract void requiresNew(TransactionIsolationLevel isolationLevel, Runnable block);
+  void requiresNew(TransactionIsolationLevel isolationLevel, Runnable block);
 
   /**
    * Executes the transaction whose attribute is REQUIRES_NEW and returns the result.
@@ -71,7 +70,7 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT requiresNew(Supplier<RESULT> supplier);
+  <RESULT> RESULT requiresNew(Supplier<RESULT> supplier);
 
   /**
    * Executes the transaction whose attribute is REQUIRES_NEW with the specified transaction
@@ -82,15 +81,14 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT requiresNew(
-      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  <RESULT> RESULT requiresNew(TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
   /**
    * Executes the transaction whose attribute is NOT_SUPPORTED.
    *
    * @param block the code that is executed in the transaction
    */
-  public abstract void notSupported(Runnable block);
+  void notSupported(Runnable block);
 
   /**
    * Executes the transaction whose attribute is NOT_SUPPORTED with the specified transaction
@@ -99,7 +97,7 @@ public interface TransactionManager {
    * @param isolationLevel the transaction isolation level
    * @param block the code that is executed in the transaction
    */
-  public abstract void notSupported(TransactionIsolationLevel isolationLevel, Runnable block);
+  void notSupported(TransactionIsolationLevel isolationLevel, Runnable block);
 
   /**
    * Executes the transaction whose attribute is NOT_SUPPORTED and returns the result.
@@ -108,7 +106,7 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT notSupported(Supplier<RESULT> supplier);
+  <RESULT> RESULT notSupported(Supplier<RESULT> supplier);
 
   /**
    * Executes the transaction whose attribute is NOT_SUPPORTED with the specified transaction
@@ -119,18 +117,17 @@ public interface TransactionManager {
    * @param <RESULT> the result type
    * @return the result
    */
-  public abstract <RESULT> RESULT notSupported(
-      TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
+  <RESULT> RESULT notSupported(TransactionIsolationLevel isolationLevel, Supplier<RESULT> supplier);
 
   /** Marks the current transaction to undo in the end of the transaction. */
-  public abstract void setRollbackOnly();
+  void setRollbackOnly();
 
   /**
    * Whether the current transaction is marked to be undone.
    *
    * @return {@code true} if the current transaction is marked.
    */
-  public abstract boolean isRollbackOnly();
+  boolean isRollbackOnly();
 
   /**
    * Creates a save point with the specified name.
@@ -143,7 +140,7 @@ public interface TransactionManager {
    * @throws SavepointAlreadyExistsException if the save point already exists
    * @throws JdbcException if a JDBC related error occurs
    */
-  public abstract void setSavepoint(String savepointName);
+  void setSavepoint(String savepointName);
 
   /**
    * Whether the current transaction has the save point.
@@ -155,7 +152,7 @@ public interface TransactionManager {
    * @throws TransactionNotYetBegunException if the transaction is not begun
    * @return {@code true} if the transaction has the save point
    */
-  public abstract boolean hasSavepoint(String savepointName);
+  boolean hasSavepoint(String savepointName);
 
   /**
    * Removes the specified save point and subsequent save points from the current transaction.
@@ -167,7 +164,7 @@ public interface TransactionManager {
    * @throws TransactionNotYetBegunException if the transaction is not yet begun
    * @throws JdbcException if a JDBC related error occurs
    */
-  public abstract void releaseSavepoint(String savepointName);
+  void releaseSavepoint(String savepointName);
 
   /**
    * Undoes all changes made after the given save point.
@@ -180,5 +177,5 @@ public interface TransactionManager {
    * @throws TransactionNotYetBegunException if the transaction is not begun
    * @throws JdbcException if a JDBC related error occurs
    */
-  public abstract void rollback(String savepointName);
+  void rollback(String savepointName);
 }

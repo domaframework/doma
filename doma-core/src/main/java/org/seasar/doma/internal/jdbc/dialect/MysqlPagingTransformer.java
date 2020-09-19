@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.SqlNode;
 
 public class MysqlPagingTransformer extends StandardPagingTransformer {
 
-  public static String MAXIMUM_LIMIT = "18446744073709551615";
+  public static final String MAXIMUM_LIMIT = "18446744073709551615";
 
   public MysqlPagingTransformer(long offset, long limit) {
     super(offset, limit);
@@ -21,7 +21,7 @@ public class MysqlPagingTransformer extends StandardPagingTransformer {
     processed = true;
 
     OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
-    OrderByClauseNode orderBy = node.getOrderByClauseNode();
+    OrderByClauseNode orderBy;
     if (originalOrderBy != null) {
       orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
       for (SqlNode child : originalOrderBy.getChildren()) {

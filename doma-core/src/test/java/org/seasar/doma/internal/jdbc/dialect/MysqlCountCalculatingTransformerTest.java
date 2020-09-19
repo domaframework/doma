@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class MysqlCountCalculatingTransformerTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     String expected = "select sql_calc_found_rows * from emp";
     MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
     SqlParser parser = new SqlParser("select * from emp");

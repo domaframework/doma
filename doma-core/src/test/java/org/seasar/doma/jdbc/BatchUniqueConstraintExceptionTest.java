@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class BatchUniqueConstraintExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     BatchUniqueConstraintException e =
         new BatchUniqueConstraintException(
             SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb", new Exception());

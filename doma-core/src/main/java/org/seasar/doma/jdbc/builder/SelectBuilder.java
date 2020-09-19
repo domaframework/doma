@@ -448,7 +448,7 @@ public class SelectBuilder {
     EntityType<ELEMENT> entityType =
         EntityTypeFactory.getEntityType(elementClass, config.getClassHelper());
     query.setEntityType(entityType);
-    ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<ELEMENT>(entityType);
+    ResultSetHandler<List<ELEMENT>> handler = new EntityResultListHandler<>(entityType);
     return execute(handler);
   }
 
@@ -771,7 +771,7 @@ public class SelectBuilder {
 
   private <RESULT> RESULT execute(ResultSetHandler<RESULT> resultSetHandler) {
     prepare();
-    SelectCommand<RESULT> command = new SelectCommand<RESULT>(query, resultSetHandler);
+    SelectCommand<RESULT> command = new SelectCommand<>(query, resultSetHandler);
     RESULT result = command.execute();
     query.complete();
     return result;

@@ -7,6 +7,6 @@ public class OptionalDomainResultListParameter<BASIC, DOMAIN>
     extends ScalarResultListParameter<BASIC, Optional<DOMAIN>> {
 
   public OptionalDomainResultListParameter(DomainType<BASIC, DOMAIN> domainType) {
-    super(() -> domainType.createOptionalScalar());
+    super(domainType::createOptionalScalar);
   }
 }

@@ -30,12 +30,13 @@ import org.seasar.doma.wrapper.PrimitiveIntWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScalarsTest {
 
   private final ClassHelper classHelper = new ClassHelper() {};
 
   @Test
-  public void testWrapBasic() throws Exception {
+  public void testWrapBasic() {
     assertNotNull(Scalars.wrap(true, boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap(true, Boolean.class, false, classHelper));
     assertNotNull(Scalars.wrap((byte) 1, byte.class, false, classHelper));
@@ -60,10 +61,10 @@ public class ScalarsTest {
         Scalars.wrap(
             Timestamp.valueOf("2009-01-23 12:34:56"), Timestamp.class, false, classHelper));
     assertNotNull(Scalars.wrap(new java.util.Date(), java.util.Date.class, false, classHelper));
-    assertNotNull(Scalars.wrap(LocalDate.of(2009, 01, 23), LocalDate.class, false, classHelper));
+    assertNotNull(Scalars.wrap(LocalDate.of(2009, 1, 23), LocalDate.class, false, classHelper));
     assertNotNull(
         Scalars.wrap(
-            LocalDateTime.of(2009, 01, 23, 12, 34, 56), LocalDateTime.class, false, classHelper));
+            LocalDateTime.of(2009, 1, 23, 12, 34, 56), LocalDateTime.class, false, classHelper));
     assertNotNull(Scalars.wrap(LocalTime.of(12, 34, 56), LocalTime.class, false, classHelper));
     assertNotNull(Scalars.wrap(null, Array.class, false, classHelper));
     assertNotNull(Scalars.wrap(null, Blob.class, false, classHelper));
@@ -72,7 +73,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapBasic_primitiveType() throws Exception {
+  public void testWrapBasic_primitiveType() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(10, int.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -85,7 +86,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapBasic_primitiveType_null() throws Exception {
+  public void testWrapBasic_primitiveType_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, int.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -98,7 +99,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapBasic_null() throws Exception {
+  public void testWrapBasic_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -112,9 +113,8 @@ public class ScalarsTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapBasic_optional() throws Exception {
-    Supplier<Scalar<?, ?>> supplier =
-        Scalars.wrap(new Integer(10), Integer.class, true, classHelper);
+  public void testWrapBasic_optional() {
+    Supplier<Scalar<?, ?>> supplier = Scalars.wrap(10, Integer.class, true, classHelper);
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
@@ -124,12 +124,12 @@ public class ScalarsTest {
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
-    assertEquals(new Integer(10), wrapper.get());
+    assertEquals(10, wrapper.get());
   }
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapBasic_optional_null() throws Exception {
+  public void testWrapBasic_optional_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, Integer.class, true, classHelper);
     assertNotNull(supplier);
 
@@ -144,7 +144,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapEnum() throws Exception {
+  public void testWrapEnum() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -157,7 +157,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapEnum_null() throws Exception {
+  public void testWrapEnum_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -171,7 +171,7 @@ public class ScalarsTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapEnum_optional() throws Exception {
+  public void testWrapEnum_optional() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(MyEnum.AAA, MyEnum.class, true, classHelper);
     assertNotNull(supplier);
 
@@ -187,7 +187,7 @@ public class ScalarsTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapEnum_optional_null() throws Exception {
+  public void testWrapEnum_optional_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, MyEnum.class, true, classHelper);
     assertNotNull(supplier);
 
@@ -202,7 +202,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapDomain() throws Exception {
+  public void testWrapDomain() {
     PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
         Scalars.wrap(phoneNumber, PhoneNumber.class, false, classHelper);
@@ -217,7 +217,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapDomain_subclass() throws Exception {
+  public void testWrapDomain_subclass() {
     PhoneNumber phoneNumber = new InternationalPhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
         Scalars.wrap(phoneNumber, InternationalPhoneNumber.class, false, classHelper);
@@ -232,7 +232,7 @@ public class ScalarsTest {
   }
 
   @Test
-  public void testWrapDomain_null() throws Exception {
+  public void testWrapDomain_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, false, classHelper);
     assertNotNull(supplier);
 
@@ -248,7 +248,7 @@ public class ScalarsTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapDomain_option() throws Exception {
+  public void testWrapDomain_option() {
     PhoneNumber phoneNumber = new PhoneNumber("123-456-789");
     Supplier<Scalar<?, ?>> supplier =
         Scalars.wrap(phoneNumber, PhoneNumber.class, true, classHelper);
@@ -266,7 +266,7 @@ public class ScalarsTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testWrapDomain_option_null() throws Exception {
+  public void testWrapDomain_option_null() {
     Supplier<Scalar<?, ?>> supplier = Scalars.wrap(null, PhoneNumber.class, true, classHelper);
     assertNotNull(supplier);
 
@@ -277,7 +277,7 @@ public class ScalarsTest {
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(StringWrapper.class, wrapper.getClass());
-    assertEquals(null, wrapper.get());
+    assertNull(wrapper.get());
   }
 
   public enum MyEnum {

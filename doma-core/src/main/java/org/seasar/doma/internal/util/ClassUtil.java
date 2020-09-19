@@ -16,9 +16,7 @@ public final class ClassUtil {
   public static <T> T newInstance(Class<T> clazz) throws WrapException {
     try {
       return clazz.newInstance();
-    } catch (InstantiationException e) {
-      throw new WrapException(e);
-    } catch (IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException e) {
       throw new WrapException(e);
     }
   }
@@ -27,9 +25,7 @@ public final class ClassUtil {
       throws WrapException {
     try {
       return clazz.getConstructor(parameterTypes);
-    } catch (SecurityException e) {
-      throw new WrapException(e);
-    } catch (NoSuchMethodException e) {
+    } catch (SecurityException | NoSuchMethodException e) {
       throw new WrapException(e);
     }
   }
@@ -38,9 +34,7 @@ public final class ClassUtil {
       throws WrapException {
     try {
       return clazz.getMethod(name, parameterTypes);
-    } catch (SecurityException e) {
-      throw new WrapException(e);
-    } catch (NoSuchMethodException e) {
+    } catch (SecurityException | NoSuchMethodException e) {
       throw new WrapException(e);
     }
   }
@@ -50,9 +44,7 @@ public final class ClassUtil {
     assertNotNull(clazz, name, parameterTypes);
     try {
       return clazz.getDeclaredMethod(name, parameterTypes);
-    } catch (SecurityException e) {
-      throw new WrapException(e);
-    } catch (NoSuchMethodException e) {
+    } catch (SecurityException | NoSuchMethodException e) {
       throw new WrapException(e);
     }
   }
@@ -61,9 +53,7 @@ public final class ClassUtil {
     assertNotNull(clazz, name);
     try {
       return clazz.getDeclaredField(name);
-    } catch (SecurityException e) {
-      throw new WrapException(e);
-    } catch (NoSuchFieldException e) {
+    } catch (SecurityException | NoSuchFieldException e) {
       throw new WrapException(e);
     }
   }
@@ -151,10 +141,6 @@ public final class ClassUtil {
     if (superclass == null) {
       return null;
     }
-    R result = traverse(superclass, f);
-    if (result != null) {
-      return result;
-    }
-    return null;
+    return traverse(superclass, f);
   }
 }

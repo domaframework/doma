@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class EntityPropertyAccessExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     EntityPropertyAccessException e =
         new EntityPropertyAccessException(new Exception(), "aaa", "bbb");
     System.out.println(e.getMessage());

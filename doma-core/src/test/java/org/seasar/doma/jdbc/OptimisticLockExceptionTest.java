@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class OptimisticLockExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     OptimisticLockException e =
         new OptimisticLockException(SqlLogType.FORMATTED, SqlKind.UPDATE, "aaa", "bbb", "ccc");
     System.out.println(e.getMessage());

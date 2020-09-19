@@ -55,6 +55,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
         () -> Message.DOMA2220.getMessage(callerClassName, callerMethodName));
   }
 
+  @SuppressWarnings("CStyleArrayDeclaration")
   protected void logDaoMethodEntering(
       String callerClassName,
       String callerMethodName,
@@ -325,7 +326,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   public void logAutoCommitEnablingFailure(
       String callerClassName, String callerMethodName, SQLException e) {
     logAutoCommitEnablingFailure(
-        callerClassName, callerMethodName, e, defaultLevel, () -> Message.DOMA2071.getMessage());
+        callerClassName, callerMethodName, e, defaultLevel, Message.DOMA2071::getMessage);
   }
 
   protected void logAutoCommitEnablingFailure(
@@ -366,7 +367,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   public void logConnectionClosingFailure(
       String callerClassName, String callerMethodName, SQLException e) {
     logConnectionClosingFailure(
-        callerClassName, callerMethodName, e, defaultLevel, () -> Message.DOMA2073.getMessage());
+        callerClassName, callerMethodName, e, defaultLevel, Message.DOMA2073::getMessage);
   }
 
   protected void logConnectionClosingFailure(
@@ -382,7 +383,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   public void logStatementClosingFailure(
       String callerClassName, String callerMethodName, SQLException e) {
     logStatementClosingFailure(
-        callerClassName, callerMethodName, e, defaultLevel, () -> Message.DOMA2074.getMessage());
+        callerClassName, callerMethodName, e, defaultLevel, Message.DOMA2074::getMessage);
   }
 
   protected void logStatementClosingFailure(
@@ -398,7 +399,7 @@ public abstract class AbstractJdbcLogger<LEVEL> implements JdbcLogger {
   public void logResultSetClosingFailure(
       String callerClassName, String callerMethodName, SQLException e) {
     logResultSetClosingFailure(
-        callerClassName, callerMethodName, e, defaultLevel, () -> Message.DOMA2075.getMessage());
+        callerClassName, callerMethodName, e, defaultLevel, Message.DOMA2075::getMessage);
   }
 
   protected void logResultSetClosingFailure(

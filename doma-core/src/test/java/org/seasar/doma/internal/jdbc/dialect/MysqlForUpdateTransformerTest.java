@@ -15,7 +15,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class MysqlForUpdateTransformerTest {
 
   @Test
-  public void testForUpdateNormal() throws Exception {
+  public void testForUpdateNormal() {
     String expected = "select * from emp order by emp.id for update";
     MysqlForUpdateTransformer transformer =
         new MysqlForUpdateTransformer(SelectForUpdateType.NORMAL, 0);

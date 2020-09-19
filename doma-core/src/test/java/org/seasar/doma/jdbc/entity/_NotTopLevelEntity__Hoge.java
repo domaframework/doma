@@ -36,6 +36,7 @@ public final class _NotTopLevelEntity__Hoge
           String, org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>>
       __entityPropertyTypeMap;
 
+  @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private _NotTopLevelEntity__Hoge() {
     __listenerSupplier = () -> ListenerHolder.listener;
     __immutable = false;
@@ -57,7 +58,7 @@ public final class _NotTopLevelEntity__Hoge
 
   @Override
   public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
-    return __namingType;
+    return null;
   }
 
   @Override
@@ -91,7 +92,7 @@ public final class _NotTopLevelEntity__Hoge
       java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String>
           namingFunction) {
     if (__tableName.isEmpty()) {
-      return namingFunction.apply(__namingType, __name);
+      return namingFunction.apply(null, __name);
     }
     return __tableName;
   }
@@ -206,8 +207,7 @@ public final class _NotTopLevelEntity__Hoge
   public NotTopLevelEntity.Hoge newEntity(
       java.util.Map<String, org.seasar.doma.jdbc.entity.Property<NotTopLevelEntity.Hoge, ?>>
           __args) {
-    NotTopLevelEntity.Hoge entity = new NotTopLevelEntity.Hoge();
-    return entity;
+    return new NotTopLevelEntity.Hoge();
   }
 
   @Override
@@ -234,7 +234,7 @@ public final class _NotTopLevelEntity__Hoge
   }
 
   private static class ListenerHolder {
-    private static org.seasar.doma.jdbc.entity.NullEntityListener<NotTopLevelEntity.Hoge> listener =
-        new org.seasar.doma.jdbc.entity.NullEntityListener<>();
+    private static final org.seasar.doma.jdbc.entity.NullEntityListener<NotTopLevelEntity.Hoge>
+        listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
   }
 }

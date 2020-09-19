@@ -9,6 +9,6 @@ public class DomainStreamHandler<BASIC, DOMAIN, RESULT>
 
   public DomainStreamHandler(
       DomainType<BASIC, DOMAIN> domainType, Function<Stream<DOMAIN>, RESULT> mapper) {
-    super(() -> domainType.createScalar(), mapper);
+    super(domainType::createScalar, mapper);
   }
 }

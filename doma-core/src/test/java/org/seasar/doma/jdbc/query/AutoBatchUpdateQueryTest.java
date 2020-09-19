@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -22,6 +21,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoBatchUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -29,12 +29,12 @@ public class AutoBatchUpdateQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -45,7 +45,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -54,12 +54,11 @@ public class AutoBatchUpdateQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchUpdateQuery batchUpdateQuery = query;
-    assertEquals(2, batchUpdateQuery.getSqls().size());
+    assertEquals(2, ((BatchUpdateQuery) query).getSqls().size());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -70,7 +69,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -86,10 +85,10 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(5, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+    assertNull(parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -97,15 +96,15 @@ public class AutoBatchUpdateQueryTest {
         sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(5, parameters.size());
-    assertTrue(parameters.get(0).getWrapper().get() == null);
+    assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(4).getWrapper().get());
   }
 
   @Test
-  public void testOption_ignoreVersion() throws Exception {
+  public void testOption_ignoreVersion() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -116,7 +115,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -132,8 +131,8 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("update EMP set NAME = ?, SALARY = ?, VERSION = ? where ID = ?", sql.getRawSql());
@@ -141,12 +140,12 @@ public class AutoBatchUpdateQueryTest {
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
   }
 
   @Test
-  public void testOption_include() throws Exception {
+  public void testOption_include() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -157,7 +156,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -173,9 +172,9 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -183,13 +182,13 @@ public class AutoBatchUpdateQueryTest {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   @Test
-  public void testOption_exclude() throws Exception {
+  public void testOption_exclude() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -200,7 +199,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -216,9 +215,9 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals(new BigDecimal(200), parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
+    assertEquals(10, parameters.get(2).getWrapper().get());
+    assertEquals(100, parameters.get(3).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals(
@@ -226,25 +225,25 @@ public class AutoBatchUpdateQueryTest {
     parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertNull(parameters.get(0).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(1).getWrapper().get());
+    assertEquals(20, parameters.get(2).getWrapper().get());
+    assertEquals(200, parameters.get(3).getWrapper().get());
   }
 
   @Test
-  public void testIsExecutable() throws Exception {
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+  public void testIsExecutable() {
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setEntities(Collections.<Emp>emptyList());
+    query.setEntities(Collections.emptyList());
     query.prepare();
     assertFalse(query.isExecutable());
   }
 
   @Test
-  public void testTenantId() throws Exception {
+  public void testTenantId() {
     Salesman s1 = new Salesman();
     s1.setId(10);
     s1.setName("aaa");
@@ -258,7 +257,7 @@ public class AutoBatchUpdateQueryTest {
     s2.setVersion(200);
 
     AutoBatchUpdateQuery<Salesman> query =
-        new AutoBatchUpdateQuery<Salesman>(_Salesman.getSingletonInternal());
+        new AutoBatchUpdateQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(s1, s2));
@@ -274,10 +273,10 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(6, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
-    assertEquals(new Integer(100), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(10), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(100), parameters.get(4).getWrapper().get());
+    assertNull(parameters.get(1).getWrapper().get());
+    assertEquals(100, parameters.get(2).getWrapper().get());
+    assertEquals(10, parameters.get(3).getWrapper().get());
+    assertEquals(100, parameters.get(4).getWrapper().get());
     assertEquals("bbb", parameters.get(5).getWrapper().get());
 
     sql = query.getSqls().get(1);
@@ -286,11 +285,11 @@ public class AutoBatchUpdateQueryTest {
         sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(6, parameters.size());
-    assertTrue(parameters.get(0).getWrapper().get() == null);
+    assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(2).getWrapper().get());
-    assertEquals(new Integer(20), parameters.get(3).getWrapper().get());
-    assertEquals(new Integer(200), parameters.get(4).getWrapper().get());
+    assertEquals(200, parameters.get(2).getWrapper().get());
+    assertEquals(20, parameters.get(3).getWrapper().get());
+    assertEquals(200, parameters.get(4).getWrapper().get());
     assertEquals("bbb", parameters.get(5).getWrapper().get());
   }
 }

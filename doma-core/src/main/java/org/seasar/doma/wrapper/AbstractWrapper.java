@@ -7,7 +7,7 @@ package org.seasar.doma.wrapper;
  */
 public abstract class AbstractWrapper<BASIC> implements Wrapper<BASIC> {
 
-  protected Class<BASIC> basicClass;
+  protected final Class<BASIC> basicClass;
 
   protected BASIC value;
 

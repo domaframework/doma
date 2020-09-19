@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class OriginalStatesNotFoundExceptionTest {
 
   @Test
-  public void test() throws Exception {
+  public void test() {
     OriginalStatesNotFoundException e =
         new OriginalStatesNotFoundException(new Exception(), "aaa", "bbb");
     System.out.println(e.getMessage());

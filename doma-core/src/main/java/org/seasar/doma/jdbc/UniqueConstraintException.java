@@ -41,7 +41,7 @@ public class UniqueConstraintException extends JdbcException {
   }
 
   protected UniqueConstraintException(
-      MessageResource messageCode,
+      @SuppressWarnings("SameParameterValue") MessageResource messageCode,
       SqlKind kind,
       String rawSql,
       String sqlFilePath,

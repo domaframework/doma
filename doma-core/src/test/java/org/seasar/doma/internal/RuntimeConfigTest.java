@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.entity.EntityListener;
 public class RuntimeConfigTest {
 
   @Test
-  public void testGetEntityListener() throws Exception {
+  public void testGetEntityListener() {
     Config originalConfig =
         new MockConfig() {
 
@@ -38,7 +38,7 @@ public class RuntimeConfigTest {
   }
 
   @Test
-  public void testGetEntityListenerNullCheck() throws Exception {
+  public void testGetEntityListenerNullCheck() {
     Config originalConfig =
         new MockConfig() {
 
@@ -56,7 +56,6 @@ public class RuntimeConfigTest {
           .get(MockEntityListener.class, MockEntityListener::new);
       fail();
     } catch (ConfigException e) {
-      assertEquals(originalConfig.getClass().getName(), e.getClassName());
       assertEquals("getEntityListenerProvider", e.getMethodName());
     }
   }

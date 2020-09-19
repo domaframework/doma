@@ -5,9 +5,10 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar;
 import org.seasar.doma.wrapper.Wrapper;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class OptionalBasicInParameter<BASIC> extends ScalarInParameter<BASIC, Optional<BASIC>> {
 
   public OptionalBasicInParameter(Supplier<Wrapper<BASIC>> supplier, Optional<BASIC> value) {
-    super(new OptionalBasicScalar<BASIC>(supplier), value);
+    super(new OptionalBasicScalar<>(supplier), value);
   }
 }

@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SqlFileBatchInsertQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();
@@ -24,12 +25,12 @@ public class SqlFileBatchInsertQueryTest {
   private Method method;
 
   @BeforeEach
-  protected void setUp(TestInfo testInfo) throws Exception {
+  protected void setUp(TestInfo testInfo) {
     method = testInfo.getTestMethod().get();
   }
 
   @Test
-  public void testPrepare() throws Exception {
+  public void testPrepare() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -40,7 +41,7 @@ public class SqlFileBatchInsertQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -51,12 +52,11 @@ public class SqlFileBatchInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchInsertQuery batchInsertQuery = query;
-    assertEquals(2, batchInsertQuery.getSqls().size());
+    assertEquals(2, ((BatchInsertQuery) query).getSqls().size());
   }
 
   @Test
-  public void testOption_default() throws Exception {
+  public void testOption_default() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -67,7 +67,7 @@ public class SqlFileBatchInsertQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -82,7 +82,7 @@ public class SqlFileBatchInsertQueryTest {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(10), parameters.get(0).getWrapper().get());
+    assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals("aaa", parameters.get(1).getWrapper().get());
     assertNull(parameters.get(2).getWrapper().get());
 
@@ -90,7 +90,7 @@ public class SqlFileBatchInsertQueryTest {
     assertEquals("insert into emp (id, name, salary) values (?, ?, ?)", sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(3, parameters.size());
-    assertEquals(new Integer(20), parameters.get(0).getWrapper().get());
+    assertEquals(20, parameters.get(0).getWrapper().get());
     assertNull(parameters.get(1).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(2).getWrapper().get());
   }
