@@ -113,6 +113,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
       RESULT result = supplier.get();
       if (result instanceof Stream) {
         Stream<?> stream = (Stream<?>) result;
+        //noinspection ResultOfMethodCallIgnored
         stream.onClose(closeHandler);
       } else {
         closeHandler.run();
