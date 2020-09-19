@@ -20,12 +20,12 @@ public class PreparedSqlParameterBinder
   }
 
   @Override
-  public void bind(PreparedStatement preparedStatement, List<? extends InParameter<?>> paramters)
+  public void bind(PreparedStatement preparedStatement, List<? extends InParameter<?>> parameters)
       throws SQLException {
-    assertNotNull(preparedStatement, paramters);
+    assertNotNull(preparedStatement, parameters);
     int index = 1;
     JdbcMappingVisitor jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
-    for (InParameter<?> parameter : paramters) {
+    for (InParameter<?> parameter : parameters) {
       bindInParameter(preparedStatement, parameter, index, jdbcMappingVisitor);
       index++;
     }

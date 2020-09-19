@@ -273,7 +273,7 @@ public class MapBatchInsertBuilderTest {
                 new LinkedHashMap<String, Object>() {
                   {
                     put("name", "ALLEN");
-                    put("salaree", 2000);
+                    put("age", 20);
                   }
                 });
           }

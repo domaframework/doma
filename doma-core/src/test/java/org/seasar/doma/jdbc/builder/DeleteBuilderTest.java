@@ -35,7 +35,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testLiterall() {
+  public void testLiteral() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");

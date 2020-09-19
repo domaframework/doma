@@ -207,7 +207,7 @@ public class ExpressionTokenizerTest {
   }
 
   @Test
-  public void testParans() {
+  public void testParens() {
     ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb(2, 3)");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("aaa", tokenizer.getToken());

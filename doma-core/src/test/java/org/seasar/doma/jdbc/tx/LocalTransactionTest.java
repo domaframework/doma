@@ -34,7 +34,7 @@ public class LocalTransactionTest {
   }
 
   @Test
-  public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
+  public void testBeginImplicitDefaultTransactionIsolationLevel() throws Exception {
     LocalTransaction transaction =
         dataSource.getLocalTransaction(jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
     transaction.begin();

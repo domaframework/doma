@@ -37,9 +37,9 @@ public class CallableSqlParameterFetcher {
   public void fetch(CallableStatement callableStatement, List<? extends SqlParameter> parameters)
       throws SQLException {
     assertNotNull(callableStatement, parameters);
-    FetchingVisitor fetchngVisitor = new FetchingVisitor(query, callableStatement);
+    FetchingVisitor fetchingVisitor = new FetchingVisitor(query, callableStatement);
     for (SqlParameter parameter : parameters) {
-      parameter.accept(fetchngVisitor, null);
+      parameter.accept(fetchingVisitor, null);
     }
   }
 

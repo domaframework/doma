@@ -53,7 +53,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testRmoveLast() {
+  public void testRemoveLast() {
     SelectBuilder builder = SelectBuilder.newInstance(new MockConfig());
     builder.sql("aaa").sql("bbb");
     builder.removeLast();

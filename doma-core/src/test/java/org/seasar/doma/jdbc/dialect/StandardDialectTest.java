@@ -118,7 +118,7 @@ public class StandardDialectTest {
   }
 
   @Test
-  public void testExpressionFunctions_roundDonwTimePart_forUtilDate() {
+  public void testExpressionFunctions_roundDownTimePart_forUtilDate() {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     Calendar calendar = Calendar.getInstance();
@@ -128,7 +128,7 @@ public class StandardDialectTest {
   }
 
   @Test
-  public void testExpressionFunctions_roundDonwTimePart_forDate() {
+  public void testExpressionFunctions_roundDownTimePart_forDate() {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     Calendar calendar = Calendar.getInstance();
@@ -138,7 +138,7 @@ public class StandardDialectTest {
   }
 
   @Test
-  public void testExpressionFunctions_roundDonwTimePart_forTimestamp() {
+  public void testExpressionFunctions_roundDownTimePart_forTimestamp() {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     Timestamp timestamp = Timestamp.valueOf("2009-01-23 12:34:56.123456789");
@@ -147,7 +147,7 @@ public class StandardDialectTest {
   }
 
   @Test
-  public void testExpressionFunctions_roundDonwTimePart_forLocalDateTime() {
+  public void testExpressionFunctions_roundDownTimePart_forLocalDateTime() {
     StandardDialect dialect = new StandardDialect();
     ExpressionFunctions functions = dialect.getExpressionFunctions();
     LocalDateTime localDateTime = LocalDateTime.of(2009, 1, 23, 12, 34, 56, 123456789);

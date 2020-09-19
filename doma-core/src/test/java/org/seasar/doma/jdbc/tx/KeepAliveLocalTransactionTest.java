@@ -37,7 +37,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testBeginImlicitDefaultTransactionIsolationLevel() throws Exception {
+  public void testBeginImplicitDefaultTransactionIsolationLevel() throws Exception {
     LocalTransaction transaction =
         dataSource.getKeepAliveLocalTransaction(jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
     transaction.begin();
@@ -320,7 +320,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testInitAndDestory() {
+  public void testInitAndDestroy() {
     assertNull(transaction.localTxContextHolder.get());
     transaction.init();
     assertNotNull(transaction.localTxContextHolder.get());

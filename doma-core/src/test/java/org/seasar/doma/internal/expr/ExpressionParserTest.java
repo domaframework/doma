@@ -217,7 +217,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod() {
+  public void testStaticMethod() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@valueOf(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -226,7 +226,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod_classNotFound() {
+  public void testStaticMethod_classNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@valueOf(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -239,7 +239,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictMethod_methodNotFound() {
+  public void testStaticMethod_methodNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@xxx(1)");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -265,7 +265,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField() {
+  public void testStaticField() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@CASE_INSENSITIVE_ORDER");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -274,7 +274,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField_classNotFound() {
+  public void testStaticField_classNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.Xxx@CASE_INSENSITIVE_ORDER");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -287,7 +287,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void testStatictField_fieldNotFound() {
+  public void testStaticField_fieldNotFound() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@hoge");
     ExpressionNode expression = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();

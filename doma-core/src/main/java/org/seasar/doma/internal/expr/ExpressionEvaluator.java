@@ -100,9 +100,9 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     return variableValues.remove(variableName);
   }
 
-  public void add(String varialbeName, Value value) {
-    assertNotNull(varialbeName, value);
-    variableValues.put(varialbeName, value);
+  public void add(String variableName, Value value) {
+    assertNotNull(variableName, value);
+    variableValues.put(variableName, value);
   }
 
   public EvaluationResult evaluate(ExpressionNode node) {
@@ -263,11 +263,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   protected Text createText(
-      OperatorNode operatoNode, ExpressionNode operandNode, EvaluationResult evaluationResult) {
+      OperatorNode operatorNode, ExpressionNode operandNode, EvaluationResult evaluationResult) {
     if (!Text.isAcceptable(evaluationResult.getValueClass())) {
       return null;
     }
-    return new Text(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
+    return new Text(operatorNode, evaluationResult.getValue(), evaluationResult.getValueClass());
   }
 
   protected void throwNotTextException(
@@ -351,13 +351,13 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   protected Number createNumber(
-      ArithmeticOperatorNode operatoNode,
+      ArithmeticOperatorNode operatorNode,
       ExpressionNode operandNode,
       EvaluationResult evaluationResult) {
     if (!Number.isAcceptable(evaluationResult.getValueClass())) {
       return null;
     }
-    return new Number(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
+    return new Number(operatorNode, evaluationResult.getValue(), evaluationResult.getValueClass());
   }
 
   protected ExpressionException newNotNumberException(
@@ -569,19 +569,19 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     for (Method method : methods) {
       Class<?> paramTypes[] = method.getParameterTypes();
       if (paramTypes.length == argTypes.length) {
-        int degreeOfcoincidence = 0;
+        int degreeOfCoincidence = 0;
         for (int i = 0; i < paramTypes.length; i++) {
           int difference = calculateHierarchyDifference(paramTypes[i], argTypes[i], 0);
           if (difference == -1) {
             continue outer;
           }
-          degreeOfcoincidence += difference;
+          degreeOfCoincidence += difference;
         }
-        if (degreeOfcoincidence == 0) {
+        if (degreeOfCoincidence == 0) {
           return method;
         }
-        if (candidate == null || degreeOfcoincidence < candidate.degreeOfcoincidence) {
-          candidate = new CandidateMethod(degreeOfcoincidence, method);
+        if (candidate == null || degreeOfCoincidence < candidate.degreeOfCoincidence) {
+          candidate = new CandidateMethod(degreeOfCoincidence, method);
         }
       }
     }
@@ -1188,11 +1188,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
   }
 
   protected static class CandidateMethod {
-    final int degreeOfcoincidence;
+    final int degreeOfCoincidence;
     final Method method;
 
-    CandidateMethod(int degreeOfcoincidence, Method method) {
-      this.degreeOfcoincidence = degreeOfcoincidence;
+    CandidateMethod(int degreeOfCoincidence, Method method) {
+      this.degreeOfCoincidence = degreeOfCoincidence;
       this.method = method;
     }
   }

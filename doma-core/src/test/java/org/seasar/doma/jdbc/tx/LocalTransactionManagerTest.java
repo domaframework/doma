@@ -41,7 +41,7 @@ public class LocalTransactionManagerTest {
   }
 
   @Test
-  public void testRequired_blcok() {
+  public void testRequired_block() {
     TransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);
@@ -66,7 +66,7 @@ public class LocalTransactionManagerTest {
   }
 
   @Test
-  public void testRequiresNew_blcok() {
+  public void testRequiresNew_block() {
     TransactionManager manager = new LocalTransactionManager(transaction);
     StringBuilder log = new StringBuilder();
     log.append(LocalTransactionManagerTest.counter);

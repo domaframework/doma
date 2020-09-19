@@ -25,7 +25,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code =} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -55,7 +55,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code <>} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -85,7 +85,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code >} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -115,7 +115,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code >=} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -145,7 +145,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code <} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
@@ -175,7 +175,7 @@ public abstract class ComparisonDeclaration {
    * Adds a {@code <=} operator.
    *
    * @param left the left hand operand
-   * @param right the right hand operand. If this value is null, the query condition does'nt include
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
    *     the operand.
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null

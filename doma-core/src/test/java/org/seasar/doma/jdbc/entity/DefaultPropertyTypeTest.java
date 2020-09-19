@@ -101,7 +101,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_columnNotDefined_embeddableProeprty() {
+  public void testGetColumnName_columnNotDefined_embeddableProperty() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -146,7 +146,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_columnNotDefined() {
+  public void testGetColumnName_naming_columnNotDefined() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -161,7 +161,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_quote_quoteRequired() {
+  public void testGetColumnName_naming_quote_quoteRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -176,7 +176,7 @@ public class DefaultPropertyTypeTest {
   }
 
   @Test
-  public void testGetColumnName_naiming_quote_quoteNotRequired() {
+  public void testGetColumnName_naming_quote_quoteNotRequired() {
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
