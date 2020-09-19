@@ -194,7 +194,6 @@ public class BatchDeleteExecutorTest {
   }
 
   private static class Employee {
-    @SuppressWarnings("unused")
     final int id;
 
     final String name;
