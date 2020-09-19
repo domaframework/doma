@@ -68,7 +68,7 @@ public final class Options {
 
   public boolean isTestEnabled() {
     String test = getOption(TEST);
-    return Boolean.valueOf(test);
+    return Boolean.parseBoolean(test);
   }
 
   public String getVersion() {
@@ -80,7 +80,7 @@ public final class Options {
 
   public boolean isMetamodelEnabled() {
     String enabled = getOption(METAMODEL_ENABLED);
-    return enabled != null ? Boolean.valueOf(enabled) : false;
+    return enabled != null ? Boolean.parseBoolean(enabled) : false;
   }
 
   public String getMetamodelPrefix() {
@@ -102,7 +102,7 @@ public final class Options {
 
   public boolean isDebugEnabled() {
     String debug = getOption(DEBUG);
-    return Boolean.valueOf(debug);
+    return Boolean.parseBoolean(debug);
   }
 
   public String getDaoPackage() {
@@ -136,12 +136,12 @@ public final class Options {
 
   public boolean getSqlValidation() {
     String v = getOption(SQL_VALIDATION);
-    return v != null ? Boolean.valueOf(v) : true;
+    return v != null ? Boolean.parseBoolean(v) : true;
   }
 
   public boolean getVersionValidation() {
     String v = getOption(VERSION_VALIDATION);
-    return v != null ? Boolean.valueOf(v) : true;
+    return v != null ? Boolean.parseBoolean(v) : true;
   }
 
   public String getConfigPath() {
