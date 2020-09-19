@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -76,7 +75,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     HashMap<Integer, EntityPropertyType<ENTITY, ?>> indexMap = new HashMap<>();
     HashMap<String, EntityPropertyType<ENTITY, ?>> columnNameMap = createColumnNameMap(entityType);
     Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet =
-        resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : Collections.emptySet();
+        resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : new HashSet<>();
     int count = resultSetMeta.getColumnCount();
     for (int i = 1; i < count + 1; i++) {
       String columnName = resultSetMeta.getColumnLabel(i);
