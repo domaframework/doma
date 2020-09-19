@@ -1,7 +1,7 @@
 package org.seasar.doma.jdbc.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -78,7 +78,7 @@ public class AutoBatchDeleteQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(2, parameters.size());
     assertEquals(10, parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
+    assertNull(parameters.get(1).getWrapper().get());
 
     sql = query.getSqls().get(1);
     assertEquals("delete from EMP where ID = ? and VERSION = ?", sql.getRawSql());

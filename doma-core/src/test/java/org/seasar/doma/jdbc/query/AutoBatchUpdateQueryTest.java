@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -86,7 +85,7 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(5, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
+    assertNull(parameters.get(1).getWrapper().get());
     assertEquals(100, parameters.get(2).getWrapper().get());
     assertEquals(10, parameters.get(3).getWrapper().get());
     assertEquals(100, parameters.get(4).getWrapper().get());
@@ -97,7 +96,7 @@ public class AutoBatchUpdateQueryTest {
         sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(5, parameters.size());
-    assertTrue(parameters.get(0).getWrapper().get() == null);
+    assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
     assertEquals(200, parameters.get(2).getWrapper().get());
     assertEquals(20, parameters.get(3).getWrapper().get());
@@ -274,7 +273,7 @@ public class AutoBatchUpdateQueryTest {
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(6, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertTrue(parameters.get(1).getWrapper().get() == null);
+    assertNull(parameters.get(1).getWrapper().get());
     assertEquals(100, parameters.get(2).getWrapper().get());
     assertEquals(10, parameters.get(3).getWrapper().get());
     assertEquals(100, parameters.get(4).getWrapper().get());
@@ -286,7 +285,7 @@ public class AutoBatchUpdateQueryTest {
         sql.getRawSql());
     parameters = sql.getParameters();
     assertEquals(6, parameters.size());
-    assertTrue(parameters.get(0).getWrapper().get() == null);
+    assertNull(parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(2000), parameters.get(1).getWrapper().get());
     assertEquals(200, parameters.get(2).getWrapper().get());
     assertEquals(20, parameters.get(3).getWrapper().get());

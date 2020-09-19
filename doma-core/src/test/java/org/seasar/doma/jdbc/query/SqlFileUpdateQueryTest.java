@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import example.entity.Emp;
@@ -73,7 +74,7 @@ public class SqlFileUpdateQueryTest {
     List<? extends InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());
     assertEquals("aaa", parameters.get(0).getWrapper().get());
-    assertEquals(null, parameters.get(1).getWrapper().get());
+    assertNull(parameters.get(1).getWrapper().get());
     assertEquals(100, parameters.get(2).getWrapper().get());
     assertEquals(10, parameters.get(3).getWrapper().get());
     assertTrue(query.isExecutable());

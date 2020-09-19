@@ -276,7 +276,7 @@ public class ScalarsTest {
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(StringWrapper.class, wrapper.getClass());
-    assertEquals(null, wrapper.get());
+    assertNull(wrapper.get());
   }
 
   public enum MyEnum {

@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -118,14 +119,14 @@ public class MapBatchInsertBuilderTest {
     assertEquals(expectedSql, sqls.get(0).getRawSql());
     List<? extends SqlParameter> parameters0 = sqls.get(0).getParameters();
     assertEquals(2, parameters0.size());
-    assertEquals(null, parameters0.get(0).getValue());
+    assertNull(parameters0.get(0).getValue());
     assertEquals(1000, parameters0.get(1).getValue());
 
     assertEquals(expectedSql, sqls.get(1).getRawSql());
     List<? extends SqlParameter> parameters1 = sqls.get(1).getParameters();
     assertEquals(2, parameters1.size());
     assertEquals("ALLEN", parameters1.get(0).getValue());
-    assertEquals(null, parameters1.get(1).getValue());
+    assertNull(parameters1.get(1).getValue());
   }
 
   @SuppressWarnings("serial")

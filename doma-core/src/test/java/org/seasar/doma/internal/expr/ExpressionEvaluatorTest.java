@@ -55,7 +55,7 @@ public class ExpressionEvaluatorTest {
     EvaluationResult result =
         evaluator.invokeMethod(
             location, method, person, Person.class, new Class[] {}, new Object[] {});
-    assertEquals(null, result.getValue());
+    assertNull(result.getValue());
     assertEquals(String.class, result.getValueClass());
   }
 
@@ -265,7 +265,7 @@ public class ExpressionEvaluatorTest {
     Person person = new Person();
     person.optionalName = Optional.empty();
     EvaluationResult result = evaluator.getFieldValue(location, field, person);
-    assertEquals(null, result.getValue());
+    assertNull(result.getValue());
     assertEquals(String.class, result.getValueClass());
   }
 
