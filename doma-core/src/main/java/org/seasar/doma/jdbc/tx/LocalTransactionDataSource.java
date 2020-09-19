@@ -69,7 +69,7 @@ public final class LocalTransactionDataSource implements DataSource {
    * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
-  public Connection getConnection() throws SQLException {
+  public Connection getConnection() {
     return getConnectionInternal();
   }
 
@@ -82,7 +82,7 @@ public final class LocalTransactionDataSource implements DataSource {
    * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
-  public Connection getConnection(String username, String password) throws SQLException {
+  public Connection getConnection(String username, String password) {
     return getConnectionInternal();
   }
 

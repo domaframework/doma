@@ -148,15 +148,15 @@ public class SimpleDataSource implements DataSource {
   }
 
   @Override
-  public PrintWriter getLogWriter() throws SQLException {
+  public PrintWriter getLogWriter() {
     return null;
   }
 
   @Override
-  public void setLogWriter(PrintWriter out) throws SQLException {}
+  public void setLogWriter(PrintWriter out) {}
 
   @Override
-  public boolean isWrapperFor(Class<?> iface) throws SQLException {
+  public boolean isWrapperFor(Class<?> iface) {
     return iface != null && iface.isAssignableFrom(getClass());
   }
 

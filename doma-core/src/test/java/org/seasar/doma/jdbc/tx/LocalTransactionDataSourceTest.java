@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 public class LocalTransactionDataSourceTest {
 
   @Test
-  public void testGetConnection() throws Exception {
+  public void testGetConnection() {
     UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
     LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
     dataSource.getLocalTransaction(jdbcLogger).begin();
@@ -23,7 +23,7 @@ public class LocalTransactionDataSourceTest {
   }
 
   @Test
-  public void testGetConnection_notYetBegun() throws Exception {
+  public void testGetConnection_notYetBegun() {
     LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
     try {
       dataSource.getConnection();
@@ -34,7 +34,7 @@ public class LocalTransactionDataSourceTest {
   }
 
   @Test
-  public void testIsWrapperFor() throws Exception {
+  public void testIsWrapperFor() throws SQLException {
     DataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
     assertTrue(dataSource.isWrapperFor(LocalTransactionDataSource.class));
     assertTrue(dataSource.isWrapperFor(MockDataSource.class));
@@ -42,7 +42,7 @@ public class LocalTransactionDataSourceTest {
   }
 
   @Test
-  public void testUnwrap() throws Exception {
+  public void testUnwrap() throws SQLException {
     DataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
     assertNotNull(dataSource.unwrap(LocalTransactionDataSource.class));
     assertNotNull(dataSource.unwrap(MockDataSource.class));

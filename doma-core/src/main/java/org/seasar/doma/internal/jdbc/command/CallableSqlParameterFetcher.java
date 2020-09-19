@@ -29,7 +29,7 @@ public class CallableSqlParameterFetcher {
 
   protected final ModuleQuery query;
 
-  public CallableSqlParameterFetcher(ModuleQuery query) throws SQLException {
+  public CallableSqlParameterFetcher(ModuleQuery query) {
     assertNotNull(query);
     this.query = query;
   }
@@ -63,7 +63,7 @@ public class CallableSqlParameterFetcher {
     }
 
     @Override
-    public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p) throws SQLException {
+    public <BASIC> Void visitInParameter(InParameter<BASIC> parameter, Void p) {
       index++;
       return null;
     }

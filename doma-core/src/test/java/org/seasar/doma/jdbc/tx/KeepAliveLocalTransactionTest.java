@@ -28,7 +28,7 @@ public class KeepAliveLocalTransactionTest {
       dataSource.getKeepAliveLocalTransaction(jdbcLogger);
 
   @Test
-  public void testBegin() throws Exception {
+  public void testBegin() {
     transaction.begin();
     assertTrue(transaction.isActive());
     dataSource.getConnection();
@@ -37,7 +37,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testBeginImplicitDefaultTransactionIsolationLevel() throws Exception {
+  public void testBeginImplicitDefaultTransactionIsolationLevel() {
     LocalTransaction transaction =
         dataSource.getKeepAliveLocalTransaction(jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
     transaction.begin();
@@ -48,7 +48,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testBeginWithTransactionIsolationLevel() throws Exception {
+  public void testBeginWithTransactionIsolationLevel() {
     transaction.begin(TransactionIsolationLevel.SERIALIZABLE);
     assertTrue(transaction.isActive());
     dataSource.getConnection();
@@ -68,7 +68,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testBegin_failedToBegin() throws Exception {
+  public void testBegin_failedToBegin() {
     final SQLException exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
@@ -92,7 +92,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testBegin_failedToSetTransactionIsolation() throws Exception {
+  public void testBegin_failedToSetTransactionIsolation() {
     final SQLException exception = new SQLException();
     MockConnection connection =
         new MockConnection() {
@@ -236,7 +236,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testCommit() throws Exception {
+  public void testCommit() {
     transaction.begin();
     dataSource.getConnection();
     transaction.commit();
@@ -265,7 +265,7 @@ public class KeepAliveLocalTransactionTest {
   }
 
   @Test
-  public void testRollback() throws Exception {
+  public void testRollback() {
     transaction.begin();
     dataSource.getConnection();
     transaction.rollback();
