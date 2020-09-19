@@ -42,5 +42,5 @@ public interface AutoFunctionOptionalParameterDao {
   @Function
   List<Optional<MyEnum>> executeFunction6(@ResultSet List<Optional<MyEnum>> arg1);
 
-  public enum MyEnum {}
+  enum MyEnum {}
 }

@@ -11,8 +11,8 @@ public interface DaoExtendsDao extends EmpDao {
 
   @Override
   @Select
-  public Emp selectById(Integer id, SelectOptions options);
+  Emp selectById(Integer id, SelectOptions options);
 
   @Update
-  public int update2(Emp entity);
+  int update2(Emp entity);
 }

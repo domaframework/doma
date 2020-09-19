@@ -11,8 +11,8 @@ public interface NoConfigDaoExtendsNoConfigDao extends NoConfigEmpDao {
 
   @Override
   @Select
-  public Emp selectById(Integer id, SelectOptions options);
+  Emp selectById(Integer id, SelectOptions options);
 
   @Update
-  public int update2(Emp entity);
+  int update2(Emp entity);
 }

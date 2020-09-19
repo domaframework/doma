@@ -2,9 +2,9 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 public interface Issue214EntityInterface2 extends Issue214EntityInterface {
 
-  public static final String SATIC_FIELD = "";
+  String SATIC_FIELD = "";
 
-  public static String staticMethod() {
+  static String staticMethod() {
     return null;
   }
 

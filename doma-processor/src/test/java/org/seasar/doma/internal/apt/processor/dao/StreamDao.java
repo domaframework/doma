@@ -28,7 +28,7 @@ public interface StreamDao {
   @Select(strategy = SelectType.STREAM, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
   <R> R selectByIdAsMap(Integer id, Function<Stream<Map<String, Object>>, R> callback);
 
-  public class HogeFunction implements Function<Stream<String>, String> {
+  class HogeFunction implements Function<Stream<String>, String> {
 
     @Override
     public String apply(Stream<String> t) {
