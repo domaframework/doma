@@ -955,6 +955,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     protected EvaluationResult divide(Number other) {
       BigDecimal newValue = null;
       try {
+        //noinspection BigDecimalMethodWithoutRoundingCalled
         newValue = numberValue.divide(other.numberValue);
       } catch (ArithmeticException e) {
         handleArithmeticException(e);
