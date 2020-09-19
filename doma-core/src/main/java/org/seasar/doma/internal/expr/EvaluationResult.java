@@ -24,7 +24,7 @@ public class EvaluationResult {
 
   public boolean getBooleanValue() {
     if (value instanceof Boolean) {
-      return ((Boolean) value).booleanValue();
+      return (Boolean) value;
     }
     return false;
   }
