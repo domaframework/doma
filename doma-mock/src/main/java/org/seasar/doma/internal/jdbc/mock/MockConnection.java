@@ -37,7 +37,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   public boolean autoCommit = true;
 
-  public List<String> savepointNames = new ArrayList<>();
+  public final List<String> savepointNames = new ArrayList<>();
 
   public int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
 
