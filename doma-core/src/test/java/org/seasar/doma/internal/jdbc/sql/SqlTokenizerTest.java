@@ -646,7 +646,7 @@ public class SqlTokenizerTest {
       tokenizer.next();
       fail();
     } catch (JdbcException expected) {
-      System.out.println(expected);
+      System.out.println(expected.getMessage());
       assertEquals(Message.DOMA2119, expected.getMessageResource());
     }
   }

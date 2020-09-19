@@ -60,7 +60,7 @@ public class BuiltinIdentityIdGeneratorTest {
       identityIdGenerator.generatePreInsert(idGenerationConfig);
       fail();
     } catch (IllegalStateException ignored) {
-      System.out.println(ignored);
+      System.out.println(ignored.getMessage());
     }
   }
 }

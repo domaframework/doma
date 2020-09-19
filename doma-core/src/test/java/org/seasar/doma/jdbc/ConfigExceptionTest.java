@@ -9,7 +9,7 @@ public class ConfigExceptionTest {
   @Test
   public void test() throws Exception {
     ConfigException e = new ConfigException("aaa", "bbb");
-    System.out.println(e);
+    System.out.println(e.getMessage());
     assertEquals("aaa", e.getClassName());
     assertEquals("bbb", e.getMethodName());
   }

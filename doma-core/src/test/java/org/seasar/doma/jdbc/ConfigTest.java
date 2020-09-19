@@ -21,7 +21,7 @@ public class ConfigTest {
       Config.get("hoge");
       fail();
     } catch (DomaIllegalArgumentException e) {
-      System.out.println(e);
+      System.out.println(e.getMessage());
     }
   }
 
