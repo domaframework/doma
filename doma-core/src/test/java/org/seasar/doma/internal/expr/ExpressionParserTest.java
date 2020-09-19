@@ -757,19 +757,19 @@ public class ExpressionParserTest {
     ExpressionNode node = parser.parse();
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     EvaluationResult result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(2.5), result.getValue());
+    assertEquals(new BigDecimal("2.5"), result.getValue());
 
     parser = new ExpressionParser("+2.5B");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(2.5), result.getValue());
+    assertEquals(new BigDecimal("2.5"), result.getValue());
 
     parser = new ExpressionParser("-2.5B");
     node = parser.parse();
     evaluator = new ExpressionEvaluator();
     result = evaluator.evaluate(node);
-    assertEquals(new BigDecimal(-2.5), result.getValue());
+    assertEquals(BigDecimal.valueOf(-2.5), result.getValue());
   }
 
   @Test
