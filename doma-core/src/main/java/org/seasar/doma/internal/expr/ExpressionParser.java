@@ -255,6 +255,7 @@ public class ExpressionParser {
                 Message.DOMA3011, location.getExpression(), location.getPosition(), token);
           }
         case EOE:
+          //noinspection DuplicateBranchesInSwitch
           {
             break outer;
           }
