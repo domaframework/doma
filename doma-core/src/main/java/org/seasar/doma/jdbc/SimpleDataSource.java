@@ -17,6 +17,7 @@ import org.seasar.doma.message.Message;
  * <p>It is assumed that this object is used only in simple applications. In production environment,
  * you should use the {@link DataSource} implementation that provides connection pooling.
  */
+@SuppressWarnings("RedundantThrows")
 public class SimpleDataSource implements DataSource {
 
   /**
@@ -148,15 +149,15 @@ public class SimpleDataSource implements DataSource {
   }
 
   @Override
-  public PrintWriter getLogWriter() {
+  public PrintWriter getLogWriter() throws SQLException {
     return null;
   }
 
   @Override
-  public void setLogWriter(PrintWriter out) {}
+  public void setLogWriter(PrintWriter out) throws SQLException {}
 
   @Override
-  public boolean isWrapperFor(Class<?> iface) {
+  public boolean isWrapperFor(Class<?> iface) throws SQLException {
     return iface != null && iface.isAssignableFrom(getClass());
   }
 
