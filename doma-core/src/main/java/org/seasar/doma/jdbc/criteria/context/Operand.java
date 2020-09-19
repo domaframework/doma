@@ -74,6 +74,7 @@ public interface Operand {
     }
   }
 
+  @SuppressWarnings("SameReturnValue")
   interface Visitor<R> {
 
     R visit(Param operand);

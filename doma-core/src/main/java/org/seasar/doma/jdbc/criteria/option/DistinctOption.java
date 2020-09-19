@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria.option;
 
 /** Represents the option that decides whether to append the DISTINCT keyword or not. */
+@SuppressWarnings("SameReturnValue")
 public interface DistinctOption {
   enum Kind implements DistinctOption {
     NONE,

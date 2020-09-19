@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria.option;
 
 /** Represents the option about the associate and associateWith operators. */
+@SuppressWarnings("SameReturnValue")
 public interface AssociationOption {
   enum Kind implements AssociationOption {
     MANDATORY,

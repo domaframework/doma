@@ -232,6 +232,7 @@ public class NodePreparedSqlBuilder
     return visitValueNode(node, p, validator.andThen(p::addLiteralValue));
   }
 
+  @SuppressWarnings("SameReturnValue")
   protected Void visitValueNode(ValueNode node, Context p, Consumer<Scalar<?, ?>> valueHandler) {
     SqlLocation location = node.getLocation();
     String name = node.getVariableName();
@@ -323,6 +324,7 @@ public class NodePreparedSqlBuilder
     return matcher.lookingAt();
   }
 
+  @SuppressWarnings("SameReturnValue")
   protected Void handleSingleValueNode(
       ValueNode node,
       Context p,

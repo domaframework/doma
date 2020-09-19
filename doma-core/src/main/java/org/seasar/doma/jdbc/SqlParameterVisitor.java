@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc;
 
+@SuppressWarnings("SameReturnValue")
 public interface SqlParameterVisitor<R, P, TH extends Throwable> {
 
   <BASIC> R visitInParameter(InParameter<BASIC> parameter, P p) throws TH;
