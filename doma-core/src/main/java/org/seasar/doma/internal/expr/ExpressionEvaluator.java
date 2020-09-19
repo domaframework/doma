@@ -449,7 +449,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected EvaluationResult invokeConstructor(
       ExpressionLocation location, Class<?> clazz, Constructor<?> constructor, Object... params) {
-    Object value = null;
+    Object value;
     try {
       value = ConstructorUtil.newInstance(constructor, params);
     } catch (WrapException e) {

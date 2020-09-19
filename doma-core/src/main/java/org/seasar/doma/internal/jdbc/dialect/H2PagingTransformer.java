@@ -19,7 +19,7 @@ public class H2PagingTransformer extends H212126PagingTransformer {
     processed = true;
 
     OrderByClauseNode originalOrderBy = node.getOrderByClauseNode();
-    OrderByClauseNode orderBy = node.getOrderByClauseNode();
+    OrderByClauseNode orderBy;
     if (originalOrderBy != null) {
       orderBy = new OrderByClauseNode(originalOrderBy.getWordNode());
       for (SqlNode child : originalOrderBy.getChildren()) {

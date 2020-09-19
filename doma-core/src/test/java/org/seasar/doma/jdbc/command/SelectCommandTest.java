@@ -134,7 +134,6 @@ public class SelectCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     BindValue bindValue = bindValues.get(0);
-    bindValue = bindValues.get(0);
     assertEquals(new BigDecimal(5000), bindValue.getValue());
     assertEquals(1, bindValue.getIndex());
   }
@@ -222,7 +221,6 @@ public class SelectCommandTest {
 
       List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
       BindValue bindValue = bindValues.get(0);
-      bindValue = bindValues.get(0);
       assertEquals(new BigDecimal(5000), bindValue.getValue());
       assertEquals(1, bindValue.getIndex());
 
