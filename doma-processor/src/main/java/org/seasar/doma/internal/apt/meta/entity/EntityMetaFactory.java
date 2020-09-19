@@ -491,8 +491,10 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       for (VariableElement fieldElement : getFieldElements(classElement)) {
         try {
           if (fieldElement.getAnnotation(Transient.class) != null) {
+            //noinspection UnnecessaryContinue
             continue;
           } else if (fieldElement.getModifiers().contains(Modifier.STATIC)) {
+            //noinspection UnnecessaryContinue
             continue;
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
             doOriginalStatesField(classElement, fieldElement, entityMeta);
