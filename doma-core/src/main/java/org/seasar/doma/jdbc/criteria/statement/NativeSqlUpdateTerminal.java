@@ -37,6 +37,7 @@ public class NativeSqlUpdateTerminal extends AbstractStatement<NativeSqlUpdateTe
    * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
+  @SuppressWarnings("EmptyMethod")
   @Override
   public Integer execute() {
     return super.execute();

@@ -34,6 +34,7 @@ public interface StreamMappable<ELEMENT> extends Listable<ELEMENT> {
     return mapStream(s -> s.collect(collector));
   }
 
+  @SuppressWarnings("EmptyMethod")
   @Override
   StreamMappable<ELEMENT> peek(Consumer<Sql<?>> consumer);
 }

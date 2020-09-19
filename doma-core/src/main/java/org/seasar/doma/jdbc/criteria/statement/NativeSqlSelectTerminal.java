@@ -32,6 +32,7 @@ public class NativeSqlSelectTerminal<RESULT>
    *     {@literal false} and the WHERE clause is empty
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
+  @SuppressWarnings("EmptyMethod")
   @Override
   public RESULT execute() {
     return super.execute();

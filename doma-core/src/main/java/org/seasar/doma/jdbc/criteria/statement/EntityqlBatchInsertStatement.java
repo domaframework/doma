@@ -39,6 +39,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
    * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
+  @SuppressWarnings("EmptyMethod")
   @Override
   public BatchResult<ENTITY> execute() {
     return super.execute();
