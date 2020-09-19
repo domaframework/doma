@@ -164,12 +164,16 @@ public class ScriptTokenizer {
         return QUOTE;
       case WORD:
         int wordStartPos = pos;
-        for (; type == WORD && pos < length; peek(nextPos)) {}
+        while (type == WORD && pos < length) {
+          peek(nextPos);
+        }
         token = line.substring(wordStartPos, pos);
         return WORD;
       case OTHER:
         int otherStartPos = pos;
-        for (; type == OTHER && pos < length; peek(nextPos)) {}
+        while (type == OTHER && pos < length) {
+          peek(nextPos);
+        }
         token = line.substring(otherStartPos, pos);
         return OTHER;
       default:
