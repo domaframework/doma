@@ -67,7 +67,7 @@ public class QueryParameterMeta {
     return element.getAnnotation(annotationType) != null;
   }
 
-  class NullableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+  static class NullableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
     NullableCtTypeVisitor() {
       super(false);
@@ -84,7 +84,7 @@ public class QueryParameterMeta {
     }
   }
 
-  class BindableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+  static class BindableCtTypeVisitor extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
     BindableCtTypeVisitor() {
       super(false);

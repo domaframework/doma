@@ -122,7 +122,7 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;
 
@@ -171,7 +171,8 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamFunctionTargetCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  static class ParamFunctionTargetCtTypeVisitor
+      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;
 
@@ -277,7 +278,7 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamCollectorTargetCtTypeVisitor
+  static class ParamCollectorTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;

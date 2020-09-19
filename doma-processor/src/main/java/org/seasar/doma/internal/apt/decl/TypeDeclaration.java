@@ -357,7 +357,7 @@ public class TypeDeclaration {
         .allMatch(p -> types.isAssignableWithErasure(p.fst, p.snd));
   }
 
-  private class ScalarDetector extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
+  private static class ScalarDetector extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
 
     private ScalarDetector() {
       super(false);
