@@ -150,7 +150,7 @@ public class CallableSqlBuilder
     return null;
   }
 
-  protected class Context {
+  protected static class Context {
 
     private final StringBuilder rawSqlBuf = new StringBuilder(200);
 

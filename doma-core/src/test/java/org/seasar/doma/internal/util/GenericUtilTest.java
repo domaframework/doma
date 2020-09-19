@@ -100,5 +100,5 @@ public class GenericUtilTest {
     }
   }
 
-  public class Ccc2<T2> extends Bbb2<String, T2> {}
+  public static class Ccc2<T2> extends Bbb2<String, T2> {}
 }
