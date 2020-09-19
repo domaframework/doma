@@ -203,8 +203,8 @@ public class ExpressionEvaluatorTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     try {
       evaluator.forClassName(location, "inexistentClass");
-    } catch (ExpressionException ignored) {
-      System.out.println(ignored.getMessage());
+    } catch (ExpressionException e) {
+      System.out.println(e.getMessage());
     }
   }
 

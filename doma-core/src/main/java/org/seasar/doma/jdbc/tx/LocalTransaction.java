@@ -256,8 +256,8 @@ public class LocalTransaction {
       try {
         connection.rollback();
         jdbcLogger.logTransactionRolledback(className, callerMethodName, id);
-      } catch (SQLException ignored) {
-        jdbcLogger.logTransactionRollbackFailure(className, callerMethodName, id, ignored);
+      } catch (SQLException e) {
+        jdbcLogger.logTransactionRollbackFailure(className, callerMethodName, id, e);
       } finally {
         end(callerMethodName);
       }
@@ -427,9 +427,9 @@ public class LocalTransaction {
     if (isolationLevel != Connection.TRANSACTION_NONE) {
       try {
         connection.setTransactionIsolation(isolationLevel);
-      } catch (SQLException ignored) {
+      } catch (SQLException e) {
         jdbcLogger.logTransactionIsolationSettingFailure(
-            className, callerMethodName, isolationLevel, ignored);
+            className, callerMethodName, isolationLevel, e);
       }
     }
 
@@ -437,8 +437,8 @@ public class LocalTransaction {
     if (isAutoCommit) {
       try {
         connection.setAutoCommit(true);
-      } catch (SQLException ignored) {
-        jdbcLogger.logAutoCommitEnablingFailure(className, callerMethodName, ignored);
+      } catch (SQLException e) {
+        jdbcLogger.logAutoCommitEnablingFailure(className, callerMethodName, e);
       }
     }
 

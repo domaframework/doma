@@ -59,8 +59,8 @@ public class BuiltinIdentityIdGeneratorTest {
     try {
       identityIdGenerator.generatePreInsert(idGenerationConfig);
       fail();
-    } catch (IllegalStateException ignored) {
-      System.out.println(ignored.getMessage());
+    } catch (IllegalStateException e) {
+      System.out.println(e.getMessage());
     }
   }
 }
