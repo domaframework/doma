@@ -199,7 +199,7 @@ public final class Options {
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "rawtypes"})
   private Map<String, String> loadProperties(FileObject config) throws IOException {
     try (InputStream is = config.openInputStream();
         InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {

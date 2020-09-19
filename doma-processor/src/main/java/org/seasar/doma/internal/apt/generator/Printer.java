@@ -48,6 +48,7 @@ public class Printer {
     }
   }
 
+  @SuppressWarnings("rawtypes")
   private CharSequence toCharSequence(Object arg) {
     if (arg instanceof CharSequence) {
       return (CharSequence) arg;
