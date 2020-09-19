@@ -170,7 +170,7 @@ public abstract class AptinaTestCase {
 
   public void compile() throws IOException {
     javaCompiler = ToolProvider.getSystemJavaCompiler();
-    diagnostics = new DiagnosticCollector<JavaFileObject>();
+    diagnostics = new DiagnosticCollector<>();
     final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
 
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
@@ -393,7 +393,7 @@ public abstract class AptinaTestCase {
   }
 
   List<JavaFileObject> getCompilationUnits() throws IOException {
-    final List<JavaFileObject> result = new ArrayList<JavaFileObject>(compilationUnits.size());
+    final List<JavaFileObject> result = new ArrayList<>(compilationUnits.size());
     for (final CompilationUnit compilationUnit : compilationUnits) {
       result.add(compilationUnit.getJavaFileObject());
     }

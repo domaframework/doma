@@ -17,6 +17,6 @@ public class ParameterizedOfSalary<T, U> {
   }
 
   public static <T, U> ParameterizedOfSalary<T, U> of(BigDecimal value) {
-    return new ParameterizedOfSalary<T, U>(value);
+    return new ParameterizedOfSalary<>(value);
   }
 }

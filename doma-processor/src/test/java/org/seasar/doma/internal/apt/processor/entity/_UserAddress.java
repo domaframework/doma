@@ -17,24 +17,24 @@ public class _UserAddress implements EmbeddableType<UserAddress> {
   public <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
       String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType) {
     return java.util.Arrays.asList(
-        new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
-            entityClass,
-            () -> new BasicScalar<>(StringWrapper::new),
-            embeddedPropertyName + ".city",
-            "",
-            namingType,
-            true,
-            true,
-            false),
-        new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, String, String>(
-            entityClass,
-            () -> new BasicScalar<>(StringWrapper::new),
-            embeddedPropertyName + ".street",
-            "",
-            namingType,
-            true,
-            true,
-            false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(
+                    entityClass,
+                    () -> new BasicScalar<>(StringWrapper::new),
+                    embeddedPropertyName + ".city",
+                    "",
+                    namingType,
+                    true,
+                    true,
+                    false),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<>(
+                    entityClass,
+                    () -> new BasicScalar<>(StringWrapper::new),
+                    embeddedPropertyName + ".street",
+                    "",
+                    namingType,
+                    true,
+                    true,
+                    false));
   }
 
   @Override
