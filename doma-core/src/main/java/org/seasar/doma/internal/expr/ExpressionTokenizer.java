@@ -386,9 +386,9 @@ public class ExpressionTokenizer {
       buf.mark();
       char c2 = buf.get();
       if (Character.isDigit(c2)) {
-        //noinspection SingleStatementInBlock
         continue;
-      } else if (c2 == '.') {
+      }
+      if (c2 == '.') {
         if (decimal) {
           type = ILLEGAL_NUMBER_LITERAL;
           return;
