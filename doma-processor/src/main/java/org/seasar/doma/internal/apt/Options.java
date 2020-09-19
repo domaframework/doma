@@ -80,7 +80,7 @@ public final class Options {
 
   public boolean isMetamodelEnabled() {
     String enabled = getOption(METAMODEL_ENABLED);
-    return enabled != null ? Boolean.parseBoolean(enabled) : false;
+    return enabled != null && Boolean.parseBoolean(enabled);
   }
 
   public String getMetamodelPrefix() {
@@ -136,12 +136,12 @@ public final class Options {
 
   public boolean getSqlValidation() {
     String v = getOption(SQL_VALIDATION);
-    return v != null ? Boolean.parseBoolean(v) : true;
+    return v == null || Boolean.parseBoolean(v);
   }
 
   public boolean getVersionValidation() {
     String v = getOption(VERSION_VALIDATION);
-    return v != null ? Boolean.parseBoolean(v) : true;
+    return v == null || Boolean.parseBoolean(v);
   }
 
   public String getConfigPath() {
