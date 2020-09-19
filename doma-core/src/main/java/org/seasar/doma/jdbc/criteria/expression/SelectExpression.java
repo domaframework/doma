@@ -10,12 +10,11 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 
 public class SelectExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
 
-  private final SubSelectContext.Single<PROPERTY> subSelectContext;
   public final SelectContext context;
   public final PropertyMetamodel<?> propertyMetamodel;
 
   public SelectExpression(SubSelectContext.Single<PROPERTY> subSelectContext) {
-    this.subSelectContext = Objects.requireNonNull(subSelectContext);
+    Objects.requireNonNull(subSelectContext);
     this.context = subSelectContext.get();
     this.propertyMetamodel = subSelectContext.getPropertyMetamodel();
   }
