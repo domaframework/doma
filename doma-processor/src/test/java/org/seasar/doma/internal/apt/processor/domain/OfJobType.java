@@ -9,7 +9,7 @@ enum OfJobType {
 
   private final String value;
 
-  private OfJobType(String value) {
+  OfJobType(String value) {
     this.value = value;
   }
 
