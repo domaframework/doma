@@ -7,6 +7,7 @@ interface KStatement<RESULT> : KBuildable<KStatement<RESULT>> {
     fun execute(): RESULT
 
     override fun peek(block: (Sql<*>) -> Unit): KStatement<RESULT> {
-        return super.peek(block)
+        super.peek(block)
+        return this
     }
 }

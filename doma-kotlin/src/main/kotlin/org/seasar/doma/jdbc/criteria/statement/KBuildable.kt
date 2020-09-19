@@ -6,9 +6,8 @@ interface KBuildable<BUILDABLE : KBuildable<BUILDABLE>> {
 
     fun asSql(): Sql<*>
 
-    @Suppress("UNCHECKED_CAST")
-    fun peek(block: (Sql<*>) -> Unit): BUILDABLE {
+    fun peek(block: (Sql<*>) -> Unit): KBuildable<BUILDABLE> {
         block(asSql())
-        return this as BUILDABLE
+        return this
     }
 }
