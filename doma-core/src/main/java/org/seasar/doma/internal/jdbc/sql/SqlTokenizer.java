@@ -489,7 +489,7 @@ public class SqlTokenizer {
           if (c3 == '*' && c4 == '/') {
             return;
           }
-          if ((c3 == '\r' && c4 == '\n') || (c3 == '\r' || c3 == '\n')) {
+          if ((c3 == '\r' || c3 == '\n')) {
             currentLineNumber++;
           }
           buf.reset();
