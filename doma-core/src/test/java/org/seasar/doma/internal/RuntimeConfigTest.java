@@ -56,7 +56,6 @@ public class RuntimeConfigTest {
           .get(MockEntityListener.class, MockEntityListener::new);
       fail();
     } catch (ConfigException e) {
-      assertEquals(originalConfig.getClass().getName(), e.getClassName());
       assertEquals("getEntityListenerProvider", e.getMethodName());
     }
   }
