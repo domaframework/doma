@@ -204,7 +204,7 @@ public class BatchInsertExecutorTest {
   @Test
   public void testExecutor() throws Exception {
     List<Employee> employees =
-        Arrays.asList(new Employee[] {new Employee("SMITH", 100), new Employee("ALLEN", 200)});
+        Arrays.asList(new Employee("SMITH", 100), new Employee("ALLEN", 200));
     BatchInsertExecutor executor = BatchInsertExecutor.newInstance(new MockConfig());
     executor.execute(
         employees,

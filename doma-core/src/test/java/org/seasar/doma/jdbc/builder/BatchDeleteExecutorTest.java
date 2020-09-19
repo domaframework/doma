@@ -210,10 +210,8 @@ public class BatchDeleteExecutorTest {
   public void testExecutor() throws Exception {
     List<Employee> employees =
         Arrays.asList(
-            new Employee[] {
-              new Employee(10, "SMITH", new BigDecimal("1001")),
-              new Employee(20, "ALLEN", new BigDecimal("2001"))
-            });
+            new Employee(10, "SMITH", new BigDecimal("1001")),
+            new Employee(20, "ALLEN", new BigDecimal("2001")));
     BatchDeleteExecutor executor = BatchDeleteExecutor.newInstance(new MockConfig());
     executor.execute(
         employees,
