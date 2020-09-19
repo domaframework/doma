@@ -134,6 +134,7 @@ public final class Options {
     return getOption(DOMAIN_CONVERTERS);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean getSqlValidation() {
     String v = getOption(SQL_VALIDATION);
     return v == null || Boolean.parseBoolean(v);

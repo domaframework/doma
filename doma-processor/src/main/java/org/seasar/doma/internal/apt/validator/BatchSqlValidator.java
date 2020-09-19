@@ -59,6 +59,7 @@ public class BatchSqlValidator extends SqlValidator {
     return super.visitForNode(node, p);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean isSuppressed(Message message) {
     if (suppress != null) {
       for (Message suppressMessage : suppress.messages()) {

@@ -275,6 +275,7 @@ class EntityPropertyMetaFactory {
     propertyMeta.setColumnAnnot(columnAnnot);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private boolean isNumber(CtType ctType) {
     Boolean isNumber =
         ctType.accept(

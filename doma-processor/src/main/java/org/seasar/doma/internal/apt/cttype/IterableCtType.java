@@ -28,6 +28,7 @@ public class IterableCtType extends AbstractCtType {
     return elementCtType.isWildcard();
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isList() {
     return ctx.getMoreTypes().isSameTypeWithErasure(type, List.class);
   }
