@@ -871,7 +871,7 @@ public class StandardDialect implements Dialect {
       if (date == null) {
         return null;
       }
-      Calendar calendar = makeRoundedDownClandar(date);
+      Calendar calendar = makeRoundedDownCalendar(date);
       return new java.util.Date(calendar.getTimeInMillis());
     }
 
@@ -880,7 +880,7 @@ public class StandardDialect implements Dialect {
       if (date == null) {
         return null;
       }
-      Calendar calendar = makeRoundedDownClandar(date);
+      Calendar calendar = makeRoundedDownCalendar(date);
       return new Date(calendar.getTimeInMillis());
     }
 
@@ -889,7 +889,7 @@ public class StandardDialect implements Dialect {
       if (timestamp == null) {
         return null;
       }
-      Calendar calendar = makeRoundedDownClandar(timestamp);
+      Calendar calendar = makeRoundedDownCalendar(timestamp);
       return new Timestamp(calendar.getTimeInMillis());
     }
 
@@ -901,7 +901,7 @@ public class StandardDialect implements Dialect {
       return localDateTime.truncatedTo(ChronoUnit.DAYS);
     }
 
-    protected Calendar makeRoundedDownClandar(java.util.Date date) {
+    protected Calendar makeRoundedDownCalendar(java.util.Date date) {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(date);
       calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -911,12 +911,22 @@ public class StandardDialect implements Dialect {
       return calendar;
     }
 
+    /**
+     * @param date the date
+     * @return the calender
+     * @deprecated Use {@link #makeRoundedDownCalendar(java.util.Date)} instead
+     */
+    @Deprecated
+    protected Calendar makeRoundedDownClandar(java.util.Date date) {
+      return makeRoundedDownCalendar(date);
+    }
+
     @Override
     public java.util.Date roundUpTimePart(java.util.Date date) {
       if (date == null) {
         return null;
       }
-      Calendar calendar = makeRoundedUpClandar(date);
+      Calendar calendar = makeRoundedUpCalendar(date);
       return new java.util.Date(calendar.getTimeInMillis());
     }
 
@@ -925,7 +935,7 @@ public class StandardDialect implements Dialect {
       if (date == null) {
         return null;
       }
-      Calendar calendar = makeRoundedUpClandar(date);
+      Calendar calendar = makeRoundedUpCalendar(date);
       return new Date(calendar.getTimeInMillis());
     }
 
@@ -934,7 +944,7 @@ public class StandardDialect implements Dialect {
       if (timestamp == null) {
         return null;
       }
-      Calendar calendar = makeRoundedUpClandar(timestamp);
+      Calendar calendar = makeRoundedUpCalendar(timestamp);
       return new Timestamp(calendar.getTimeInMillis());
     }
 
@@ -954,7 +964,7 @@ public class StandardDialect implements Dialect {
       return localDateTime.plusDays(1).truncatedTo(ChronoUnit.DAYS);
     }
 
-    protected Calendar makeRoundedUpClandar(java.util.Date date) {
+    protected Calendar makeRoundedUpCalendar(java.util.Date date) {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(date);
       calendar.add(Calendar.DATE, 1);
@@ -963,6 +973,16 @@ public class StandardDialect implements Dialect {
       calendar.set(Calendar.SECOND, 0);
       calendar.set(Calendar.MILLISECOND, 0);
       return calendar;
+    }
+
+    /**
+     * @param date the date
+     * @return the calender
+     * @deprecated Use {@link #makeRoundedUpCalendar(java.util.Date)} instead
+     */
+    @Deprecated
+    protected Calendar makeRoundedUpClandar(java.util.Date date) {
+      return makeRoundedUpCalendar(date);
     }
 
     /**
