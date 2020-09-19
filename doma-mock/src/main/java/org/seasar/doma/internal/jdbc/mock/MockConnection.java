@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+@SuppressWarnings("RedundantThrows")
 public class MockConnection extends MockWrapper implements Connection {
 
   public MockStatement statement = new MockStatement();
@@ -37,7 +38,7 @@ public class MockConnection extends MockWrapper implements Connection {
 
   public boolean autoCommit = true;
 
-  public List<String> savepointNames = new ArrayList<>();
+  public final List<String> savepointNames = new ArrayList<>();
 
   public int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
 

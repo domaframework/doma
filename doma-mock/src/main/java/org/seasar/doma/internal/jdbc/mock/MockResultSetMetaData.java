@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("RedundantThrows")
 public class MockResultSetMetaData extends MockWrapper implements ResultSetMetaData {
 
   public final List<ColumnMetaData> columns = new ArrayList<>();
