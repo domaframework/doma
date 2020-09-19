@@ -63,7 +63,7 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
   }
 
   @Override
-  public Writer openWriter() throws IOException {
+  public Writer openWriter() {
     return new OutputStreamWriter(openOutputStream(), charset);
   }
 

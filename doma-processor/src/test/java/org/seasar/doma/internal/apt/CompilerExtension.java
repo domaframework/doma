@@ -27,7 +27,7 @@ public class CompilerExtension extends AptinaTestCase
   }
 
   @Override
-  public void afterEach(ExtensionContext context) throws Exception {
+  public void afterEach(ExtensionContext context) {
     TimeZone.setDefault(null);
     super.tearDown();
   }
