@@ -19,7 +19,7 @@ public class BatchSqlValidator extends SqlValidator {
 
   private boolean forWarningNotified;
 
-  private Suppress suppress;
+  private final Suppress suppress;
 
   public BatchSqlValidator(
       Context ctx,

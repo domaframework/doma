@@ -14,7 +14,7 @@ import org.seasar.doma.message.Message;
 
 public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
 
-  protected Class<? extends Annotation> supportedAnnotationType;
+  protected final Class<? extends Annotation> supportedAnnotationType;
 
   protected Context ctx;
 

@@ -10,7 +10,7 @@ import org.seasar.doma.message.MessageResource;
 
 public final class Reporter {
 
-  private Messager messager;
+  private final Messager messager;
 
   Reporter(ProcessingEnvironment env) {
     assertNotNull(env);

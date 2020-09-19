@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 public class Code {
 
-  private Consumer<Printer> consumer;
+  private final Consumer<Printer> consumer;
 
   public Code(Consumer<Printer> consumer) {
     assertNotNull(consumer);

@@ -16,9 +16,9 @@ import javax.tools.StandardLocation;
 
 public class Resources {
 
-  private Filer filer;
+  private final Filer filer;
 
-  private String resourcesDir;
+  private final String resourcesDir;
 
   Resources(Context ctx, ProcessingEnvironment env) {
     assertNotNull(ctx, env);
