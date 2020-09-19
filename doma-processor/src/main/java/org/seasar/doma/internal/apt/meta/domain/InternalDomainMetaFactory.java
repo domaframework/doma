@@ -274,7 +274,7 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
     public void validateAccessorMethod(TypeElement classElement, InternalDomainMeta domainMeta) {
       TypeElement typeElement = classElement;
       TypeMirror typeMirror = classElement.asType();
-      for (; typeElement != null && typeMirror.getKind() != TypeKind.NONE; ) {
+      while (typeElement != null && typeMirror.getKind() != TypeKind.NONE) {
         for (ExecutableElement method :
             ElementFilter.methodsIn(typeElement.getEnclosedElements())) {
           if (!method.getSimpleName().contentEquals(domainMeta.getAccessorMethod())) {

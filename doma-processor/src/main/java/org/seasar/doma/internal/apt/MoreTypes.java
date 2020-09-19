@@ -463,7 +463,7 @@ public class MoreTypes implements Types {
       }
       p.append(" extends ");
       first.accept(this, p);
-      for (; it.hasNext(); ) {
+      while (it.hasNext()) {
         p.append("&");
         TypeMirror bound = it.next();
         bound.accept(this, p);
