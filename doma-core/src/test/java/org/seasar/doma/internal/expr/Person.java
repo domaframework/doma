@@ -5,6 +5,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class Person {
 
   public String name;

@@ -6,6 +6,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.builder.SelectBuilder;
 
 /** A context for a comment. */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class CommentContext {
 
   protected final String className;
