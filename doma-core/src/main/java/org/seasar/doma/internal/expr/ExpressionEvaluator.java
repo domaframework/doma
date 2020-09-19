@@ -253,11 +253,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.add(rightNumber);
   }
@@ -290,11 +290,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.subtract(rightNumber);
   }
@@ -307,11 +307,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.multiply(rightNumber);
   }
@@ -324,11 +324,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.divide(rightNumber);
   }
@@ -341,11 +341,11 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     EvaluationResult rightResult = evaluateNotNullableOperandNode(node, rightNode, p);
     Number leftNumber = createNumber(node, leftNode, leftResult);
     if (leftNumber == null) {
-      throwNotNumberException(node, leftNode, leftResult);
+      throw newNotNumberException(node, leftNode, leftResult);
     }
     Number rightNumber = createNumber(node, rightNode, rightResult);
     if (rightNumber == null) {
-      throwNotNumberException(node, rightNode, rightResult);
+      throw newNotNumberException(node, rightNode, rightResult);
     }
     return leftNumber.mod(rightNumber);
   }
@@ -360,12 +360,12 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
     return new Number(operatoNode, evaluationResult.getValue(), evaluationResult.getValueClass());
   }
 
-  protected void throwNotNumberException(
+  protected ExpressionException newNotNumberException(
       ArithmeticOperatorNode operatorNode,
       ExpressionNode operandNode,
       EvaluationResult evaluationResult) {
     ExpressionLocation location = operandNode.getLocation();
-    throw new ExpressionException(
+    return new ExpressionException(
         Message.DOMA3013,
         location.getExpression(),
         location.getPosition(),
