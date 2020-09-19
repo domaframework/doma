@@ -153,6 +153,7 @@ class ExpressionsTest {
     assertNotEquals(concat(e.name, "a"), concat(e.name, "b"));
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testAvg() {
     assertEquals(avg(e.id), avg(e.id));
@@ -163,6 +164,7 @@ class ExpressionsTest {
     assertEquals(e.id, count(e.id).argument());
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testCount() {
     assertEquals(count(e.id), count(e.id));
@@ -173,6 +175,7 @@ class ExpressionsTest {
     assertEquals(e.id, count(e.id).argument());
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testCount_noArg() {
     assertEquals(count(), count());
@@ -182,6 +185,7 @@ class ExpressionsTest {
     assertEquals("*", count().argument().getName());
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testMax() {
     assertEquals(max(e.id), max(e.id));
@@ -192,6 +196,7 @@ class ExpressionsTest {
     assertEquals(e.id, max(e.id).argument());
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testMin() {
     assertEquals(min(e.id), min(e.id));
@@ -202,6 +207,7 @@ class ExpressionsTest {
     assertEquals(e.id, min(e.id).argument());
   }
 
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
   @Test
   void testSum() {
     assertEquals(sum(e.id), sum(e.id));
