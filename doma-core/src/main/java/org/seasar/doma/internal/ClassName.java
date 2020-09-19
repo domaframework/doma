@@ -1,5 +1,6 @@
 package org.seasar.doma.internal;
 
+import java.util.Objects;
 import org.seasar.doma.internal.util.ClassUtil;
 
 public class ClassName implements CharSequence {
@@ -7,7 +8,7 @@ public class ClassName implements CharSequence {
   private final String qualifiedName;
 
   public ClassName(String qualifiedName) {
-    this.qualifiedName = qualifiedName;
+    this.qualifiedName = Objects.requireNonNull(qualifiedName);
   }
 
   public String getPackageName() {
@@ -33,6 +34,7 @@ public class ClassName implements CharSequence {
     return qualifiedName.subSequence(start, end);
   }
 
+  @SuppressWarnings("NullableProblems")
   @Override
   public String toString() {
     return qualifiedName;
