@@ -8,28 +8,28 @@ import org.seasar.doma.jdbc.entity.NamingType;
 public interface Naming {
 
   /** the adapter for {@link NamingType#NONE} */
-  static Naming NONE = new Adapter(NamingType.NONE);
+  Naming NONE = new Adapter(NamingType.NONE);
 
   /** the adapter for {@link NamingType#LOWER_CASE} */
-  static Naming LOWER_CASE = new Adapter(NamingType.LOWER_CASE);
+  Naming LOWER_CASE = new Adapter(NamingType.LOWER_CASE);
 
   /** the adapter for {@link NamingType#UPPER_CASE} */
-  static Naming UPPER_CASE = new Adapter(NamingType.UPPER_CASE);
+  Naming UPPER_CASE = new Adapter(NamingType.UPPER_CASE);
 
   /** the adapter for {@link NamingType#SNAKE_LOWER_CASE} */
-  static Naming SNAKE_LOWER_CASE = new Adapter(NamingType.SNAKE_LOWER_CASE);
+  Naming SNAKE_LOWER_CASE = new Adapter(NamingType.SNAKE_LOWER_CASE);
 
   /** the adapter for {@link NamingType#SNAKE_UPPER_CASE} */
-  static Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
+  Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
 
   /** the adapter for {@link NamingType#LENIENT_SNAKE_LOWER_CASE} */
-  static Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
+  Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
 
   /** the adapter for {@link NamingType#LENIENT_SNAKE_UPPER_CASE} */
-  static Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
+  Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
 
   /** the default convention */
-  static Naming DEFAULT = NONE;
+  Naming DEFAULT = NONE;
 
   /**
    * Applies the naming convention.
