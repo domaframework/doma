@@ -37,19 +37,20 @@ class MoreElementsTest extends CompilerSupport {
     int key3() default 1;
   }
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   @MyAnnotation(key1 = "aaa", key3 = 2)
   private class Inner {}
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings("InnerClassMayBeStatic")
   private class ParameterizedClass<T, U extends Number> {}
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings("InnerClassMayBeStatic")
   private class BoundType<T extends Number> {}
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings("InnerClassMayBeStatic")
   private class IntersectionType<T extends Number & Runnable> {}
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings("InnerClassMayBeStatic")
   private class ReferredTypeVar<T extends Number, S extends List<T>> {}
 
   private interface MyDao {

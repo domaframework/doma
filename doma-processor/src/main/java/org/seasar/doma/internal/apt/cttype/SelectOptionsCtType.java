@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.cttype;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.Context;
 

@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Test;
 public class ResourcesTest {
 
   @Test
-  public void testFileObjectImpl_toUri() throws Exception {
+  public void testFileObjectImpl_toUri() {
     Path path = Paths.get("aaa", "bbb");
     FileObject fileObject = new Resources.FileObjectImpl(path);
     assertNotNull(fileObject.toUri());
   }
 
   @Test
-  public void testFileObjectImpl_getName() throws Exception {
+  public void testFileObjectImpl_getName() {
     Path path = Paths.get("aaa", "bbb");
     FileObject fileObject = new Resources.FileObjectImpl(path);
     assertNotNull(fileObject.getName());
@@ -31,9 +31,11 @@ public class ResourcesTest {
     try {
       FileObject fileObject = new Resources.FileObjectImpl(file.toPath());
       try (InputStream is = fileObject.openInputStream()) {
+        //noinspection ResultOfMethodCallIgnored
         is.read();
       }
     } finally {
+      //noinspection ResultOfMethodCallIgnored
       file.delete();
     }
   }

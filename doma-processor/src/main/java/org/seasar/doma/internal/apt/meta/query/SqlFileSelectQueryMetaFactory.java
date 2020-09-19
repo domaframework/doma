@@ -122,7 +122,7 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;
 
@@ -171,7 +171,8 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamFunctionTargetCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  static class ParamFunctionTargetCtTypeVisitor
+      extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;
 
@@ -277,7 +278,7 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  class ParamCollectorTargetCtTypeVisitor
+  static class ParamCollectorTargetCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlFileSelectQueryMeta queryMeta;
@@ -421,7 +422,7 @@ public class SqlFileSelectQueryMetaFactory
 
     @Override
     public Void visitStreamCtType(StreamCtType ctType, Void p) throws RuntimeException {
-      if (!isSuppressed(Message.DOMA4274)) {
+      if (!isSuppressed()) {
         ctx.getReporter().report(Kind.WARNING, Message.DOMA4274, methodElement, new Object[] {});
       }
       queryMeta.setResultStream(true);
@@ -451,10 +452,10 @@ public class SqlFileSelectQueryMetaFactory
       return null;
     }
 
-    boolean isSuppressed(Message message) {
+    boolean isSuppressed() {
       if (suppress != null) {
         for (Message suppressMessage : suppress.messages()) {
-          if (suppressMessage == message) {
+          if (suppressMessage == Message.DOMA4274) {
             return true;
           }
         }

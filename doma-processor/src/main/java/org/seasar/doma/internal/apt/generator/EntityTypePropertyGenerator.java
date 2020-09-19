@@ -150,7 +150,7 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 12 */ propertyMeta.isColumnQuoteRequired());
   }
 
-  private class EmbeddableCtTypeVisitor
+  private static class EmbeddableCtTypeVisitor
       extends SimpleCtTypeVisitor<EmbeddableCtType, Void, RuntimeException> {
 
     @Override

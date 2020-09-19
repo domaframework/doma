@@ -35,5 +35,5 @@ public interface AutoFunctionDao {
   MyEnum executeFunction6(
       @In MyEnum arg1, @InOut Reference<MyEnum> arg2, @Out Reference<MyEnum> arg3);
 
-  public enum MyEnum {}
+  enum MyEnum {}
 }

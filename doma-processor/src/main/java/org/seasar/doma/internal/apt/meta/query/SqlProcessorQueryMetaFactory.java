@@ -96,7 +96,7 @@ public class SqlProcessorQueryMetaFactory
     return false;
   }
 
-  class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
+  static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlProcessorQueryMeta queryMeta;
 
@@ -124,7 +124,7 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  class ParamBiFunctionFirstArgCtTypeVisitor
+  static class ParamBiFunctionFirstArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlProcessorQueryMeta queryMeta;
@@ -148,7 +148,7 @@ public class SqlProcessorQueryMetaFactory
     }
   }
 
-  class ParamBiFunctionSecondArgCtTypeVisitor
+  static class ParamBiFunctionSecondArgCtTypeVisitor
       extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {
 
     final SqlProcessorQueryMeta queryMeta;

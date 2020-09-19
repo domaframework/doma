@@ -151,7 +151,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
   }
 
   public JavaFileObject getGeneratedJavaFile(
-      final Location location, final String className, final Kind kind) throws IOException {
+      final Location location, final String className, final Kind kind) {
     final String key = kind.name() + "::" + className;
     if (fileObjects.containsKey(key)) {
       return fileObjects.get(key);

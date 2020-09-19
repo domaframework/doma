@@ -19,7 +19,7 @@ public class OfEnumDomain {
     return new OfEnumDomain(value);
   }
 
-  public static enum JobType {
+  public enum JobType {
     SALESMAN
   }
 }

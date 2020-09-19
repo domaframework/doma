@@ -4,6 +4,7 @@ import org.seasar.doma.Embeddable;
 
 public class Outer_nonStaticInner {
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   @Embeddable
   public class Inner {
 

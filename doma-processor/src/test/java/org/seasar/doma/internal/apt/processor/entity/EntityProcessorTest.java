@@ -34,7 +34,7 @@ class EntityProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
     addProcessor(new EntityProcessor());
@@ -138,7 +138,7 @@ class EntityProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
-  void error(Class clazz, Message message, String... options) throws Exception {
+  void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
     addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);

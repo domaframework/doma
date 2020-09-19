@@ -7,6 +7,7 @@ public class FinalMissingImmutableEntity {
 
   private final String aaa;
 
+  @SuppressWarnings("FieldMayBeFinal")
   private int bbb;
 
   private final Integer ccc;

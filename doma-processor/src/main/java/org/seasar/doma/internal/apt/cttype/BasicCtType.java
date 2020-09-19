@@ -17,14 +17,11 @@ public class BasicCtType extends AbstractCtType {
 
   private final TypeElement wrapperTypeElement;
 
-  private final TypeMirror wrapperType;
-
   BasicCtType(Context ctx, TypeMirror type, Pair<TypeElement, TypeMirror> wrapperElementAndType) {
     super(ctx, type);
     assertNotNull(wrapperElementAndType);
     this.boxedType = ctx.getMoreTypes().boxIfPrimitive(type);
     this.wrapperTypeElement = wrapperElementAndType.fst;
-    this.wrapperType = wrapperElementAndType.snd;
   }
 
   public TypeMirror getBoxedType() {

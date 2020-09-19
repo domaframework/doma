@@ -11,7 +11,7 @@ import org.seasar.doma.message.Message;
 
 public abstract class CompilerSupport {
 
-  @RegisterExtension CompilerExtension compiler = new CompilerExtension();
+  @RegisterExtension final CompilerExtension compiler = new CompilerExtension();
 
   protected void enableCompilationAssertion() {
     compiler.enableCompilationAssertion();

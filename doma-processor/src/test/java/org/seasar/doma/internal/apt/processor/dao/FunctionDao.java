@@ -12,6 +12,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.jdbc.Reference;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Dao(config = MyConfig.class)
 public interface FunctionDao {
 

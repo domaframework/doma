@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.processor.entity;
 
 import org.seasar.doma.Entity;
 
+@SuppressWarnings("DefaultAnnotationParam")
 @Entity(immutable = false)
 public class IllegalMutableChildEntity extends ImmutableParentEntity {
 

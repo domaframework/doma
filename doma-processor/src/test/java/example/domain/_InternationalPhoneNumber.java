@@ -1,6 +1,7 @@
 package example.domain;
 
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.wrapper.StringWrapper;
 
 public class _InternationalPhoneNumber
     extends AbstractDomainType<String, InternationalPhoneNumber> {
@@ -8,7 +9,7 @@ public class _InternationalPhoneNumber
   private static final _InternationalPhoneNumber singleton = new _InternationalPhoneNumber();
 
   private _InternationalPhoneNumber() {
-    super(() -> new org.seasar.doma.wrapper.StringWrapper());
+    super(StringWrapper::new);
   }
 
   @Override

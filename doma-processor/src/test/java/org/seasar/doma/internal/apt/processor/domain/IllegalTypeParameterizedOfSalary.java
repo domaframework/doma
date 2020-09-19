@@ -18,6 +18,6 @@ public class IllegalTypeParameterizedOfSalary<T, U> {
 
   public static <T, U extends Comparable<T>> IllegalTypeParameterizedOfSalary<T, U> of(
       BigDecimal value) {
-    return new IllegalTypeParameterizedOfSalary<T, U>(value);
+    return new IllegalTypeParameterizedOfSalary<>(value);
   }
 }

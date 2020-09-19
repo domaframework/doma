@@ -425,7 +425,7 @@ public class MoreTypes implements Types {
 
   private class TypeParameterNameBuilder extends TypeNameBuilder {
 
-    private Set<TypeVariable> processedVariables = new HashSet<>();
+    private final Set<TypeVariable> processedVariables = new HashSet<>();
 
     @Override
     public Void visitPrimitive(PrimitiveType t, StringBuilder p) {
@@ -463,7 +463,7 @@ public class MoreTypes implements Types {
       }
       p.append(" extends ");
       first.accept(this, p);
-      for (; it.hasNext(); ) {
+      while (it.hasNext()) {
         p.append("&");
         TypeMirror bound = it.next();
         bound.accept(this, p);

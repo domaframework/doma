@@ -1,7 +1,7 @@
 package org.seasar.doma.internal.apt.processor.metamodel;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
@@ -38,7 +38,7 @@ public class _EmpInfo implements EmbeddableType<EmpInfo> {
     }
 
     public List<PropertyMetamodel<?>> allPropertyMetamodels() {
-      return Arrays.asList(hiredate);
+      return Collections.singletonList(hiredate);
     }
   }
 }

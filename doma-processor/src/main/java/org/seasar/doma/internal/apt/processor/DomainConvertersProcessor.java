@@ -33,7 +33,7 @@ public class DomainConvertersProcessor extends AbstractProcessor {
     }
     for (TypeElement a : annotations) {
       for (TypeElement typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
-        handleTypeElement(typeElement, t -> validate(t));
+        handleTypeElement(typeElement, this::validate);
       }
     }
     return true;

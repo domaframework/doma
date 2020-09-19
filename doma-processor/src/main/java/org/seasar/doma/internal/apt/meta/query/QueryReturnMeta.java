@@ -33,10 +33,12 @@ public class QueryReturnMeta {
         null);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isPrimitiveInt() {
     return ctType.getType().getKind() == TypeKind.INT;
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isPrimitiveIntArray() {
     return ctType
         .getType()
@@ -51,10 +53,12 @@ public class QueryReturnMeta {
             null);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isPrimitiveVoid() {
     return ctType.getType().getKind() == TypeKind.VOID;
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isResult(EntityCtType entityCtType) {
     return ctType.accept(
         new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
@@ -68,6 +72,7 @@ public class QueryReturnMeta {
         null);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isBatchResult(EntityCtType entityCtType) {
     return ctType.accept(
         new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {

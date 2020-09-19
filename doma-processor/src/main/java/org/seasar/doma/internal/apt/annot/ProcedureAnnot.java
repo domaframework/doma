@@ -97,7 +97,7 @@ public class ProcedureAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }
-    return value.booleanValue();
+    return value;
   }
 
   public int getQueryTimeoutValue() {

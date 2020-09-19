@@ -20,12 +20,12 @@ public class AptException extends DomaException {
   protected AnnotationValue annotationValue;
 
   public AptException(MessageResource messageResource, Element element, Object[] args) {
-    this(messageResource, Kind.ERROR, element, null, null, null, args);
+    this(messageResource, element, null, null, null, args);
   }
 
   public AptException(
       MessageResource messageResource, Element element, Throwable cause, Object[] args) {
-    this(messageResource, Kind.ERROR, element, null, null, cause, args);
+    this(messageResource, element, null, null, cause, args);
   }
 
   public AptException(
@@ -33,7 +33,7 @@ public class AptException extends DomaException {
       Element element,
       AnnotationMirror annotationMirror,
       Object[] args) {
-    this(messageResource, Kind.ERROR, element, annotationMirror, null, null, args);
+    this(messageResource, element, annotationMirror, null, null, args);
   }
 
   public AptException(
@@ -42,19 +42,18 @@ public class AptException extends DomaException {
       AnnotationMirror annotationMirror,
       AnnotationValue annotationValue,
       Object[] args) {
-    this(messageResource, Kind.ERROR, element, annotationMirror, annotationValue, null, args);
+    this(messageResource, element, annotationMirror, annotationValue, null, args);
   }
 
   private AptException(
       MessageResource messageResource,
-      Kind kind,
       Element element,
       AnnotationMirror annotationMirror,
       AnnotationValue annotationValue,
       Throwable cause,
       Object[] args) {
     super(messageResource, cause, args);
-    this.kind = kind;
+    this.kind = Kind.ERROR;
     this.element = element;
     this.annotationMirror = annotationMirror;
     this.annotationValue = annotationValue;

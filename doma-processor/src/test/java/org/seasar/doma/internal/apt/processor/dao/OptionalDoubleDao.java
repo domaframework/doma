@@ -16,6 +16,7 @@ import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.jdbc.Reference;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Dao(config = MyConfig.class)
 public interface OptionalDoubleDao {
 

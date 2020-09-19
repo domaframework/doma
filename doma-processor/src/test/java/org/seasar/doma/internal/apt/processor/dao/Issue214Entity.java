@@ -5,7 +5,7 @@ import org.seasar.doma.Entity;
 @Entity
 public class Issue214Entity extends Issue214AbstractEntity2 {
 
-  public static final String SATIC_FIELD = "";
+  public static final String STATIC_FIELD = "";
 
   public String instanceField = "";
 

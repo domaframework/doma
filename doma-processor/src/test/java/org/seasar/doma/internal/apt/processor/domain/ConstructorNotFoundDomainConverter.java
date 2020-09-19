@@ -1,13 +1,13 @@
 package org.seasar.doma.internal.apt.processor.domain;
 
 import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.internal.apt.processor.domain.ConstrutorNotFoundDomainConverter.ValueObject;
+import org.seasar.doma.internal.apt.processor.domain.ConstructorNotFoundDomainConverter.ValueObject;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 @ExternalDomain
-public class ConstrutorNotFoundDomainConverter implements DomainConverter<ValueObject, String> {
+public class ConstructorNotFoundDomainConverter implements DomainConverter<ValueObject, String> {
 
-  private ConstrutorNotFoundDomainConverter() {}
+  private ConstructorNotFoundDomainConverter() {}
 
   @Override
   public String fromDomainToValue(ValueObject domain) {

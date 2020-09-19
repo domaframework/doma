@@ -1,6 +1,9 @@
 package org.seasar.doma.internal.apt.decl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -17,6 +20,7 @@ import org.seasar.doma.internal.apt.TestProcessor;
 
 class TypeDeclarationTest extends CompilerSupport {
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   private class Inner {}
 
   @SuppressWarnings("unused")

@@ -31,7 +31,7 @@ class DaoProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
     addProcessor(new DaoProcessor());
@@ -153,7 +153,7 @@ class DaoProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
-  void error(Class clazz, Message message) throws Exception {
+  void error(Class<?> clazz, Message message) throws Exception {
     addProcessor(new DaoProcessor());
     addCompilationUnit(clazz);
     compile();

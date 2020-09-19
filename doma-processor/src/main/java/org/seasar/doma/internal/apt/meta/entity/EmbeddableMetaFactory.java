@@ -127,6 +127,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       }
       NestingKind nestingKind = typeElement.getNestingKind();
       if (nestingKind == NestingKind.TOP_LEVEL) {
+        //noinspection UnnecessaryReturnStatement
         return;
       } else if (nestingKind == NestingKind.MEMBER) {
         Set<Modifier> modifiers = typeElement.getModifiers();
@@ -147,8 +148,10 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
       for (VariableElement fieldElement : getFieldElements(embeddableElement)) {
         try {
           if (fieldElement.getAnnotation(Transient.class) != null) {
+            //noinspection UnnecessaryContinue
             continue;
           } else if (fieldElement.getModifiers().contains(Modifier.STATIC)) {
+            //noinspection UnnecessaryContinue
             continue;
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
             throw new AptException(Message.DOMA4286, fieldElement, new Object[] {});

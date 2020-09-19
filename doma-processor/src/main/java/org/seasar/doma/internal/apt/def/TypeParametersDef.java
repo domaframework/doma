@@ -14,7 +14,7 @@ import javax.lang.model.element.TypeParameterElement;
 
 public class TypeParametersDef {
 
-  private Map<TypeParameterElement, String> typeParameterNameMap;
+  private final Map<TypeParameterElement, String> typeParameterNameMap;
 
   public TypeParametersDef(Map<TypeParameterElement, String> typeParameterNameMap) {
     assertNotNull(typeParameterNameMap);

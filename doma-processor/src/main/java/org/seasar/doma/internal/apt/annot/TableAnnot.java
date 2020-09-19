@@ -63,6 +63,6 @@ public class TableAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }
-    return value.booleanValue();
+    return value;
   }
 }

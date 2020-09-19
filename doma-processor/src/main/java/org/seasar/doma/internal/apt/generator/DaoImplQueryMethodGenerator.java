@@ -1530,6 +1530,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return null;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarStreamHandler> getBasicStreamHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicStreamHandler.class;
@@ -1537,6 +1538,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return BasicStreamHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarStreamHandler> getDomainStreamHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainStreamHandler.class;
@@ -1672,6 +1674,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return null;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarCollectorHandler> getBasicCollectorHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicCollectorHandler.class;
@@ -1679,6 +1682,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return BasicCollectorHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarCollectorHandler> getDomainCollectorHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainCollectorHandler.class;
@@ -1929,6 +1933,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return null;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarSingleResultHandler> getBasicSingleResultHandler(
         Boolean optional) {
       if (Boolean.TRUE == optional) {
@@ -1937,6 +1942,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return BasicSingleResultHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarResultListHandler> getBasicResultListHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalBasicResultListHandler.class;
@@ -1944,6 +1950,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return BasicResultListHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarSingleResultHandler> getDomainSingleResultHandler(
         Boolean optional) {
       if (Boolean.TRUE == optional) {
@@ -1952,6 +1959,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return DomainSingleResultHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends ScalarResultListHandler> getDomainResultListHandler(Boolean optional) {
       if (Boolean.TRUE == optional) {
         return OptionalDomainResultListHandler.class;
@@ -1967,6 +1975,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return MapSingleResultHandler.class;
     }
 
+    @SuppressWarnings("rawtypes")
     private Class<? extends AbstractSingleResultHandler> getEntitySingleResultHandler(
         Boolean optional) {
       if (Boolean.TRUE == optional) {

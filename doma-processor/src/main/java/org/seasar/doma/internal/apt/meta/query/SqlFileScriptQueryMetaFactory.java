@@ -69,11 +69,11 @@ public class SqlFileScriptQueryMetaFactory
     }
     String filePath = queryMeta.getPath();
     File file = getFile(filePath);
-    File[] siblingfiles = getSiblingFiles(file);
+    File[] siblingFiles = getSiblingFiles(file);
     String methodName = queryMeta.getName();
-    for (File siblingfile : siblingfiles) {
-      if (ScriptFileUtil.isScriptFile(siblingfile, methodName)) {
-        String fileName = siblingfile.getName();
+    for (File siblingFile : siblingFiles) {
+      if (ScriptFileUtil.isScriptFile(siblingFile, methodName)) {
+        String fileName = siblingFile.getName();
         queryMeta.addFileName(fileName);
       }
     }

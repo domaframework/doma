@@ -18,7 +18,7 @@ public class CompilerExtension extends AptinaTestCase
     implements BeforeEachCallback, AfterEachCallback {
 
   @Override
-  public void beforeEach(ExtensionContext context) throws Exception {
+  public void beforeEach(ExtensionContext context) {
     addSourcePath("src/test/java");
     addSourcePath("src/test/resources");
     setCharset("UTF-8");
@@ -27,7 +27,7 @@ public class CompilerExtension extends AptinaTestCase
   }
 
   @Override
-  public void afterEach(ExtensionContext context) throws Exception {
+  public void afterEach(ExtensionContext context) {
     TimeZone.setDefault(null);
     super.tearDown();
   }

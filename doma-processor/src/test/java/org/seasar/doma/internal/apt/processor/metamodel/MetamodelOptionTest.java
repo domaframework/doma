@@ -34,7 +34,7 @@ class MetamodelOptionTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
     addProcessor(new EntityProcessor());

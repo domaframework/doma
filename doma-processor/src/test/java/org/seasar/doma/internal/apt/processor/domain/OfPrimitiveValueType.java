@@ -9,7 +9,7 @@ enum OfPrimitiveValueType {
 
   private final int value;
 
-  private OfPrimitiveValueType(int value) {
+  OfPrimitiveValueType(int value) {
     this.value = value;
   }
 

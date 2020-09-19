@@ -2,13 +2,14 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.wrapper.IntegerWrapper;
 
 public final class _Age extends AbstractDomainType<Integer, Age> {
 
   private static final _Age singleton = new _Age();
 
   private _Age() {
-    super(() -> new org.seasar.doma.wrapper.IntegerWrapper());
+    super(IntegerWrapper::new);
   }
 
   @Override

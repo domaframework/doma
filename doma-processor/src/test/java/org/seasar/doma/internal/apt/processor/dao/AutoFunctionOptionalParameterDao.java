@@ -11,6 +11,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.jdbc.Reference;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Dao(config = MyConfig.class)
 public interface AutoFunctionOptionalParameterDao {
 
@@ -41,5 +42,5 @@ public interface AutoFunctionOptionalParameterDao {
   @Function
   List<Optional<MyEnum>> executeFunction6(@ResultSet List<Optional<MyEnum>> arg1);
 
-  public enum MyEnum {}
+  enum MyEnum {}
 }

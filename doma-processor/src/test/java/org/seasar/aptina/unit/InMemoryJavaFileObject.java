@@ -48,7 +48,7 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
   }
 
   @Override
-  public InputStream openInputStream() throws IOException {
+  public InputStream openInputStream() {
     return new ByteArrayInputStream(
         content != null
             ? content
@@ -56,14 +56,14 @@ class InMemoryJavaFileObject extends SimpleJavaFileObject {
   }
 
   @Override
-  public OutputStream openOutputStream() throws IOException {
+  public OutputStream openOutputStream() {
     content = null;
     outputStream = new ByteArrayOutputStream(1024);
     return outputStream;
   }
 
   @Override
-  public Writer openWriter() throws IOException {
+  public Writer openWriter() {
     return new OutputStreamWriter(openOutputStream(), charset);
   }
 

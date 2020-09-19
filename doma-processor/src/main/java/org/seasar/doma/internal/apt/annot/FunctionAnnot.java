@@ -102,7 +102,7 @@ public class FunctionAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUOTE);
     }
-    return value.booleanValue();
+    return value;
   }
 
   public int getQueryTimeoutValue() {
@@ -110,7 +110,7 @@ public class FunctionAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
-    return value.intValue();
+    return value;
   }
 
   public MapKeyNamingType getMapKeyNamingValue() {
@@ -126,7 +126,7 @@ public class FunctionAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(ENSURE_RESULT_MAPPING);
     }
-    return value.booleanValue();
+    return value;
   }
 
   public SqlLogType getSqlLogValue() {

@@ -5,7 +5,7 @@ import javax.lang.model.element.TypeElement;
 
 public class DefaultQueryMeta extends AbstractQueryMeta {
 
-  private boolean isVirtual;
+  private final boolean isVirtual;
 
   public DefaultQueryMeta(
       TypeElement daoElement, ExecutableElement methodElement, boolean isVirtual) {

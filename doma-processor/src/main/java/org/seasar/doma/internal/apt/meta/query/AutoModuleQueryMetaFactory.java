@@ -94,7 +94,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
         .accept(new InOutReferentCtTypeVisitor(parameterMeta, referenceCtType), false);
   }
 
-  class ResultSetCtTypeVisitor extends SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException> {
+  static class ResultSetCtTypeVisitor
+      extends SimpleCtTypeVisitor<IterableCtType, Void, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
 
@@ -117,7 +118,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class ResultSetElementCtTypeVisitor
+  static class ResultSetElementCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
@@ -196,7 +197,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class InCtTypeVisitor
+  static class InCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
@@ -255,7 +256,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class OutCtTypeVisitor extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
+  static class OutCtTypeVisitor
+      extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
 
@@ -275,7 +277,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class OutReferentCtTypeVisitor
+  static class OutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
@@ -339,7 +341,8 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class InOutCtTypeVisitor extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
+  static class InOutCtTypeVisitor
+      extends SimpleCtTypeVisitor<ReferenceCtType, Void, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;
 
@@ -359,7 +362,7 @@ public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     }
   }
 
-  class InOutReferentCtTypeVisitor
+  static class InOutReferentCtTypeVisitor
       extends SimpleCtTypeVisitor<CallableSqlParameterMeta, Boolean, RuntimeException> {
 
     final QueryParameterMeta parameterMeta;

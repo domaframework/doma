@@ -131,6 +131,6 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(SQL_FILE);
     }
-    return value.booleanValue();
+    return value;
   }
 }

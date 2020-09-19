@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.dao.experimental;
 import java.util.List;
 import java.util.function.BiFunction;
 import org.seasar.doma.*;
-import org.seasar.doma.Sql;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 

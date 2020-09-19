@@ -5,6 +5,7 @@ import org.seasar.doma.Embeddable;
 
 @Embeddable
 public class EmpInfo {
+  @SuppressWarnings("FieldCanBeLocal")
   private final LocalDate hiredate;
 
   public EmpInfo(LocalDate hiredate) {

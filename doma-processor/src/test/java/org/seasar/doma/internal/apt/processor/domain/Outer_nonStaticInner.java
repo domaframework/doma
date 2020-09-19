@@ -5,6 +5,7 @@ import org.seasar.doma.Domain;
 
 public class Outer_nonStaticInner {
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   @Domain(valueType = BigDecimal.class)
   public class Inner {
 

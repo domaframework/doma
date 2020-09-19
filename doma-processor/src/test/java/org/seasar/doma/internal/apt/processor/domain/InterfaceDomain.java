@@ -15,7 +15,7 @@ public interface InterfaceDomain {
         .orElseGet(() -> new Color(value));
   }
 
-  public enum DefinedColor implements InterfaceDomain {
+  enum DefinedColor implements InterfaceDomain {
     RED,
     BLUE,
     GREEN;
@@ -26,7 +26,7 @@ public interface InterfaceDomain {
     }
   }
 
-  public static class Color implements InterfaceDomain {
+  class Color implements InterfaceDomain {
 
     private final String value;
 

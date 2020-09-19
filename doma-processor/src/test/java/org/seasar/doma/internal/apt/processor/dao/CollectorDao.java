@@ -32,7 +32,7 @@ public interface CollectorDao {
   @Select(strategy = SelectType.COLLECT, mapKeyNaming = MapKeyNamingType.CAMEL_CASE)
   <R> R selectByIdAsMap(Integer id, Collector<Map<String, Object>, ?, R> collector);
 
-  public class HogeCollector implements Collector<String, String, String> {
+  class HogeCollector implements Collector<String, String, String> {
 
     @Override
     public Supplier<String> supplier() {

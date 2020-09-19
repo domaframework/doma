@@ -6,5 +6,5 @@ public enum AccessLevel {
   PROTECTED,
   PACKAGE,
   PRIVATE,
-  NONE;
+  NONE
 }

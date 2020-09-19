@@ -108,7 +108,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(QUERY_TIMEOUT);
     }
-    return value.intValue();
+    return value;
   }
 
   public Boolean getIgnoreVersionValue() {
@@ -148,6 +148,6 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     if (value == null) {
       throw new AptIllegalStateException(SQL_FILE);
     }
-    return value.booleanValue();
+    return value;
   }
 }

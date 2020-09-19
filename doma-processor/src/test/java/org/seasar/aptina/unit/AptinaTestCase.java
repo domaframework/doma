@@ -17,6 +17,7 @@ package org.seasar.aptina.unit;
 
 import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.seasar.aptina.unit.AssertionUtils.*;
 import static org.seasar.aptina.unit.IOUtils.*;
 
@@ -76,7 +77,7 @@ public abstract class AptinaTestCase {
 
   protected AptinaTestCase() {}
 
-  public void tearDown() throws Exception {
+  public void tearDown() {
     if (testingJavaFileManager != null) {
       try {
         testingJavaFileManager.close();
@@ -169,7 +170,7 @@ public abstract class AptinaTestCase {
 
   public void compile() throws IOException {
     javaCompiler = ToolProvider.getSystemJavaCompiler();
-    diagnostics = new DiagnosticCollector<JavaFileObject>();
+    diagnostics = new DiagnosticCollector<>();
     final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
 
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
@@ -251,7 +252,7 @@ public abstract class AptinaTestCase {
       assertEquals(expected, actual);
       return;
     }
-    final BufferedReader expectedReader = new BufferedReader(new StringReader(expected.toString()));
+    final BufferedReader expectedReader = new BufferedReader(new StringReader(expected));
     final BufferedReader actualReader = new BufferedReader(new StringReader(actual));
     try {
       assertEqualsByLine(expectedReader, actualReader);
@@ -274,7 +275,7 @@ public abstract class AptinaTestCase {
       assertEquals(expectedLine, actualLine, "line:" + lineNo);
     }
     ++lineNo;
-    assertEquals(null, actualReader.readLine(), "line:" + lineNo);
+    assertNull(actualReader.readLine(), "line:" + lineNo);
   }
 
   public void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
@@ -392,7 +393,7 @@ public abstract class AptinaTestCase {
   }
 
   List<JavaFileObject> getCompilationUnits() throws IOException {
-    final List<JavaFileObject> result = new ArrayList<JavaFileObject>(compilationUnits.size());
+    final List<JavaFileObject> result = new ArrayList<>(compilationUnits.size());
     for (final CompilationUnit compilationUnit : compilationUnits) {
       result.add(compilationUnit.getJavaFileObject());
     }
@@ -417,7 +418,7 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   static class LoggingDiagnosticListener implements DiagnosticListener<JavaFileObject> {
 
-    DiagnosticListener<JavaFileObject> listener;
+    final DiagnosticListener<JavaFileObject> listener;
 
     LoggingDiagnosticListener(final DiagnosticListener<JavaFileObject> listener) {
       this.listener = listener;
@@ -439,7 +440,7 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   class FileCompilationUnit implements CompilationUnit {
 
-    String className;
+    final String className;
 
     public FileCompilationUnit(final String className) {
       this.className = className;
@@ -455,9 +456,9 @@ public abstract class AptinaTestCase {
   /** @author koichik */
   class InMemoryCompilationUnit implements CompilationUnit {
 
-    String className;
+    final String className;
 
-    String source;
+    final String source;
 
     public InMemoryCompilationUnit(final String className, final String source) {
       this.className = className;

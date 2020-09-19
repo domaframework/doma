@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.annot;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
