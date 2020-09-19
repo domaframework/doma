@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BatchUpdateCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.NonUniqueResultException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class EntitySingleResultHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

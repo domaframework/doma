@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.wrapper.StringWrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScalarProviderTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

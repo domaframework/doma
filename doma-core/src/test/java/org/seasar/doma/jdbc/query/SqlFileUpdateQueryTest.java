@@ -34,6 +34,7 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SqlFileUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

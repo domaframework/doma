@@ -30,6 +30,7 @@ import org.seasar.doma.wrapper.PrimitiveIntWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScalarsTest {
 
   private final ClassHelper classHelper = new ClassHelper() {};

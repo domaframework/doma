@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class DeleteCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScalarInOutParameterTest {
 
   @Test

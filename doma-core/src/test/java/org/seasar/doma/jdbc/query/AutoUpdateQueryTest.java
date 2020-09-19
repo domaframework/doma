@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

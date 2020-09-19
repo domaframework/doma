@@ -11,6 +11,7 @@ import org.seasar.doma.Sql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AbstractSqlFileRepositoryTest {
 
   @Test

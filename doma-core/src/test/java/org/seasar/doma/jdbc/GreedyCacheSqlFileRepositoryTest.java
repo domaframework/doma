@@ -13,6 +13,7 @@ import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class GreedyCacheSqlFileRepositoryTest {
 
   private Method method;

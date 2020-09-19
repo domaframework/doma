@@ -14,6 +14,7 @@ import org.seasar.doma.jdbc.ScriptException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileScriptQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ScriptCommandTest {
 
   private Method method;

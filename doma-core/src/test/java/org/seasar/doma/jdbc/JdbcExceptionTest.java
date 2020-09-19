@@ -18,6 +18,7 @@ import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.message.Message;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class JdbcExceptionTest {
 
   private final MockConfig config = new MockConfig();

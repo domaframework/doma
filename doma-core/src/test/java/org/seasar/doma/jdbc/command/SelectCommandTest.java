@@ -33,6 +33,7 @@ import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SelectCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

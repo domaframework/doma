@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.IterationContext;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class EntityIterationHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

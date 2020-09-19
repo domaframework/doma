@@ -13,6 +13,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BatchDeleteCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

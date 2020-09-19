@@ -15,6 +15,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class InsertCommandTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

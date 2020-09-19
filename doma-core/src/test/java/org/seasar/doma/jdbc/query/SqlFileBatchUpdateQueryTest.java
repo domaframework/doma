@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SqlFileBatchUpdateQueryTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

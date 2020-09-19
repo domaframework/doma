@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.SqlFileSelectQuery;
 import org.seasar.doma.wrapper.StringWrapper;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BasicResultListHandlerTest {
 
   private final MockConfig runtimeConfig = new MockConfig();

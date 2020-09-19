@@ -17,6 +17,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.ScriptFileNotFoundException;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class SqlFileScriptQueryTest {
 
   private final MockConfig config = new MockConfig();

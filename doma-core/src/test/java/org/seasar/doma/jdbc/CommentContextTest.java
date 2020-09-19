@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 class CommentContextTest {
 
   @Test
