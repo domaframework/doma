@@ -31,9 +31,11 @@ public class ResourcesTest {
     try {
       FileObject fileObject = new Resources.FileObjectImpl(file.toPath());
       try (InputStream is = fileObject.openInputStream()) {
+        //noinspection ResultOfMethodCallIgnored
         is.read();
       }
     } finally {
+      //noinspection ResultOfMethodCallIgnored
       file.delete();
     }
   }

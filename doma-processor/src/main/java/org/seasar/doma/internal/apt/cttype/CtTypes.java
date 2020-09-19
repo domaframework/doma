@@ -242,6 +242,7 @@ public class CtTypes {
 
   private DomainInfo getDomainInfo(Domain domain) {
     try {
+      //noinspection ResultOfMethodCallIgnored
       domain.valueType();
     } catch (MirroredTypeException e) {
       return new DomainInfo(e.getTypeMirror(), false);
