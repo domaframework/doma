@@ -95,11 +95,9 @@ public class ScriptTokenizer {
     switch (type) {
       case END_OF_FILE:
         token = null;
-        type = END_OF_FILE;
         return END_OF_FILE;
       case END_OF_LINE:
         token = "";
-        type = END_OF_LINE;
         return END_OF_LINE;
       case BLOCK_DELIMITER:
         token = line;

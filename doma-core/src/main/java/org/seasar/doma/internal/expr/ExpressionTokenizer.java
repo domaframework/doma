@@ -33,7 +33,6 @@ public class ExpressionTokenizer {
   public ExpressionTokenType next() {
     if (type == EOE) {
       token = null;
-      type = EOE;
       return EOE;
     }
     ExpressionTokenType currentType = type;

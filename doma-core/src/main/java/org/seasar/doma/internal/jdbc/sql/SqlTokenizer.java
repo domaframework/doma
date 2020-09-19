@@ -79,7 +79,6 @@ public class SqlTokenizer {
     switch (type) {
       case EOF:
         token = null;
-        type = EOF;
         return EOF;
       case EOL:
         lineStartPosition = buf.position();
