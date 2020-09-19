@@ -51,7 +51,7 @@ public class InsertCommandTest {
 
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(1, bindValues.get(0).getValue());
-    assertEquals(new String("hoge"), bindValues.get(1).getValue());
+    assertEquals("hoge", bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
     assertEquals(10, bindValues.get(3).getValue());
   }
@@ -82,7 +82,7 @@ public class InsertCommandTest {
     List<BindValue> bindValues = runtimeConfig.dataSource.connection.preparedStatement.bindValues;
     assertEquals(4, bindValues.size());
     assertEquals(1, bindValues.get(0).getValue());
-    assertEquals(new String("hoge"), bindValues.get(1).getValue());
+    assertEquals("hoge", bindValues.get(1).getValue());
     assertEquals(new BigDecimal(1000), bindValues.get(2).getValue());
     assertEquals(1, bindValues.get(3).getValue());
   }
