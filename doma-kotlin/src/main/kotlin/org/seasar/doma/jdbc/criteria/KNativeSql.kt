@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.criteria.statement.KNativeSqlUpdateStarting
 
 class KNativeSql(config: Config?) {
 
-    protected val nativeSql = NativeSql(config)
+    private val nativeSql = NativeSql(config)
 
     fun <ENTITY> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
