@@ -49,8 +49,7 @@ public class SqlFileBatchDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchDeleteQuery batchDeleteQuery = query;
-    assertEquals(2, batchDeleteQuery.getSqls().size());
+    assertEquals(2, ((BatchDeleteQuery) query).getSqls().size());
   }
 
   @Test

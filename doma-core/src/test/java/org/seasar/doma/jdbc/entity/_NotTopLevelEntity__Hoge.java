@@ -206,8 +206,7 @@ public final class _NotTopLevelEntity__Hoge
   public NotTopLevelEntity.Hoge newEntity(
       java.util.Map<String, org.seasar.doma.jdbc.entity.Property<NotTopLevelEntity.Hoge, ?>>
           __args) {
-    NotTopLevelEntity.Hoge entity = new NotTopLevelEntity.Hoge();
-    return entity;
+    return new NotTopLevelEntity.Hoge();
   }
 
   @Override

@@ -123,9 +123,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
-      ENTITY newEntity =
+      currentEntity =
           generatedIdPropertyType.preInsert(entityType, currentEntity, idGenerationConfig);
-      currentEntity = newEntity;
     }
   }
 

@@ -64,8 +64,7 @@ public class SqlFileUpdateQueryTest {
     query.addParameter("emp", Emp.class, emp);
     query.prepare();
 
-    UpdateQuery updateQuery = query;
-    PreparedSql sql = updateQuery.getSql();
+    PreparedSql sql = ((UpdateQuery) query).getSql();
     assertEquals(
         "update aaa set NAME = ?, SALARY = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
     assertEquals(
@@ -299,8 +298,7 @@ public class SqlFileUpdateQueryTest {
     query.addParameter("version", Integer.class, 100);
     query.prepare();
 
-    UpdateQuery updateQuery = query;
-    PreparedSql sql = updateQuery.getSql();
+    PreparedSql sql = ((UpdateQuery) query).getSql();
     assertEquals("update aaa set NAME = ?, VERSION = ? + 1 where id = ?", sql.getRawSql());
     assertEquals(
         "update aaa set NAME = 'aaa', VERSION = 100 + 1 where id = 10", sql.getFormattedSql());
@@ -337,8 +335,7 @@ public class SqlFileUpdateQueryTest {
     query.addParameter("emp", Emp.class, emp);
     query.prepare();
 
-    UpdateQuery updateQuery = query;
-    PreparedSql sql = updateQuery.getSql();
+    PreparedSql sql = ((UpdateQuery) query).getSql();
     assertEquals("update aaa set VERSION = ? + 1 where id = ?", sql.getRawSql());
     assertEquals("update aaa set VERSION = 100 + 1 where id = 10", sql.getFormattedSql());
     List<? extends InParameter<?>> parameters = sql.getParameters();

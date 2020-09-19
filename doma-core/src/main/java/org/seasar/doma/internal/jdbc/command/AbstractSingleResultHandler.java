@@ -24,17 +24,15 @@ public abstract class AbstractSingleResultHandler<RESULT> implements ResultSetHa
   public Supplier<RESULT> handle(
       ResultSet resultSet, SelectQuery query, ResultSetRowIndexConsumer consumer)
       throws SQLException {
-    Supplier<RESULT> result =
-        handler.handle(
-            resultSet,
-            query,
-            (index, next) -> {
-              consumer.accept(index, next);
-              if (index == 0 && next) {
-                Sql<?> sql = query.getSql();
-                throw new NonUniqueResultException(query.getConfig().getExceptionSqlLogType(), sql);
-              }
-            });
-    return result;
+    return handler.handle(
+        resultSet,
+        query,
+        (index, next) -> {
+          consumer.accept(index, next);
+          if (index == 0 && next) {
+            Sql<?> sql = query.getSql();
+            throw new NonUniqueResultException(query.getConfig().getExceptionSqlLogType(), sql);
+          }
+        });
   }
 }

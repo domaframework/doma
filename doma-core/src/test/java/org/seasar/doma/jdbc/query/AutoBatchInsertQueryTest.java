@@ -48,9 +48,8 @@ public class AutoBatchInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchInsertQuery batchInsertQuery = query;
-    assertTrue(batchInsertQuery.isBatchSupported());
-    assertEquals(2, batchInsertQuery.getSqls().size());
+    assertTrue(((BatchInsertQuery) query).isBatchSupported());
+    assertEquals(2, ((BatchInsertQuery) query).getSqls().size());
   }
 
   @Test

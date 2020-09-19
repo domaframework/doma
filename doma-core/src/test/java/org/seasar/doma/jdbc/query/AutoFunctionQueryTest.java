@@ -23,7 +23,6 @@ public class AutoFunctionQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    FunctionQuery<Integer> functionQuery = query;
-    assertNotNull(functionQuery.getSql());
+    assertNotNull(((FunctionQuery<Integer>) query).getSql());
   }
 }

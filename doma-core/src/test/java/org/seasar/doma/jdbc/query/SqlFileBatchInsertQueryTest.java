@@ -51,8 +51,7 @@ public class SqlFileBatchInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    BatchInsertQuery batchInsertQuery = query;
-    assertEquals(2, batchInsertQuery.getSqls().size());
+    assertEquals(2, ((BatchInsertQuery) query).getSqls().size());
   }
 
   @Test

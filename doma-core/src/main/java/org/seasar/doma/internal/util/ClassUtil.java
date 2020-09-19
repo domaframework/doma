@@ -141,7 +141,6 @@ public final class ClassUtil {
     if (superclass == null) {
       return null;
     }
-    R result = traverse(superclass, f);
-    return result;
+    return traverse(superclass, f);
   }
 }

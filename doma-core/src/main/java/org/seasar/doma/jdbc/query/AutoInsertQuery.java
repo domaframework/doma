@@ -103,8 +103,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
-      ENTITY newEntity = generatedIdPropertyType.preInsert(entityType, entity, idGenerationConfig);
-      entity = newEntity;
+      entity = generatedIdPropertyType.preInsert(entityType, entity, idGenerationConfig);
     }
   }
 
@@ -141,9 +140,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   @Override
   public void generateId(Statement statement) {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
-      ENTITY newEntity =
+      entity =
           generatedIdPropertyType.postInsert(entityType, entity, idGenerationConfig, statement);
-      entity = newEntity;
     }
   }
 
