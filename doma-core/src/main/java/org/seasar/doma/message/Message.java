@@ -958,7 +958,7 @@ public enum Message implements MessageResource {
 
   private final String messagePattern;
 
-  private Message(String messagePattern) {
+  Message(String messagePattern) {
     this.messagePattern = messagePattern;
   }
 

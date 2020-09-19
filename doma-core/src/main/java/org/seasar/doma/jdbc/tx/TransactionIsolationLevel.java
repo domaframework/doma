@@ -22,7 +22,7 @@ public enum TransactionIsolationLevel {
 
   private int level;
 
-  private TransactionIsolationLevel(int level) {
+  TransactionIsolationLevel(int level) {
     this.level = level;
   }
 
