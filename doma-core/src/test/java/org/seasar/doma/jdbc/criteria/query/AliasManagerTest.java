@@ -11,10 +11,10 @@ import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 class AliasManagerTest {
-  private Emp_ e = new Emp_();
-  private Dept_ d = new Dept_();
-  private Emp_ e2 = new Emp_();
-  private Dept_ d2 = new Dept_();
+  private final Emp_ e = new Emp_();
+  private final Dept_ d = new Dept_();
+  private final Emp_ e2 = new Emp_();
+  private final Dept_ d2 = new Dept_();
 
   private static class ContextImpl implements Context {
 

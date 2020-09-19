@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.SqlNode;
 public class MssqlDialect extends Mssql2008Dialect {
 
   /** whether this dialect forces to use the OFFSET FETCH Clause for a paging */
-  private boolean pagingForceOffsetFetch;
+  private final boolean pagingForceOffsetFetch;
 
   public MssqlDialect() {
     this(

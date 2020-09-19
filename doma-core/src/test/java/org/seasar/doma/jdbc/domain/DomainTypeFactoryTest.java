@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.ClassHelper;
 
 public class DomainTypeFactoryTest {
 
-  private ClassHelper classHelper = new ClassHelper() {};
+  private final ClassHelper classHelper = new ClassHelper() {};
 
   @Test
   public void testGetDomainType() throws Exception {

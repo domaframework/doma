@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.ClassHelper;
 
 public class EntityTypeFactoryTest {
 
-  private ClassHelper classHelper = new ClassHelper() {};
+  private final ClassHelper classHelper = new ClassHelper() {};
 
   @Test
   public void testGetEntityType() throws Exception {

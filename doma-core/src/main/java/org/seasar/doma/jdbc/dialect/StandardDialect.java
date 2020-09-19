@@ -712,7 +712,7 @@ public class StandardDialect implements Dialect {
   public static class StandardExpressionFunctions implements ExpressionFunctions {
 
     /** the default escape character */
-    private static char DEFAULT_ESCAPE_CHAR = '$';
+    private static final char DEFAULT_ESCAPE_CHAR = '$';
 
     /** the default wild card characters */
     private static final char[] DEFAULT_WILDCARDS = {'%', '_'};

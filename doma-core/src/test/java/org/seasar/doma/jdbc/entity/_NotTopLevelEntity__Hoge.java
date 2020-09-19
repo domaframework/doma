@@ -234,7 +234,7 @@ public final class _NotTopLevelEntity__Hoge
   }
 
   private static class ListenerHolder {
-    private static org.seasar.doma.jdbc.entity.NullEntityListener<NotTopLevelEntity.Hoge> listener =
-        new org.seasar.doma.jdbc.entity.NullEntityListener<>();
+    private static final org.seasar.doma.jdbc.entity.NullEntityListener<NotTopLevelEntity.Hoge>
+        listener = new org.seasar.doma.jdbc.entity.NullEntityListener<>();
   }
 }
