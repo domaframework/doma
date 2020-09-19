@@ -11,7 +11,7 @@ public class IfBlockNode extends AbstractSqlNode implements BlockNode {
 
   protected IfNode ifNode;
 
-  protected List<ElseifNode> elseifNodes = new ArrayList<ElseifNode>();
+  protected List<ElseifNode> elseifNodes = new ArrayList<>();
 
   protected ElseNode elseNode;
 

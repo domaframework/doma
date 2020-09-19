@@ -41,7 +41,7 @@ public class BatchUpdateQueryHelper<E> {
 
   public List<EntityPropertyType<E, ?>> getTargetPropertyTypes() {
     List<EntityPropertyType<E, ?>> targetPropertyTypes =
-        new ArrayList<EntityPropertyType<E, ?>>(entityType.getEntityPropertyTypes().size());
+        new ArrayList<>(entityType.getEntityPropertyTypes().size());
     for (EntityPropertyType<E, ?> p : entityType.getEntityPropertyTypes()) {
       if (!p.isUpdatable()) {
         continue;

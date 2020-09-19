@@ -60,7 +60,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
 
   @Override
   public <E> void setEntityAndEntityType(String name, E entity, EntityType<E> entityType) {
-    entityHandler = new EntityHandler<E>(name, entity, entityType);
+    entityHandler = new EntityHandler<>(name, entity, entityType);
   }
 
   public void setVersionIgnored(boolean versionIgnored) {
@@ -99,7 +99,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
 
     protected void preDelete() {
       SqlFilePreDeleteContext<E> context =
-          new SqlFilePreDeleteContext<E>(entityType, method, config);
+          new SqlFilePreDeleteContext<>(entityType, method, config);
       entityType.preDelete(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();
@@ -109,7 +109,7 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
 
     protected void postDelete() {
       SqlFilePostDeleteContext<E> context =
-          new SqlFilePostDeleteContext<E>(entityType, method, config);
+          new SqlFilePostDeleteContext<>(entityType, method, config);
       entityType.postDelete(entity, context);
       if (context.getNewEntity() != null) {
         entity = context.getNewEntity();

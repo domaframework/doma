@@ -11,6 +11,6 @@ public class OptionalBasicInOutParameter<BASIC>
 
   public OptionalBasicInOutParameter(
       Supplier<Wrapper<BASIC>> supplier, Reference<Optional<BASIC>> reference) {
-    super(new OptionalBasicScalar<BASIC>(supplier), reference);
+    super(new OptionalBasicScalar<>(supplier), reference);
   }
 }

@@ -682,7 +682,7 @@ public class SqlParserTest {
   @Test
   public void testFor() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");
@@ -731,7 +731,7 @@ public class SqlParserTest {
   @Test
   public void testFor_removeWhere() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     evaluator.add("names", new Value(List.class, list));
     String testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/";
@@ -749,7 +749,7 @@ public class SqlParserTest {
   @Test
   public void testFor_removeOrderBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     evaluator.add("names", new Value(List.class, list));
     String testSql =
         "select * from aaa order by /*%for n : names*/name = /*n*/'a' /*%if n_has_next */, /*%end*//*%end*/";
@@ -767,7 +767,7 @@ public class SqlParserTest {
   @Test
   public void testFor_removeGroupBy() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     evaluator.add("names", new Value(List.class, list));
     String testSql =
         "select * from aaa group by /*%for n : names*/name = /*n*/'a' /*%if n_has_next */, /*%end*//*%end*/";
@@ -785,7 +785,7 @@ public class SqlParserTest {
   @Test
   public void testFor_removeOr() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     evaluator.add("names", new Value(List.class, list));
     String testSql =
         "select * from aaa where /*%for n : names*/name = /*n*/'a' /*%if n_has_next */or /*%end*//*%end*/ or salary > 100";
@@ -803,7 +803,7 @@ public class SqlParserTest {
   @Test
   public void testFor_index() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> list = new ArrayList<>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");

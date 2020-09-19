@@ -242,7 +242,7 @@ public class MapBatchInsertBuilderTest {
   @Test
   public void testEmptyList() throws Exception {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
-    List<LinkedHashMap<String, Object>> employees = new ArrayList<LinkedHashMap<String, Object>>();
+    List<LinkedHashMap<String, Object>> employees = new ArrayList<>();
     try {
       builder.execute(employees);
     } catch (JdbcException e) {

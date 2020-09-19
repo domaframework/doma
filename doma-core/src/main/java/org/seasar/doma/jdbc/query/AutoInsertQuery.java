@@ -48,8 +48,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preInsert() {
-    AutoPreInsertContext<ENTITY> context =
-        new AutoPreInsertContext<ENTITY>(entityType, method, config);
+    AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<>(entityType, method, config);
     entityType.preInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -154,8 +153,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postInsert() {
-    AutoPostInsertContext<ENTITY> context =
-        new AutoPostInsertContext<ENTITY>(entityType, method, config);
+    AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<>(entityType, method, config);
     entityType.postInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();

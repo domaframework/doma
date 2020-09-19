@@ -35,7 +35,7 @@ public class ScalarProviderTest {
     ScalarProvider<String, String> provider =
         new ScalarProvider<>(
             () ->
-                new org.seasar.doma.internal.jdbc.scalar.BasicScalar<String>(
+                new org.seasar.doma.internal.jdbc.scalar.BasicScalar<>(
                     () -> new org.seasar.doma.wrapper.StringWrapper()),
             new MySelectQuery());
     String result = provider.get(resultSet);
@@ -54,7 +54,7 @@ public class ScalarProviderTest {
     ScalarProvider<String, Optional<String>> provider =
         new ScalarProvider<>(
             () ->
-                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<String>(
+                new org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalar<>(
                     () -> new org.seasar.doma.wrapper.StringWrapper()),
             new MySelectQuery());
     Optional<String> result = provider.get(resultSet);

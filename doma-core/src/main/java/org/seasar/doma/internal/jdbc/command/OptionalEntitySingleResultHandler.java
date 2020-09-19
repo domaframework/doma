@@ -7,6 +7,6 @@ public class OptionalEntitySingleResultHandler<ENTITY>
     extends AbstractSingleResultHandler<Optional<ENTITY>> {
 
   public OptionalEntitySingleResultHandler(EntityType<ENTITY> entityType) {
-    super(new EntityIterationHandler<>(entityType, new OptionalSingleResultCallback<ENTITY>()));
+    super(new EntityIterationHandler<>(entityType, new OptionalSingleResultCallback<>()));
   }
 }

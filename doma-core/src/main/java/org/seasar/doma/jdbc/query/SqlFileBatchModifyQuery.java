@@ -120,14 +120,14 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
   public void setElements(Iterable<ELEMENT> elements) {
     assertNotNull(elements);
     if (elements instanceof Collection<?>) {
-      this.elements = new ArrayList<ELEMENT>((Collection<ELEMENT>) elements);
+      this.elements = new ArrayList<>((Collection<ELEMENT>) elements);
     } else {
-      this.elements = new ArrayList<ELEMENT>();
+      this.elements = new ArrayList<>();
       for (ELEMENT element : elements) {
         this.elements.add(element);
       }
     }
-    this.sqls = new ArrayList<PreparedSql>(this.elements.size());
+    this.sqls = new ArrayList<>(this.elements.size());
   }
 
   public List<ELEMENT> getEntities() {

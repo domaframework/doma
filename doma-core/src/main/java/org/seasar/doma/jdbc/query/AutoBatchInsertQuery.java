@@ -70,7 +70,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void preInsert() {
     AutoBatchPreInsertContext<ENTITY> context =
-        new AutoBatchPreInsertContext<ENTITY>(entityType, method, config);
+        new AutoBatchPreInsertContext<>(entityType, method, config);
     entityType.preInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -186,7 +186,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void postInsert() {
     AutoBatchPostInsertContext<ENTITY> context =
-        new AutoBatchPostInsertContext<ENTITY>(entityType, method, config);
+        new AutoBatchPostInsertContext<>(entityType, method, config);
     entityType.postInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();

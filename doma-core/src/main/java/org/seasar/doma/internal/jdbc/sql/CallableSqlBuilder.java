@@ -82,7 +82,7 @@ public class CallableSqlBuilder
     }
     context.cutBackIfNecessary();
     context.append(")}");
-    LinkedList<SqlParameter> allParameters = new LinkedList<SqlParameter>(parameters);
+    LinkedList<SqlParameter> allParameters = new LinkedList<>(parameters);
     if (resultParameter != null) {
       allParameters.addFirst(resultParameter);
     }

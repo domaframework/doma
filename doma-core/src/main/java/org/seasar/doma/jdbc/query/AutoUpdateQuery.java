@@ -50,7 +50,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected void setupHelper() {
     helper =
-        new UpdateQueryHelper<ENTITY>(
+        new UpdateQueryHelper<>(
             config,
             entityType,
             includedPropertyNames,
@@ -64,7 +64,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   protected void preUpdate() {
     List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = helper.getTargetPropertyTypes(entity);
     AutoPreUpdateContext<ENTITY> context =
-        new AutoPreUpdateContext<ENTITY>(entityType, method, config, targetPropertyTypes);
+        new AutoPreUpdateContext<>(entityType, method, config, targetPropertyTypes);
     entityType.preUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -156,7 +156,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       targetPropertyTypes.add(versionPropertyType);
     }
     AutoPostUpdateContext<ENTITY> context =
-        new AutoPostUpdateContext<ENTITY>(entityType, method, config, targetPropertyTypes);
+        new AutoPostUpdateContext<>(entityType, method, config, targetPropertyTypes);
     entityType.postUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -191,7 +191,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
         List<EntityPropertyType<E, ?>> targetPropertyTypes) {
       super(entityType, method, config);
       assertNotNull(targetPropertyTypes);
-      changedPropertyNames = new HashSet<String>(targetPropertyTypes.size());
+      changedPropertyNames = new HashSet<>(targetPropertyTypes.size());
       for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
         changedPropertyNames.add(propertyType.getName());
       }
@@ -220,7 +220,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
         List<EntityPropertyType<E, ?>> targetPropertyTypes) {
       super(entityType, method, config);
       assertNotNull(targetPropertyTypes);
-      changedPropertyNames = new HashSet<String>(targetPropertyTypes.size());
+      changedPropertyNames = new HashSet<>(targetPropertyTypes.size());
       for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
         changedPropertyNames.add(propertyType.getName());
       }

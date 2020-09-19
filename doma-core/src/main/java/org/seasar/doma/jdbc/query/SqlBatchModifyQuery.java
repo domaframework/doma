@@ -24,7 +24,7 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements Batch
 
   protected SqlNode sqlNode;
 
-  protected final Map<String, List<Value>> parameters = new LinkedHashMap<String, List<Value>>();
+  protected final Map<String, List<Value>> parameters = new LinkedHashMap<>();
 
   protected List<PreparedSql> sqls;
 
@@ -60,7 +60,7 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements Batch
   }
 
   protected void prepareSql() {
-    sqls = new ArrayList<PreparedSql>();
+    sqls = new ArrayList<>();
     IntStream.rangeClosed(0, parameterSize - 1)
         .forEach(
             i -> {

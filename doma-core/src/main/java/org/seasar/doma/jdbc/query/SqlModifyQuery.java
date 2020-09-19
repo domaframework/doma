@@ -19,7 +19,7 @@ public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuer
 
   protected SqlNode sqlNode;
 
-  protected final Map<String, Value> parameters = new LinkedHashMap<String, Value>();
+  protected final Map<String, Value> parameters = new LinkedHashMap<>();
 
   protected PreparedSql sql;
 

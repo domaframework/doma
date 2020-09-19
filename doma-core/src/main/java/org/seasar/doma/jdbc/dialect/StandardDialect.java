@@ -87,7 +87,7 @@ public class StandardDialect implements Dialect {
 
   /** the set of {@literal SQLState} code that represents unique violation */
   protected static final Set<String> UNIQUE_CONSTRAINT_VIOLATION_STATE_CODES =
-      new HashSet<String>(Arrays.asList("23", "27", "44"));
+      new HashSet<>(Arrays.asList("23", "27", "44"));
 
   private static final CriteriaBuilder CRITERIA_SQL_BUILDER = new StandardCriteriaBuilder();
 
@@ -545,7 +545,7 @@ public class StandardDialect implements Dialect {
     @Override
     public <E extends Enum<E>> Void visitEnumWrapper(
         EnumWrapper<E> wrapper, JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
-      return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
+      return p.apply(wrapper, new EnumType<>(wrapper.getBasicClass()));
     }
 
     @Override
@@ -693,7 +693,7 @@ public class StandardDialect implements Dialect {
     @Override
     public <E extends Enum<E>> String visitEnumWrapper(
         EnumWrapper<E> wrapper, SqlLogFormattingFunction p, Void q) throws RuntimeException {
-      return p.apply(wrapper, new EnumType<E>(wrapper.getBasicClass()));
+      return p.apply(wrapper, new EnumType<>(wrapper.getBasicClass()));
     }
 
     @Override
@@ -1024,10 +1024,10 @@ public class StandardDialect implements Dialect {
   public static class StandardScriptBlockContext implements ScriptBlockContext {
 
     /** the key wards that represents the start of a block */
-    protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<List<String>>();
+    protected List<List<String>> sqlBlockStartKeywordsList = new ArrayList<>();
 
     /** the key words */
-    protected List<String> keywords = new ArrayList<String>();
+    protected List<String> keywords = new ArrayList<>();
 
     /** {@code true} if this context is inside of a block */
     protected boolean inBlock;

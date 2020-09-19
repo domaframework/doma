@@ -45,7 +45,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -70,7 +70,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -116,7 +116,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -157,7 +157,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -200,7 +200,7 @@ public class AutoBatchUpdateQueryTest {
     emp2.setId(20);
     emp2.setVersion(200);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -233,7 +233,7 @@ public class AutoBatchUpdateQueryTest {
 
   @Test
   public void testIsExecutable() throws Exception {
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -258,7 +258,7 @@ public class AutoBatchUpdateQueryTest {
     s2.setVersion(200);
 
     AutoBatchUpdateQuery<Salesman> query =
-        new AutoBatchUpdateQuery<Salesman>(_Salesman.getSingletonInternal());
+        new AutoBatchUpdateQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(s1, s2));

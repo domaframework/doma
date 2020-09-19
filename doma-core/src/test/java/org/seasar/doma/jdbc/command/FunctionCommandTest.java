@@ -32,22 +32,21 @@ public class FunctionCommandTest {
     IntegerWrapper bbb = new IntegerWrapper(50);
     IntegerWrapper ccc = new IntegerWrapper(60);
 
-    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
+    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<>();
     query.setConfig(runtimeConfig);
     query.setCatalogName("xxx");
     query.setSchemaName("yyy");
     query.setFunctionName("aaa");
     query.setResultParameter(
-        new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
-    query.addParameter(new BasicInParameter<Integer>(() -> aaa));
-    query.addParameter(new BasicOutParameter<Integer>(() -> bbb, new Reference<Integer>()));
-    query.addParameter(new BasicInOutParameter<Integer>(() -> ccc, new Reference<Integer>()));
+        new BasicSingleResultParameter<>(() -> new org.seasar.doma.wrapper.IntegerWrapper()));
+    query.addParameter(new BasicInParameter<>(() -> aaa));
+    query.addParameter(new BasicOutParameter<>(() -> bbb, new Reference<>()));
+    query.addParameter(new BasicInOutParameter<>(() -> ccc, new Reference<>()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
-    Integer result = new FunctionCommand<Integer>(query).execute();
+    Integer result = new FunctionCommand<>(query).execute();
     query.complete();
 
     assertNotNull(result);

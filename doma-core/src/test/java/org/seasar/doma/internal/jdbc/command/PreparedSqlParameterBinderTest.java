@@ -22,11 +22,10 @@ public class PreparedSqlParameterBinderTest {
   @Test
   public void testBind() throws Exception {
     MockPreparedStatement preparedStatement = new MockPreparedStatement();
-    List<BasicInParameter<?>> parameters = new ArrayList<BasicInParameter<?>>();
+    List<BasicInParameter<?>> parameters = new ArrayList<>();
+    parameters.add(new BasicInParameter<>(() -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
     parameters.add(
-        new BasicInParameter<String>(() -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
-    parameters.add(
-        new BasicInParameter<BigDecimal>(
+        new BasicInParameter<>(
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(new BigDecimal(10))));
     PreparedSqlParameterBinder binder = new PreparedSqlParameterBinder(new MyQuery());
     binder.bind(preparedStatement, parameters);

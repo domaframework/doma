@@ -34,7 +34,7 @@ public class InsertCommandTest {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -64,7 +64,7 @@ public class InsertCommandTest {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(null);
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

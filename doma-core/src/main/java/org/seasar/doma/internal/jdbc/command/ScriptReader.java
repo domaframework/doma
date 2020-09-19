@@ -94,7 +94,7 @@ public class ScriptReader {
 
     protected StringBuilder buf = new StringBuilder(300);
 
-    protected List<String> wordList = new ArrayList<String>();
+    protected List<String> wordList = new ArrayList<>();
 
     protected ScriptBlockContext sqlBlockContext;
 

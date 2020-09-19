@@ -14,7 +14,7 @@ public class EntityResultListParameter<ENTITY> extends AbstractResultListParamet
   boolean resultMappingEnsured;
 
   public EntityResultListParameter(EntityType<ENTITY> entityType, boolean resultMappingEnsured) {
-    super(new ArrayList<ENTITY>());
+    super(new ArrayList<>());
     assertNotNull(entityType);
     this.entityType = entityType;
     this.resultMappingEnsured = resultMappingEnsured;

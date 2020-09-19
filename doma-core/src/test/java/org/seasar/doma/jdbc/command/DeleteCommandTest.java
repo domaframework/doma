@@ -38,7 +38,7 @@ public class DeleteCommandTest {
     emp.setSalary(new BigDecimal(1000));
     emp.setVersion(10);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -69,7 +69,7 @@ public class DeleteCommandTest {
     MockPreparedStatement ps = new MockPreparedStatement();
     ps.updatedRows = 0;
     runtimeConfig.dataSource.connection = new MockConnection(ps);
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -92,7 +92,7 @@ public class DeleteCommandTest {
     emp.setName("aaa");
     emp.setVersion(100);
 
-    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

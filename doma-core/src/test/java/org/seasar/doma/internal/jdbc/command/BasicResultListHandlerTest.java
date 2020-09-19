@@ -47,7 +47,7 @@ public class BasicResultListHandlerTest {
     query.prepare();
 
     BasicResultListHandler<String> handler =
-        new BasicResultListHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+        new BasicResultListHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
     List<String> results = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("aaa", results.get(0));
@@ -73,7 +73,7 @@ public class BasicResultListHandlerTest {
     query.prepare();
 
     BasicResultListHandler<String> handler =
-        new BasicResultListHandler<String>(() -> new org.seasar.doma.wrapper.StringWrapper());
+        new BasicResultListHandler<>(() -> new org.seasar.doma.wrapper.StringWrapper());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

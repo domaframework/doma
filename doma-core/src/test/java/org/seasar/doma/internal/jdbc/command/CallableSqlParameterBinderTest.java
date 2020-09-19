@@ -31,17 +31,15 @@ public class CallableSqlParameterBinderTest {
 
     List<SqlParameter> parameters = new ArrayList<>();
     parameters.add(
-        new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
+        new BasicSingleResultParameter<>(() -> new org.seasar.doma.wrapper.IntegerWrapper()));
+    parameters.add(new BasicInParameter<>(() -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
     parameters.add(
-        new BasicInParameter<String>(() -> new org.seasar.doma.wrapper.StringWrapper("aaa")));
-    parameters.add(
-        new BasicInOutParameter<BigDecimal>(
+        new BasicInOutParameter<>(
             () -> new org.seasar.doma.wrapper.BigDecimalWrapper(),
-            new Reference<BigDecimal>(new BigDecimal(10))));
+            new Reference<>(new BigDecimal(10))));
     parameters.add(
-        new BasicOutParameter<String>(
-            () -> new org.seasar.doma.wrapper.StringWrapper("bbb"), new Reference<String>()));
+        new BasicOutParameter<>(
+            () -> new org.seasar.doma.wrapper.StringWrapper("bbb"), new Reference<>()));
     CallableSqlParameterBinder binder = new CallableSqlParameterBinder(new MyQuery());
     binder.bind(callableStatement, parameters);
 

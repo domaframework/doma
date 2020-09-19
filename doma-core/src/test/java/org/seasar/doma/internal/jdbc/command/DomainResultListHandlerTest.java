@@ -47,7 +47,7 @@ public class DomainResultListHandlerTest {
     query.prepare();
 
     DomainResultListHandler<String, PhoneNumber> handler =
-        new DomainResultListHandler<String, PhoneNumber>(_PhoneNumber.getSingletonInternal());
+        new DomainResultListHandler<>(_PhoneNumber.getSingletonInternal());
     List<PhoneNumber> results = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(2, results.size());
     assertEquals("01-2345-6789", results.get(0).getValue());

@@ -23,7 +23,7 @@ public class MysqlDialect extends StandardDialect {
 
   /** the set of {@literal SQLState} code that represents unique violation */
   protected static final Set<Integer> UNIQUE_CONSTRAINT_VIOLATION_ERROR_CODES =
-      new HashSet<Integer>(Arrays.asList(1022, 1062));
+      new HashSet<>(Arrays.asList(1022, 1062));
 
   /** the quotation mark of the start */
   protected static final char OPEN_QUOTE = '`';

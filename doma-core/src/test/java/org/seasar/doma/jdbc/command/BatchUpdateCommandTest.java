@@ -38,7 +38,7 @@ public class BatchUpdateCommandTest {
     emp2.setName("foo");
     emp2.setVersion(20);
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -66,7 +66,7 @@ public class BatchUpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));
@@ -91,7 +91,7 @@ public class BatchUpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchUpdateQuery<Emp> query = new AutoBatchUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp));

@@ -44,7 +44,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -71,7 +71,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -101,7 +101,7 @@ public class SqlFileBatchUpdateQueryTest {
 
   @Test
   public void testIsExecutable() throws Exception {
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -125,7 +125,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -155,7 +155,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -185,7 +185,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));
@@ -215,7 +215,7 @@ public class SqlFileBatchUpdateQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<Emp>(Emp.class);
+    SqlFileBatchUpdateQuery<Emp> query = new SqlFileBatchUpdateQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), "testPopulate"));

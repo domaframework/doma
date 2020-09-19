@@ -27,11 +27,11 @@ public class PreparedSqlBuilderTest {
         new PreparedSqlBuilder(config, SqlKind.SELECT, SqlLogType.FORMATTED);
     builder.appendSql("select * from aaa where name = ");
     Wrapper<String> stringWrapper = new StringWrapper("hoge");
-    builder.appendParameter(new BasicInParameter<String>(() -> stringWrapper));
+    builder.appendParameter(new BasicInParameter<>(() -> stringWrapper));
 
     builder.appendSql(" and salary = ");
     Wrapper<BigDecimal> bigDecimalWrapper = new BigDecimalWrapper(new BigDecimal(100));
-    builder.appendParameter(new BasicInParameter<BigDecimal>(() -> bigDecimalWrapper));
+    builder.appendParameter(new BasicInParameter<>(() -> bigDecimalWrapper));
     PreparedSql sql = builder.build(Function.identity());
     assertEquals("select * from aaa where name = ? and salary = ?", sql.toString());
   }
@@ -44,8 +44,7 @@ public class PreparedSqlBuilderTest {
     DomainType<String, PhoneNumber> phoneNumberType =
         DomainTypeFactory.getDomainType(PhoneNumber.class, new ClassHelper() {});
     PhoneNumber phoneNumber = new PhoneNumber("03-1234-5678");
-    builder.appendParameter(
-        new DomainInParameter<String, PhoneNumber>(phoneNumberType, phoneNumber));
+    builder.appendParameter(new DomainInParameter<>(phoneNumberType, phoneNumber));
     PreparedSql sql = builder.build(Function.identity());
     assertEquals("select * from aaa where phoneNumber = ?", sql.toString());
   }

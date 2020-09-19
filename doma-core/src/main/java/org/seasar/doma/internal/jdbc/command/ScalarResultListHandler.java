@@ -7,6 +7,6 @@ public class ScalarResultListHandler<BASIC, CONTAINER>
     extends AbstractResultListHandler<CONTAINER> {
 
   public ScalarResultListHandler(Supplier<Scalar<BASIC, CONTAINER>> supplier) {
-    super(new ScalarIterationHandler<>(supplier, new ResultListCallback<CONTAINER>()));
+    super(new ScalarIterationHandler<>(supplier, new ResultListCallback<>()));
   }
 }

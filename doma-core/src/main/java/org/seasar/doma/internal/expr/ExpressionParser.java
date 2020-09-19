@@ -39,9 +39,9 @@ import org.seasar.doma.message.Message;
 
 public class ExpressionParser {
 
-  protected final Deque<ExpressionNode> expressionNodes = new LinkedList<ExpressionNode>();
+  protected final Deque<ExpressionNode> expressionNodes = new LinkedList<>();
 
-  protected final Deque<OperatorNode> operatorNodes = new LinkedList<OperatorNode>();
+  protected final Deque<OperatorNode> operatorNodes = new LinkedList<>();
 
   protected final ExpressionReducer expressionReducer = new ExpressionReducer();
 

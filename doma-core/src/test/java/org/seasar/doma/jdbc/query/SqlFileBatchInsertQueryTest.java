@@ -40,7 +40,7 @@ public class SqlFileBatchInsertQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -67,7 +67,7 @@ public class SqlFileBatchInsertQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(200);
 
-    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<Emp>(Emp.class);
+    SqlFileBatchInsertQuery<Emp> query = new SqlFileBatchInsertQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));

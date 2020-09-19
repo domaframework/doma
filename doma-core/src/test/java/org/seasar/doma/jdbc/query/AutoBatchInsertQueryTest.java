@@ -39,7 +39,7 @@ public class AutoBatchInsertQueryTest {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
@@ -64,7 +64,7 @@ public class AutoBatchInsertQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(10);
 
-    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchInsertQuery<Emp> query = new AutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");

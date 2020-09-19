@@ -67,8 +67,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Emp> command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     Emp entity = command.execute();
     query.complete();
 
@@ -111,8 +110,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<List<Emp>> command =
-        new SelectCommand<List<Emp>>(
-            query, new EntityResultListHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntityResultListHandler<>(_Emp.getSingletonInternal()));
     List<Emp> entities = command.execute();
     query.complete();
 
@@ -164,8 +162,7 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Emp> command =
-        new SelectCommand<Emp>(
-            query, new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal()));
+        new SelectCommand<>(query, new EntitySingleResultHandler<>(_Emp.getSingletonInternal()));
     try {
       command.execute();
       fail();
@@ -199,10 +196,8 @@ public class SelectCommandTest {
     query.prepare();
 
     SelectCommand<Stream<Emp>> command =
-        new SelectCommand<Stream<Emp>>(
-            query,
-            new EntityStreamHandler<Emp, Stream<Emp>>(
-                _Emp.getSingletonInternal(), Function.identity()));
+        new SelectCommand<>(
+            query, new EntityStreamHandler<>(_Emp.getSingletonInternal(), Function.identity()));
     try (Stream<Emp> stream = command.execute()) {
       query.complete();
 

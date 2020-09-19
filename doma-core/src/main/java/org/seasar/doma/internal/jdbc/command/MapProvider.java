@@ -35,7 +35,7 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
 
   @Override
   public Map<String, Object> get(ResultSet resultSet) throws SQLException {
-    Map<String, Object> map = new LinkedHashMap<String, Object>();
+    Map<String, Object> map = new LinkedHashMap<>();
     if (indexMap == null) {
       indexMap = createIndexMap(resultSet.getMetaData());
     }
@@ -53,7 +53,7 @@ public class MapProvider extends AbstractObjectProvider<Map<String, Object>> {
       throws SQLException {
     MapKeyNaming naming = query.getConfig().getMapKeyNaming();
     Method method = query.getMethod();
-    HashMap<Integer, String> indexMap = new HashMap<Integer, String>();
+    HashMap<Integer, String> indexMap = new HashMap<>();
     int count = resultSetMeta.getColumnCount();
     for (int i = 1; i < count + 1; i++) {
       String columnName = resultSetMeta.getColumnLabel(i);

@@ -12,7 +12,7 @@ public class OriginalStatesAccessorTest {
     Hoge hoge = new Hoge();
     hoge.setOriginalStates(states);
     OriginalStatesAccessor<Hoge> accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+        new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     assertSame(states, accessor.get(hoge));
   }
 
@@ -21,7 +21,7 @@ public class OriginalStatesAccessorTest {
     Hoge states = new Hoge();
     Hoge hoge = new Hoge();
     OriginalStatesAccessor<Hoge> accessor =
-        new OriginalStatesAccessor<OriginalStatesAccessorTest.Hoge>(Hoge.class, "originalStates");
+        new OriginalStatesAccessor<>(Hoge.class, "originalStates");
     accessor.set(hoge, states);
     assertSame(states, hoge.getOriginalStates());
   }

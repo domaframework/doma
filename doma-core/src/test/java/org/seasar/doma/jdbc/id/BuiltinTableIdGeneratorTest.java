@@ -24,7 +24,7 @@ public class BuiltinTableIdGeneratorTest {
     MockConnection connection2 = new MockConnection();
     MockResultSet resultSet2 = connection2.preparedStatement.resultSet;
     resultSet2.rows.add(new RowData(11L));
-    final LinkedList<MockConnection> connections = new LinkedList<MockConnection>();
+    final LinkedList<MockConnection> connections = new LinkedList<>();
     connections.add(connection);
     connections.add(connection2);
     config.dataSource =

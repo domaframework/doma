@@ -40,7 +40,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setId(20);
     emp2.setName("bbb");
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -64,7 +64,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(10);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -99,7 +99,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setSalary(new BigDecimal(2000));
     emp2.setVersion(10);
 
-    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<Emp>(_Emp.getSingletonInternal());
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));
@@ -135,7 +135,7 @@ public class AutoBatchDeleteQueryTest {
     emp2.setVersion(2);
 
     AutoBatchDeleteQuery<Salesman> query =
-        new AutoBatchDeleteQuery<Salesman>(_Salesman.getSingletonInternal());
+        new AutoBatchDeleteQuery<>(_Salesman.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntities(Arrays.asList(emp1, emp2));

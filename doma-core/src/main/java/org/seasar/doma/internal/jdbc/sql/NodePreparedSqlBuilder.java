@@ -839,7 +839,7 @@ public class NodePreparedSqlBuilder
     }
 
     protected <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar) {
-      appendParameterInternal(new ScalarInParameter<BASIC, CONTAINER>(scalar));
+      appendParameterInternal(new ScalarInParameter<>(scalar));
     }
 
     protected <BASIC> void appendParameter(InParameter<BASIC> parameter) {

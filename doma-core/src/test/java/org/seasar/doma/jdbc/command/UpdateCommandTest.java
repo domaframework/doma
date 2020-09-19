@@ -36,7 +36,7 @@ public class UpdateCommandTest {
     emp.setVersion(10);
     emp.originalStates = new Emp();
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -68,7 +68,7 @@ public class UpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -93,7 +93,7 @@ public class UpdateCommandTest {
 
     runtimeConfig.dataSource.connection.preparedStatement.updatedRows = 0;
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -120,7 +120,7 @@ public class UpdateCommandTest {
 
     emp.originalStates = states;
 
-    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<Emp>(_Emp.getSingletonInternal());
+    AutoUpdateQuery<Emp> query = new AutoUpdateQuery<>(_Emp.getSingletonInternal());
     query.setMethod(getClass().getDeclaredMethod(method.getName()));
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

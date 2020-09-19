@@ -8,8 +8,6 @@ public class OptionalMapSingleResultHandler
     extends AbstractSingleResultHandler<Optional<Map<String, Object>>> {
 
   public OptionalMapSingleResultHandler(MapKeyNamingType keyNamingType) {
-    super(
-        new MapIterationHandler<>(
-            keyNamingType, new OptionalSingleResultCallback<Map<String, Object>>()));
+    super(new MapIterationHandler<>(keyNamingType, new OptionalSingleResultCallback<>()));
   }
 }

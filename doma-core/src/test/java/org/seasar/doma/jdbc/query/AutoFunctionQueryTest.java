@@ -13,12 +13,11 @@ public class AutoFunctionQueryTest {
 
   @Test
   public void testPrepare() throws Exception {
-    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<Integer>();
+    AutoFunctionQuery<Integer> query = new AutoFunctionQuery<>();
     query.setConfig(runtimeConfig);
     query.setFunctionName("aaa");
     query.setResultParameter(
-        new BasicSingleResultParameter<Integer>(
-            () -> new org.seasar.doma.wrapper.IntegerWrapper()));
+        new BasicSingleResultParameter<>(() -> new org.seasar.doma.wrapper.IntegerWrapper()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);

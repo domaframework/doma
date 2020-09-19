@@ -230,7 +230,7 @@ public abstract class BatchBuilder {
       }
       if (paramClass != batchParam.paramClass) {
         if (batchParam.paramClass == Object.class) {
-          final BatchParam<P> newBatchParam = new BatchParam<P>(batchParam, paramClass);
+          final BatchParam<P> newBatchParam = new BatchParam<>(batchParam, paramClass);
           newBatchParam.add(param);
           helper.modifyParam(newBatchParam);
         } else if (param == null && paramClass == Object.class) {

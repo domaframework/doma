@@ -124,8 +124,7 @@ public class ExpressionEvaluatorTest {
   public void testFindMethod() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {Object.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {Object.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -134,8 +133,7 @@ public class ExpressionEvaluatorTest {
   public void testFindMethod_String_is_subtype_of_Object() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {String.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {String.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -144,8 +142,7 @@ public class ExpressionEvaluatorTest {
   public void testFindMethod_List_is_subtype_of_Object() throws Exception {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
-        evaluator.findMethod(
-            "add", new ArrayList<Object>(), ArrayList.class, new Class[] {List.class});
+        evaluator.findMethod("add", new ArrayList<>(), ArrayList.class, new Class[] {List.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }
@@ -155,7 +152,7 @@ public class ExpressionEvaluatorTest {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     Method method =
         evaluator.findMethod(
-            "addAll", new ArrayList<Object>(), ArrayList.class, new Class[] {List.class});
+            "addAll", new ArrayList<>(), ArrayList.class, new Class[] {List.class});
     assertNotNull(method);
     assertEquals(Collection.class, method.getDeclaringClass());
   }

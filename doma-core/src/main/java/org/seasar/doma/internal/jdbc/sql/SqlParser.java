@@ -54,7 +54,7 @@ public class SqlParser {
   protected static final Pattern LITERAL_PATTERN =
       Pattern.compile("[-+'.0-9]|.*'|true|false|null", Pattern.CASE_INSENSITIVE);
 
-  protected final Deque<AppendableSqlNode> nodeStack = new LinkedList<AppendableSqlNode>();
+  protected final Deque<AppendableSqlNode> nodeStack = new LinkedList<>();
 
   protected final String sql;
 

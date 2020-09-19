@@ -34,7 +34,7 @@ public class AutoInsertQueryTest {
     emp.setId(10);
     emp.setName("aaa");
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -53,7 +53,7 @@ public class AutoInsertQueryTest {
     emp.setId(10);
     emp.setName("aaa");
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -79,7 +79,7 @@ public class AutoInsertQueryTest {
     emp.setId(10);
     emp.setName("aaa");
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -105,7 +105,7 @@ public class AutoInsertQueryTest {
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
@@ -131,7 +131,7 @@ public class AutoInsertQueryTest {
     emp.setName("aaa");
     emp.setSalary(new BigDecimal(200));
 
-    AutoInsertQuery<Emp> query = new AutoInsertQuery<Emp>(_Emp.getSingletonInternal());
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);

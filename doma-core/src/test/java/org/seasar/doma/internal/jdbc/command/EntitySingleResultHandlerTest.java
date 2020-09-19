@@ -48,7 +48,7 @@ public class EntitySingleResultHandlerTest {
     query.prepare();
 
     EntitySingleResultHandler<Emp> handler =
-        new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+        new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     Emp emp = handler.handle(resultSet, query, (i, next) -> {}).get();
     assertEquals(1, emp.getId());
     assertEquals("aaa", emp.getName());
@@ -73,7 +73,7 @@ public class EntitySingleResultHandlerTest {
     query.prepare();
 
     EntitySingleResultHandler<Emp> handler =
-        new EntitySingleResultHandler<Emp>(_Emp.getSingletonInternal());
+        new EntitySingleResultHandler<>(_Emp.getSingletonInternal());
     try {
       handler.handle(resultSet, query, (i, next) -> {});
       fail();

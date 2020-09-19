@@ -86,7 +86,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void preInsert() {
       SqlFileBatchPreInsertContext<ELEMENT> context =
-          new SqlFileBatchPreInsertContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPreInsertContext<>(entityType, method, config);
       entityType.preInsert(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();
@@ -95,7 +95,7 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
 
     protected void postInsert() {
       SqlFileBatchPostInsertContext<ELEMENT> context =
-          new SqlFileBatchPostInsertContext<ELEMENT>(entityType, method, config);
+          new SqlFileBatchPostInsertContext<>(entityType, method, config);
       entityType.postInsert(currentEntity, context);
       if (context.getNewEntity() != null) {
         currentEntity = context.getNewEntity();

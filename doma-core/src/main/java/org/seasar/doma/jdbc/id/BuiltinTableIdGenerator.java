@@ -79,8 +79,8 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             createUpdateFormattedSql(),
             null,
             Arrays.asList(
-                new BasicInParameter<Long>(() -> allocationSizeWrapper),
-                new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+                new BasicInParameter<>(() -> allocationSizeWrapper),
+                new BasicInParameter<>(() -> pkColumnValueWrapper)),
             SqlLogType.FORMATTED);
     selectSql =
         new PreparedSql(
@@ -88,7 +88,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
             createSelectRawSql(),
             createSelectFormattedSql(),
             null,
-            Arrays.asList(new BasicInParameter<String>(() -> pkColumnValueWrapper)),
+            Arrays.asList(new BasicInParameter<>(() -> pkColumnValueWrapper)),
             SqlLogType.FORMATTED);
   }
 

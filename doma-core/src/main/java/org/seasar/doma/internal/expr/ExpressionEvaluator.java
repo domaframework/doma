@@ -85,7 +85,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       ExpressionFunctions expressionFunctions,
       ClassHelper classHelper) {
     assertNotNull(variableValues, expressionFunctions, classHelper);
-    this.variableValues = new HashMap<String, Value>(variableValues);
+    this.variableValues = new HashMap<>(variableValues);
     this.expressionFunctions = expressionFunctions;
     this.classHelper = classHelper;
   }
@@ -531,7 +531,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected Method findMethodFromInterfaces(
       String methodName, Object target, Class<?> targetClass, Class<?>[] paramTypes) {
-    LinkedList<Method> methods = new LinkedList<Method>();
+    LinkedList<Method> methods = new LinkedList<>();
     for (Class<?> clazz = targetClass;
         clazz != null && clazz != Object.class;
         clazz = clazz.getSuperclass()) {
@@ -548,7 +548,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected Method findMethodFromClasses(
       String methodName, Object target, Class<?> targetClass, Class<?>[] paramTypes) {
-    LinkedList<Method> methods = new LinkedList<Method>();
+    LinkedList<Method> methods = new LinkedList<>();
     for (Class<?> clazz = targetClass;
         clazz != null && clazz != Object.class;
         clazz = clazz.getSuperclass()) {
@@ -831,7 +831,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   protected static class Number {
 
-    protected static final Map<Class<?>, Integer> priorityMap = new HashMap<Class<?>, Integer>();
+    protected static final Map<Class<?>, Integer> priorityMap = new HashMap<>();
 
     static {
       priorityMap.put(BigDecimal.class, 80);
@@ -993,7 +993,7 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
       implements ExpressionNodeVisitor<Void, List<EvaluationResult>> {
 
     public ParameterCollection collect(ExpressionNode node) {
-      List<EvaluationResult> evaluationResults = new ArrayList<EvaluationResult>();
+      List<EvaluationResult> evaluationResults = new ArrayList<>();
       node.accept(this, evaluationResults);
       return new ParameterCollection(evaluationResults);
     }

@@ -20,8 +20,7 @@ import org.seasar.doma.message.Message;
  */
 public final class LocalTransactionDataSource implements DataSource {
 
-  private final ThreadLocal<LocalTransactionContext> localTxContextHolder =
-      new ThreadLocal<LocalTransactionContext>();
+  private final ThreadLocal<LocalTransactionContext> localTxContextHolder = new ThreadLocal<>();
 
   private final DataSource dataSource;
 

@@ -38,7 +38,7 @@ public class SqlFileBatchDeleteQueryTest {
     emp2.setName("bbb");
     emp2.setVersion(200);
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
@@ -61,7 +61,7 @@ public class SqlFileBatchDeleteQueryTest {
     Emp emp2 = new Emp();
     emp2.setName("bbb");
 
-    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<Emp>(Emp.class);
+    SqlFileBatchDeleteQuery<Emp> query = new SqlFileBatchDeleteQuery<>(Emp.class);
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setSqlFilePath(SqlFileUtil.buildPath(getClass().getName(), method.getName()));
