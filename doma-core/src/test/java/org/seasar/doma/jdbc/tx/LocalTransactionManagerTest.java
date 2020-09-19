@@ -61,11 +61,7 @@ public class LocalTransactionManagerTest {
   @Test
   public void testRequired_supplier() throws Exception {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
-        manager.required(
-            () -> {
-              return "aaa";
-            });
+    String result = manager.required(() -> "aaa");
     assertEquals("aaa", result);
   }
 
