@@ -90,11 +90,7 @@ public class LocalTransactionManagerTest {
   @Test
   public void testRequiresNew_supplier() throws Exception {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
-        manager.requiresNew(
-            () -> {
-              return "aaa";
-            });
+    String result = manager.requiresNew(() -> "aaa");
     assertEquals("aaa", result);
   }
 
@@ -119,11 +115,7 @@ public class LocalTransactionManagerTest {
   @Test
   public void testNotSupported_supplier() throws Exception {
     LocalTransactionManager manager = new LocalTransactionManager(transaction);
-    String result =
-        manager.notSupported(
-            () -> {
-              return "aaa";
-            });
+    String result = manager.notSupported(() -> "aaa");
     assertEquals("aaa", result);
   }
 

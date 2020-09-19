@@ -1179,12 +1179,7 @@ class NativeSqlSelectTest {
     NativeSql nativeSql = new NativeSql(config);
 
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt =
-        nativeSql.from(
-            e,
-            options -> {
-              options.setComment("hello");
-            });
+    Statement<List<Emp>> stmt = nativeSql.from(e, options -> options.setComment("hello"));
 
     Sql<?> sql = stmt.asSql();
     assertEquals(
