@@ -36,6 +36,7 @@ public final class _NotTopLevelEntity__Hoge
           String, org.seasar.doma.jdbc.entity.EntityPropertyType<NotTopLevelEntity.Hoge, ?>>
       __entityPropertyTypeMap;
 
+  @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private _NotTopLevelEntity__Hoge() {
     __listenerSupplier = () -> ListenerHolder.listener;
     __immutable = false;
