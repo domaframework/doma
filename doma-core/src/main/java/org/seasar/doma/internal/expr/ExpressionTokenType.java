@@ -75,5 +75,5 @@ public enum ExpressionTokenType {
 
   OTHER,
 
-  EOE;
+  EOE
 }
