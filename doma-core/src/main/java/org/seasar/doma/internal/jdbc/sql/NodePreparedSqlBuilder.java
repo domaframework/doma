@@ -116,11 +116,8 @@ public class NodePreparedSqlBuilder
         sqlFilePath,
         evaluator,
         sqlLogType,
-        new Function<ExpandNode, List<String>>() {
-          @Override
-          public List<String> apply(ExpandNode node) {
-            throw new UnsupportedOperationException();
-          }
+        node -> {
+          throw new UnsupportedOperationException();
         });
   }
 
@@ -138,11 +135,8 @@ public class NodePreparedSqlBuilder
         evaluator,
         sqlLogType,
         columnsExpander,
-        new BiConsumer<PopulateNode, SqlContext>() {
-          @Override
-          public void accept(PopulateNode node, SqlContext context) {
-            throw new UnsupportedOperationException();
-          }
+        (node, context) -> {
+          throw new UnsupportedOperationException();
         });
   }
 

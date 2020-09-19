@@ -156,13 +156,9 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
     try {
       Long value =
           controller.requiresNew(
-              new RequiresNewController.Callback<Long>() {
-
-                @Override
-                public Long execute() {
-                  updateId(config, updateSql);
-                  return selectId(config, selectSql);
-                }
+              () -> {
+                updateId(config, updateSql);
+                return selectId(config, selectSql);
               });
       return value - allocationSize;
     } catch (Throwable t) {

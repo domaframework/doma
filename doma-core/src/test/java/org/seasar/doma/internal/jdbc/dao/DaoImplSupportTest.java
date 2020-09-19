@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import javax.sql.DataSource;
@@ -77,14 +76,7 @@ public class DaoImplSupportTest {
   private <T> T mock(Class<T> aClass) {
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
     Class<?>[] interfaces = {aClass};
-    InvocationHandler h =
-        new InvocationHandler() {
-
-          @Override
-          public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            return null;
-          }
-        };
+    InvocationHandler h = (proxy, method, args) -> null;
     Object proxy = Proxy.newProxyInstance(loader, interfaces, h);
     return aClass.cast(proxy);
   }
