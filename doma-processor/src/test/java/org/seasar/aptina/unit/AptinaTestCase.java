@@ -252,7 +252,7 @@ public abstract class AptinaTestCase {
       assertEquals(expected, actual);
       return;
     }
-    final BufferedReader expectedReader = new BufferedReader(new StringReader(expected.toString()));
+    final BufferedReader expectedReader = new BufferedReader(new StringReader(expected));
     final BufferedReader actualReader = new BufferedReader(new StringReader(actual));
     try {
       assertEqualsByLine(expectedReader, actualReader);
