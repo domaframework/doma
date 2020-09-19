@@ -110,6 +110,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         builder.appendSql(" and ");
       } else {
         builder.appendSql(" where ");
+        //noinspection UnusedAssignment
         whereClauseAppended = true;
       }
       Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();

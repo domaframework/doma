@@ -127,6 +127,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
         builder.appendSql(" and ");
       } else {
         builder.appendSql(" where ");
+        //noinspection UnusedAssignment
         whereClauseAppended = true;
       }
       Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
