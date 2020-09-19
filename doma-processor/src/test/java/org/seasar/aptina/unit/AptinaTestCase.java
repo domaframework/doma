@@ -17,6 +17,7 @@ package org.seasar.aptina.unit;
 
 import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.seasar.aptina.unit.AssertionUtils.*;
 import static org.seasar.aptina.unit.IOUtils.*;
 
@@ -274,7 +275,7 @@ public abstract class AptinaTestCase {
       assertEquals(expectedLine, actualLine, "line:" + lineNo);
     }
     ++lineNo;
-    assertEquals(null, actualReader.readLine(), "line:" + lineNo);
+    assertNull(actualReader.readLine(), "line:" + lineNo);
   }
 
   public void assertEqualsGeneratedSource(final CharSequence expected, final Class<?> clazz)
