@@ -31,17 +31,15 @@ public class ExpressionTokenizer {
   }
 
   public ExpressionTokenType next() {
-    switch (type) {
-      case EOE:
-        token = null;
-        type = EOE;
-        return EOE;
-      default:
-        ExpressionTokenType currentType = type;
-        prepareToken();
-        peek();
-        return currentType;
+    if (type == EOE) {
+      token = null;
+      type = EOE;
+      return EOE;
     }
+    ExpressionTokenType currentType = type;
+    prepareToken();
+    peek();
+    return currentType;
   }
 
   protected void prepareToken() {
