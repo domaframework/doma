@@ -11,16 +11,12 @@ import org.seasar.doma.wrapper.StringWrapper;
 
 public class DefaultPropertyTypeTest {
 
-  @SuppressWarnings("unused")
   private String hoge;
 
-  @SuppressWarnings("unused")
   private Foo foo;
 
-  @SuppressWarnings("unused")
   private int primitiveInt;
 
-  @SuppressWarnings("unused")
   private Integer integer;
 
   @Test

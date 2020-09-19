@@ -86,7 +86,6 @@ public @interface Entity {
    *
    * @return the entity listener class
    */
-  @SuppressWarnings("rawtypes")
   Class<? extends EntityListener> listener() default NullEntityListener.class;
 
   /**
