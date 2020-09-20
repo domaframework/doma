@@ -84,11 +84,11 @@ Import `getting-started` to your IDEA as a Gradle project.
 
 .. note::
 
-  If you use IntelliJ IDEA Ultimate Edition, 
+  If you use IntelliJ IDEA Ultimate Edition,
   `Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_ can help you.
 
 
-Programming model 
+Programming model
 =================
 
 Doma provides 2 styles to access database as follows:
