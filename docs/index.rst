@@ -41,8 +41,7 @@ User Documentation
 .. toctree::
    :maxdepth: 2
 
-   getting-started-idea
-   getting-started-eclipse
+   getting-started
    config
    basic
    domain

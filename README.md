@@ -84,9 +84,8 @@ public interface EmployeeDao {
 
 ### Other Examples
 
-Try following getting started examples:
-- [Get started! (IntelliJ IDEA)](https://doma.readthedocs.io/en/latest/getting-started-idea/)
-- [Get started! (Eclipse)](https://doma.readthedocs.io/en/latest/getting-started-eclipse/)
+Try following getting started example:
+- [Getting started](https://doma.readthedocs.io/en/latest/getting-started/)
 
 For more complete examples,
 see [simple-examples](https://github.com/domaframework/simple-examples)
