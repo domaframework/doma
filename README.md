@@ -20,7 +20,7 @@ Doma has various strengths:
 Examples
 ---------------------
 
-### type-safe Criteria API
+### Type-safe Criteria API
 
 Written in Java 8:
 
@@ -58,34 +58,35 @@ val list = entityql
     .fetch()
 ```
 
-### two-way SQL
+See [Criteria API](https://doma.readthedocs.io/en/latest/criteria-api/)
+for more information.
 
-selectByExample.sql:
+### SQL templates
 
-```sql
-select * from EMPLOYEE where
-/*%if e.employeeNo > 7800*/
-  /*%if e.managerId != null*/
-    salary >= /*e.salary*/9999
-  /*%end*/
-/*%end*/
-```
-
-Doma maps the above SQL template to the following DAO interface:
+Written in Java 15:
 
 ```java
 @Dao
 public interface EmployeeDao {
 
+  @Sql(
+    """
+    select * from EMPLOYEE where
+    /*%if salary != null*/
+      SALARY >= /*salary*/9999
+    /*%end*/
+    """)
   @Select
-  List<Employee> selectByExample(Employee e);
+  List<Employee> selectBySalary(BigDecimal salary);
 }
 ```
 
-### Other Examples
+See [SQL templates](https://doma.readthedocs.io/en/latest/sql/)
+for more information.
 
-Try following getting started example:
-- [Getting started](https://doma.readthedocs.io/en/latest/getting-started/)
+### More Examples
+
+Try [Getting started](https://doma.readthedocs.io/en/latest/getting-started/).
 
 For more complete examples,
 see [simple-examples](https://github.com/domaframework/simple-examples)
@@ -126,10 +127,10 @@ https://groups.google.com/g/doma-user
 Related projects
 ---------------------
 
-- [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) : Supports integration with Spring Boot
-- [doma-quarkus](https://github.com/domaframework/doma-quarkus) : Supports integration with Quarkus
-- [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) : Makes compilation easy
-- [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) : Generates Java and SQL files
+- [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) - Supports integration with Spring Boot
+- [doma-quarkus](https://github.com/domaframework/doma-quarkus) - Supports integration with Quarkus
+- [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) - Makes compilation easy
+- [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) - Generates Java and SQL files
 
 Major versions
 ---------------------
