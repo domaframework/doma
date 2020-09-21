@@ -102,6 +102,9 @@ DSL style allows you to build type-safe SQL statements with the Criteria API.
 DAO style allows you to map SQL statements to methods defined in the Java interface.
 
 We recommend you prefer the DSL style.
+This is because the Criteria API, which enables the DSL style, has many advantages.
+For example, the Criteria API does not use reflection.
+It also supports associations such as one-to-many, many-to-one, one-to-one.
 
 DSL style
 =========
