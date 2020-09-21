@@ -61,6 +61,9 @@ Eclipse
 -------
 
 We tested Eclipse 2020-09.
+Note that you need `a patch <https://marketplace.eclipse.org/content/java-15-support-eclipse-2020-09-417>`_
+to enable Java 15 features.
+See also `this movie <https://www.youtube.com/watch?v=-qsW-0Ztg_U>`_.
 
 Before importing, generate eclipse files as follows:
 
