@@ -88,10 +88,10 @@ Import `getting-started` to your IDEA as a Gradle project.
   `Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_ can help you.
 
 
-Programming model
-=================
+Programming styles
+==================
 
-Doma provides 2 styles to access database as follows:
+Doma supports two programming styles as follows:
 
 - DSL style
 - DAO style
