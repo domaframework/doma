@@ -61,6 +61,9 @@ Eclipse
 -------
 
 We tested Eclipse 2020-09.
+Note that you need `a patch <https://marketplace.eclipse.org/content/java-15-support-eclipse-2020-09-417>`_
+to enable Java 15 features.
+See also `this movie <https://www.youtube.com/watch?v=-qsW-0Ztg_U>`_.
 
 Before importing, generate eclipse files as follows:
 
@@ -87,11 +90,10 @@ Import `getting-started` to your IDEA as a Gradle project.
   If you use IntelliJ IDEA Ultimate Edition,
   `Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_ can help you.
 
+Programming styles
+==================
 
-Programming model
-=================
-
-Doma provides 2 styles to access database as follows:
+Doma supports two programming styles as follows:
 
 - DSL style
 - DAO style
@@ -100,6 +102,9 @@ DSL style allows you to build type-safe SQL statements with the Criteria API.
 DAO style allows you to map SQL statements to methods defined in the Java interface.
 
 We recommend you prefer the DSL style.
+This is because the Criteria API, which enables the DSL style, has many advantages.
+For example, the Criteria API does not use reflection.
+It also supports associations such as one-to-many, many-to-one, one-to-one.
 
 DSL style
 =========
