@@ -90,7 +90,6 @@ Import `getting-started` to your IDEA as a Gradle project.
   If you use IntelliJ IDEA Ultimate Edition,
   `Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_ can help you.
 
-
 Programming styles
 ==================
 
