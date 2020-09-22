@@ -14,38 +14,23 @@ import org.slf4j.event.Level;
 
 class Slf4jJdbcLoggerTest {
 
-  private final Sql<?> sql =
-      new Sql<SqlParameter>() {
-        @Override
-        public SqlKind getKind() {
-          return SqlKind.SELECT;
-        }
+  private final Sql<?> selectSql =
+      new PreparedSql(
+          SqlKind.SELECT,
+          "raw",
+          "formatted",
+          "sqlFilePath",
+          Collections.emptyList(),
+          SqlLogType.FORMATTED);
 
-        @Override
-        public String getRawSql() {
-          return "raw";
-        }
-
-        @Override
-        public String getFormattedSql() {
-          return "formatted";
-        }
-
-        @Override
-        public String getSqlFilePath() {
-          return "sqlFilePath";
-        }
-
-        @Override
-        public List<SqlParameter> getParameters() {
-          return Collections.emptyList();
-        }
-
-        @Override
-        public SqlLogType getSqlLogType() {
-          return SqlLogType.FORMATTED;
-        }
-      };
+  private final Sql<?> insertSql =
+      new PreparedSql(
+          SqlKind.INSERT,
+          "raw",
+          "formatted",
+          "sqlFilePath",
+          Collections.emptyList(),
+          SqlLogType.FORMATTED);
 
   @AfterEach
   void afterEach() {
@@ -58,7 +43,7 @@ class Slf4jJdbcLoggerTest {
     Slf4jJdbcLogger logger = new Slf4jJdbcLogger(Level.TRACE);
     String className = getClass().getName();
     String methodName = "constructor";
-    logger.logSql(className, methodName, sql);
+    logger.logSql(className, methodName, selectSql);
 
     List<ILoggingEvent> events = getEvents();
     assertEquals(0, events.size());
@@ -69,16 +54,27 @@ class Slf4jJdbcLoggerTest {
     Slf4jJdbcLogger logger = new Slf4jJdbcLogger();
     String className = getClass().getName();
     String methodName = "logSql";
-    logger.logSql(className, methodName, sql);
+    logger.logSql(className, methodName, selectSql);
 
     List<ILoggingEvent> events = getEvents();
     assertEquals(1, events.size());
   }
 
   @Test
-  void logSql_null() {
+  void logSql_childLogger() {
     Slf4jJdbcLogger logger = new Slf4jJdbcLogger();
-    logger.logSql(null, null, sql);
+    String className = getClass().getName();
+    String methodName = "logSql";
+    logger.logSql(className, methodName, insertSql);
+
+    List<ILoggingEvent> events = getEvents();
+    assertEquals(0, events.size());
+  }
+
+  @Test
+  void logSql_classAndMethod_null() {
+    Slf4jJdbcLogger logger = new Slf4jJdbcLogger();
+    logger.logSql(null, null, selectSql);
 
     List<ILoggingEvent> events = getEvents();
     assertEquals(1, events.size());
@@ -91,6 +87,17 @@ class Slf4jJdbcLoggerTest {
     String methodName = "logConnectionClosingFailure";
     SQLException exception = new SQLException("my exception");
     logger.logConnectionClosingFailure(className, methodName, exception);
+
+    List<ILoggingEvent> events = getEvents();
+    assertEquals(1, events.size());
+  }
+
+  @Test
+  void logSqlExecutionSkipping() {
+    Slf4jJdbcLogger logger = new Slf4jJdbcLogger();
+    String className = getClass().getName();
+    String methodName = "logSqlExecutionSkipping";
+    logger.logSqlExecutionSkipping(className, methodName, SqlExecutionSkipCause.STATE_UNCHANGED);
 
     List<ILoggingEvent> events = getEvents();
     assertEquals(1, events.size());

@@ -2,7 +2,7 @@ package org.seasar.doma.jdbc;
 
 public enum LogKind {
   DAO,
-  BATCH,
+  SKIP,
   SQL,
   LOCAL_TRANSACTION,
   FAILURE;

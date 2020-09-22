@@ -27,7 +27,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       Object args[],
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.DAO, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(LogKind.DAO.fullName(), level, callerClassName, callerMethodName, null, messageSupplier);
   }
 
   @Override
@@ -37,7 +37,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       Object result,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.DAO, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(LogKind.DAO.fullName(), level, callerClassName, callerMethodName, null, messageSupplier);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       RuntimeException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.DAO, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(LogKind.DAO.fullName(), level, callerClassName, callerMethodName, null, messageSupplier);
   }
 
   @Override
@@ -57,7 +57,8 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SqlExecutionSkipCause cause,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.BATCH, level, callerClassName, callerMethodName, null, messageSupplier);
+    String loggerName = LogKind.SKIP.fullName() + "." + cause.name();
+    log(loggerName, level, callerClassName, callerMethodName, null, messageSupplier);
   }
 
   @Override
@@ -67,7 +68,8 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       Sql<?> sql,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.SQL, level, callerClassName, callerMethodName, null, messageSupplier);
+    String loggerName = LogKind.SQL.fullName() + "." + sql.getKind().name();
+    log(loggerName, level, callerClassName, callerMethodName, null, messageSupplier);
   }
 
   @Override
@@ -77,7 +79,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String transactionId,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -87,7 +95,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String transactionId,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -98,7 +112,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String savepointName,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -108,7 +128,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String transactionId,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -118,7 +144,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String transactionId,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -129,7 +161,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String savepointName,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -140,7 +178,13 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       String savepointName,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.LOCAL_TRANSACTION, level, callerClassName, callerMethodName, null, messageSupplier);
+    log(
+        LogKind.LOCAL_TRANSACTION.fullName(),
+        level,
+        callerClassName,
+        callerMethodName,
+        null,
+        messageSupplier);
   }
 
   @Override
@@ -150,7 +194,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   @Override
@@ -160,7 +204,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   @Override
@@ -171,7 +215,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   @Override
@@ -181,7 +225,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   @Override
@@ -191,7 +235,7 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   @Override
@@ -201,20 +245,20 @@ public class Slf4jJdbcLogger extends AbstractJdbcLogger<Level> {
       SQLException e,
       Level level,
       Supplier<String> messageSupplier) {
-    log(LogKind.FAILURE, level, callerClassName, callerMethodName, e, messageSupplier);
+    log(LogKind.FAILURE.fullName(), level, callerClassName, callerMethodName, e, messageSupplier);
   }
 
   protected void log(
-      LogKind logKind,
+      String loggerName,
       Level level,
       String callerClassName,
       String callerMethodName,
       Throwable throwable,
       Supplier<String> messageSupplier) {
-    Objects.requireNonNull(logKind);
+    Objects.requireNonNull(loggerName);
     Objects.requireNonNull(level);
     Objects.requireNonNull(messageSupplier);
-    final Logger logger = LoggerFactory.getLogger(logKind.fullName());
+    final Logger logger = LoggerFactory.getLogger(loggerName);
     switch (level) {
       case ERROR:
         if (logger.isErrorEnabled()) {

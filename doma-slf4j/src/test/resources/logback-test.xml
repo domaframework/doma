@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="org.seasar.doma" level="debug"/>
+    <logger name="org.seasar.doma.jdbc.LogKind.SQL.INSERT" level="off"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />
