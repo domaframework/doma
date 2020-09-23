@@ -257,6 +257,7 @@ rootProject.apply {
         }
         format("documentation") {
             target("docs/**/*.rst", "**/*.md")
+            targetExclude("CHANGELOG.md")
             trimTrailingWhitespace()
             endWithNewline()
         }
