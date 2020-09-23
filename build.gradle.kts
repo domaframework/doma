@@ -233,6 +233,23 @@ rootProject.apply {
         named("releaseRepository") {
             onlyIf { isReleaseVersion }
         }
+
+        register("updateChangelog") {
+            doLast {
+                val releaseBody: String by project
+                val releaseHtmlUrl: String by project
+                val releaseName: String by project
+                val path = file("CHANGELOG.md").toPath()
+                val lines = java.nio.file.Files.readAllLines(path)
+                java.nio.file.Files.write(path, listOf("# [$releaseName]($releaseHtmlUrl)", ""),
+                        java.nio.file.StandardOpenOption.WRITE,
+                        java.nio.file.StandardOpenOption.TRUNCATE_EXISTING)
+                val body = releaseBody.replace("#([0-9]+)".toRegex(), """[$0]\(https://github.com/domaframework/doma/pull/$1\)""")
+                java.nio.file.Files.write(path, body.toByteArray(), java.nio.file.StandardOpenOption.APPEND)
+                java.nio.file.Files.write(path, listOf("", "") + lines, java.nio.file.StandardOpenOption.APPEND)
+            }
+        }
+
     }
 
     configure<net.researchgate.release.ReleaseExtension> {
@@ -257,6 +274,7 @@ rootProject.apply {
         }
         format("documentation") {
             target("docs/**/*.rst", "**/*.md")
+            targetExclude("CHANGELOG.md")
             trimTrailingWhitespace()
             endWithNewline()
         }
