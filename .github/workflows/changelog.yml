@@ -1,0 +1,37 @@
+name: Changelog
+
+on:
+  release:
+    types: 
+      - published
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Update CHANGELOG.md
+        run: ./gradlew updateChangelog -PreleaseBody="${{ github.event.release.body }}" -PreleaseHtmlUrl=${{ github.event.release.html_url }} -PreleaseName=${{ github.event.release.name }}
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v4
+        with:
+          message: "Update CHANGELOG.md"
+          add: "CHANGELOG.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
