@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: master
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -31,6 +33,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v4
         with:
+          ref: master
           message: "Update CHANGELOG.md"
           add: "CHANGELOG.md"
         env:
