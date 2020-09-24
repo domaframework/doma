@@ -72,6 +72,8 @@ These dialect are located in the ``org.seasar.doma.jdbc.dialect`` package.
 
    Required item
 
+.. _config-logger:
+
 Logger
 ------
 
