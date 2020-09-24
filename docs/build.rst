@@ -47,7 +47,6 @@ Build with IntelliJ IDEA
 ========================
 
 Use a newer version of IntelliJ IDEA, and then import your project as a Gradle project.
-To know how to import project, see :ref:`idea-import-project`.
 
 .. _eclipse-build:
 

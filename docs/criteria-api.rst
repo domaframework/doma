@@ -471,10 +471,10 @@ The above query issues the following SQL statement:
 
     select t0_.EMPLOYEE_ID, t0_.EMPLOYEE_NAME from EMPLOYEE t0_
 
-.. _criteria_where:
-
 Note that the select clause of the above SQL statement contains the primary key "EMPLOYEE_ID".
 The ``selectTo`` method always includes the id properties of the entity, even if you don't.
+
+.. _criteria_where:
 
 Where expression (Entityql, NativeSql)
 --------------------------------------
@@ -960,7 +960,7 @@ The above query issues the following SQL statement:
     order by t0_.DEPARTMENT_ID asc, t0_.SALARY desc
 
 Dynamic order by expression (NativeSql)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An order by expression uses only evaluated operators to build an ORDER BY clause.
 
