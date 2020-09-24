@@ -58,6 +58,7 @@ User Documentation
    annotation-processing
    lombok-support
    kotlin-support
+   slf4j-support
 
 About Doma
 ==========

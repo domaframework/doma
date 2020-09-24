@@ -192,7 +192,7 @@ rootProject.apply {
 
     fun replaceVersionInDocs(ver: String) {
         ant.withGroovyBuilder {
-            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|kotlin|processor)?:)[^"]*(")""",
+            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
                     "replace" to "\\1${ver}\\3",
                     "encoding" to encoding,
                     "flags" to "g") {
