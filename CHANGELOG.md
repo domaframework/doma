@@ -1,3 +1,53 @@
+# [2.43.0](https://github.com/domaframework/doma/releases/tag/2.43.0)
+
+
+## New Features
+
+* Add the doma-slf4j module ([#594](https://github.com/domaframework/doma/pull/594))
+
+## Bug Fixes
+
+* Fix changelog.yml ([#597](https://github.com/domaframework/doma/pull/597))
+* Fix typo in keywords used in Oracle11Dialect ([#584](https://github.com/domaframework/doma/pull/584))
+* Fix typo in method name ([#583](https://github.com/domaframework/doma/pull/583))
+* Fix a broken error message ([#579](https://github.com/domaframework/doma/pull/579))
+
+## Maintenance
+
+* Add CHANGELOG.md ([#596](https://github.com/domaframework/doma/pull/596))
+* Split a CI job ([#587](https://github.com/domaframework/doma/pull/587))
+* Add 'throws' declarations for compatibility ([#586](https://github.com/domaframework/doma/pull/586))
+* Cleanup Code for the doma-mock module ([#585](https://github.com/domaframework/doma/pull/585))
+* Cleanup Code for the doma-processor module ([#582](https://github.com/domaframework/doma/pull/582))
+* Remove duplicate code ([#581](https://github.com/domaframework/doma/pull/581))
+* Cleanup Code for the doma-kotlin module ([#580](https://github.com/domaframework/doma/pull/580))
+* Cleanup Code for the doma-core module ([#578](https://github.com/domaframework/doma/pull/578))
+* Specify the version explicitly on CI ([#576](https://github.com/domaframework/doma/pull/576))
+* Test on JDK 15 ([#572](https://github.com/domaframework/doma/pull/572))
+* Replace versions in documentation automatically ([#567](https://github.com/domaframework/doma/pull/567))
+
+## Documentation
+
+* Fix warning messages ([#599](https://github.com/domaframework/doma/pull/599))
+* Add documentation for SLF4J support ([#598](https://github.com/domaframework/doma/pull/598))
+* Clean getting-started document ([#591](https://github.com/domaframework/doma/pull/591))
+* Clean README.md ([#590](https://github.com/domaframework/doma/pull/590))
+* Rewrite getting-started document ([#589](https://github.com/domaframework/doma/pull/589))
+* Clean RELEASE_OPERATIONS.md ([#575](https://github.com/domaframework/doma/pull/575))
+* Support Java 15 ([#573](https://github.com/domaframework/doma/pull/573))
+* Format example code in README.md ([#571](https://github.com/domaframework/doma/pull/571))
+* Add a description for Kotlin projects ([#569](https://github.com/domaframework/doma/pull/569))
+* Fix a broken link ([#568](https://github.com/domaframework/doma/pull/568))
+
+## Dependency Upgrades
+
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.6.1 ([#593](https://github.com/domaframework/doma/pull/593))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.6.0 ([#592](https://github.com/domaframework/doma/pull/592))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.5.2 ([#577](https://github.com/domaframework/doma/pull/577))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.25.0 ([#574](https://github.com/domaframework/doma/pull/574))
+* Update org.junit.jupiter to v5.7.0 ([#570](https://github.com/domaframework/doma/pull/570))
+
+
 # [2.42.0](https://github.com/domaframework/doma/releases/tag/2.42.0)
 
 ## New Features
