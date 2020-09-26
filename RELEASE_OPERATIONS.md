@@ -7,7 +7,7 @@ The Gradle release task creates a release commit and push it to the origin/maste
 ```
 $ git checkout master
 $ git pull
-$ ./gradlew release -Prelease.releaseVersion=2.43.1
+$ ./gradlew release -Prelease.releaseVersion=$(gh release list -L 1 | tee /dev/tty  | awk '{print $1}')
 ```
 
 The value of `release.releaseVersion` is decided by the draft name of
@@ -28,7 +28,7 @@ The workflow builds artifacts and publishes them to [Maven Central](https://repo
 Use [Dependency Watch](https://github.com/JakeWharton/dependency-watch).
 
 ```
-$ dependency-watch await org.seasar.doma:doma-core:2.43.1 && say "New version is available!"
+$ dependency-watch await org.seasar.doma:doma-core:$(gh release list -L 1 | tee /dev/tty  | awk '{print $1}') && say "New version is available!"
 ```
 
 If the above command is successful, the following directories will contain the new artifacts:
