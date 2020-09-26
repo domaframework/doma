@@ -220,7 +220,7 @@ rootProject.apply {
 
         named("updateVersion") {
             doLast {
-                val newVersion = project.properties["release.newVersion"]?.toString()
+                val newVersion = project.properties["version"]?.toString()
                 checkNotNull(newVersion)
                 replaceVersionInArtifact(newVersion)
             }

@@ -5,13 +5,12 @@
 The Gradle release task creates a release commit and push it to the origin/master branch.
 
 ```
-$ export DOMA_VERSION=1.0.0
 $ git checkout master
 $ git pull
-$ ./gradlew release -Prelease.releaseVersion=${DOMA_VERSION} -Prelease.newVersion=1.1.0-SNAPSHOT
+$ ./gradlew release -Prelease.releaseVersion=2.43.1
 ```
 
-The value of `DOMA_VERSION` is decided by the draft name of
+The value of `release.releaseVersion` is decided by the draft name of
 [Releases](https://github.com/domaframework/doma/releases).
 
 ## Build and Publish
@@ -29,7 +28,7 @@ The workflow builds artifacts and publishes them to [Maven Central](https://repo
 Use [Dependency Watch](https://github.com/JakeWharton/dependency-watch).
 
 ```
-$ dependency-watch await org.seasar.doma:doma-core:${DOMA_VERSION} && say "Doma ${DOMA_VERSION} is available!"
+$ dependency-watch await org.seasar.doma:doma-core:2.43.1 && say "New version is available!"
 ```
 
 If the above command is successful, the following directories will contain the new artifacts:
