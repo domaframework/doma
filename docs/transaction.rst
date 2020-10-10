@@ -11,6 +11,8 @@ This document explains how to configure and use the local transaction.
 If you want to use global transaction, use frameworks or application servers
 which support JTA (Java Transaction API).
 
+See also :ref:`config-configuration-definition` .
+
 Configuration
 =============
 
@@ -28,7 +30,6 @@ Here is an example:
 
 .. code-block:: java
 
-  @SingletonConfig
   public class AppConfig implements Config {
 
       private static final AppConfig CONFIG = new AppConfig();
@@ -67,24 +68,26 @@ Here is an example:
       }
   }
 
-.. note::
-
-  The ``@SingletonConfig`` shows that this class is a singleton class.
-
 Usage
 ======
 
-Let's see examples on the condition that we use the following Dao interface annotated with
-the ``AppConfig`` class which we saw in the `Configuration`_.
+We use the following DAO interface in example code:
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
-      ...
+      @Sql("select /*%expand*/* from employee where id = /*id*/0")
+      @Select
+      Employee selectById(Integer id);
+
+      @Update
+      int update(Employee employee);
+
+      @Delete
+      int delete(Employee employee);
   }
 
-The ``dao`` used in the code examples below are instances of this class.
 
 Start and finish transactions
 -----------------------------
@@ -100,6 +103,7 @@ Use a lambda expression to write a process which you want to run in a transactio
 .. code-block:: java
 
   TransactionManager tm = AppConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -119,6 +123,7 @@ Besides throwing an exception, you can use ``setRollbackOnly`` method to rollbac
 .. code-block:: java
 
   TransactionManager tm = AppConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -137,6 +142,7 @@ With a savepoint, you can cancel specific changes in a transaction.
 .. code-block:: java
 
   TransactionManager tm = AppConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
 
   tm.required(() -> {
       // Search and update

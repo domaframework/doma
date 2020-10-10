@@ -9,7 +9,7 @@ Annotate with ``@BatchUpdate`` to Dao method for execute batch update.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @BatchUpdate
       int[] update(List<Employee> employees);

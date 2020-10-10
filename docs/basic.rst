@@ -104,7 +104,7 @@ Using in DAO interface
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
 
       @Select

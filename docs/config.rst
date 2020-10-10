@@ -230,6 +230,8 @@ All JDBC drivers are loaded automatically by the `service provider <service prov
   For example, when you use Apache Tomcat, you will find the case.
   See also: `DriverManager, the service provider mechanism and memory leaks <tomcat driver_>`_
 
+.. _config-configuration-definition:
+
 Configuration definition
 ========================
 
@@ -243,7 +245,6 @@ The simple definition is appropriate in following cases:
 
 .. code-block:: java
 
-  @SingletonConfig
   public class AppConfig implements Config {
 
       private static final AppConfig CONFIG = new AppConfig();
@@ -282,21 +283,22 @@ The simple definition is appropriate in following cases:
       }
   }
 
-.. note::
-
-  Remember to annotate the class with ``@SingletonConfig``
-
-Specify the above class to the config element of ``@Dao``.
+You can use the above ``AppConfig`` class as follows:
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
+
+The above ``EmployeeDao`` interface must be annotated with the ``@Dao`` annotation as follows:
+
+.. code-block:: java
+
+  @Dao
   public interface EmployeeDao {
 
       @Select
       Employee selectById(Integer id);
   }
-
 
 Advanced definition
 -------------------

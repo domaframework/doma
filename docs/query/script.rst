@@ -10,7 +10,7 @@ annotate DAO methods with ``@Script``:
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Script
       void createTable();
@@ -71,7 +71,7 @@ You can specify scripts to DAO methods with the ``@Sql`` annotation:
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Sql("create table employee (id integer, name varchar(200))")
       @Script

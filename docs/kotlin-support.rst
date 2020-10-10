@@ -76,7 +76,7 @@ Dao interfaces
 
 .. code-block:: java
 
-  @Dao(config = AppConfig::class)
+  @Dao
   interface PersonDao {
     @Sql("""
     select * from person where id = /*id*/0

@@ -328,7 +328,7 @@ The Domain classes showed above are used as follows:
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
 
       @Select

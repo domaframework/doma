@@ -9,7 +9,7 @@ To call stored procedures, you must annotate DAO methods with the ``@Procedure``
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Procedure
       void execute(@In Integer id, @InOut Reference<BigDecimal> salary);

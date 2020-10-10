@@ -9,7 +9,7 @@ Annotate with ``@Insert`` to Dao method for execute insert.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Insert
       int insert(Employee employee);

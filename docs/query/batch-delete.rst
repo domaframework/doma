@@ -9,7 +9,7 @@ Annotate with ``@BatchDelete`` to Dao method for execute batch delete.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @BatchDelete
       int[] delete(List<Employee> employees);
