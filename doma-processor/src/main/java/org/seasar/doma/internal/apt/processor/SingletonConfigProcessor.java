@@ -10,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
-import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Options;
@@ -22,8 +21,9 @@ import org.seasar.doma.message.Message;
 @SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG, Options.CONFIG_PATH})
 public class SingletonConfigProcessor extends AbstractProcessor {
 
+  @SuppressWarnings("deprecation")
   public SingletonConfigProcessor() {
-    super(SingletonConfig.class);
+    super(org.seasar.doma.SingletonConfig.class);
   }
 
   @Override

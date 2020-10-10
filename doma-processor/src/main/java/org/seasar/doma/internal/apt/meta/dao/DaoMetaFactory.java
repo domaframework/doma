@@ -27,7 +27,6 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import org.seasar.doma.DaoMethod;
-import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
@@ -147,7 +146,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private void validateUserDefinedConfig(
       TypeElement configElement, DaoMeta daoMeta, DaoAnnot daoAnnot) {
-    SingletonConfig singletonConfig = configElement.getAnnotation(SingletonConfig.class);
+    @SuppressWarnings("deprecation")
+    org.seasar.doma.SingletonConfig singletonConfig =
+        configElement.getAnnotation(org.seasar.doma.SingletonConfig.class);
     if (singletonConfig == null) {
       if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
         throw new AptException(
