@@ -5,6 +5,7 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.ParentEntity;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface SqlFileInsertEntityDao {
 

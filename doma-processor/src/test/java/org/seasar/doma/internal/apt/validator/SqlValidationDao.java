@@ -5,6 +5,7 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.processor.dao.MyConfig;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface SqlValidationDao {
 

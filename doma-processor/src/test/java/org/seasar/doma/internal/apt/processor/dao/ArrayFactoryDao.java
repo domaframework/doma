@@ -4,6 +4,7 @@ import java.sql.Array;
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface ArrayFactoryDao {
 

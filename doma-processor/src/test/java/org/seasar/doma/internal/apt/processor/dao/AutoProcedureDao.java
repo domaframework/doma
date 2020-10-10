@@ -6,6 +6,7 @@ import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface AutoProcedureDao {
 

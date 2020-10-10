@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.Config;
  * <p>The annotated interface must be a top level interface.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Insert
@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.Config;
  * <p>The interface can extend another DAO interface:
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface WorkerDao {
  *
  *     &#064;Insert
@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.Config;
  * </pre>
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao extends WorkerDao {
  *
  *     &#064;Insert
@@ -71,7 +71,10 @@ public @interface Dao {
    * instance can be injected by using {@link AnnotateWith}.
    *
    * @return the configuration
+   * @deprecated always pass a {@link Config} instance to the constructor of DAO implementation
+   *     class
    */
+  @Deprecated
   Class<? extends Config> config() default Config.class;
 
   /** @return the access level of the DAO implementation class. */

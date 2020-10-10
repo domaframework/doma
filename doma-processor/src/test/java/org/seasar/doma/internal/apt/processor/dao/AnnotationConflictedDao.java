@@ -5,6 +5,7 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface AnnotationConflictedDao {
 

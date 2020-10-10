@@ -6,7 +6,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.SelectOptions;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
 @Dao(config = MyConfig.class)
 public interface OptionalParameterDao {
 

@@ -5,6 +5,7 @@ import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface SqlFileBatchUpdateEntityDao {
 

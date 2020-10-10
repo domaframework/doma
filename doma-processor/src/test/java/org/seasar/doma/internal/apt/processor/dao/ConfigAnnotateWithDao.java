@@ -8,6 +8,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
+@SuppressWarnings("deprecation")
 @Dao(config = ExampleConfig.class)
 @AnnotateWith(
     annotations = {

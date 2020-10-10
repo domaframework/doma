@@ -4,6 +4,7 @@ import java.sql.NClob;
 import org.seasar.doma.Dao;
 import org.seasar.doma.NClobFactory;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface NClobFactoryDao {
 

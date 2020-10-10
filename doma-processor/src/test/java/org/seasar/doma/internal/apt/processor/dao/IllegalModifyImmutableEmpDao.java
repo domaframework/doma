@@ -4,6 +4,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface IllegalModifyImmutableEmpDao {
 
