@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *     &#64;SqlProcessor
  *     &lt;R&gt; R process(Integer id, BiFunction&lt;Config, PreparedSql, R&gt; handler);

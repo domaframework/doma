@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * {@link Function} or {@link Procedure}.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Procedure

@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.Reference;
  * the parameters of the method that is annotated with {@link Function} or {@link Procedure}.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Procedure
@@ -22,7 +22,7 @@ import org.seasar.doma.jdbc.Reference;
  * </pre>
  *
  * <pre>
- * EmployeeDao dao = new EmployeeDaoImpl();
+ * EmployeeDao dao = new EmployeeDaoImpl(config);
  * Reference&lt;BigDecimal&gt; salaryRef = new Reference&lt;BigDecimal&gt;(new BigDecimal(1000));
  * dao.updateSalary(1, salaryRef);
  * BigDecimal salary = salaryRef.get();
