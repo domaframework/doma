@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc.criteria;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.avgAsDouble;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.countDistinct;
@@ -1383,5 +1384,21 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(expression);
     Sql<?> sql = stmt.asSql();
     assertEquals("select (select t1_.ID from EMP t1_) from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
+  void expression_avg() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(avg(e.salary));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select avg(t0_.SALARY) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void expression_avgAsDouble() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = nativeSql.from(e).select(avgAsDouble(e.salary));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select avg(t0_.SALARY) from EMP t0_", sql.getFormattedSql());
   }
 }

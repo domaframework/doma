@@ -563,6 +563,11 @@ public class BuilderSupport {
     }
 
     @Override
+    public void visit(AggregateFunction.AvgAsDouble avg) {
+      oneArgumentFunction(avg.getName(), avg.argument());
+    }
+
+    @Override
     public void visit(AggregateFunction.Count count) {
       buf.appendSql(count.getName());
       buf.appendSql("(");

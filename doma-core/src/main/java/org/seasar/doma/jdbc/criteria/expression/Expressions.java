@@ -239,6 +239,11 @@ public class Expressions {
     return new AggregateFunction.Avg<>(propertyMetamodel);
   }
 
+  public static AggregateFunction.AvgAsDouble avgAsDouble(PropertyMetamodel<?> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    return new AggregateFunction.AvgAsDouble(propertyMetamodel);
+  }
+
   public static AggregateFunction.Count count() {
     return new AggregateFunction.Count(AggregateFunction.Asterisk);
   }

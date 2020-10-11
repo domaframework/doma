@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.expression
 
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction.Avg
+import org.seasar.doma.jdbc.criteria.expression.AggregateFunction.AvgAsDouble
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction.Max
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction.Min
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction.Sum
@@ -233,6 +234,12 @@ object KExpressions {
         propertyMetamodel: PropertyMetamodel<PROPERTY>
     ): Avg<PROPERTY> {
         return Expressions.avg(propertyMetamodel)
+    }
+
+    fun avgAsDouble(
+        propertyMetamodel: PropertyMetamodel<*>
+    ): AvgAsDouble {
+        return Expressions.avgAsDouble(propertyMetamodel)
     }
 
     fun count(): AggregateFunction.Count {

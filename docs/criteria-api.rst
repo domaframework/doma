@@ -824,6 +824,7 @@ Aggregate Functions (NativeSql)
 We support the following aggregate functions:
 
 * avg(property)
+* avgAsDouble(property)
 * count()
 * count(property)
 * countDistinct(property)

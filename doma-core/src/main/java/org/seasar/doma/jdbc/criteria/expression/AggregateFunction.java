@@ -69,6 +69,31 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     }
   }
 
+  class AvgAsDouble extends AbstractFunction<Double> {
+
+    public AvgAsDouble(PropertyMetamodel<?> argument) {
+      super("avg", argument);
+    }
+
+    @Override
+    public Class<?> asClass() {
+      return Double.class;
+    }
+
+    @Override
+    public EntityPropertyType<?, Double> asType() {
+      return new DoublePropertyType(null);
+    }
+
+    @Override
+    public void accept(PropertyMetamodel.Visitor visitor) {
+      if (visitor instanceof AggregateFunction.Visitor) {
+        AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
+        v.visit(this);
+      }
+    }
+  }
+
   class Count extends AbstractFunction<Long> {
 
     public final boolean distinct;
@@ -175,6 +200,8 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
 
   interface Visitor {
     void visit(AggregateFunction.Avg<?> avg);
+
+    void visit(AggregateFunction.AvgAsDouble avg);
 
     void visit(AggregateFunction.Count count);
 
