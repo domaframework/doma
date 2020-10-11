@@ -1,12 +1,11 @@
 package org.seasar.doma.internal.apt.processor.config;
 
 import javax.sql.DataSource;
-import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 @SuppressWarnings("deprecation")
-@SingletonConfig
+@org.seasar.doma.SingletonConfig
 public class PublicConstructorConfig implements Config {
 
   public PublicConstructorConfig() {}
