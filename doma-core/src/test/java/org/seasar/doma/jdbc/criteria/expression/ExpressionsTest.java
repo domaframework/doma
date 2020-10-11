@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.avgAsDouble;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.div;
@@ -161,7 +162,18 @@ class ExpressionsTest {
     assertNotEquals(avg(e.id), max(e.id));
 
     assertEquals("avg", avg(e.id).getName());
-    assertEquals(e.id, count(e.id).argument());
+    assertEquals(e.id, avg(e.id).argument());
+  }
+
+  @SuppressWarnings("AssertBetweenInconvertibleTypes")
+  @Test
+  void testAvgAsDouble() {
+    assertEquals(avgAsDouble(e.id), avgAsDouble(e.id));
+    assertNotEquals(avgAsDouble(e.id), avgAsDouble(e.name));
+    assertNotEquals(avgAsDouble(e.id), max(e.id));
+
+    assertEquals("avg", avgAsDouble(e.id).getName());
+    assertEquals(e.id, avgAsDouble(e.id).argument());
   }
 
   @SuppressWarnings("AssertBetweenInconvertibleTypes")
