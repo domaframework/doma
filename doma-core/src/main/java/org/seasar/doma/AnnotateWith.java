@@ -50,6 +50,7 @@ import org.seasar.doma.jdbc.Config;
  * }
  * </pre>
  */
+@SuppressWarnings("deprecation")
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnnotateWith {

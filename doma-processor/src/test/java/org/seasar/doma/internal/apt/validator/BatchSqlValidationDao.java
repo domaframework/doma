@@ -6,6 +6,7 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.processor.dao.MyConfig;
 import org.seasar.doma.message.Message;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface BatchSqlValidationDao {
 

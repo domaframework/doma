@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.JdbcException;
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;ClobFactory

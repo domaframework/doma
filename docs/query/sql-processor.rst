@@ -10,7 +10,7 @@ To mark a DAO method as an SQL processor, annotate the method with ``@SqlProcess
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @SqlProcessor
       <R> R process(Integer id, BiFunction<Config, PreparedSql, R> handler);

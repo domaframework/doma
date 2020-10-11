@@ -6,6 +6,7 @@ import org.seasar.doma.In;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface PrimitiveTypeDao {
 

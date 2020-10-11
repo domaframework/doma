@@ -12,6 +12,7 @@ import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface ImmutableEmpDao {
 

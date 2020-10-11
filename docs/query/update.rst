@@ -9,7 +9,7 @@ Annotate with ``@Update`` to Dao method for execute update.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Update
       int update(Employee employee);

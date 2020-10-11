@@ -6,6 +6,7 @@ import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.processor.entity.AbstractEntity;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface ProcedureAbstractEntityListDao {
 

@@ -5,6 +5,7 @@ import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
+@SuppressWarnings("deprecation")
 @SingletonConfig
 public class PublicConstructorConfig implements Config {
 

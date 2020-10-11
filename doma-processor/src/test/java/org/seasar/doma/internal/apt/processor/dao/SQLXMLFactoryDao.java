@@ -4,6 +4,7 @@ import java.sql.SQLXML;
 import org.seasar.doma.Dao;
 import org.seasar.doma.SQLXMLFactory;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface SQLXMLFactoryDao {
 

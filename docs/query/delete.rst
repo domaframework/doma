@@ -9,7 +9,7 @@ Annotate with ``@Delete`` to Dao method for execute delete.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Delete
       int delete(Employee employee);

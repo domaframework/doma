@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.ResultMappingException;
  * method that is annotated with {@link Function} or {@link Procedure}.
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Procedure
@@ -23,7 +23,7 @@ import org.seasar.doma.jdbc.ResultMappingException;
  * </pre>
  *
  * <pre>
- * EmployeeDao dao = new EmployeeDaoImpl();
+ * EmployeeDao dao = new EmployeeDaoImpl(config);
  * List&lt;Employee&gt; employees = new ArrayList&lt;Employee&gt;();
  * dao.fetchEmployees(10, employees);
  * for (Employee e : employees) {

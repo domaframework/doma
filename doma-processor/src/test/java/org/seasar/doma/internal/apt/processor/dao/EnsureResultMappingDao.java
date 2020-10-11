@@ -10,6 +10,7 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.Select;
 import org.seasar.doma.jdbc.SelectOptions;
 
+@SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
 public interface EnsureResultMappingDao {
 

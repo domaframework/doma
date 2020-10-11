@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  * </ul>
  *
  * <pre>
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Sql("select name from employee where age = &#047;* age *&#047;0)")

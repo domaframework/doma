@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.UnknownColumnException;
  *     ...
  * }
  *
- * &#064;Dao(config = AppConfig.class)
+ * &#064;Dao
  * public interface EmployeeDao {
  *
  *     &#064;Select

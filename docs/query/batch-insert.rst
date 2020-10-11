@@ -9,7 +9,7 @@ Annotate with ``@BatchInsert`` to Dao method for execute batch insert.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @BatchInsert
       int[] insert(List<Employee> employees);

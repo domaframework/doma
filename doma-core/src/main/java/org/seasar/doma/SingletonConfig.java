@@ -12,9 +12,12 @@ import org.seasar.doma.jdbc.Config;
  *
  * <p>The annotated class must have a static method that returns a singleton. The all constructors
  * of the class must be private.
+ *
+ * @deprecated create a singleton {@link Config} without this annotation
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Deprecated
 public @interface SingletonConfig {
 
   /**

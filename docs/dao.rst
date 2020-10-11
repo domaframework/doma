@@ -33,7 +33,7 @@ You can get ``Config`` instance associated dao instance if you call ``Config.get
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
 
       default int count() {
@@ -81,7 +81,7 @@ One dao interface can handle more than one entity classes.
 
 .. code-block:: java
 
-  @Dao(config = AppConfig.class)
+  @Dao
   public interface MyDao {
 
       @Select

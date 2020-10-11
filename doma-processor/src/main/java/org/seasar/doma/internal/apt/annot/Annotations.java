@@ -34,7 +34,6 @@ import org.seasar.doma.SQLXMLFactory;
 import org.seasar.doma.Script;
 import org.seasar.doma.Select;
 import org.seasar.doma.SequenceGenerator;
-import org.seasar.doma.SingletonConfig;
 import org.seasar.doma.Sql;
 import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Table;
@@ -241,9 +240,11 @@ public class Annotations {
     return newInstance(field, SequenceGenerator.class, SequenceGeneratorAnnot::new);
   }
 
+  @SuppressWarnings("deprecation")
   public SingletonConfigAnnot newSingletonConfigAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
-    return newInstance(typeElement, SingletonConfig.class, SingletonConfigAnnot::new);
+    return newInstance(
+        typeElement, org.seasar.doma.SingletonConfig.class, SingletonConfigAnnot::new);
   }
 
   public SqlAnnot newSqlAnnot(ExecutableElement method) {

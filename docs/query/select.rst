@@ -9,7 +9,7 @@ Annotate with ``@Select`` to Dao method for execute search.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Select
       List<Employee> selectByDepartmentName(String departmentName);
@@ -289,7 +289,7 @@ You define ``SelectOptions`` as Dao method parameter.
 
 .. code-block:: java
 
-  @Config(config = AppConfig.class)
+  @Dao
   public interface EmployeeDao {
       @Select
       List<Employee> selectByDepartmentName(String departmentName, SelectOptions options);
