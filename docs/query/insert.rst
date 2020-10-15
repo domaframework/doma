@@ -140,7 +140,7 @@ Also, ``exclude`` element and ``include`` element and ``excludeNull`` element of
 Unique constraint violation
 ===========================
 
-``UniqueConstraintException`` is thrown regardless with or without using sql file if unique constraint violation is occured.
+``UniqueConstraintException`` is thrown regardless with or without using sql file if unique constraint violation is occurred.
 
 Query timeout
 ==================

@@ -23,8 +23,8 @@ To use local transaction, these conditions are required:
 * Use the ``LocalTransactionManager`` above to control database access
 
 There are several ways to generate and get the ``LocalTransactionManager``,
-but the simplest way is to generate it in the constructor of ``Config`` implementaion class
-and make the ``Config`` implementaiton class singleton.
+but the simplest way is to generate it in the constructor of ``Config`` implementation class
+and make the ``Config`` implementation class singleton.
 
 Here is an example:
 

@@ -6,7 +6,7 @@ Configuration
    :depth: 3
 
 The configurable items must be returned from the methods of the implementation class of
-the ``org.seasar.doma.jdbc.Confing`` interface.
+the ``org.seasar.doma.jdbc.Config`` interface.
 
 Configurable items
 ==================
