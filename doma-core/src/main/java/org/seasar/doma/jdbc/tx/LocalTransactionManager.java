@@ -4,6 +4,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.jdbc.JdbcLogger;
 
 /** A transaction manager for local transactions. */
 public class LocalTransactionManager implements TransactionManager {
@@ -15,6 +16,32 @@ public class LocalTransactionManager implements TransactionManager {
       throw new DomaNullPointerException("transaction");
     }
     this.transaction = transaction;
+  }
+
+  public LocalTransactionManager(LocalTransactionDataSource dataSource, JdbcLogger jdbcLogger) {
+    if (dataSource == null) {
+      throw new DomaNullPointerException("dataSource");
+    }
+    if (jdbcLogger == null) {
+      throw new DomaNullPointerException("jdbcLogger");
+    }
+    this.transaction = dataSource.getLocalTransaction(jdbcLogger);
+  }
+
+  public LocalTransactionManager(
+      LocalTransactionDataSource dataSource,
+      JdbcLogger jdbcLogger,
+      TransactionIsolationLevel isolationLevel) {
+    if (dataSource == null) {
+      throw new DomaNullPointerException("dataSource");
+    }
+    if (jdbcLogger == null) {
+      throw new DomaNullPointerException("jdbcLogger");
+    }
+    if (isolationLevel == null) {
+      throw new DomaNullPointerException("isolationLevel");
+    }
+    this.transaction = dataSource.getLocalTransaction(jdbcLogger, isolationLevel);
   }
 
   @Override
