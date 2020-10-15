@@ -23,7 +23,7 @@ There is no feature that auto generating search SQL.
 
   You need creating entity class **depending on search result**.
   For example, result set including column in EMPLOYEE table is accepted Employee class if the Employee class that correspond EMPLOYEE table is declared.
-  But, you need different class from the Employee entity class(For example EmmployeeDepartment class) for result set that is get by joining EMPLOYEE table and DEPARTMENT table.
+  But, you need different class from the Employee entity class(For example EmployeeDepartment class) for result set that is get by joining EMPLOYEE table and DEPARTMENT table.
 
 Query condition
 =================
@@ -85,7 +85,7 @@ You can specify multiple parameter.
 Mapping to IN clauses by using Iterable.
 -----------------------------------------
 
-You use subtype of ``java.lang.Iterable`` if excute searching by using IN clauses.
+You use subtype of ``java.lang.Iterable`` if execute searching by using IN clauses.
 
 .. code-block:: java
 
@@ -147,7 +147,7 @@ But if `Ensure of search result`_ is enabled, exception is thrown if search coun
 Stream search
 ==============
 
-You can use stream search if  handle all record at one try as ``java.util.stream.Stream`` rather than recieve as ``java.util.List``.
+You can use stream search if  handle all record at one try as ``java.util.stream.Stream`` rather than receiving as ``java.util.List``.
 
 There are two kind in stream search such as return the return value and pass ``Stream`` to ``java.util.Function``.
 

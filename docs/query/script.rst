@@ -172,7 +172,7 @@ Following script is valid for Oracle Database:
   insert into EMPLOYEE (ID, NAME) values (1, 'SMITH');
 
   /*
-   * procedure creatiton block
+   * procedure creation block
    */
   create or replace procedure proc
   ( cur out sys_refcursor,

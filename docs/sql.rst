@@ -292,7 +292,7 @@ The following example is the pair of a DAO method and an SQL template:
 
 .. code-block:: java
 
-  List<Employee> selectAll(BigDecimal salary, String orderyBy);
+  List<Employee> selectAll(BigDecimal salary, String orderBy);
 
 .. code-block:: sql
 

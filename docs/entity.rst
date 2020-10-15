@@ -251,7 +251,7 @@ In advance, define the database primary key as IDENTITY.
 
 .. warning::
 
-  All RDBMS does't support the IDENTITY function.
+  All RDBMS doesn't support the IDENTITY function.
 
 Id generation by SEQUENCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -273,7 +273,7 @@ correspond the properties within the ``@SequenceGenerator`` annotation.
 
 .. warning::
 
-  All RDBMS does't support the SEQUENCE.
+  All RDBMS doesn't support the SEQUENCE.
 
 Id generation by TABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -327,7 +327,7 @@ Tenant Id
 ------------------------------
 
 The tenant id fields are represented with the ``@TenantId`` annotation.
-The column corresponding to the annotated field is included in the WHERE clause of UPDATE and DELETE stetements.
+The column corresponding to the annotated field is included in the WHERE clause of UPDATE and DELETE statements.
 
 .. code-block:: java
 
