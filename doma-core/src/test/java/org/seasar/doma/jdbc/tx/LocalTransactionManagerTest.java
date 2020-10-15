@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.tx;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -131,5 +132,24 @@ public class LocalTransactionManagerTest {
         });
     log.append(LocalTransactionManagerTest.counter);
     assertEquals("01110", log.toString());
+  }
+
+  @Test
+  public void testConstructor1() {
+    LocalTransactionManager manager = new LocalTransactionManager(transaction);
+    assertNotNull(manager);
+  }
+
+  @Test
+  public void testConstructor2() {
+    LocalTransactionManager manager = new LocalTransactionManager(dataSource, jdbcLogger);
+    assertNotNull(manager);
+  }
+
+  @Test
+  public void testConstructor3() {
+    LocalTransactionManager manager =
+        new LocalTransactionManager(dataSource, jdbcLogger, TransactionIsolationLevel.SERIALIZABLE);
+    assertNotNull(manager);
   }
 }
