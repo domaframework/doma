@@ -6,11 +6,21 @@ import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.JdbcLogger;
 
-/** A transaction manager for local transactions. */
+/**
+ * A transaction manager for local transactions.
+ *
+ * <p>This instance is thread safe.
+ */
 public class LocalTransactionManager implements TransactionManager {
 
   protected final LocalTransaction transaction;
 
+  /**
+   * Create an instance.
+   *
+   * @param transaction the transaction
+   * @throws DomaNullPointerException if the {@code transaction} is {@code null}
+   */
   public LocalTransactionManager(LocalTransaction transaction) {
     if (transaction == null) {
       throw new DomaNullPointerException("transaction");
@@ -18,6 +28,13 @@ public class LocalTransactionManager implements TransactionManager {
     this.transaction = transaction;
   }
 
+  /**
+   * Create an instance.
+   *
+   * @param dataSource the data source
+   * @param jdbcLogger the logger
+   * @throws DomaNullPointerException if any of the parameters are {@code null}
+   */
   public LocalTransactionManager(LocalTransactionDataSource dataSource, JdbcLogger jdbcLogger) {
     if (dataSource == null) {
       throw new DomaNullPointerException("dataSource");
@@ -28,6 +45,14 @@ public class LocalTransactionManager implements TransactionManager {
     this.transaction = dataSource.getLocalTransaction(jdbcLogger);
   }
 
+  /**
+   * Create an instance.
+   *
+   * @param dataSource the data source
+   * @param jdbcLogger the logger
+   * @param isolationLevel the default transaction isolation level
+   * @throws DomaNullPointerException if any of the parameters are {@code null}
+   */
   public LocalTransactionManager(
       LocalTransactionDataSource dataSource,
       JdbcLogger jdbcLogger,
@@ -44,6 +69,13 @@ public class LocalTransactionManager implements TransactionManager {
     this.transaction = dataSource.getLocalTransaction(jdbcLogger, isolationLevel);
   }
 
+  /**
+   * Returns the transaction.
+   *
+   * <p>This method is mainly used in test code.
+   *
+   * @return the transaction
+   */
   public LocalTransaction getTransaction() {
     return transaction;
   }
