@@ -44,6 +44,10 @@ public class LocalTransactionManager implements TransactionManager {
     this.transaction = dataSource.getLocalTransaction(jdbcLogger, isolationLevel);
   }
 
+  public LocalTransaction getTransaction() {
+    return transaction;
+  }
+
   @Override
   public void required(Runnable block) {
     if (block == null) {
