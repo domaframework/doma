@@ -245,9 +245,9 @@ The simple definition is appropriate in following cases:
 
 .. code-block:: java
 
-  public class AppConfig implements Config {
+  public class DbConfig implements Config {
 
-      private static final AppConfig CONFIG = new AppConfig();
+      private static final DbConfig CONFIG = new DbConfig();
 
       private final Dialect dialect;
 
@@ -255,7 +255,7 @@ The simple definition is appropriate in following cases:
 
       private final TransactionManager transactionManager;
 
-      private AppConfig() {
+      private DbConfig() {
           dialect = new H2Dialect();
           dataSource = new LocalTransactionDataSource(
                   "jdbc:h2:mem:tutorial;DB_CLOSE_DELAY=-1", "sa", null);
@@ -278,16 +278,16 @@ The simple definition is appropriate in following cases:
           return transactionManager;
       }
 
-      public static AppConfig singleton() {
+      public static DbConfig singleton() {
           return CONFIG;
       }
   }
 
-You can use the above ``AppConfig`` class as follows:
+You can use the above ``DbConfig`` class as follows:
 
 .. code-block:: java
 
-  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
+  EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
 
 The above ``EmployeeDao`` interface must be annotated with the ``@Dao`` annotation as follows:
 
@@ -312,7 +312,7 @@ Suppose the ``dialect`` and the ``dataSource`` are injected by the dependency in
 
 .. code-block:: java
 
-  public class AppConfig implements Config {
+  public class DbConfig implements Config {
 
       private Dialect dialect;
 

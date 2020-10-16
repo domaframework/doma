@@ -30,9 +30,9 @@ Here is an example:
 
 .. code-block:: java
 
-  public class AppConfig implements Config {
+  public class DbConfig implements Config {
 
-      private static final AppConfig CONFIG = new AppConfig();
+      private static final DbConfig CONFIG = new DbConfig();
 
       private final Dialect dialect;
 
@@ -40,7 +40,7 @@ Here is an example:
 
       private final TransactionManager transactionManager;
 
-      private AppConfig() {
+      private DbConfig() {
           dialect = new H2Dialect();
           dataSource = new LocalTransactionDataSource(
                   "jdbc:h2:mem:tutorial;DB_CLOSE_DELAY=-1", "sa", null);
@@ -63,7 +63,7 @@ Here is an example:
           return transactionManager;
       }
 
-      public static AppConfig singleton() {
+      public static DbConfig singleton() {
           return CONFIG;
       }
   }
@@ -102,8 +102,8 @@ Use a lambda expression to write a process which you want to run in a transactio
 
 .. code-block:: java
 
-  TransactionManager tm = AppConfig.singleton().getTransactionManager();
-  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
+  TransactionManager tm = DbConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -122,8 +122,8 @@ Besides throwing an exception, you can use ``setRollbackOnly`` method to rollbac
 
 .. code-block:: java
 
-  TransactionManager tm = AppConfig.singleton().getTransactionManager();
-  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
+  TransactionManager tm = DbConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
 
   tm.required(() -> {
       Employee employee = dao.selectById(1);
@@ -141,8 +141,8 @@ With a savepoint, you can cancel specific changes in a transaction.
 
 .. code-block:: java
 
-  TransactionManager tm = AppConfig.singleton().getTransactionManager();
-  EmployeeDao dao = new EmployeeDaoImpl(AppConfig.singleton());
+  TransactionManager tm = DbConfig.singleton().getTransactionManager();
+  EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
 
   tm.required(() -> {
       // Search and update
