@@ -37,6 +37,7 @@ If the above command is successful, the following directories will contain the n
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-mock/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-kotlin/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-processor/
+- https://repo1.maven.org/maven2/org/seasar/doma/doma-slf4j/
 
 ## Publish documentation
 
