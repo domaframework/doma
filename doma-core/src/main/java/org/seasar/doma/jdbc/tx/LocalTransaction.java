@@ -21,7 +21,7 @@ import org.seasar.doma.message.Message;
  * the transaction always by {@link #commit()} or {@link #rollback()}.
  *
  * <pre>
- * LocalTransaction tx = AppConfig.getLocalTransaction();
+ * LocalTransaction tx = DbConfig.singleton().getLocalTransaction();
  * try {
  *     tx.begin();
  *
@@ -39,7 +39,8 @@ import org.seasar.doma.message.Message;
  * Same instance can handle multiple transactions sequentially.
  *
  * <pre>
- * LocalTransaction tx = AppConfig.getLocalTransaction();
+ * Db
+ * LocalTransaction tx = DbConfig.singleton().getLocalTransaction();
  * // transaction 1
  * try {
  *     tx.begin();

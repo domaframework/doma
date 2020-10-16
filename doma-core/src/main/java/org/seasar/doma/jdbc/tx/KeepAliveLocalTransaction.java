@@ -13,7 +13,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
  * <p>This instance is thread safe.
  *
  * <pre>
- * KeepAliveLocalTransaction tx = AppConfig.getKeepAliveLocalTransaction();
+ * KeepAliveLocalTransaction tx = DbConfig.singleton().getKeepAliveLocalTransaction();
  * tx.init();
  * try {
  *     try {
