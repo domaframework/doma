@@ -1,3 +1,32 @@
+# [2.44.0](https://github.com/domaframework/doma/releases/tag/2.44.0)
+
+
+## New Features
+
+* Add the avgAsDouble aggregate function ([#605](https://github.com/domaframework/doma/pull/605))
+
+## Maintenance
+
+* Make LocalTransactionManager more useful ([#609](https://github.com/domaframework/doma/pull/609))
+* Move the LogKind enum from doma-slf4j to doma-core ([#607](https://github.com/domaframework/doma/pull/607))
+* Suppress deprecation warning messages ([#604](https://github.com/domaframework/doma/pull/604))
+* Deprecate the config element of the Dao annotation ([#603](https://github.com/domaframework/doma/pull/603))
+* Use candidate version instead of explicitly specifying ([#601](https://github.com/domaframework/doma/pull/601))
+
+## Documentation
+
+* Add a description of Maven ([#612](https://github.com/domaframework/doma/pull/612))
+* Rename AppConfig to DbConfig ([#611](https://github.com/domaframework/doma/pull/611))
+* Add a link to the doma-slf4j repository ([#610](https://github.com/domaframework/doma/pull/610))
+* Fix typo ([#608](https://github.com/domaframework/doma/pull/608))
+* Get releaseVersion by GitHub CLI ([#602](https://github.com/domaframework/doma/pull/602))
+* Use runtimeOnly dependency for logback ([#600](https://github.com/domaframework/doma/pull/600))
+
+## Dependency Upgrades
+
+* Update dependency gradle to v6.7 ([#606](https://github.com/domaframework/doma/pull/606))
+
+
 # [2.43.0](https://github.com/domaframework/doma/releases/tag/2.43.0)
 
 
