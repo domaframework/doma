@@ -92,15 +92,17 @@ For more complete examples,
 see [simple-examples](https://github.com/domaframework/simple-examples)
 and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetstore).
 
-Build with Gradle
------------------
+Installing
+----------
+
+### Gradle
 
 For Java projects:
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-core:2.43.0"
-    annotationProcessor "org.seasar.doma:doma-processor:2.43.0"
+    implementation("org.seasar.doma:doma-core:2.43.0")
+    annotationProcessor("org.seasar.doma:doma-processor:2.43.0")
 }
 ```
 
@@ -108,11 +110,54 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```groovy
 dependencies {
-    implementation "org.seasar.doma:doma-kotlin:2.43.0"
-    kapt "org.seasar.doma:doma-processor:2.43.0"
+    implementation("org.seasar.doma:doma-kotlin:2.43.0")
+    kapt("org.seasar.doma:doma-processor:2.43.0")
 }
 ```
 
+### Maven
+
+We recommend using Gradle, but if you want to use Maven, see below.
+
+For Java projects:
+
+```xml
+...
+<properties>
+    <org.seasar.doma.version>2.43.0</org.seasar.doma.version>
+</properties>
+...
+<dependencies>
+    <dependency>
+        <groupId>org.seasar.doma</groupId>
+        <artifactId>doma-core</artifactId>
+        <version>${org.seasar.doma.version}</version>
+    </dependency>
+</dependencies>
+...
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>1.8</source> <!-- depending on your project -->
+                <target>1.8</target> <!-- depending on your project -->
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.seasar.doma</groupId>
+                        <artifactId>doma-processor</artifactId>
+                        <version>${doma.version}</version>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+For Kotlin projects, see [Kotlin document](https://kotlinlang.org/docs/reference/kapt.html#using-in-maven).
 
 Documentation
 ---------------------
