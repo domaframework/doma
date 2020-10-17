@@ -23,10 +23,10 @@ public interface Naming {
   Naming SNAKE_UPPER_CASE = new Adapter(NamingType.SNAKE_UPPER_CASE);
 
   /** the adapter for {@link NamingType#LENIENT_SNAKE_LOWER_CASE} */
-  Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
+  @Deprecated Naming LENIENT_SNAKE_LOWER_CASE = new Adapter(NamingType.LENIENT_SNAKE_LOWER_CASE);
 
   /** the adapter for {@link NamingType#LENIENT_SNAKE_UPPER_CASE} */
-  Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
+  @Deprecated Naming LENIENT_SNAKE_UPPER_CASE = new Adapter(NamingType.LENIENT_SNAKE_UPPER_CASE);
 
   /** the default convention */
   Naming DEFAULT = NONE;

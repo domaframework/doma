@@ -88,6 +88,7 @@ public enum NamingType {
     }
   },
 
+  @Deprecated
   LENIENT_SNAKE_UPPER_CASE {
 
     @Override
@@ -108,6 +109,7 @@ public enum NamingType {
     }
   },
 
+  @Deprecated
   LENIENT_SNAKE_LOWER_CASE {
 
     @Override
