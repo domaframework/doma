@@ -3,13 +3,17 @@ package org.seasar.doma.internal.apt.meta.domain;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -40,7 +44,7 @@ public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta>
     DataTypeMeta dataTypeMeta = new DataTypeMeta(typeElement, typeElement.asType(), dataTypeAnnot);
     validateTypeElement(typeElement, dataTypeMeta);
     doTypeParameters(typeElement, dataTypeMeta);
-    doValueType(typeElement, dataTypeMeta);
+    doConstructor(typeElement, dataTypeMeta);
     return dataTypeMeta;
   }
 
@@ -87,11 +91,22 @@ public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta>
     dataTypeMeta.setTypeParametersDef(typeParametersDef);
   }
 
-  private void doValueType(TypeElement typeElement, DataTypeMeta dataTypeMeta) {
-    VariableElement param =
-        ctx.getMoreElements().getSingleParameterOfRecordConstructor(typeElement);
-    if (param == null) {
+  private void doConstructor(TypeElement typeElement, DataTypeMeta dataTypeMeta) {
+    List<ExecutableElement> constructors =
+        ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
+            .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
+            .filter(c -> c.getParameters().size() == 1)
+            .collect(Collectors.toList());
+    if (constructors.isEmpty()) {
       throw new AptException(Message.DOMA4453, typeElement, new Object[] {});
+    }
+    if (constructors.size() > 1) {
+      throw new AptException(Message.DOMA4456, typeElement, new Object[] {});
+    }
+    ExecutableElement constructor = constructors.iterator().next();
+    VariableElement param = constructor.getParameters().iterator().next();
+    if (param == null) {
+      throw new AptIllegalStateException("param is null");
     }
     TypeMirror type = param.asType();
     BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(type);
