@@ -914,9 +914,10 @@ public enum Message implements MessageResource {
   DOMA4452(
       "The type \"{0}\" is a local or anonymous class. "
           + "The data type and its enclosing type must be a top level or member class."),
-  DOMA4453("The public constructor whose parameter size is one is not found."),
+  DOMA4453("The non-private 1-arg constructor is required."),
   DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
   DOMA4455("The combination of the prefix=\"{0}\" and the suffix=\"\" is not allowed."),
+  DOMA4456("The non-private 1-arg constructor must be only one, but more than one found."),
 
   // other
   DOMA5001(

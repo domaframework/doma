@@ -31,8 +31,11 @@ import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -42,6 +45,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
@@ -251,10 +255,19 @@ public class CtTypes {
   }
 
   private DomainInfo getDomainInfo(TypeElement typeElement, DataType dataType) {
-    VariableElement param =
-        ctx.getMoreElements().getSingleParameterOfRecordConstructor(typeElement);
+    List<ExecutableElement> constructors =
+        ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
+            .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
+            .filter(c -> c.getParameters().size() == 1)
+            .collect(Collectors.toList());
+    if (constructors.size() != 1) {
+      throw new AptIllegalStateException(
+          String.format("%s : %d", typeElement.getQualifiedName(), constructors.size()));
+    }
+    ExecutableElement constructor = constructors.iterator().next();
+    VariableElement param = constructor.getParameters().iterator().next();
     if (param == null) {
-      throw new AptIllegalStateException(typeElement.getQualifiedName().toString());
+      throw new AptIllegalStateException("param is null");
     }
     return new DomainInfo(param.asType(), false);
   }

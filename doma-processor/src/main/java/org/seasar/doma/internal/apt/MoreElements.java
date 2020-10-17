@@ -35,7 +35,6 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor8;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
-import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.util.Zip;
 
@@ -312,18 +311,6 @@ public class MoreElements implements Elements {
     List<TypeMirror> typeMirrors =
         typeParameterElements.stream().map(TypeParameterElement::asType).collect(toList());
     return ctx.getMoreTypes().getTypeParameterNames(typeMirrors);
-  }
-
-  public VariableElement getSingleParameterOfRecordConstructor(TypeElement record) {
-    if (!ElementKindUtil.isRecord(record.getKind())) {
-      throw new AptIllegalStateException(record.getQualifiedName() + " must be a record type.");
-    }
-    return ElementFilter.constructorsIn(record.getEnclosedElements()).stream()
-        .filter(c -> c.getModifiers().contains(Modifier.PUBLIC))
-        .filter(c -> c.getParameters().size() == 1)
-        .flatMap(c -> c.getParameters().stream())
-        .findFirst()
-        .orElse(null);
   }
 
   public boolean isVirtualDefaultMethod(TypeElement typeElement, ExecutableElement methodElement) {
