@@ -124,14 +124,14 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <org.seasar.doma.version>2.44.0</org.seasar.doma.version>
+    <doma.version>2.44.0</doma.version>
 </properties>
 ...
 <dependencies>
     <dependency>
         <groupId>org.seasar.doma</groupId>
         <artifactId>doma-core</artifactId>
-        <version>${org.seasar.doma.version}</version>
+        <version>${doma.version}</version>
     </dependency>
 </dependencies>
 ...

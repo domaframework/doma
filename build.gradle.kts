@@ -203,7 +203,7 @@ rootProject.apply {
             }
         }
         ant.withGroovyBuilder {
-            "replaceregexp"("match" to """(<org.seasar.doma.version>)[^<]*(</org.seasar.doma.version>)""",
+            "replaceregexp"("match" to """(<doma.version>)[^<]*(</doma.version>)""",
                     "replace" to "\\1${ver}\\2",
                     "encoding" to encoding,
                     "flags" to "g") {
