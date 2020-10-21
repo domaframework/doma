@@ -81,7 +81,7 @@ jobs:
 
     steps:
       - name: Download Maven Repository
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: maven-repository
           path: .
@@ -160,7 +160,7 @@ jobs:
           mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
 
       - name: Download Maven Repository
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: maven-repository
           path: .
@@ -235,7 +235,7 @@ jobs:
 
     steps:
       - name: Download Maven Repository
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: maven-repository
           path: .
@@ -315,7 +315,7 @@ jobs:
             -S 127.0.0.1 -U sa -P 'P@ssw0rd' -Q 'CREATE DATABASE doma_it'
 
       - name: Download Maven Repository
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: maven-repository
           path: .
@@ -371,7 +371,7 @@ jobs:
 
     steps:
       - name: Download Maven Repository
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: maven-repository
           path: .
