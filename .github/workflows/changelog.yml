@@ -31,9 +31,9 @@ jobs:
         run: ./gradlew updateChangelog -PreleaseBody="${{ github.event.release.body }}" -PreleaseHtmlUrl=${{ github.event.release.html_url }} -PreleaseName=${{ github.event.release.name }}
 
       - name: Commit changes
-        uses: EndBug/add-and-commit@v4
+        uses: EndBug/add-and-commit@v5
         with:
-          ref: master
+          branch: master
           message: "Update CHANGELOG.md"
           add: "CHANGELOG.md"
         env:
