@@ -33,7 +33,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v5
         with:
-          ref: master
+          branch: master
           message: "Update CHANGELOG.md"
           add: "CHANGELOG.md"
         env:
