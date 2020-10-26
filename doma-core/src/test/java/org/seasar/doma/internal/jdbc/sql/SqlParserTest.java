@@ -943,6 +943,18 @@ public class SqlParserTest {
     assertNotNull(sqlNode);
   }
 
+  @Test
+  public void testDelimiter() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    SqlParser parser = new SqlParser("select 1; select 2;");
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select 1;", sql.getRawSql());
+  }
+
   public enum MyEnum {
     AAA,
     BBB,

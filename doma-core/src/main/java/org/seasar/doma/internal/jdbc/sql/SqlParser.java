@@ -232,6 +232,10 @@ public class SqlParser {
             break;
           }
         case DELIMITER:
+          {
+            parseDelimiter();
+            break outer;
+          }
         case EOF:
           {
             break outer;
@@ -555,6 +559,10 @@ public class SqlParser {
   protected void parseEOL() {
     EolNode node = new EolNode(token);
     appendNode(node);
+  }
+
+  protected void parseDelimiter() {
+    appendNode(OtherNode.of(token));
   }
 
   protected boolean containsOnlyWhitespaces(SqlNode node) {
