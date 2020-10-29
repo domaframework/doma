@@ -172,8 +172,8 @@ https://groups.google.com/g/doma-user
 Related projects
 ---------------------
 
+- [quarkiverse/quarkiverse-doma](https://github.com/quarkiverse/quarkiverse-doma) - Supports integration with Quarkus
 - [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) - Supports integration with Spring Boot
-- [doma-quarkus](https://github.com/domaframework/doma-quarkus) - Supports integration with Quarkus
 - [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) - Makes compilation easy
 - [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) - Generates Java and SQL files
 
