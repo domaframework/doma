@@ -1,3 +1,28 @@
+# [2.44.1](https://github.com/domaframework/doma/releases/tag/2.44.1)
+
+
+## Bug Fixes
+
+* Retain first semi-colon instead of removing it in SQL template ([#621](https://github.com/domaframework/doma/pull/621))
+* Prohibit multiple 1-arg constructors in DataType annotated record ([#614](https://github.com/domaframework/doma/pull/614))
+
+## Maintenance
+
+* Switch from Gitter to Zulip ([#619](https://github.com/domaframework/doma/pull/619))
+* Deprecate LENIENT_SNAKE_LOWER_CASE and LENIENT_SNAKE_UPPER_CASE ([#613](https://github.com/domaframework/doma/pull/613))
+
+## Documentation
+
+* Replace doma-quarkus with quarkiverse-doma ([#622](https://github.com/domaframework/doma/pull/622))
+* Fix version property name ([#615](https://github.com/domaframework/doma/pull/615))
+
+## Dependency Upgrades
+
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.7.0 ([#618](https://github.com/domaframework/doma/pull/618))
+* Update EndBug/add-and-commit action to v5 ([#616](https://github.com/domaframework/doma/pull/616))
+* Update actions/download-artifact action to v2 ([#617](https://github.com/domaframework/doma/pull/617))
+
+
 # [2.44.0](https://github.com/domaframework/doma/releases/tag/2.44.0)
 
 
