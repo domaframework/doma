@@ -23,6 +23,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
   MERGE_METHOD: "squash"
   MERGE_FORKS: "false"
+  MERGE_RETRIES: "10"
+  MERGE_RETRY_SLEEP: "60000"
   UPDATE_METHOD: "rebase"
 
 jobs:
