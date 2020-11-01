@@ -1,3 +1,4 @@
+automerge: ['chore/*', 'ci/*', 'docs/*', 'fix/*', 'refactor/*', 'test/*']
 chore: chore/*
 ci: ci/*
 dependencies: dependencies/*
