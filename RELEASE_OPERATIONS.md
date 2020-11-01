@@ -1,31 +1,25 @@
 # Release Operations
 
-## Run the Gradle release task
+## Dispatch the release workflow
 
-The Gradle release task creates a release commit and push it to the origin/master branch.
+Dispatch the [release workflow](.github/workflows/release.yml) as follows:
 
 ```
-$ git checkout master
-$ git pull
-$ ./gradlew release -Prelease.releaseVersion=$(gh release list -L 1 | tee /dev/tty  | awk '{print $1}')
+$ gh api repos/domaframework/doma/actions/workflows/release.yml/dispatches -F ref='master'
 ```
-
-The value of `release.releaseVersion` is decided by the draft name of
-[Releases](https://github.com/domaframework/doma/releases).
 
 ## Build and Publish
 
 (No operation required)
 
-The GitHub Actions workflow [Java CI with Gradle](.github/workflows/ci.yml) handles the above push event.
-
-The workflow builds artifacts and publishes them to [Maven Central](https://repo1.maven.org/).
+The [ci workflow](.github/workflows/ci.yml) follows the above release workflow
+and publishes artifacts to [Maven Central](https://repo1.maven.org/).
 
 ## Wait for the artifacts to appear on Maven Central
 
 (Optional)
 
-Use [Dependency Watch](https://github.com/JakeWharton/dependency-watch).
+Use [Dependency Watch](https://github.com/JakeWharton/dependency-watch):
 
 ```
 $ dependency-watch await org.seasar.doma:doma-core:$(gh release list -L 1 | tee /dev/tty  | awk '{print $1}') && say "New version is available!"
@@ -54,6 +48,7 @@ and publish release notes.
 
 ## Announce the release
 
-Announce the release of new version using Twitter and Google Group.
-- [@domaframework](https://twitter.com/domaframework)
-- [doma-user](https://groups.google.com/g/doma-user)
+Announce the release of new version using
+[Twitter]((https://twitter.com/domaframework)),
+[Zulip](https://domaframework.zulipchat.com), and
+[Google Group](https://groups.google.com/g/doma-user).
