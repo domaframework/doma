@@ -1,3 +1,18 @@
+# [2.44.2](https://github.com/domaframework/doma/releases/tag/2.44.2)
+
+
+## Bug Fixes
+
+* Fix returning wrong type for Optional properties on selecting ([#628](https://github.com/domaframework/doma/pull/628))
+
+## Maintenance
+
+* Adjust merge retry settings ([#626](https://github.com/domaframework/doma/pull/626))
+* Add a new personal access token ([#625](https://github.com/domaframework/doma/pull/625))
+* Add pascalgn/automerge-action ([#624](https://github.com/domaframework/doma/pull/624))
+* Run the Gradle release task in the GitHub Actions workflow ([#623](https://github.com/domaframework/doma/pull/623))
+
+
 # [2.44.1](https://github.com/domaframework/doma/releases/tag/2.44.1)
 
 
