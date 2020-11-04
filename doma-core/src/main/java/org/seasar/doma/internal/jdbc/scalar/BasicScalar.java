@@ -36,6 +36,11 @@ public class BasicScalar<BASIC> implements Scalar<BASIC, BASIC> {
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return get();
+  }
+
+  @Override
   public BASIC getDefault() {
     return wrapper.getDefault();
   }

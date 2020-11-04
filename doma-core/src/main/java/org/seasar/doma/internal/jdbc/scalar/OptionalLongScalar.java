@@ -30,6 +30,11 @@ public class OptionalLongScalar implements Scalar<Long, OptionalLong> {
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return get().orElse(0L);
+  }
+
+  @Override
   public OptionalLong getDefault() {
     return OptionalLong.empty();
   }

@@ -19,6 +19,13 @@ public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
   Object get();
 
   /**
+   * Return the non optional value of this property.
+   *
+   * @return the non optional value of this property
+   */
+  Object getAsNonOptional();
+
+  /**
    * Loads the value from the entity to this property.
    *
    * @param entity the entity

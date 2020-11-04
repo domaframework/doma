@@ -38,6 +38,11 @@ public class OptionalBasicScalar<BASIC> implements Scalar<BASIC, Optional<BASIC>
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return get().orElse(null);
+  }
+
+  @Override
   public Optional<BASIC> getDefault() {
     return Optional.empty();
   }

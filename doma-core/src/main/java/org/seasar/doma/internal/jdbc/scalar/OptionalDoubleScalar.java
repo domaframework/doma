@@ -30,6 +30,11 @@ public class OptionalDoubleScalar implements Scalar<Double, OptionalDouble> {
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return get().orElse(0d);
+  }
+
+  @Override
   public OptionalDouble getDefault() {
     return OptionalDouble.empty();
   }

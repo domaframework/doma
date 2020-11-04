@@ -201,6 +201,11 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     }
 
     @Override
+    public Object getAsNonOptional() {
+      return scalar.getAsNonOptional();
+    }
+
+    @Override
     public Property<ENTITY, BASIC> load(ENTITY entity) {
       Object value = field.getValue(entity);
       scalar.set(scalar.cast(value));

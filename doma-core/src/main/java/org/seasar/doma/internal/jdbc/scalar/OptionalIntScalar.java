@@ -30,6 +30,11 @@ public class OptionalIntScalar implements Scalar<Integer, OptionalInt> {
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return get().orElse(0);
+  }
+
+  @Override
   public OptionalInt getDefault() {
     return OptionalInt.empty();
   }

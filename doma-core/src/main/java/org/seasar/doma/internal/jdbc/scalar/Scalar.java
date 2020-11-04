@@ -8,6 +8,8 @@ public interface Scalar<BASIC, CONTAINER> extends JdbcMappable<BASIC> {
 
   CONTAINER get();
 
+  Object getAsNonOptional();
+
   CONTAINER getDefault();
 
   void set(CONTAINER container);

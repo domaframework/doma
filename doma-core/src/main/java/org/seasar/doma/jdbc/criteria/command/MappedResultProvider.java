@@ -74,7 +74,7 @@ public class MappedResultProvider<RESULT> extends AbstractObjectProvider<RESULT>
             } catch (SQLException e) {
               throw new UncheckedSQLException(e);
             }
-            return (PROPERTY) property.get();
+            return (PROPERTY) property.getAsNonOptional();
           }
         };
     try {
