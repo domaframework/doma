@@ -68,6 +68,11 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
     }
 
     @Override
+    public Object getAsNonOptional() {
+      return get();
+    }
+
+    @Override
     public DOMAIN getDefault() {
       return null;
     }
@@ -116,6 +121,11 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
         return getDefaultInternal();
       }
       return Optional.of(newDomain(value));
+    }
+
+    @Override
+    public Object getAsNonOptional() {
+      return get().orElse(null);
     }
 
     @Override

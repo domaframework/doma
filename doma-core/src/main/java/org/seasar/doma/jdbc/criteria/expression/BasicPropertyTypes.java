@@ -115,6 +115,11 @@ abstract class BasicProperty<BASIC> implements Property<Object, BASIC> {
   }
 
   @Override
+  public Object getAsNonOptional() {
+    return scalar.getAsNonOptional();
+  }
+
+  @Override
   public Property<Object, BASIC> load(Object o) {
     throw new UnsupportedOperationException();
   }

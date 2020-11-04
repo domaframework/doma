@@ -79,6 +79,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertEquals(10, scalar.get());
+    assertEquals(10, scalar.getAsNonOptional());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(PrimitiveIntWrapper.class, wrapper.getClass());
@@ -92,6 +93,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertEquals(0, scalar.get());
+    assertEquals(0, scalar.getAsNonOptional());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(PrimitiveIntWrapper.class, wrapper.getClass());
@@ -105,6 +107,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertNull(scalar.get());
+    assertNull(scalar.getAsNonOptional());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());
@@ -119,6 +122,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertTrue(scalar.get() instanceof Optional);
+    assertTrue(scalar.getAsNonOptional() instanceof Integer);
     Optional<Integer> optional = (Optional<Integer>) scalar.get();
     assertEquals(new Integer(10), optional.get());
 
@@ -135,6 +139,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertTrue(scalar.get() instanceof Optional);
+    assertNull(scalar.getAsNonOptional());
     Optional<Integer> optional = (Optional<Integer>) scalar.get();
     assertFalse(optional.isPresent());
 
@@ -210,6 +215,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertEquals(phoneNumber, scalar.get());
+    assertEquals(phoneNumber, scalar.getAsNonOptional());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(StringWrapper.class, wrapper.getClass());
@@ -238,6 +244,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertTrue(scalar.get() instanceof PhoneNumber);
+    assertTrue(scalar.getAsNonOptional() instanceof PhoneNumber);
     PhoneNumber phoneNumber = (PhoneNumber) scalar.get();
     assertNull(phoneNumber.getValue());
 
@@ -256,6 +263,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertTrue(scalar.get() instanceof Optional);
+    assertTrue(scalar.getAsNonOptional() instanceof PhoneNumber);
     Optional<PhoneNumber> optional = (Optional<PhoneNumber>) scalar.get();
     assertEquals(phoneNumber, optional.get());
 
@@ -272,6 +280,7 @@ public class ScalarsTest {
 
     Scalar<?, ?> scalar = supplier.get();
     assertTrue(scalar.get() instanceof Optional);
+    assertNull(scalar.getAsNonOptional());
     Optional<PhoneNumber> optional = (Optional<PhoneNumber>) scalar.get();
     assertFalse(optional.isPresent());
 
