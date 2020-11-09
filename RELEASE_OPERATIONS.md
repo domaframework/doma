@@ -49,6 +49,6 @@ and publish release notes.
 ## Announce the release
 
 Announce the release of new version using
-[Twitter]((https://twitter.com/domaframework)),
+[Twitter](https://twitter.com/domaframework),
 [Zulip](https://domaframework.zulipchat.com), and
 [Google Group](https://groups.google.com/g/doma-user).
