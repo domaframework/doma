@@ -562,7 +562,7 @@ public class SqlParser {
   }
 
   protected void parseDelimiter() {
-    appendNode(OtherNode.of(token));
+    rootNode.appendNode(OtherNode.of(token));
   }
 
   protected boolean containsOnlyWhitespaces(SqlNode node) {
