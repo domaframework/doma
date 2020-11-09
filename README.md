@@ -164,15 +164,20 @@ Documentation
 
 https://doma.readthedocs.io/
 
-Google Group
+Forum
 ---------------------
 
 https://groups.google.com/g/doma-user
 
+Chatroom
+---------------------
+
+https://domaframework.zulipchat.com
+
 Related projects
 ---------------------
 
-- [quarkiverse/quarkiverse-doma](https://github.com/quarkiverse/quarkiverse-doma) - Supports integration with Quarkus
+- [quarkiverse-doma](https://github.com/quarkiverse/quarkiverse-doma) - Supports integration with Quarkus
 - [doma-spring-boot](https://github.com/domaframework/doma-spring-boot) - Supports integration with Spring Boot
 - [doma-compile-plugin](https://github.com/domaframework/doma-compile-plugin) - Makes compilation easy
 - [doma-codegen-plugin](https://github.com/domaframework/doma-codegen-plugin) - Generates Java and SQL files
