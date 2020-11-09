@@ -164,10 +164,15 @@ Documentation
 
 https://doma.readthedocs.io/
 
-Google Group
+Forum
 ---------------------
 
 https://groups.google.com/g/doma-user
+
+Chatroom
+---------------------
+
+https://domaframework.zulipchat.com
 
 Related projects
 ---------------------
