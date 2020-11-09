@@ -1,3 +1,21 @@
+# [2.44.3](https://github.com/domaframework/doma/releases/tag/2.44.3)
+
+
+## Bug Fixes
+
+* Consider the trailing semi-colon in SQL transformation ([#631](https://github.com/domaframework/doma/pull/631))
+
+## Maintenance
+
+* Specify timeout-minutes for GitHub Actions jobs ([#630](https://github.com/domaframework/doma/pull/630))
+* Remove automerge-action ([#629](https://github.com/domaframework/doma/pull/629))
+
+## Documentation
+
+* Fix markdown syntax ([#633](https://github.com/domaframework/doma/pull/633))
+* Update README.md ([#632](https://github.com/domaframework/doma/pull/632))
+
+
 # [2.44.2](https://github.com/domaframework/doma/releases/tag/2.44.2)
 
 
