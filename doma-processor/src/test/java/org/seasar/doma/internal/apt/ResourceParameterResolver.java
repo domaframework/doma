@@ -7,15 +7,20 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.util.ResourceUtil;
 
 public class ResourceParameterResolver implements ParameterResolver {
 
-  private final Class<?> clazz;
+  private final String className;
 
   public ResourceParameterResolver(Class<?> clazz) {
+    this(clazz.getSimpleName());
+  }
+
+  public ResourceParameterResolver(String clazz) {
     assertNotNull(clazz);
-    this.clazz = clazz;
+    this.className = new ClassName(clazz).getSimpleName();
   }
 
   @Override
@@ -31,7 +36,7 @@ public class ResourceParameterResolver implements ParameterResolver {
       throws ParameterResolutionException {
     Class<?> testClass = extensionContext.getTestClass().orElseThrow(AssertionError::new);
     String prefix = testClass.getName().replace(".", "/");
-    String path = String.format("%s_%s.txt", prefix, clazz.getSimpleName());
+    String path = String.format("%s_%s.txt", prefix, className);
     return ResourceUtil.getResource(path);
   }
 }
