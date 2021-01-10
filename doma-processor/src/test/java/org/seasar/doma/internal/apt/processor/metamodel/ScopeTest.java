@@ -23,9 +23,11 @@ public class ScopeTest extends CompilerSupport {
 
     @TestTemplate
     @ExtendWith(ScopeTest.SuccessInvocationContextProvider.class)
-    void success(String fqn, String[] options) throws Exception {
-        addOption(options);
+    void success(String fqn, String[] otherClasses) throws Exception {
         addProcessor(new EntityProcessor());
+        for (String otherClass : otherClasses) {
+            addResourceFileCompilationUnit(otherClass);
+        }
         addResourceFileCompilationUnit(fqn);
         compile();
         assertTrue(getCompiledResult());
@@ -41,12 +43,14 @@ public class ScopeTest extends CompilerSupport {
         public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
                 ExtensionContext context) {
             return Stream.of(
-                    invocationContext("org.seasar.doma.internal.apt.processor.entity.ScopedEntity")
+                    invocationContext(
+                            "org.seasar.doma.internal.apt.processor.entity.ScopedEntity",
+                            "org.seasar.doma.internal.apt.processor.entity.ScopeClass")
             );
         }
 
         private TestTemplateInvocationContext invocationContext(
-                String classFqn, String... options) {
+                String classFqn, String... otherClasses) {
             return new TestTemplateInvocationContext() {
                 @Override
                 public String getDisplayName(int invocationIndex) {
@@ -58,7 +62,7 @@ public class ScopeTest extends CompilerSupport {
                 public List<Extension> getAdditionalExtensions() {
                     return Arrays.asList(
                             new SimpleParameterResolver(classFqn),
-                            new SimpleParameterResolver(options));
+                            new SimpleParameterResolver(otherClasses));
                 }
             };
         }
