@@ -1,16 +1,12 @@
 package org.seasar.doma.internal.apt.generator;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityMetaScope;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
@@ -18,6 +14,13 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
+
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import java.util.List;
+
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class EntityMetamodelGenerator extends AbstractGenerator {
 
@@ -70,6 +73,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     printEntityTypeField();
     printAllPropertyMetamodelsFields();
     printPropertyMetamodelFields();
+    printScopeField();
   }
 
   private void printEntityTypeField() {
@@ -86,6 +90,14 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printQualifiedTableNameField() {
     iprint("private final String __qualifiedTableName;%n");
+    print("%n");
+  }
+
+  private void printScopeField() {
+    List<EntityMetaScope> scopes = entityMeta.getAllMetaScope();
+    for (EntityMetaScope scope : scopes) {
+      iprint("private final %1$s %2$s = new %1$s();%n", scope.scopeClass(), scope.scopeField());
+    }
     print("%n");
   }
 

@@ -18,6 +18,8 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.lang.String> name = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.lang.String>(java.lang.String.class, __entityType, "name");
 
+    private final org.seasar.doma.internal.apt.processor.entity.ScopeClass _scope_ScopeClass = new org.seasar.doma.internal.apt.processor.entity.ScopeClass();
+
     public ScopedEntity_() {
         this("");
     }
