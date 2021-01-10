@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 
 class ScopeClass {
 
-    public Consumer<WhereDeclaration> searchByName(ScopedEntity_ e, String text) {
+    public Consumer<WhereDeclaration> startWithHoge(ScopedEntity_ e) {
         return w -> {
-            w.like(e.name, "%" + text + "%");
+            w.like(e.name, "hoge%");
         };
     }
 }

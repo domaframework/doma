@@ -5,6 +5,8 @@ import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.decl.MethodDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaScope;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
@@ -169,6 +171,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   private void printMethods() {
     printAsTypeMethod();
     printAllPropertyMetamodelsMethod();
+    printScopeMethods();
   }
 
   private void printAsTypeMethod() {
@@ -191,5 +194,23 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     unindent();
     iprint("}%n");
     print("%n");
+  }
+
+  private void printScopeMethods() {
+    for (EntityMetaScope scope : entityMeta.getAllMetaScope()) {
+      TypeDeclaration declaration = ctx.getDeclarations().newTypeDeclaration(scope.scopeClass().asType());
+      printScopeMethods(scope, declaration);
+    }
+  }
+
+  private void printScopeMethods(EntityMetaScope scope, TypeDeclaration type) {
+    for (MethodDeclaration method : type.getScopeMethods(scope.scopeClass())) {
+      iprint("public %1$s %2$s() {%n", method.getReturnTypeDeclaration(), method.name());
+      indent();
+      iprint("return %1$s.%2$s(this);%n", scope.scopeField(), method.name());
+      unindent();
+      iprint("}%n");
+      print("%n");
+    }
   }
 }

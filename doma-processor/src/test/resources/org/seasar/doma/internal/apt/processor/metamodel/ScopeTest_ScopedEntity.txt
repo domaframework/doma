@@ -42,4 +42,8 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
         return __allPropertyMetamodels;
     }
 
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> startWithHoge() {
+        return _scope_ScopeClass.startWithHoge(this);
+    }
+
 }

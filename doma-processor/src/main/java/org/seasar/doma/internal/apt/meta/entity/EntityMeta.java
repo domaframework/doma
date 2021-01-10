@@ -1,7 +1,7 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
-import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.ScopeClass;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.jdbc.entity.NamingType;
@@ -120,7 +120,7 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public List<EntityMetaScope> getAllMetaScope() {
-    List<ClassName> scopeClasses = getEntityAnnot().getMetamodelValue().getScopeValue();
+    List<ScopeClass> scopeClasses = getEntityAnnot().getMetamodelValue().getScopeValue();
     return scopeClasses.stream()
             .map(EntityMetaScope::new)
             .collect(Collectors.toList());

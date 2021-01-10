@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.annot;
 
-import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -59,12 +57,10 @@ public class MetamodelAnnot extends AbstractAnnot {
     return value;
   }
 
-  public List<ClassName> getScopeValue() {
+  public List<ScopeClass> getScopeValue() {
     List<TypeMirror> type = AnnotationValueUtil.toTypeList(scopeClasses);
     return type.stream()
-            .map(TypeMirror::toString)
-            .map(ClassNames::normalizeBinaryName)
-            .map(ClassName::new)
+            .map(ScopeClass::new)
             .collect(Collectors.toList());
   }
 }

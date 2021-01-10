@@ -1,9 +1,9 @@
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
-
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class MethodDeclaration {
 
@@ -27,5 +27,9 @@ public class MethodDeclaration {
 
   public boolean isStatic() {
     return element.getModifiers().contains(Modifier.STATIC);
+  }
+
+  public String name() {
+    return element.getSimpleName().toString();
   }
 }

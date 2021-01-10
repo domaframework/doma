@@ -1,33 +1,25 @@
 package org.seasar.doma.internal.apt.decl;
 
+import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.MoreTypes;
+import org.seasar.doma.internal.apt.annot.ScopeClass;
+import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.internal.util.Zip;
+import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+
+import javax.lang.model.element.*;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.function.Predicate;
+
 import static java.util.stream.Collectors.toList;
 import static javax.lang.model.util.ElementFilter.*;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import javax.lang.model.element.*;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.MoreTypes;
-import org.seasar.doma.internal.apt.cttype.ArrayCtType;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.internal.util.Zip;
 
 public class TypeDeclaration {
 
@@ -226,6 +218,35 @@ public class TypeDeclaration {
     }
   }
 
+  public List<MethodDeclaration> getScopeMethods(ScopeClass scopeClass) {
+    return getMethods(m -> isScopeMethod(m, scopeClass));
+  }
+
+  public boolean isScopeMethod(ExecutableElement m, ScopeClass scopeClass) {
+    if (m.getModifiers().contains(Modifier.STATIC)) {
+      return false;
+    }
+
+    if (!m.getModifiers().contains(Modifier.PUBLIC)) {
+      return false;
+    }
+
+    if (m.getReturnType().getKind() == TypeKind.VOID) {
+      return false;
+    }
+
+    if (m.getParameters().size() < 1) {
+      return false;
+    }
+
+    VariableElement firstParameter = m.getParameters().get(0);
+    if (!ctx.getMoreTypes().isAssignableWithErasure(firstParameter.asType(), EntityMetamodel.class)) {
+      return false;
+    }
+
+    return true;
+  }
+
   public Optional<MethodDeclaration> getMethodDeclaration(
       String name, List<TypeDeclaration> parameterTypeDeclarations) {
     return getMethodDeclarationInternal(name, parameterTypeDeclarations, false);
@@ -247,21 +268,25 @@ public class TypeDeclaration {
 
   private List<MethodDeclaration> getCandidateMethodDeclarations(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+    return getMethods(m -> (!statik || m.getModifiers().contains(Modifier.STATIC)) &&
+            m.getModifiers().contains(Modifier.PUBLIC) &&
+            m.getSimpleName().contentEquals(name) &&
+            m.getReturnType().getKind() != TypeKind.VOID &&
+            m.getParameters().size() == parameterTypeDeclarations.size() &&
+            isAssignable(parameterTypeDeclarations, m.getParameters()));
+  }
+
+  private List<MethodDeclaration> getMethods(Predicate<ExecutableElement> predicate) {
     return typeParameterDeclarationsMap.entrySet().stream()
-        .map(e -> new Pair<>(e.getKey(), e.getValue()))
-        .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
-        .filter(p -> Objects.nonNull(p.fst))
-        .flatMap(
-            p ->
-                methodsIn(p.fst.getEnclosedElements()).stream()
-                    .filter(m -> !statik || m.getModifiers().contains(Modifier.STATIC))
-                    .filter(m -> m.getModifiers().contains(Modifier.PUBLIC))
-                    .filter(m -> m.getSimpleName().contentEquals(name))
-                    .filter(m -> m.getReturnType().getKind() != TypeKind.VOID)
-                    .filter(m -> m.getParameters().size() == parameterTypeDeclarations.size())
-                    .filter(m -> isAssignable(parameterTypeDeclarations, m.getParameters()))
-                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
-        .collect(toList());
+            .map(e -> new Pair<>(e.getKey(), e.getValue()))
+            .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
+            .filter(p -> Objects.nonNull(p.fst))
+            .flatMap(
+                    p ->
+                            methodsIn(p.fst.getEnclosedElements()).stream()
+                                    .filter(predicate)
+                                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
+            .collect(toList());
   }
 
   private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
