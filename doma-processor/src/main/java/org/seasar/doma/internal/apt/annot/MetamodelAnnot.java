@@ -59,8 +59,6 @@ public class MetamodelAnnot extends AbstractAnnot {
 
   public List<ScopeClass> getScopeValue() {
     List<TypeMirror> type = AnnotationValueUtil.toTypeList(scopeClasses);
-    return type.stream()
-            .map(ScopeClass::new)
-            .collect(Collectors.toList());
+    return type.stream().map(ScopeClass::new).collect(Collectors.toList());
   }
 }

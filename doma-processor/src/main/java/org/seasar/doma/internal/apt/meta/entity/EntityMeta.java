@@ -127,9 +127,7 @@ public class EntityMeta implements TypeElementMeta {
       return Collections.emptyList();
     }
     List<ScopeClass> scopeClasses = metamodelValue.getScopeValue();
-    return scopeClasses.stream()
-            .map(EntityMetaScope::new)
-            .collect(Collectors.toList());
+    return scopeClasses.stream().map(EntityMetaScope::new).collect(Collectors.toList());
   }
 
   public boolean hasVersionPropertyMeta() {

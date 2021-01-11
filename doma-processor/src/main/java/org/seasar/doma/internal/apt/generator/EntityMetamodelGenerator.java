@@ -202,7 +202,8 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printScopeMethods() {
     for (EntityMetaScope scope : entityMeta.getAllMetaScope()) {
-      TypeDeclaration declaration = ctx.getDeclarations().newTypeDeclaration(scope.scopeClass().asType());
+      TypeDeclaration declaration =
+          ctx.getDeclarations().newTypeDeclaration(scope.scopeClass().asType());
       printScopeMethods(scope, declaration);
     }
   }
@@ -212,10 +213,15 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
       List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
       parameters.remove(0);
 
-      iprint("public %1$s %2$s(%3$s) {%n", method.getReturnTypeDeclaration(), method.name(), generateParameterList(method, parameters));
+      iprint(
+          "public %1$s %2$s(%3$s) {%n",
+          method.getReturnTypeDeclaration(),
+          method.name(),
+          generateParameterList(method, parameters));
       indent();
 
-      String params = parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
+      String params =
+          parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
       if (!params.isEmpty()) {
         params = ", " + params;
       }
@@ -226,7 +232,8 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     }
   }
 
-  private String generateParameterList(MethodDeclaration method, List<? extends VariableElement> parameters) {
+  private String generateParameterList(
+      MethodDeclaration method, List<? extends VariableElement> parameters) {
     List<String> params = new ArrayList<>();
     for (int i = 0; i < parameters.size(); i++) {
       VariableElement variable = parameters.get(i);

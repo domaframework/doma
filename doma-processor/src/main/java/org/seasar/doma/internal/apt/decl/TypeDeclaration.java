@@ -264,25 +264,27 @@ public class TypeDeclaration {
 
   private List<MethodDeclaration> getCandidateMethodDeclarations(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
-    return getMethods(m -> (!statik || m.getModifiers().contains(Modifier.STATIC)) &&
-            m.getModifiers().contains(Modifier.PUBLIC) &&
-            m.getSimpleName().contentEquals(name) &&
-            m.getReturnType().getKind() != TypeKind.VOID &&
-            m.getParameters().size() == parameterTypeDeclarations.size() &&
-            isAssignable(parameterTypeDeclarations, m.getParameters()));
+    return getMethods(
+        m ->
+            (!statik || m.getModifiers().contains(Modifier.STATIC))
+                && m.getModifiers().contains(Modifier.PUBLIC)
+                && m.getSimpleName().contentEquals(name)
+                && m.getReturnType().getKind() != TypeKind.VOID
+                && m.getParameters().size() == parameterTypeDeclarations.size()
+                && isAssignable(parameterTypeDeclarations, m.getParameters()));
   }
 
   private List<MethodDeclaration> getMethods(Predicate<ExecutableElement> predicate) {
     return typeParameterDeclarationsMap.entrySet().stream()
-            .map(e -> new Pair<>(e.getKey(), e.getValue()))
-            .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
-            .filter(p -> Objects.nonNull(p.fst))
-            .flatMap(
-                    p ->
-                            methodsIn(p.fst.getEnclosedElements()).stream()
-                                    .filter(predicate)
-                                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
-            .collect(toList());
+        .map(e -> new Pair<>(e.getKey(), e.getValue()))
+        .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
+        .filter(p -> Objects.nonNull(p.fst))
+        .flatMap(
+            p ->
+                methodsIn(p.fst.getEnclosedElements()).stream()
+                    .filter(predicate)
+                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
+        .collect(toList());
   }
 
   private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {

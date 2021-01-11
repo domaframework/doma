@@ -19,62 +19,60 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScopeTest extends CompilerSupport {
 
-    @BeforeEach
-    void setup() {
-        addOption("-Adoma.test=true");
-        addOption("-Adoma.metamodel.enabled=true");
+  @BeforeEach
+  void setup() {
+    addOption("-Adoma.test=true");
+    addOption("-Adoma.metamodel.enabled=true");
+  }
+
+  @TestTemplate
+  @ExtendWith(ScopeTest.SuccessInvocationContextProvider.class)
+  void success(String fqn, String[] otherClasses, URL expected) throws Exception {
+    addProcessor(new EntityProcessor());
+    for (String otherClass : otherClasses) {
+      addResourceFileCompilationUnit(otherClass);
+    }
+    addResourceFileCompilationUnit(fqn);
+    compile();
+    String metamodel = ClassNames.newEntityMetamodelClassNameBuilder(fqn, "", "_").toString();
+    assertEqualsGeneratedSourceWithResource(expected, metamodel);
+    assertTrue(getCompiledResult());
+  }
+
+  static class SuccessInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
     }
 
-    @TestTemplate
-    @ExtendWith(ScopeTest.SuccessInvocationContextProvider.class)
-    void success(String fqn, String[] otherClasses, URL expected) throws Exception {
-        addProcessor(new EntityProcessor());
-        for (String otherClass : otherClasses) {
-            addResourceFileCompilationUnit(otherClass);
-        }
-        addResourceFileCompilationUnit(fqn);
-        compile();
-        String metamodel = ClassNames.newEntityMetamodelClassNameBuilder(fqn, "", "_")
-                .toString();
-        assertEqualsGeneratedSourceWithResource(expected, metamodel);
-        assertTrue(getCompiledResult());
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(
+          invocationContext(
+              "org.seasar.doma.internal.apt.processor.entity.ScopedEntity",
+              "org.seasar.doma.internal.apt.processor.entity.ScopeClass"),
+          invocationContext(
+              "org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity",
+              "org.seasar.doma.internal.apt.processor.entity.CreatedAtScope"));
     }
 
-    static class SuccessInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    private TestTemplateInvocationContext invocationContext(
+        String classFqn, String... otherClasses) {
+      return new TestTemplateInvocationContext() {
         @Override
-        public boolean supportsTestTemplate(ExtensionContext context) {
-            return true;
+        public String getDisplayName(int invocationIndex) {
+          return new ClassName(classFqn).getSimpleName();
         }
 
         @Override
-        public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-                ExtensionContext context) {
-            return Stream.of(
-                    invocationContext(
-                            "org.seasar.doma.internal.apt.processor.entity.ScopedEntity",
-                            "org.seasar.doma.internal.apt.processor.entity.ScopeClass"),
-                    invocationContext(
-                            "org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity",
-                            "org.seasar.doma.internal.apt.processor.entity.CreatedAtScope")
-            );
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new ResourceParameterResolver(classFqn),
+              new SimpleParameterResolver(classFqn),
+              new SimpleParameterResolver(otherClasses));
         }
-
-        private TestTemplateInvocationContext invocationContext(
-                String classFqn, String... otherClasses) {
-            return new TestTemplateInvocationContext() {
-                @Override
-                public String getDisplayName(int invocationIndex) {
-                    return new ClassName(classFqn).getSimpleName();
-                }
-
-                @Override
-                public List<Extension> getAdditionalExtensions() {
-                    return Arrays.asList(
-                            new ResourceParameterResolver(classFqn),
-                            new SimpleParameterResolver(classFqn),
-                            new SimpleParameterResolver(otherClasses));
-                }
-            };
-        }
+      };
     }
+  }
 }
