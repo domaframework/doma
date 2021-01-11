@@ -1,16 +1,15 @@
 package org.seasar.doma.internal.apt.annot;
 
-import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 public class MetamodelAnnot extends AbstractAnnot {
 

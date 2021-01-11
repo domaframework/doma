@@ -1,24 +1,23 @@
 package org.seasar.doma.internal.apt.decl;
 
+import static java.util.stream.Collectors.toList;
+import static javax.lang.model.util.ElementFilter.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.function.Predicate;
+import javax.lang.model.element.*;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.MoreTypes;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.util.Zip;
-
-import javax.lang.model.element.*;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.function.Predicate;
-
-import static java.util.stream.Collectors.toList;
-import static javax.lang.model.util.ElementFilter.*;
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 public class TypeDeclaration {
 

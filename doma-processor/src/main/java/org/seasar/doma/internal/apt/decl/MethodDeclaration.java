@@ -1,11 +1,11 @@
 package org.seasar.doma.internal.apt.decl;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
+import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
-import java.util.List;
-
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class MethodDeclaration {
 

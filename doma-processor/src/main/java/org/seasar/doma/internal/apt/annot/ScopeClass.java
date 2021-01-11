@@ -1,9 +1,8 @@
 package org.seasar.doma.internal.apt.annot;
 
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
-
-import javax.lang.model.type.TypeMirror;
 
 public class ScopeClass {
   final TypeMirror type;

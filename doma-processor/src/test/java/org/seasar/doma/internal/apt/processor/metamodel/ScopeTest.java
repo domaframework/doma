@@ -1,5 +1,11 @@
 package org.seasar.doma.internal.apt.processor.metamodel;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.*;
@@ -9,13 +15,6 @@ import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScopeTest extends CompilerSupport {
 
