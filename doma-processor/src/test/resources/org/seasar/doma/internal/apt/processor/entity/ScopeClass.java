@@ -25,4 +25,11 @@ class ScopeClass {
             w.in(e.name, Arrays.asList(names));
         };
     }
+
+    public Consumer<WhereDeclaration> idAndName(ScopedEntity_ e, long id, String name) {
+        return w -> {
+            w.eq(e.id, id);
+            w.eq(e.name, name);
+        };
+    }
 }
