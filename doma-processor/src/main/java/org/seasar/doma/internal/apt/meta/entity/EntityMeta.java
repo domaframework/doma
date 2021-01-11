@@ -1,6 +1,7 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
+import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.ScopeClass;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
@@ -11,6 +12,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,7 +122,11 @@ public class EntityMeta implements TypeElementMeta {
   }
 
   public List<EntityMetaScope> getAllMetaScope() {
-    List<ScopeClass> scopeClasses = getEntityAnnot().getMetamodelValue().getScopeValue();
+    MetamodelAnnot metamodelValue = getEntityAnnot().getMetamodelValue();
+    if (metamodelValue == null) {
+      return Collections.emptyList();
+    }
+    List<ScopeClass> scopeClasses = metamodelValue.getScopeValue();
     return scopeClasses.stream()
             .map(EntityMetaScope::new)
             .collect(Collectors.toList());
