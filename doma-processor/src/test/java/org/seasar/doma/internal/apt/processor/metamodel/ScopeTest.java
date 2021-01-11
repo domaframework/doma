@@ -52,7 +52,10 @@ public class ScopeTest extends CompilerSupport {
             return Stream.of(
                     invocationContext(
                             "org.seasar.doma.internal.apt.processor.entity.ScopedEntity",
-                            "org.seasar.doma.internal.apt.processor.entity.ScopeClass")
+                            "org.seasar.doma.internal.apt.processor.entity.ScopeClass"),
+                    invocationContext(
+                            "org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity",
+                            "org.seasar.doma.internal.apt.processor.entity.CreatedAtScope")
             );
         }
 
