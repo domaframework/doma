@@ -99,8 +99,8 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     List<EntityMetaScope> scopes = entityMeta.getAllMetaScope();
     for (EntityMetaScope scope : scopes) {
       iprint("private final %1$s %2$s = new %1$s();%n", scope.scopeClass(), scope.scopeField());
+      print("%n");
     }
-    print("%n");
   }
 
   private void printConstructors() {
