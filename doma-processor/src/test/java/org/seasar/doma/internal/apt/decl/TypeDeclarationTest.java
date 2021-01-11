@@ -1,22 +1,21 @@
 package org.seasar.doma.internal.apt.decl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
+
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TypeDeclarationTest extends CompilerSupport {
 
@@ -34,6 +33,11 @@ class TypeDeclarationTest extends CompilerSupport {
 
   @SuppressWarnings("unused")
   public String myMethod(Integer integer) {
+    return null;
+  }
+
+  @SuppressWarnings("unused")
+  public String varArgs(String... args) {
     return null;
   }
 
@@ -428,6 +432,50 @@ class TypeDeclarationTest extends CompilerSupport {
             assertFalse(methodDeclarations.isPresent());
           }
         });
+  }
+
+  @Test
+  void getMethodDeclarationParameters() {
+    Class<?> testClass = getClass();
+    addProcessor(
+            new TestProcessor() {
+              @Override
+              protected void run() {
+                TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
+                TypeDeclaration parameterDeclaration =
+                        ctx.getDeclarations().newTypeDeclaration(Integer.class);
+                Optional<MethodDeclaration> methodDeclaration =
+                        typeDeclaration.getMethodDeclaration(
+                                "myMethod", Collections.singletonList(parameterDeclaration));
+                assertTrue(methodDeclaration.isPresent());
+                MethodDeclaration declaration = methodDeclaration.get();
+                List<? extends VariableElement> parameters = declaration.parameters();
+                assertEquals(parameters.size(), 1);
+                VariableElement first = parameters.get(0);
+                assertEquals(first.getSimpleName().toString(), "integer");
+                assertEquals(first.asType().toString(), "java.lang.Integer");
+                assertFalse(declaration.isVarArgs());
+              }
+            },
+            new TestProcessor() {
+              @Override
+              protected void run() {
+                TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
+                TypeDeclaration parameterDeclaration =
+                        ctx.getDeclarations().newTypeDeclaration(String[].class);
+                Optional<MethodDeclaration> methodDeclaration =
+                        typeDeclaration.getMethodDeclaration(
+                                "varArgs", Collections.singletonList(parameterDeclaration));
+                assertTrue(methodDeclaration.isPresent());
+                MethodDeclaration declaration = methodDeclaration.get();
+                List<? extends VariableElement> parameters = declaration.parameters();
+                assertEquals(parameters.size(), 1);
+                VariableElement first = parameters.get(0);
+                assertEquals(first.getSimpleName().toString(), "args");
+                assertEquals(first.asType().toString(), "java.lang.String[]");
+                assertTrue(declaration.isVarArgs());
+              }
+            });
   }
 
   @Test
