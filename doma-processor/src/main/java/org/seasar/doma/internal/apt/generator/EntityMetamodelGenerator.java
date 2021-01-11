@@ -19,8 +19,12 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -205,12 +209,39 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printScopeMethods(EntityMetaScope scope, TypeDeclaration type) {
     for (MethodDeclaration method : type.getScopeMethods(scope.scopeClass())) {
-      iprint("public %1$s %2$s() {%n", method.getReturnTypeDeclaration(), method.name());
+      List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
+      parameters.remove(0);
+
+      iprint("public %1$s %2$s(%3$s) {%n", method.getReturnTypeDeclaration(), method.name(), generateParameterList(method, parameters));
       indent();
-      iprint("return %1$s.%2$s(this);%n", scope.scopeField(), method.name());
+
+      String params = parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
+      if (!params.isEmpty()) {
+        params = ", " + params;
+      }
+      iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method.name(), params);
       unindent();
       iprint("}%n");
       print("%n");
     }
+  }
+
+  private String generateParameterList(MethodDeclaration method, List<? extends VariableElement> parameters) {
+    List<String> params = new ArrayList<>();
+    for (int i = 0; i < parameters.size(); i++) {
+      VariableElement variable = parameters.get(i);
+      boolean isLast = (parameters.size() - 1) == i;
+      String type = variable.asType().toString();
+
+      if (isLast && method.isVarArgs()) {
+        // build varargs parameter
+        ArrayType arrayType = (ArrayType) variable.asType();
+        type = arrayType.getComponentType().toString() + "...";
+      }
+
+      params.add(type + " " + variable.getSimpleName());
+    }
+
+    return String.join(", ", params);
   }
 }
