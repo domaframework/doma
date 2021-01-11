@@ -50,4 +50,7 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
         return _scope_ScopeClass.ids(this, ids);
     }
 
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> names(String... names) {
+        return _scope_ScopeClass.names(this, names);
+    }
 }

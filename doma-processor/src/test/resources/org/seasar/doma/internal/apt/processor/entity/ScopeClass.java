@@ -19,4 +19,10 @@ class ScopeClass {
             w.in(e.id, Arrays.stream(ids).boxed().collect(Collectors.toList()));
         };
     }
+
+    public Consumer<WhereDeclaration> names(ScopedEntity_ e, String... names) {
+        return w -> {
+            w.in(e.name, Arrays.asList(names));
+        };
+    }
 }
