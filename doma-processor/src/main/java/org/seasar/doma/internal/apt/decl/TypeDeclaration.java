@@ -1,11 +1,11 @@
 package org.seasar.doma.internal.apt.decl;
 
+import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.MoreTypes;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.util.Zip;
-import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
@@ -217,11 +217,11 @@ public class TypeDeclaration {
     }
   }
 
-  public List<MethodDeclaration> getScopeMethods() {
-    return getMethods(this::isScopeMethod);
+  public List<MethodDeclaration> getScopeMethods(ClassName metamodel) {
+    return getMethods(m -> isScopeMethod(m, metamodel));
   }
 
-  public boolean isScopeMethod(ExecutableElement m) {
+  public boolean isScopeMethod(ExecutableElement m, ClassName metamodel) {
     if (m.getModifiers().contains(Modifier.STATIC)) {
       return false;
     }
@@ -239,7 +239,8 @@ public class TypeDeclaration {
     }
 
     VariableElement firstParameter = m.getParameters().get(0);
-    return ctx.getMoreTypes().isAssignableWithErasure(firstParameter.asType(), EntityMetamodel.class);
+    // TODO: この時点ではmetamodelが作られていないので代入可能かのチェックができない。SimpleNameの比較をしているが名前空間がちがえばすり抜けるため他の良い方法があれば
+    return firstParameter.asType().toString().equals(metamodel.getSimpleName());
   }
 
   public Optional<MethodDeclaration> getMethodDeclaration(
