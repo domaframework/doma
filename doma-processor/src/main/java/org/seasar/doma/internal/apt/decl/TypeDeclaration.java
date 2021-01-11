@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.decl;
 
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.MoreTypes;
-import org.seasar.doma.internal.apt.annot.ScopeClass;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.util.Zip;
@@ -218,11 +217,11 @@ public class TypeDeclaration {
     }
   }
 
-  public List<MethodDeclaration> getScopeMethods(ScopeClass scopeClass) {
-    return getMethods(m -> isScopeMethod(m, scopeClass));
+  public List<MethodDeclaration> getScopeMethods() {
+    return getMethods(this::isScopeMethod);
   }
 
-  public boolean isScopeMethod(ExecutableElement m, ScopeClass scopeClass) {
+  public boolean isScopeMethod(ExecutableElement m) {
     if (m.getModifiers().contains(Modifier.STATIC)) {
       return false;
     }
@@ -240,11 +239,7 @@ public class TypeDeclaration {
     }
 
     VariableElement firstParameter = m.getParameters().get(0);
-    if (!ctx.getMoreTypes().isAssignableWithErasure(firstParameter.asType(), EntityMetamodel.class)) {
-      return false;
-    }
-
-    return true;
+    return ctx.getMoreTypes().isAssignableWithErasure(firstParameter.asType(), EntityMetamodel.class);
   }
 
   public Optional<MethodDeclaration> getMethodDeclaration(

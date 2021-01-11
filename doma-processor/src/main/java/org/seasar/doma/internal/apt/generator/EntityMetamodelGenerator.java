@@ -207,8 +207,8 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     }
   }
 
-  private void printScopeMethods(EntityMetaScope scope, TypeDeclaration type) {
-    for (MethodDeclaration method : type.getScopeMethods(scope.scopeClass())) {
+  private void printScopeMethods(EntityMetaScope scope, TypeDeclaration scopeDeclaration) {
+    for (MethodDeclaration method : scopeDeclaration.getScopeMethods()) {
       List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
       parameters.remove(0);
 
