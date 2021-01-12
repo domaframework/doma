@@ -238,7 +238,7 @@ public class TypeDeclaration {
     }
 
     VariableElement firstParameter = m.getParameters().get(0);
-    // TODO: この時点ではmetamodelが作られていないので代入可能かのチェックができない。SimpleNameの比較をしているが名前空間がちがえばすり抜けるため他の良い方法があれば
+    // Note; Here, type checking cannot be performed correctly because it is before the Metamodel is generated.
     return firstParameter.asType().toString().equals(metamodel.getSimpleName());
   }
 
