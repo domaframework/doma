@@ -20,9 +20,9 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.time.LocalDateTime> createdAt = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.time.LocalDateTime>(java.time.LocalDateTime.class, __entityType, "createdAt");
 
-    private final org.seasar.doma.internal.apt.processor.entity.CreatedAtScope _scope_CreatedAtScope = new org.seasar.doma.internal.apt.processor.entity.CreatedAtScope();
+    private final org.seasar.doma.internal.apt.processor.entity.CreatedAtScope __scope__org_seasar_doma_internal_apt_processor_entity_CreatedAtScope = new org.seasar.doma.internal.apt.processor.entity.CreatedAtScope();
 
-    private final org.seasar.doma.internal.apt.processor.entity.NameScope _scope_NameScope = new org.seasar.doma.internal.apt.processor.entity.NameScope();
+    private final org.seasar.doma.internal.apt.processor.entity.NameScope __scope__org_seasar_doma_internal_apt_processor_entity_NameScope = new org.seasar.doma.internal.apt.processor.entity.NameScope();
 
     public MultiScopeEntity_() {
         this("");
@@ -48,11 +48,11 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> today() {
-        return _scope_CreatedAtScope.today(this);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_CreatedAtScope.today(this);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> nameEq(java.lang.String name) {
-        return _scope_NameScope.nameEq(this, name);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_NameScope.nameEq(this, name);
     }
 
 }

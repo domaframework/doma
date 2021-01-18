@@ -18,7 +18,7 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.lang.String> name = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.lang.String>(java.lang.String.class, __entityType, "name");
 
-    private final org.seasar.doma.internal.apt.processor.entity.ScopeClass _scope_ScopeClass = new org.seasar.doma.internal.apt.processor.entity.ScopeClass();
+    private final org.seasar.doma.internal.apt.processor.entity.ScopeClass __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass = new org.seasar.doma.internal.apt.processor.entity.ScopeClass();
 
     public ScopedEntity_() {
         this("");
@@ -43,19 +43,19 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> startWithHoge() {
-        return _scope_ScopeClass.startWithHoge(this);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.startWithHoge(this);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> ids(long[] ids) {
-        return _scope_ScopeClass.ids(this, ids);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.ids(this, ids);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> names(java.lang.String... names) {
-        return _scope_ScopeClass.names(this, names);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.names(this, names);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idAndName(long id, java.lang.String name) {
-        return _scope_ScopeClass.idAndName(this, id, name);
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.idAndName(this, id, name);
     }
 
 }
