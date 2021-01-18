@@ -30,7 +30,7 @@ public class ScopeClass {
 
   public String scopeField() {
     String name = className().getSimpleName();
-    return "_scope_" + name;
+    return "__scope__" + name;
   }
 
   @Override
