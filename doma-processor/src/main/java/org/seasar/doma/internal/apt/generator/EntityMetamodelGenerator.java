@@ -79,7 +79,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     printEntityTypeField();
     printAllPropertyMetamodelsFields();
     printPropertyMetamodelFields();
-    printScopeField();
+    printScopeFields();
   }
 
   private void printEntityTypeField() {
@@ -99,7 +99,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  private void printScopeField() {
+  private void printScopeFields() {
     MetamodelAnnot metamodelValue = entityMeta.getEntityAnnot().getMetamodelValue();
     for (ScopeClass scope : metamodelValue.scopes()) {
       iprint("private final %1$s %2$s = new %1$s();%n", scope, scope.scopeField());
