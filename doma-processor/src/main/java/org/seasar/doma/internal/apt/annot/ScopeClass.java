@@ -1,13 +1,17 @@
 package org.seasar.doma.internal.apt.annot;
 
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.apt.decl.MethodDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+
+import javax.lang.model.type.TypeMirror;
+import java.util.List;
 
 public class ScopeClass {
-  final TypeMirror type;
+  final TypeDeclaration type;
 
-  public ScopeClass(TypeMirror type) {
+  public ScopeClass(TypeDeclaration type) {
     this.type = type;
   }
 
@@ -17,7 +21,16 @@ public class ScopeClass {
   }
 
   public TypeMirror asType() {
-    return type;
+    return type.getType();
+  }
+
+  public List<MethodDeclaration> scopeMethods(ClassName metamodelName) {
+    return type.getScopeMethods(metamodelName);
+  }
+
+  public String scopeField() {
+    String name = className().getSimpleName();
+    return "_scope_" + name;
   }
 
   @Override

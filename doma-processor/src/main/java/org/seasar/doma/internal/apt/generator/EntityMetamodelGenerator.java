@@ -1,24 +1,14 @@
 package org.seasar.doma.internal.apt.generator;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
+import org.seasar.doma.internal.apt.annot.ScopeClass;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.decl.MethodDeclaration;
-import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
-import org.seasar.doma.internal.apt.meta.entity.EntityMetaScope;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
@@ -26,6 +16,17 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
+
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.TypeMirror;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class EntityMetamodelGenerator extends AbstractGenerator {
 
@@ -99,9 +100,9 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   }
 
   private void printScopeField() {
-    List<EntityMetaScope> scopes = entityMeta.getAllMetaScope();
-    for (EntityMetaScope scope : scopes) {
-      iprint("private final %1$s %2$s = new %1$s();%n", scope.scopeClass(), scope.scopeField());
+    MetamodelAnnot metamodelValue = entityMeta.getEntityAnnot().getMetamodelValue();
+    for (ScopeClass scope : metamodelValue.scopes()) {
+      iprint("private final %1$s %2$s = new %1$s();%n", scope, scope.scopeField());
       print("%n");
     }
   }
@@ -200,35 +201,34 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   }
 
   private void printScopeMethods() {
-    for (EntityMetaScope scope : entityMeta.getAllMetaScope()) {
-      TypeDeclaration declaration =
-          ctx.getDeclarations().newTypeDeclaration(scope.scopeClass().asType());
-      printScopeMethods(scope, declaration);
+    MetamodelAnnot metamodel = entityMeta.getEntityAnnot().getMetamodelValue();
+    for (ScopeClass scopeClass : metamodel.scopes()) {
+      for (MethodDeclaration method : scopeClass.scopeMethods(className)) {
+        printScopeMethod(scopeClass, method);
+      }
     }
   }
 
-  private void printScopeMethods(EntityMetaScope scope, TypeDeclaration scopeDeclaration) {
-    for (MethodDeclaration method : scopeDeclaration.getScopeMethods(className)) {
-      List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
-      parameters.remove(0);
+  private void printScopeMethod(ScopeClass scope, MethodDeclaration method) {
+    List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
+    parameters.remove(0);
 
-      iprint(
-          "public %1$s %2$s(%3$s) {%n",
-          method.getReturnTypeDeclaration(),
-          method.name(),
-          generateParameterList(method, parameters));
-      indent();
+    iprint(
+        "public %1$s %2$s(%3$s) {%n",
+        method.getReturnTypeDeclaration(),
+        method.name(),
+        generateParameterList(method, parameters));
+    indent();
 
-      String params =
-          parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
-      if (!params.isEmpty()) {
-        params = ", " + params;
-      }
-      iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method.name(), params);
-      unindent();
-      iprint("}%n");
-      print("%n");
+    String params =
+        parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
+    if (!params.isEmpty()) {
+      params = ", " + params;
     }
+    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method.name(), params);
+    unindent();
+    iprint("}%n");
+    print("%n");
   }
 
   private String generateParameterList(
