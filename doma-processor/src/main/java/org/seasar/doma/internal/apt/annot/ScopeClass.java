@@ -29,7 +29,7 @@ public class ScopeClass {
   }
 
   public String scopeField() {
-    String name = className().getSimpleName();
+    String name = className().toString().replace(".", "_");
     return "__scope__" + name;
   }
 
