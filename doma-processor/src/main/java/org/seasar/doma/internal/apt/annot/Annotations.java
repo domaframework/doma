@@ -8,6 +8,7 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -178,15 +179,20 @@ public class Annotations {
     assertNotNull(annotationMirror);
     MetamodelAnnot metamodelAnnot = newInstance(annotationMirror, MetamodelAnnot::new);
     List<TypeMirror> types = AnnotationValueUtil.toTypeList(metamodelAnnot.getScope());
-    types.stream()
-        .map(
-            t -> {
-              TypeDeclaration scopeType = ctx.getDeclarations().newTypeDeclaration(t);
-              return new ScopeClass(scopeType);
-            })
-        .forEach(metamodelAnnot::addScope);
+    for (TypeMirror t : types) {
+      ScopeClass scopeClass = newScopeClass(t);
+      metamodelAnnot.addScope(scopeClass);
+    }
 
     return metamodelAnnot;
+  }
+
+  private ScopeClass newScopeClass(TypeMirror scopeType) {
+    TypeDeclaration type = ctx.getDeclarations().newTypeDeclaration(scopeType);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(scopeType);
+    List<? extends Element> members = ctx.getMoreElements().getAllMembers(typeElement);
+    List<ExecutableElement> methods = new ArrayList<>(ElementFilter.methodsIn(members));
+    return new ScopeClass(type, methods);
   }
 
   public NClobFactoryAnnot newNClobFactoryAnnot(ExecutableElement method) {

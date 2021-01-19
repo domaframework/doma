@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -202,20 +203,22 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   private void printScopeMethods() {
     MetamodelAnnot metamodel = entityMeta.getEntityAnnot().getMetamodelValue();
     for (ScopeClass scopeClass : metamodel.scopes()) {
-      for (MethodDeclaration method : scopeClass.scopeMethods(className)) {
+      for (ExecutableElement method : scopeClass.scopeMethods(className)) {
         printScopeMethod(scopeClass, method);
       }
     }
   }
 
-  private void printScopeMethod(ScopeClass scope, MethodDeclaration method) {
-    List<? extends VariableElement> parameters = new ArrayList<>(method.parameters());
+  private void printScopeMethod(ScopeClass scope, ExecutableElement method) {
+    List<? extends VariableElement> parameters = new ArrayList<>(method.getParameters());
+    TypeMirror returnType = method.getReturnType();
+    String methodName = method.getSimpleName().toString();
     parameters.remove(0);
 
     iprint(
         "public %1$s %2$s(%3$s) {%n",
-        method.getReturnTypeDeclaration(),
-        method.name(),
+        returnType,
+        methodName,
         generateParameterList(method, parameters));
     indent();
 
@@ -224,14 +227,14 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     if (!params.isEmpty()) {
       params = ", " + params;
     }
-    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method.name(), params);
+    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method, params);
     unindent();
     iprint("}%n");
     print("%n");
   }
 
   private String generateParameterList(
-      MethodDeclaration method, List<? extends VariableElement> parameters) {
+          ExecutableElement method, List<? extends VariableElement> parameters) {
     List<String> params = new ArrayList<>();
     for (int i = 0; i < parameters.size(); i++) {
       VariableElement variable = parameters.get(i);

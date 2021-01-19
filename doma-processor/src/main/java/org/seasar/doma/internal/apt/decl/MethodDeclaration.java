@@ -2,10 +2,8 @@ package org.seasar.doma.internal.apt.decl;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
 
 public class MethodDeclaration {
 
@@ -29,17 +27,5 @@ public class MethodDeclaration {
 
   public boolean isStatic() {
     return element.getModifiers().contains(Modifier.STATIC);
-  }
-
-  public String name() {
-    return element.getSimpleName().toString();
-  }
-
-  public List<? extends VariableElement> parameters() {
-    return element.getParameters();
-  }
-
-  public boolean isVarArgs() {
-    return element.isVarArgs();
   }
 }

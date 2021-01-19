@@ -434,50 +434,6 @@ class TypeDeclarationTest extends CompilerSupport {
   }
 
   @Test
-  void getMethodDeclarationParameters() {
-    Class<?> testClass = getClass();
-    addProcessor(
-        new TestProcessor() {
-          @Override
-          protected void run() {
-            TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
-            TypeDeclaration parameterDeclaration =
-                ctx.getDeclarations().newTypeDeclaration(Integer.class);
-            Optional<MethodDeclaration> methodDeclaration =
-                typeDeclaration.getMethodDeclaration(
-                    "myMethod", Collections.singletonList(parameterDeclaration));
-            assertTrue(methodDeclaration.isPresent());
-            MethodDeclaration declaration = methodDeclaration.get();
-            List<? extends VariableElement> parameters = declaration.parameters();
-            assertEquals(parameters.size(), 1);
-            VariableElement first = parameters.get(0);
-            assertEquals(first.getSimpleName().toString(), "integer");
-            assertEquals(first.asType().toString(), "java.lang.Integer");
-            assertFalse(declaration.isVarArgs());
-          }
-        },
-        new TestProcessor() {
-          @Override
-          protected void run() {
-            TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
-            TypeDeclaration parameterDeclaration =
-                ctx.getDeclarations().newTypeDeclaration(String[].class);
-            Optional<MethodDeclaration> methodDeclaration =
-                typeDeclaration.getMethodDeclaration(
-                    "varArgs", Collections.singletonList(parameterDeclaration));
-            assertTrue(methodDeclaration.isPresent());
-            MethodDeclaration declaration = methodDeclaration.get();
-            List<? extends VariableElement> parameters = declaration.parameters();
-            assertEquals(parameters.size(), 1);
-            VariableElement first = parameters.get(0);
-            assertEquals(first.getSimpleName().toString(), "args");
-            assertEquals(first.asType().toString(), "java.lang.String[]");
-            assertTrue(declaration.isVarArgs());
-          }
-        });
-  }
-
-  @Test
   void emulateConcatOperation() {
     addProcessor(
         new TestProcessor() {

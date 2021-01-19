@@ -217,33 +217,6 @@ public class TypeDeclaration {
     }
   }
 
-  public List<MethodDeclaration> getScopeMethods(ClassName metamodel) {
-    return getMethods(m -> isScopeMethod(m, metamodel));
-  }
-
-  public boolean isScopeMethod(ExecutableElement m, ClassName metamodel) {
-    if (m.getModifiers().contains(Modifier.STATIC)) {
-      return false;
-    }
-
-    if (!m.getModifiers().contains(Modifier.PUBLIC)) {
-      return false;
-    }
-
-    if (m.getReturnType().getKind() == TypeKind.VOID) {
-      return false;
-    }
-
-    if (m.getParameters().size() < 1) {
-      return false;
-    }
-
-    VariableElement firstParameter = m.getParameters().get(0);
-    // Note; Here, type checking cannot be performed correctly because it is before the Metamodel is
-    // generated.
-    return firstParameter.asType().toString().equals(metamodel.getSimpleName());
-  }
-
   public Optional<MethodDeclaration> getMethodDeclaration(
       String name, List<TypeDeclaration> parameterTypeDeclarations) {
     return getMethodDeclarationInternal(name, parameterTypeDeclarations, false);
