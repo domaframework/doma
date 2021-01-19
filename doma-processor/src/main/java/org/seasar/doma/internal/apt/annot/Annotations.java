@@ -179,11 +179,12 @@ public class Annotations {
     MetamodelAnnot metamodelAnnot = newInstance(annotationMirror, MetamodelAnnot::new);
     List<TypeMirror> types = AnnotationValueUtil.toTypeList(metamodelAnnot.getScope());
     types.stream()
-            .map(t -> {
+        .map(
+            t -> {
               TypeDeclaration scopeType = ctx.getDeclarations().newTypeDeclaration(t);
               return new ScopeClass(scopeType);
             })
-            .forEach(metamodelAnnot::addScope);
+        .forEach(metamodelAnnot::addScope);
 
     return metamodelAnnot;
   }

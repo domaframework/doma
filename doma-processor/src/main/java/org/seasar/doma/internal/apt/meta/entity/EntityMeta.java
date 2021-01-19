@@ -1,18 +1,17 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
-
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 public class EntityMeta implements TypeElementMeta {
 
