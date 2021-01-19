@@ -100,6 +100,9 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printScopeFields() {
     MetamodelAnnot metamodelValue = entityMeta.getEntityAnnot().getMetamodelValue();
+    if (metamodelValue == null) {
+      return;
+    }
     for (ScopeClass scope : metamodelValue.scopes()) {
       iprint("private final %1$s %2$s = new %1$s();%n", scope, scope.scopeField());
       print("%n");
@@ -201,6 +204,9 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printScopeMethods() {
     MetamodelAnnot metamodel = entityMeta.getEntityAnnot().getMetamodelValue();
+    if (metamodel == null) {
+      return;
+    }
     for (ScopeClass scopeClass : metamodel.scopes()) {
       for (ExecutableElement method : scopeClass.scopeMethods(className)) {
         printScopeMethod(scopeClass, method);
