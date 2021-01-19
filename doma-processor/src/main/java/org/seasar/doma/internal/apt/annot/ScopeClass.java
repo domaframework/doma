@@ -1,17 +1,15 @@
 package org.seasar.doma.internal.apt.annot;
 
-import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.ClassNames;
-import org.seasar.doma.internal.apt.decl.MethodDeclaration;
-import org.seasar.doma.internal.apt.decl.TypeDeclaration;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 
 public class ScopeClass {
   final TypeDeclaration type;
@@ -32,7 +30,9 @@ public class ScopeClass {
   }
 
   public List<ExecutableElement> scopeMethods(ClassName metamodelName) {
-    return methods.stream().filter(m -> isScopeMethod(m, metamodelName)).collect(Collectors.toList());
+    return methods.stream()
+        .filter(m -> isScopeMethod(m, metamodelName))
+        .collect(Collectors.toList());
   }
 
   public String scopeField() {

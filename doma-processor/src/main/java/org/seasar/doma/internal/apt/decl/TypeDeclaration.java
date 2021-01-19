@@ -63,11 +63,11 @@ public class TypeDeclaration {
   private final int numberPriority;
 
   protected TypeDeclaration(
-          Context ctx,
-          TypeMirror type,
-          CtType ctType,
-          TypeElement typeElement,
-          Map<Name, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
+      Context ctx,
+      TypeMirror type,
+      CtType ctType,
+      TypeElement typeElement,
+      Map<Name, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
     assertNotNull(ctx, type, ctType, typeParameterDeclarationsMap);
     this.ctx = ctx;
     this.type = type;
@@ -98,13 +98,13 @@ public class TypeDeclaration {
 
   public boolean isBooleanType() {
     return type.getKind() == TypeKind.BOOLEAN
-            || ctx.getMoreTypes().isSameTypeWithErasure(type, Boolean.class);
+        || ctx.getMoreTypes().isSameTypeWithErasure(type, Boolean.class);
   }
 
   public boolean isTextType() {
     return type.getKind() == TypeKind.CHAR
-            || ctx.getMoreTypes().isSameTypeWithErasure(type, String.class)
-            || ctx.getMoreTypes().isSameTypeWithErasure(type, Character.class);
+        || ctx.getMoreTypes().isSameTypeWithErasure(type, String.class)
+        || ctx.getMoreTypes().isSameTypeWithErasure(type, Character.class);
   }
 
   public boolean isNumberType() {
@@ -135,54 +135,54 @@ public class TypeDeclaration {
 
   public boolean isScalarIterableType() {
     return ctType.accept(
-            new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
 
-              @Override
-              protected Boolean defaultAction(CtType ctType, Void aVoid) {
-                return false;
-              }
+          @Override
+          protected Boolean defaultAction(CtType ctType, Void aVoid) {
+            return false;
+          }
 
-              @Override
-              public Boolean visitIterableCtType(IterableCtType ctType, Void aVoid) {
-                return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
-              }
-            },
-            null);
+          @Override
+          public Boolean visitIterableCtType(IterableCtType ctType, Void aVoid) {
+            return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
+          }
+        },
+        null);
   }
 
   public boolean isScalarArrayType() {
     return ctType.accept(
-            new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
-              @Override
-              protected Boolean defaultAction(CtType ctType, Void aVoid) {
-                return false;
-              }
+        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
+          @Override
+          protected Boolean defaultAction(CtType ctType, Void aVoid) {
+            return false;
+          }
 
-              @Override
-              public Boolean visitArrayCtType(ArrayCtType ctType, Void aVoid) {
-                return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
-              }
-            },
-            null);
+          @Override
+          public Boolean visitArrayCtType(ArrayCtType ctType, Void aVoid) {
+            return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
+          }
+        },
+        null);
   }
 
   public List<TypeParameterDeclaration> getTypeParameterDeclarations() {
     Optional<List<TypeParameterDeclaration>> typeParameterDeclarations =
-            typeParameterDeclarationsMap.values().stream().findFirst();
+        typeParameterDeclarationsMap.values().stream().findFirst();
     return typeParameterDeclarations.orElse(Collections.emptyList());
   }
 
   public Optional<ConstructorDeclaration> getConstructorDeclaration(
-          List<TypeDeclaration> parameterTypeDeclarations) {
+      List<TypeDeclaration> parameterTypeDeclarations) {
     if (typeElement == null) {
       return Optional.empty();
     }
     return constructorsIn(typeElement.getEnclosedElements()).stream()
-            .filter(c -> c.getModifiers().contains(Modifier.PUBLIC))
-            .filter(c -> c.getParameters().size() == parameterTypeDeclarations.size())
-            .filter(c -> isAssignable(parameterTypeDeclarations, c.getParameters()))
-            .map(c -> ctx.getDeclarations().newConstructorDeclaration(c))
-            .findAny();
+        .filter(c -> c.getModifiers().contains(Modifier.PUBLIC))
+        .filter(c -> c.getParameters().size() == parameterTypeDeclarations.size())
+        .filter(c -> isAssignable(parameterTypeDeclarations, c.getParameters()))
+        .map(c -> ctx.getDeclarations().newConstructorDeclaration(c))
+        .findAny();
   }
 
   public Optional<FieldDeclaration> getFieldDeclaration(String name) {
@@ -201,16 +201,16 @@ public class TypeDeclaration {
 
   private List<FieldDeclaration> getCandidateFieldDeclarations(String name, boolean statik) {
     return typeParameterDeclarationsMap.entrySet().stream()
-            .map(e -> new Pair<>(e.getKey(), e.getValue()))
-            .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
-            .filter(p -> Objects.nonNull(p.fst))
-            .flatMap(
-                    p ->
-                            fieldsIn(p.fst.getEnclosedElements()).stream()
-                                    .filter(f -> !statik || f.getModifiers().contains(Modifier.STATIC))
-                                    .filter(f -> f.getSimpleName().contentEquals(name))
-                                    .map(f -> ctx.getDeclarations().newFieldDeclaration(f, p.snd)))
-            .collect(toList());
+        .map(e -> new Pair<>(e.getKey(), e.getValue()))
+        .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
+        .filter(p -> Objects.nonNull(p.fst))
+        .flatMap(
+            p ->
+                fieldsIn(p.fst.getEnclosedElements()).stream()
+                    .filter(f -> !statik || f.getModifiers().contains(Modifier.STATIC))
+                    .filter(f -> f.getSimpleName().contentEquals(name))
+                    .map(f -> ctx.getDeclarations().newFieldDeclaration(f, p.snd)))
+        .collect(toList());
   }
 
   private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
@@ -227,41 +227,41 @@ public class TypeDeclaration {
   }
 
   public Optional<MethodDeclaration> getMethodDeclaration(
-          String name, List<TypeDeclaration> parameterTypeDeclarations) {
+      String name, List<TypeDeclaration> parameterTypeDeclarations) {
     return getMethodDeclarationInternal(name, parameterTypeDeclarations, false);
   }
 
   public Optional<MethodDeclaration> getStaticMethodDeclaration(
-          String name, List<TypeDeclaration> parameterTypeDeclarations) {
+      String name, List<TypeDeclaration> parameterTypeDeclarations) {
     return getMethodDeclarationInternal(name, parameterTypeDeclarations, true);
   }
 
   private Optional<MethodDeclaration> getMethodDeclarationInternal(
-          String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+      String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
     List<MethodDeclaration> candidates =
-            getCandidateMethodDeclarations(name, parameterTypeDeclarations, statik);
+        getCandidateMethodDeclarations(name, parameterTypeDeclarations, statik);
     removeOverriddenMethodDeclarations(candidates);
     removeHiddenMethodDeclarations(candidates);
     return candidates.stream().findFirst();
   }
 
   private List<MethodDeclaration> getCandidateMethodDeclarations(
-          String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
+      String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
     return typeParameterDeclarationsMap.entrySet().stream()
-            .map(e -> new Pair<>(e.getKey(), e.getValue()))
-            .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
-            .filter(p -> Objects.nonNull(p.fst))
-            .flatMap(
-                    p ->
-                            methodsIn(p.fst.getEnclosedElements()).stream()
-                                    .filter(m -> !statik || m.getModifiers().contains(Modifier.STATIC))
-                                    .filter(m -> m.getModifiers().contains(Modifier.PUBLIC))
-                                    .filter(m -> m.getSimpleName().contentEquals(name))
-                                    .filter(m -> m.getReturnType().getKind() != TypeKind.VOID)
-                                    .filter(m -> m.getParameters().size() == parameterTypeDeclarations.size())
-                                    .filter(m -> isAssignable(parameterTypeDeclarations, m.getParameters()))
-                                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
-            .collect(toList());
+        .map(e -> new Pair<>(e.getKey(), e.getValue()))
+        .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
+        .filter(p -> Objects.nonNull(p.fst))
+        .flatMap(
+            p ->
+                methodsIn(p.fst.getEnclosedElements()).stream()
+                    .filter(m -> !statik || m.getModifiers().contains(Modifier.STATIC))
+                    .filter(m -> m.getModifiers().contains(Modifier.PUBLIC))
+                    .filter(m -> m.getSimpleName().contentEquals(name))
+                    .filter(m -> m.getReturnType().getKind() != TypeKind.VOID)
+                    .filter(m -> m.getParameters().size() == parameterTypeDeclarations.size())
+                    .filter(m -> isAssignable(parameterTypeDeclarations, m.getParameters()))
+                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
+        .collect(toList());
   }
 
   private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
@@ -270,12 +270,12 @@ public class TypeDeclaration {
       MethodDeclaration overridden = it.next();
       for (MethodDeclaration overrider : overriders) {
         TypeElement overriderTypeElement =
-                ctx.getMoreElements().toTypeElement(overrider.getElement().getEnclosingElement());
+            ctx.getMoreElements().toTypeElement(overrider.getElement().getEnclosingElement());
         if (overriderTypeElement == null) {
           continue;
         }
         if (ctx.getMoreElements()
-                .overrides(overrider.getElement(), overridden.getElement(), overriderTypeElement)) {
+            .overrides(overrider.getElement(), overridden.getElement(), overriderTypeElement)) {
           it.remove();
           break;
         }
@@ -349,12 +349,12 @@ public class TypeDeclaration {
   }
 
   private boolean isAssignable(
-          List<TypeDeclaration> parameterTypeDeclarations, List<? extends VariableElement> parameters) {
+      List<TypeDeclaration> parameterTypeDeclarations, List<? extends VariableElement> parameters) {
     MoreTypes types = ctx.getMoreTypes();
     return Zip.stream(parameterTypeDeclarations, parameters)
-            .map(p -> p.map(TypeDeclaration::getType, Element::asType))
-            .map(p -> p.map(types::boxIfPrimitive, types::boxIfPrimitive))
-            .allMatch(p -> types.isAssignableWithErasure(p.fst, p.snd));
+        .map(p -> p.map(TypeDeclaration::getType, Element::asType))
+        .map(p -> p.map(types::boxIfPrimitive, types::boxIfPrimitive))
+        .allMatch(p -> types.isAssignableWithErasure(p.fst, p.snd));
   }
 
   private static class ScalarDetector extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {

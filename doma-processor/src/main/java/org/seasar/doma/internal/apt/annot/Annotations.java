@@ -1,21 +1,20 @@
 package org.seasar.doma.internal.apt.annot;
 
-import org.seasar.doma.*;
-import org.seasar.doma.experimental.DataType;
-import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.decl.TypeDeclaration;
-import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.lang.model.element.*;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import org.seasar.doma.*;
+import org.seasar.doma.experimental.DataType;
+import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 public class Annotations {
 

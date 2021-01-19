@@ -18,7 +18,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.ScopeClass;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.decl.MethodDeclaration;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.util.Pair;
@@ -217,9 +216,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
     iprint(
         "public %1$s %2$s(%3$s) {%n",
-        returnType,
-        methodName,
-        generateParameterList(method, parameters));
+        returnType, methodName, generateParameterList(method, parameters));
     indent();
 
     String params =
@@ -234,7 +231,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   }
 
   private String generateParameterList(
-          ExecutableElement method, List<? extends VariableElement> parameters) {
+      ExecutableElement method, List<? extends VariableElement> parameters) {
     List<String> params = new ArrayList<>();
     for (int i = 0; i < parameters.size(); i++) {
       VariableElement variable = parameters.get(i);
