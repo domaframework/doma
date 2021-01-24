@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;

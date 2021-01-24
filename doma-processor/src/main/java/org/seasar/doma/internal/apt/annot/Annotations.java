@@ -3,44 +3,17 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import org.seasar.doma.AnnotateWith;
-import org.seasar.doma.ArrayFactory;
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.BlobFactory;
-import org.seasar.doma.ClobFactory;
-import org.seasar.doma.Column;
-import org.seasar.doma.Dao;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Domain;
-import org.seasar.doma.DomainConverters;
-import org.seasar.doma.Embeddable;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Insert;
-import org.seasar.doma.NClobFactory;
-import org.seasar.doma.Procedure;
-import org.seasar.doma.ResultSet;
-import org.seasar.doma.SQLXMLFactory;
-import org.seasar.doma.Script;
-import org.seasar.doma.Select;
-import org.seasar.doma.SequenceGenerator;
-import org.seasar.doma.Sql;
-import org.seasar.doma.SqlProcessor;
-import org.seasar.doma.Table;
-import org.seasar.doma.TableGenerator;
-import org.seasar.doma.Update;
+import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import org.seasar.doma.*;
 import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 public class Annotations {
@@ -203,7 +176,22 @@ public class Annotations {
 
   public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {
     assertNotNull(annotationMirror);
-    return newInstance(annotationMirror, MetamodelAnnot::new);
+    MetamodelAnnot metamodelAnnot = newInstance(annotationMirror, MetamodelAnnot::new);
+    List<TypeMirror> types = AnnotationValueUtil.toTypeList(metamodelAnnot.getScope());
+    for (TypeMirror t : types) {
+      ScopeClass scopeClass = newScopeClass(t);
+      metamodelAnnot.addScope(scopeClass);
+    }
+
+    return metamodelAnnot;
+  }
+
+  private ScopeClass newScopeClass(TypeMirror scopeType) {
+    TypeDeclaration type = ctx.getDeclarations().newTypeDeclaration(scopeType);
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(scopeType);
+    List<? extends Element> members = ctx.getMoreElements().getAllMembers(typeElement);
+    List<ExecutableElement> methods = new ArrayList<>(ElementFilter.methodsIn(members));
+    return new ScopeClass(type, methods);
   }
 
   public NClobFactoryAnnot newNClobFactoryAnnot(ExecutableElement method) {

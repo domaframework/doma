@@ -2,6 +2,8 @@ package org.seasar.doma.internal.apt.annot;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNonNullValue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -14,14 +16,21 @@ public class MetamodelAnnot extends AbstractAnnot {
 
   private static final String SUFFIX = "suffix";
 
+  private static final String SCOPE = "scope";
+
   private final AnnotationValue prefix;
 
   private final AnnotationValue suffix;
+
+  private final AnnotationValue scopeClasses;
+
+  private final List<ScopeClass> scopes = new ArrayList<>();
 
   MetamodelAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
     this.prefix = assertNonNullValue(values, PREFIX);
     this.suffix = assertNonNullValue(values, SUFFIX);
+    this.scopeClasses = assertNonNullValue(values, SCOPE);
   }
 
   public AnnotationValue getPrefix() {
@@ -30,6 +39,10 @@ public class MetamodelAnnot extends AbstractAnnot {
 
   public AnnotationValue getSuffix() {
     return suffix;
+  }
+
+  public AnnotationValue getScope() {
+    return scopeClasses;
   }
 
   public String getPrefixValue() {
@@ -46,5 +59,13 @@ public class MetamodelAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(SUFFIX);
     }
     return value;
+  }
+
+  public void addScope(ScopeClass scopeClass) {
+    scopes.add(scopeClass);
+  }
+
+  public List<ScopeClass> scopes() {
+    return scopes;
   }
 }
