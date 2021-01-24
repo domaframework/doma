@@ -12,4 +12,10 @@ class NameScope {
       w.eq(e.name, name);
     };
   }
+
+  public Consumer<WhereDeclaration> ignoredMethod(MultiScopeEntity_ e, String name) {
+    return w -> {
+      w.eq(e.name, name);
+    };
+  }
 }
