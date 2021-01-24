@@ -26,20 +26,12 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
-import org.seasar.doma.Entity;
-import org.seasar.doma.EntityField;
-import org.seasar.doma.OriginalStates;
-import org.seasar.doma.ParameterName;
-import org.seasar.doma.Transient;
+import org.seasar.doma.*;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
-import org.seasar.doma.internal.apt.annot.EntityAnnot;
-import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
-import org.seasar.doma.internal.apt.annot.TableAnnot;
-import org.seasar.doma.internal.apt.annot.ValueAnnot;
+import org.seasar.doma.internal.apt.annot.*;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.internal.apt.util.ElementKindUtil;
@@ -476,6 +468,38 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
               classElement,
               metamodelAnnot.getAnnotationMirror(),
               new Object[] {Constants.TYPE_PREFIX});
+        }
+        validateScopeClass(metamodelAnnot);
+      }
+    }
+
+    void validateScopeClass(MetamodelAnnot metamodelAnnot) {
+      for (ScopeClass scope : metamodelAnnot.scopes()) {
+        for (ExecutableElement scopeMethod : scope.scopeMethods()) {
+          if (scopeMethod.getParameters().size() < 1) {
+            throw new AptException(
+                Message.DOMA4457,
+                scopeMethod,
+                metamodelAnnot.getAnnotationMirror(),
+                new Object[] {});
+          }
+
+          Set<Modifier> modifiers = scopeMethod.getModifiers();
+          if (modifiers.contains(Modifier.STATIC)) {
+            throw new AptException(
+                Message.DOMA4458,
+                scopeMethod,
+                metamodelAnnot.getAnnotationMirror(),
+                new Object[] {});
+          }
+
+          if (!modifiers.contains(Modifier.PUBLIC)) {
+            throw new AptException(
+                Message.DOMA4459,
+                scopeMethod,
+                metamodelAnnot.getAnnotationMirror(),
+                new Object[] {});
+          }
         }
       }
     }
