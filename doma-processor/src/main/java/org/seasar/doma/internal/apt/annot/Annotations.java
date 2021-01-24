@@ -191,6 +191,7 @@ public class Annotations {
     TypeElement typeElement = ctx.getMoreTypes().toTypeElement(scopeType);
     List<? extends Element> members = ctx.getMoreElements().getAllMembers(typeElement);
     List<ExecutableElement> methods = new ArrayList<>(ElementFilter.methodsIn(members));
+    methods.removeIf(m -> m.getAnnotation(ScopeMethod.class) == null);
     return new ScopeClass(type, methods);
   }
 

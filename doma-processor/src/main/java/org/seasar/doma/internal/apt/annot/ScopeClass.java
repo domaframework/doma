@@ -1,10 +1,8 @@
 package org.seasar.doma.internal.apt.annot;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.ScopeMethod;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
@@ -28,16 +26,12 @@ public class ScopeClass {
   }
 
   public List<ExecutableElement> scopeMethods() {
-    return methods.stream().filter(this::isScopeMethod).collect(Collectors.toList());
+    return methods;
   }
 
   public String scopeField() {
     String name = className().toString().replace(".", "_");
     return "__scope__" + name;
-  }
-
-  private boolean isScopeMethod(ExecutableElement m) {
-    return m.getAnnotation(ScopeMethod.class) != null;
   }
 
   @Override
