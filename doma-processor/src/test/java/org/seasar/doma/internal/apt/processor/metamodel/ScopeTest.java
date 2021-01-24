@@ -55,8 +55,8 @@ public class ScopeTest extends CompilerSupport {
               "org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity",
               "org.seasar.doma.internal.apt.processor.entity.CreatedAtScope"),
           invocationContext(
-                  "org.seasar.doma.internal.apt.processor.entity.ItemEntity",
-                  "org.seasar.doma.internal.apt.processor.entity.ItemScope"));
+              "org.seasar.doma.internal.apt.processor.entity.ItemEntity",
+              "org.seasar.doma.internal.apt.processor.entity.ItemScope"));
     }
 
     private TestTemplateInvocationContext invocationContext(

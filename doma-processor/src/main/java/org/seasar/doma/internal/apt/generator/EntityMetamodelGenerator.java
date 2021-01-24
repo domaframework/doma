@@ -208,7 +208,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
       return;
     }
     for (ScopeClass scopeClass : metamodel.scopes()) {
-      for (ExecutableElement method : scopeClass.scopeMethods(className)) {
+      for (ExecutableElement method : scopeClass.scopeMethods()) {
         printScopeMethod(scopeClass, method);
       }
     }

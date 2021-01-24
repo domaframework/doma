@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
+import org.seasar.doma.ScopeMethod;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.function.Consumer;
 
 class CreatedAtScope {
 
+  @ScopeMethod
   public Consumer<WhereDeclaration> today(MultiScopeEntity_ e) {
     LocalDate now = LocalDate.now();
     return w -> {

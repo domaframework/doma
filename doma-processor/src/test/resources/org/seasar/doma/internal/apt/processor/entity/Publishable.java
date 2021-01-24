@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
+import org.seasar.doma.ScopeMethod;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ interface Publishable<E extends EntityMetamodel<?>> {
 
     PropertyMetamodel<LocalDateTime> publishedAt(E e);
 
+    @ScopeMethod
     default Consumer<WhereDeclaration> published(E e) {
         return w -> {
             w.le(publishedAt(e), LocalDateTime.now());
