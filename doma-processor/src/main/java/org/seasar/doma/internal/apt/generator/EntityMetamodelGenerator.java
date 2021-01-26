@@ -5,10 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
@@ -221,8 +218,8 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     parameters.remove(0);
 
     iprint(
-        "public %1$s %2$s(%3$s) {%n",
-        returnType, methodName, generateParameterList(method, parameters));
+        "public %1$s%2$s %3$s(%4$s) {%n",
+        buildTypeParameters(method), returnType, methodName, generateParameterList(method, parameters));
     indent();
 
     String params =
@@ -234,6 +231,22 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     unindent();
     iprint("}%n");
     print("%n");
+  }
+
+  private String buildTypeParameters(ExecutableElement method) {
+    List<? extends TypeParameterElement> typeParameters = method.getTypeParameters();
+    if (typeParameters.isEmpty()) {
+      return "";
+    }
+    return typeParameters.stream()
+            .map(this::buildTypeParameter)
+            .collect(Collectors.joining(", ", "<", "> "));
+  }
+
+  private String buildTypeParameter(TypeParameterElement element) {
+    return element.getSimpleName().toString() + " extends " + element.getBounds().stream()
+            .map(TypeMirror::toString)
+            .collect(Collectors.joining(" & "));
   }
 
   private String generateParameterList(
