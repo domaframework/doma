@@ -285,6 +285,40 @@ class TypeDeclarationTest extends CompilerSupport {
   }
 
   @Test
+  void getAllTypeParameterDeclarations() {
+    addProcessor(
+            new TestProcessor() {
+              @Override
+              protected void run() {
+                TypeDeclaration typeDeclaration =
+                        ctx.getDeclarations().newTypeDeclaration(Number.class);
+                List<TypeParameterDeclaration> typeParams =
+                        typeDeclaration.getAllTypeParameterDeclarations();
+                assertTrue(typeParams.isEmpty());
+              }
+            },
+            new TestProcessor() {
+              @Override
+              protected void run() {
+                TypeDeclaration typeDeclaration =
+                        ctx.getDeclarations().newTypeDeclaration(String.class);
+                List<TypeParameterDeclaration> typeParams =
+                        typeDeclaration.getAllTypeParameterDeclarations();
+
+                assertEquals(typeParams.size(), 1);
+                TypeParameterDeclaration parameterDeclaration = typeParams.get(0);
+                TypeMirror actualType = parameterDeclaration.getActualType();
+                TypeMirror formalType = parameterDeclaration.getFormalType();
+                TypeVariable typeVariable =
+                        ctx.getMoreTypes().toTypeVariable(formalType);
+                assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(actualType, String.class));
+                assertEquals("T", typeVariable.asElement().getSimpleName().toString());
+              }
+            }
+    );
+  }
+
+  @Test
   void getConstructorDeclaration() {
     addProcessor(
         new TestProcessor() {

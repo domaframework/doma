@@ -7,6 +7,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -170,6 +171,12 @@ public class TypeDeclaration {
     Optional<List<TypeParameterDeclaration>> typeParameterDeclarations =
         typeParameterDeclarationsMap.values().stream().findFirst();
     return typeParameterDeclarations.orElse(Collections.emptyList());
+  }
+
+  public List<TypeParameterDeclaration> getAllTypeParameterDeclarations() {
+    return typeParameterDeclarationsMap.values().stream()
+            .flatMap(Collection::stream)
+            .collect(toList());
   }
 
   public Optional<ConstructorDeclaration> getConstructorDeclaration(
