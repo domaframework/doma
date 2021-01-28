@@ -1,7 +1,6 @@
 package org.seasar.doma.internal.apt.annot;
 
 import java.util.List;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
@@ -9,9 +8,9 @@ import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 
 public class ScopeClass {
   final TypeDeclaration type;
-  final List<ExecutableElement> methods;
+  final List<ScopeMethodAdapter> methods;
 
-  public ScopeClass(TypeDeclaration type, List<ExecutableElement> methods) {
+  public ScopeClass(TypeDeclaration type, List<ScopeMethodAdapter> methods) {
     this.type = type;
     this.methods = methods;
   }
@@ -25,7 +24,7 @@ public class ScopeClass {
     return type.getType();
   }
 
-  public List<ExecutableElement> scopeMethods() {
+  public List<ScopeMethodAdapter> scopeMethods() {
     return methods;
   }
 

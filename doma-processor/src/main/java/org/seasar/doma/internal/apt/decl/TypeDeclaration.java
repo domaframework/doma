@@ -175,8 +175,8 @@ public class TypeDeclaration {
 
   public List<TypeParameterDeclaration> getAllTypeParameterDeclarations() {
     return typeParameterDeclarationsMap.values().stream()
-            .flatMap(Collection::stream)
-            .collect(toList());
+        .flatMap(Collection::stream)
+        .collect(toList());
   }
 
   public Optional<ConstructorDeclaration> getConstructorDeclaration(

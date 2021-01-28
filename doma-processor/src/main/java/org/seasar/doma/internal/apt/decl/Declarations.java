@@ -127,6 +127,12 @@ public class Declarations {
     return new MethodDeclaration(methodElement, returnTypeDeclaration);
   }
 
+  public TypeParameterDeclaration newTypeParameterDeclarationUsingTypeParams(
+      TypeMirror formalType, List<TypeParameterDeclaration> typeParameterDeclarations) {
+    TypeMirror actualType = resolveTypeParameter(formalType, typeParameterDeclarations);
+    return new TypeParameterDeclaration(formalType, actualType);
+  }
+
   private TypeMirror resolveTypeParameter(
       TypeMirror formalType, List<TypeParameterDeclaration> typeParameterDeclarations) {
     for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
