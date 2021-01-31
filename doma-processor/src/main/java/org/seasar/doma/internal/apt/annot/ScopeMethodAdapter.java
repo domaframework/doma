@@ -9,7 +9,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.decl.TypeParameterDeclaration;
 
-public class ScopeMethodAdapter {
+public class ScopeMethodAdapter implements Comparable<ScopeMethodAdapter> {
   final ExecutableElement method;
   final List<TypeParameterDeclaration> resolvedTypeParameters;
 
@@ -54,5 +54,10 @@ public class ScopeMethodAdapter {
 
   public Set<Modifier> getModifiers() {
     return method.getModifiers();
+  }
+
+  @Override
+  public int compareTo(ScopeMethodAdapter o) {
+    return this.getMethodName().compareTo(o.getMethodName());
   }
 }

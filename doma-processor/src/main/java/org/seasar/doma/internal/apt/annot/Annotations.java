@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -212,6 +213,7 @@ public class Annotations {
               .collect(Collectors.toList());
       methodAdapters.add(new ScopeMethodAdapter(method, typeParams));
     }
+    Collections.sort(methodAdapters);
     return new ScopeClass(type, methodAdapters);
   }
 

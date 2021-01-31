@@ -45,20 +45,20 @@ public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamode
         return __allPropertyMetamodels;
     }
 
-    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> published() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.published(this);
-    }
-
-    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration> newest() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.newest(this);
-    }
-
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idEq(java.lang.Long id) {
         return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.idEq(this, id);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idEq(java.util.List<java.lang.Long> id) {
         return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.idEq(this, id);
+    }
+
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration> newest() {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.newest(this);
+    }
+
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> published() {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.published(this);
     }
 
 }
