@@ -5,10 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
@@ -17,6 +14,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.ScopeClass;
+import org.seasar.doma.internal.apt.annot.ScopeMethodAdapter;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
@@ -208,21 +206,24 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
       return;
     }
     for (ScopeClass scopeClass : metamodel.scopes()) {
-      for (ExecutableElement method : scopeClass.scopeMethods(className)) {
+      for (ScopeMethodAdapter method : scopeClass.scopeMethods()) {
         printScopeMethod(scopeClass, method);
       }
     }
   }
 
-  private void printScopeMethod(ScopeClass scope, ExecutableElement method) {
+  private void printScopeMethod(ScopeClass scope, ScopeMethodAdapter method) {
     List<? extends VariableElement> parameters = new ArrayList<>(method.getParameters());
     TypeMirror returnType = method.getReturnType();
-    String methodName = method.getSimpleName().toString();
+    String methodName = method.getMethodName();
     parameters.remove(0);
 
     iprint(
-        "public %1$s %2$s(%3$s) {%n",
-        returnType, methodName, generateParameterList(method, parameters));
+        "public %1$s%2$s %3$s(%4$s) {%n",
+        buildTypeParameters(method),
+        returnType,
+        methodName,
+        generateParameterList(method, parameters));
     indent();
 
     String params =
@@ -230,19 +231,35 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     if (!params.isEmpty()) {
       params = ", " + params;
     }
-    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), method, params);
+    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), methodName, params);
     unindent();
     iprint("}%n");
     print("%n");
   }
 
+  private String buildTypeParameters(ScopeMethodAdapter method) {
+    List<? extends TypeParameterElement> typeParameters = method.getTypeParameters();
+    if (typeParameters.isEmpty()) {
+      return "";
+    }
+    return typeParameters.stream()
+        .map(this::buildTypeParameter)
+        .collect(Collectors.joining(", ", "<", "> "));
+  }
+
+  private String buildTypeParameter(TypeParameterElement element) {
+    return element.getSimpleName().toString()
+        + " extends "
+        + element.getBounds().stream().map(TypeMirror::toString).collect(Collectors.joining(" & "));
+  }
+
   private String generateParameterList(
-      ExecutableElement method, List<? extends VariableElement> parameters) {
+      ScopeMethodAdapter method, List<? extends VariableElement> parameters) {
     List<String> params = new ArrayList<>();
     for (int i = 0; i < parameters.size(); i++) {
       VariableElement variable = parameters.get(i);
       boolean isLast = (parameters.size() - 1) == i;
-      String type = variable.asType().toString();
+      String type = method.resolveParameter(variable).toString();
 
       if (isLast && method.isVarArgs()) {
         // build varargs parameter

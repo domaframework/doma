@@ -78,6 +78,10 @@ public abstract class CompilerSupport {
     compiler.assertMessage(message);
   }
 
+  protected void assertContainsMessage(Message message) {
+    compiler.assertContainsMessage(message);
+  }
+
   protected void assertNoMessage() {
     compiler.assertNoMessage();
   }

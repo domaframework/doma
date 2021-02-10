@@ -918,6 +918,9 @@ public enum Message implements MessageResource {
   DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
   DOMA4455("The combination of the prefix=\"{0}\" and the suffix=\"\" is not allowed."),
   DOMA4456("The non-private 1-arg constructor must be only one, but more than one found."),
+  DOMA4457("You must always receive the EntityMetamodel as the first parameter"),
+  DOMA4458("You can't use static methods"),
+  DOMA4459("Must be a public method"),
 
   // other
   DOMA5001(

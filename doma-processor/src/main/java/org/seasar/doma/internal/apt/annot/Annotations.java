@@ -3,10 +3,12 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -14,6 +16,7 @@ import org.seasar.doma.*;
 import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
+import org.seasar.doma.internal.apt.decl.TypeParameterDeclaration;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 public class Annotations {
@@ -191,7 +194,27 @@ public class Annotations {
     TypeElement typeElement = ctx.getMoreTypes().toTypeElement(scopeType);
     List<? extends Element> members = ctx.getMoreElements().getAllMembers(typeElement);
     List<ExecutableElement> methods = new ArrayList<>(ElementFilter.methodsIn(members));
-    return new ScopeClass(type, methods);
+    methods.removeIf(m -> m.getAnnotation(ScopeMethod.class) == null);
+
+    List<TypeParameterDeclaration> typeParameterDeclarations =
+        type.getAllTypeParameterDeclarations();
+    List<ScopeMethodAdapter> methodAdapters = new ArrayList<>(methods.size());
+    for (ExecutableElement method : methods) {
+      List<? extends VariableElement> parameters = method.getParameters();
+
+      List<TypeParameterDeclaration> typeParams =
+          parameters.stream()
+              .map(Element::asType)
+              .map(
+                  formalType ->
+                      ctx.getDeclarations()
+                          .newTypeParameterDeclarationUsingTypeParams(
+                              formalType, typeParameterDeclarations))
+              .collect(Collectors.toList());
+      methodAdapters.add(new ScopeMethodAdapter(method, typeParams));
+    }
+    Collections.sort(methodAdapters);
+    return new ScopeClass(type, methodAdapters);
   }
 
   public NClobFactoryAnnot newNClobFactoryAnnot(ExecutableElement method) {

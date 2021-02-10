@@ -47,6 +47,13 @@ public class CompilerExtension extends AptinaTestCase
     fail();
   }
 
+  public void assertContainsMessage(Message message) {
+    List<Diagnostic<? extends JavaFileObject>> diagnostics = getDiagnostics();
+    if (diagnostics.stream().map(this::extractMessage).noneMatch(m -> m == message)) {
+      fail();
+    }
+  }
+
   private Message extractMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
     String message = diagnostic.getMessage(getLocale());
     int start = message.indexOf('[');

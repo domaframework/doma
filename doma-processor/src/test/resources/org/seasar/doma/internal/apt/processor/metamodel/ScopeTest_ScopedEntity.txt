@@ -42,20 +42,44 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
         return __allPropertyMetamodels;
     }
 
-    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> startWithHoge() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.startWithHoge(this);
+    public <T extends java.lang.Number> T boundedGenericMethod(T t) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.boundedGenericMethod(this, t);
+    }
+
+    public <A extends java.lang.Number, B extends java.util.List<A> & java.io.Serializable> java.util.List<A> boundedGenericTypeMethod(A a, B b) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.boundedGenericTypeMethod(this, a, b);
+    }
+
+    public <T extends java.lang.Object> T genericMethod(T t) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.genericMethod(this, t);
+    }
+
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idAndName(long id, java.lang.String name) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.idAndName(this, id, name);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> ids(long[] ids) {
         return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.ids(this, ids);
     }
 
+    public <A extends java.lang.Number, B extends java.lang.Object> java.util.List<A> multipleGenericTypeMethod(A a, B b) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.multipleGenericTypeMethod(this, a, b);
+    }
+
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> names(java.lang.String... names) {
         return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.names(this, names);
     }
 
-    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idAndName(long id, java.lang.String name) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.idAndName(this, id, name);
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> numberList(java.util.List<? extends java.lang.Number> numbers) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.numberList(this, numbers);
+    }
+
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> startWithHoge() {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.startWithHoge(this);
+    }
+
+    public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> stringList(java.util.List<java.lang.String> names) {
+        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.stringList(this, names);
     }
 
 }
