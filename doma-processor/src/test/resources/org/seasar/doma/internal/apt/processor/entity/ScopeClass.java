@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
-import org.seasar.doma.ScopeMethod;
+import org.seasar.doma.Scope;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
 import java.io.Serializable;
@@ -12,28 +12,28 @@ import java.util.ArrayList;
 
 class ScopeClass {
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> startWithHoge(ScopedEntity_ e) {
         return w -> {
             w.like(e.name, "hoge%");
         };
     }
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> ids(ScopedEntity_ e, long[] ids) {
         return w -> {
             w.in(e.id, Arrays.stream(ids).boxed().collect(Collectors.toList()));
         };
     }
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> names(ScopedEntity_ e, String... names) {
         return w -> {
             w.in(e.name, Arrays.asList(names));
         };
     }
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> idAndName(ScopedEntity_ e, long id, String name) {
         return w -> {
             w.eq(e.id, id);
@@ -41,36 +41,36 @@ class ScopeClass {
         };
     }
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> stringList(ScopedEntity_ e, List<String> names) {
         return w -> {
             w.in(e.name, names);
         };
     }
 
-    @ScopeMethod
+    @Scope
     public Consumer<WhereDeclaration> numberList(ScopedEntity_ e, List<? extends Number> numbers) {
         return w -> {
             w.in(e.id, numbers.stream().map(Number::longValue).collect(Collectors.toList()));
         };
     }
 
-    @ScopeMethod
+    @Scope
     public <T> T genericMethod(ScopedEntity_ e, T t) {
         return t;
     }
 
-    @ScopeMethod
+    @Scope
     public <T extends Number> T boundedGenericMethod(ScopedEntity_ e, T t) {
         return t;
     }
 
-    @ScopeMethod
+    @Scope
     public <A extends Number, B> List<A> multipleGenericTypeMethod(ScopedEntity_ e, A a, B b) {
         return new ArrayList<>(Arrays.asList(a));
     }
 
-    @ScopeMethod
+    @Scope
     public <A extends Number, B extends List<A> & Serializable> List<A> boundedGenericTypeMethod(ScopedEntity_ e, A a, B b) {
         return new ArrayList<>(Arrays.asList(a));
     }

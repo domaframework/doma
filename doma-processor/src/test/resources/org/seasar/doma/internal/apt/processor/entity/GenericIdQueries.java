@@ -1,7 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
-import org.seasar.doma.ScopeMethod;
-import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
+import org.seasar.doma.Scope;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
 import java.util.List;
@@ -13,12 +12,12 @@ interface GenericIdQueries<E extends EntityMetamodel<?>, ID> {
 
     PropertyMetamodel<ID> id(E e);
 
-    @ScopeMethod
+    @Scope
     default Consumer<WhereDeclaration> idEq(E e, ID id) {
         return w -> w.eq(id(e), id);
     }
 
-    @ScopeMethod
+    @Scope
     default Consumer<WhereDeclaration> idEq(E e, List<ID> id) {
         return w -> w.in(id(e), id);
     }

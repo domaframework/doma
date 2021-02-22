@@ -1,6 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
-import org.seasar.doma.ScopeMethod;
+import org.seasar.doma.Scope;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 
@@ -13,14 +13,14 @@ interface Publishable<E extends EntityMetamodel<?>> {
 
     PropertyMetamodel<LocalDateTime> publishedAt(E e);
 
-    @ScopeMethod
+    @Scope
     default Consumer<WhereDeclaration> published(E e) {
         return w -> {
             w.le(publishedAt(e), LocalDateTime.now());
         };
     }
 
-    @ScopeMethod
+    @Scope
     default Consumer<OrderByNameDeclaration> newest(E e) {
         return o -> o.desc(publishedAt(e));
     }
