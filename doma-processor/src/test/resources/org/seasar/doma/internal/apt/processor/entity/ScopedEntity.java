@@ -3,7 +3,7 @@ package org.seasar.doma.internal.apt.processor.entity;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
-@Entity(metamodel = @Metamodel(scope = {ScopeClass.class}))
+@Entity(metamodel = @Metamodel(scopes = {ScopeClass.class}))
 class ScopedEntity {
     Long id;
     String name;

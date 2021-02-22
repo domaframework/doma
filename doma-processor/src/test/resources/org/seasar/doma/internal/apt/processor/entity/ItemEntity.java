@@ -4,10 +4,8 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
 import java.time.LocalDateTime;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Metamodel;
 
-@Entity(metamodel = @Metamodel(scope = ItemScope.class))
+@Entity(metamodel = @Metamodel(scopes = ItemScope.class))
 class ItemEntity {
     Long id;
     String name;

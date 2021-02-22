@@ -5,7 +5,7 @@ import org.seasar.doma.Metamodel;
 
 import java.time.LocalDateTime;
 
-@Entity(metamodel = @Metamodel(scope = {CreatedAtScope.class, NameScope.class}))
+@Entity(metamodel = @Metamodel(scopes = {CreatedAtScope.class, NameScope.class}))
 class MultiScopeEntity {
   Long id;
   String name;

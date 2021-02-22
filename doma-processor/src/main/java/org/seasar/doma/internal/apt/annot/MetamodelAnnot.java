@@ -16,7 +16,7 @@ public class MetamodelAnnot extends AbstractAnnot {
 
   private static final String SUFFIX = "suffix";
 
-  private static final String SCOPE = "scope";
+  private static final String SCOPES = "scopes";
 
   private final AnnotationValue prefix;
 
@@ -30,7 +30,7 @@ public class MetamodelAnnot extends AbstractAnnot {
     super(annotationMirror);
     this.prefix = assertNonNullValue(values, PREFIX);
     this.suffix = assertNonNullValue(values, SUFFIX);
-    this.scopeClasses = assertNonNullValue(values, SCOPE);
+    this.scopeClasses = assertNonNullValue(values, SCOPES);
   }
 
   public AnnotationValue getPrefix() {

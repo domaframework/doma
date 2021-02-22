@@ -33,5 +33,5 @@ public @interface Metamodel {
   String suffix() default "";
 
   /** @return the scope class array */
-  Class<?>[] scope() default {};
+  Class<?>[] scopes() default {};
 }
