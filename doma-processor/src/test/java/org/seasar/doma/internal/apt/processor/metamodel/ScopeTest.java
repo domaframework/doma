@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.processor.metamodel;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
@@ -16,7 +15,6 @@ import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
-import org.seasar.doma.message.Message;
 
 public class ScopeTest extends CompilerSupport {
 
@@ -51,14 +49,14 @@ public class ScopeTest extends CompilerSupport {
         ExtensionContext context) {
       return Stream.of(
           invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.ScopedEntity",
-              "org.seasar.doma.internal.apt.processor.entity.ScopeClass"),
+              "org.seasar.doma.internal.apt.processor.metamodel.Room",
+              "org.seasar.doma.internal.apt.processor.metamodel.RoomScope"),
           invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity",
-              "org.seasar.doma.internal.apt.processor.entity.CreatedAtScope"),
+              "org.seasar.doma.internal.apt.processor.metamodel.Multi",
+              "org.seasar.doma.internal.apt.processor.metamodel.CreatedAtScope"),
           invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.ItemEntity",
-              "org.seasar.doma.internal.apt.processor.entity.ItemScope"));
+              "org.seasar.doma.internal.apt.processor.metamodel.Item",
+              "org.seasar.doma.internal.apt.processor.metamodel.ItemScope"));
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -75,54 +73,6 @@ public class ScopeTest extends CompilerSupport {
               new ResourceParameterResolver(classFqn),
               new SimpleParameterResolver(classFqn),
               new SimpleParameterResolver(otherClasses));
-        }
-      };
-    }
-  }
-
-  @TestTemplate
-  @ExtendWith(ScopeTest.ErrorInvocationContextProvider.class)
-  void compileError(String fqn, Message message) throws Exception {
-    addProcessor(new EntityProcessor());
-    addResourceFileCompilationUnit(fqn);
-    compile();
-    assertFalse(getCompiledResult());
-    assertContainsMessage(message);
-  }
-
-  static class ErrorInvocationContextProvider implements TestTemplateInvocationContextProvider {
-
-    @Override
-    public boolean supportsTestTemplate(ExtensionContext context) {
-      return true;
-    }
-
-    @Override
-    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-        ExtensionContext context) {
-      return Stream.of(
-          invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.NonParamMethodScopeEntity",
-              Message.DOMA4457),
-          invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.StaticMethodScopeEntity",
-              Message.DOMA4458),
-          invocationContext(
-              "org.seasar.doma.internal.apt.processor.entity.NonPublicMethodScopeEntity",
-              Message.DOMA4459));
-    }
-
-    private TestTemplateInvocationContext invocationContext(String classFqn, Message message) {
-      return new TestTemplateInvocationContext() {
-        @Override
-        public String getDisplayName(int invocationIndex) {
-          return new ClassName(classFqn).getSimpleName();
-        }
-
-        @Override
-        public List<Extension> getAdditionalExtensions() {
-          return Arrays.asList(
-              new SimpleParameterResolver(classFqn), new SimpleParameterResolver(message));
         }
       };
     }

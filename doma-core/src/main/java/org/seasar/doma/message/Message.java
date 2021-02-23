@@ -442,8 +442,8 @@ public enum Message implements MessageResource {
   DOMA4089(
       "When you annotate the field with @Id or @Version, "
           + "you must not annotate the field with @Column(updatable=false) to the same field."),
-  DOMA4090("The annotation processor \"{0}\" starts processing for the class \"{1}\"."),
-  DOMA4091("The annotation processor \"{0}\" ends processing for the class \"{1}\"."),
+  DOMA4090("The annotation processor \"{0}\" starts processing for the element \"{1}\"."),
+  DOMA4091("The annotation processor \"{0}\" ends processing for the element \"{1}\"."),
   DOMA4092(
       "Failed to verify the SQL template \"{0}\" on line {2} at column {3}. The cause is as follows: {4} SQL=[{1}]."),
   DOMA4093("The field annotated with @Version must be numeric."),

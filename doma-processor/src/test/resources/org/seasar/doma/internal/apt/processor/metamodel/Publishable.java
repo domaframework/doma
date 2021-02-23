@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Scope;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
@@ -15,9 +15,7 @@ interface Publishable<E extends EntityMetamodel<?>> {
 
     @Scope
     default Consumer<WhereDeclaration> published(E e) {
-        return w -> {
-            w.le(publishedAt(e), LocalDateTime.now());
-        };
+        return w -> w.le(publishedAt(e), LocalDateTime.now());
     }
 
     @Scope

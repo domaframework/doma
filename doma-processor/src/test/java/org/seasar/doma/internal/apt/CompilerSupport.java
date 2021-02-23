@@ -1,8 +1,13 @@
 package org.seasar.doma.internal.apt;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
@@ -43,10 +48,12 @@ public abstract class CompilerSupport {
 
   protected void addResourceFileCompilationUnit(final String fqn) {
     String fileName = fqn.replace(".", "/") + ".java";
-    try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-      String source = reader.lines().collect(Collectors.joining("\n"));
-      compiler.addCompilationUnit(fqn, source);
+    try (InputStream in = getClass().getClassLoader().getResourceAsStream(fileName)) {
+      Objects.requireNonNull(in);
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+        String source = reader.lines().collect(Collectors.joining("\n"));
+        compiler.addCompilationUnit(fqn, source);
+      }
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
@@ -76,10 +83,6 @@ public abstract class CompilerSupport {
 
   protected void assertMessage(Message message) {
     compiler.assertMessage(message);
-  }
-
-  protected void assertContainsMessage(Message message) {
-    compiler.assertContainsMessage(message);
   }
 
   protected void assertNoMessage() {

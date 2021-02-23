@@ -1,4 +1,4 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Scope;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
