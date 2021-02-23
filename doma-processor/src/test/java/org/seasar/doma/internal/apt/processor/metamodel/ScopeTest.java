@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.CompilerSupport;
@@ -53,10 +57,13 @@ public class ScopeTest extends CompilerSupport {
               "org.seasar.doma.internal.apt.processor.metamodel.RoomScope"),
           invocationContext(
               "org.seasar.doma.internal.apt.processor.metamodel.Multi",
-              "org.seasar.doma.internal.apt.processor.metamodel.CreatedAtScope"),
+              "org.seasar.doma.internal.apt.processor.metamodel.CreatedAtScope",
+              "org.seasar.doma.internal.apt.processor.metamodel.NameScope"),
           invocationContext(
               "org.seasar.doma.internal.apt.processor.metamodel.Item",
-              "org.seasar.doma.internal.apt.processor.metamodel.ItemScope"));
+              "org.seasar.doma.internal.apt.processor.metamodel.ItemScope",
+              "org.seasar.doma.internal.apt.processor.metamodel.Publishable",
+              "org.seasar.doma.internal.apt.processor.metamodel.GenericIdQueries"));
     }
 
     private TestTemplateInvocationContext invocationContext(
