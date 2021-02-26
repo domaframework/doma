@@ -3,7 +3,7 @@ plugins {
     id("com.diffplug.eclipse.apt") version "3.28.2" apply false
     id("com.diffplug.spotless") version "5.10.2"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
-    id("io.codearte.nexus-staging") version "0.22.0"
+    id("io.codearte.nexus-staging") version "0.30.0"
     id("net.researchgate.release") version "2.8.1"
     kotlin("jvm") version "1.4.0" apply false
 }
