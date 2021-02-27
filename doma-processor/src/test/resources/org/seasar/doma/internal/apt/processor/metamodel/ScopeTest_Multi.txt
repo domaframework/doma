@@ -1,8 +1,8 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity> {
+public final class Multi_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.metamodel.Multi> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -10,7 +10,7 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
 
     private final String __qualifiedTableName;
 
-    private final org.seasar.doma.internal.apt.processor.entity._MultiScopeEntity __entityType = org.seasar.doma.internal.apt.processor.entity._MultiScopeEntity.getSingletonInternal();
+    private final org.seasar.doma.internal.apt.processor.metamodel._Multi __entityType = org.seasar.doma.internal.apt.processor.metamodel._Multi.getSingletonInternal();
 
     private final java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __allPropertyMetamodels;
 
@@ -20,15 +20,15 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.time.LocalDateTime> createdAt = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.time.LocalDateTime>(java.time.LocalDateTime.class, __entityType, "createdAt");
 
-    private final org.seasar.doma.internal.apt.processor.entity.CreatedAtScope __scope__org_seasar_doma_internal_apt_processor_entity_CreatedAtScope = new org.seasar.doma.internal.apt.processor.entity.CreatedAtScope();
+    private final org.seasar.doma.internal.apt.processor.metamodel.CreatedAtScope __scope__org_seasar_doma_internal_apt_processor_metamodel_CreatedAtScope = new org.seasar.doma.internal.apt.processor.metamodel.CreatedAtScope();
 
-    private final org.seasar.doma.internal.apt.processor.entity.NameScope __scope__org_seasar_doma_internal_apt_processor_entity_NameScope = new org.seasar.doma.internal.apt.processor.entity.NameScope();
+    private final org.seasar.doma.internal.apt.processor.metamodel.NameScope __scope__org_seasar_doma_internal_apt_processor_metamodel_NameScope = new org.seasar.doma.internal.apt.processor.metamodel.NameScope();
 
-    public MultiScopeEntity_() {
+    public Multi_() {
         this("");
     }
 
-    public MultiScopeEntity_(String qualifiedTableName) {
+    public Multi_(String qualifiedTableName) {
         this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __list = new java.util.ArrayList<>(3);
         __list.add(id);
@@ -38,7 +38,7 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.entity.MultiScopeEntity> asType() {
+    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.metamodel.Multi> asType() {
         return __qualifiedTableName.isEmpty() ? __entityType : new org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy<>(__entityType, __qualifiedTableName);
     }
 
@@ -48,11 +48,11 @@ public final class MultiScopeEntity_ implements org.seasar.doma.jdbc.criteria.me
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> today() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_CreatedAtScope.today(this);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_CreatedAtScope.today(this);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> nameEq(java.lang.String name) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_NameScope.nameEq(this, name);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_NameScope.nameEq(this, name);
     }
 
 }

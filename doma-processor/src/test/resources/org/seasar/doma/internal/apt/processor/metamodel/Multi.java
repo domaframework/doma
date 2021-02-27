@@ -1,12 +1,12 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
 import java.time.LocalDateTime;
 
-@Entity(metamodel = @Metamodel(scope = {CreatedAtScope.class, NameScope.class}))
-class MultiScopeEntity {
+@Entity(metamodel = @Metamodel(scopes = {CreatedAtScope.class, NameScope.class}))
+class Multi {
   Long id;
   String name;
   LocalDateTime createdAt;

@@ -1,8 +1,8 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.entity.ItemEntity> {
+public final class Item_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.metamodel.Item> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -10,7 +10,7 @@ public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamode
 
     private final String __qualifiedTableName;
 
-    private final org.seasar.doma.internal.apt.processor.entity._ItemEntity __entityType = org.seasar.doma.internal.apt.processor.entity._ItemEntity.getSingletonInternal();
+    private final org.seasar.doma.internal.apt.processor.metamodel._Item __entityType = org.seasar.doma.internal.apt.processor.metamodel._Item.getSingletonInternal();
 
     private final java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __allPropertyMetamodels;
 
@@ -20,13 +20,13 @@ public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamode
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.time.LocalDateTime> publishedAt = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.time.LocalDateTime>(java.time.LocalDateTime.class, __entityType, "publishedAt");
 
-    private final org.seasar.doma.internal.apt.processor.entity.ItemScope __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope = new org.seasar.doma.internal.apt.processor.entity.ItemScope();
+    private final org.seasar.doma.internal.apt.processor.metamodel.ItemScope __scope__org_seasar_doma_internal_apt_processor_metamodel_ItemScope = new org.seasar.doma.internal.apt.processor.metamodel.ItemScope();
 
-    public ItemEntity_() {
+    public Item_() {
         this("");
     }
 
-    public ItemEntity_(String qualifiedTableName) {
+    public Item_(String qualifiedTableName) {
         this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __list = new java.util.ArrayList<>(3);
         __list.add(id);
@@ -36,7 +36,7 @@ public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamode
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.entity.ItemEntity> asType() {
+    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.metamodel.Item> asType() {
         return __qualifiedTableName.isEmpty() ? __entityType : new org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy<>(__entityType, __qualifiedTableName);
     }
 
@@ -46,19 +46,19 @@ public final class ItemEntity_ implements org.seasar.doma.jdbc.criteria.metamode
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idEq(java.lang.Long id) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.idEq(this, id);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_ItemScope.idEq(this, id);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idEq(java.util.List<java.lang.Long> id) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.idEq(this, id);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_ItemScope.idEq(this, id);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration> newest() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.newest(this);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_ItemScope.newest(this);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> published() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ItemScope.published(this);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_ItemScope.published(this);
     }
 
 }

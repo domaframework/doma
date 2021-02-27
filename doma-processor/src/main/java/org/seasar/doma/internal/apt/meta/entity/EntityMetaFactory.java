@@ -38,8 +38,6 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
-import org.seasar.doma.internal.apt.annot.ScopeClass;
-import org.seasar.doma.internal.apt.annot.ScopeMethodAdapter;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
@@ -206,8 +204,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     public void doClassElement(TypeElement classElement, EntityMeta entityMeta) {
       validateClass(classElement, entityMeta);
       validateEntityListener(classElement, entityMeta);
-      validateMetamodelAnnotation(classElement, entityMeta);
+      validateMetamodel(classElement, entityMeta);
 
+      doScopes(classElement, entityMeta);
       doTable(classElement, entityMeta);
     }
 
@@ -466,7 +465,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       return null;
     }
 
-    void validateMetamodelAnnotation(TypeElement classElement, EntityMeta entityMeta) {
+    void validateMetamodel(TypeElement classElement, EntityMeta entityMeta) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       MetamodelAnnot metamodelAnnot = entityAnnot.getMetamodelValue();
       if (metamodelAnnot != null) {
@@ -479,38 +478,23 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
               metamodelAnnot.getAnnotationMirror(),
               new Object[] {Constants.TYPE_PREFIX});
         }
-        validateScopeClass(metamodelAnnot);
       }
     }
 
-    void validateScopeClass(MetamodelAnnot metamodelAnnot) {
-      for (ScopeClass scope : metamodelAnnot.scopes()) {
-        for (ScopeMethodAdapter scopeMethod : scope.scopeMethods()) {
-          if (scopeMethod.getParameters().size() < 1) {
-            throw new AptException(
-                Message.DOMA4457,
-                scopeMethod.toElement(),
-                metamodelAnnot.getAnnotationMirror(),
-                new Object[] {});
-          }
-
-          Set<Modifier> modifiers = scopeMethod.getModifiers();
-          if (modifiers.contains(Modifier.STATIC)) {
-            throw new AptException(
-                Message.DOMA4458,
-                scopeMethod.toElement(),
-                metamodelAnnot.getAnnotationMirror(),
-                new Object[] {});
-          }
-
-          if (!modifiers.contains(Modifier.PUBLIC)) {
-            throw new AptException(
-                Message.DOMA4459,
-                scopeMethod.toElement(),
-                metamodelAnnot.getAnnotationMirror(),
-                new Object[] {});
-          }
+    void doScopes(TypeElement classElement, EntityMeta entityMeta) {
+      EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
+      MetamodelAnnot metamodelAnnot = entityAnnot.getMetamodelValue();
+      if (metamodelAnnot == null) {
+        return;
+      }
+      for (TypeMirror typeMirror : metamodelAnnot.getScopesValue()) {
+        TypeElement typeElement = ctx.getMoreTypes().toTypeElement(typeMirror);
+        if (typeElement == null) {
+          continue;
         }
+        ScopeClassMetaFactory scopeClassMetaFactory = new ScopeClassMetaFactory(ctx, typeElement);
+        ScopeClassMeta scopeClassMeta = scopeClassMetaFactory.createScopeClassMeta();
+        entityMeta.addScopeClassMeta(scopeClassMeta);
       }
     }
 

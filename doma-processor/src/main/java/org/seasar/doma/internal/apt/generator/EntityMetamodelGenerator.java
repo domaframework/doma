@@ -2,22 +2,22 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.lang.model.element.*;
-import javax.lang.model.type.ArrayType;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
-import org.seasar.doma.internal.apt.annot.ScopeClass;
-import org.seasar.doma.internal.apt.annot.ScopeMethodAdapter;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
+import org.seasar.doma.internal.apt.meta.entity.ScopeClassMeta;
+import org.seasar.doma.internal.apt.meta.entity.ScopeMethodMeta;
+import org.seasar.doma.internal.apt.meta.entity.ScopeParameterMeta;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
@@ -97,12 +97,10 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   }
 
   private void printScopeFields() {
-    MetamodelAnnot metamodelValue = entityMeta.getEntityAnnot().getMetamodelValue();
-    if (metamodelValue == null) {
-      return;
-    }
-    for (ScopeClass scope : metamodelValue.scopes()) {
-      iprint("private final %1$s %2$s = new %1$s();%n", scope, scope.scopeField());
+    for (ScopeClassMeta scopeClassMeta : entityMeta.getScopeClassMetas()) {
+      iprint(
+          "private final %1$s %2$s = new %1$s();%n",
+          scopeClassMeta.getTypeElement(), scopeClassMeta.getIdentifier());
       print("%n");
     }
   }
@@ -201,43 +199,33 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   }
 
   private void printScopeMethods() {
-    MetamodelAnnot metamodel = entityMeta.getEntityAnnot().getMetamodelValue();
-    if (metamodel == null) {
-      return;
-    }
-    for (ScopeClass scopeClass : metamodel.scopes()) {
-      for (ScopeMethodAdapter method : scopeClass.scopeMethods()) {
-        printScopeMethod(scopeClass, method);
+    for (ScopeClassMeta scopeClassMeta : entityMeta.getScopeClassMetas()) {
+      for (ScopeMethodMeta scopeMethodMeta : scopeClassMeta.getMethods()) {
+        printScopeMethod(scopeClassMeta, scopeMethodMeta);
       }
     }
   }
 
-  private void printScopeMethod(ScopeClass scope, ScopeMethodAdapter method) {
-    List<? extends VariableElement> parameters = new ArrayList<>(method.getParameters());
-    TypeMirror returnType = method.getReturnType();
-    String methodName = method.getMethodName();
-    parameters.remove(0);
-
+  private void printScopeMethod(ScopeClassMeta clazz, ScopeMethodMeta method) {
     iprint(
         "public %1$s%2$s %3$s(%4$s) {%n",
         buildTypeParameters(method),
-        returnType,
-        methodName,
-        generateParameterList(method, parameters));
+        method.getReturnType(),
+        method.getName(),
+        buildParameterList(method));
     indent();
-
-    String params =
-        parameters.stream().map(VariableElement::getSimpleName).collect(Collectors.joining(", "));
-    if (!params.isEmpty()) {
-      params = ", " + params;
+    iprint("return %1$s.%2$s(this", clazz.getIdentifier(), method.getName());
+    if (!method.getParameters().isEmpty()) {
+      print(", ");
+      print(buildArgumentList(method));
     }
-    iprint("return %1$s.%2$s(this%3$s);%n", scope.scopeField(), methodName, params);
+    print(");%n");
     unindent();
     iprint("}%n");
     print("%n");
   }
 
-  private String buildTypeParameters(ScopeMethodAdapter method) {
+  private String buildTypeParameters(ScopeMethodMeta method) {
     List<? extends TypeParameterElement> typeParameters = method.getTypeParameters();
     if (typeParameters.isEmpty()) {
       return "";
@@ -253,23 +241,13 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
         + element.getBounds().stream().map(TypeMirror::toString).collect(Collectors.joining(" & "));
   }
 
-  private String generateParameterList(
-      ScopeMethodAdapter method, List<? extends VariableElement> parameters) {
-    List<String> params = new ArrayList<>();
-    for (int i = 0; i < parameters.size(); i++) {
-      VariableElement variable = parameters.get(i);
-      boolean isLast = (parameters.size() - 1) == i;
-      String type = method.resolveParameter(variable).toString();
+  private String buildParameterList(ScopeMethodMeta method) {
+    return String.join(", ", method.getParameters());
+  }
 
-      if (isLast && method.isVarArgs()) {
-        // build varargs parameter
-        ArrayType arrayType = (ArrayType) variable.asType();
-        type = arrayType.getComponentType().toString() + "...";
-      }
-
-      params.add(type + " " + variable.getSimpleName());
-    }
-
-    return String.join(", ", params);
+  private String buildArgumentList(ScopeMethodMeta method) {
+    return method.getParameters().stream()
+        .map(ScopeParameterMeta::getName)
+        .collect(Collectors.joining(", "));
   }
 }

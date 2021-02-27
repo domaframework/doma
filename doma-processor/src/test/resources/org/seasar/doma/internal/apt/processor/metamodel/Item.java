@@ -1,14 +1,12 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
 import java.time.LocalDateTime;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Metamodel;
 
-@Entity(metamodel = @Metamodel(scope = ItemScope.class))
-class ItemEntity {
+@Entity(metamodel = @Metamodel(scopes = ItemScope.class))
+class Item {
     Long id;
     String name;
     LocalDateTime publishedAt;

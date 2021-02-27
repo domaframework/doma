@@ -1,8 +1,8 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 /** */
 @javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
-public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.entity.ScopedEntity> {
+public final class Room_ implements org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel<org.seasar.doma.internal.apt.processor.metamodel.Room> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
@@ -10,7 +10,7 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
 
     private final String __qualifiedTableName;
 
-    private final org.seasar.doma.internal.apt.processor.entity._ScopedEntity __entityType = org.seasar.doma.internal.apt.processor.entity._ScopedEntity.getSingletonInternal();
+    private final org.seasar.doma.internal.apt.processor.metamodel._Room __entityType = org.seasar.doma.internal.apt.processor.metamodel._Room.getSingletonInternal();
 
     private final java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __allPropertyMetamodels;
 
@@ -18,13 +18,13 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
 
     public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.lang.String> name = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.lang.String>(java.lang.String.class, __entityType, "name");
 
-    private final org.seasar.doma.internal.apt.processor.entity.ScopeClass __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass = new org.seasar.doma.internal.apt.processor.entity.ScopeClass();
+    private final org.seasar.doma.internal.apt.processor.metamodel.RoomScope __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope = new org.seasar.doma.internal.apt.processor.metamodel.RoomScope();
 
-    public ScopedEntity_() {
+    public Room_() {
         this("");
     }
 
-    public ScopedEntity_(String qualifiedTableName) {
+    public Room_(String qualifiedTableName) {
         this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);
         java.util.ArrayList<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __list = new java.util.ArrayList<>(2);
         __list.add(id);
@@ -33,7 +33,7 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
     }
 
     @Override
-    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.entity.ScopedEntity> asType() {
+    public org.seasar.doma.jdbc.entity.EntityType<org.seasar.doma.internal.apt.processor.metamodel.Room> asType() {
         return __qualifiedTableName.isEmpty() ? __entityType : new org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy<>(__entityType, __qualifiedTableName);
     }
 
@@ -43,43 +43,43 @@ public final class ScopedEntity_ implements org.seasar.doma.jdbc.criteria.metamo
     }
 
     public <T extends java.lang.Number> T boundedGenericMethod(T t) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.boundedGenericMethod(this, t);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.boundedGenericMethod(this, t);
     }
 
     public <A extends java.lang.Number, B extends java.util.List<A> & java.io.Serializable> java.util.List<A> boundedGenericTypeMethod(A a, B b) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.boundedGenericTypeMethod(this, a, b);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.boundedGenericTypeMethod(this, a, b);
     }
 
     public <T extends java.lang.Object> T genericMethod(T t) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.genericMethod(this, t);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.genericMethod(this, t);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> idAndName(long id, java.lang.String name) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.idAndName(this, id, name);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.idAndName(this, id, name);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> ids(long[] ids) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.ids(this, ids);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.ids(this, ids);
     }
 
     public <A extends java.lang.Number, B extends java.lang.Object> java.util.List<A> multipleGenericTypeMethod(A a, B b) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.multipleGenericTypeMethod(this, a, b);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.multipleGenericTypeMethod(this, a, b);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> names(java.lang.String... names) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.names(this, names);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.names(this, names);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> numberList(java.util.List<? extends java.lang.Number> numbers) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.numberList(this, numbers);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.numberList(this, numbers);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> startWithHoge() {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.startWithHoge(this);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.startWithHoge(this);
     }
 
     public java.util.function.Consumer<org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration> stringList(java.util.List<java.lang.String> names) {
-        return __scope__org_seasar_doma_internal_apt_processor_entity_ScopeClass.stringList(this, names);
+        return __scope__org_seasar_doma_internal_apt_processor_metamodel_RoomScope.stringList(this, names);
     }
 
 }

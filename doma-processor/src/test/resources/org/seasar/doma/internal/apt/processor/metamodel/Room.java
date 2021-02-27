@@ -1,10 +1,10 @@
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.internal.apt.processor.metamodel;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Metamodel;
 
-@Entity(metamodel = @Metamodel(scope = {ScopeClass.class}))
-class ScopedEntity {
+@Entity(metamodel = @Metamodel(scopes = {RoomScope.class}))
+class Room {
     Long id;
     String name;
 

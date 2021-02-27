@@ -19,6 +19,8 @@ public class EntityMeta implements TypeElementMeta {
 
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
+  private final List<ScopeClassMeta> scopeClassMetas = new ArrayList<>();
+
   private final EntityAnnot entityAnnot;
 
   private final TypeElement typeElement;
@@ -208,6 +210,14 @@ public class EntityMeta implements TypeElementMeta {
 
   public boolean hasEmbeddedProperties() {
     return allPropertyMetas.stream().anyMatch(EntityPropertyMeta::isEmbedded);
+  }
+
+  public void addScopeClassMeta(ScopeClassMeta scopeClassMeta) {
+    scopeClassMetas.add(scopeClassMeta);
+  }
+
+  public List<ScopeClassMeta> getScopeClassMetas() {
+    return scopeClassMetas;
   }
 
   @Override
