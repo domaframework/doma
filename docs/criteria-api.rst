@@ -1594,6 +1594,77 @@ The above query issues the following SQL statement:
     )
     where t0_.EMPLOYEE_ID = ?
 
+Scopes (Entityql, NativeSql)
+==========================================
+
+Scoping allow you to specify commonly-used query conditions.
+
+To define a simple scope,
+create the class which has a method annotated with ``@Scope``:
+
+.. code-block:: java
+
+    public class DepartmentScope {
+        @Scope
+        public Consumer<WhereDeclaration> onlyTokyo(Department_ d) {
+            return c -> c.eq(d.location, "Tokyo");
+        }
+    }
+
+To enable the scope,
+specify the above class in the scopes element of ``@Metamodel``:
+
+.. code-block:: java
+
+    @Entity(metamodel = @Metamodel(scopes = { DepartmentScope.class }))
+    public class Department { ... }
+
+Now the metamodel ``Department_`` has a ``onlyTokyo`` method.
+You can use it as follows:
+
+.. code-block:: java
+
+    Department_ d = new Department_();
+
+    List<Department> list = entityql.from(d).where(d.onlyTokyo()).fetch();
+
+The above query issues the following SQL statement:
+
+.. code-block:: sql
+
+    select t0_.DEPARTMENT_ID, t0_.DEPARTMENT_NO, t0_.DEPARTMENT_NAME, t0_.LOCATION, t0_.VERSION from DEPARTMENT t0_
+    where t0_.LOCATION = ?
+
+When you want to combine other query conditions with scopes,
+compose them using the `andThen` method:
+
+.. code-block:: java
+
+    Department_ d = new Department_();
+
+    List<Department> list = entityql.from(d).where(d.onlyTokyo().andThen(c -> c.gt(d.departmentNo, 50))).fetch();
+
+You can define several scopes in a class as follows:
+
+.. code-block:: java
+
+    public class DepartmentScope {
+        @Scope
+        public Consumer<WhereDeclaration> onlyTokyo(Department_ d) {
+            return c -> c.eq(d.location, "Tokyo");
+        }
+
+        @Scope
+        public Consumer<WhereDeclaration> locationStartsWith(Department_ d, String prefix) {
+            return c -> c.like(d.location, prefix, LikeOption.prefix());
+        }
+
+        @Scope
+        public Consumer<OrderByNameDeclaration> sortByNo(Department_ d) {
+            return c -> c.asc(d.departmentNo);
+        }
+    }
+
 Tips
 ====
 
