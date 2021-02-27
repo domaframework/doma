@@ -226,7 +226,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.5
+        image: postgres:10.16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
