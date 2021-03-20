@@ -74,8 +74,6 @@ The value ``new`` means that the object of annotated class is created with a con
       }
     }
 
-  But note that ``@DataType`` is an experimental feature.
-
 
 Instantiation with a static factory method
 ------------------------------------------
