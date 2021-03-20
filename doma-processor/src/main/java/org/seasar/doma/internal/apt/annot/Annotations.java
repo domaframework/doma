@@ -21,6 +21,7 @@ import org.seasar.doma.BlobFactory;
 import org.seasar.doma.ClobFactory;
 import org.seasar.doma.Column;
 import org.seasar.doma.Dao;
+import org.seasar.doma.DataType;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Domain;
 import org.seasar.doma.DomainConverters;
@@ -39,7 +40,6 @@ import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Table;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Update;
-import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
