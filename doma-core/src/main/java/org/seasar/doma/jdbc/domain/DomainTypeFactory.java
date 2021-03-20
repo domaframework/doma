@@ -3,10 +3,10 @@ package org.seasar.doma.jdbc.domain;
 import static org.seasar.doma.internal.Constants.EXTERNAL_DOMAIN_TYPE_ARRAY_SUFFIX;
 
 import java.lang.reflect.Method;
+import org.seasar.doma.DataType;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Domain;
-import org.seasar.doma.experimental.DataType;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.util.ClassUtil;
