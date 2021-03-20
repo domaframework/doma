@@ -3,6 +3,7 @@ name: "Code Scanning"
 on:
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   CodeQL-Build:
@@ -18,8 +19,29 @@ jobs:
         with:
           languages: java
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build and Install packages
+        run: ./gradlew assemble check
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
