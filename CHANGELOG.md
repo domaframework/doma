@@ -1,3 +1,67 @@
+# [2.46.0](https://github.com/domaframework/doma/releases/tag/2.46.0)
+
+## New Features
+
+* Support the DataType annotation officially ([#670](https://github.com/domaframework/doma/pull/670))
+
+## Maintenance
+
+* Fix error "No code found during the build" ([#669](https://github.com/domaframework/doma/pull/669))
+* Change build steps for CodeQL analysis ([#668](https://github.com/domaframework/doma/pull/668))
+* Fix warning "git checkout HEAD^2 is no longer necessary" ([#666](https://github.com/domaframework/doma/pull/666))
+
+## Documentation
+
+* Support Java 16 ([#671](https://github.com/domaframework/doma/pull/671))
+
+## Dependency Upgrades
+
+* Bump jinja2 from 2.10 to 2.11.3 in /docs ([#667](https://github.com/domaframework/doma/pull/667))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.11.0 ([#665](https://github.com/domaframework/doma/pull/665))
+* Update postgres Docker tag to v10.16 ([#664](https://github.com/domaframework/doma/pull/664))
+
+
+# [2.45.0](https://github.com/domaframework/doma/releases/tag/2.45.0)
+
+## New Features
+
+* Support mixin for Scope features ([#648](https://github.com/domaframework/doma/pull/648))
+* Add Scope features ([#643](https://github.com/domaframework/doma/pull/643))
+
+## Maintenance
+
+* Refactor Scope features ([#660](https://github.com/domaframework/doma/pull/660))
+
+## Documentation
+
+* Add documentation about Scope features ([#663](https://github.com/domaframework/doma/pull/663))
+* Change the name of quarkus extension and its link ([#647](https://github.com/domaframework/doma/pull/647))
+
+## Dependency Upgrades
+
+* Update dependency io.codearte.nexus-staging:io.codearte.nexus-staging.gradle.plugin to v0.30.0 ([#662](https://github.com/domaframework/doma/pull/662))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.28.2 ([#661](https://github.com/domaframework/doma/pull/661))
+* Update dependency gradle to v6.8.3 ([#659](https://github.com/domaframework/doma/pull/659))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.28.1 ([#658](https://github.com/domaframework/doma/pull/658))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.10.2 ([#656](https://github.com/domaframework/doma/pull/656))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.28.0 ([#655](https://github.com/domaframework/doma/pull/655))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.10.1 ([#654](https://github.com/domaframework/doma/pull/654))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.27.0 ([#653](https://github.com/domaframework/doma/pull/653))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.26.1 ([#652](https://github.com/domaframework/doma/pull/652))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.10.0 ([#651](https://github.com/domaframework/doma/pull/651))
+* Update dependency gradle to v6.8.2 ([#650](https://github.com/domaframework/doma/pull/650))
+* Update org.junit.jupiter to v5.7.1 ([#649](https://github.com/domaframework/doma/pull/649))
+* Update dependency gradle to v6.8.1 ([#646](https://github.com/domaframework/doma/pull/646))
+* Update EndBug/add-and-commit action to v7 ([#644](https://github.com/domaframework/doma/pull/644))
+* Update dependency gradle to v6.8 ([#642](https://github.com/domaframework/doma/pull/642))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.9.0 ([#640](https://github.com/domaframework/doma/pull/640))
+* Update EndBug/add-and-commit action to v6 ([#638](https://github.com/domaframework/doma/pull/638))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.26.0 ([#639](https://github.com/domaframework/doma/pull/639))
+* Update dependency gradle to v6.7.1 ([#636](https://github.com/domaframework/doma/pull/636))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.8.2 ([#635](https://github.com/domaframework/doma/pull/635))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.8.1 ([#634](https://github.com/domaframework/doma/pull/634))
+
+
 # [2.44.3](https://github.com/domaframework/doma/releases/tag/2.44.3)
 
 
