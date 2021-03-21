@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: Build And Install
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -66,7 +66,7 @@ jobs:
           path: ./**/build/reports
 
   h2:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: H2 - JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     needs: build
@@ -131,7 +131,7 @@ jobs:
           path: ./**/build/reports
 
   mysql:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: MySQL - JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     needs: build
@@ -210,7 +210,7 @@ jobs:
           path: ./**/build/reports
 
   postgres:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: PostgreSQL - JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     needs: build
@@ -285,7 +285,7 @@ jobs:
           path: ./**/build/reports
 
   sqlserver:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: SQL Server - JDK ${{ matrix.java }}
     runs-on: ubuntu-latest
     needs: build
@@ -365,7 +365,7 @@ jobs:
           path: ./**/build/reports
 
   additional-features:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    if: contains(github.event.head_commit.message, '[skip build]') == false
     name: Additional Features
     runs-on: ubuntu-latest
     needs: build
@@ -418,7 +418,7 @@ jobs:
           path: ./**/build/reports
 
   publish:
-    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[skip ci]') == false
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[skip build]') == false
     name: Publish
     runs-on: ubuntu-latest
     needs: [ build, h2, mysql, postgres, sqlserver, additional-features ]
