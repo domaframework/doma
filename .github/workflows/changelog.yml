@@ -3,7 +3,7 @@ name: Changelog
 on:
   release:
     types: 
-      - published
+      - released
 
 jobs:
   changelog:
@@ -29,7 +29,11 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Update CHANGELOG.md
-        run: ./gradlew updateChangelog -PreleaseBody="${{ github.event.release.body }}" -PreleaseHtmlUrl=${{ github.event.release.html_url }} -PreleaseName=${{ github.event.release.name }}
+        run: |
+          export ORG_GRADLE_PROJECT_releaseBody=$(jq '.release.body' $GITHUB_EVENT_PATH)
+          export ORG_GRADLE_PROJECT_releaseHtmlUrl=$(jq '.release.html_url' $GITHUB_EVENT_PATH)
+          export ORG_GRADLE_PROJECT_releaseName=$(jq '.release.name' $GITHUB_EVENT_PATH)
+          ./gradlew updateChangelog
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
