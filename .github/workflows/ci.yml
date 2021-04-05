@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Set up JDK 8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 8
 
@@ -92,7 +92,7 @@ jobs:
         run: tar -xzf maven-repository.tgz -C ~
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
 
@@ -171,7 +171,7 @@ jobs:
         run: tar -xzf maven-repository.tgz -C ~
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
 
@@ -246,7 +246,7 @@ jobs:
         run: tar -xzf maven-repository.tgz -C ~
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
 
@@ -326,7 +326,7 @@ jobs:
         run: tar -xzf maven-repository.tgz -C ~
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
 
@@ -382,7 +382,7 @@ jobs:
         run: tar -xzf maven-repository.tgz -C ~
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 16
 
@@ -425,7 +425,7 @@ jobs:
 
     steps:
       - name: Set up JDK 8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 8
 
