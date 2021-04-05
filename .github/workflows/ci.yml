@@ -20,6 +20,7 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 8
 
       - name: Checkout
@@ -94,6 +95,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: Checkout
@@ -173,6 +175,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: Checkout
@@ -248,6 +251,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: Checkout
@@ -328,6 +332,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: Checkout
@@ -384,6 +389,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 16
 
       - name: Checkout
@@ -427,6 +433,7 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 8
 
       - name: Checkout
