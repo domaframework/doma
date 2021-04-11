@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
 import java.util.List;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -185,7 +184,7 @@ public class DeleteBuilder {
   }
 
   private <E> DeleteBuilder appendParams(Class<E> elementClass, List<E> params, boolean literal) {
-  DeleteBuilder builder = this;
+    DeleteBuilder builder = this;
     int index = 0;
     for (E param : params) {
       builder = builder.appendParam(elementClass, param, literal).sql(", ");

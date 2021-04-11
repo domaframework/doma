@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
 import java.util.List;
-
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;

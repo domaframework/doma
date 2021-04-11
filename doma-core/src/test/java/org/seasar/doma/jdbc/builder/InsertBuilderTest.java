@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
@@ -98,14 +97,14 @@ public class InsertBuilderTest {
     builder.sql("salary in (").params(int.class, Collections.emptyList()).sql(")");
     Sql<?> sql = builder.getSql();
     String rawSql =
-            String.format(
-                "insert into TmpEmp%n"
-                    + "(name, salary)%n"
-                    + "select name, salary from Emp%n"
-                    + "where%n"
-                    + "name in (null)%n"
-                    + "and%n"
-                    + "salary in (null)");
+        String.format(
+            "insert into TmpEmp%n"
+                + "(name, salary)%n"
+                + "select name, salary from Emp%n"
+                + "where%n"
+                + "name in (null)%n"
+                + "and%n"
+                + "salary in (null)");
     assertEquals(rawSql, sql.getRawSql());
 
     List<? extends SqlParameter> params = sql.getParameters();
@@ -124,14 +123,14 @@ public class InsertBuilderTest {
     builder.sql("salary in (").literals(int.class, Arrays.asList(10, 20, 30)).sql(")");
     Sql<?> sql = builder.getSql();
     String rawSql =
-            String.format(
-                "insert into TmpEmp%n"
-                    + "(name, salary)%n"
-                    + "select name, salary from Emp%n"
-                    + "where%n"
-                    + "name in ('x', 'y', 'z')%n"
-                    + "and%n"
-                    + "salary in (10, 20, 30)");
+        String.format(
+            "insert into TmpEmp%n"
+                + "(name, salary)%n"
+                + "select name, salary from Emp%n"
+                + "where%n"
+                + "name in ('x', 'y', 'z')%n"
+                + "and%n"
+                + "salary in (10, 20, 30)");
     assertEquals(rawSql, sql.getRawSql());
 
     List<? extends SqlParameter> params = sql.getParameters();
@@ -150,14 +149,14 @@ public class InsertBuilderTest {
     builder.sql("salary in (").literals(int.class, Collections.emptyList()).sql(")");
     Sql<?> sql = builder.getSql();
     String rawSql =
-            String.format(
-                "insert into TmpEmp%n"
-                    + "(name, salary)%n"
-                    + "select name, salary from Emp%n"
-                    + "where%n"
-                    + "name in (null)%n"
-                    + "and%n"
-                    + "salary in (null)");
+        String.format(
+            "insert into TmpEmp%n"
+                + "(name, salary)%n"
+                + "select name, salary from Emp%n"
+                + "where%n"
+                + "name in (null)%n"
+                + "and%n"
+                + "salary in (null)");
     assertEquals(rawSql, sql.getRawSql());
 
     List<? extends SqlParameter> params = sql.getParameters();
