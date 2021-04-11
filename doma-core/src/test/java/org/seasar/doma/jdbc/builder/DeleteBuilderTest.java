@@ -1,6 +1,6 @@
 package org.seasar.doma.jdbc.builder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,7 +58,7 @@ public class DeleteBuilderTest {
 
   @Test
   public void testParams() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name in (").params(String.class, Arrays.asList("x", "y", "z")).sql(")");
@@ -81,7 +81,7 @@ public class DeleteBuilderTest {
 
   @Test
   public void testParams_empty() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name in (").params(String.class, Collections.emptyList()).sql(")");
@@ -98,7 +98,7 @@ public class DeleteBuilderTest {
 
   @Test
   public void testLiterals() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name in (").literals(String.class, Arrays.asList("x", "y", "z")).sql(")");
@@ -115,7 +115,7 @@ public class DeleteBuilderTest {
 
   @Test
   public void testLiterals_empty() throws Exception {
-    UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
+    DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
     builder.sql("name in (").literals(String.class, Collections.emptyList()).sql(")");
