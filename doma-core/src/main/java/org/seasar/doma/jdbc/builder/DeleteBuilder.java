@@ -1,6 +1,8 @@
 package org.seasar.doma.jdbc.builder;
 
 import java.sql.Statement;
+import java.util.List;
+
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
@@ -117,6 +119,27 @@ public class DeleteBuilder {
   }
 
   /**
+   * Appends a parameter list.
+   *
+   * <p>The element type of the list must be one of basic types or holder types.
+   *
+   * @param <E> the element type of the list
+   * @param elementClass the element class of the list
+   * @param params the parameter list
+   * @return a builder
+   * @throws DomaNullPointerException if {@code elementClass} or {@code params} is {@code null}
+   */
+  public <E> DeleteBuilder params(Class<E> elementClass, List<E> params) {
+    if (elementClass == null) {
+      throw new DomaNullPointerException("elementClass");
+    }
+    if (params == null) {
+      throw new DomaNullPointerException("params");
+    }
+    return appendParams(elementClass, params, false);
+  }
+
+  /**
    * Appends a parameter as literal.
    *
    * <p>The parameter type must be one of basic types or holder types.
@@ -134,10 +157,46 @@ public class DeleteBuilder {
     return appendParam(paramClass, param, true);
   }
 
+  /**
+   * Appends a parameter list as literal.
+   *
+   * <p>The element type of the list must be one of basic types or holder types.
+   *
+   * @param <E> the element type of the list
+   * @param elementClass the element class of the list
+   * @param params the parameter list
+   * @return a builder
+   * @throws DomaNullPointerException if {@code elementClass} or {@code params} is {@code null}
+   */
+  public <E> DeleteBuilder literals(Class<E> elementClass, List<E> params) {
+    if (elementClass == null) {
+      throw new DomaNullPointerException("elementClass");
+    }
+    if (params == null) {
+      throw new DomaNullPointerException("params");
+    }
+    return appendParams(elementClass, params, true);
+  }
+
   private <P> DeleteBuilder appendParam(Class<P> paramClass, P param, boolean literal) {
     helper.appendParam(new Param(paramClass, param, paramIndex, literal));
     paramIndex.increment();
     return new SubsequentDeleteBuilder(helper, query, paramIndex);
+  }
+
+  private <E> DeleteBuilder appendParams(Class<E> elementClass, List<E> params, boolean literal) {
+  DeleteBuilder builder = this;
+    int index = 0;
+    for (E param : params) {
+      builder = builder.appendParam(elementClass, param, literal).sql(", ");
+      index++;
+    }
+    if (index == 0) {
+      builder = builder.sql("null");
+    } else {
+      builder = builder.removeLast();
+    }
+    return builder;
   }
 
   /**
