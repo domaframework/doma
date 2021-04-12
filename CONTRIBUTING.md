@@ -50,7 +50,7 @@ You can check the last publication date here:
 
 ### IDE
 
-#### IntelliJ IEDA
+#### IntelliJ IDEA
 
 Import the root directory as a Gradle project.
 
