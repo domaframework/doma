@@ -249,7 +249,7 @@ rootProject.apply {
                 val releaseBody: String by project
                 val releaseHtmlUrl: String by project
                 val releaseName: String by project
-                val header = "# [$releaseName]($releaseHtmlUrl)"
+                val header = "# [${releaseName.trim('\"')}](${releaseHtmlUrl.trim('\"')})"
                 val path = file("CHANGELOG.md").toPath()
                 val lines = java.nio.file.Files.readAllLines(path)
                 if (lines.none { it.startsWith(header) }) {
@@ -258,7 +258,11 @@ rootProject.apply {
                         java.nio.file.StandardOpenOption.WRITE,
                         java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
                     )
-                    val body = releaseBody.replace(
+                    val body = releaseBody.trim('"')
+                        .replace("\\\"", "\"")
+                        .replace("\\n", "\n")
+                        .replace("\\r", "\r")
+                        .replace(
                         "#([0-9]+)".toRegex(),
                         """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
                     )

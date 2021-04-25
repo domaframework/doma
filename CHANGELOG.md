@@ -1,6 +1,27 @@
-# ["2.46.1"]("https://github.com/domaframework/doma/releases/tag/2.46.1")
+# [2.46.1](https://github.com/domaframework/doma/releases/tag/2.46.1)
 
-"\r\n* Fix typo \"IEDA\" -> \"IDEA\" ([#684](https://github.com/domaframework/doma/pull/684))\r\n* Add params and literals methods to InsertBuilder, UpdateBuilder and DeleteBuilder ([#683](https://github.com/domaframework/doma/pull/683))\r\n\r\n## Maintenance\r\n\r\n* Remove \"skip ci\" check ([#673](https://github.com/domaframework/doma/pull/673))\r\n* Pass parameters using environment variables ([#672](https://github.com/domaframework/doma/pull/672))\r\n\r\n## Dependency Upgrades\r\n\r\n* Update actions/github-script action to v4 ([#688](https://github.com/domaframework/doma/pull/688))\r\n* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.4 ([#687](https://github.com/domaframework/doma/pull/687))\r\n* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.3 ([#686](https://github.com/domaframework/doma/pull/686))\r\n* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.1 ([#685](https://github.com/domaframework/doma/pull/685))\r\n* Update dependency gradle to v7 ([#681](https://github.com/domaframework/doma/pull/681))\r\n* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.0 ([#682](https://github.com/domaframework/doma/pull/682))\r\n* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.29.1 ([#680](https://github.com/domaframework/doma/pull/680))\r\n* Update actions/setup-java action to v2 ([#678](https://github.com/domaframework/doma/pull/678))\r\n* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.11.1 ([#676](https://github.com/domaframework/doma/pull/676))\r\n* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.29.0 ([#674](https://github.com/domaframework/doma/pull/674))\r\n"
+## Maintenance
+
+* Add params and literals methods to InsertBuilder, UpdateBuilder and DeleteBuilder ([#683](https://github.com/domaframework/doma/pull/683))
+* Remove "skip ci" check ([#673](https://github.com/domaframework/doma/pull/673))
+* Pass parameters using environment variables ([#672](https://github.com/domaframework/doma/pull/672))
+
+## Documentation
+
+* Fix typo "IEDA" -> "IDEA" ([#684](https://github.com/domaframework/doma/pull/684))
+
+## Dependency Upgrades
+
+* Update actions/github-script action to v4 ([#688](https://github.com/domaframework/doma/pull/688))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.4 ([#687](https://github.com/domaframework/doma/pull/687))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.3 ([#686](https://github.com/domaframework/doma/pull/686))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.1 ([#685](https://github.com/domaframework/doma/pull/685))
+* Update dependency gradle to v7 ([#681](https://github.com/domaframework/doma/pull/681))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.0 ([#682](https://github.com/domaframework/doma/pull/682))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.29.1 ([#680](https://github.com/domaframework/doma/pull/680))
+* Update actions/setup-java action to v2 ([#678](https://github.com/domaframework/doma/pull/678))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.11.1 ([#676](https://github.com/domaframework/doma/pull/676))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.29.0 ([#674](https://github.com/domaframework/doma/pull/674))
 
 # [2.46.0](https://github.com/domaframework/doma/releases/tag/2.46.0)
 
