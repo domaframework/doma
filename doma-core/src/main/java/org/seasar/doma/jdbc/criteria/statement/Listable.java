@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -37,7 +38,12 @@ public interface Listable<ELEMENT> extends Statement<List<ELEMENT>> {
    * @return the first element of data
    */
   default Optional<ELEMENT> fetchOptional() {
-    return stream().findFirst();
+    Iterator<ELEMENT> iterator = stream().iterator();
+    if (iterator.hasNext()) {
+      return Optional.ofNullable(iterator.next());
+    } else {
+      return Optional.empty();
+    }
   }
 
   /**
