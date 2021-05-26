@@ -1,3 +1,18 @@
+# [2.46.2](https://github.com/domaframework/doma/releases/tag/2.46.2)
+
+
+## Bug Fixes
+
+* Don't use Stream.findFirst() to avoid NullPointerException ([#695](https://github.com/domaframework/doma/pull/695))
+
+## Dependency Upgrades
+
+* Update dependency gradle to v7.0.2 ([#691](https://github.com/domaframework/doma/pull/691))
+* Update org.junit.jupiter to v5.7.2 ([#692](https://github.com/domaframework/doma/pull/692))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.12.5 ([#690](https://github.com/domaframework/doma/pull/690))
+* Update dependency gradle to v7.0.1 ([#689](https://github.com/domaframework/doma/pull/689))
+
+
 # [2.46.1](https://github.com/domaframework/doma/releases/tag/2.46.1)
 
 ## Maintenance
