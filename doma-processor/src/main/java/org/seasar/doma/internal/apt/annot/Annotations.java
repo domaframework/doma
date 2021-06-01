@@ -3,9 +3,11 @@ package org.seasar.doma.internal.apt.annot;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -57,33 +59,42 @@ public class Annotations {
         typeElement, ctx.getOptions().getLombokAllArgsConstructor(), AllArgsConstructorAnnot::new);
   }
 
-  public AnnotateWithAnnot newAnnotateWithAnnot(TypeElement typeElement) {
+  public List<AnnotateWithAnnot> newAnnotateWithAnnots(TypeElement typeElement) {
     assertNotNull(typeElement);
-    AnnotationMirror annotateWith =
-        ctx.getMoreElements().getAnnotationMirror(typeElement, AnnotateWith.class);
-    if (annotateWith == null) {
-      for (AnnotationMirror annotationMirror : typeElement.getAnnotationMirrors()) {
-        TypeElement ownerElement =
-            ctx.getMoreElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
-        if (ownerElement == null) {
-          continue;
-        }
-        annotateWith = ctx.getMoreElements().getAnnotationMirror(ownerElement, AnnotateWith.class);
-        if (annotateWith != null) {
-          break;
-        }
-      }
-      if (annotateWith == null) {
-        return null;
+    List<AnnotationMirror> annotateWiths = new ArrayList<>();
+    {
+      AnnotationMirror annotateWith =
+          ctx.getMoreElements().getAnnotationMirror(typeElement, AnnotateWith.class);
+      if (annotateWith != null) {
+        annotateWiths.add(annotateWith);
       }
     }
-    Map<String, AnnotationValue> values = ctx.getMoreElements().getValuesWithDefaults(annotateWith);
-    AnnotationValue annotations = values.get(AnnotateWithAnnot.ANNOTATIONS);
-    ArrayList<AnnotationAnnot> annotationsValue = new ArrayList<>();
-    for (AnnotationMirror annotationMirror : AnnotationValueUtil.toAnnotationList(annotations)) {
-      annotationsValue.add(newAnnotationAnnot(annotationMirror));
+    for (AnnotationMirror annotationMirror : typeElement.getAnnotationMirrors()) {
+      TypeElement ownerElement =
+          ctx.getMoreElements().toTypeElement(annotationMirror.getAnnotationType().asElement());
+      if (ownerElement == null) {
+        continue;
+      }
+      AnnotationMirror annotateWith =
+          ctx.getMoreElements().getAnnotationMirror(ownerElement, AnnotateWith.class);
+      if (annotateWith != null) {
+        annotateWiths.add(annotateWith);
+      }
     }
-    return new AnnotateWithAnnot(annotateWith, annotations, annotationsValue);
+    return annotateWiths.stream()
+        .map(
+            annotateWith -> {
+              Map<String, AnnotationValue> values =
+                  ctx.getMoreElements().getValuesWithDefaults(annotateWith);
+              AnnotationValue annotations = values.get(AnnotateWithAnnot.ANNOTATIONS);
+              ArrayList<AnnotationAnnot> annotationsValue = new ArrayList<>();
+              for (AnnotationMirror annotationMirror :
+                  AnnotationValueUtil.toAnnotationList(annotations)) {
+                annotationsValue.add(newAnnotationAnnot(annotationMirror));
+              }
+              return new AnnotateWithAnnot(annotateWith, annotations, annotationsValue);
+            })
+        .collect(Collectors.toList());
   }
 
   private AnnotationAnnot newAnnotationAnnot(AnnotationMirror annotationMirror) {

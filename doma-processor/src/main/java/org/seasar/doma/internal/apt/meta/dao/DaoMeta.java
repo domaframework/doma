@@ -21,7 +21,7 @@ public class DaoMeta implements TypeElementMeta {
 
   private final DaoAnnot daoAnnot;
 
-  private AnnotateWithAnnot annotateWithAnnot;
+  private List<AnnotateWithAnnot> annotateWithAnnots = Collections.emptyList();
 
   private TypeMirror type;
 
@@ -90,23 +90,22 @@ public class DaoMeta implements TypeElementMeta {
     return daoAnnot.getAccessLevelValue();
   }
 
-  public AnnotateWithAnnot getAnnotateWithAnnot() {
-    return annotateWithAnnot;
+  public List<AnnotateWithAnnot> getAnnotateWithAnnots() {
+    return annotateWithAnnots;
   }
 
-  public void setAnnotateWithAnnot(AnnotateWithAnnot annotateWithAnnot) {
-    this.annotateWithAnnot = annotateWithAnnot;
+  public void setAnnotateWithAnnots(List<AnnotateWithAnnot> annotateWithAnnots) {
+    this.annotateWithAnnots = annotateWithAnnots;
   }
 
   public List<AnnotationAnnot> getAnnotationMirrors(AnnotationTarget target) {
     assertNotNull(target);
-    if (annotateWithAnnot == null || annotateWithAnnot.getAnnotationsValue() == null) {
-      return Collections.emptyList();
-    }
     List<AnnotationAnnot> results = new ArrayList<>();
-    for (AnnotationAnnot annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
-      if (target.name().contentEquals(annotationAnnot.getTargetValue().getSimpleName())) {
-        results.add(annotationAnnot);
+    for (AnnotateWithAnnot annotateWithAnnot : annotateWithAnnots) {
+      for (AnnotationAnnot annotationAnnot : annotateWithAnnot.getAnnotationsValue()) {
+        if (target.name().contentEquals(annotationAnnot.getTargetValue().getSimpleName())) {
+          results.add(annotationAnnot);
+        }
       }
     }
     return results;

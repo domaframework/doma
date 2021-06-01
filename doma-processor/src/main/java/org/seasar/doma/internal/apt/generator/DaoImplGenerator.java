@@ -133,7 +133,7 @@ public class DaoImplGenerator extends AbstractGenerator {
     if (daoMeta.hasUserDefinedConfig()) {
       Code configCode = createConfigCode();
       printNoArgConstructor(configCode);
-      if (daoMeta.getAnnotateWithAnnot() == null) {
+      if (daoMeta.getAnnotateWithAnnots().isEmpty()) {
         boolean required = areJdbcConstructorsRequired();
         if (required) {
           printConnectionArgConstructor(configCode);
