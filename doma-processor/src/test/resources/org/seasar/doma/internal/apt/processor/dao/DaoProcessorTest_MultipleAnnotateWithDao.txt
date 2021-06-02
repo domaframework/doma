@@ -1,0 +1,62 @@
+package org.seasar.doma.internal.apt.processor.dao;
+
+/** */
+@org.seasar.doma.internal.apt.processor.dao.ClassAnnotation(aaa = 1, bbb = true)
+@org.seasar.doma.internal.apt.processor.dao.ClassAnnotation2(aaa = 1, bbb = true)
+@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.DaoImplementation
+public class MultipleAnnotateWithDaoImpl implements org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDao, org.seasar.doma.jdbc.ConfigProvider {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
+
+    /**
+     * @param config the config
+     */
+    @org.seasar.doma.internal.apt.processor.dao.ConstructorAnnotation(aaa = 1, bbb = true)
+    @org.seasar.doma.internal.apt.processor.dao.ConstructorAnnotation2(aaa = 1, bbb = true)
+    public MultipleAnnotateWithDaoImpl(@org.seasar.doma.internal.apt.processor.dao.ConstructorParameterAnnotation(aaa = 1, bbb = true) @org.seasar.doma.internal.apt.processor.dao.ConstructorParameterAnnotation2(aaa = 1, bbb = true) org.seasar.doma.jdbc.Config config) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
+    }
+
+    @Override
+    public int insert(org.seasar.doma.internal.apt.processor.entity.Emp emp) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDaoImpl", "insert", emp);
+        try {
+            if (emp == null) {
+                throw new org.seasar.doma.DomaNullPointerException("emp");
+            }
+            org.seasar.doma.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoInsertQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method0);
+            __query.setConfig(__support.getConfig());
+            __query.setEntity(emp);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDaoImpl");
+            __query.setCallerMethodName("insert");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method0, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDaoImpl", "insert", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.MultipleAnnotateWithDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+}

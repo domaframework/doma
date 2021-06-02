@@ -219,11 +219,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private void doAnnotateWith(DaoMeta daoMeta) {
-    AnnotateWithAnnot annotateWithAnnot =
-        ctx.getAnnotations().newAnnotateWithAnnot(daoMeta.getTypeElement());
-    if (annotateWithAnnot != null) {
-      daoMeta.setAnnotateWithAnnot(annotateWithAnnot);
-    }
+    List<AnnotateWithAnnot> annotateWithAnnots =
+        ctx.getAnnotations().newAnnotateWithAnnots(daoMeta.getTypeElement());
+    daoMeta.setAnnotateWithAnnots(annotateWithAnnots);
   }
 
   private void doParentDao(DaoMeta daoMeta) {
