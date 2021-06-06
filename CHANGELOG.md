@@ -1,3 +1,11 @@
+# [2.47.0](https://github.com/domaframework/doma/releases/tag/2.47.0)
+
+
+## New Features
+
+* Add support for handling multiple AnnotateWith ([#697](https://github.com/domaframework/doma/pull/697))
+
+
 # [2.46.2](https://github.com/domaframework/doma/releases/tag/2.46.2)
 
 
