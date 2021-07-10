@@ -1,3 +1,21 @@
+# [2.47.1](https://github.com/domaframework/doma/releases/tag/2.47.1)
+
+
+## Bug Fixes
+
+* Allow the domain class to implement the Iterable interface ([#705](https://github.com/domaframework/doma/pull/705))
+
+## Dependency Upgrades
+
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.14.1 ([#704](https://github.com/domaframework/doma/pull/704))
+* Update dependency gradle to v7.1.1 ([#703](https://github.com/domaframework/doma/pull/703))
+* Update dependency org.slf4j:slf4j-api to v1.7.31 ([#702](https://github.com/domaframework/doma/pull/702))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.14.0 ([#701](https://github.com/domaframework/doma/pull/701))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.30.0 ([#700](https://github.com/domaframework/doma/pull/700))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.13.0 ([#698](https://github.com/domaframework/doma/pull/698))
+* Update dependency gradle to v7.1 ([#699](https://github.com/domaframework/doma/pull/699))
+
+
 # [2.47.0](https://github.com/domaframework/doma/releases/tag/2.47.0)
 
 
