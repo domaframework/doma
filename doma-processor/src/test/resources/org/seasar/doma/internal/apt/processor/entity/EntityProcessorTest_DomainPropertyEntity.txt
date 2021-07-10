@@ -53,9 +53,9 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
         __tableName = "";
         __isQuoteRequired = false;
         java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __idList = new java.util.ArrayList<>();
-        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __list = new java.util.ArrayList<>(3);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __map = new java.util.LinkedHashMap<>(3);
-        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __embeddedMap = new java.util.LinkedHashMap<>(3);
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __list = new java.util.ArrayList<>(4);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __map = new java.util.LinkedHashMap<>(4);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __embeddedMap = new java.util.LinkedHashMap<>(4);
         initializeMaps(__map, __embeddedMap);
         initializeIdList(__map, __idList);
         initializeList(__map, __list);
@@ -68,6 +68,7 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
     private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, ?>> __embeddedMap) {
         __map.put("id", new org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Identifier>(org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.processor.entity._Identifier.getSingletonInternal().createScalarSupplier(), "id", "", __namingType, false, __idGenerator));
         __map.put("name", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.processor.entity.Name>(org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.processor.entity._Name.getSingletonInternal().createScalarSupplier(), "name", "", __namingType, true, true, false));
+        __map.put("names", new org.seasar.doma.jdbc.entity.DefaultPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, java.lang.String, org.seasar.doma.internal.apt.processor.entity.Names>(org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.processor.entity._Names.getSingletonInternal().createScalarSupplier(), "names", "", __namingType, true, true, false));
         __map.put("ver", new org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity, java.lang.Integer, org.seasar.doma.internal.apt.processor.entity.Ver>(org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity.class, org.seasar.doma.internal.apt.processor.entity._Ver.getSingletonInternal().createScalarSupplier(), "ver", "", __namingType, false));
     }
 
@@ -209,6 +210,7 @@ public final class _DomainPropertyEntity extends org.seasar.doma.jdbc.entity.Abs
         org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity entity = new org.seasar.doma.internal.apt.processor.entity.DomainPropertyEntity();
         if (__args.get("id") != null) __args.get("id").save(entity);
         if (__args.get("name") != null) __args.get("name").save(entity);
+        if (__args.get("names") != null) __args.get("names").save(entity);
         if (__args.get("ver") != null) __args.get("ver").save(entity);
         return entity;
     }

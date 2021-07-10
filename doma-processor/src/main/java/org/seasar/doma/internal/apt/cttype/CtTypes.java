@@ -546,18 +546,18 @@ public class CtTypes {
 
   private CtType newCtTypeInternal(
       TypeMirror type, CtTypeVisitor<Void, Void, AptException> validator) {
-    // The newArrayCtType function must be after the newDomainCtType function
+    // Apply newDomainCtType, newEmbeddableCtType and newEntityCtType functions first.
     List<Function<TypeMirror, CtType>> functions =
         Arrays.asList(
+            this::newDomainCtType,
+            this::newEmbeddableCtType,
+            this::newEntityCtType,
             this::newIterableCtType,
             this::newStreamCtType,
-            this::newEntityCtType,
             this::newOptionalCtType,
             this::newOptionalIntCtType,
             this::newOptionalLongCtType,
             this::newOptionalDoubleCtType,
-            this::newDomainCtType,
-            this::newEmbeddableCtType,
             this::newBasicCtType,
             this::newMapCtType,
             this::newSelectOptionsCtType,
