@@ -17,6 +17,8 @@ public class DomainPropertyEntity {
 
   Name name;
 
+  Names names;
+
   @Version Ver ver;
 
   public Identifier getId() {
@@ -33,6 +35,14 @@ public class DomainPropertyEntity {
 
   public void setName(Name name) {
     this.name = name;
+  }
+
+  public Names getNames() {
+    return names;
+  }
+
+  public void setNames(Names names) {
+    this.names = names;
   }
 
   public Ver getVer() {
