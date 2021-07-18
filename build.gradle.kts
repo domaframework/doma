@@ -1,6 +1,6 @@
 plugins {
     base
-    id("com.diffplug.eclipse.apt") version "3.30.0" apply false
+    id("com.diffplug.eclipse.apt") version "3.30.2" apply false
     id("com.diffplug.spotless") version "5.14.1"
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("io.codearte.nexus-staging") version "0.30.0"
