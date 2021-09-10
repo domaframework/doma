@@ -47,7 +47,7 @@ public class NativeSqlSelectTerminal<RESULT>
             config, context, createCommenter(settings.getComment()), settings.getSqlLogType());
     PreparedSql sql = builder.build();
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
-    query.setFetchSize(settings.getQueryTimeout());
+    query.setFetchSize(settings.getFetchSize());
     query.setMaxRows(settings.getMaxRows());
     query.setQueryTimeout(settings.getQueryTimeout());
     return new SelectCommand<RESULT>(query, resultSetHandler) {
