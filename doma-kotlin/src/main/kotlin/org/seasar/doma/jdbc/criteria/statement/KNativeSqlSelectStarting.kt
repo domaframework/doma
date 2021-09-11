@@ -291,6 +291,14 @@ class KNativeSqlSelectStarting<ENTITY>(private val statement: NativeSqlSelectSta
         return KNativeSqlSelectIntermediate(setOperand)
     }
 
+    fun selectAsRow(
+        propertyMetamodel: PropertyMetamodel<*>,
+        vararg propertyMetamodels: PropertyMetamodel<*>?
+    ): KSetOperand<Row> {
+        val setOperand = statement.selectAsRow(propertyMetamodel, *propertyMetamodels)
+        return KNativeSqlSelectIntermediate(setOperand)
+    }
+
     fun <RESULT> selectTo(
         entityMetamodel: EntityMetamodel<RESULT>?,
         vararg propertyMetamodels: PropertyMetamodel<*>?

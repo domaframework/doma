@@ -747,6 +747,21 @@ public class NativeSqlSelectStarting<ENTITY>
     for (int i = 0; i < propertyMetamodels.length; i++) {
       Objects.requireNonNull(propertyMetamodels[i], "propertyMetamodels[" + i + "]");
     }
+    return selectAsRowInternal(propertyMetamodel, propertyMetamodels);
+  }
+
+  public SetOperand<Row> selectAsRow(
+      PropertyMetamodel<?> propertyMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(propertyMetamodel);
+    Objects.requireNonNull(propertyMetamodels);
+    for (int i = 0; i < propertyMetamodels.length; i++) {
+      Objects.requireNonNull(propertyMetamodels[i], "propertyMetamodels[" + i + "]");
+    }
+    return selectAsRowInternal(propertyMetamodel, propertyMetamodels);
+  }
+
+  private SetOperand<Row> selectAsRowInternal(
+      PropertyMetamodel<?> propertyMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     List<PropertyMetamodel<?>> list = new ArrayList<>(1 + propertyMetamodels.length);
     list.add(propertyMetamodel);
     list.addAll(Arrays.asList(propertyMetamodels));
