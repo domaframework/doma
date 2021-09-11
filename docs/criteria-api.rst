@@ -454,6 +454,15 @@ The above query issues the following SQL statement:
 Up to 9 numbers, the column results are held by ``Tuple2`` to ``Tuple9``.
 For more than 9 numbers, the results are held by ``Row``.
 
+You can get a ``Row`` list explicitly by using ``selectAsRow`` as follows:
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    List<Row> list =
+        nativeSql.from(e).selectAsRow(e.employeeName, e.employeeNo).fetch();
+
 Column projection and mapping (Entityql, NativeSql)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
