@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Sql;
@@ -115,6 +116,31 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
     } catch (WrapException e) {
       Throwable cause = e.getCause();
       throw new JdbcException(Message.DOMA2010, cause, path, cause);
+    }
+  }
+
+  protected static final class CacheKey {
+    private final Method method;
+    private final String path;
+
+    public CacheKey(Method method, String path) {
+      Objects.requireNonNull(method);
+      Objects.requireNonNull(path);
+      this.method = method.isAnnotationPresent(Sql.class) ? method : null;
+      this.path = path;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      CacheKey cacheKey = (CacheKey) o;
+      return Objects.equals(method, cacheKey.method) && path.equals(cacheKey.path);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(method, path);
     }
   }
 }
