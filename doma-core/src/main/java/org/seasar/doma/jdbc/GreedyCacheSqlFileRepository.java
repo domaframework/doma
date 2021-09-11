@@ -8,16 +8,17 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /** An SQL file repository that caches the results of SQL parsing without limit. */
 public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
 
-  protected final ConcurrentMap<String, SqlFile> sqlFileMap = new ConcurrentHashMap<>(200);
+  protected final ConcurrentMap<CacheKey, SqlFile> sqlFileMap = new ConcurrentHashMap<>(200);
 
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
-    SqlFile file = sqlFileMap.get(path);
+    CacheKey key = new CacheKey(method, path);
+    SqlFile file = sqlFileMap.get(key);
     if (file != null) {
       return file;
     }
     file = createSqlFile(method, path, dialect);
-    SqlFile current = sqlFileMap.putIfAbsent(path, file);
+    SqlFile current = sqlFileMap.putIfAbsent(key, file);
     return current != null ? current : file;
   }
 
