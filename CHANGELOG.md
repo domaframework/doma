@@ -1,3 +1,37 @@
+# [2.48.0](https://github.com/domaframework/doma/releases/tag/2.48.0)
+
+
+## New Features
+
+* Add the selectAsRow method to NativeSql DSL ([#723](https://github.com/domaframework/doma/pull/723))
+
+## Bug Fixes
+
+* Allow overloading for methods annotated with org.seasar.doma.Sql ([#724](https://github.com/domaframework/doma/pull/724))
+* Do not remove "(" when generating insert sql into auto_increment column only table ([#722](https://github.com/domaframework/doma/pull/722))
+* Fix a problem where the queryTimeout value was incorrectly used as the fetchSize value ([#721](https://github.com/domaframework/doma/pull/721))
+
+## Documentation
+
+* Remove the forum link ([#725](https://github.com/domaframework/doma/pull/725))
+
+## Dependency Upgrades
+
+* Update plugin com.diffplug.eclipse.apt to v3.32.1 ([#719](https://github.com/domaframework/doma/pull/719))
+* Update dependency ch.qos.logback:logback-classic to v1.2.6 ([#718](https://github.com/domaframework/doma/pull/718))
+* Update plugin com.diffplug.spotless to v5.15.0 ([#716](https://github.com/domaframework/doma/pull/716))
+* Update plugin com.diffplug.eclipse.apt to v3.32.0 ([#715](https://github.com/domaframework/doma/pull/715))
+* Update org.jetbrains.kotlin to v1.5.30 ([#714](https://github.com/domaframework/doma/pull/714))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.14.3 ([#713](https://github.com/domaframework/doma/pull/713))
+* Update dependency gradle to v7.2 ([#712](https://github.com/domaframework/doma/pull/712))
+* Update dependency ch.qos.logback:logback-classic to v1.2.5 ([#711](https://github.com/domaframework/doma/pull/711))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.31.0 ([#710](https://github.com/domaframework/doma/pull/710))
+* Update dependency com.diffplug.spotless:com.diffplug.spotless.gradle.plugin to v5.14.2 ([#709](https://github.com/domaframework/doma/pull/709))
+* Update dependency ch.qos.logback:logback-classic to v1.2.4 ([#707](https://github.com/domaframework/doma/pull/707))
+* Update dependency org.slf4j:slf4j-api to v1.7.32 ([#708](https://github.com/domaframework/doma/pull/708))
+* Update dependency com.diffplug.eclipse.apt:com.diffplug.eclipse.apt.gradle.plugin to v3.30.2 ([#706](https://github.com/domaframework/doma/pull/706))
+
+
 # [2.47.1](https://github.com/domaframework/doma/releases/tag/2.47.1)
 
 
