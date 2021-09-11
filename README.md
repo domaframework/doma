@@ -163,11 +163,6 @@ Documentation
 
 https://doma.readthedocs.io/
 
-Forum
----------------------
-
-https://groups.google.com/g/doma-user
-
 Chatroom
 ---------------------
 
