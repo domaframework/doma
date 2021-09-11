@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import example.entity.AutoIncrement;
 import example.entity.Emp;
+import example.entity._AutoIncrement;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -16,6 +18,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.dialect.MysqlDialect;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoInsertQueryTest {
@@ -45,6 +48,25 @@ public class AutoInsertQueryTest {
     query.prepare();
 
     assertNotNull(((InsertQuery) query).getSql());
+  }
+
+  @Test
+  public void testPrepare_MySql_autoIncrement() {
+    runtimeConfig.setDialect(new MysqlDialect());
+
+    AutoIncrement autoIncrement = new AutoIncrement();
+
+    AutoInsertQuery<AutoIncrement> query =
+        new AutoInsertQuery<>(_AutoIncrement.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(autoIncrement);
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    assertEquals("insert into AutoIncrement () values ()", query.getSql().getRawSql());
   }
 
   @Test

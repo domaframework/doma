@@ -120,19 +120,23 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     builder.appendSql("insert into ");
     builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" (");
-    for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-      builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
-      builder.appendSql(", ");
+    if (!targetPropertyTypes.isEmpty()) {
+      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+        builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
+        builder.appendSql(", ");
+      }
+      builder.cutBackSql(2);
     }
-    builder.cutBackSql(2);
     builder.appendSql(") values (");
-    for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-      Property<ENTITY, ?> property = propertyType.createProperty();
-      property.load(entity);
-      builder.appendParameter(property.asInParameter());
-      builder.appendSql(", ");
+    if (!targetPropertyTypes.isEmpty()) {
+      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+        Property<ENTITY, ?> property = propertyType.createProperty();
+        property.load(entity);
+        builder.appendParameter(property.asInParameter());
+        builder.appendSql(", ");
+      }
+      builder.cutBackSql(2);
     }
-    builder.cutBackSql(2);
     builder.appendSql(")");
     sql = builder.build(this::comment);
   }
