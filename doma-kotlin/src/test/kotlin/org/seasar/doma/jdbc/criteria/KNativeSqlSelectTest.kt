@@ -646,11 +646,13 @@ internal class KNativeSqlSelectTest {
                 gt(e.id, d.id)
                 le(e.id, d.id)
                 lt(e.id, d.id)
+                isNull(e.name)
+                isNotNull(e.name)
             }
             .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID and t0_.ID <> t1_.ID and t0_.ID >= t1_.ID and t0_.ID > t1_.ID and t0_.ID <= t1_.ID and t0_.ID < t1_.ID)",
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID and t0_.ID <> t1_.ID and t0_.ID >= t1_.ID and t0_.ID > t1_.ID and t0_.ID <= t1_.ID and t0_.ID < t1_.ID and t0_.NAME is null and t0_.NAME is not null)",
             sql.formattedSql
         )
     }
