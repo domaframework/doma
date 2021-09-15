@@ -201,5 +201,6 @@ Major versions
 | Java 14 |        |   v    |
 | Java 15 |        |   v    |
 | Java 16 |        |   v    |
+| Java 17 |        |   v    |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
