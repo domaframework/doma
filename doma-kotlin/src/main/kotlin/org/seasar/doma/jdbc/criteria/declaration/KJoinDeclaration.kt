@@ -27,4 +27,12 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
     fun <PROPERTY> lt(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.lt(left, right)
     }
+
+    fun <PROPERTY> isNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
+        declaration.isNull(propertyMetamodel)
+    }
+
+    fun <PROPERTY> isNotNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
+        declaration.isNotNull(propertyMetamodel)
+    }
 }

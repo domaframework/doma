@@ -53,4 +53,28 @@ public class JoinDeclaration {
     Objects.requireNonNull(right);
     add(new Criterion.Lt(new Operand.Prop(left), new Operand.Prop(right)));
   }
+
+  /**
+   * Adds a {@code IS NULL} operator.
+   *
+   * @param propertyMetamodel the operand
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code propertyMetamodel} is null
+   */
+  public <PROPERTY> void isNull(PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    add(new Criterion.IsNull(new Operand.Prop(propertyMetamodel)));
+  }
+
+  /**
+   * Adds a {@code IS NOT NULL} operator.
+   *
+   * @param propertyMetamodel the operand
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code propertyMetamodel} is null
+   */
+  public <PROPERTY> void isNotNull(PropertyMetamodel<PROPERTY> propertyMetamodel) {
+    Objects.requireNonNull(propertyMetamodel);
+    add(new Criterion.IsNotNull(new Operand.Prop(propertyMetamodel)));
+  }
 }
