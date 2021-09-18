@@ -112,7 +112,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Test
-        run: ./gradlew ${{ matrix.driver }} -PdomaVersion=${{ needs.setup.outputs.version }} -PenableAdditionalFeatures=true
+        run: ./gradlew ${{ matrix.driver }} -PdomaVersion=${{ needs.build.outputs.version }} -PenableAdditionalFeatures=true
 
       - name: Upload reports
         if: failure()
