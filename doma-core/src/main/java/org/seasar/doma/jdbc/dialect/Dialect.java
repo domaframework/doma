@@ -150,6 +150,15 @@ public interface Dialect {
   }
 
   /**
+   * Whether this object supports mod operator {@code %}.
+   *
+   * @return {@code true}, if this object supports it
+   */
+  default boolean supportsModOperator() {
+    return true;
+  }
+
+  /**
    * Returns an SQL object to get IDENTITY values that are generated in the database.
    *
    * <p>This method is available, only if {@link #supportsIdentity()} returns {@code true}.
