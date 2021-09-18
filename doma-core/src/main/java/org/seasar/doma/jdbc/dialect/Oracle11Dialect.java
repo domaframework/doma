@@ -160,6 +160,11 @@ public class Oracle11Dialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsModOperator() {
+    return false;
+  }
+
+  @Override
   public JdbcType<ResultSet> getResultSetType() {
     return RESULT_SET;
   }

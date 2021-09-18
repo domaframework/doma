@@ -509,7 +509,15 @@ public class BuilderSupport {
 
     @Override
     public void visit(ArithmeticExpression.Mod<?> mod) {
-      binaryOperator(mod.getName(), mod.left, mod.right);
+      if (config.getDialect().supportsModOperator()) {
+        binaryOperator(mod.getName(), mod.left, mod.right);
+      } else {
+        buf.appendSql("mod(");
+        mod.left.accept(operandVisitor);
+        buf.appendSql(", ");
+        mod.right.accept(operandVisitor);
+        buf.appendSql(")");
+      }
     }
 
     @Override
