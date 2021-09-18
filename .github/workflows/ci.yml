@@ -66,20 +66,15 @@ jobs:
           name: build
           path: ./**/build/reports
 
-  h2:
-    if: contains(github.event.head_commit.message, '[skip build]') == false
-    name: H2 - JDK ${{ matrix.java }}
+  test:
+    name: Test (Java${{ matrix.java }}, ${{ matrix.driver }})
     runs-on: ubuntu-latest
     needs: build
-
-    env:
-      ORG_GRADLE_PROJECT_jdbcUrl: ''
-      ORG_GRADLE_PROJECT_jdbcUser: ''
-      ORG_GRADLE_PROJECT_jdbcPassword: ''
-
     strategy:
       matrix:
-        java: [ 8 ]
+        java: [17]
+        driver: [h2, mysql, postgresql, sqlserver]
+    timeout-minutes: 10
 
     steps:
       - name: Download Maven Repository
@@ -92,7 +87,7 @@ jobs:
         shell: bash
         run: tar -xzf maven-repository.tgz -C ~
 
-      - name: Set up JDK
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
@@ -115,319 +110,22 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Print Gradle version
-        run: ./gradlew -v
-
-      - name: Test (java)
-        run: ./gradlew :java:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Test (kotlin)
-        run: ./gradlew :kotlin:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: h2-jdk${{ matrix.java }}
-          path: ./**/build/reports
-
-  mysql:
-    if: contains(github.event.head_commit.message, '[skip build]') == false
-    name: MySQL - JDK ${{ matrix.java }}
-    runs-on: ubuntu-latest
-    needs: build
-
-    env:
-      ORG_GRADLE_PROJECT_jdbcUrl: jdbc:mysql://127.0.0.1/doma_it
-      ORG_GRADLE_PROJECT_jdbcUser: root
-      ORG_GRADLE_PROJECT_jdbcPassword: root
-
-    strategy:
-      matrix:
-        java: [ 8 ]
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: doma_it
-        ports:
-          - 3306
-
-    steps:
-      - name: Setup MySQL service
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -uroot -h127.0.0.1 -proot -e 'create database doma_it;'
-
-      - name: Download Maven Repository
-        uses: actions/download-artifact@v2
-        with:
-          name: maven-repository
-          path: .
-
-      - name: Extract Maven Repository
-        shell: bash
-        run: tar -xzf maven-repository.tgz -C ~
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: ${{ matrix.java }}
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: domaframework/doma-it
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Print Gradle version
-        run: ./gradlew -v
-
-      - name: Test (java)
-        run: ./gradlew :java:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Test (kotlin)
-        run: ./gradlew :kotlin:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: mysql-jdk${{ matrix.java }}
-          path: ./**/build/reports
-
-  postgres:
-    if: contains(github.event.head_commit.message, '[skip build]') == false
-    name: PostgreSQL - JDK ${{ matrix.java }}
-    runs-on: ubuntu-latest
-    needs: build
-
-    env:
-      ORG_GRADLE_PROJECT_jdbcUrl: jdbc:postgresql://127.0.0.1/doma_it
-      ORG_GRADLE_PROJECT_jdbcUser: postgres
-      ORG_GRADLE_PROJECT_jdbcPassword: postgres
-
-    strategy:
-      matrix:
-        java: [ 8 ]
-
-    services:
-      postgres:
-        image: postgres:10.16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: doma_it
-        ports:
-          - 127.0.0.1:5432:5432
-
-    steps:
-      - name: Download Maven Repository
-        uses: actions/download-artifact@v2
-        with:
-          name: maven-repository
-          path: .
-
-      - name: Extract Maven Repository
-        shell: bash
-        run: tar -xzf maven-repository.tgz -C ~
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: ${{ matrix.java }}
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: domaframework/doma-it
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
- 
-      - name: Print Gradle version
-        run: ./gradlew -v
-
-      - name: Test (java)
-        run: ./gradlew :java:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Test (kotlin)
-        run: ./gradlew :kotlin:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: postgres-jdk${{ matrix.java }}
-          path: ./**/build/reports
-
-  sqlserver:
-    if: contains(github.event.head_commit.message, '[skip build]') == false
-    name: SQL Server - JDK ${{ matrix.java }}
-    runs-on: ubuntu-latest
-    needs: build
-
-    env:
-      ORG_GRADLE_PROJECT_jdbcUrl: jdbc:sqlserver://127.0.0.1;database=doma_it
-      ORG_GRADLE_PROJECT_jdbcUser: sa
-      ORG_GRADLE_PROJECT_jdbcPassword: P@ssw0rd
-
-    strategy:
-      matrix:
-        java: [ 8 ]
-
-    services:
-      sqlserver:
-        image: docker://mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04
-        options: --name "mssqlcontainer" --health-cmd "/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P P@ssw0rd -Q \"SELECT * FROM sys.objects;\"" --health-interval 20s --health-timeout 30s --health-retries 128
-        ports:
-          - "1433:1433"
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: "P@ssw0rd"
-
-    steps:
-      - name: Setup SQL Server service
-        run: |
-          docker exec mssqlcontainer /opt/mssql-tools/bin/sqlcmd \
-            -S 127.0.0.1 -U sa -P 'P@ssw0rd' -Q 'CREATE DATABASE doma_it'
-
-      - name: Download Maven Repository
-        uses: actions/download-artifact@v2
-        with:
-          name: maven-repository
-          path: .
-
-      - name: Extract Maven Repository
-        shell: bash
-        run: tar -xzf maven-repository.tgz -C ~
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: ${{ matrix.java }}
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: domaframework/doma-it
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Print Gradle version
-        run: ./gradlew -v
-
-      - name: Test (java)
-        run: ./gradlew :java:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Test (kotlin)
-        run: ./gradlew :kotlin:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }}
-
-      - name: Upload reports
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: sqlserver-jdk${{ matrix.java }}
-          path: ./**/build/reports
-
-  additional-features:
-    if: contains(github.event.head_commit.message, '[skip build]') == false
-    name: Additional Features
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download Maven Repository
-        uses: actions/download-artifact@v2
-        with:
-          name: maven-repository
-          path: .
-
-      - name: Extract Maven Repository
-        shell: bash
-        run: tar -xzf maven-repository.tgz -C ~
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: domaframework/doma-it
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Print Gradle version
-        run: ./gradlew -v
 
       - name: Test
-        run: ./gradlew :jep:check -x spotlessCheck -PdomaVersion=${{ needs.build.outputs.version }} -PenableAdditionalFeatures=true
+        run: ./gradlew ${{ matrix.driver }} -PdomaVersion=${{ needs.setup.outputs.version }} -PenableAdditionalFeatures=true
 
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: additional-features
+          name: java${{ matrix.java }}-${{ matrix.driver }}
           path: ./**/build/reports
 
   publish:
     if: github.event_name == 'push' && contains(github.event.head_commit.message, '[skip build]') == false
     name: Publish
     runs-on: ubuntu-latest
-    needs: [ build, h2, mysql, postgres, sqlserver, additional-features ]
+    needs: [ build, test ]
 
     steps:
       - name: Set up JDK 8
