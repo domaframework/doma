@@ -1,3 +1,27 @@
+# [2.49.0](https://github.com/domaframework/doma/releases/tag/2.49.0)
+
+
+## New Features
+
+* Support isNull and isNotNull predicates in ON clause of Criteria API ([#729](https://github.com/domaframework/doma/pull/729))
+
+## Bug Fixes
+
+* If the dialect does not support the mod operator, use the mod function in the Criteria API ([#733](https://github.com/domaframework/doma/pull/733))
+
+## Maintenance
+
+* Simplify integration test ([#732](https://github.com/domaframework/doma/pull/732))
+* Support Java 17 ([#730](https://github.com/domaframework/doma/pull/730))
+
+## Dependency Upgrades
+
+* Update plugin org.jetbrains.kotlin.jvm to v1.5.31 ([#734](https://github.com/domaframework/doma/pull/734))
+* Update plugin com.diffplug.eclipse.apt to v3.33.0 ([#731](https://github.com/domaframework/doma/pull/731))
+* Update plugin com.diffplug.eclipse.apt to v3.32.2 ([#727](https://github.com/domaframework/doma/pull/727))
+* Update org.junit.jupiter to v5.8.0 ([#726](https://github.com/domaframework/doma/pull/726))
+
+
 # [2.48.0](https://github.com/domaframework/doma/releases/tag/2.48.0)
 
 
