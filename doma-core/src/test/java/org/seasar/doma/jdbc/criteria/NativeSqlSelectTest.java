@@ -716,6 +716,31 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void join_on_complex() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .innerJoin(
+                d,
+                on -> {
+                  on.eq(e.id, d.id);
+                  on.or(
+                      () -> {
+                        on.isNull(d.name);
+                        on.in(d.id, Arrays.asList(1, 2, 3));
+                      });
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID or (t1_.NAME is null and t1_.ID in (1, 2, 3)))",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void orderBy() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =

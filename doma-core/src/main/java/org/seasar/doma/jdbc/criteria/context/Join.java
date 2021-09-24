@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 public class Join {
   public final EntityMetamodel<?> entityMetamodel;
   public final JoinKind kind;
-  public final List<Criterion> on = new ArrayList<>();
+  public List<Criterion> on = new ArrayList<>();
 
   public Join(EntityMetamodel<?> entityMetamodel, JoinKind kind) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
