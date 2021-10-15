@@ -288,6 +288,11 @@ java.sql.Timestamp @roundDownTimePart(java.sql.Timestamp timestamp)
   The return value is a new Timestamp which is rounded down the time part.
   It returns ``null`` if you pass ``null`` as a parameter.
 
+java.time.LocalDateTime @roundDownTimePart(java.time.LocalDateTime localDateTime)
+  Rounds down the time part.
+  The return value is a new LocalDateTime which is rounded down the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
+
 java.util.Date @roundUpTimePart(java.util.Date date)
   Rounds up the time part.
   The return value is a new Date which is rounded up the time part.
@@ -301,6 +306,16 @@ java.sql.Date @roundUpTimePart(java.sql.Date date)
 java.sql.Timestamp @roundUpTimePart(java.sql.Timestamp timestamp)
   Rounds up the time part.
   The return value is a new Timestamp which is rounded up the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
+
+java.time.LocalDateTime @roundUpTimePart(java.time.LocalDateTime localDateTime)
+  Rounds up the time part.
+  The return value is a new LocalDateTime which is rounded up the time part.
+  It returns ``null`` if you pass ``null`` as a parameter.
+
+java.time.LocalDate @roundUpTimePart(java.time.LocalDate localDate)
+  Returns the next day.
+  The return value is a new LocalDate which is the next one after the argument.
   It returns ``null`` if you pass ``null`` as a parameter.
 
 boolean @isEmpty(CharSequence charSequence)
