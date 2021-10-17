@@ -25,7 +25,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
           script: |
-            const list = await github.repos.listReleases({
+            const list = await github.rest.repos.listReleases({
               owner: "domaframework",
               repo: "doma",
             });
