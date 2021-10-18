@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import javax.annotation.Generated;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.jdbc.entity.AbstractEntityType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -24,7 +23,6 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 import org.seasar.doma.jdbc.id.BuiltinIdentityIdGenerator;
 import org.seasar.doma.wrapper.IntegerWrapper;
 
-@Generated("")
 public class _AutoIncrement extends AbstractEntityType<AutoIncrement> {
 
   private static final _AutoIncrement singleton = new _AutoIncrement();
