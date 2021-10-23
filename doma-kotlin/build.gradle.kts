@@ -18,4 +18,7 @@ tasks {
     compileTestKotlin {
         kotlinOptions.jvmTarget = jvmTarget
     }
+    javadoc {
+        enabled = false
+    }
 }

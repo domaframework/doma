@@ -5,6 +5,7 @@ plugins {
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("io.codearte.nexus-staging") version "0.30.0"
     id("net.researchgate.release") version "2.8.1"
+    id("org.javamodularity.moduleplugin") version "1.8.10" apply false
     kotlin("jvm") version "1.5.31" apply false
 }
 
@@ -44,6 +45,7 @@ subprojects {
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "de.marcphilipp.nexus-publish")
+    apply(plugin = "org.javamodularity.moduleplugin")
 
     tasks {
         val replaceVersionInJava by registering {
@@ -68,24 +70,32 @@ subprojects {
             (options as StandardJavadocDocletOptions).apply {
                 charSet = encoding
                 docEncoding = encoding
-                links("https://docs.oracle.com/javase/8/docs/api/")
                 use()
-                exclude("**/internal/**")
             }
         }
 
         named<JavaCompile>("compileTestJava") {
             options.encoding = encoding
             options.compilerArgs = listOf("-proc:none")
+            extensions.configure(org.javamodularity.moduleplugin.extensions.CompileTestModuleOptions::class) {
+                isCompileOnClasspath = true
+            }
         }
 
         named<Test>("test") {
             maxHeapSize = "1g"
             useJUnitPlatform()
+            extensions.configure(org.javamodularity.moduleplugin.extensions.TestModuleOptions::class) {
+                runOnClasspath = true
+            }
         }
 
         named("build") {
             dependsOn("publishToMavenLocal")
+        }
+
+        withType<JavaCompile>().configureEach {
+            modularity.inferModulePath.set(false)
         }
 
         withType<Sign>().configureEach {
@@ -96,6 +106,10 @@ subprojects {
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    }
+
+    configure<org.javamodularity.moduleplugin.extensions.ModularityExtension> {
+        mixedJavaRelease(8)
     }
 
     configure<JavaPluginExtension> {
