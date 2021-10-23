@@ -27,7 +27,7 @@ Doma provides the doma-slf4j artifact to adapt SLF4J.
 Configuration
 =============
 
-Return a ``org.seasar.doma.jdbc.Slf4jJdbcLogger`` instance from
+Return a ``org.seasar.doma.slf4j.Slf4jJdbcLogger`` instance from
 the ``getJdbcLogger`` method of the ``org.seasar.doma.jdbc.Config`` implementation class.
 
 See also :ref:`Logger<config-logger>`.
