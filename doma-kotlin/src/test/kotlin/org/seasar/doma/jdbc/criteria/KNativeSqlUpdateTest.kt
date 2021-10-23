@@ -9,7 +9,7 @@ import java.math.BigDecimal
 
 internal class KNativeSqlUpdateTest {
 
-    private val nativeSql = KNativeSql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
 
     @Test
     fun set() {
@@ -45,7 +45,7 @@ internal class KNativeSqlUpdateTest {
     fun aliasInUpdateClause() {
         val config = MockConfig()
         config.dialect = MssqlDialect()
-        val nativeSql = KNativeSql(config)
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
         val e = Emp_()
         val stmt = nativeSql
             .update(e)

@@ -9,7 +9,7 @@ import java.math.BigDecimal
 
 internal class KEntityqlDeleteTest {
 
-    private val entityql = KEntityql(MockConfig())
+    private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(MockConfig())
 
     @Test
     fun test() {

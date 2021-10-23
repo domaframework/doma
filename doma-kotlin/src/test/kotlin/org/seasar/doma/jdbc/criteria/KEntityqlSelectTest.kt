@@ -14,7 +14,7 @@ import org.seasar.doma.message.Message
 
 internal class KEntityqlSelectTest {
 
-    private val entityql = KEntityql(MockConfig())
+    private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(MockConfig())
 
     @Test
     fun from() {
