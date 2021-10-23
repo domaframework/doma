@@ -1,4 +1,4 @@
-package org.seasar.doma.jdbc;
+package org.seasar.doma.slf4j;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,6 +9,11 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
+import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.SqlLogType;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
