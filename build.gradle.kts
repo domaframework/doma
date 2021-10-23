@@ -99,8 +99,8 @@ subprojects {
     }
 
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
         withJavadocJar()
         withSourcesJar()
     }
@@ -183,7 +183,7 @@ subprojects {
             }
         }
         jdt {
-            javaRuntimeName = "JavaSE-1.8"
+            javaRuntimeName = "JavaSE-11"
         }
     }
 }
