@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.criteria.mock.MockConfig
 
 internal class KNativeSqlInsertTest {
 
-    private val nativeSql = KNativeSql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
 
     @Test
     fun insert() {
