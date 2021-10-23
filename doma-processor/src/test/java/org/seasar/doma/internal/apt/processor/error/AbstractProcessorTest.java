@@ -14,7 +14,6 @@ class AbstractProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     disableCompilationAssertion();
-    addSourcePath("src/main/java");
   }
 
   @AfterEach
