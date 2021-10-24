@@ -82,7 +82,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        java: [17]
+        java: [8, 17]
         driver: [h2, mysql, postgresql, sqlserver]
     timeout-minutes: 10
 
