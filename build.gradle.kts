@@ -47,62 +47,6 @@ subprojects {
     apply(plugin = "de.marcphilipp.nexus-publish")
     apply(plugin = "org.javamodularity.moduleplugin")
 
-    tasks {
-        val replaceVersionInJava by registering {
-            doLast {
-                replaceVersionInArtifact(version.toString())
-            }
-        }
-
-        named<JavaCompile>("compileJava") {
-            dependsOn(replaceVersionInJava)
-            options.encoding = encoding
-        }
-
-        named<Jar>("jar") {
-            manifest {
-                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
-            }
-        }
-
-        named<Javadoc>("javadoc") {
-            options.encoding = encoding
-            (options as StandardJavadocDocletOptions).apply {
-                charSet = encoding
-                docEncoding = encoding
-                use()
-            }
-        }
-
-        named<JavaCompile>("compileTestJava") {
-            options.encoding = encoding
-            options.compilerArgs = listOf("-proc:none")
-            extensions.configure(org.javamodularity.moduleplugin.extensions.CompileTestModuleOptions::class) {
-                isCompileOnClasspath = true
-            }
-        }
-
-        named<Test>("test") {
-            maxHeapSize = "1g"
-            useJUnitPlatform()
-            extensions.configure(org.javamodularity.moduleplugin.extensions.TestModuleOptions::class) {
-                runOnClasspath = true
-            }
-        }
-
-        named("build") {
-            dependsOn("publishToMavenLocal")
-        }
-
-        withType<JavaCompile>().configureEach {
-            modularity.inferModulePath.set(false)
-        }
-
-        withType<Sign>().configureEach {
-            onlyIf { isReleaseVersion }
-        }
-    }
-
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
@@ -198,6 +142,66 @@ subprojects {
         }
         jdt {
             javaRuntimeName = "JavaSE-11"
+        }
+    }
+
+    tasks {
+        val replaceVersionInJava by registering {
+            doLast {
+                replaceVersionInArtifact(version.toString())
+            }
+        }
+
+        named<JavaCompile>("compileJava") {
+            dependsOn(replaceVersionInJava)
+            options.encoding = encoding
+        }
+
+        named<Jar>("jar") {
+            manifest {
+                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+            }
+        }
+
+        named("sourcesJar") {
+            dependsOn("compileModuleInfoJava")
+        }
+
+        named<Javadoc>("javadoc") {
+            options.encoding = encoding
+            (options as StandardJavadocDocletOptions).apply {
+                charSet = encoding
+                docEncoding = encoding
+                use()
+            }
+        }
+
+        named<JavaCompile>("compileTestJava") {
+            options.encoding = encoding
+            options.compilerArgs = listOf("-proc:none")
+            extensions.configure(org.javamodularity.moduleplugin.extensions.CompileTestModuleOptions::class) {
+                isCompileOnClasspath = true
+            }
+        }
+
+        named<Test>("test") {
+            maxHeapSize = "1g"
+            useJUnitPlatform()
+            extensions.configure(org.javamodularity.moduleplugin.extensions.TestModuleOptions::class) {
+                runOnClasspath = true
+            }
+        }
+
+        named("build") {
+            dependsOn("publishToMavenLocal")
+        }
+
+        withType<JavaCompile>().configureEach {
+            modularity.inferModulePath.set(false)
+        }
+
+        withType<Sign>().configureEach {
+            onlyIf { isReleaseVersion }
         }
     }
 }
