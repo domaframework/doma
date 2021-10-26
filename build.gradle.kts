@@ -7,7 +7,7 @@ plugins {
     id("net.researchgate.release") version "2.8.1"
     id("org.seasar.doma.compile") version "1.1.0" apply false
     kotlin("jvm") version "1.5.31" apply false
-    kotlin("kapt") version "1.5.31" apply false
+    kotlin("kapt") version "1.6.0-RC" apply false
 }
 
 val Project.javaModuleName: String
