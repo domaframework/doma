@@ -33,13 +33,13 @@ module org.seasar.doma.core {
   exports org.seasar.doma.internal.jdbc.scalar;
   exports org.seasar.doma.internal.jdbc.sql;
   exports org.seasar.doma.internal.wrapper;
+  exports org.seasar.doma.internal.util;
 
   // Qualified Exports
   exports org.seasar.doma.internal.expr to org.seasar.doma.processor;
   exports org.seasar.doma.internal.expr.node to org.seasar.doma.processor;
   exports org.seasar.doma.internal.jdbc.sql.node to org.seasar.doma.processor;
   exports org.seasar.doma.internal.jdbc.util to org.seasar.doma.processor;
-  exports org.seasar.doma.internal.util to org.seasar.doma.processor;
 
   // Requires
   requires transitive java.sql;
