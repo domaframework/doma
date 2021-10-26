@@ -46,7 +46,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build and Install packages
+      - name: Assemble and Check
         run: ./gradlew assemble check
 
       - name: Upload reports
