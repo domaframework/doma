@@ -1,0 +1,1 @@
+select * from EMP where ID = /*id*/100
