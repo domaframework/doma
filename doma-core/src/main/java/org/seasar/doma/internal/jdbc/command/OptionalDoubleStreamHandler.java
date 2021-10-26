@@ -5,10 +5,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.jdbc.scalar.OptionalDoubleScalar;
 
-/**
- * @author nakamura-to
- * @param <RESULT>
- */
 public class OptionalDoubleStreamHandler<RESULT>
     extends ScalarStreamHandler<Double, OptionalDouble, RESULT> {
 

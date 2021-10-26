@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.dialect.MysqlDialect
 
 internal class KNativeSqlDeleteTest {
 
-    private val nativeSql = KNativeSql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
 
     @Test
     fun deleteFrom() {

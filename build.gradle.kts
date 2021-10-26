@@ -8,6 +8,17 @@ plugins {
     kotlin("jvm") version "1.5.31" apply false
 }
 
+val Project.javaModuleName: String
+    get() = "org.seasar." + this.name.replace('-', '.')
+
+val modularProjects: List<Project> = listOf(
+    findProject(":doma-core")!!,
+    findProject(":doma-kotlin")!!,
+    findProject(":doma-mock")!!,
+    findProject(":doma-processor")!!,
+    findProject(":doma-slf4j")!!,
+)
+
 val encoding: String by project
 val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 
@@ -45,62 +56,13 @@ subprojects {
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "de.marcphilipp.nexus-publish")
 
-    tasks {
-        val replaceVersionInJava by registering {
-            doLast {
-                replaceVersionInArtifact(version.toString())
-            }
-        }
-
-        named<JavaCompile>("compileJava") {
-            dependsOn(replaceVersionInJava)
-            options.encoding = encoding
-        }
-
-        named<Jar>("jar") {
-            manifest {
-                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
-            }
-        }
-
-        named<Javadoc>("javadoc") {
-            options.encoding = encoding
-            (options as StandardJavadocDocletOptions).apply {
-                charSet = encoding
-                docEncoding = encoding
-                links("https://docs.oracle.com/javase/8/docs/api/")
-                use()
-                exclude("**/internal/**")
-            }
-        }
-
-        named<JavaCompile>("compileTestJava") {
-            options.encoding = encoding
-            options.compilerArgs = listOf("-proc:none")
-        }
-
-        named<Test>("test") {
-            maxHeapSize = "1g"
-            useJUnitPlatform()
-        }
-
-        named("build") {
-            dependsOn("publishToMavenLocal")
-        }
-
-        withType<Sign>().configureEach {
-            onlyIf { isReleaseVersion }
-        }
-    }
-
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     }
 
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        toolchain.languageVersion.set(JavaLanguageVersion.of(8))
         withJavadocJar()
         withSourcesJar()
     }
@@ -184,6 +146,126 @@ subprojects {
         }
         jdt {
             javaRuntimeName = "JavaSE-1.8"
+        }
+    }
+
+    class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
+        @get:CompileClasspath
+        val modulePath: Configuration = it.configurations["compileClasspath"]
+        override fun asArguments() = listOf("--module-path", modulePath.asPath)
+
+        @Internal
+        override fun getName() = "module-path"
+    }
+
+    class PatchModuleArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
+
+        @get:Input
+        val module: String = it.javaModuleName
+
+        @get:InputFiles
+        @get:PathSensitive(PathSensitivity.RELATIVE)
+        val patch: Provider<FileCollection> = provider {
+            val sourceSets = it.the<SourceSetContainer>()
+            if (it == project)
+                files(sourceSets.matching { it.name.startsWith("main") }.map { it.output })
+            else
+                files(sourceSets["main"].java.srcDirs)
+        }
+
+        override fun asArguments(): List<String> {
+            val path = patch.get().filter { it.exists() }.asPath
+            if (path.isEmpty()) {
+                return emptyList()
+            }
+            return listOf("--patch-module", "$module=$path")
+        }
+
+        @Internal
+        override fun getName() = "patch-module($module)"
+    }
+
+    val javaModuleName = project.javaModuleName
+    val moduleSourceDir = file("src/module/$javaModuleName")
+    val moduleOutputDir = file("$buildDir/classes/java/module")
+
+    val compileModule by tasks.registering(JavaCompile::class) {
+        dependsOn(tasks.named("classes"))
+        source = fileTree(moduleSourceDir)
+        destinationDirectory.set(moduleOutputDir)
+        sourceCompatibility = "9"
+        targetCompatibility = "9"
+        classpath = files()
+        options.release.set(9)
+        options.compilerArgs.addAll(
+            listOf(
+                "--module-version", "${project.version}",
+                "--module-source-path", files(modularProjects.map { "${it.projectDir}/src/module" }).asPath
+            )
+        )
+        options.compilerArgumentProviders.add(ModulePathArgumentProvider(project))
+        options.compilerArgumentProviders.addAll(modularProjects.map { PatchModuleArgumentProvider(it) })
+        modularity.inferModulePath.set(false)
+    }
+
+    tasks {
+        val replaceVersionInJava by registering {
+            doLast {
+                replaceVersionInArtifact(version.toString())
+            }
+        }
+
+        named<JavaCompile>("compileJava") {
+            dependsOn(replaceVersionInJava)
+            options.encoding = encoding
+        }
+
+        named<Jar>("jar") {
+            dependsOn(compileModule)
+            manifest {
+                attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
+            }
+            from("$moduleOutputDir/$javaModuleName") {
+                include("module-info.class")
+            }
+        }
+
+        named<Jar>("sourcesJar") {
+            from(moduleSourceDir) {
+                include("module-info.java")
+            }
+        }
+
+        named<Javadoc>("javadoc") {
+            options.encoding = encoding
+            (options as StandardJavadocDocletOptions).apply {
+                charSet = encoding
+                docEncoding = encoding
+                use()
+                exclude("**/internal/**")
+            }
+        }
+
+        named<JavaCompile>("compileTestJava") {
+            options.encoding = encoding
+            options.compilerArgs = listOf("-proc:none")
+        }
+
+        named<Test>("test") {
+            maxHeapSize = "1g"
+            useJUnitPlatform()
+        }
+
+        named("build") {
+            dependsOn("publishToMavenLocal")
+        }
+
+        withType<JavaCompile>().configureEach {
+            modularity.inferModulePath.set(false)
+        }
+
+        withType<Sign>().configureEach {
+            onlyIf { isReleaseVersion }
         }
     }
 }

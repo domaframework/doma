@@ -9,26 +9,10 @@ import org.seasar.doma.jdbc.Commenter
 import org.seasar.doma.jdbc.criteria.entity.Dept_
 import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.entity.NoIdEmp_
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.avg
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.case
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.concat
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.count
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.countDistinct
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.literal
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.lower
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.ltrim
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.max
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.min
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.rtrim
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.select
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.sum
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.trim
-import org.seasar.doma.jdbc.criteria.expression.KExpressions.upper
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
 import org.seasar.doma.jdbc.criteria.option.DistinctOption
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption
 import org.seasar.doma.jdbc.criteria.option.LikeOption
-import org.seasar.doma.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2
 import org.seasar.doma.jdbc.dialect.Db2Dialect
 import org.seasar.doma.jdbc.dialect.Dialect
@@ -36,12 +20,28 @@ import org.seasar.doma.jdbc.dialect.Mssql2008Dialect
 import org.seasar.doma.jdbc.dialect.MssqlDialect
 import org.seasar.doma.jdbc.dialect.OracleDialect
 import org.seasar.doma.jdbc.dialect.PostgresDialect
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.avg
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.case
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.concat
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.count
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.countDistinct
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.literal
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.lower
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.ltrim
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.max
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.min
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.rtrim
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.select
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.sum
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.trim
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.upper
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.message.Message
 import java.math.BigDecimal
 
 internal class KNativeSqlSelectTest {
 
-    private val nativeSql = KNativeSql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
 
     @Test
     fun from() {
@@ -729,7 +729,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_db2() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return Db2Dialect()
@@ -747,7 +747,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_mssql() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return MssqlDialect()
@@ -765,7 +765,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_mssql_nowait() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return MssqlDialect()
@@ -787,7 +787,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_oracle_nowait() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -802,7 +802,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_oracle_nowait_withColumn() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -825,7 +825,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_oracle_wait_withColumn() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -848,7 +848,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun forUpdate_postgres_nowait_withTable() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return PostgresDialect()
@@ -1078,7 +1078,7 @@ internal class KNativeSqlSelectTest {
                 }
             }
         }
-        val nativeSql = KNativeSql(config)
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
         val e = Emp_()
         val stmt = nativeSql.from(e) { comment = "hello" }
         val sql = stmt.asSql()
@@ -1143,7 +1143,7 @@ internal class KNativeSqlSelectTest {
 
     @Test
     fun expression_concat_mssql2008() {
-        val nativeSql = KNativeSql(
+        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return Mssql2008Dialect()
