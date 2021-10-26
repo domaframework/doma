@@ -21,29 +21,23 @@ spotless {
     }
 }
 
-tasks {
-    val encoding = "UTF-8"
-
-    val prepareModuleInfo by registering {
-        doLast {
-            delete(moduleInfoFile)
-            if (javaReleaseVersion > 8) {
-                file(moduleInfoFile).writeText("""
+delete(moduleInfoFile)
+if (javaReleaseVersion > 8) {
+    file(moduleInfoFile).writeText("""
                 open module org.seasar.doma.it.java {
                     requires org.seasar.doma.core;
                 }
-            """.trimIndent())
-            }
-        }
-    }
+            """.trimIndent()
+    )
+}
 
+tasks {
+    val encoding = "UTF-8"
+    
     compileJava {
-        dependsOn(prepareModuleInfo)
         options.encoding = encoding
         options.release.set(javaReleaseVersion)
         options.compilerArgs.addAll(listOf("-Adoma.domain.converters=org.seasar.doma.it.domain.DomainConverterProvider"))
-        doLast {
-        }
     }
 
     compileTestJava {
