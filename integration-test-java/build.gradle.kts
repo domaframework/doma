@@ -33,7 +33,7 @@ if (javaReleaseVersion > 8) {
 
 tasks {
     val encoding = "UTF-8"
-    
+
     compileJava {
         options.encoding = encoding
         options.release.set(javaReleaseVersion)
