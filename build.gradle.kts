@@ -242,6 +242,7 @@ subprojects {
                 charSet = encoding
                 docEncoding = encoding
                 use()
+                exclude("**/internal/**")
             }
         }
 
