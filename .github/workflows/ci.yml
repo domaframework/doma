@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build And Install
+    name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
