@@ -266,10 +266,6 @@ configure(modularProjects) {
             dependsOn("publishToMavenLocal")
         }
 
-        withType<JavaCompile>().configureEach {
-            modularity.inferModulePath.set(false)
-        }
-
         withType<Sign>().configureEach {
             onlyIf { isReleaseVersion }
         }
