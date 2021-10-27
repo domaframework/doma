@@ -98,13 +98,10 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Test with Java 8
-        run: ./gradlew clean integration-test-java:test integration-test-kotlin:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=8
-
-      - name: Test with Java 17 without JPMS
-        run: ./gradlew clean integration-test-java:test integration-test-kotlin:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17
+        run: ./gradlew integration-test-java:test integration-test-kotlin:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=8
 
       - name: Test with Java 17 with JPMS
-        run: ./gradlew clean integration-test-java:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17 -PtestUseModule=true
+        run: ./gradlew integration-test-java:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17 -PtestUseModule=true
   
       - name: Upload reports
         if: failure()
