@@ -1,0 +1,1 @@
+select /*%expand*/* from EMPLOYEE where EMPLOYEE_ID = /*id*/100

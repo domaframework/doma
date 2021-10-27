@@ -1,0 +1,1 @@
+select * from DEPARTMENT where DEPARTMENT_ID = /*branchId*/0

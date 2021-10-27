@@ -1,0 +1,1 @@
+select * from EMPLOYEE where HIREDATE = /*hiredate*/'2000-01-01'

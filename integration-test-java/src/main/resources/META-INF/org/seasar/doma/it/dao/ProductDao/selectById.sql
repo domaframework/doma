@@ -1,0 +1,1 @@
+select /*%expand*/* from Product where id = /*id*/0

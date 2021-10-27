@@ -5,29 +5,28 @@ plugins {
     id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
     id("io.codearte.nexus-staging") version "0.30.0"
     id("net.researchgate.release") version "2.8.1"
+    id("org.seasar.doma.compile") version "1.1.0" apply false
     kotlin("jvm") version "1.5.31" apply false
+    kotlin("kapt") version "1.6.0-RC" apply false
 }
 
 val Project.javaModuleName: String
     get() = "org.seasar." + this.name.replace('-', '.')
 
-val modularProjects: List<Project> = listOf(
-    findProject(":doma-core")!!,
-    findProject(":doma-kotlin")!!,
-    findProject(":doma-mock")!!,
-    findProject(":doma-processor")!!,
-    findProject(":doma-slf4j")!!,
-)
+val modularProjects: List<Project> = subprojects.filter { it.name.startsWith("doma-") }
+val integrationTestProjects: List<Project> = subprojects.filter { it.name.startsWith("integration-test-") }
 
 val encoding: String by project
 val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
-        "replaceregexp"("match" to """(private static final String VERSION = ")[^"]*(")""",
-                "replace" to "\\1${ver}\\2",
-                "encoding" to encoding,
-                "flags" to "g") {
+        "replaceregexp"(
+            "match" to """(private static final String VERSION = ")[^"]*(")""",
+            "replace" to "\\1${ver}\\2",
+            "encoding" to encoding,
+            "flags" to "g"
+        ) {
             "fileset"("dir" to ".") {
                 "include"("name" to "**/Artifact.java")
             }
@@ -51,15 +50,19 @@ allprojects {
 
 subprojects {
     apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
-    apply(plugin = "signing")
-    apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "de.marcphilipp.nexus-publish")
 
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     }
+}
+
+configure(modularProjects) {
+    apply(plugin = "java-library")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
+    apply(plugin = "com.diffplug.eclipse.apt")
+    apply(plugin = "de.marcphilipp.nexus-publish")
 
     configure<JavaPluginExtension> {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -140,7 +143,10 @@ subprojects {
                 }
                 withXml {
                     val node = asNode()
-                    node.appendNode("classpathentry", mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated"))
+                    node.appendNode(
+                        "classpathentry",
+                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
+                    )
                 }
             }
         }
@@ -270,14 +276,110 @@ subprojects {
     }
 }
 
+configure(integrationTestProjects) {
+    apply(plugin = "java")
+    apply(plugin = "com.diffplug.eclipse.apt")
+    apply(plugin = "com.diffplug.spotless")
+    apply(plugin ="org.seasar.doma.compile")
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.16.0"))
+        "testRuntimeOnly"("com.h2database:h2:1.4.200")
+        "testRuntimeOnly"("mysql:mysql-connector-java:8.0.27")
+        "testRuntimeOnly"("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
+        "testRuntimeOnly"("org.postgresql:postgresql:42.3.0")
+        "testRuntimeOnly"("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
+        "testRuntimeOnly"("org.testcontainers:mysql")
+        "testRuntimeOnly"("org.testcontainers:oracle-xe")
+        "testRuntimeOnly"("org.testcontainers:postgresql")
+        "testRuntimeOnly"("org.testcontainers:mssqlserver")
+    }
+
+    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
+        classpath {
+            file {
+                whenMerged {
+                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                    classpath.entries.removeAll {
+                        when (it) {
+                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                            else -> false
+                        }
+                    }
+                }
+                withXml {
+                    val node = asNode()
+                    node.appendNode(
+                        "classpathentry",
+                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
+                    )
+                }
+            }
+        }
+        jdt {
+            javaRuntimeName = "JavaSE-17"
+        }
+    }
+
+    tasks {
+        withType<JavaCompile> {
+            options.encoding = encoding
+        }
+
+        fun Test.prepare(driver: String) {
+            val urlKey = "$driver.url"
+            val url = project.property(urlKey) ?: throw GradleException("The $urlKey property is not found.")
+            this.systemProperty("driver", driver)
+            this.systemProperty("url", url)
+            maxHeapSize = "1g"
+            useJUnitPlatform()
+        }
+
+        named<Test>("test") {
+            val driver: Any by project
+            prepare(driver.toString())
+        }
+
+        val h2 by registering(Test::class) {
+            prepare("h2")
+        }
+
+        val mysql by registering(Test::class) {
+            prepare("mysql")
+        }
+
+        val oracle by registering(Test::class) {
+            prepare("oracle")
+        }
+
+        val postgresql by registering(Test::class) {
+            prepare("postgresql")
+        }
+
+        val sqlserver by registering(Test::class) {
+            prepare("sqlserver")
+        }
+
+        register("testAll") {
+            dependsOn(h2, mysql, oracle, postgresql, sqlserver)
+        }
+    }
+}
+
 rootProject.apply {
 
     fun replaceVersionInDocs(ver: String) {
         ant.withGroovyBuilder {
-            "replaceregexp"("match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
-                    "replace" to "\\1${ver}\\3",
-                    "encoding" to encoding,
-                    "flags" to "g") {
+            "replaceregexp"(
+                "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
+                "replace" to "\\1${ver}\\3",
+                "encoding" to encoding,
+                "flags" to "g"
+            ) {
                 "fileset"("dir" to ".") {
                     "include"("name" to "README.md")
                     "include"("name" to "docs/**/*.rst")
@@ -285,10 +387,12 @@ rootProject.apply {
             }
         }
         ant.withGroovyBuilder {
-            "replaceregexp"("match" to """(<doma.version>)[^<]*(</doma.version>)""",
-                    "replace" to "\\1${ver}\\2",
-                    "encoding" to encoding,
-                    "flags" to "g") {
+            "replaceregexp"(
+                "match" to """(<doma.version>)[^<]*(</doma.version>)""",
+                "replace" to "\\1${ver}\\2",
+                "encoding" to encoding,
+                "flags" to "g"
+            ) {
                 "fileset"("dir" to ".") {
                     "include"("name" to "README.md")
                 }
@@ -345,9 +449,9 @@ rootProject.apply {
                         .replace("\\n", "\n")
                         .replace("\\r", "\r")
                         .replace(
-                        "#([0-9]+)".toRegex(),
-                        """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
-                    )
+                            "#([0-9]+)".toRegex(),
+                            """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
+                        )
                     java.nio.file.Files.write(path, body.toByteArray(), java.nio.file.StandardOpenOption.APPEND)
                     java.nio.file.Files.write(path, listOf("", "") + lines, java.nio.file.StandardOpenOption.APPEND)
                 }
