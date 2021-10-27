@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
 }
 
 dependencies {
@@ -10,20 +10,12 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+}
+
 spotless {
     java {
         googleJavaFormat("1.7")
-    }
-}
-
-tasks {
-    val encoding = "UTF-8"
-
-    compileJava {
-        options.encoding = encoding
-    }
-
-    compileTestJava {
-        options.encoding = encoding
     }
 }

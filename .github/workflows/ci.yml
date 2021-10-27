@@ -61,7 +61,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [8, 17]
         driver: [h2, mysql, postgresql, sqlserver]
     timeout-minutes: 10
 
@@ -98,9 +97,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Test
-        run: ./gradlew ${{ matrix.driver }} -PjavaReleaseVersion=${{ matrix.java }}
+      - name: Test with Java 8
+        run: ./gradlew clean integration-test-java:test integration-test-kotlin:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=8
 
+      - name: Test with Java 17 without JPMS
+        run: ./gradlew clean integration-test-java:test integration-test-kotlin:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17
+
+      - name: Test with Java 17 with JPMS
+        run: ./gradlew clean integration-test-java:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17 -PtestUseModule=true
+  
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v2

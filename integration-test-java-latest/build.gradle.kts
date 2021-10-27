@@ -2,6 +2,19 @@ plugins {
     java
 }
 
+val moduleInfoFile = "$projectDir/src/main/java/module-info.java"
+val useModule: Boolean = project.properties["testUseModule"].toString().toBoolean()
+
+delete(moduleInfoFile)
+if (useModule) {
+    file(moduleInfoFile).writeText("""
+                open module org.seasar.doma.it.java.latest {
+                    requires org.seasar.doma.core;
+                }
+            """.trimIndent()
+    )
+}
+
 dependencies {
     annotationProcessor(project(":doma-processor"))
     implementation(project(":doma-core"))
@@ -17,13 +30,3 @@ java {
 //        googleJavaFormat("1.9")
 //    }
 //}
-
-tasks {
-    val encoding = "UTF-8"
-
-    withType<JavaCompile> {
-        options.encoding = encoding
-    }
-
-    withType<Test> {}
-}

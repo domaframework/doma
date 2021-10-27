@@ -299,10 +299,6 @@ configure(integrationTestProjects) {
         "testRuntimeOnly"("org.testcontainers:mssqlserver")
     }
 
-    configure<JavaPluginExtension> {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(8))
-    }
-
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
         classpath {
             file {
@@ -330,6 +326,10 @@ configure(integrationTestProjects) {
     }
 
     tasks {
+        withType<JavaCompile> {
+            options.encoding = encoding
+        }
+
         fun Test.prepare(driver: String) {
             val urlKey = "$driver.url"
             val url = project.property(urlKey) ?: throw GradleException("The $urlKey property is not found.")
