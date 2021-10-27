@@ -113,7 +113,7 @@ configure(modularProjects) {
         val signingKey: String? by project
         val signingPassword: String? by project
         useInMemoryPgpKeys(signingKey, signingPassword)
-        val publishing = convention.findByType(PublishingExtension::class)!!
+        val publishing = extensions.getByType(PublishingExtension::class)
         sign(publishing.publications)
         isRequired = isReleaseVersion
     }
