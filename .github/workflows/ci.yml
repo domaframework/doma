@@ -36,7 +36,7 @@ jobs:
       - name: Assemble and Check
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assemble check
+          arguments: javaToolchains assemble check
 
       - name: Upload reports
         if: failure()
@@ -79,6 +79,7 @@ jobs:
           arguments: |
             -Pdriver=${{ matrix.driver }}
             -PtestJavaLangVersion=8
+            javaToolchains
             integration-test-java:test
             integration-test-kotlin:test
 
@@ -89,6 +90,7 @@ jobs:
             -Pdriver=${{ matrix.driver }}
             -PtestJavaLangVersion=17
             -PtestUseModule=true
+            javaToolchains
             integration-test-java:test
             integration-test-java-latest:test
   
@@ -134,7 +136,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
         with:
-          arguments: publish closeAndReleaseRepository
+          arguments: javaToolchains publish closeAndReleaseRepository
 
       - name: Upload reports
         if: failure()
