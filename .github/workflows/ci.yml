@@ -83,7 +83,7 @@ jobs:
             integration-test-java:test
             integration-test-kotlin:test
 
-      - name: Test with Java 17 with JPMS
+      - name: Test with Java 17 using JPMS
         uses: gradle/gradle-build-action@v2
         with:
           arguments: |
