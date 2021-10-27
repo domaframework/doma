@@ -46,7 +46,7 @@ jobs:
           path: ./**/build/reports
 
   test:
-    name: Test (Java${{ matrix.java }}, ${{ matrix.driver }})
+    name: Test (${{ matrix.driver }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -96,7 +96,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: java${{ matrix.java }}-${{ matrix.driver }}
+          name: ${{ matrix.driver }}
           path: ./**/build/reports
 
   publish:
