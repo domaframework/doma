@@ -33,21 +33,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Assemble and Check
-        run: ./gradlew assemble check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assemble check
 
       - name: Upload reports
         if: failure()
@@ -84,24 +73,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Test with Java 8
-        run: ./gradlew integration-test-java:test integration-test-kotlin:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=8
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            -Pdriver=${{ matrix.driver }}
+            -PtestJavaLangVersion=8
+            integration-test-java:test
+            integration-test-kotlin:test
 
       - name: Test with Java 17 with JPMS
-        run: ./gradlew integration-test-java:test integration-test-java-latest:test -Pdriver=${{ matrix.driver }} -PtestJavaLangVersion=17 -PtestUseModule=true
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            -Pdriver=${{ matrix.driver }}
+            -PtestJavaLangVersion=17
+            -PtestUseModule=true
+            integration-test-java:test
+            integration-test-java-latest:test
   
       - name: Upload reports
         if: failure()
@@ -137,26 +126,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
       - name: Publish packages
-        run: ./gradlew publish closeAndReleaseRepository
+        uses: gradle/gradle-build-action@v2
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
+        with:
+          arguments: publish closeAndReleaseRepository
 
       - name: Upload reports
         if: failure()
