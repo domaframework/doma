@@ -98,7 +98,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.driver }}
+          name: test-${{ matrix.driver }}
           path: ./**/build/reports
 
   publish:
