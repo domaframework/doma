@@ -1,13 +1,13 @@
 plugins {
     base
-    id("com.diffplug.eclipse.apt") version "3.33.1" apply false
-    id("com.diffplug.spotless") version "5.17.1"
-    id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
-    id("io.codearte.nexus-staging") version "0.30.0"
-    id("net.researchgate.release") version "2.8.1"
-    id("org.seasar.doma.compile") version "1.1.0" apply false
-    kotlin("jvm") version "1.5.31" apply false
-    kotlin("kapt") version "1.6.0-RC" apply false
+    id("com.diffplug.eclipse.apt") apply false
+    id("com.diffplug.spotless")
+    id("de.marcphilipp.nexus-publish") apply false
+    id("io.codearte.nexus-staging")
+    id("net.researchgate.release")
+    id("org.seasar.doma.compile") apply false
+    kotlin("jvm") apply false
+    kotlin("kapt") apply false
 }
 
 val Project.javaModuleName: String
