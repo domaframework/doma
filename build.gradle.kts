@@ -49,7 +49,7 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java-library")
+    apply(plugin = "java")
 
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
