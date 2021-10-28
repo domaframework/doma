@@ -278,10 +278,6 @@ configure(integrationTestProjects) {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin ="org.seasar.doma.compile")
 
-    repositories {
-        mavenCentral()
-    }
-
     dependencies {
         "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.16.2"))
         "testRuntimeOnly"("com.h2database:h2:1.4.200")
