@@ -34,6 +34,32 @@ fun replaceVersionInArtifact(ver: String) {
     }
 }
 
+fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName: String) {
+    classpath {
+        file {
+            whenMerged {
+                val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                classpath.entries.removeAll {
+                    when (it) {
+                        is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                        else -> false
+                    }
+                }
+            }
+            withXml {
+                val node = asNode()
+                node.appendNode(
+                    "classpathentry",
+                    mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
+                )
+            }
+        }
+    }
+    jdt {
+        this.javaRuntimeName = javaRuntimeName
+    }
+}
+
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
@@ -130,29 +156,7 @@ configure(modularProjects) {
     }
 
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode(
-                        "classpathentry",
-                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
-                    )
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-1.8"
-        }
+        configure("JavaSE-1.8")
     }
 
     class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
@@ -292,29 +296,7 @@ configure(integrationTestProjects) {
     }
 
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode(
-                        "classpathentry",
-                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
-                    )
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-17"
-        }
+        configure("JavaSE-17")
     }
 
     tasks {
