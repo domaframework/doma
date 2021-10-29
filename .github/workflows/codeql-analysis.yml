@@ -25,11 +25,10 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Build
-        run: ./gradlew assemble check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assemble check
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
