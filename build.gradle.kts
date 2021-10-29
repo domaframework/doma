@@ -1,13 +1,13 @@
 plugins {
     base
-    id("com.diffplug.eclipse.apt") version "3.33.1" apply false
-    id("com.diffplug.spotless") version "5.17.1"
-    id("de.marcphilipp.nexus-publish") version "0.4.0" apply false
-    id("io.codearte.nexus-staging") version "0.30.0"
-    id("net.researchgate.release") version "2.8.1"
-    id("org.seasar.doma.compile") version "1.1.0" apply false
-    kotlin("jvm") version "1.5.31" apply false
-    kotlin("kapt") version "1.6.0-RC" apply false
+    id("com.diffplug.eclipse.apt") apply false
+    id("com.diffplug.spotless")
+    id("de.marcphilipp.nexus-publish") apply false
+    id("io.codearte.nexus-staging")
+    id("net.researchgate.release")
+    id("org.seasar.doma.compile") apply false
+    kotlin("jvm") apply false
+    kotlin("kapt") apply false
 }
 
 val Project.javaModuleName: String
@@ -34,6 +34,32 @@ fun replaceVersionInArtifact(ver: String) {
     }
 }
 
+fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName: String) {
+    classpath {
+        file {
+            whenMerged {
+                val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
+                classpath.entries.removeAll {
+                    when (it) {
+                        is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
+                        else -> false
+                    }
+                }
+            }
+            withXml {
+                val node = asNode()
+                node.appendNode(
+                    "classpathentry",
+                    mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
+                )
+            }
+        }
+    }
+    jdt {
+        this.javaRuntimeName = javaRuntimeName
+    }
+}
+
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
@@ -49,7 +75,7 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java-library")
+    apply(plugin = "java")
 
     dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.1")
@@ -113,7 +139,7 @@ configure(modularProjects) {
         val signingKey: String? by project
         val signingPassword: String? by project
         useInMemoryPgpKeys(signingKey, signingPassword)
-        val publishing = convention.findByType(PublishingExtension::class)!!
+        val publishing = extensions.getByType(PublishingExtension::class)
         sign(publishing.publications)
         isRequired = isReleaseVersion
     }
@@ -130,29 +156,7 @@ configure(modularProjects) {
     }
 
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode(
-                        "classpathentry",
-                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
-                    )
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-1.8"
-        }
+        configure("JavaSE-1.8")
     }
 
     class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
@@ -266,10 +270,6 @@ configure(modularProjects) {
             dependsOn("publishToMavenLocal")
         }
 
-        withType<JavaCompile>().configureEach {
-            modularity.inferModulePath.set(false)
-        }
-
         withType<Sign>().configureEach {
             onlyIf { isReleaseVersion }
         }
@@ -281,10 +281,6 @@ configure(integrationTestProjects) {
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "com.diffplug.spotless")
     apply(plugin ="org.seasar.doma.compile")
-
-    repositories {
-        mavenCentral()
-    }
 
     dependencies {
         "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.16.2"))
@@ -300,29 +296,7 @@ configure(integrationTestProjects) {
     }
 
     configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        classpath {
-            file {
-                whenMerged {
-                    val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                    classpath.entries.removeAll {
-                        when (it) {
-                            is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                            else -> false
-                        }
-                    }
-                }
-                withXml {
-                    val node = asNode()
-                    node.appendNode(
-                        "classpathentry",
-                        mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
-                    )
-                }
-            }
-        }
-        jdt {
-            javaRuntimeName = "JavaSE-17"
-        }
+        configure("JavaSE-17")
     }
 
     tasks {
