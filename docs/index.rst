@@ -59,6 +59,7 @@ User Documentation
    lombok-support
    kotlin-support
    slf4j-support
+   jpms-support
 
 About Doma
 ==========
