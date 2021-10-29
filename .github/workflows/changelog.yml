@@ -15,12 +15,17 @@ jobs:
         with:
           ref: master
 
+      - name: Prepare ENV variables
+        run: |
+          body=$(jq '.release.body' $GITHUB_EVENT_PATH)
+          html_url=$(jq '.release.html_url' $GITHUB_EVENT_PATH)
+          name=$(jq '.release.name' $GITHUB_EVENT_PATH)
+          echo "ORG_GRADLE_PROJECT_releaseBody=$body" >> $GITHUB_ENV
+          echo "ORG_GRADLE_PROJECT_releaseHtmlUrl=$html_url" >> $GITHUB_ENV
+          echo "ORG_GRADLE_PROJECT_releaseName=$name" >> $GITHUB_ENV
+
       - name: Update CHANGELOG.md
         uses: gradle/gradle-build-action@v2
-        env:
-          ORG_GRADLE_PROJECT_releaseBody: $(jq '.release.body' $GITHUB_EVENT_PATH)
-          ORG_GRADLE_PROJECT_releaseHtmlUrl: $(jq '.release.html_url' $GITHUB_EVENT_PATH)
-          ORG_GRADLE_PROJECT_releaseName: $(jq '.release.name' $GITHUB_EVENT_PATH)
         with:
           arguments: updateChangelog
 
