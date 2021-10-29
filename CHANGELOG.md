@@ -1,6 +1,40 @@
-# [$(jq '.release.name' $GITHUB_EVENT_PATH)]($(jq '.release.html_url' $GITHUB_EVENT_PATH))
+# [2.50.0](https://github.com/domaframework/doma/releases/tag/2.50.0)
 
-$(jq '.release.body' $GITHUB_EVENT_PATH)
+## Breaking Changes
+
+- The package name included in the jar file of doma-kotlin has been changed from `org.seasar.doma.jdbc.criteria` to `org.seasar.doma.kotlin.jdbc.criteria`.
+- The package name included in the jar file of doma-slf4j has been changed from `org.seasar.doma.jdbc` to `org.seasar.doma.slf4j`.
+
+These changes are necessary to support the Java Platform Module System.
+
+## New Features
+
+* Support Java Platform Module System (#749)
+* Make complex conditions available in ON and HAVING clauses (#739)
+
+## Maintenance
+
+* Polish GitHub Actions workflows (#757)
+* Polish Gradle build scripts (#756)
+* Include integration-test projects (aka. domaframework/doma-it) into this repository (#750)
+
+## Documentation
+
+* Add documentation about JPMS (#758)
+* Update Expression Language Document (#746)
+
+## Dependency Upgrades
+
+* Update dependency org.testcontainers:testcontainers-bom to v1.16.2 (#753)
+* Bump babel from 2.6.0 to 2.9.1 in /docs (#747)
+* Update plugin com.diffplug.spotless to v5.17.1 (#751)
+* Update actions/github-script action to v5 (#740)
+* Update plugin com.diffplug.spotless to v5.17.0 (#745)
+* Update plugin com.diffplug.spotless to v5.16.0 (#743)
+* Update plugin com.diffplug.eclipse.apt to v3.33.1 (#742)
+* Update plugin com.diffplug.spotless to v5.15.2 (#741)
+* Update org.junit.jupiter to v5.8.1 (#738)
+* Update plugin com.diffplug.spotless to v5.15.1 (#737)
 
 # [2.49.0](https://github.com/domaframework/doma/releases/tag/2.49.0)
 
