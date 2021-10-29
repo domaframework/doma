@@ -1,3 +1,7 @@
+# [$(jq '.release.name' $GITHUB_EVENT_PATH)]($(jq '.release.html_url' $GITHUB_EVENT_PATH))
+
+$(jq '.release.body' $GITHUB_EVENT_PATH)
+
 # [2.49.0](https://github.com/domaframework/doma/releases/tag/2.49.0)
 
 
