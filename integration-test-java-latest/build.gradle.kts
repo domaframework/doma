@@ -24,9 +24,3 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
-
-//spotless {
-//    java {
-//        googleJavaFormat("1.9")
-//    }
-//}

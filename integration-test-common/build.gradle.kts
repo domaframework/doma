@@ -13,9 +13,3 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
 }
-
-spotless {
-    java {
-        googleJavaFormat("1.7")
-    }
-}
