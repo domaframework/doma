@@ -13,14 +13,6 @@ dependencies {
     testImplementation(project(":integration-test-common"))
 }
 
-spotless {
-    kotlin {
-        ktlint("0.38.1")
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
 }

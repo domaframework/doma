@@ -26,12 +26,6 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
 }
 
-spotless {
-    java {
-        googleJavaFormat("1.7")
-    }
-}
-
 tasks {
     compileJava {
         options.compilerArgs.addAll(listOf("-Adoma.domain.converters=org.seasar.doma.it.domain.DomainConverterProvider"))
