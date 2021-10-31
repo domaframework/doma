@@ -1,5 +1,10 @@
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+
 plugins {
-    base
+    `java-library`
+    `maven-publish`
+    signing
     id("com.diffplug.eclipse.apt") apply false
     id("com.diffplug.spotless")
     id("de.marcphilipp.nexus-publish") apply false
@@ -110,7 +115,7 @@ subprojects {
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     }
 
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    spotless {
         java {
             googleJavaFormat("1.12.0")
         }
@@ -127,9 +132,8 @@ configure(modularProjects) {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "de.marcphilipp.nexus-publish")
 
-    configure<JavaPluginExtension> {
+    java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
         withJavadocJar()
         withSourcesJar()
@@ -141,7 +145,7 @@ configure(modularProjects) {
         }
     }
 
-    configure<PublishingExtension> {
+    publishing {
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
@@ -174,7 +178,7 @@ configure(modularProjects) {
         }
     }
 
-    configure<SigningExtension> {
+    signing {
         val signingKey: String? by project
         val signingPassword: String? by project
         useInMemoryPgpKeys(signingKey, signingPassword)
@@ -373,11 +377,11 @@ configure(integrationTestProjects) {
 }
 
 rootProject.apply {
-    configure<net.researchgate.release.ReleaseExtension> {
+    release {
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     }
 
-    configure<io.codearte.gradle.nexus.NexusStagingExtension> {
+    nexusStaging {
         val sonatypeUsername: String by project
         val sonatypePassword: String by project
         username = sonatypeUsername
@@ -385,7 +389,7 @@ rootProject.apply {
         packageGroup = "org.seasar"
     }
 
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    spotless {
         format("misc") {
             target("**/*.gradle.kts", "**/*.gitignore")
             targetExclude("**/bin/**", "**/build/**")
@@ -438,12 +442,12 @@ rootProject.apply {
                 val releaseName: String by project
                 val header = "# [${releaseName.trim('\"')}](${releaseHtmlUrl.trim('\"')})"
                 val path = file("CHANGELOG.md").toPath()
-                val lines = java.nio.file.Files.readAllLines(path)
+                val lines = Files.readAllLines(path)
                 if (lines.none { it.startsWith(header) }) {
-                    java.nio.file.Files.write(
+                    Files.write(
                         path, listOf(header, ""),
-                        java.nio.file.StandardOpenOption.WRITE,
-                        java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
+                        StandardOpenOption.WRITE,
+                        StandardOpenOption.TRUNCATE_EXISTING
                     )
                     val body = releaseBody.trim('"')
                         .replace("\\\"", "\"")
