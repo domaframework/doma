@@ -1,7 +1,9 @@
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+import org.gradle.plugins.ide.eclipse.model.EclipseModel
 
 plugins {
+    eclipse
     `java-library`
     `maven-publish`
     signing
@@ -66,7 +68,7 @@ fun replaceVersionInDocs(ver: String) {
     }
 }
 
-fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName: String) {
+fun EclipseModel.configureWithJavaRuntimeName(javaRuntimeName: String) {
     classpath {
         file {
             whenMerged {
@@ -180,8 +182,8 @@ configure(modularProjects) {
         isRequired = isReleaseVersion
     }
 
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        configure("JavaSE-1.8")
+    eclipse {
+        configureWithJavaRuntimeName("JavaSE-1.8")
     }
 
     class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
@@ -320,8 +322,8 @@ configure(integrationTestProjects) {
         "testRuntimeOnly"("org.testcontainers:mssqlserver")
     }
 
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        configure("JavaSE-17")
+    eclipse {
+        configureWithJavaRuntimeName("JavaSE-17")
     }
 
     tasks {
@@ -375,6 +377,9 @@ rootProject.apply {
     }
 
     nexusPublishing {
+        repositories {
+            sonatype()
+        }
         packageGroup.set("org.seasar")
     }
 
@@ -415,7 +420,7 @@ rootProject.apply {
                 replaceVersionInArtifact(newVersion)
             }
         }
-        
+
         register("updateChangelog") {
             doLast {
                 val releaseBody: String by project
