@@ -34,6 +34,34 @@ fun replaceVersionInArtifact(ver: String) {
     }
 }
 
+fun replaceVersionInDocs(ver: String) {
+    ant.withGroovyBuilder {
+        "replaceregexp"(
+            "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
+            "replace" to "\\1${ver}\\3",
+            "encoding" to encoding,
+            "flags" to "g"
+        ) {
+            "fileset"("dir" to ".") {
+                "include"("name" to "README.md")
+                "include"("name" to "docs/**/*.rst")
+            }
+        }
+    }
+    ant.withGroovyBuilder {
+        "replaceregexp"(
+            "match" to """(<doma.version>)[^<]*(</doma.version>)""",
+            "replace" to "\\1${ver}\\2",
+            "encoding" to encoding,
+            "flags" to "g"
+        ) {
+            "fileset"("dir" to ".") {
+                "include"("name" to "README.md")
+            }
+        }
+    }
+}
+
 fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName: String) {
     classpath {
         file {
@@ -345,35 +373,6 @@ configure(integrationTestProjects) {
 }
 
 rootProject.apply {
-
-    fun replaceVersionInDocs(ver: String) {
-        ant.withGroovyBuilder {
-            "replaceregexp"(
-                "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
-                "replace" to "\\1${ver}\\3",
-                "encoding" to encoding,
-                "flags" to "g"
-            ) {
-                "fileset"("dir" to ".") {
-                    "include"("name" to "README.md")
-                    "include"("name" to "docs/**/*.rst")
-                }
-            }
-        }
-        ant.withGroovyBuilder {
-            "replaceregexp"(
-                "match" to """(<doma.version>)[^<]*(</doma.version>)""",
-                "replace" to "\\1${ver}\\2",
-                "encoding" to encoding,
-                "flags" to "g"
-            ) {
-                "fileset"("dir" to ".") {
-                    "include"("name" to "README.md")
-                }
-            }
-        }
-    }
-
     configure<net.researchgate.release.ReleaseExtension> {
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     }
