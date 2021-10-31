@@ -102,7 +102,7 @@ allprojects {
     }
 
     tasks {
-        named("build") {
+        build {
             dependsOn(spotlessApply)
         }
     }
@@ -252,12 +252,12 @@ configure(modularProjects) {
             }
         }
 
-        named<JavaCompile>("compileJava") {
+        compileJava {
             dependsOn(replaceVersionInJava)
             options.encoding = encoding
         }
 
-        named<Jar>("jar") {
+        jar {
             dependsOn(compileModule)
             manifest {
                 attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
@@ -273,7 +273,7 @@ configure(modularProjects) {
             }
         }
 
-        named<Javadoc>("javadoc") {
+        javadoc {
             options.encoding = encoding
             (options as StandardJavadocDocletOptions).apply {
                 charSet = encoding
@@ -283,17 +283,17 @@ configure(modularProjects) {
             }
         }
 
-        named<JavaCompile>("compileTestJava") {
+        compileTestJava {
             options.encoding = encoding
             options.compilerArgs = listOf("-proc:none")
         }
 
-        named<Test>("test") {
+        test {
             maxHeapSize = "1g"
             useJUnitPlatform()
         }
 
-        named("build") {
+        build {
             dependsOn("publishToMavenLocal")
         }
 
@@ -340,7 +340,7 @@ configure(integrationTestProjects) {
             useJUnitPlatform()
         }
 
-        named<Test>("test") {
+        test {
             val driver: Any by project
             prepare(driver.toString())
         }
@@ -409,11 +409,11 @@ rootProject.apply {
             }
         }
 
-        named("beforeReleaseBuild") {
+        beforeReleaseBuild {
             dependsOn(replaceVersion)
         }
 
-        named("updateVersion") {
+        updateVersion {
             doLast {
                 val newVersion = project.properties["version"]?.toString()
                 checkNotNull(newVersion)
