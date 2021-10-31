@@ -227,7 +227,7 @@ configure(modularProjects) {
     val moduleOutputDir = file("$buildDir/classes/java/module")
 
     val compileModule by tasks.registering(JavaCompile::class) {
-        dependsOn(tasks.named("classes"))
+        dependsOn("classes")
         source = fileTree(moduleSourceDir)
         destinationDirectory.set(moduleOutputDir)
         sourceCompatibility = "9"
