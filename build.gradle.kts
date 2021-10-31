@@ -1,9 +1,15 @@
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+import org.gradle.plugins.ide.eclipse.model.EclipseModel
+
 plugins {
-    base
+    eclipse
+    `java-library`
+    `maven-publish`
+    signing
     id("com.diffplug.eclipse.apt") apply false
     id("com.diffplug.spotless")
-    id("de.marcphilipp.nexus-publish") apply false
-    id("io.codearte.nexus-staging")
+    id("io.github.gradle-nexus.publish-plugin")
     id("net.researchgate.release")
     id("org.seasar.doma.compile") apply false
     kotlin("jvm") apply false
@@ -34,7 +40,35 @@ fun replaceVersionInArtifact(ver: String) {
     }
 }
 
-fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName: String) {
+fun replaceVersionInDocs(ver: String) {
+    ant.withGroovyBuilder {
+        "replaceregexp"(
+            "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
+            "replace" to "\\1${ver}\\3",
+            "encoding" to encoding,
+            "flags" to "g"
+        ) {
+            "fileset"("dir" to ".") {
+                "include"("name" to "README.md")
+                "include"("name" to "docs/**/*.rst")
+            }
+        }
+    }
+    ant.withGroovyBuilder {
+        "replaceregexp"(
+            "match" to """(<doma.version>)[^<]*(</doma.version>)""",
+            "replace" to "\\1${ver}\\2",
+            "encoding" to encoding,
+            "flags" to "g"
+        ) {
+            "fileset"("dir" to ".") {
+                "include"("name" to "README.md")
+            }
+        }
+    }
+}
+
+fun EclipseModel.configureWithJavaRuntimeName(javaRuntimeName: String) {
     classpath {
         file {
             whenMerged {
@@ -63,14 +97,14 @@ fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName:
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
-    tasks {
-        named("build") {
-            dependsOn(spotlessApply)
-        }
-    }
-
     repositories {
         mavenCentral()
+    }
+
+    tasks {
+        build {
+            dependsOn(spotlessApply)
+        }
     }
 }
 
@@ -82,7 +116,7 @@ subprojects {
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     }
 
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    spotless {
         java {
             googleJavaFormat("1.12.0")
         }
@@ -99,21 +133,14 @@ configure(modularProjects) {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
     apply(plugin = "com.diffplug.eclipse.apt")
-    apply(plugin = "de.marcphilipp.nexus-publish")
 
-    configure<JavaPluginExtension> {
+    java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
         withJavadocJar()
         withSourcesJar()
     }
 
-    configure<de.marcphilipp.gradle.nexus.NexusPublishExtension> {
-        repositories {
-            sonatype()
-        }
-    }
-
-    configure<PublishingExtension> {
+    publishing {
         publications {
             create<MavenPublication>("maven") {
                 from(components["java"])
@@ -146,7 +173,7 @@ configure(modularProjects) {
         }
     }
 
-    configure<SigningExtension> {
+    signing {
         val signingKey: String? by project
         val signingPassword: String? by project
         useInMemoryPgpKeys(signingKey, signingPassword)
@@ -155,8 +182,8 @@ configure(modularProjects) {
         isRequired = isReleaseVersion
     }
 
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        configure("JavaSE-1.8")
+    eclipse {
+        configureWithJavaRuntimeName("JavaSE-1.8")
     }
 
     class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
@@ -200,7 +227,7 @@ configure(modularProjects) {
     val moduleOutputDir = file("$buildDir/classes/java/module")
 
     val compileModule by tasks.registering(JavaCompile::class) {
-        dependsOn(tasks.named("classes"))
+        dependsOn("classes")
         source = fileTree(moduleSourceDir)
         destinationDirectory.set(moduleOutputDir)
         sourceCompatibility = "9"
@@ -225,12 +252,12 @@ configure(modularProjects) {
             }
         }
 
-        named<JavaCompile>("compileJava") {
+        compileJava {
             dependsOn(replaceVersionInJava)
             options.encoding = encoding
         }
 
-        named<Jar>("jar") {
+        jar {
             dependsOn(compileModule)
             manifest {
                 attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
@@ -246,7 +273,7 @@ configure(modularProjects) {
             }
         }
 
-        named<Javadoc>("javadoc") {
+        javadoc {
             options.encoding = encoding
             (options as StandardJavadocDocletOptions).apply {
                 charSet = encoding
@@ -256,17 +283,17 @@ configure(modularProjects) {
             }
         }
 
-        named<JavaCompile>("compileTestJava") {
+        compileTestJava {
             options.encoding = encoding
             options.compilerArgs = listOf("-proc:none")
         }
 
-        named<Test>("test") {
+        test {
             maxHeapSize = "1g"
             useJUnitPlatform()
         }
 
-        named("build") {
+        build {
             dependsOn("publishToMavenLocal")
         }
 
@@ -295,8 +322,8 @@ configure(integrationTestProjects) {
         "testRuntimeOnly"("org.testcontainers:mssqlserver")
     }
 
-    configure<org.gradle.plugins.ide.eclipse.model.EclipseModel> {
-        configure("JavaSE-17")
+    eclipse {
+        configureWithJavaRuntimeName("JavaSE-17")
     }
 
     tasks {
@@ -313,7 +340,7 @@ configure(integrationTestProjects) {
             useJUnitPlatform()
         }
 
-        named<Test>("test") {
+        test {
             val driver: Any by project
             prepare(driver.toString())
         }
@@ -345,32 +372,30 @@ configure(integrationTestProjects) {
 }
 
 rootProject.apply {
+    release {
+        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+    }
 
-    fun replaceVersionInDocs(ver: String) {
-        ant.withGroovyBuilder {
-            "replaceregexp"(
-                "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
-                "replace" to "\\1${ver}\\3",
-                "encoding" to encoding,
-                "flags" to "g"
-            ) {
-                "fileset"("dir" to ".") {
-                    "include"("name" to "README.md")
-                    "include"("name" to "docs/**/*.rst")
-                }
-            }
+    nexusPublishing {
+        repositories {
+            sonatype()
         }
-        ant.withGroovyBuilder {
-            "replaceregexp"(
-                "match" to """(<doma.version>)[^<]*(</doma.version>)""",
-                "replace" to "\\1${ver}\\2",
-                "encoding" to encoding,
-                "flags" to "g"
-            ) {
-                "fileset"("dir" to ".") {
-                    "include"("name" to "README.md")
-                }
-            }
+        packageGroup.set("org.seasar")
+    }
+
+    spotless {
+        format("misc") {
+            target("**/*.gradle.kts", "**/*.gitignore")
+            targetExclude("**/bin/**", "**/build/**")
+            indentWithSpaces()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        format("documentation") {
+            target("docs/**/*.rst", "**/*.md")
+            targetExclude("CHANGELOG.md")
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 
@@ -384,24 +409,16 @@ rootProject.apply {
             }
         }
 
-        named("beforeReleaseBuild") {
+        beforeReleaseBuild {
             dependsOn(replaceVersion)
         }
 
-        named("updateVersion") {
+        updateVersion {
             doLast {
                 val newVersion = project.properties["version"]?.toString()
                 checkNotNull(newVersion)
                 replaceVersionInArtifact(newVersion)
             }
-        }
-
-        named("closeRepository") {
-            onlyIf { isReleaseVersion }
-        }
-
-        named("releaseRepository") {
-            onlyIf { isReleaseVersion }
         }
 
         register("updateChangelog") {
@@ -411,12 +428,12 @@ rootProject.apply {
                 val releaseName: String by project
                 val header = "# [${releaseName.trim('\"')}](${releaseHtmlUrl.trim('\"')})"
                 val path = file("CHANGELOG.md").toPath()
-                val lines = java.nio.file.Files.readAllLines(path)
+                val lines = Files.readAllLines(path)
                 if (lines.none { it.startsWith(header) }) {
-                    java.nio.file.Files.write(
+                    Files.write(
                         path, listOf(header, ""),
-                        java.nio.file.StandardOpenOption.WRITE,
-                        java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
+                        StandardOpenOption.WRITE,
+                        StandardOpenOption.TRUNCATE_EXISTING
                     )
                     val body = releaseBody.trim('"')
                         .replace("\\\"", "\"")
@@ -426,39 +443,10 @@ rootProject.apply {
                             "#([0-9]+)".toRegex(),
                             """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
                         )
-                    java.nio.file.Files.write(path, body.toByteArray(), java.nio.file.StandardOpenOption.APPEND)
-                    java.nio.file.Files.write(path, listOf("", "") + lines, java.nio.file.StandardOpenOption.APPEND)
+                    Files.write(path, body.toByteArray(), StandardOpenOption.APPEND)
+                    Files.write(path, listOf("", "") + lines, StandardOpenOption.APPEND)
                 }
             }
-        }
-
-    }
-
-    configure<net.researchgate.release.ReleaseExtension> {
-        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
-    }
-
-    configure<io.codearte.gradle.nexus.NexusStagingExtension> {
-        val sonatypeUsername: String by project
-        val sonatypePassword: String by project
-        username = sonatypeUsername
-        password = sonatypePassword
-        packageGroup = "org.seasar"
-    }
-
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        format("misc") {
-            target("**/*.gradle.kts", "**/*.gitignore")
-            targetExclude("**/bin/**", "**/build/**")
-            indentWithSpaces()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-        format("documentation") {
-            target("docs/**/*.rst", "**/*.md")
-            targetExclude("CHANGELOG.md")
-            trimTrailingWhitespace()
-            endWithNewline()
         }
     }
 }
