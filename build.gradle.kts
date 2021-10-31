@@ -7,8 +7,7 @@ plugins {
     signing
     id("com.diffplug.eclipse.apt") apply false
     id("com.diffplug.spotless")
-    id("de.marcphilipp.nexus-publish") apply false
-    id("io.codearte.nexus-staging")
+    id("io.github.gradle-nexus.publish-plugin")
     id("net.researchgate.release")
     id("org.seasar.doma.compile") apply false
     kotlin("jvm") apply false
@@ -137,12 +136,6 @@ configure(modularProjects) {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
         withJavadocJar()
         withSourcesJar()
-    }
-
-    configure<de.marcphilipp.gradle.nexus.NexusPublishExtension> {
-        repositories {
-            sonatype()
-        }
     }
 
     publishing {
@@ -381,12 +374,8 @@ rootProject.apply {
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
     }
 
-    nexusStaging {
-        val sonatypeUsername: String by project
-        val sonatypePassword: String by project
-        username = sonatypeUsername
-        password = sonatypePassword
-        packageGroup = "org.seasar"
+    nexusPublishing {
+        packageGroup.set("org.seasar")
     }
 
     spotless {
@@ -426,15 +415,7 @@ rootProject.apply {
                 replaceVersionInArtifact(newVersion)
             }
         }
-
-        named("closeRepository") {
-            onlyIf { isReleaseVersion }
-        }
-
-        named("releaseRepository") {
-            onlyIf { isReleaseVersion }
-        }
-
+        
         register("updateChangelog") {
             doLast {
                 val releaseBody: String by project
@@ -457,8 +438,8 @@ rootProject.apply {
                             "#([0-9]+)".toRegex(),
                             """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
                         )
-                    java.nio.file.Files.write(path, body.toByteArray(), java.nio.file.StandardOpenOption.APPEND)
-                    java.nio.file.Files.write(path, listOf("", "") + lines, java.nio.file.StandardOpenOption.APPEND)
+                    Files.write(path, body.toByteArray(), StandardOpenOption.APPEND)
+                    Files.write(path, listOf("", "") + lines, StandardOpenOption.APPEND)
                 }
             }
         }

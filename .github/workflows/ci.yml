@@ -136,7 +136,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
         with:
-          arguments: javaToolchains publish closeAndReleaseRepository
+          arguments: javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
         if: failure()
