@@ -63,14 +63,14 @@ fun org.gradle.plugins.ide.eclipse.model.EclipseModel.configure(javaRuntimeName:
 allprojects {
     apply(plugin = "com.diffplug.spotless")
 
+    repositories {
+        mavenCentral()
+    }
+
     tasks {
         named("build") {
             dependsOn(spotlessApply)
         }
-    }
-
-    repositories {
-        mavenCentral()
     }
 }
 
@@ -374,6 +374,34 @@ rootProject.apply {
         }
     }
 
+    configure<net.researchgate.release.ReleaseExtension> {
+        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+    }
+
+    configure<io.codearte.gradle.nexus.NexusStagingExtension> {
+        val sonatypeUsername: String by project
+        val sonatypePassword: String by project
+        username = sonatypeUsername
+        password = sonatypePassword
+        packageGroup = "org.seasar"
+    }
+
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        format("misc") {
+            target("**/*.gradle.kts", "**/*.gitignore")
+            targetExclude("**/bin/**", "**/build/**")
+            indentWithSpaces()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        format("documentation") {
+            target("docs/**/*.rst", "**/*.md")
+            targetExclude("CHANGELOG.md")
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+
     tasks {
         val replaceVersion by registering {
             doLast {
@@ -430,35 +458,6 @@ rootProject.apply {
                     java.nio.file.Files.write(path, listOf("", "") + lines, java.nio.file.StandardOpenOption.APPEND)
                 }
             }
-        }
-
-    }
-
-    configure<net.researchgate.release.ReleaseExtension> {
-        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
-    }
-
-    configure<io.codearte.gradle.nexus.NexusStagingExtension> {
-        val sonatypeUsername: String by project
-        val sonatypePassword: String by project
-        username = sonatypeUsername
-        password = sonatypePassword
-        packageGroup = "org.seasar"
-    }
-
-    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-        format("misc") {
-            target("**/*.gradle.kts", "**/*.gitignore")
-            targetExclude("**/bin/**", "**/build/**")
-            indentWithSpaces()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-        format("documentation") {
-            target("docs/**/*.rst", "**/*.md")
-            targetExclude("CHANGELOG.md")
-            trimTrailingWhitespace()
-            endWithNewline()
         }
     }
 }
