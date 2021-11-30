@@ -3,7 +3,7 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id("com.diffplug.eclipse.apt") version "3.33.2"
+        id("com.diffplug.eclipse.apt") version "3.33.3"
         id("com.diffplug.spotless") version "6.0.0"
         id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
         id("net.researchgate.release") version "2.8.1"
