@@ -95,6 +95,7 @@ fun EclipseModel.configureWithJavaRuntimeName(javaRuntimeName: String) {
 }
 
 allprojects {
+    apply(plugin = "base")
     apply(plugin = "com.diffplug.spotless")
 
     repositories {
