@@ -6,6 +6,7 @@ import org.seasar.doma.DomainConverters;
   AgeConverter.class,
   LocationConverter.class,
   HiredateConverter.class,
-  StringArrayConverter.class
+  StringArrayConverter.class,
+  UUIDConverter.class
 })
 public class DomainConverterProvider {}
