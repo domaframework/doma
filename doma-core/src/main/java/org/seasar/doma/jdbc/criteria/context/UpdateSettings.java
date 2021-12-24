@@ -1,6 +1,10 @@
 package org.seasar.doma.jdbc.criteria.context;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 /** Represents the settings for an UPDATE criteria query. */
 public class UpdateSettings extends Settings {
@@ -9,6 +13,8 @@ public class UpdateSettings extends Settings {
   private boolean ignoreVersion;
   private boolean suppressOptimisticLockException;
   private boolean excludeNull;
+  private final List<PropertyMetamodel<?>> includedProperties = new ArrayList<>();
+  private final List<PropertyMetamodel<?>> excludedProperties = new ArrayList<>();
 
   /**
    * Returns the batch size.
@@ -114,5 +120,41 @@ public class UpdateSettings extends Settings {
    */
   public void setExcludeNull(boolean excludeNull) {
     this.excludeNull = excludeNull;
+  }
+
+  /**
+   * Returns the included properties.
+   *
+   * @return the included properties
+   */
+  public List<PropertyMetamodel<?>> include() {
+    return includedProperties;
+  }
+
+  /**
+   * Sets the included properties.
+   *
+   * @param propertyMetamodels the included properties
+   */
+  public void include(PropertyMetamodel<?>... propertyMetamodels) {
+    Collections.addAll(includedProperties, propertyMetamodels);
+  }
+
+  /**
+   * Returns the excluded properties.
+   *
+   * @return the excluded properties
+   */
+  public List<PropertyMetamodel<?>> exclude() {
+    return excludedProperties;
+  }
+
+  /**
+   * Sets the excluded properties.
+   *
+   * @param propertyMetamodels the excluded properties
+   */
+  public void exclude(PropertyMetamodel<?>... propertyMetamodels) {
+    Collections.addAll(excludedProperties, propertyMetamodels);
   }
 }

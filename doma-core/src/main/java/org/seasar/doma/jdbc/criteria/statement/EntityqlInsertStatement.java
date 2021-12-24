@@ -7,6 +7,7 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.Query;
@@ -54,8 +55,10 @@ public class EntityqlInsertStatement<ENTITY>
     query.setQueryTimeout(settings.getQueryTimeout());
     query.setSqlLogType(settings.getSqlLogType());
     query.setNullExcluded(settings.getExcludeNull());
-    query.setIncludedPropertyNames();
-    query.setExcludedPropertyNames();
+    query.setIncludedPropertyNames(
+        settings.include().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setExcludedPropertyNames(
+        settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setMessage(settings.getComment());
     query.prepare();
     InsertCommand command =

@@ -8,6 +8,7 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.Query;
@@ -60,8 +61,10 @@ public class EntityqlUpdateStatement<ENTITY>
     query.setSqlLogType(settings.getSqlLogType());
     query.setNullExcluded(settings.getExcludeNull());
     query.setVersionIgnored(settings.getIgnoreVersion());
-    query.setIncludedPropertyNames();
-    query.setExcludedPropertyNames();
+    query.setIncludedPropertyNames(
+        settings.include().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setExcludedPropertyNames(
+        settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setUnchangedPropertyIncluded(false);
     query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
