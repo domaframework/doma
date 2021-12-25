@@ -1193,6 +1193,8 @@ We support the following settings:
 * sqlLogType
 * batchSize
 * excludeNull
+* include
+* exclude
 
 They are all optional.
 
@@ -1220,6 +1222,16 @@ You can apply them as follows:
                   c.value(d.version, 1);
                 })
             .execute();
+
+.. code-block:: java
+
+    Department_ d = new Department_();
+
+    Department department = ...;
+
+    Result<Department> result = entityql.insert(d, department, settings ->
+        settings.exclude(d.departmentName, d.location)
+    ).execute();
 
 Insert statement (Entityql)
 ----------------------------
@@ -1330,6 +1342,8 @@ We support the following settings:
 * sqlLogType
 * suppressOptimisticLockException
 * excludeNull
+* include
+* exclude
 
 They are all optional.
 
@@ -1351,6 +1365,16 @@ You can apply them as follows:
     }).set(c -> {
       c.value(e.employeeName, "aaa");
     }).execute();
+
+.. code-block:: java
+
+    Employee_ e = new Employee_();
+
+    Employee employee = ...;
+
+    Result<Employee> result = entityql.update(e, employee, settings ->
+      settings.exclude(e.hiredate, e.salary)
+    ).execute();
 
 .. note::
 
