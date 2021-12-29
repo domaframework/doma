@@ -1,3 +1,45 @@
+# [2.51.0](https://github.com/domaframework/doma/releases/tag/2.51.0)
+
+
+## New Features
+
+* Support to include/exclude properties in the Criteria INSERT/UPDATE statements ([#789](https://github.com/domaframework/doma/pull/789))
+
+## Maintenance
+
+* Add a test for the PostgreSQL UUID type ([#778](https://github.com/domaframework/doma/pull/778))
+* Polish Gradle build scripts ([#764](https://github.com/domaframework/doma/pull/764))
+* Fix build steps for CodeQL ([#763](https://github.com/domaframework/doma/pull/763))
+* Add a .sdkmanrc for ease of development ([#761](https://github.com/domaframework/doma/pull/761))
+* Fix the changelog workflow ([#759](https://github.com/domaframework/doma/pull/759))
+
+## Dependency Upgrades
+
+* Update plugin com.diffplug.spotless to v6.1.0 ([#788](https://github.com/domaframework/doma/pull/788))
+* Update dependency ch.qos.logback:logback-classic to v1.2.10 ([#787](https://github.com/domaframework/doma/pull/787))
+* Update dependency gradle to v7.3.3 ([#786](https://github.com/domaframework/doma/pull/786))
+* Update dependency ch.qos.logback:logback-classic to v1.2.9 ([#784](https://github.com/domaframework/doma/pull/784))
+* Update plugin com.diffplug.spotless to v6.0.5 ([#783](https://github.com/domaframework/doma/pull/783))
+* Update plugin com.diffplug.eclipse.apt to v3.34.0 ([#782](https://github.com/domaframework/doma/pull/782))
+* Update dependency gradle to v7.3.2 ([#781](https://github.com/domaframework/doma/pull/781))
+* Update dependency ch.qos.logback:logback-classic to v1.2.8 ([#780](https://github.com/domaframework/doma/pull/780))
+* Update org.jetbrains.kotlin to v1.6.10 ([#779](https://github.com/domaframework/doma/pull/779))
+* Update plugin com.diffplug.spotless to v6.0.4 ([#777](https://github.com/domaframework/doma/pull/777))
+* Update plugin com.diffplug.spotless to v6.0.2 ([#776](https://github.com/domaframework/doma/pull/776))
+* Update plugin com.diffplug.spotless to v6.0.1 ([#775](https://github.com/domaframework/doma/pull/775))
+* Update dependency gradle to v7.3.1 ([#774](https://github.com/domaframework/doma/pull/774))
+* Update plugin com.diffplug.eclipse.apt to v3.33.3 ([#773](https://github.com/domaframework/doma/pull/773))
+* Update org.junit.jupiter to v5.8.2 ([#771](https://github.com/domaframework/doma/pull/771))
+* Update org.jetbrains.kotlin to v1.6.0 ([#770](https://github.com/domaframework/doma/pull/770))
+* Update dependency ch.qos.logback:logback-classic to v1.2.7 ([#769](https://github.com/domaframework/doma/pull/769))
+* Update plugin com.diffplug.spotless to v6 ([#767](https://github.com/domaframework/doma/pull/767))
+* Update dependency gradle to v7.3 ([#768](https://github.com/domaframework/doma/pull/768))
+* Update plugin com.diffplug.eclipse.apt to v3.33.2 ([#766](https://github.com/domaframework/doma/pull/766))
+* Update plugin org.jetbrains.kotlin.kapt to v1.6.0-RC2 ([#765](https://github.com/domaframework/doma/pull/765))
+* Use google-java-format 1.12.0 ([#762](https://github.com/domaframework/doma/pull/762))
+* Update dependency org.postgresql:postgresql to v42.3.1 ([#760](https://github.com/domaframework/doma/pull/760))
+
+
 # [2.50.0](https://github.com/domaframework/doma/releases/tag/2.50.0)
 
 ## Breaking Changes
