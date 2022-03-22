@@ -20,7 +20,7 @@ jobs:
           languages: java
 
       - name: Set up JDK 8
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 8
@@ -30,7 +30,7 @@ jobs:
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 17
