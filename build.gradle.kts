@@ -1,5 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.StandardOpenOption
 import org.gradle.plugins.ide.eclipse.model.EclipseModel
 
 plugins {
@@ -394,7 +392,6 @@ rootProject.apply {
         }
         format("documentation") {
             target("docs/**/*.rst", "**/*.md")
-            targetExclude("CHANGELOG.md")
             trimTrailingWhitespace()
             endWithNewline()
         }
@@ -419,34 +416,6 @@ rootProject.apply {
                 val newVersion = project.properties["version"]?.toString()
                 checkNotNull(newVersion)
                 replaceVersionInArtifact(newVersion)
-            }
-        }
-
-        register("updateChangelog") {
-            doLast {
-                val releaseBody: String by project
-                val releaseHtmlUrl: String by project
-                val releaseName: String by project
-                val header = "# [${releaseName.trim('\"')}](${releaseHtmlUrl.trim('\"')})"
-                val path = file("CHANGELOG.md").toPath()
-                val lines = Files.readAllLines(path)
-                if (lines.none { it.startsWith(header) }) {
-                    Files.write(
-                        path, listOf(header, ""),
-                        StandardOpenOption.WRITE,
-                        StandardOpenOption.TRUNCATE_EXISTING
-                    )
-                    val body = releaseBody.trim('"')
-                        .replace("\\\"", "\"")
-                        .replace("\\n", "\n")
-                        .replace("\\r", "\r")
-                        .replace(
-                            "#([0-9]+)".toRegex(),
-                            """[$0]\(https://github.com/domaframework/doma/pull/$1\)"""
-                        )
-                    Files.write(path, body.toByteArray(), StandardOpenOption.APPEND)
-                    Files.write(path, listOf("", "") + lines, StandardOpenOption.APPEND)
-                }
             }
         }
     }
