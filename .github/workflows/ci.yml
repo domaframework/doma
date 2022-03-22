@@ -31,7 +31,7 @@ jobs:
           java-version: 17
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Assemble and Check
         uses: gradle/gradle-build-action@v2
@@ -71,7 +71,7 @@ jobs:
           java-version: 17
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Test with Java 8
         uses: gradle/gradle-build-action@v2
@@ -126,7 +126,7 @@ jobs:
           java-version: 17
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Publish packages
         uses: gradle/gradle-build-action@v2
