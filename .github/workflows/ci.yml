@@ -40,7 +40,7 @@ jobs:
 
       - name: Upload reports
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: ./**/build/reports
@@ -96,7 +96,7 @@ jobs:
   
       - name: Upload reports
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-${{ matrix.driver }}
           path: ./**/build/reports
@@ -140,7 +140,7 @@ jobs:
 
       - name: Upload reports
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: publish
           path: ./**/build/reports
