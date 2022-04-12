@@ -309,7 +309,7 @@ configure(integrationTestProjects) {
     apply(plugin ="org.seasar.doma.compile")
 
     dependencies {
-        "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.16.3"))
+        "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.17.0"))
         "testRuntimeOnly"("com.h2database:h2:1.4.200")
         "testRuntimeOnly"("mysql:mysql-connector-java:8.0.28")
         "testRuntimeOnly"("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
