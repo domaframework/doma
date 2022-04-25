@@ -311,7 +311,7 @@ configure(integrationTestProjects) {
     dependencies {
         "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.17.1"))
         "testRuntimeOnly"("com.h2database:h2:1.4.200")
-        "testRuntimeOnly"("mysql:mysql-connector-java:8.0.28")
+        "testRuntimeOnly"("mysql:mysql-connector-java:8.0.29")
         "testRuntimeOnly"("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
         "testRuntimeOnly"("org.postgresql:postgresql:42.3.4")
         "testRuntimeOnly"("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
