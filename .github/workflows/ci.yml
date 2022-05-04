@@ -24,6 +24,16 @@ jobs:
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 18
+
+      - name: Prepare JDK18 env var
+        shell: bash
+        run: echo "JDK18=$JAVA_HOME" >> $GITHUB_ENV
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -64,6 +74,16 @@ jobs:
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 18
+
+      - name: Prepare JDK18 env var
+        shell: bash
+        run: echo "JDK18=$JAVA_HOME" >> $GITHUB_ENV
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -92,8 +112,18 @@ jobs:
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
+
+      - name: Test with Java 18 using JPMS
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            -Pdriver=${{ matrix.driver }}
+            -PtestJavaLangVersion=18
+            -PtestUseModule=true
+            javaToolchains
+            integration-test-java:test
             integration-test-java-latest:test
-  
+
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v3
@@ -118,6 +148,16 @@ jobs:
       - name: Prepare JDK8 env var
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 18
+
+      - name: Prepare JDK18 env var
+        shell: bash
+        run: echo "JDK18=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3

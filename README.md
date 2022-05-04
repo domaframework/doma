@@ -189,7 +189,7 @@ Major versions
 ### Compatibility matrix
 
 |         | Doma 1 | Doma 2 |
-| ------- | ------ | ------ |
+|---------| ------ | ------ |
 | Java 6  |   v    |        |
 | Java 7  |   v    |        |
 | Java 8  |   v    |   v    |
@@ -202,5 +202,6 @@ Major versions
 | Java 15 |        |   v    |
 | Java 16 |        |   v    |
 | Java 17 |        |   v    |
+| Java 18 |        |   v    |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
