@@ -23,5 +23,5 @@ include("doma-slf4j")
 
 include("integration-test-common")
 include("integration-test-java")
-include("integration-test-java-latest")
+include("integration-test-java-additional")
 include("integration-test-kotlin")

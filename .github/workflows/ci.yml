@@ -112,6 +112,7 @@ jobs:
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
+            integration-test-java-additional:test
 
       - name: Test with Java 18 using JPMS
         uses: gradle/gradle-build-action@v2
@@ -122,7 +123,7 @@ jobs:
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
-            integration-test-java-latest:test
+            integration-test-java-additional:test
 
       - name: Upload reports
         if: failure()
