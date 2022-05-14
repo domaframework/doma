@@ -2,12 +2,11 @@ package org.seasar.doma.internal.jdbc.dialect;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlNode;
 
-public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
+public class StandardForUpdateTransformer extends AbstractTransformer {
 
   protected final SelectForUpdateType forUpdateType;
 
@@ -31,10 +30,5 @@ public class StandardForUpdateTransformer extends SimpleSqlNodeVisitor<SqlNode, 
       result.appendNode(child.accept(this, null));
     }
     return result;
-  }
-
-  @Override
-  protected SqlNode defaultAction(SqlNode node, Void p) {
-    return node;
   }
 }
