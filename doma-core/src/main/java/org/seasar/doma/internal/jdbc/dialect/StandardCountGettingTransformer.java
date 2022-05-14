@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.jdbc.dialect;
 
-import org.seasar.doma.internal.jdbc.sql.SimpleSqlNodeVisitor;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.FragmentNode;
 import org.seasar.doma.internal.jdbc.sql.node.FromClauseNode;
@@ -8,7 +7,7 @@ import org.seasar.doma.internal.jdbc.sql.node.SelectClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.SelectStatementNode;
 import org.seasar.doma.jdbc.SqlNode;
 
-public class StandardCountGettingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
+public class StandardCountGettingTransformer extends AbstractTransformer {
 
   protected boolean processed;
 
@@ -46,10 +45,5 @@ public class StandardCountGettingTransformer extends SimpleSqlNodeVisitor<SqlNod
     result.setFromClauseNode(from);
     result.setOptionClauseNode(node.getOptionClauseNode());
     return result;
-  }
-
-  @Override
-  public SqlNode defaultAction(SqlNode node, Void p) {
-    return node;
   }
 }

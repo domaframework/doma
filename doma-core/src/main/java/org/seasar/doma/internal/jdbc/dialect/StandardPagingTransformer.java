@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Void> {
+public class StandardPagingTransformer extends AbstractTransformer {
 
   private final AliasReplacer replacer = new AliasReplacer();
 
@@ -88,11 +88,6 @@ public class StandardPagingTransformer extends SimpleSqlNodeVisitor<SqlNode, Voi
     result.setForUpdateClauseNode(node.getForUpdateClauseNode());
     result.setOptionClauseNode(node.getOptionClauseNode());
     return result;
-  }
-
-  @Override
-  protected SqlNode defaultAction(SqlNode node, Void p) {
-    return node;
   }
 
   protected static class AliasReplacer extends SimpleSqlNodeVisitor<SqlNode, Void> {
