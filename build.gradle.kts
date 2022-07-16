@@ -372,7 +372,10 @@ configure(integrationTestProjects) {
 
 rootProject.apply {
     release {
-        newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+        newVersionCommitMessage.set("[Gradle Release Plugin] - [skip ci] new version commit: ")
+        git {
+            requireBranch.set("master")
+        }
     }
 
     nexusPublishing {
