@@ -22,6 +22,8 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
   public static final String INCLUDE = "include";
   public static final String EXCLUDE = "exclude";
 
+  public static final String IGNORE_GENERATED_KEYS = "ignoreGeneratedKeys";
+
   private final AnnotationValue sqlFile;
 
   private final AnnotationValue queryTimeout;
@@ -38,6 +40,8 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
 
   private final AnnotationValue sqlLog;
 
+  private final AnnotationValue ignoreGeneratedKeys;
+
   BatchModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
@@ -52,6 +56,7 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
     this.include = values.get(INCLUDE);
     this.exclude = values.get(EXCLUDE);
+    this.ignoreGeneratedKeys = values.get(IGNORE_GENERATED_KEYS);
   }
 
   public AnnotationValue getSqlFile() {
@@ -84,6 +89,10 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
 
   public AnnotationValue getSqlLog() {
     return sqlLog;
+  }
+
+  public AnnotationValue getIgnoreGeneratedKeys() {
+    return ignoreGeneratedKeys;
   }
 
   public int getQueryTimeoutValue() {
@@ -132,5 +141,9 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(SQL_FILE);
     }
     return value;
+  }
+
+  public Boolean getIgnoreGeneratedKeysValues() {
+    return AnnotationValueUtil.toBoolean(ignoreGeneratedKeys);
   }
 }

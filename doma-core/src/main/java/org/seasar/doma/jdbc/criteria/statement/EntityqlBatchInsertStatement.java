@@ -60,6 +60,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
     query.setSqlLogType(settings.getSqlLogType());
     query.setIncludedPropertyNames();
     query.setExcludedPropertyNames();
+    query.setGeneratedKeysIgnored(settings.getIgnoreGeneratedKeys());
     query.setMessage(settings.getComment());
     query.prepare();
     BatchInsertCommand command =

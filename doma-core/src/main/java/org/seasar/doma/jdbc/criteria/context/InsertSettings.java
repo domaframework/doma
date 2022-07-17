@@ -13,6 +13,8 @@ public class InsertSettings extends Settings {
   private final List<PropertyMetamodel<?>> includedProperties = new ArrayList<>();
   private final List<PropertyMetamodel<?>> excludedProperties = new ArrayList<>();
 
+  private boolean ignoreGeneratedKeys;
+
   /**
    * Returns the batch size.
    *
@@ -90,5 +92,24 @@ public class InsertSettings extends Settings {
    */
   public void exclude(PropertyMetamodel<?>... propertyMetamodels) {
     Collections.addAll(excludedProperties, propertyMetamodels);
+  }
+
+  /**
+   * Returns whether auto-generated keys are ignored.
+   *
+   * @return Whether auto-generated keys are ignored.
+   */
+  public boolean getIgnoreGeneratedKeys() {
+    return ignoreGeneratedKeys;
+  }
+
+  /**
+   * If this flag is enabled, performance may be improved. However, note that entities won't have
+   * auto-generated keys.
+   *
+   * @param ignoreGeneratedKeys whether auto-generated keys are ignored
+   */
+  public void setIgnoreGeneratedKeys(boolean ignoreGeneratedKeys) {
+    this.ignoreGeneratedKeys = ignoreGeneratedKeys;
   }
 }

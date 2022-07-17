@@ -47,6 +47,14 @@ If annotated with ``@GeneratedValue`` at :doc:`../entity` identifier, the identi
 
 You reference :ref:`identity-auto-generation` about cautionary point.
 
+If you don't use auto-generated keys in your application, you can enable the `ingoreGeneratedKeys` flag.
+This flag may improve performance.
+
+.. code-block:: java
+
+  @BatchInsert(ignoreGeneratedKeys = true)
+  int[] insert(List<Employee> entities);
+
 Version number
 ----------------
 
