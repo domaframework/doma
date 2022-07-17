@@ -1195,6 +1195,7 @@ We support the following settings:
 * excludeNull
 * include
 * exclude
+* ignoreGeneratedKeys
 
 They are all optional.
 
