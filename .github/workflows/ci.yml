@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        driver: [h2, mysql, postgresql, sqlserver]
+        driver: [h2, mysql, postgresql, sqlserver, oracle]
     timeout-minutes: 15
 
     steps:
