@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
@@ -188,6 +189,19 @@ public class AutoBatchInsertTest {
       assertNotNull(entity2.getId());
       assertTrue(entity.getId() < entity2.getId());
     }
+  }
+
+  @Test
+  public void testId_Identity_ignoreGeneratedKeys(Config config) throws Exception {
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
+    for (int i = 0; i < 110; i++) {
+      IdentityStrategy entity = new IdentityStrategy();
+      IdentityStrategy entity2 = new IdentityStrategy();
+      int[] result = dao.insertWithoutRetrievingGeneratedKeys(Arrays.asList(entity, entity2));
+      assertEquals(2, result.length);
+    }
+    List<IdentityStrategy> list = dao.selectAll();
+    assertEquals(220, list.size());
   }
 
   @Test

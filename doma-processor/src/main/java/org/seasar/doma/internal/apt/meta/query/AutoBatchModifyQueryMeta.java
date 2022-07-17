@@ -71,6 +71,10 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     return batchModifyAnnot.getSqlLogValue();
   }
 
+  public Boolean getIgnoreGeneratedKeysValues() {
+    return batchModifyAnnot.getIgnoreGeneratedKeysValues();
+  }
+
   @Override
   public <R> R accept(QueryMetaVisitor<R> visitor) {
     return visitor.visitAutoBatchModifyQueryMeta(this);

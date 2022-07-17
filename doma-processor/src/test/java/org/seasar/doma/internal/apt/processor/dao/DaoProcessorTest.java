@@ -130,7 +130,8 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(
               ApplicationScopedDao.class,
               "-Adoma.cdi.ApplicationScoped=" + ApplicationScoped.class.getCanonicalName()),
-          invocationContext(MultipleAnnotateWithDao.class));
+          invocationContext(MultipleAnnotateWithDao.class),
+          invocationContext(IgnoreGeneratedKeysDao.class));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {

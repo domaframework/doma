@@ -91,4 +91,12 @@ public @interface BatchInsert {
 
   /** @return the output format of SQL logs. */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * Whether auto-generated keys are not retrieved from the database to improve performance. If this
+   * flag is enabled, entities won't have auto-generated keys.
+   *
+   * @return Whether auto-generated keys are not retrieved.
+   */
+  boolean ignoreGeneratedKeys() default false;
 }

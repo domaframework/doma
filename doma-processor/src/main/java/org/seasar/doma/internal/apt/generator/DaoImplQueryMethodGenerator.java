@@ -387,6 +387,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
           "__query.setOptimisticLockExceptionSuppressed(%1$s);%n", suppressOptimisticLockException);
     }
 
+    Boolean ignoreGeneratedKeys = m.getIgnoreGeneratedKeysValues();
+    if (ignoreGeneratedKeys != null) {
+      iprint("__query.setGeneratedKeysIgnored(%1$s);%n", ignoreGeneratedKeys);
+    }
+
     iprint("__query.prepare();%n");
     iprint(
         "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",

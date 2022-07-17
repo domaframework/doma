@@ -99,6 +99,10 @@ public interface Dialect {
    */
   boolean supportsBatchUpdateResults();
 
+  default boolean supportsBatchExecutionReturningGeneratedValues() {
+    return false;
+  }
+
   /**
    * Whether this object supports pessimistic locking.
    *
