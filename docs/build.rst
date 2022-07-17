@@ -35,8 +35,8 @@ Write your build.gradle as follows:
 .. code-block:: groovy
 
   dependencies {
-      implementation "org.seasar.doma:doma-core:2.51.1"
-      annotationProcessor "org.seasar.doma:doma-processor:2.51.1"
+      implementation "org.seasar.doma:doma-core:2.52.0"
+      annotationProcessor "org.seasar.doma:doma-processor:2.52.0"
   }
 
 To simplify your build.script, we recommend that you use the `Doma Compile Plugin`_.
