@@ -9,7 +9,7 @@ plugins {
     id("com.diffplug.spotless")
     id("io.github.gradle-nexus.publish-plugin")
     id("net.researchgate.release")
-    id("org.seasar.doma.compile") apply false
+    id("org.domaframework.doma.compile") apply false
     kotlin("jvm") apply false
     kotlin("kapt") apply false
 }
@@ -306,7 +306,7 @@ configure(integrationTestProjects) {
     apply(plugin = "java")
     apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "com.diffplug.spotless")
-    apply(plugin ="org.seasar.doma.compile")
+    apply(plugin ="org.domaframework.doma.compile")
 
     dependencies {
         "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.17.3"))
