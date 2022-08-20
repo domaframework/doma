@@ -75,8 +75,7 @@ Then import the java-8 and java-15 projects to your workspace.
 
 .. note::
 
-  If you want to store SQL statements in files, `Doma Tools <https://marketplace.eclipse.org/content/doma-tools>`_ can help you.
-  See `the old documentation <https://doma.readthedocs.io/en/2.42.0/getting-started-eclipse/#install-doma-tools-that-is-eclipse-plugin>`_ for more information.
+  If you want to store SQL statements in files, `Doma Tools <https://github.com/domaframework/doma-tools>`_ can help you.
 
 IntelliJ IDEA
 -------------
