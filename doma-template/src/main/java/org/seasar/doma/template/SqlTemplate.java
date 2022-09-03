@@ -25,7 +25,6 @@ public class SqlTemplate {
 
   private final String sql;
   private final Config config;
-
   private final Map<String, Value> values = new HashMap<>();
 
   /** @param sql a template. Must not be null. */
