@@ -134,7 +134,7 @@ configure(modularProjects) {
     apply(plugin = "com.diffplug.eclipse.apt")
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
         withJavadocJar()
         withSourcesJar()
     }
@@ -254,6 +254,7 @@ configure(modularProjects) {
         compileJava {
             dependsOn(replaceVersionInJava)
             options.encoding = encoding
+            options.release.set(8)
         }
 
         jar {
@@ -285,6 +286,7 @@ configure(modularProjects) {
         compileTestJava {
             options.encoding = encoding
             options.compilerArgs = listOf("-proc:none")
+            options.release.set(8)
         }
 
         test {
