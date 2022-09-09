@@ -117,7 +117,7 @@ public class NodePreparedSqlBuilder
         evaluator,
         sqlLogType,
         node -> {
-          throw new UnsupportedOperationException();
+          throw new UnsupportedOperationException("The '%expand' directive is not supported.");
         });
   }
 
@@ -136,7 +136,7 @@ public class NodePreparedSqlBuilder
         sqlLogType,
         columnsExpander,
         (node, context) -> {
-          throw new UnsupportedOperationException();
+          throw new UnsupportedOperationException("The '%populate' directive is not supported.");
         });
   }
 

@@ -41,7 +41,7 @@ fun replaceVersionInArtifact(ver: String) {
 fun replaceVersionInDocs(ver: String) {
     ant.withGroovyBuilder {
         "replaceregexp"(
-            "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j)?:)[^"]*(")""",
+            "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j|template)?:)[^"]*(")""",
             "replace" to "\\1${ver}\\3",
             "encoding" to encoding,
             "flags" to "g"
