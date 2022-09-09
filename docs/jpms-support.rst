@@ -26,6 +26,8 @@ Doma provides the following modules:
 +----------------+------------------------------------+
 | doma-slf4j     |  org.seasar.doma.slf4j             |
 +----------------+------------------------------------+
+| doma-template  |  org.seasar.doma.template          |
++----------------+------------------------------------+
 
 Usage
 =====

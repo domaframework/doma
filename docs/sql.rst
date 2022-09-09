@@ -796,3 +796,36 @@ In other hand, the followings are the beginning of a directive:
 .. note::
 
   We recommend you always use ``/**...*/`` to begin multi line comments because it is simple.
+
+doma-template module
+====================
+
+The doma-template module helps obtain prepared SQL statements from SQL templates.
+The module only contains the following classes:
+
+* SqlArgument
+* SqlStatement
+* SqlTemplate
+
+Gradle
+------
+
+.. code-block:: xml
+
+    dependencies {
+        implementation("org.seasar.doma:doma-template:2.52.0")
+    }
+
+Usage
+-----
+
+.. code-block:: java
+
+    String sql = "select * from emp where name = /* name */'' and salary = /* salary */0";
+    SqlStatement statement =
+        new SqlTemplate(sql)
+            .add("name", String.class, "abc")
+            .add("salary", int.class, 1234)
+            .execute();
+    String rawSql = statement.getRawSql(); // select * from emp where name = ? and salary = ?
+    List<SqlArgument> arguments = statement.getArguments();
