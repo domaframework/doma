@@ -69,4 +69,28 @@ class SqlTemplateTest {
     assertEquals(String.class, argument1.getType());
     assertEquals("a$[b]$%c%", argument1.getValue());
   }
+
+  @Test
+  void expandDirective() {
+    String sql =
+        "select /*%expand name */* from emp where name = /* name */'' and salary = /* salary */0";
+    try {
+      new SqlTemplate(sql)
+          .add("name", String.class, "abc")
+          .add("salary", int.class, 1234)
+          .execute();
+    } catch (UnsupportedOperationException e) {
+      assertEquals("The '%expand' directive is not supported.", e.getMessage());
+    }
+  }
+
+  @Test
+  void populateDirective() {
+    String sql = "update employee set /*%populate*/ id = id where age < 30";
+    try {
+      new SqlTemplate(sql).execute();
+    } catch (UnsupportedOperationException e) {
+      assertEquals("The '%populate' directive is not supported.", e.getMessage());
+    }
+  }
 }
