@@ -22,7 +22,6 @@ import org.seasar.doma.wrapper.Wrapper;
 
 /** Represents a SQL template. */
 public class SqlTemplate {
-
   private final String sql;
   private final Config config;
   private final Map<String, Value> values = new HashMap<>();
@@ -80,7 +79,7 @@ public class SqlTemplate {
   }
 
   /**
-   * Create a SQL statement from this template.
+   * Creates a SQL statement from this template.
    *
    * @return a SQL statement. Must not be null.
    */

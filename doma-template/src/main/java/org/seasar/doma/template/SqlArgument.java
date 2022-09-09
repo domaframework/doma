@@ -4,9 +4,7 @@ import java.util.Objects;
 
 /** Represents a SQL argument. */
 public class SqlArgument {
-
   private final Class<?> type;
-
   private final Object value;
 
   /**
