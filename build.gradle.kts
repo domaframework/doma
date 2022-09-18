@@ -120,7 +120,7 @@ subprojects {
             googleJavaFormat("1.12.0")
         }
         kotlin {
-            ktlint("0.38.1")
+            ktlint("0.45.2")
             trimTrailingWhitespace()
             endWithNewline()
         }
