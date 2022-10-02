@@ -203,5 +203,6 @@ Major versions
 | Java 16 |        |   v    |
 | Java 17 |        |   v    |
 | Java 18 |        |   v    |
+| Java 19 |        |   v    |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
