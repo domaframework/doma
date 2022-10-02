@@ -181,28 +181,28 @@ Major versions
 
 ### Status and Repository
 
-| Version                                | Status            | Repository                             | Branch |
-| -------------------------------------- | ----------------- | -------------------------------------- | ------ |
-| [Doma 1](http://doma.seasar.org/)      | stable            | https://github.com/seasarorg/doma/     | master |
-| [Doma 2](http://doma.readthedocs.org/) | stable            | https://github.com/domaframework/doma/ | master |
+| Version                                | Status | Repository                             | Branch |
+|----------------------------------------|--------|----------------------------------------|--------|
+| [Doma 1](http://doma.seasar.org/)      | stable | https://github.com/seasarorg/doma/     | master |
+| [Doma 2](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | master |
 
 ### Compatibility matrix
 
 |         | Doma 1 | Doma 2 |
-|---------| ------ | ------ |
-| Java 6  |   v    |        |
-| Java 7  |   v    |        |
-| Java 8  |   v    |   v    |
-| Java 9  |        |   v    |
-| Java 10 |        |   v    |
-| Java 11 |        |   v    |
-| Java 12 |        |   v    |
-| Java 13 |        |   v    |
-| Java 14 |        |   v    |
-| Java 15 |        |   v    |
-| Java 16 |        |   v    |
-| Java 17 |        |   v    |
-| Java 18 |        |   v    |
-| Java 19 |        |   v    |
+|---------|--------|--------|
+| Java 6  | v      |        |
+| Java 7  | v      |        |
+| Java 8  | v      | v      |
+| Java 9  |        | v      |
+| Java 10 |        | v      |
+| Java 11 |        | v      |
+| Java 12 |        | v      |
+| Java 13 |        | v      |
+| Java 14 |        | v      |
+| Java 15 |        | v      |
+| Java 16 |        | v      |
+| Java 17 |        | v      |
+| Java 18 |        | v      |
+| Java 19 |        | v      |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
