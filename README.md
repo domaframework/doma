@@ -62,7 +62,7 @@ for more information.
 
 ### SQL templates
 
-Written in Java 15:
+Written in Java 15 or above:
 
 ```java
 @Dao
