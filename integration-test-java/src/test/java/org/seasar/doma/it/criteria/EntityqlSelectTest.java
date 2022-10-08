@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
@@ -358,6 +359,49 @@ public class EntityqlSelectTest {
         list.stream().allMatch(it -> it.getDepartment().getDepartmentName().equals("SALES")));
     assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
     assertTrue(list.stream().allMatch(it -> it.getAddress() != null));
+  }
+
+  @Test
+  void associate_multi_oneToMany() {
+    Team_ t = new Team_();
+    Player_ p = new Player_();
+    Coach_ c = new Coach_();
+
+    entityql.insert(t, new Team(1, "Tokyo")).execute();
+    entityql.insert(t, new Team(2, "Osaka")).execute();
+    entityql.insert(p, new Player(1, "Player 1", 1)).execute();
+    entityql.insert(p, new Player(2, "Player 2", 1)).execute();
+    entityql.insert(p, new Player(3, "Player 3", 1)).execute();
+    entityql.insert(p, new Player(4, "Player 4", 2)).execute();
+    entityql.insert(p, new Player(5, "Player 5", 2)).execute();
+    entityql.insert(c, new Coach(1, "Coach 1", 1)).execute();
+    entityql.insert(c, new Coach(2, "Coach 2", 1)).execute();
+    entityql.insert(c, new Coach(3, "Coach 3", 2)).execute();
+
+    List<Team> teams =
+        entityql
+            .from(t)
+            .leftJoin(p, on -> on.eq(t.id, p.teamId))
+            .leftJoin(c, on -> on.eq(t.id, c.teamId))
+            .where(w -> w.eq(t.id, 1))
+            .associate(t, p, (team, player) -> team.getPlayers().add(player))
+            .associate(t, c, (team, coach) -> team.getCoaches().add(coach))
+            .execute();
+
+    assertEquals(1, teams.size());
+    Team team = teams.iterator().next();
+    assertEquals("Tokyo", team.getName());
+    assertEquals(3, team.getPlayers().size());
+    List<Integer> playerIds =
+        team.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
+    assertTrue(playerIds.contains(1));
+    assertTrue(playerIds.contains(2));
+    assertTrue(playerIds.contains(3));
+    assertEquals(2, team.getCoaches().size());
+    List<Integer> coachIds =
+        team.getCoaches().stream().map(Coach::getId).collect(Collectors.toList());
+    assertTrue(coachIds.contains(1));
+    assertTrue(coachIds.contains(2));
   }
 
   @Test
