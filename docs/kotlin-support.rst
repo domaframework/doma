@@ -85,7 +85,7 @@ Dao interfaces
     fun selectById(id: Int): Person
 
     @Insert
-    fun insert(Person person): Result<Person>
+    fun insert(person: Person): Result<Person>
   }
 
 * Use `Destructuring Declarations <https://kotlinlang.org/docs/reference/multi-declarations.html>`_
