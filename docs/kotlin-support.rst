@@ -94,7 +94,7 @@ Dao interfaces
 .. code-block:: java
 
   val dao: PersonDao = ...
-  val person = Person(name = Name("Jhon"), address = Address(city = "Tokyo", street = "Yaesu"))
+  val person = Person(name = Name("John"), address = Address(city = "Tokyo", street = "Yaesu"))
   val (newPerson, count) = dao.insert(person)
 
 .. _kotlin-specific-criteria-api:
