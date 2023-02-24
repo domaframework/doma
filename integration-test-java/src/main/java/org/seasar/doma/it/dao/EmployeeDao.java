@@ -15,6 +15,7 @@ import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.Sql;
 import org.seasar.doma.Suppress;
+import org.seasar.doma.Update;
 import org.seasar.doma.it.domain.Hiredate;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.Config;
@@ -150,4 +151,7 @@ public interface EmployeeDao {
 
   @Insert
   int insert(Employee entity);
+
+  @Update
+  int update(Employee entity);
 }
