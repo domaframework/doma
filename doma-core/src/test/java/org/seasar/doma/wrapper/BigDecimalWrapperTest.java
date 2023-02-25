@@ -1,6 +1,8 @@
 package org.seasar.doma.wrapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -41,5 +43,12 @@ public class BigDecimalWrapperTest {
     BigDecimalWrapper wrapper = new BigDecimalWrapper(new BigDecimal(10));
     wrapper.decrement();
     assertEquals(new BigDecimal(9), wrapper.get());
+  }
+
+  @Test
+  public void testHasEqualValue() {
+    BigDecimalWrapper wrapper = new BigDecimalWrapper(new BigDecimal("10"));
+    assertTrue(wrapper.hasEqualValue(new BigDecimal("10.00")));
+    assertNotEquals(wrapper.get(), new BigDecimal("10.00"));
   }
 }
