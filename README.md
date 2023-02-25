@@ -205,4 +205,12 @@ Major versions
 | Java 18 |        | v      |
 | Java 19 |        | v      |
 
+Backers & Sponsors
+------------------
+
+If you use Doma in your project or enterprise and would like to support ongoing development, please consider becoming a backer or a sponsor.
+Sponsor logos will show up here with a link to your website.
+
+[[Become a backer or a sponsor](https://opencollective.com/doma#category-CONTRIBUTE)]
+
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
