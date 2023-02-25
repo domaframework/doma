@@ -28,3 +28,9 @@ java {
     val version = max(17, javaLangVersion)
     toolchain.languageVersion.set(JavaLanguageVersion.of(version))
 }
+
+tasks {
+    compileJava {
+        options.incrementalAfterFailure.set(false)
+    }
+}

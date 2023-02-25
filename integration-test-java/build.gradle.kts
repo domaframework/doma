@@ -29,6 +29,7 @@ java {
 tasks {
     compileJava {
         options.compilerArgs.addAll(listOf("-Adoma.domain.converters=org.seasar.doma.it.domain.DomainConverterProvider"))
+        options.incrementalAfterFailure.set(false)
     }
 
     compileTestJava {
