@@ -24,7 +24,7 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1)",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -35,7 +35,7 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -46,7 +46,7 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -58,7 +58,7 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) select t1_.ID, t1_.NAME, t1_.SALARY, t1_.VERSION from CATA.DEPT t0_ inner join EMP t1_ on (t0_.ID = t1_.ID)",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -69,7 +69,7 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 }

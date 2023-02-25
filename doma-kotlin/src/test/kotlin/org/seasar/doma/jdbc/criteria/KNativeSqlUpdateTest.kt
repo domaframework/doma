@@ -37,7 +37,7 @@ internal class KNativeSqlUpdateTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "update EMP t0_ set NAME = 'bbb', SALARY = 1000 where t0_.ID = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -57,7 +57,7 @@ internal class KNativeSqlUpdateTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "update t0_ set NAME = 'bbb', SALARY = 1000 from EMP t0_ where t0_.ID = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 }

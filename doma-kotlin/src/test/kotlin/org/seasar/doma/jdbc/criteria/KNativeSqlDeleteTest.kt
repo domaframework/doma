@@ -43,7 +43,7 @@ internal class KNativeSqlDeleteTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "delete from EMP t0_ where t0_.NAME = 'a' and t0_.VERSION = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -55,7 +55,7 @@ internal class KNativeSqlDeleteTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "delete from EMP t0_ where t0_.ID in (select t1_.ID from CATA.DEPT t1_)",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 }

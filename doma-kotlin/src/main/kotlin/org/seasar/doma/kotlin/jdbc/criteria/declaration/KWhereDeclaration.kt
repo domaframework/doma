@@ -21,7 +21,7 @@ class KWhereDeclaration(declaration: WhereDeclaration) : org.seasar.doma.kotlin.
     fun <PROPERTY> between(
         propertyMetamodel: PropertyMetamodel<PROPERTY>,
         start: PROPERTY?,
-        end: PROPERTY?
+        end: PROPERTY?,
     ) {
         declaration.between(propertyMetamodel, start, end)
     }
@@ -36,42 +36,42 @@ class KWhereDeclaration(declaration: WhereDeclaration) : org.seasar.doma.kotlin.
 
     fun <PROPERTY> `in`(
         left: PropertyMetamodel<PROPERTY>,
-        right: SubSelectContext<PropertyMetamodel<PROPERTY>>
+        right: SubSelectContext<PropertyMetamodel<PROPERTY>>,
     ) {
         declaration.`in`(left, right)
     }
 
     fun <PROPERTY> notIn(
         left: PropertyMetamodel<PROPERTY>,
-        right: SubSelectContext<PropertyMetamodel<PROPERTY>>
+        right: SubSelectContext<PropertyMetamodel<PROPERTY>>,
     ) {
         declaration.notIn(left, right)
     }
 
     fun <PROPERTY1, PROPERTY2> `in`(
         left: Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>,
-        right: List<Tuple2<PROPERTY1, PROPERTY2>>?
+        right: List<Tuple2<PROPERTY1, PROPERTY2>>?,
     ) {
         declaration.`in`(left, right)
     }
 
     fun <PROPERTY1, PROPERTY2> notIn(
         left: Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>,
-        right: List<Tuple2<PROPERTY1, PROPERTY2>>?
+        right: List<Tuple2<PROPERTY1, PROPERTY2>>?,
     ) {
         declaration.notIn(left, right)
     }
 
     fun <PROPERTY1, PROPERTY2> `in`(
         left: Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>,
-        right: SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>>
+        right: SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>>,
     ) {
         declaration.`in`(left, right)
     }
 
     fun <PROPERTY1, PROPERTY2> notIn(
         left: Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>,
-        right: SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>>
+        right: SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>>,
     ) {
         declaration.notIn(left, right)
     }

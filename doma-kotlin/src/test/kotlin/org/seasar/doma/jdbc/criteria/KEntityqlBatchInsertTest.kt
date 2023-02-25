@@ -23,7 +23,7 @@ internal class KEntityqlBatchInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1)",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 

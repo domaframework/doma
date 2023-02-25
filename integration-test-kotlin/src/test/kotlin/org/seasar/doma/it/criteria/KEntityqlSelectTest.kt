@@ -252,7 +252,7 @@ class KEntityqlSelectTest(config: Config) {
                     employee.department = department
                     department.employeeList += employee
                 },
-                AssociationOption.optional()
+                AssociationOption.optional(),
             )
             .fetch()
     }
@@ -275,7 +275,7 @@ class KEntityqlSelectTest(config: Config) {
             .fetch()
         assertEquals(6, list.size)
         assertTrue(
-            list.all { it.department?.departmentName == "SALES" }
+            list.all { it.department?.departmentName == "SALES" },
         )
         assertEquals(list[0].department?.employeeList?.size, 6)
         assertTrue(list.all { it: Employee -> it.address != null })

@@ -23,7 +23,7 @@ class KEntityql(config: Config) {
 
     fun <ENTITY> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
-        block: SelectSettings.() -> Unit = {}
+        block: SelectSettings.() -> Unit = {},
     ): KEntityqlSelectStarting<ENTITY> {
         val statement = entityql.from(entityMetamodel, block)
         return KEntityqlSelectStarting(statement)
@@ -32,7 +32,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
-        block: UpdateSettings.() -> Unit = {}
+        block: UpdateSettings.() -> Unit = {},
     ): KStatement<Result<ENTITY>> {
         val statement = entityql.update(entityMetamodel, entity, block)
         return KEntityqlUpdateStatement(statement)
@@ -41,7 +41,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
-        block: DeleteSettings.() -> Unit = {}
+        block: DeleteSettings.() -> Unit = {},
     ): KStatement<Result<ENTITY>> {
         val statement = entityql.delete(entityMetamodel, entity, block)
         return KEntityqlDeleteStatement(statement)
@@ -50,7 +50,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
-        block: InsertSettings.() -> Unit = {}
+        block: InsertSettings.() -> Unit = {},
     ): KStatement<Result<ENTITY>> {
         val statement = entityql.insert(entityMetamodel, entity, block)
         return KEntityqlInsertStatement(statement)
@@ -59,7 +59,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
-        block: UpdateSettings.() -> Unit = {}
+        block: UpdateSettings.() -> Unit = {},
     ): KStatement<BatchResult<ENTITY>> {
         val statement = entityql.update(entityMetamodel, entities, block)
         return KEntityqlBatchUpdateStatement(statement)
@@ -68,7 +68,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
-        block: DeleteSettings.() -> Unit = {}
+        block: DeleteSettings.() -> Unit = {},
     ): KStatement<BatchResult<ENTITY>> {
         val statement = entityql.delete(entityMetamodel, entities, block)
         return KEntityqlBatchDeleteStatement(statement)
@@ -77,7 +77,7 @@ class KEntityql(config: Config) {
     fun <ENTITY> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
-        block: InsertSettings.() -> Unit = {}
+        block: InsertSettings.() -> Unit = {},
     ): KStatement<BatchResult<ENTITY>> {
         val statement = entityql.insert(entityMetamodel, entities, block)
         return KEntityqlBatchInsertStatement(statement)

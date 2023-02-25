@@ -20,7 +20,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
 
     fun innerJoin(
         entityMetamodel: EntityMetamodel<*>,
-        block: KJoinDeclaration.() -> Unit
+        block: KJoinDeclaration.() -> Unit,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.innerJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
@@ -28,7 +28,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
 
     fun leftJoin(
         entityMetamodel: EntityMetamodel<*>,
-        block: KJoinDeclaration.() -> Unit
+        block: KJoinDeclaration.() -> Unit,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.leftJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
@@ -37,7 +37,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
     fun <ENTITY1, ENTITY2> associate(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
-        associator: (ENTITY1, ENTITY2) -> Unit
+        associator: (ENTITY1, ENTITY2) -> Unit,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.associate(first, second, associator, AssociationOption.mandatory())
         return this
@@ -47,7 +47,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> Unit,
-        option: AssociationOption
+        option: AssociationOption,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.associate(first, second, associator, option)
         return this
@@ -56,7 +56,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
     fun <ENTITY1, ENTITY2> associateWith(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
-        associator: (ENTITY1, ENTITY2) -> ENTITY1
+        associator: (ENTITY1, ENTITY2) -> ENTITY1,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.associateWith(first, second, associator)
         return this
@@ -66,7 +66,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> ENTITY1,
-        option: AssociationOption
+        option: AssociationOption,
     ): KEntityqlSelectStarting<ENTITY> {
         statement.associateWith(first, second, associator, option)
         return this
@@ -104,7 +104,7 @@ class KEntityqlSelectStarting<ENTITY>(private val statement: EntityqlSelectStart
 
     fun <RESULT> selectTo(
         entityMetamodel: EntityMetamodel<RESULT>,
-        vararg propertyMetamodels: PropertyMetamodel<*>
+        vararg propertyMetamodels: PropertyMetamodel<*>,
     ): KEntityqlSelectTerminal<RESULT> {
         val terminal = statement.selectTo(entityMetamodel, *propertyMetamodels)
         return KEntityqlSelectTerminal(terminal)

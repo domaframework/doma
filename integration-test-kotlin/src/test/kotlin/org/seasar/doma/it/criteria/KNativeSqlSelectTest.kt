@@ -32,7 +32,7 @@ class KNativeSqlSelectTest(config: Config) {
         val e = Employee_()
         val list = nativeSql
             .from(
-                e
+                e,
             ) {
                 comment = "all employees"
                 sqlLogType = SqlLogType.RAW
@@ -49,7 +49,7 @@ class KNativeSqlSelectTest(config: Config) {
     fun fetch_allowEmptyWhere_disabled() {
         val e = Employee_()
         assertThrows(
-            EmptyWhereClauseException::class.java
+            EmptyWhereClauseException::class.java,
         ) { nativeSql.from(e) { allowEmptyWhere = false }.fetch() }
     }
 
@@ -445,7 +445,7 @@ class KNativeSqlSelectTest(config: Config) {
             .select(
                 Expressions.concat(e.employeeName, "a"),
                 Expressions.concat("b", e.employeeName),
-                Expressions.concat(e.employeeName, e.employeeName)
+                Expressions.concat(e.employeeName, e.employeeName),
             )
             .fetch()
         assertEquals(14, list.size)
@@ -462,8 +462,8 @@ class KNativeSqlSelectTest(config: Config) {
                         eq(e.employeeName, Expressions.literal("SMITH"), Expressions.lower(e.employeeName))
                         eq(e.employeeName, Expressions.literal("KING"), Expressions.lower(e.employeeName))
                     },
-                    KExpressions.literal("_")
-                )
+                    KExpressions.literal("_"),
+                ),
             )
             .fetch()
         assertEquals(14, list.size)

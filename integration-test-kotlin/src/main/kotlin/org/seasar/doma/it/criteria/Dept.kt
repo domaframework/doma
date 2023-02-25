@@ -13,5 +13,5 @@ data class Dept(
     val departmentNo: Int,
     val departmentName: String,
     val location: String,
-    @Version val version: Int
+    @Version val version: Int,
 )

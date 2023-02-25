@@ -23,7 +23,7 @@ internal class KEntityqlUpdateTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 + 1 where ID = 1 and VERSION = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -39,7 +39,7 @@ internal class KEntityqlUpdateTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "update EMP set NAME = 'aaa', SALARY = 1000, VERSION = 1 where ID = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 
@@ -55,7 +55,7 @@ internal class KEntityqlUpdateTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "update EMP set SALARY = 1000, VERSION = 1 + 1 where ID = 1 and VERSION = 1",
-            sql.formattedSql
+            sql.formattedSql,
         )
     }
 }

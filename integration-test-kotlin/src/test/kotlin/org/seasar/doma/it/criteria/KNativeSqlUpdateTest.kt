@@ -28,7 +28,7 @@ class KNativeSqlUpdateTest(config: Config) {
         val e = Employee_()
         val count = nativeSql
             .update(
-                e
+                e,
             ) {
                 comment = "update all"
                 queryTimeout = 1000
@@ -59,7 +59,7 @@ class KNativeSqlUpdateTest(config: Config) {
     fun where_empty() {
         val e = Employee_()
         val ex = assertThrows(
-            EmptyWhereClauseException::class.java
+            EmptyWhereClauseException::class.java,
         ) { nativeSql.update(e).set { value(e.departmentId, 3) }.execute() }
         println(ex.message)
     }

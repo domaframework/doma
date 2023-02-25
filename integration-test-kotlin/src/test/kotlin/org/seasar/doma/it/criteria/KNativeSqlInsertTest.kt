@@ -18,7 +18,7 @@ class KNativeSqlInsertTest(config: Config) {
         val d = Department_()
         val count = nativeSql
             .insert(
-                d
+                d,
             ) {
                 comment = "insert department"
                 queryTimeout = 1000
@@ -75,7 +75,7 @@ class KNativeSqlInsertTest(config: Config) {
                     d.departmentNo,
                     d.departmentName,
                     d.location,
-                    d.version
+                    d.version,
                 )
             }
             .execute()

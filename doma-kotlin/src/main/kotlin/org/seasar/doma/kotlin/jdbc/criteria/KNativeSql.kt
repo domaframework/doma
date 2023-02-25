@@ -17,7 +17,7 @@ class KNativeSql(config: Config?) {
 
     fun <ENTITY> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
-        block: SelectSettings.() -> Unit = {}
+        block: SelectSettings.() -> Unit = {},
     ): KNativeSqlSelectStarting<ENTITY> {
         val statement = nativeSql.from(entityMetamodel, block)
         return KNativeSqlSelectStarting(statement)
@@ -25,7 +25,7 @@ class KNativeSql(config: Config?) {
 
     fun <ENTITY> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
-        block: UpdateSettings.() -> Unit = {}
+        block: UpdateSettings.() -> Unit = {},
     ): KNativeSqlUpdateStarting {
         val statement = nativeSql.update(entityMetamodel, block)
         return KNativeSqlUpdateStarting(statement)
@@ -33,7 +33,7 @@ class KNativeSql(config: Config?) {
 
     fun <ENTITY> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
-        block: DeleteSettings.() -> Unit = {}
+        block: DeleteSettings.() -> Unit = {},
     ): KNativeSqlDeleteStarting {
         val statement = nativeSql.delete(entityMetamodel, block)
         return KNativeSqlDeleteStarting(statement)
@@ -41,7 +41,7 @@ class KNativeSql(config: Config?) {
 
     fun <ENTITY> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
-        block: InsertSettings.() -> Unit = {}
+        block: InsertSettings.() -> Unit = {},
     ): KNativeSqlInsertStarting {
         val statement = nativeSql.insert(entityMetamodel, block)
         return KNativeSqlInsertStarting(statement)

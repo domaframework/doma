@@ -21,7 +21,7 @@ data class Emp(
     val addressId: Int,
     @Version val version: Int,
     @Transient val department: Dept?,
-    @Transient val manager: Emp?
+    @Transient val manager: Emp?,
 ) {
 
     constructor(
@@ -33,6 +33,6 @@ data class Emp(
         salary: Salary,
         departmentId: Int,
         addressId: Int,
-        version: Int
+        version: Int,
     ) : this(employeeId, employeeNo, employeeName, managerId, hiredate, salary, departmentId, addressId, version, null, null)
 }
