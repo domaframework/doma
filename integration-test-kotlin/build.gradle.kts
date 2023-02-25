@@ -16,3 +16,9 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
 }
+
+tasks {
+    compileJava {
+        options.incrementalAfterFailure.set(false)
+    }
+}
