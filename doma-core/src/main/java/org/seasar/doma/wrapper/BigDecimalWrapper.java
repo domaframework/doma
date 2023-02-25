@@ -44,6 +44,18 @@ public class BigDecimalWrapper extends AbstractWrapper<BigDecimal>
   }
 
   @Override
+  protected boolean doHasEqualValue(Object otherValue) {
+    BigDecimal value = doGet();
+    if (value == null) {
+      return otherValue == null;
+    }
+    if (otherValue instanceof BigDecimal) {
+      return value.compareTo((BigDecimal) otherValue) == 0;
+    }
+    return false;
+  }
+
+  @Override
   public <R, P, Q, TH extends Throwable> R accept(WrapperVisitor<R, P, Q, TH> visitor, P p, Q q)
       throws TH {
     if (visitor == null) {

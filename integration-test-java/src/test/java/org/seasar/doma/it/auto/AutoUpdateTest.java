@@ -23,6 +23,8 @@ import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
 import org.seasar.doma.it.dao.DeptDaoImpl;
+import org.seasar.doma.it.dao.EmployeeDao;
+import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.SalesmanDao;
@@ -37,6 +39,7 @@ import org.seasar.doma.it.entity.Businessman;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
+import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.Salesman;
 import org.seasar.doma.it.entity.Staff;
@@ -252,6 +255,15 @@ public class AutoUpdateTest {
     assertEquals(13, staff.staffInfo.managerId);
     assertEquals(2, staff.departmentId.intValue());
     assertEquals(1, staff.addressId.intValue());
+  }
+
+  @Test
+  public void testUpdateUsingOriginalStates(Config config) throws Exception {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
+    Employee employee = dao.selectById(8);
+    employee.setSalary(new Salary(new BigDecimal("3000")));
+    int result = dao.update(employee);
+    assertEquals(0, result);
   }
 
   @Test
