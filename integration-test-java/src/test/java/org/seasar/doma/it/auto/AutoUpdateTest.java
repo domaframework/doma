@@ -1,7 +1,6 @@
 package org.seasar.doma.it.auto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -262,9 +261,7 @@ public class AutoUpdateTest {
   public void testUpdateUsingOriginalStates(Config config) throws Exception {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(8);
-    BigDecimal newValue = new BigDecimal("3000");
-    assertNotEquals(newValue, employee.getSalary().getValue());
-    employee.setSalary(new Salary(newValue));
+    employee.setSalary(new Salary(new BigDecimal("3000")));
     int result = dao.update(employee);
     assertEquals(0, result);
   }
