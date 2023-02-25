@@ -314,7 +314,7 @@ configure(integrationTestProjects) {
         "testRuntimeOnly"("mysql:mysql-connector-java:8.0.32")
         "testRuntimeOnly"("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
         "testRuntimeOnly"("org.postgresql:postgresql:42.5.4")
-        "testRuntimeOnly"("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
+        "testRuntimeOnly"("com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre11")
         "testRuntimeOnly"("org.testcontainers:mysql")
         "testRuntimeOnly"("org.testcontainers:oracle-xe")
         "testRuntimeOnly"("org.testcontainers:postgresql")
