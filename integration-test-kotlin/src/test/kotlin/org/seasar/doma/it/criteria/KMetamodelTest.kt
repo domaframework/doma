@@ -18,7 +18,7 @@ class KMetamodelTest {
     @Test
     fun tableName_single_quotation() {
         val ex = assertThrows(
-            DomaIllegalArgumentException::class.java
+            DomaIllegalArgumentException::class.java,
         ) {
             val e = Employee_("ab'c")
             e.asType()
@@ -29,7 +29,7 @@ class KMetamodelTest {
     @Test
     fun tableName_semicolon() {
         val ex = assertThrows(
-            DomaIllegalArgumentException::class.java
+            DomaIllegalArgumentException::class.java,
         ) {
             val e = Employee_("ab;c")
             e.asType()
@@ -40,7 +40,7 @@ class KMetamodelTest {
     @Test
     fun tableName_two_hyphens() {
         val ex = assertThrows(
-            DomaIllegalArgumentException::class.java
+            DomaIllegalArgumentException::class.java,
         ) {
             val e = Employee_("ab--c")
             e.asType()
@@ -51,7 +51,7 @@ class KMetamodelTest {
     @Test
     fun tableName_slash() {
         val ex = assertThrows(
-            DomaIllegalArgumentException::class.java
+            DomaIllegalArgumentException::class.java,
         ) {
             val e = Employee_("ab/*c")
             e.asType()

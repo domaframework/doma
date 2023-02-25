@@ -5,7 +5,7 @@ import org.seasar.doma.jdbc.Sql
 import org.seasar.doma.jdbc.criteria.statement.Statement
 
 class KEntityqlBatchInsertStatement<ENTITY>(
-    private val statement: Statement<BatchResult<ENTITY>>
+    private val statement: Statement<BatchResult<ENTITY>>,
 ) : KStatement<BatchResult<ENTITY>> {
 
     override fun execute(): BatchResult<ENTITY> {
