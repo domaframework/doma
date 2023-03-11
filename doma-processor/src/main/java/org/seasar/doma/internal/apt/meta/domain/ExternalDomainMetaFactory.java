@@ -128,6 +128,12 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
             Message.DOMA4203, converterElement, new Object[] {domainElement.getQualifiedName()});
       }
     }
+
+    BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(declaredType);
+    if (basicCtType != null) {
+      throw new AptException(Message.DOMA4460, converterElement, new Object[] {declaredType});
+    }
+
     meta.setTypeElement(domainElement);
     TypeParametersDef typeParametersDef = ctx.getMoreElements().getTypeParametersDef(domainElement);
     meta.setTypeParametersDef(typeParametersDef);

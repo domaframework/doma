@@ -921,6 +921,8 @@ public enum Message implements MessageResource {
   DOMA4457("You must always receive the EntityMetamodel as the first parameter"),
   DOMA4458("You can't use static methods"),
   DOMA4459("Must be a public method"),
+  DOMA4460(
+      "The first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter must not be a basic type."),
 
   // other
   DOMA5001(
