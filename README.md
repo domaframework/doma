@@ -204,6 +204,7 @@ Major versions
 | Java 17 |        | v      |
 | Java 18 |        | v      |
 | Java 19 |        | v      |
+| Java 20 |        | v      |
 
 Backers & Sponsors
 ------------------
