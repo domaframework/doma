@@ -25,6 +25,7 @@ import org.seasar.doma.jdbc.criteria.Entityql;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 import org.seasar.doma.jdbc.criteria.statement.Listable;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class EntityqlSelectTest {
@@ -181,6 +182,48 @@ public class EntityqlSelectTest {
             .fetch();
 
     assertEquals(6, list.size());
+  }
+
+  @Test
+  void where_in3() {
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .where(
+                c ->
+                    c.in(
+                        new Tuple3<>(e.employeeId, e.employeeNo, e.employeeName),
+                        Arrays.asList(
+                            new Tuple3<>(2, 7499, "ALLEN"),
+                            new Tuple3<>(3, 7521, "WARD"),
+                            new Tuple3<>(4, 7566, "JONES"))))
+            .orderBy(c -> c.asc(e.employeeId))
+            .fetch();
+
+    assertEquals(3, list.size());
+  }
+
+  @Test
+  void where_in3_subQuery() {
+    Employee_ e = new Employee_();
+    Employee_ e2 = new Employee_();
+
+    List<Employee> list =
+        entityql
+            .from(e)
+            .where(
+                c ->
+                    c.in(
+                        new Tuple3<>(e.employeeId, e.employeeNo, e.employeeName),
+                        c.from(e2)
+                            .where(c2 -> c2.in(e2.employeeId, Arrays.asList(2, 3, 4)))
+                            .select(e2.employeeId, e2.employeeNo, e2.employeeName)))
+            .orderBy(c -> c.asc(e.employeeId))
+            .fetch();
+
+    assertEquals(3, list.size());
   }
 
   @Test

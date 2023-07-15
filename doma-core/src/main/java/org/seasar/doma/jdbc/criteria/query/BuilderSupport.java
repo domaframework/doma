@@ -25,6 +25,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
@@ -232,6 +233,26 @@ public class BuilderSupport {
     }
 
     @Override
+    public void visit(Criterion.InTuple3 c) {
+      inTriple(c.left, c.right, false);
+    }
+
+    @Override
+    public void visit(Criterion.NotInTuple3 c) {
+      inTriple(c.left, c.right, true);
+    }
+
+    @Override
+    public void visit(Criterion.InTuple3SubQuery c) {
+      inTripleSubQuery(c.left, c.right, false);
+    }
+
+    @Override
+    public void visit(Criterion.NotInTuple3SubQuery c) {
+      inTripleSubQuery(c.left, c.right, true);
+    }
+
+    @Override
     public void visit(Criterion.Exists c) {
       exists(c.context, false);
     }
@@ -393,6 +414,58 @@ public class BuilderSupport {
       column(left.getItem1());
       buf.appendSql(", ");
       column(left.getItem2());
+      buf.appendSql(")");
+      if (not) {
+        buf.appendSql(" not");
+      }
+      buf.appendSql(" in (");
+      AliasManager child = new AliasManager(right, aliasManager);
+      SelectBuilder builder = new SelectBuilder(config, right, commenter, buf, child);
+      builder.interpret();
+      buf.appendSql(")");
+    }
+
+    private void inTriple(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left,
+        List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> right,
+        boolean not) {
+      buf.appendSql("(");
+      column(left.getItem1());
+      buf.appendSql(", ");
+      column(left.getItem2());
+      buf.appendSql(", ");
+      column(left.getItem3());
+      buf.appendSql(")");
+      if (not) {
+        buf.appendSql(" not");
+      }
+      buf.appendSql(" in (");
+      if (right.isEmpty()) {
+        buf.appendSql("null, null, null");
+      } else {
+        right.forEach(
+            triple -> {
+              buf.appendSql("(");
+              param(triple.getItem1());
+              buf.appendSql(", ");
+              param(triple.getItem2());
+              buf.appendSql(", ");
+              param(triple.getItem3());
+              buf.appendSql("), ");
+            });
+        buf.cutBackSql(2);
+      }
+      buf.appendSql(")");
+    }
+
+    private void inTripleSubQuery(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left, SelectContext right, boolean not) {
+      buf.appendSql("(");
+      column(left.getItem1());
+      buf.appendSql(", ");
+      column(left.getItem2());
+      buf.appendSql(", ");
+      column(left.getItem3());
       buf.appendSql(")");
       if (not) {
         buf.appendSql(" not");

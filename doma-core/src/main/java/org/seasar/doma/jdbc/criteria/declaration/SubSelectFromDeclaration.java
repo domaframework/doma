@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 public class SubSelectFromDeclaration<ENTITY> implements SubSelectContext<ENTITY> {
 
@@ -81,6 +82,21 @@ public class SubSelectFromDeclaration<ENTITY> implements SubSelectContext<ENTITY
           PropertyMetamodel<PROPERTY1> first, PropertyMetamodel<PROPERTY2> second) {
     SelectContext context = declaration.getContext();
     context.projection = new Projection.PropertyMetamodels(first, second);
+    return () -> context;
+  }
+
+  public <PROPERTY1, PROPERTY2, PROPERTY3>
+      SubSelectContext<
+              Tuple3<
+                  PropertyMetamodel<PROPERTY1>,
+                  PropertyMetamodel<PROPERTY2>,
+                  PropertyMetamodel<PROPERTY3>>>
+          select(
+              PropertyMetamodel<PROPERTY1> first,
+              PropertyMetamodel<PROPERTY2> second,
+              PropertyMetamodel<PROPERTY3> third) {
+    SelectContext context = declaration.getContext();
+    context.projection = new Projection.PropertyMetamodels(first, second, third);
     return () -> context;
   }
 
