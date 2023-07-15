@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 public interface Criterion {
   void accept(Visitor visitor);
@@ -298,6 +299,72 @@ public interface Criterion {
     }
   }
 
+  class InTuple3 implements Criterion {
+    public final Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left;
+    public final List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> right;
+
+    public InTuple3(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left,
+        List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> right) {
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  class NotInTuple3 implements Criterion {
+    public final Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left;
+    public final List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> right;
+
+    public NotInTuple3(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left,
+        List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> right) {
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  class InTuple3SubQuery implements Criterion {
+    public final Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left;
+    public final SelectContext right;
+
+    public InTuple3SubQuery(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left, SelectContext right) {
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  class NotInTuple3SubQuery implements Criterion {
+    public final Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left;
+    public final SelectContext right;
+
+    public NotInTuple3SubQuery(
+        Tuple3<Operand.Prop, Operand.Prop, Operand.Prop> left, SelectContext right) {
+      this.left = Objects.requireNonNull(left);
+      this.right = Objects.requireNonNull(right);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
   class Exists implements Criterion {
     public final SelectContext context;
 
@@ -404,6 +471,14 @@ public interface Criterion {
     void visit(InTuple2SubQuery criterion);
 
     void visit(NotInTuple2SubQuery criterion);
+
+    void visit(InTuple3 criterion);
+
+    void visit(NotInTuple3 criterion);
+
+    void visit(InTuple3SubQuery criterion);
+
+    void visit(NotInTuple3SubQuery criterion);
 
     void visit(Exists criterion);
 

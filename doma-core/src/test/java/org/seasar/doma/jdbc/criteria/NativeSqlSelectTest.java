@@ -41,6 +41,7 @@ import org.seasar.doma.jdbc.criteria.statement.Buildable;
 import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.dialect.Db2Dialect;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect;
@@ -409,6 +410,56 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void where_in_tuple3() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.in(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      Arrays.asList(
+                          new Tuple3<>(1, "a", BigDecimal.ONE),
+                          new Tuple3<>(2, "b", BigDecimal.TEN)));
+                  c.in(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      (List<Tuple3<Integer, String, BigDecimal>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.SALARY) in ((1, 'a', 1), (2, 'b', 10))",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_notIn_tuple3() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c -> {
+                  c.notIn(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      Arrays.asList(
+                          new Tuple3<>(1, "a", BigDecimal.ONE),
+                          new Tuple3<>(2, "b", BigDecimal.TEN)));
+                  c.notIn(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      (List<Tuple3<Integer, String, BigDecimal>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.SALARY) not in ((1, 'a', 1), (2, 'b', 10))",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void where_in_subQuery() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
@@ -463,6 +514,46 @@ class NativeSqlSelectTest {
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from CATA.DEPT t1_)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_in_tuple3_subQuery() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c ->
+                    c.in(
+                        new Tuple3<>(e.id, e.name, e.version),
+                        c.from(d).select(d.id, d.name, d.id)))
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.VERSION) in (select t1_.ID, t1_.NAME, t1_.ID from CATA.DEPT t1_)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_notIn_tuple3_subQuery() {
+    Emp_ e = new Emp_();
+    Dept_ d = new Dept_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .where(
+                c ->
+                    c.notIn(
+                        new Tuple3<>(e.id, e.name, e.version),
+                        c.from(d).select(d.id, d.name, d.id)))
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.VERSION) not in (select t1_.ID, t1_.NAME, t1_.ID from CATA.DEPT t1_)",
         sql.getFormattedSql());
   }
 
