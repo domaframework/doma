@@ -16,7 +16,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
@@ -185,6 +187,7 @@ public class EntityqlSelectTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL})
   void where_in3() {
     Employee_ e = new Employee_();
 
