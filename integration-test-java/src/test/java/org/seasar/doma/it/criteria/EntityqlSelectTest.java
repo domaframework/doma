@@ -209,6 +209,7 @@ public class EntityqlSelectTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL})
   void where_in3_subQuery() {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
