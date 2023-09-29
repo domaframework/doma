@@ -53,7 +53,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Release ${{ env.RELEASE_VERSION }}
-        uses: gradle/gradle-build-action@v2.8.1
+        uses: gradle/gradle-build-action@v2.9.0
         with:
           arguments: release -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
 
