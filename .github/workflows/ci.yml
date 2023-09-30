@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Assemble and Check
-        uses: gradle/gradle-build-action@v2.9.0
+        uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: javaToolchains assemble check
 
@@ -94,7 +94,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test with Java 8
-        uses: gradle/gradle-build-action@v2.9.0
+        uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
@@ -104,7 +104,7 @@ jobs:
             integration-test-kotlin:test
 
       - name: Test with Java 17 using JPMS
-        uses: gradle/gradle-build-action@v2.9.0
+        uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
@@ -115,7 +115,7 @@ jobs:
             integration-test-java-additional:test
 
       - name: Test with Java 20 using JPMS
-        uses: gradle/gradle-build-action@v2.9.0
+        uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
@@ -170,7 +170,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Publish packages
-        uses: gradle/gradle-build-action@v2.9.0
+        uses: gradle/gradle-build-action@v2.8.1
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
