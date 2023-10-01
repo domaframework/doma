@@ -32,7 +32,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.8.1
 
       - name: Build
-        run: |
+        run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
           assemble check
