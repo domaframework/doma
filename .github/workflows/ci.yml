@@ -17,7 +17,7 @@ jobs:
       - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.OLDEST_JDK_VERSION }}
 
       - name: Prepare the oldest JDK env var
@@ -27,7 +27,7 @@ jobs:
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_JDK_VERSION }}
 
       - name: Prepare the latest JDK env var
@@ -37,7 +37,7 @@ jobs:
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout
@@ -69,7 +69,7 @@ jobs:
       - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.OLDEST_JDK_VERSION }}
 
       - name: Prepare the oldest JDK env var
@@ -79,7 +79,7 @@ jobs:
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_JDK_VERSION }}
 
       - name: Prepare the latest JDK env var
@@ -89,7 +89,7 @@ jobs:
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout
@@ -147,7 +147,7 @@ jobs:
       - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.OLDEST_JDK_VERSION }}
 
       - name: Prepare the oldest JDK env var
@@ -157,7 +157,7 @@ jobs:
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_JDK_VERSION }}
 
       - name: Prepare the latest JDK env var
@@ -167,7 +167,7 @@ jobs:
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout

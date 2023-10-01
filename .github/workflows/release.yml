@@ -39,7 +39,7 @@ jobs:
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout
