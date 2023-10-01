@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2.8.1
+        uses: gradle/gradle-build-action@v2.9.0
 
       - name: Assemble and Check
         run: >
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2.8.1
+        uses: gradle/gradle-build-action@v2.9.0
 
       - name: Test with the oldest JDK
         run: >
@@ -125,7 +125,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2.8.1
+        uses: gradle/gradle-build-action@v2.9.0
 
       - name: Publish packages
         env:
