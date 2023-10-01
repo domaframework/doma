@@ -16,7 +16,9 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.message.Message;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public class MapBatchInsertBuilderTest {
 
   @SuppressWarnings("serial")

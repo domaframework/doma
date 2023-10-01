@@ -24,6 +24,8 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DomainConverters {
 
-  /** @return the aggregation of {@code DomainConverter} classes. */
+  /**
+   * @return the aggregation of {@code DomainConverter} classes.
+   */
   Class<? extends DomainConverter<?, ?>>[] value() default {};
 }

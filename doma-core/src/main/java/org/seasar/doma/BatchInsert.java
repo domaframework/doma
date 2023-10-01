@@ -46,7 +46,9 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 @DaoMethod
 public @interface BatchInsert {
 
-  /** @return whether the annotated method is mapped to an SQL file. */
+  /**
+   * @return whether the annotated method is mapped to an SQL file.
+   */
   boolean sqlFile() default false;
 
   /**
@@ -89,7 +91,9 @@ public @interface BatchInsert {
    */
   String[] exclude() default {};
 
-  /** @return the output format of SQL logs. */
+  /**
+   * @return the output format of SQL logs.
+   */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 
   /**

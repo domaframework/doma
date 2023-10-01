@@ -13,17 +13,23 @@ public class EmpDaoImpl extends DaoImplSupport implements EmpDao {
     super(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
   }
 
-  /** @param connection the connection */
+  /**
+   * @param connection the connection
+   */
   public EmpDaoImpl(java.sql.Connection connection) {
     super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
   }
 
-  /** @param dataSource the dataSource */
+  /**
+   * @param dataSource the dataSource
+   */
   public EmpDaoImpl(javax.sql.DataSource dataSource) {
     super(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
   }
 
-  /** @param config the configuration */
+  /**
+   * @param config the configuration
+   */
   protected EmpDaoImpl(org.seasar.doma.jdbc.Config config) {
     super(config);
   }

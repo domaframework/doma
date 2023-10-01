@@ -18,19 +18,25 @@ public abstract class AbstractResultSetType extends AbstractJdbcType<ResultSet> 
     super(type);
   }
 
-  /** @throws JdbcUnsupportedOperationException if invoked */
+  /**
+   * @throws JdbcUnsupportedOperationException if invoked
+   */
   @Override
   public ResultSet getValue(ResultSet resultSet, int index) {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "getValue");
   }
 
-  /** @throws JdbcUnsupportedOperationException if invoked */
+  /**
+   * @throws JdbcUnsupportedOperationException if invoked
+   */
   @Override
   public void setValue(PreparedStatement preparedStatement, int index, ResultSet value) {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "setValue");
   }
 
-  /** @return {@code null} */
+  /**
+   * @return {@code null}
+   */
   @Override
   protected ResultSet doGetValue(ResultSet resultSet, int index) {
     return null;

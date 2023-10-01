@@ -41,6 +41,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GeneratedValue {
 
-  /** @return the strategy how to generate identifiers. */
+  /**
+   * @return the strategy how to generate identifiers.
+   */
   GenerationType strategy();
 }

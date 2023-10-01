@@ -10,10 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Annotation {
 
-  /** @return the location where the annotation is specified. */
+  /**
+   * @return the location where the annotation is specified.
+   */
   AnnotationTarget target();
 
-  /** @return the annotation class that this annotation represents. */
+  /**
+   * @return the annotation class that this annotation represents.
+   */
   Class<? extends java.lang.annotation.Annotation> type();
 
   /**

@@ -77,6 +77,8 @@ public @interface Dao {
   @Deprecated
   Class<? extends Config> config() default Config.class;
 
-  /** @return the access level of the DAO implementation class. */
+  /**
+   * @return the access level of the DAO implementation class.
+   */
   AccessLevel accessLevel() default AccessLevel.PUBLIC;
 }

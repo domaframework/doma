@@ -43,10 +43,14 @@ import org.seasar.doma.jdbc.UnknownColumnException;
 @DaoMethod
 public @interface Procedure {
 
-  /** @return the catalog name. */
+  /**
+   * @return the catalog name.
+   */
   String catalog() default "";
 
-  /** @return the schema name. */
+  /**
+   * @return the schema name.
+   */
   String schema() default "";
 
   /**
@@ -84,6 +88,8 @@ public @interface Procedure {
    */
   MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 
-  /** @return the output format of SQL logs. */
+  /**
+   * @return the output format of SQL logs.
+   */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

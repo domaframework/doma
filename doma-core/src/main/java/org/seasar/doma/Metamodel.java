@@ -26,12 +26,18 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Metamodel {
-  /** @return the prefix for the metamodel class */
+  /**
+   * @return the prefix for the metamodel class
+   */
   String prefix() default "";
 
-  /** @return the suffix for the metamodel class */
+  /**
+   * @return the suffix for the metamodel class
+   */
   String suffix() default "";
 
-  /** @return the scope class array */
+  /**
+   * @return the scope class array
+   */
   Class<?>[] scopes() default {};
 }

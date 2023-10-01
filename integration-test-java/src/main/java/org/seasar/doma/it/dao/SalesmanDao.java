@@ -9,7 +9,9 @@ import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.entity.Salesman;
 
-/** @author nakamura */
+/**
+ * @author nakamura
+ */
 @Dao
 public interface SalesmanDao {
 

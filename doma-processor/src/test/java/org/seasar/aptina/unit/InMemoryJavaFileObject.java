@@ -26,7 +26,9 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import javax.tools.SimpleJavaFileObject;
 
-/** @author koichik */
+/**
+ * @author koichik
+ */
 class InMemoryJavaFileObject extends SimpleJavaFileObject {
 
   byte[] content;

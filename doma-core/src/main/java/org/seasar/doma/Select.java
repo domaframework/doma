@@ -103,10 +103,14 @@ public @interface Select {
    */
   int maxRows() default -1;
 
-  /** @return the strategy for handling an object that is mapped to a result set. */
+  /**
+   * @return the strategy for handling an object that is mapped to a result set.
+   */
   SelectType strategy() default SelectType.RETURN;
 
-  /** @return the fetch type. */
+  /**
+   * @return the fetch type.
+   */
   FetchType fetch() default FetchType.LAZY;
 
   /**
@@ -140,6 +144,8 @@ public @interface Select {
    */
   MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 
-  /** @return the output format of SQL logs. */
+  /**
+   * @return the output format of SQL logs.
+   */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

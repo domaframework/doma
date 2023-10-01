@@ -37,7 +37,9 @@ public final class _String__ARRAY__
     return String[].class;
   }
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _String__ARRAY__ getSingletonInternal() {
     return singleton;
   }

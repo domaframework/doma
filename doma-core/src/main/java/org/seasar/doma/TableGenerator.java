@@ -33,30 +33,48 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableGenerator {
 
-  /** @return the catalog name. */
+  /**
+   * @return the catalog name.
+   */
   String catalog() default "";
 
-  /** @return the schema name. */
+  /**
+   * @return the schema name.
+   */
   String schema() default "";
 
-  /** @return the table name. */
+  /**
+   * @return the table name.
+   */
   String table() default "ID_GENERATOR";
 
-  /** @return the column name that is the primary key. */
+  /**
+   * @return the column name that is the primary key.
+   */
   String pkColumnName() default "PK";
 
-  /** @return the column name that has generated identifiers. */
+  /**
+   * @return the column name that has generated identifiers.
+   */
   String valueColumnName() default "VALUE";
 
-  /** @return the value of the primary key column. */
+  /**
+   * @return the value of the primary key column.
+   */
   String pkColumnValue();
 
-  /** @return the initial value. */
+  /**
+   * @return the initial value.
+   */
   long initialValue() default 1;
 
-  /** @return the allocated size. */
+  /**
+   * @return the allocated size.
+   */
   long allocationSize() default 1;
 
-  /** @return the implementation class of the {@link TableIdGenerator} interface. */
+  /**
+   * @return the implementation class of the {@link TableIdGenerator} interface.
+   */
   Class<? extends TableIdGenerator> implementer() default BuiltinTableIdGenerator.class;
 }

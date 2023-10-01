@@ -40,6 +40,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Sql {
 
-  /** @return the SQL template */
+  /**
+   * @return the SQL template
+   */
   String value();
 }

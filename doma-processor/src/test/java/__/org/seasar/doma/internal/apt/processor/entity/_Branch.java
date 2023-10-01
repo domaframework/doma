@@ -42,7 +42,9 @@ public final class _Branch
     return Branch.class;
   }
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _Branch getSingletonInternal() {
     return singleton;
   }

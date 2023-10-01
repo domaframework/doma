@@ -223,12 +223,16 @@ public final class _NotTopLevelEntity__Hoge
   @Override
   public void saveCurrentStates(NotTopLevelEntity.Hoge __entity) {}
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _NotTopLevelEntity__Hoge getSingletonInternal() {
     return __singleton;
   }
 
-  /** @return the new instance */
+  /**
+   * @return the new instance
+   */
   public static _NotTopLevelEntity__Hoge newInstance() {
     return new _NotTopLevelEntity__Hoge();
   }

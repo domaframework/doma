@@ -55,7 +55,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Domain {
 
-  /** @return the value type that is wrapped by the domain class. */
+  /**
+   * @return the value type that is wrapped by the domain class.
+   */
   Class<?> valueType();
 
   /**
@@ -78,6 +80,8 @@ public @interface Domain {
    */
   String accessorMethod() default "getValue";
 
-  /** @return whether the constructor or the factory method accepts {@code null} as an argument. */
+  /**
+   * @return whether the constructor or the factory method accepts {@code null} as an argument.
+   */
   boolean acceptNull() default false;
 }

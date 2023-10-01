@@ -18,7 +18,9 @@ public enum AccessLevel {
     this.modifier = modifier;
   }
 
-  /** @return the modifier's name */
+  /**
+   * @return the modifier's name
+   */
   public String getModifier() {
     return modifier;
   }

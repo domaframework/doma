@@ -42,7 +42,9 @@ public final class _PrimaryKey
     return PrimaryKey.class;
   }
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _PrimaryKey getSingletonInternal() {
     return singleton;
   }

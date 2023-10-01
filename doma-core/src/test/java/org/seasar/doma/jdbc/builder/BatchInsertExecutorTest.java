@@ -17,7 +17,9 @@ import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.query.SqlBatchInsertQuery;
 import org.seasar.doma.message.Message;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public class BatchInsertExecutorTest {
 
   private SqlBatchInsertQuery mockQuery() {

@@ -36,11 +36,11 @@ jobs:
         if: github.event.inputs.version == null
         run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: ${{ vars.JDK_DISTRIBUTION }}
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,10 +52,14 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Release ${{ env.RELEASE_VERSION }}
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: release -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
+
+      - name: Release ${{ env.RELEASE_VERSION }}
+        run: >
+          ./gradlew
+          -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
+          release
 
       - name: Upload reports
         if: failure()

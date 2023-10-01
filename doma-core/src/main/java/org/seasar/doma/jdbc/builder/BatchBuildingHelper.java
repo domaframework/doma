@@ -10,7 +10,9 @@ import java.util.Map;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 class BatchBuildingHelper {
 
   private static final String lineSeparator = System.getProperty("line.separator");

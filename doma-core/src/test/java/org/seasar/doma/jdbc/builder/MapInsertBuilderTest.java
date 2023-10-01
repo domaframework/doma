@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.SqlParameter;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public class MapInsertBuilderTest {
 
   @SuppressWarnings("serial")

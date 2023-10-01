@@ -11,6 +11,8 @@ import org.seasar.doma.message.Message;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Suppress {
 
-  /** @return the messages that should be suppressed. */
+  /**
+   * @return the messages that should be suppressed.
+   */
   Message[] messages();
 }
