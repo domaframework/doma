@@ -14,7 +14,9 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.jdbc.entity.EntityListener;
 
-/** @author backpaper0 */
+/**
+ * @author backpaper0
+ */
 public class RuntimeConfigTest {
 
   @Test

@@ -16,7 +16,9 @@ import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.query.SqlBatchDeleteQuery;
 import org.seasar.doma.message.Message;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public class BatchDeleteExecutorTest {
 
   private SqlBatchDeleteQuery mockQuery() {

@@ -117,7 +117,7 @@ subprojects {
 
     spotless {
         java {
-            googleJavaFormat("1.12.0")
+            googleJavaFormat("1.17.0")
         }
         kotlin {
             ktlint("0.48.2")

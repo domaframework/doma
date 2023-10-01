@@ -6,7 +6,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 class BatchParam<P> {
 
   final String name;

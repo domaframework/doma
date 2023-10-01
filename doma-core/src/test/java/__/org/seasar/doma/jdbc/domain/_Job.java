@@ -31,7 +31,9 @@ public final class _Job extends org.seasar.doma.jdbc.domain.AbstractDomainType<S
     return Job.class;
   }
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _Job getSingletonInternal() {
     return singleton;
   }

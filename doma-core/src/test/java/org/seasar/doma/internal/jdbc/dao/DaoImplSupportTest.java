@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.jdbc.Config;
 
-/** @author backpaper0 */
+/**
+ * @author backpaper0
+ */
 public class DaoImplSupportTest {
 
   @SuppressWarnings("ConstantConditions")

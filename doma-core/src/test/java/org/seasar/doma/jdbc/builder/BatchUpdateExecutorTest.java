@@ -16,7 +16,9 @@ import org.seasar.doma.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.jdbc.query.SqlBatchUpdateQuery;
 import org.seasar.doma.message.Message;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public class BatchUpdateExecutorTest {
 
   private SqlBatchUpdateQuery mockQuery() {

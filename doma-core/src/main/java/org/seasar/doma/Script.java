@@ -49,9 +49,13 @@ public @interface Script {
    */
   String blockDelimiter() default "";
 
-  /** @return whether to halt a script execution when an error occurs. */
+  /**
+   * @return whether to halt a script execution when an error occurs.
+   */
   boolean haltOnError() default true;
 
-  /** @return the output format of SQL logs. */
+  /**
+   * @return the output format of SQL logs.
+   */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

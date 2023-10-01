@@ -29,7 +29,9 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 
-/** @author koichik */
+/**
+ * @author koichik
+ */
 class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
 
   final Map<String, InMemoryJavaFileObject> fileObjects = new HashMap<>();

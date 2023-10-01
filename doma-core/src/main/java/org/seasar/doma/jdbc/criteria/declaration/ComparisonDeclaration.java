@@ -688,6 +688,7 @@ public abstract class ComparisonDeclaration {
     Objects.requireNonNull(entityMetamodel);
     return new SubSelectFromDeclaration<>(entityMetamodel);
   }
+
   /**
    * Add a {@code AND} operator.
    *

@@ -17,7 +17,9 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author bakenezumi */
+/**
+ * @author bakenezumi
+ */
 public abstract class SqlBatchModifyQuery extends AbstractQuery implements BatchModifyQuery {
 
   protected final SqlKind kind;

@@ -42,7 +42,9 @@ public final class _VersionNo
     return VersionNo.class;
   }
 
-  /** @return the singleton */
+  /**
+   * @return the singleton
+   */
   public static _VersionNo getSingletonInternal() {
     return singleton;
   }

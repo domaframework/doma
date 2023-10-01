@@ -733,7 +733,9 @@ public class StandardDialect implements Dialect {
       this(DEFAULT_WILDCARDS);
     }
 
-    /** @param wildcards the wild card characters for the SQL LIKE operator */
+    /**
+     * @param wildcards the wild card characters for the SQL LIKE operator
+     */
     protected StandardExpressionFunctions(char[] wildcards) {
       this(DEFAULT_ESCAPE_CHAR, wildcards);
     }

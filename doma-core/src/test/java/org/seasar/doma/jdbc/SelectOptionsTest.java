@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
 
-/** @author backpaper0 */
+/**
+ * @author backpaper0
+ */
 public class SelectOptionsTest {
 
   @SuppressWarnings("ConstantConditions")

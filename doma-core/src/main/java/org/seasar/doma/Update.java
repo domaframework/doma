@@ -48,7 +48,9 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 @DaoMethod
 public @interface Update {
 
-  /** @return whether the annotated method is mapped to an SQL file. */
+  /**
+   * @return whether the annotated method is mapped to an SQL file.
+   */
   boolean sqlFile() default false;
 
   /**
@@ -117,6 +119,8 @@ public @interface Update {
    */
   boolean suppressOptimisticLockException() default false;
 
-  /** @return the output format of SQL logs. */
+  /**
+   * @return the output format of SQL logs.
+   */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

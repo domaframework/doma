@@ -11,7 +11,9 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
-/** @author shinsuke-oda */
+/**
+ * @author shinsuke-oda
+ */
 public class MssqlPagingTransformerTest {
 
   @Test

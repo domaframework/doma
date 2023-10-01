@@ -17,7 +17,9 @@ package org.seasar.aptina.unit;
 
 import org.opentest4j.AssertionFailedError;
 
-/** @author koichik */
+/**
+ * @author koichik
+ */
 @SuppressWarnings("serial")
 public class SourceNotGeneratedException extends AssertionFailedError {
 

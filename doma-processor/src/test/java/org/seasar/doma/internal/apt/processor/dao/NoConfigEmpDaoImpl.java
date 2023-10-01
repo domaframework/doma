@@ -8,7 +8,9 @@ import org.seasar.doma.jdbc.SelectOptions;
 
 public class NoConfigEmpDaoImpl extends DaoImplSupport implements NoConfigEmpDao {
 
-  /** @param config the config */
+  /**
+   * @param config the config
+   */
   public NoConfigEmpDaoImpl(org.seasar.doma.jdbc.Config config) {
     super(config);
   }

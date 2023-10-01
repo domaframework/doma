@@ -55,6 +55,8 @@ import org.seasar.doma.jdbc.Config;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnnotateWith {
 
-  /** @return the {@link Annotation} array. */
+  /**
+   * @return the {@link Annotation} array.
+   */
   Annotation[] annotations();
 }

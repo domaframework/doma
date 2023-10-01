@@ -46,7 +46,9 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
-/** @author koichik */
+/**
+ * @author koichik
+ */
 public abstract class AptinaTestCase {
 
   Locale locale;
@@ -415,7 +417,9 @@ public abstract class AptinaTestCase {
     }
   }
 
-  /** @author koichik */
+  /**
+   * @author koichik
+   */
   static class LoggingDiagnosticListener implements DiagnosticListener<JavaFileObject> {
 
     final DiagnosticListener<JavaFileObject> listener;
@@ -431,13 +435,17 @@ public abstract class AptinaTestCase {
     }
   }
 
-  /** @author koichik */
+  /**
+   * @author koichik
+   */
   interface CompilationUnit {
 
     JavaFileObject getJavaFileObject() throws IOException;
   }
 
-  /** @author koichik */
+  /**
+   * @author koichik
+   */
   class FileCompilationUnit implements CompilationUnit {
 
     final String className;
@@ -453,7 +461,9 @@ public abstract class AptinaTestCase {
     }
   }
 
-  /** @author koichik */
+  /**
+   * @author koichik
+   */
   class InMemoryCompilationUnit implements CompilationUnit {
 
     final String className;

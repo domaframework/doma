@@ -35,27 +35,37 @@ public class Dept {
     this.version = version;
   }
 
-  /** @return the departmentId */
+  /**
+   * @return the departmentId
+   */
   public Identity<Dept> getDepartmentId() {
     return departmentId;
   }
 
-  /** @return the departmentNo */
+  /**
+   * @return the departmentNo
+   */
   public Integer getDepartmentNo() {
     return departmentNo;
   }
 
-  /** @return the departmentName */
+  /**
+   * @return the departmentName
+   */
   public String getDepartmentName() {
     return departmentName;
   }
 
-  /** @return the location */
+  /**
+   * @return the location
+   */
   public Location<Dept> getLocation() {
     return location;
   }
 
-  /** @return the version */
+  /**
+   * @return the version
+   */
   public Integer getVersion() {
     return version;
   }

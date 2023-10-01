@@ -31,21 +31,33 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SequenceGenerator {
 
-  /** @return the catalog name. */
+  /**
+   * @return the catalog name.
+   */
   String catalog() default "";
 
-  /** @return the schema name. */
+  /**
+   * @return the schema name.
+   */
   String schema() default "";
 
-  /** @return the sequence name. */
+  /**
+   * @return the sequence name.
+   */
   String sequence();
 
-  /** @return the initial value. */
+  /**
+   * @return the initial value.
+   */
   long initialValue() default 1;
 
-  /** @return the allocation size. */
+  /**
+   * @return the allocation size.
+   */
   long allocationSize() default 1;
 
-  /** @return the implementation class of the {@link SequenceIdGenerator} interface. */
+  /**
+   * @return the implementation class of the {@link SequenceIdGenerator} interface.
+   */
   Class<? extends SequenceIdGenerator> implementer() default BuiltinSequenceIdGenerator.class;
 }

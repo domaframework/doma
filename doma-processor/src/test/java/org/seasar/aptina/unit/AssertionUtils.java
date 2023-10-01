@@ -17,7 +17,9 @@ package org.seasar.aptina.unit;
 
 import java.util.Collection;
 
-/** @author koichik */
+/**
+ * @author koichik
+ */
 class AssertionUtils {
 
   private AssertionUtils() {}

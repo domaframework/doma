@@ -22,10 +22,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
-  /** @return the catalog name. */
+  /**
+   * @return the catalog name.
+   */
   String catalog() default "";
 
-  /** @return the schema name. */
+  /**
+   * @return the schema name.
+   */
   String schema() default "";
 
   /**
