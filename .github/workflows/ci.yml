@@ -18,27 +18,27 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: ${{ vars.OLDEST_JDK_VERSION }}"
 
       - name: Prepare the oldest JDK env var
         shell: bash
-        run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.OLDEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_JDK_VERSION }}"
 
       - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.LATEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +46,9 @@ jobs:
       - name: Assemble and Check
         uses: gradle/gradle-build-action@v2.8.1
         with:
-          arguments: javaToolchains assemble check
+          arguments: |
+            -Porg.gradle.java.installations.fromEnv=JDK${{ vars.OLDEST_JDK_VERSION }}",JDK${{ vars.LATEST_JDK_VERSION }}"
+            javaToolchains assemble check
 
       - name: Upload reports
         if: failure()
@@ -68,27 +70,27 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: ${{ vars.OLDEST_JDK_VERSION }}"
 
       - name: Prepare the oldest JDK env var
         shell: bash
-        run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.OLDEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_JDK_VERSION }}"
 
       - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.LATEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -98,7 +100,8 @@ jobs:
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=8
+            -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}"
+            -Porg.gradle.java.installations.fromEnv=JDK${{ vars.OLDEST_JDK_VERSION }}",JDK${{ vars.LATEST_JDK_VERSION }}"
             javaToolchains
             integration-test-java:test
             integration-test-kotlin:test
@@ -108,7 +111,7 @@ jobs:
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=21
+            -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}"
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
@@ -119,7 +122,8 @@ jobs:
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=21
+            -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}"
+            -Porg.gradle.java.installations.fromEnv=JDK${{ vars.OLDEST_JDK_VERSION }}",JDK${{ vars.LATEST_JDK_VERSION }}"
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
@@ -144,27 +148,27 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: ${{ vars.OLDEST_JDK_VERSION }}"
 
       - name: Prepare the oldest JDK env var
         shell: bash
-        run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.OLDEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_JDK_VERSION }}"
 
       - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.LATEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -177,7 +181,9 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
         with:
-          arguments: javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
+          arguments: |
+            -Porg.gradle.java.installations.fromEnv=JDK${{ vars.OLDEST_JDK_VERSION }}",JDK${{ vars.LATEST_JDK_VERSION }}"
+            javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
         if: failure()

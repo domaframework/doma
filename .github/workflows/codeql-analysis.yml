@@ -23,22 +23,24 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: ${{ vars.OLDEST_JDK_VERSION }}"
 
       - name: Prepare the oldest JDK env var
         shell: bash
-        run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK${{ vars.OLDEST_JDK_VERSION }}"=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 17
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}"
 
       - name: Build
         uses: gradle/gradle-build-action@v2.8.1
         with:
-          arguments: assemble check
+          arguments: |
+            -Porg.gradle.java.installations.fromEnv=JDK${{ vars.OLDEST_JDK_VERSION }}",JDK${{ vars.LATEST_JDK_VERSION }}"
+            assemble check
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
