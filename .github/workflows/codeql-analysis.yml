@@ -29,7 +29,7 @@ jobs:
             ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2.8.1
+        uses: gradle/gradle-build-action@v2.9.0
 
       - name: Build
         run: >
