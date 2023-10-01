@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}"
+          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
