@@ -26,12 +26,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Assemble and Check
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: |
-            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-            javaToolchains assemble check
+
+      - name: Assemble and Check
+        run: |
+          ./gradlew
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          javaToolchains assemble check
 
       - name: Upload reports
         if: failure()
@@ -61,39 +63,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Test with the oldest JDK
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: |
-            -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}
-            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-            javaToolchains
-            integration-test-java:test
-            integration-test-kotlin:test
+
+      - name: Test with the oldest JDK
+        run: |
+          ./gradlew
+          -Pdriver=${{ matrix.driver }}
+          -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          javaToolchains
+          integration-test-java:test
+          integration-test-kotlin:test
 
       - name: Test with the latest JDK using JPMS
-        uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: |
-            -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}
-            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-            -PtestUseModule=true
-            javaToolchains
-            integration-test-java:test
-            integration-test-java-additional:test
+        run: |
+          ./gradlew
+          -Pdriver=${{ matrix.driver }}
+          -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -PtestUseModule=true
+          javaToolchains
+          integration-test-java:test
+          integration-test-java-additional:test
 
       - name: Test with the latest LTS JDK using JPMS
-        uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: |
-            -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}
-            -PtestUseModule=true
-            javaToolchains
-            integration-test-java:test
-            integration-test-java-additional:test
+        run: |
+          ./gradlew
+          -Pdriver=${{ matrix.driver }}
+          -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}
+          -PtestUseModule=true
+          javaToolchains
+          integration-test-java:test
+          integration-test-java-additional:test
 
       - name: Upload reports
         if: failure()
@@ -122,17 +124,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Publish packages
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
+
+      - name: Publish packages
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
-        with:
-          arguments: |
-            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-            javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: |
+          ./gradlew
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
         if: failure()

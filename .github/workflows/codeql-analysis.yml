@@ -28,12 +28,14 @@ jobs:
             ${{ vars.LATEST_JDK_VERSION }}
             ${{ vars.LATEST_LTS_JDK_VERSION }}
 
-      - name: Build
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: |
-            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-            assemble check
+
+      - name: Build
+        run: |
+          ./gradlew
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          assemble check
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

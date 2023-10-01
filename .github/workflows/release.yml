@@ -52,10 +52,14 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Release ${{ env.RELEASE_VERSION }}
+      - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.8.1
-        with:
-          arguments: release -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
+
+      - name: Release ${{ env.RELEASE_VERSION }}
+        run: |
+          ./gradlew
+          -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
+          release
 
       - name: Upload reports
         if: failure()
