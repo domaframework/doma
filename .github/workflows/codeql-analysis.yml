@@ -19,20 +19,20 @@ jobs:
         with:
           languages: java
 
-      - name: Set up JDK 8
+      - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: 8
 
-      - name: Prepare JDK8 env var
+      - name: Prepare the oldest JDK env var
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: 17
 
       - name: Build

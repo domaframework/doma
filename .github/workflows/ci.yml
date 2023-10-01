@@ -14,31 +14,31 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Set up JDK 8
+      - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: 8
 
-      - name: Prepare JDK8 env var
+      - name: Prepare the oldest JDK env var
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 20
+      - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 20
+          distribution: 'zulu'
+          java-version: 21
 
-      - name: Prepare JDK20 env var
+      - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK20=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: 'zulu'
+          java-version: 21
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,36 +64,36 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Set up JDK 8
+      - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: 8
 
-      - name: Prepare JDK8 env var
+      - name: Prepare the oldest JDK env var
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 20
+      - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 20
+          distribution: 'zulu'
+          java-version: 21
 
-      - name: Prepare JDK20 env var
+      - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK20=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: 'zulu'
+          java-version: 21
 
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Test with Java 8
+      - name: Test with the oldest JDK
         uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
@@ -103,23 +103,23 @@ jobs:
             integration-test-java:test
             integration-test-kotlin:test
 
-      - name: Test with Java 17 using JPMS
+      - name: Test with the latest LTS JDK using JPMS
         uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=17
+            -PtestJavaLangVersion=21
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
             integration-test-java-additional:test
 
-      - name: Test with Java 20 using JPMS
+      - name: Test with the latest JDK using JPMS
         uses: gradle/gradle-build-action@v2.8.1
         with:
           arguments: |
             -Pdriver=${{ matrix.driver }}
-            -PtestJavaLangVersion=20
+            -PtestJavaLangVersion=21
             -PtestUseModule=true
             javaToolchains
             integration-test-java:test
@@ -140,31 +140,31 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Set up JDK 8
+      - name: Set up the oldest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: 8
 
-      - name: Prepare JDK8 env var
+      - name: Prepare the oldest JDK env var
         shell: bash
         run: echo "JDK8=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 20
+      - name: Set up the latest JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 20
+          distribution: 'zulu'
+          java-version: 21
 
-      - name: Prepare JDK20 env var
+      - name: Prepare the latest JDK env var
         shell: bash
-        run: echo "JDK20=$JAVA_HOME" >> $GITHUB_ENV
+        run: echo "JDK21=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: 'zulu'
+          java-version: 21
 
       - name: Checkout
         uses: actions/checkout@v4

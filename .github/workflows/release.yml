@@ -36,11 +36,11 @@ jobs:
         if: github.event.inputs.version == null
         run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
 
-      - name: Set up JDK 17
+      - name: Set up the latest LTS JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: 17
+          distribution: 'zulu'
+          java-version: 21
 
       - name: Checkout
         uses: actions/checkout@v4
