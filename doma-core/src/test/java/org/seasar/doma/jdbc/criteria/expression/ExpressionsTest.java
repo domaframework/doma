@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 class ExpressionsTest {
 
@@ -228,5 +229,42 @@ class ExpressionsTest {
 
     assertEquals("sum", sum(e.id).getName());
     assertEquals(e.id, sum(e.id).argument());
+  }
+
+  @Test
+  void testEquality() {
+    PropertyMetamodel<?> sum = sum(e.id);
+    PropertyMetamodel<?> div = div(sum(e.id), 1);
+    PropertyMetamodel<?> mod = mod(sum(e.id), 1);
+    PropertyMetamodel<?> mul = mul(sum(e.id), 1);
+    PropertyMetamodel<?> sub = sub(sum(e.id), 1);
+    PropertyMetamodel<?> add = add(sum(e.id), 1);
+
+    assertEquals(sum, sum(e.id));
+    assertEquals(div, div(sum(e.id), 1));
+    assertEquals(mod, mod(sum(e.id), 1));
+    assertEquals(mul, mul(sum(e.id), 1));
+    assertEquals(sub, sub(sum(e.id), 1));
+    assertEquals(add, add(sum(e.id), 1));
+
+    assertNotEquals(sum, div);
+    assertNotEquals(sum, mod);
+    assertNotEquals(sum, mul);
+    assertNotEquals(sum, sub);
+    assertNotEquals(sum, add);
+
+    assertNotEquals(div, mod);
+    assertNotEquals(div, mul);
+    assertNotEquals(div, sub);
+    assertNotEquals(div, add);
+
+    assertNotEquals(mod, mul);
+    assertNotEquals(mod, sub);
+    assertNotEquals(mod, add);
+
+    assertNotEquals(mul, sub);
+    assertNotEquals(mul, add);
+
+    assertNotEquals(sub, add);
   }
 }

@@ -43,7 +43,7 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
-      if (!(o instanceof AbstractFunction)) return false;
+      if (o == null || getClass() != o.getClass()) return false;
       AbstractFunction<?> that = (AbstractFunction<?>) o;
       return name.equals(that.name) && argument.equals(that.argument);
     }
@@ -123,6 +123,20 @@ public interface AggregateFunction<PROPERTY> extends PropertyMetamodel<PROPERTY>
         AggregateFunction.Visitor v = (AggregateFunction.Visitor) visitor;
         v.visit(this);
       }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      if (!super.equals(o)) return false;
+      Count count = (Count) o;
+      return distinct == count.distinct;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(super.hashCode(), distinct);
     }
   }
 

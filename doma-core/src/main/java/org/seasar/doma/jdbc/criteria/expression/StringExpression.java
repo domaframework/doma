@@ -34,7 +34,7 @@ public interface StringExpression<PROPERTY> extends PropertyMetamodel<PROPERTY> 
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
-      if (!(o instanceof StringExpression.OneArgumentStringExpression)) return false;
+      if (o == null || getClass() != o.getClass()) return false;
       OneArgumentStringExpression<?> that = (OneArgumentStringExpression<?>) o;
       return argument.equals(that.argument);
     }
@@ -80,7 +80,7 @@ public interface StringExpression<PROPERTY> extends PropertyMetamodel<PROPERTY> 
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
-      if (!(o instanceof StringExpression.TwoArgumentsStringExpression)) return false;
+      if (o == null || getClass() != o.getClass()) return false;
       TwoArgumentsStringExpression<?> that = (TwoArgumentsStringExpression<?>) o;
       return propertyMetamodel.equals(that.propertyMetamodel)
           && first.equals(that.first)
