@@ -32,7 +32,7 @@ public interface ArithmeticExpression<PROPERTY> extends PropertyMetamodel<PROPER
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
-      if (!(o instanceof AbstractArithmeticExpression)) return false;
+      if (o == null || getClass() != o.getClass()) return false;
       AbstractArithmeticExpression<?> that = (AbstractArithmeticExpression<?>) o;
       return propertyMetamodel.equals(that.propertyMetamodel)
           && left.equals(that.left)
