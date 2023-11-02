@@ -642,6 +642,59 @@ public class NativeSqlSelectTest {
   }
 
   @Test
+  void expressions_when_binding_string() {
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.employeeName, "SMITH", lower(e.employeeName));
+                      c.eq(e.employeeName, "KING", lower(e.employeeName));
+                    },
+                    literal("_")))
+            .fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(1, list.stream().filter(it -> it.equals("smith")).count());
+    assertEquals(1, list.stream().filter(it -> it.equals("king")).count());
+  }
+
+  @Test
+  void expressions_when_binding_domainType() {
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(c -> c.eq(e.salary, new Salary("3000"), lower(e.employeeName)), literal("*")))
+            .fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(1, list.stream().filter(it -> it.equals("scott")).count());
+    assertEquals(1, list.stream().filter(it -> it.equals("ford")).count());
+    assertEquals(12, list.stream().filter(it -> it.equals("*")).count());
+  }
+
+  @Test
+  void expressions_when_eq_null() {
+    Employee_ e = new Employee_();
+
+    List<String> list =
+        nativeSql
+            .from(e)
+            .select(
+                when(c -> c.eq(e.employeeName, (String) null, lower(e.employeeName)), literal("*")))
+            .fetch();
+
+    assertEquals(14, list.size());
+    assertEquals(14, list.stream().filter(it -> it.equals("*")).count());
+  }
+
+  @Test
   void expressions_literal_localDate() {
     Employee_ e = new Employee_();
 

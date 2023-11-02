@@ -55,6 +55,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       add(Criterion.Eq::new, left, right, then);
     }
 
+    public <PROPERTY> void eq(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Eq::new, left, right, then);
+      }
+    }
+
     public <PROPERTY> void ne(
         PropertyMetamodel<PROPERTY> left,
         PropertyMetamodel<PROPERTY> right,
@@ -63,6 +72,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       Objects.requireNonNull(right, "right");
       Objects.requireNonNull(then, "then");
       add(Criterion.Ne::new, left, right, then);
+    }
+
+    public <PROPERTY> void ne(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Ne::new, left, right, then);
+      }
     }
 
     public <PROPERTY> void ge(
@@ -75,6 +93,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       add(Criterion.Ge::new, left, right, then);
     }
 
+    public <PROPERTY> void ge(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Ge::new, left, right, then);
+      }
+    }
+
     public <PROPERTY> void gt(
         PropertyMetamodel<PROPERTY> left,
         PropertyMetamodel<PROPERTY> right,
@@ -83,6 +110,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       Objects.requireNonNull(right, "right");
       Objects.requireNonNull(then, "then");
       add(Criterion.Gt::new, left, right, then);
+    }
+
+    public <PROPERTY> void gt(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Gt::new, left, right, then);
+      }
     }
 
     public <PROPERTY> void le(
@@ -95,6 +131,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       add(Criterion.Le::new, left, right, then);
     }
 
+    public <PROPERTY> void le(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Le::new, left, right, then);
+      }
+    }
+
     public <PROPERTY> void lt(
         PropertyMetamodel<PROPERTY> left,
         PropertyMetamodel<PROPERTY> right,
@@ -103,6 +148,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
       Objects.requireNonNull(right, "right");
       Objects.requireNonNull(then, "then");
       add(Criterion.Lt::new, left, right, then);
+    }
+
+    public <PROPERTY> void lt(
+        PropertyMetamodel<PROPERTY> left, PROPERTY right, PropertyMetamodel<RESULT> then) {
+      Objects.requireNonNull(left, "left");
+      Objects.requireNonNull(then, "then");
+      if (right != null) {
+        add(Criterion.Lt::new, left, right, then);
+      }
     }
 
     public <PROPERTY> void isNull(
@@ -125,6 +179,15 @@ public class CaseExpression<RESULT> implements PropertyMetamodel<RESULT> {
         PropertyMetamodel<PROPERTY> right,
         PropertyMetamodel<RESULT> then) {
       Criterion criterion = operator.apply(new Operand.Prop(left), new Operand.Prop(right));
+      criterionList.add(new Pair<>(criterion, new Operand.Prop(then)));
+    }
+
+    private <PROPERTY> void add(
+        BiFunction<Operand.Prop, Operand.Param, Criterion> operator,
+        PropertyMetamodel<PROPERTY> left,
+        PROPERTY right,
+        PropertyMetamodel<RESULT> then) {
+      Criterion criterion = operator.apply(new Operand.Prop(left), new Operand.Param(left, right));
       criterionList.add(new Pair<>(criterion, new Operand.Prop(then)));
     }
 

@@ -1487,6 +1487,57 @@ class NativeSqlSelectTest {
   }
 
   @Test
+  void expression_when_operators_binding() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.name, "a", literal("b"));
+                      c.ne(e.name, "c", literal("d"));
+                      c.ge(e.name, "e", literal("f"));
+                      c.gt(e.name, "g", literal("h"));
+                      c.le(e.name, "i", literal("j"));
+                      c.lt(e.name, "k", literal("l"));
+                    },
+                    literal("z")));
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select case "
+            + "when t0_.NAME = ? then 'b' "
+            + "when t0_.NAME <> ? then 'd' "
+            + "when t0_.NAME >= ? then 'f' "
+            + "when t0_.NAME > ? then 'h' "
+            + "when t0_.NAME <= ? then 'j' "
+            + "when t0_.NAME < ? then 'l' "
+            + "else 'z' end from EMP t0_",
+        sql.getRawSql());
+  }
+
+  @Test
+  void expression_when_operators_binding_null() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        nativeSql
+            .from(e)
+            .select(
+                when(
+                    c -> {
+                      c.eq(e.name, (String) null, literal("b"));
+                      c.ne(e.name, (String) null, literal("d"));
+                      c.ge(e.name, (String) null, literal("f"));
+                      c.gt(e.name, (String) null, literal("h"));
+                      c.le(e.name, (String) null, literal("j"));
+                      c.lt(e.name, (String) null, literal("l"));
+                    },
+                    literal("z")));
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select 'z' from EMP t0_", sql.getRawSql());
+  }
+
+  @Test
   void expression_when_empty() {
     Emp_ e = new Emp_();
     Buildable<?> stmt = nativeSql.from(e).select(when(c -> {}, literal("c")));
