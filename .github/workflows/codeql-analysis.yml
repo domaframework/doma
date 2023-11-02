@@ -27,6 +27,7 @@ jobs:
             ${{ vars.OLDEST_JDK_VERSION }}
             ${{ vars.LATEST_JDK_VERSION }}
             ${{ vars.LATEST_LTS_JDK_VERSION }}
+            ${{ vars.BUILD_JDK_VERSION }}
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.9.0

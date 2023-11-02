@@ -22,6 +22,7 @@ jobs:
             ${{ vars.OLDEST_JDK_VERSION }}
             ${{ vars.LATEST_JDK_VERSION }}
             ${{ vars.LATEST_LTS_JDK_VERSION }}
+            ${{ vars.BUILD_JDK_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,6 +62,7 @@ jobs:
             ${{ vars.OLDEST_JDK_VERSION }}
             ${{ vars.LATEST_JDK_VERSION }}
             ${{ vars.LATEST_LTS_JDK_VERSION }}
+            ${{ vars.BUILD_JDK_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -121,6 +123,7 @@ jobs:
             ${{ vars.OLDEST_JDK_VERSION }}
             ${{ vars.LATEST_JDK_VERSION }}
             ${{ vars.LATEST_LTS_JDK_VERSION }}
+            ${{ vars.BUILD_JDK_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
