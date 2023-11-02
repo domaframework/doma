@@ -33,14 +33,16 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains assemble check
+          assemble check
 
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: ./**/build/reports
+          path: |
+            ./**/build/reports
+            /home/runner/work/doma/doma/.gradle
 
   test:
     name: Test (${{ matrix.driver }})
@@ -72,7 +74,6 @@ jobs:
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains
           integration-test-java:test
           integration-test-kotlin:test
 
@@ -83,7 +84,6 @@ jobs:
           -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
           -PtestUseModule=true
-          javaToolchains
           integration-test-java:test
           integration-test-java-additional:test
 
@@ -93,7 +93,6 @@ jobs:
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}
           -PtestUseModule=true
-          javaToolchains
           integration-test-java:test
           integration-test-java-additional:test
 
@@ -102,7 +101,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-${{ matrix.driver }}
-          path: ./**/build/reports
+          path: |
+            ./**/build/reports
+            /home/runner/work/doma/doma/.gradle
 
   publish:
     if: github.event_name == 'push'
@@ -136,11 +137,14 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
+          publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: publish
-          path: ./**/build/reports
+          path: |
+            ./**/build/reports
+            /home/runner/work/doma/doma/.gradle
+
