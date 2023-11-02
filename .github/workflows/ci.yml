@@ -33,7 +33,7 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains assemble check
+          assemble check
 
       - name: Upload reports
         if: failure()
@@ -72,7 +72,6 @@ jobs:
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains
           integration-test-java:test
           integration-test-kotlin:test
 
@@ -83,7 +82,6 @@ jobs:
           -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
           -PtestUseModule=true
-          javaToolchains
           integration-test-java:test
           integration-test-java-additional:test
 
@@ -93,7 +91,6 @@ jobs:
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}
           -PtestUseModule=true
-          javaToolchains
           integration-test-java:test
           integration-test-java-additional:test
 
@@ -136,7 +133,7 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
-          javaToolchains publishToSonatype closeAndReleaseSonatypeStagingRepository
+          publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
         if: failure()
