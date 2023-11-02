@@ -100,8 +100,8 @@ For Java projects:
 
 ```groovy
 dependencies {
-    implementation("org.seasar.doma:doma-core:2.54.1")
-    annotationProcessor("org.seasar.doma:doma-processor:2.54.1")
+    implementation("org.seasar.doma:doma-core:2.54.2")
+    annotationProcessor("org.seasar.doma:doma-processor:2.54.2")
 }
 ```
 
@@ -109,8 +109,8 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```groovy
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:2.54.1")
-    kapt("org.seasar.doma:doma-processor:2.54.1")
+    implementation("org.seasar.doma:doma-kotlin:2.54.2")
+    kapt("org.seasar.doma:doma-processor:2.54.2")
 }
 ```
 
@@ -123,7 +123,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>2.54.1</doma.version>
+    <doma.version>2.54.2</doma.version>
 </properties>
 ...
 <dependencies>
