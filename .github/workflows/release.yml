@@ -18,7 +18,7 @@ jobs:
         if: github.event.inputs.version != null
         run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         if: github.event.inputs.version == null
         id: candidate-version
         with:
