@@ -24,10 +24,9 @@ jobs:
         with:
           distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.OLDEST_JDK_VERSION }}
-            ${{ vars.LATEST_JDK_VERSION }}
-            ${{ vars.LATEST_LTS_JDK_VERSION }}
-            ${{ vars.BUILD_JDK_VERSION }}
+            ${{ vars.JDK_VERSION_OLDEST }}
+            ${{ vars.JDK_VERSION_LATEST }}
+            ${{ vars.JDK_VERSION_LATEST_LTS }}
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.9.0
@@ -35,7 +34,7 @@ jobs:
       - name: Build
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
           assemble check
 
       - name: Perform CodeQL Analysis

@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: ${{ vars.JDK_DISTRIBUTION }}
-          java-version: ${{ vars.LATEST_LTS_JDK_VERSION }}
+          java-version: ${{ vars.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
