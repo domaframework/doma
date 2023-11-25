@@ -19,10 +19,9 @@ jobs:
         with:
           distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.OLDEST_JDK_VERSION }}
-            ${{ vars.LATEST_JDK_VERSION }}
-            ${{ vars.LATEST_LTS_JDK_VERSION }}
-            ${{ vars.BUILD_JDK_VERSION }}
+            ${{ vars.JDK_VERSION_OLDEST }}
+            ${{ vars.JDK_VERSION_LATEST }}
+            ${{ vars.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +32,7 @@ jobs:
       - name: Assemble and Check
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
           assemble check
 
       - name: Upload reports
@@ -59,10 +58,9 @@ jobs:
         with:
           distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.OLDEST_JDK_VERSION }}
-            ${{ vars.LATEST_JDK_VERSION }}
-            ${{ vars.LATEST_LTS_JDK_VERSION }}
-            ${{ vars.BUILD_JDK_VERSION }}
+            ${{ vars.JDK_VERSION_OLDEST }}
+            ${{ vars.JDK_VERSION_LATEST }}
+            ${{ vars.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,8 +72,8 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.OLDEST_JDK_VERSION }}
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -PtestJavaLangVersion=${{ vars.JDK_VERSION_OLDEST }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
           integration-test-java:test
           integration-test-kotlin:test
 
@@ -83,8 +81,8 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.LATEST_JDK_VERSION }}
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -PtestJavaLangVersion=${{ vars.JDK_VERSION_LATEST }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
           -PtestUseModule=true
           integration-test-java:test
           integration-test-java-additional:test
@@ -93,7 +91,7 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.LATEST_LTS_JDK_VERSION }}
+          -PtestJavaLangVersion=${{ vars.JDK_VERSION_LATEST_LTS }}
           -PtestUseModule=true
           integration-test-java:test
           integration-test-java-additional:test
@@ -120,10 +118,9 @@ jobs:
         with:
           distribution: ${{ vars.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.OLDEST_JDK_VERSION }}
-            ${{ vars.LATEST_JDK_VERSION }}
-            ${{ vars.LATEST_LTS_JDK_VERSION }}
-            ${{ vars.BUILD_JDK_VERSION }}
+            ${{ vars.JDK_VERSION_OLDEST }}
+            ${{ vars.JDK_VERSION_LATEST }}
+            ${{ vars.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -139,7 +136,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.OLDEST_JDK_VERSION }}_X64,JAVA_HOME_${{ vars.LATEST_JDK_VERSION }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
           publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
