@@ -2,12 +2,14 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.command.AssociateCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
@@ -19,12 +21,17 @@ public class EntityqlSelectTerminal<ENTITY>
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
+  private final Optional<SubSelectContext<?>> subSelectContext;
 
   public EntityqlSelectTerminal(
-      Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
+      Config config,
+      SelectFromDeclaration declaration,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      Optional<SubSelectContext<?>> subSelectContext) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.subSelectContext = subSelectContext;
   }
 
   /**

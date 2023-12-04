@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -41,6 +42,21 @@ public class SelectBuilder {
         commenter,
         new PreparedSqlBuilder(config, SqlKind.SELECT, sqlLogType),
         new AliasManager(context));
+  }
+
+  @Deprecated
+  public SelectBuilder(
+      Config config,
+      SelectContext context,
+      Function<String, String> commenter,
+      SqlLogType sqlLogType,
+      AliasManager aliasManager) {
+    this(
+        config,
+        context,
+        commenter,
+        new PreparedSqlBuilder(config, SqlKind.SELECT, sqlLogType),
+        aliasManager);
   }
 
   public SelectBuilder(
@@ -97,7 +113,12 @@ public class SelectBuilder {
 
   private void from() {
     buf.appendSql(" from ");
-    table(context.entityMetamodel);
+    if (context.subSelectContext.isPresent()) {
+      SubSelectContext<?> subSelectContext = context.subSelectContext.get();
+      subQuery(context.entityMetamodel, subSelectContext, aliasManager);
+    } else {
+      table(context.entityMetamodel);
+    }
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
       criteriaBuilder.lockWithTableHint(buf, option, this::column);
@@ -214,6 +235,13 @@ public class SelectBuilder {
 
   private void table(EntityMetamodel<?> entityMetamodel) {
     support.table(entityMetamodel);
+  }
+
+  private void subQuery(
+      EntityMetamodel<?> entityMetamodel,
+      SubSelectContext<?> subQueryContext,
+      AliasManager aliasManager) {
+    support.subQuery(entityMetamodel, subQueryContext, aliasManager);
   }
 
   private void column(PropertyMetamodel<?> propertyMetamodel) {

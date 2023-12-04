@@ -3,11 +3,13 @@ package org.seasar.doma.jdbc.criteria.statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.declaration.JoinDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByNameDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
@@ -24,12 +26,17 @@ public class EntityqlSelectStarting<ENTITY>
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
+  private final Optional<SubSelectContext<?>> subSelectContext;
 
   public EntityqlSelectStarting(
-      Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
+      Config config,
+      SelectFromDeclaration declaration,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      Optional<SubSelectContext<?>> subSelectContext) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.subSelectContext = subSelectContext;
   }
 
   public EntityqlSelectStarting<ENTITY> distinct() {
@@ -143,7 +150,7 @@ public class EntityqlSelectStarting<ENTITY>
   public <RESULT> EntityqlSelectTerminal<RESULT> select(EntityMetamodel<RESULT> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     declaration.select(entityMetamodel);
-    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
+    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
   }
 
   public <RESULT> EntityqlSelectTerminal<RESULT> selectTo(
@@ -151,13 +158,13 @@ public class EntityqlSelectStarting<ENTITY>
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(propertyMetamodels);
     declaration.selectTo(entityMetamodel, Arrays.asList(propertyMetamodels));
-    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
+    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
   }
 
   @Override
   protected Command<List<ENTITY>> createCommand() {
     EntityqlSelectTerminal<ENTITY> terminal =
-        new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
+        new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
     return terminal.createCommand();
   }
 }

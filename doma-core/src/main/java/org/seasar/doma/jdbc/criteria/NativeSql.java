@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.command.EntityProvider;
@@ -12,11 +13,13 @@ import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.SubSelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.UpdateDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlDeleteStarting;
@@ -40,12 +43,30 @@ public class NativeSql {
   public <ENTITY> NativeSqlSelectStarting<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
     return from(entityMetamodel, (settings) -> {});
   }
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel, SubSelectContext<?> subSelectContext) {
+    return from(entityMetamodel, subSelectContext, (settings) -> {});
+  }
 
   public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
       EntityMetamodel<ENTITY> entityMetamodel, Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    SelectContext context = new SelectContext(entityMetamodel);
+    SelectContext context = new SelectContext(entityMetamodel, Optional.empty());
+    settingsConsumer.accept(context.getSettings());
+    SelectFromDeclaration declaration = new SelectFromDeclaration(context);
+    Function<SelectQuery, ObjectProvider<ENTITY>> factory =
+        query -> new EntityProvider<>(entityMetamodel.asType(), query, false);
+    return new NativeSqlSelectStarting<>(config, declaration, entityMetamodel, factory);
+  }
+
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
+      EntityMetamodel<ENTITY> entityMetamodel,
+      SubSelectContext<?> subSelectContext,
+      Consumer<SelectSettings> settingsConsumer) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(settingsConsumer);
+    Optional<SubSelectContext<?>> optionalSubSelectContext = Optional.ofNullable(subSelectContext);
+    SelectContext context = new SelectContext(entityMetamodel, optionalSubSelectContext);
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
     Function<SelectQuery, ObjectProvider<ENTITY>> factory =

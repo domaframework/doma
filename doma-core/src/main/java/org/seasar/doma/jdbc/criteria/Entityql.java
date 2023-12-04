@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
@@ -10,8 +11,10 @@ import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.SubSelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchDeleteStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchInsertStatement;
@@ -20,6 +23,7 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlDeleteStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlUpdateStatement;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 
 /**
@@ -36,17 +40,31 @@ public class Entityql {
 
   public <ENTITY> EntityqlSelectStarting<ENTITY> from(EntityMetamodel<ENTITY> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    return from(entityMetamodel, settings -> {});
+    return from(entityMetamodel, null, settings -> {});
   }
 
   public <ENTITY> EntityqlSelectStarting<ENTITY> from(
       EntityMetamodel<ENTITY> entityMetamodel, Consumer<SelectSettings> settingsConsumer) {
+    return from(entityMetamodel, null, settingsConsumer);
+  }
+
+  public <ENTITY> EntityqlSelectStarting<ENTITY> from(
+      EntityMetamodel<ENTITY> entityMetamodel, SubSelectContext<?> subSelectContext) {
+    return from(entityMetamodel, subSelectContext, settings -> {});
+  }
+
+  public <ENTITY> EntityqlSelectStarting<ENTITY> from(
+      EntityMetamodel<ENTITY> entityMetamodel,
+      SubSelectContext<?> subSelectContext,
+      Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    SelectContext context = new SelectContext(entityMetamodel);
+    Optional<SubSelectContext<?>> nullableSubSelectContext = Optional.ofNullable(subSelectContext);
+    SelectContext context = new SelectContext(entityMetamodel, nullableSubSelectContext);
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
-    return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);
+    return new EntityqlSelectStarting<>(
+        config, declaration, entityMetamodel, nullableSubSelectContext);
   }
 
   public <ENTITY> Statement<Result<ENTITY>> update(

@@ -2,12 +2,14 @@ package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -24,18 +26,26 @@ import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.Entityql;
+import org.seasar.doma.jdbc.criteria.SubNativeSql;
+import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
+import org.seasar.doma.jdbc.criteria.expression.Expressions;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
+import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.Listable;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class EntityqlSelectTest {
 
   private final Entityql entityql;
+  private final SubNativeSql subNativeSql;
 
   public EntityqlSelectTest(Config config) {
     this.entityql = new Entityql(config);
+    this.subNativeSql = new SubNativeSql(config);
   }
 
   @Test
@@ -107,6 +117,68 @@ public class EntityqlSelectTest {
 
     Employee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 100)).fetchOne();
     assertNull(employee);
+  }
+
+  @Test
+  void from_subquery() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SubSelectContext<Tuple2<PropertyMetamodel<String>, PropertyMetamodel<Salary>>> subquery =
+        subNativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentName)
+            .select(d.departmentName, Expressions.sum(e.salary));
+
+    EntityqlSelectStarting<NameAndAmount> query =
+        entityql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("8750.00")),
+            new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
+            new NameAndAmount("SALES", new BigDecimal("9400.00")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void from_subquery_subquery() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SubSelectContext<List<PropertyMetamodel<?>>> subsubquery =
+        subNativeSql
+            .from(e)
+            .select(
+                e.employeeId,
+                e.employeeNo,
+                e.employeeName,
+                e.managerId,
+                e.hiredate,
+                e.salary,
+                e.departmentId,
+                e.addressId,
+                e.version);
+
+    SubSelectContext<Tuple2<PropertyMetamodel<String>, PropertyMetamodel<Salary>>> subquery =
+        subNativeSql
+            .from(e, subsubquery)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentName)
+            .select(d.departmentName, Expressions.sum(e.salary));
+
+    EntityqlSelectStarting<NameAndAmount> query =
+        entityql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("8750.00")),
+            new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
+            new NameAndAmount("SALES", new BigDecimal("9400.00")));
+    assertIterableEquals(expected, list);
   }
 
   @Test
