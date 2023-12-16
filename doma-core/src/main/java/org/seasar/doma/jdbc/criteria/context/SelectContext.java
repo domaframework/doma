@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
@@ -15,6 +16,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 
 public class SelectContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
@@ -31,9 +33,12 @@ public class SelectContext implements Context {
   public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
+  public Optional<SetOperand<?>> subSelectContext;
 
-  public SelectContext(EntityMetamodel<?> entityMetamodel) {
+  public SelectContext(
+      EntityMetamodel<?> entityMetamodel, Optional<SetOperand<?>> subSelectContext) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.subSelectContext = Objects.requireNonNull(subSelectContext);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
   }
 

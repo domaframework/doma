@@ -1,5 +1,8 @@
 package org.seasar.doma.jdbc.criteria.query;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,8 +17,11 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
+import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
+import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
 import org.seasar.doma.jdbc.criteria.expression.CaseExpression;
 import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
@@ -24,6 +30,7 @@ import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -51,6 +58,72 @@ public class BuilderSupport {
     this.aliasManager = Objects.requireNonNull(aliasManager);
     this.operandVisitor = new OperandVisitor();
     this.propertyMetamodelVisitor = new PropertyMetamodelVisitor();
+  }
+
+  public void subQuery(
+      EntityMetamodel<?> entityMetamodel, SetOperand<?> setOperand, AliasManager aliasManager) {
+    buf.appendSql(" ( ");
+    setAliasProjection(new Tuple2<>(entityMetamodel, setOperand.getContext()));
+    setOperand.appendQuery(config, commenter, buf, aliasManager);
+    buf.appendSql(" ) ");
+    String alias = getAlias(entityMetamodel);
+    buf.appendSql(alias);
+  }
+
+  private List<PropertyMetamodel<?>> wrapAliasExpression(
+      EntityMetamodel<?> entityMetamodel, SelectContext originSelectContext) {
+    Iterator<PropertyMetamodel<?>> entityPropertyMetaIterator =
+        entityMetamodel.allPropertyMetamodels().iterator();
+    return originSelectContext.getProjectionPropertyMetamodels().stream()
+        .map(
+            it -> {
+              // TODO: replace to DomaException
+              assert entityPropertyMetaIterator.hasNext();
+              PropertyMetamodel<?> propertyMeta = entityPropertyMetaIterator.next();
+              EntityPropertyType<?, ?> propertyType = propertyMeta.asType();
+              String name =
+                  propertyType.getColumnName(
+                      config.getNaming()::apply, config.getDialect()::applyQuote);
+              return new AliasExpression<>(it, name);
+            })
+        .collect(toList());
+  }
+
+  public void setAliasProjection(
+      Tuple2<EntityMetamodel<?>, SetOperationContext<?>> entityMetamodelAndContext) {
+    EntityMetamodel<?> entityMetamodel = entityMetamodelAndContext.getItem1();
+    entityMetamodelAndContext
+        .getItem2()
+        .accept(
+            new SetOperationContext.Visitor<SetOperationContext<?>>() {
+              @Override
+              public SetOperationContext<?> visit(SetOperationContext.Select<?> select) {
+                setProjection(select.context);
+                return select;
+              }
+
+              @Override
+              public SetOperationContext<?> visit(SetOperationContext.Union<?> union) {
+                union.left.accept(this);
+                union.left.accept(this);
+
+                return union;
+              }
+
+              @Override
+              public SetOperationContext<?> visit(SetOperationContext.UnionAll<?> unionAll) {
+                unionAll.left.accept(this);
+                unionAll.left.accept(this);
+
+                return unionAll;
+              }
+
+              private void setProjection(SelectContext context) {
+                List<PropertyMetamodel<?>> projection =
+                    wrapAliasExpression(entityMetamodel, context);
+                context.projection = new Projection.PropertyMetamodels(projection);
+              }
+            });
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {
@@ -532,6 +605,7 @@ public class BuilderSupport {
 
   class PropertyMetamodelVisitor
       implements PropertyMetamodel.Visitor,
+          AliasExpression.Visitor,
           ArithmeticExpression.Visitor,
           StringExpression.Visitor,
           LiteralExpression.Visitor,
@@ -550,6 +624,12 @@ public class BuilderSupport {
       EntityPropertyType<?, ?> propertyType = propertyMetamodel.asType();
       buf.appendSql(
           propertyType.getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote));
+    }
+
+    @Override
+    public void visit(AliasExpression<?> aliasExpression) {
+      aliasExpression.getOriginalPropertyMetamodel().accept(this);
+      buf.appendSql(" AS " + aliasExpression.getAlias());
     }
 
     protected Optional<String> getAlias(PropertyMetamodel<?> propertyMetamodel) {

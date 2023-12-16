@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.Command;
@@ -14,6 +15,8 @@ import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.criteria.command.MappedResultStreamHandler;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.declaration.OrderByIndexDeclaration;
+import org.seasar.doma.jdbc.criteria.query.AliasManager;
+import org.seasar.doma.jdbc.criteria.query.SetOperationBuilder;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class NativeSqlSetStarting<ELEMENT>
@@ -41,6 +44,17 @@ public class NativeSqlSetStarting<ELEMENT>
   @Override
   public SetOperationContext<ELEMENT> getContext() {
     return context;
+  }
+
+  @Override
+  public void appendQuery(
+      Config config,
+      Function<String, String> commenter,
+      PreparedSqlBuilder buf,
+      AliasManager aliasManager) {
+    SetOperationBuilder builder =
+        new SetOperationBuilder(config, context, commenter, buf, aliasManager);
+    builder.build();
   }
 
   @Override
