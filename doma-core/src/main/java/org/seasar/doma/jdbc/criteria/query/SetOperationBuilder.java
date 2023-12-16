@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria.query;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.util.Pair;
@@ -19,6 +20,7 @@ public class SetOperationBuilder {
   private final SetOperationContext<?> context;
   private final Function<String, String> commenter;
   private final PreparedSqlBuilder buf;
+  private final Optional<AliasManager> parentAliasManager;
 
   public SetOperationBuilder(
       Config config,
@@ -28,8 +30,22 @@ public class SetOperationBuilder {
     this.config = Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
+    this.parentAliasManager = Optional.empty();
     Objects.requireNonNull(sqlLogType);
     this.buf = new PreparedSqlBuilder(config, SqlKind.SELECT, sqlLogType);
+  }
+
+  public SetOperationBuilder(
+      Config config,
+      SetOperationContext<?> context,
+      Function<String, String> commenter,
+      PreparedSqlBuilder buf,
+      AliasManager aliasManager) {
+    this.config = Objects.requireNonNull(config);
+    this.context = Objects.requireNonNull(context);
+    this.commenter = Objects.requireNonNull(commenter);
+    this.parentAliasManager = Optional.of(aliasManager);
+    this.buf = Objects.requireNonNull(buf);
   }
 
   public PreparedSql build() {
@@ -38,8 +54,8 @@ public class SetOperationBuilder {
           @Override
           public Void visit(SetOperationContext.Select<?> select) {
             SelectContext context = select.context;
-            SelectBuilder builder =
-                new SelectBuilder(config, context, commenter, buf, new AliasManager(context));
+            AliasManager am = parentAliasManager.orElseGet(() -> new AliasManager(context));
+            SelectBuilder builder = new SelectBuilder(config, context, commenter, buf, am);
             builder.interpret();
             return null;
           }

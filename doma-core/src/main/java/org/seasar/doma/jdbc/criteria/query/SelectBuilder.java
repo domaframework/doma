@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 
 public class SelectBuilder {
   private final SelectContext context;
@@ -97,7 +98,13 @@ public class SelectBuilder {
 
   private void from() {
     buf.appendSql(" from ");
-    table(context.entityMetamodel);
+    SetOperand<?> setOperand = context.subSelectContext.orElse(null);
+    if (setOperand != null) {
+      subQuery(context.entityMetamodel, setOperand, aliasManager);
+
+    } else {
+      table(context.entityMetamodel);
+    }
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
       criteriaBuilder.lockWithTableHint(buf, option, this::column);
@@ -214,6 +221,11 @@ public class SelectBuilder {
 
   private void table(EntityMetamodel<?> entityMetamodel) {
     support.table(entityMetamodel);
+  }
+
+  private void subQuery(
+      EntityMetamodel<?> entityMetamodel, SetOperand<?> setOperand, AliasManager aliasManager) {
+    support.subQuery(entityMetamodel, setOperand, aliasManager);
   }
 
   private void column(PropertyMetamodel<?> propertyMetamodel) {

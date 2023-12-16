@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.internal.jdbc.command.EntityProvider;
@@ -23,6 +24,7 @@ import org.seasar.doma.jdbc.criteria.statement.NativeSqlDeleteStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlInsertStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlUpdateStarting;
+import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
@@ -42,10 +44,30 @@ public class NativeSql {
   }
 
   public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
+      EntityMetamodel<ENTITY> entityMetamodel, SetOperand<?> subSelectContext) {
+    return from(entityMetamodel, subSelectContext, (settings) -> {});
+  }
+
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
       EntityMetamodel<ENTITY> entityMetamodel, Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    SelectContext context = new SelectContext(entityMetamodel);
+    SelectContext context = new SelectContext(entityMetamodel, Optional.empty());
+    settingsConsumer.accept(context.getSettings());
+    SelectFromDeclaration declaration = new SelectFromDeclaration(context);
+    Function<SelectQuery, ObjectProvider<ENTITY>> factory =
+        query -> new EntityProvider<>(entityMetamodel.asType(), query, false);
+    return new NativeSqlSelectStarting<>(config, declaration, entityMetamodel, factory);
+  }
+
+  public <ENTITY> NativeSqlSelectStarting<ENTITY> from(
+      EntityMetamodel<ENTITY> entityMetamodel,
+      SetOperand<?> subSelectContext,
+      Consumer<SelectSettings> settingsConsumer) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(settingsConsumer);
+    Optional<SetOperand<?>> optionalSubSelectContext = Optional.ofNullable(subSelectContext);
+    SelectContext context = new SelectContext(entityMetamodel, optionalSubSelectContext);
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
     Function<SelectQuery, ObjectProvider<ENTITY>> factory =
