@@ -7,6 +7,10 @@ on:
         description: 'Release version'
         required: false
 
+env:
+  JDK_DISTRIBUTION: zulu
+  JDK_VERSION_LATEST_LTS: 21
+
 jobs:
   release:
     name: Release
@@ -39,8 +43,8 @@ jobs:
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ vars.JDK_DISTRIBUTION }}
-          java-version: ${{ vars.JDK_VERSION_LATEST_LTS }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
+          java-version: ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
