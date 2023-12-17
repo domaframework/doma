@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+  env:
+    JDK_DISTRIBUTION: "zulu"
+    JDK_VERSION_OLDEST: "8"
+    JDK_VERSION_LATEST: "21"
+    JDK_VERSION_LATEST_LTS: "21"
 
 jobs:
   build:
@@ -17,11 +22,11 @@ jobs:
       - name: Set up JDKs
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ vars.JDK_DISTRIBUTION }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.JDK_VERSION_OLDEST }}
-            ${{ vars.JDK_VERSION_LATEST }}
-            ${{ vars.JDK_VERSION_LATEST_LTS }}
+            ${{ env.JDK_VERSION_OLDEST }}
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,7 +37,7 @@ jobs:
       - name: Assemble and Check
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           assemble check
 
       - name: Upload reports
@@ -56,11 +61,11 @@ jobs:
       - name: Set up JDKs
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ vars.JDK_DISTRIBUTION }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.JDK_VERSION_OLDEST }}
-            ${{ vars.JDK_VERSION_LATEST }}
-            ${{ vars.JDK_VERSION_LATEST_LTS }}
+            ${{ env.JDK_VERSION_OLDEST }}
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,8 +77,8 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.JDK_VERSION_OLDEST }}
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
+          -PtestJavaLangVersion=${{ env.JDK_VERSION_OLDEST }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           integration-test-java:test
           integration-test-kotlin:test
 
@@ -81,8 +86,8 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.JDK_VERSION_LATEST }}
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
+          -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST }}
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           -PtestUseModule=true
           integration-test-java:test
           integration-test-java-additional:test
@@ -91,7 +96,7 @@ jobs:
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
-          -PtestJavaLangVersion=${{ vars.JDK_VERSION_LATEST_LTS }}
+          -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST_LTS }}
           -PtestUseModule=true
           integration-test-java:test
           integration-test-java-additional:test
@@ -116,11 +121,11 @@ jobs:
       - name: Set up JDKs
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ vars.JDK_DISTRIBUTION }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.JDK_VERSION_OLDEST }}
-            ${{ vars.JDK_VERSION_LATEST }}
-            ${{ vars.JDK_VERSION_LATEST_LTS }}
+            ${{ env.JDK_VERSION_OLDEST }}
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -136,7 +141,7 @@ jobs:
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
