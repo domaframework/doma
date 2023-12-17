@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.Entityql;
 import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
@@ -141,6 +142,62 @@ public class EntityqlSelectTest {
             new NameAndAmount("ACCOUNTING", new BigDecimal("8750.00")),
             new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
             new NameAndAmount("SALES", new BigDecimal("9400.00")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void from_subquery_alias() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SetOperand<?> subquery =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentName)
+            .select(
+                new AliasExpression<>(Expressions.sum(e.salary), t.amount.getName()),
+                new AliasExpression<>(d.departmentName, t.name.getName()));
+
+    EntityqlSelectStarting<NameAndAmount> query =
+        entityql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("8750.00")),
+            new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
+            new NameAndAmount("SALES", new BigDecimal("9400.00")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void from_subquery_union() {
+    Department_ d = new Department_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SetOperand<?> subquery =
+        nativeSql
+            .from(d)
+            .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
+            .select(
+                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
+                new AliasExpression<>(d.departmentName, t.name.getName()))
+            .union(
+                nativeSql
+                    .from(d)
+                    .where(c -> c.eq(d.departmentName, "OPERATIONS"))
+                    .select(
+                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
+                        new AliasExpression<>(d.departmentName, t.name.getName())));
+
+    EntityqlSelectStarting<NameAndAmount> query =
+        entityql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("1200.00")),
+            new NameAndAmount("OPERATIONS", new BigDecimal("900")));
     assertIterableEquals(expected, list);
   }
 

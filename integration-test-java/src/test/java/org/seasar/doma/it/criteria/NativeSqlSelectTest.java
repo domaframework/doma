@@ -40,6 +40,7 @@ import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
@@ -124,6 +125,32 @@ public class NativeSqlSelectTest {
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .select(d.departmentName, sum(e.salary));
+
+    NativeSqlSelectStarting<NameAndAmount> query =
+        nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("8750.00")),
+            new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
+            new NameAndAmount("SALES", new BigDecimal("9400.00")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void from_subquery_alias() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SetOperand<?> subquery =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentName)
+            .select(
+                new AliasExpression<>(Expressions.sum(e.salary), t.amount.getName()),
+                new AliasExpression<>(d.departmentName, t.name.getName()));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
