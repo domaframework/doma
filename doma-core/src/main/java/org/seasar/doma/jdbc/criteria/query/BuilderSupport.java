@@ -88,9 +88,9 @@ public class BuilderSupport {
         });
     SetOperationBuilder builder =
         new SetOperationBuilder(config, setOperationContext, commenter, buf, aliasManager);
-    buf.appendSql(" ( ");
+    buf.appendSql("(");
     builder.build();
-    buf.appendSql(" ) ");
+    buf.appendSql(") ");
     String alias = getAlias(entityMetamodel);
     buf.appendSql(alias);
   }
