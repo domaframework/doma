@@ -17,19 +17,19 @@ public class NameAndAmount {
     this.amount = bigDecimal.intValue();
   }
 
-  public String getname() {
+  public String getName() {
     return name;
   }
 
-  public void setname(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public Integer getamount() {
+  public Integer getAmount() {
     return amount;
   }
 
-  public void setamount(Integer amount) {
+  public void setAmount(Integer amount) {
     this.amount = amount;
   }
 
