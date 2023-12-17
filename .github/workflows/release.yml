@@ -6,9 +6,10 @@ on:
       version:
         description: 'Release version'
         required: false
-  env:
-    JDK_DISTRIBUTION: "zulu"
-    JDK_VERSION_LATEST_LTS: "21"
+
+env:
+  JDK_DISTRIBUTION: zulu
+  JDK_VERSION_LATEST_LTS: 21
 
 jobs:
   release:

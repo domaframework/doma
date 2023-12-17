@@ -6,11 +6,12 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
-  env:
-    JDK_DISTRIBUTION: "zulu"
-    JDK_VERSION_OLDEST: "8"
-    JDK_VERSION_LATEST: "21"
-    JDK_VERSION_LATEST_LTS: "21"
+
+env:
+  JDK_DISTRIBUTION: zulu
+  JDK_VERSION_OLDEST: 8
+  JDK_VERSION_LATEST: 21
+  JDK_VERSION_LATEST_LTS: 21
 
 jobs:
   build:
