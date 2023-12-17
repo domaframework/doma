@@ -48,20 +48,20 @@ public class Entityql {
   }
 
   public <ENTITY> EntityqlSelectStarting<ENTITY> from(
-      EntityMetamodel<ENTITY> entityMetamodel, SetOperand<?> subSelectContext) {
-    return from(entityMetamodel, subSelectContext, settings -> {});
+      EntityMetamodel<ENTITY> entityMetamodel, SetOperand<?> setOperandForSubQuery) {
+    return from(entityMetamodel, setOperandForSubQuery, settings -> {});
   }
 
   public <ENTITY> EntityqlSelectStarting<ENTITY> from(
       EntityMetamodel<ENTITY> entityMetamodel,
-      SetOperand<?> subSelectContext,
+      SetOperand<?> setOperandForSubQuery,
       Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    SetOperationContext<?> setOperationContext =
-        subSelectContext == null ? null : subSelectContext.getContext();
+    SetOperationContext<?> setOperationContextForSubQuery =
+        setOperandForSubQuery == null ? null : setOperandForSubQuery.getContext();
     SelectContext context =
-        new SelectContext(entityMetamodel, Optional.ofNullable(setOperationContext));
+        new SelectContext(entityMetamodel, Optional.ofNullable(setOperationContextForSubQuery));
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
     return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);

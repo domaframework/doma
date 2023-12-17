@@ -32,12 +32,17 @@ public class SelectContext implements Context {
   public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
-  public Optional<SetOperationContext<?>> subSelectContext;
+
+  /**
+   * SetOperandContext for the subquery that serves as the derived table for this#entityMetamodel.
+   */
+  public Optional<SetOperationContext<?>> setOperationContextForSubQuery;
 
   public SelectContext(
-      EntityMetamodel<?> entityMetamodel, Optional<SetOperationContext<?>> subSelectContext) {
+      EntityMetamodel<?> entityMetamodel,
+      Optional<SetOperationContext<?>> setOperationContextForSubQuery) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
-    this.subSelectContext = Objects.requireNonNull(subSelectContext);
+    this.setOperationContextForSubQuery = Objects.requireNonNull(setOperationContextForSubQuery);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
   }
 

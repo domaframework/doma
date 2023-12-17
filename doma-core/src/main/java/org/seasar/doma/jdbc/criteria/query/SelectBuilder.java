@@ -98,10 +98,10 @@ public class SelectBuilder {
 
   private void from() {
     buf.appendSql(" from ");
-    SetOperationContext<?> setOperationContext = context.subSelectContext.orElse(null);
+    SetOperationContext<?> setOperationContext =
+        context.setOperationContextForSubQuery.orElse(null);
     if (setOperationContext != null) {
       subQuery(context.entityMetamodel, setOperationContext, aliasManager);
-
     } else {
       table(context.entityMetamodel);
     }
