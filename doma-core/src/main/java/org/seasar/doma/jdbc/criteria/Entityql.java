@@ -11,6 +11,7 @@ import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
+import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.declaration.SelectFromDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
@@ -57,12 +58,13 @@ public class Entityql {
       Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    Optional<SetOperand<?>> nullableSubSelectContext = Optional.ofNullable(subSelectContext);
-    SelectContext context = new SelectContext(entityMetamodel, nullableSubSelectContext);
+    SetOperationContext<?> setOperationContext =
+        subSelectContext == null ? null : subSelectContext.getContext();
+    SelectContext context =
+        new SelectContext(entityMetamodel, Optional.ofNullable(setOperationContext));
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
-    return new EntityqlSelectStarting<>(
-        config, declaration, entityMetamodel, nullableSubSelectContext);
+    return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);
   }
 
   public <ENTITY> Statement<Result<ENTITY>> update(

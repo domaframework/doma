@@ -40,11 +40,11 @@ public class SetOperationBuilder {
       SetOperationContext<?> context,
       Function<String, String> commenter,
       PreparedSqlBuilder buf,
-      AliasManager aliasManager) {
+      AliasManager parentAliasManager) {
     this.config = Objects.requireNonNull(config);
     this.context = Objects.requireNonNull(context);
     this.commenter = Objects.requireNonNull(commenter);
-    this.parentAliasManager = Optional.of(aliasManager);
+    this.parentAliasManager = Optional.of(parentAliasManager);
     this.buf = Objects.requireNonNull(buf);
   }
 
@@ -54,7 +54,10 @@ public class SetOperationBuilder {
           @Override
           public Void visit(SetOperationContext.Select<?> select) {
             SelectContext context = select.context;
-            AliasManager am = parentAliasManager.orElseGet(() -> new AliasManager(context));
+            AliasManager am =
+                parentAliasManager
+                    .map(it -> new AliasManager(context, it))
+                    .orElseGet(() -> new AliasManager(context));
             SelectBuilder builder = new SelectBuilder(config, context, commenter, buf, am);
             builder.interpret();
             return null;

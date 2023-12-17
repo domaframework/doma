@@ -30,7 +30,6 @@ import org.seasar.doma.jdbc.criteria.expression.StringExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
-import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -61,10 +60,37 @@ public class BuilderSupport {
   }
 
   public void subQuery(
-      EntityMetamodel<?> entityMetamodel, SetOperand<?> setOperand, AliasManager aliasManager) {
+      EntityMetamodel<?> entityMetamodel,
+      SetOperationContext<?> setOperationContext,
+      AliasManager aliasManager) {
+    setOperationContext.accept(
+        new SetOperationContext.Visitor<Void>() {
+          @Override
+          public Void visit(SetOperationContext.Select<?> select) {
+            List<PropertyMetamodel<?>> projection =
+                wrapAliasExpression(entityMetamodel, select.context);
+            select.context.projection = new Projection.PropertyMetamodels(projection);
+            return null;
+          }
+
+          @Override
+          public Void visit(SetOperationContext.Union<?> union) {
+            union.left.accept(this);
+            union.right.accept(this);
+            return null;
+          }
+
+          @Override
+          public Void visit(SetOperationContext.UnionAll<?> unionAll) {
+            unionAll.left.accept(this);
+            unionAll.right.accept(this);
+            return null;
+          }
+        });
+    SetOperationBuilder builder =
+        new SetOperationBuilder(config, setOperationContext, commenter, buf, aliasManager);
     buf.appendSql(" ( ");
-    setAliasProjection(new Tuple2<>(entityMetamodel, setOperand.getContext()));
-    setOperand.appendQuery(config, commenter, buf, aliasManager);
+    builder.build();
     buf.appendSql(" ) ");
     String alias = getAlias(entityMetamodel);
     buf.appendSql(alias);
@@ -87,43 +113,6 @@ public class BuilderSupport {
               return new AliasExpression<>(it, name);
             })
         .collect(toList());
-  }
-
-  public void setAliasProjection(
-      Tuple2<EntityMetamodel<?>, SetOperationContext<?>> entityMetamodelAndContext) {
-    EntityMetamodel<?> entityMetamodel = entityMetamodelAndContext.getItem1();
-    entityMetamodelAndContext
-        .getItem2()
-        .accept(
-            new SetOperationContext.Visitor<SetOperationContext<?>>() {
-              @Override
-              public SetOperationContext<?> visit(SetOperationContext.Select<?> select) {
-                setProjection(select.context);
-                return select;
-              }
-
-              @Override
-              public SetOperationContext<?> visit(SetOperationContext.Union<?> union) {
-                union.left.accept(this);
-                union.left.accept(this);
-
-                return union;
-              }
-
-              @Override
-              public SetOperationContext<?> visit(SetOperationContext.UnionAll<?> unionAll) {
-                unionAll.left.accept(this);
-                unionAll.left.accept(this);
-
-                return unionAll;
-              }
-
-              private void setProjection(SelectContext context) {
-                List<PropertyMetamodel<?>> projection =
-                    wrapAliasExpression(entityMetamodel, context);
-                context.projection = new Projection.PropertyMetamodels(projection);
-              }
-            });
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {

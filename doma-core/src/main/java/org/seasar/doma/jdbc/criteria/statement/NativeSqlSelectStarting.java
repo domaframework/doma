@@ -14,7 +14,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.command.EntityProvider;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.command.Command;
@@ -30,8 +29,6 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
-import org.seasar.doma.jdbc.criteria.query.AliasManager;
-import org.seasar.doma.jdbc.criteria.query.SelectBuilder;
 import org.seasar.doma.jdbc.criteria.tuple.Row;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
@@ -839,18 +836,6 @@ public class NativeSqlSelectStarting<ENTITY>
     NativeSqlSelectIntermediate<ENTITY> intermediate =
         new NativeSqlSelectIntermediate<>(config, declaration, createEntityProviderFactory());
     return intermediate.getContext();
-  }
-
-  @Override
-  public void appendQuery(
-      Config config,
-      Function<String, String> commenter,
-      PreparedSqlBuilder buf,
-      AliasManager aliasManager) {
-    AliasManager childAliasManager = new AliasManager(declaration.getContext(), aliasManager);
-    SelectBuilder builder =
-        new SelectBuilder(config, declaration.getContext(), commenter, buf, childAliasManager);
-    builder.build();
   }
 
   @Override
