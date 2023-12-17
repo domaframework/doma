@@ -960,6 +960,9 @@ public enum Message implements MessageResource {
       "The parameter \"{0}\" is unknown. "
           + "Ensure that you have passed it to the from, the innerJoin, or the leftJoin method before invoking the associateWith method. "
           + "If the innerJoin or leftJoin method call is optional, pass the AssociationKind.OPTIONAL value to the associateWith method."),
+  DOMA6011(
+      "The number of propertyMetamodels in the specified derived table does not match for the propertyMetamodels in the　entityMetamodel."
+          + "The number of propertyMetamodels in the entityMetamodel is {0} but the number of propertyMetamodels in the derived table is {1}."),
   ;
 
   private final String messagePattern;

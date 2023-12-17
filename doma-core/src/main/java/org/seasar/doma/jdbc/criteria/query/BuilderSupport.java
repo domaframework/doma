@@ -1,8 +1,6 @@
 package org.seasar.doma.jdbc.criteria.query;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,7 +66,8 @@ public class BuilderSupport {
           @Override
           public Void visit(SetOperationContext.Select<?> select) {
             List<PropertyMetamodel<?>> projection =
-                wrapAliasExpression(entityMetamodel, select.context);
+                wrapAliasExpression(
+                    entityMetamodel, select.context.getProjectionPropertyMetamodels());
             select.context.projection = new Projection.PropertyMetamodels(projection);
             return null;
           }
@@ -97,22 +96,33 @@ public class BuilderSupport {
   }
 
   private List<PropertyMetamodel<?>> wrapAliasExpression(
-      EntityMetamodel<?> entityMetamodel, SelectContext originSelectContext) {
-    Iterator<PropertyMetamodel<?>> entityPropertyMetaIterator =
-        entityMetamodel.allPropertyMetamodels().iterator();
-    return originSelectContext.getProjectionPropertyMetamodels().stream()
-        .map(
-            it -> {
-              // TODO: replace to DomaException
-              assert entityPropertyMetaIterator.hasNext();
-              PropertyMetamodel<?> propertyMeta = entityPropertyMetaIterator.next();
-              EntityPropertyType<?, ?> propertyType = propertyMeta.asType();
-              String name =
-                  propertyType.getColumnName(
-                      config.getNaming()::apply, config.getDialect()::applyQuote);
-              return new AliasExpression<>(it, name);
-            })
-        .collect(toList());
+      EntityMetamodel<?> entityMetamodel, List<PropertyMetamodel<?>> projectionPropertyMetamodels) {
+    if (entityMetamodel.allPropertyMetamodels().size() != projectionPropertyMetamodels.size()) {
+      throw new DomaException(
+          Message.DOMA6011,
+          entityMetamodel.allPropertyMetamodels().size(),
+          projectionPropertyMetamodels.size());
+    }
+
+    List<PropertyMetamodel<?>> aliasNamePropertyMetamodels =
+        entityMetamodel.allPropertyMetamodels();
+
+    int index = 0;
+    List<PropertyMetamodel<?>> wrappedPropertyMetamodels =
+        new ArrayList<>(projectionPropertyMetamodels.size());
+    for (PropertyMetamodel<?> projectionPropertyMetamodel : projectionPropertyMetamodels) {
+      PropertyMetamodel<?> aliasNamePropertyMetamodel = aliasNamePropertyMetamodels.get(index++);
+      if (projectionPropertyMetamodel instanceof AliasExpression) {
+        wrappedPropertyMetamodels.add(projectionPropertyMetamodel);
+        continue;
+      }
+      String name =
+          aliasNamePropertyMetamodel
+              .asType()
+              .getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote);
+      wrappedPropertyMetamodels.add(new AliasExpression<>(projectionPropertyMetamodel, name));
+    }
+    return wrappedPropertyMetamodels;
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {
