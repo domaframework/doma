@@ -202,6 +202,36 @@ public class EntityqlSelectTest {
   }
 
   @Test
+  void from_subquery_union_all() {
+    Department_ d = new Department_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SetOperand<?> subquery =
+        nativeSql
+            .from(d)
+            .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
+            .select(
+                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
+                new AliasExpression<>(d.departmentName, t.name.getName()))
+            .unionAll(
+                nativeSql
+                    .from(d)
+                    .where(c -> c.eq(d.departmentName, "OPERATIONS"))
+                    .select(
+                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
+                        new AliasExpression<>(d.departmentName, t.name.getName())));
+
+    EntityqlSelectStarting<NameAndAmount> query =
+        entityql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    List<NameAndAmount> list = query.fetch();
+    List<NameAndAmount> expected =
+        Arrays.asList(
+            new NameAndAmount("ACCOUNTING", new BigDecimal("1200.00")),
+            new NameAndAmount("OPERATIONS", new BigDecimal("900")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
   void from_subquery_subquery() {
     Department_ d = new Department_();
     Employee_ e = new Employee_();
