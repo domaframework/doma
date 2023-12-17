@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
@@ -20,17 +19,12 @@ public class EntityqlSelectTerminal<ENTITY>
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
-  private final Optional<SetOperand<?>> subSelectContext;
 
   public EntityqlSelectTerminal(
-      Config config,
-      SelectFromDeclaration declaration,
-      EntityMetamodel<ENTITY> entityMetamodel,
-      Optional<SetOperand<?>> subSelectContext) {
+      Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
-    this.subSelectContext = subSelectContext;
   }
 
   /**

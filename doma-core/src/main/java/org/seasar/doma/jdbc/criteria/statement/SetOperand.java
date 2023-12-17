@@ -1,12 +1,8 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
-import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
-import org.seasar.doma.jdbc.criteria.query.AliasManager;
 
 /**
  * Represents a set operand.
@@ -40,10 +36,4 @@ public interface SetOperand<ELEMENT> extends StreamMappable<ELEMENT> {
 
   @Override
   SetOperand<ELEMENT> peek(Consumer<Sql<?>> consumer);
-
-  void appendQuery(
-      Config config,
-      Function<String, String> commenter,
-      PreparedSqlBuilder buf,
-      AliasManager aliasManager);
 }

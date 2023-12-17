@@ -3,7 +3,6 @@ package org.seasar.doma.jdbc.criteria.statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -25,17 +24,12 @@ public class EntityqlSelectStarting<ENTITY>
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
-  private final Optional<SetOperand<?>> subSelectContext;
 
   public EntityqlSelectStarting(
-      Config config,
-      SelectFromDeclaration declaration,
-      EntityMetamodel<ENTITY> entityMetamodel,
-      Optional<SetOperand<?>> subSelectContext) {
+      Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
-    this.subSelectContext = subSelectContext;
   }
 
   public EntityqlSelectStarting<ENTITY> distinct() {
@@ -149,7 +143,7 @@ public class EntityqlSelectStarting<ENTITY>
   public <RESULT> EntityqlSelectTerminal<RESULT> select(EntityMetamodel<RESULT> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     declaration.select(entityMetamodel);
-    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
+    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
   }
 
   public <RESULT> EntityqlSelectTerminal<RESULT> selectTo(
@@ -157,13 +151,13 @@ public class EntityqlSelectStarting<ENTITY>
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(propertyMetamodels);
     declaration.selectTo(entityMetamodel, Arrays.asList(propertyMetamodels));
-    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
+    return new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
   }
 
   @Override
   protected Command<List<ENTITY>> createCommand() {
     EntityqlSelectTerminal<ENTITY> terminal =
-        new EntityqlSelectTerminal<>(config, declaration, entityMetamodel, subSelectContext);
+        new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
     return terminal.createCommand();
   }
 }

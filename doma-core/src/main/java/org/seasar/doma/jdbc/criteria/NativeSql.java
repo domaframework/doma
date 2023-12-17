@@ -13,6 +13,7 @@ import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SelectSettings;
+import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateContext;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
@@ -66,8 +67,10 @@ public class NativeSql {
       Consumer<SelectSettings> settingsConsumer) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(settingsConsumer);
-    Optional<SetOperand<?>> optionalSubSelectContext = Optional.ofNullable(subSelectContext);
-    SelectContext context = new SelectContext(entityMetamodel, optionalSubSelectContext);
+    SetOperationContext<?> setOperationContext =
+        subSelectContext == null ? null : subSelectContext.getContext();
+    SelectContext context =
+        new SelectContext(entityMetamodel, Optional.ofNullable(setOperationContext));
     settingsConsumer.accept(context.getSettings());
     SelectFromDeclaration declaration = new SelectFromDeclaration(context);
     Function<SelectQuery, ObjectProvider<ENTITY>> factory =

@@ -16,7 +16,6 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
-import org.seasar.doma.jdbc.criteria.statement.SetOperand;
 
 public class SelectContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
@@ -33,10 +32,10 @@ public class SelectContext implements Context {
   public final Map<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
-  public Optional<SetOperand<?>> subSelectContext;
+  public Optional<SetOperationContext<?>> subSelectContext;
 
   public SelectContext(
-      EntityMetamodel<?> entityMetamodel, Optional<SetOperand<?>> subSelectContext) {
+      EntityMetamodel<?> entityMetamodel, Optional<SetOperationContext<?>> subSelectContext) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.subSelectContext = Objects.requireNonNull(subSelectContext);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
