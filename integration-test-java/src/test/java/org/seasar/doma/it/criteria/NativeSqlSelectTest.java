@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
@@ -50,6 +51,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Row;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
+import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class NativeSqlSelectTest {
@@ -161,6 +163,26 @@ public class NativeSqlSelectTest {
             new NameAndAmount("RESEARCH", new BigDecimal("10875.00")),
             new NameAndAmount("SALES", new BigDecimal("9400.00")));
     assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void from_subquery_doesnot_match_alias() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+    NameAndAmount_ t = new NameAndAmount_();
+
+    SetOperand<?> subquery =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentName)
+            .select(new AliasExpression<>(d.departmentName, t.name.getName()));
+
+    NativeSqlSelectStarting<NameAndAmount> query =
+        nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
+    DomaException ex = assertThrows(DomaException.class, () -> query.fetch());
+    assertEquals(Message.DOMA6011, ex.getMessageResource());
+    System.out.println(ex.getMessage());
   }
 
   @Test
