@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.criteria.context.Join;
 import org.seasar.doma.jdbc.criteria.context.JoinKind;
 import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
+import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -97,7 +98,13 @@ public class SelectBuilder {
 
   private void from() {
     buf.appendSql(" from ");
-    table(context.entityMetamodel);
+    SetOperationContext<?> setOperationContext =
+        context.setOperationContextForSubQuery.orElse(null);
+    if (setOperationContext != null) {
+      subQuery(context.entityMetamodel, setOperationContext, aliasManager);
+    } else {
+      table(context.entityMetamodel);
+    }
     if (context.forUpdate != null) {
       ForUpdateOption option = context.forUpdate.option;
       criteriaBuilder.lockWithTableHint(buf, option, this::column);
@@ -214,6 +221,13 @@ public class SelectBuilder {
 
   private void table(EntityMetamodel<?> entityMetamodel) {
     support.table(entityMetamodel);
+  }
+
+  private void subQuery(
+      EntityMetamodel<?> entityMetamodel,
+      SetOperationContext<?> setOperationContext,
+      AliasManager aliasManager) {
+    support.subQuery(entityMetamodel, setOperationContext, aliasManager);
   }
 
   private void column(PropertyMetamodel<?> propertyMetamodel) {

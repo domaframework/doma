@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -19,7 +20,7 @@ public class SubSelectFromDeclaration<ENTITY> implements SubSelectContext<ENTITY
 
   public SubSelectFromDeclaration(EntityMetamodel<?> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
-    SelectContext context = new SelectContext(entityMetamodel);
+    SelectContext context = new SelectContext(entityMetamodel, Optional.empty());
     this.declaration = new SelectFromDeclaration(context);
   }
 

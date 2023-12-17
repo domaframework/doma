@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Pair;
@@ -32,8 +33,16 @@ public class SelectContext implements Context {
       associations = new LinkedHashMap<>();
   public final SelectSettings settings = new SelectSettings();
 
-  public SelectContext(EntityMetamodel<?> entityMetamodel) {
+  /**
+   * SetOperandContext for the subquery that serves as the derived table for this#entityMetamodel.
+   */
+  public Optional<SetOperationContext<?>> setOperationContextForSubQuery;
+
+  public SelectContext(
+      EntityMetamodel<?> entityMetamodel,
+      Optional<SetOperationContext<?>> setOperationContextForSubQuery) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.setOperationContextForSubQuery = Objects.requireNonNull(setOperationContextForSubQuery);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
   }
 
