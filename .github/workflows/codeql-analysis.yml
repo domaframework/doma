@@ -5,6 +5,12 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+env:
+  JDK_DISTRIBUTION: zulu
+  JDK_VERSION_OLDEST: 8
+  JDK_VERSION_LATEST: 21
+  JDK_VERSION_LATEST_LTS: 21
+
 jobs:
   CodeQL-Build:
     runs-on: ubuntu-latest
@@ -22,11 +28,11 @@ jobs:
       - name: Set up JDKs
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ vars.JDK_DISTRIBUTION }}
+          distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
-            ${{ vars.JDK_VERSION_OLDEST }}
-            ${{ vars.JDK_VERSION_LATEST }}
-            ${{ vars.JDK_VERSION_LATEST_LTS }}
+            ${{ env.JDK_VERSION_OLDEST }}
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2.11.0
@@ -34,7 +40,7 @@ jobs:
       - name: Build
         run: >
           ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ vars.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ vars.JDK_VERSION_LATEST }}_X64
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           assemble check
 
       - name: Perform CodeQL Analysis
