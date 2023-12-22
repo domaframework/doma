@@ -44,6 +44,8 @@ public class MoreElements implements Elements {
 
   private final Elements elementUtils;
 
+  private final Map<Class<?>, TypeElement> typeElementCache = new HashMap<>(64);
+
   public MoreElements(Context ctx, ProcessingEnvironment env) {
     assertNotNull(ctx, env);
     this.ctx = ctx;
@@ -200,7 +202,7 @@ public class MoreElements implements Elements {
       return getEnclosedTypeElement(topElement, Arrays.asList(parts).subList(1, parts.length));
     }
     try {
-      return elementUtils.getTypeElement(binaryName);
+      return getTypeElement(binaryName);
     } catch (NullPointerException ignored) {
       return null;
     }
@@ -208,7 +210,8 @@ public class MoreElements implements Elements {
 
   public TypeElement getTypeElement(Class<?> clazz) {
     assertNotNull(clazz);
-    return elementUtils.getTypeElement(clazz.getCanonicalName());
+    return typeElementCache.computeIfAbsent(
+        clazz, k -> elementUtils.getTypeElement(k.getCanonicalName()));
   }
 
   private TypeElement getEnclosedTypeElement(TypeElement typeElement, List<String> enclosedNames) {

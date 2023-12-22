@@ -160,12 +160,7 @@ public class MoreTypes implements Types {
     if (element == null) {
       return null;
     }
-    TypeElement typeElement = ctx.getMoreElements().toTypeElement(element);
-    if (typeElement == null) {
-      return null;
-    }
-    // workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=544288
-    return ctx.getMoreElements().getTypeElement(typeElement.getQualifiedName());
+    return ctx.getMoreElements().toTypeElement(element);
   }
 
   public DeclaredType toDeclaredType(TypeMirror typeMirror) {
