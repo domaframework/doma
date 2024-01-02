@@ -51,6 +51,7 @@ class ExternalDomainProcessorTest extends CompilerSupport {
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
         ExtensionContext context) {
       return Stream.of(
+          invocationContext(ColorConverter.class, Color.class),
           invocationContext(StringArrayConverter.class, String[].class),
           invocationContext(
               UpperBoundParameterizedValueObjectConverter.class,

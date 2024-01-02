@@ -130,7 +130,7 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
     }
 
     BasicCtType basicCtType = ctx.getCtTypes().newBasicCtType(declaredType);
-    if (basicCtType != null) {
+    if (basicCtType != null && !basicCtType.isEnum()) {
       throw new AptException(Message.DOMA4460, converterElement, new Object[] {declaredType});
     }
 
