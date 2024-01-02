@@ -922,7 +922,7 @@ public enum Message implements MessageResource {
   DOMA4458("You can't use static methods"),
   DOMA4459("Must be a public method"),
   DOMA4460(
-      "The first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter must be a basic type, excluding enum types."),
+      "The first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter must not be a basic type. However, enum types are exceptionally allowed."),
 
   // other
   DOMA5001(
