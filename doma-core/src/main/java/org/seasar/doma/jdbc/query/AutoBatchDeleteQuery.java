@@ -37,7 +37,7 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
       return;
     }
     executable = true;
-    executionSkipCause = null;
+    sqlExecutionSkipCause = null;
     currentEntity = entities.get(0);
     preDelete();
     prepareIdAndVersionPropertyTypes();

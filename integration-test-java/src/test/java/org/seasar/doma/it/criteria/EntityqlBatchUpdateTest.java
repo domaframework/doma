@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.entity.IdColumnOnlyEmployee;
+import org.seasar.doma.it.entity.IdColumnOnlyEmployee_;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -66,5 +68,17 @@ public class EntityqlBatchUpdateTest {
 
     BatchResult<Employee> result = entityql.update(e, Collections.emptyList()).execute();
     assertTrue(result.getEntities().isEmpty());
+  }
+
+  @Test
+  void idColumnOnlyEntity() {
+    IdColumnOnlyEmployee_ e = new IdColumnOnlyEmployee_();
+
+    IdColumnOnlyEmployee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    List<IdColumnOnlyEmployee> employeesList = Collections.singletonList(employee);
+    BatchResult<IdColumnOnlyEmployee> result = entityql.update(e, employeesList).execute();
+    assertEquals(employeesList, result.getEntities());
+    assertEquals(0, result.getCounts().length);
   }
 }

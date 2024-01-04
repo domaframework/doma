@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.entity.IdColumnOnlyEmployee;
+import org.seasar.doma.it.entity.IdColumnOnlyEmployee_;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -50,6 +52,17 @@ public class EntityqlUpdateTest {
         entityql
             .update(e, employee, settings -> settings.setSuppressOptimisticLockException(true))
             .execute();
+    assertEquals(0, result.getCount());
+  }
+
+  @Test
+  void idColumnOnlyEntity() {
+    IdColumnOnlyEmployee_ e = new IdColumnOnlyEmployee_();
+
+    IdColumnOnlyEmployee employee = entityql.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    Result<IdColumnOnlyEmployee> result = entityql.update(e, employee).execute();
+    assertEquals(employee, result.getEntity());
     assertEquals(0, result.getCount());
   }
 }
