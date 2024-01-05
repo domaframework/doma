@@ -38,8 +38,6 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     if (size == 0) {
       return;
     }
-    executable = true;
-    executionSkipCause = null;
     currentEntity = entities.get(0);
     setupHelper();
     preUpdate();
@@ -89,6 +87,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void prepareTargetPropertyTypes() {
     targetPropertyTypes = helper.getTargetPropertyTypes();
+    if (!targetPropertyTypes.isEmpty()) {
+      executable = true;
+      sqlExecutionSkipCause = null;
+    }
   }
 
   protected void prepareSql() {

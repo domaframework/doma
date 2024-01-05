@@ -40,7 +40,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   protected boolean executable;
 
-  protected SqlExecutionSkipCause executionSkipCause =
+  protected SqlExecutionSkipCause sqlExecutionSkipCause =
       SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT;
 
   protected List<PreparedSql> sqls;
@@ -164,7 +164,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   @Override
   public SqlExecutionSkipCause getSqlExecutionSkipCause() {
-    return executionSkipCause;
+    return sqlExecutionSkipCause;
   }
 
   @Override

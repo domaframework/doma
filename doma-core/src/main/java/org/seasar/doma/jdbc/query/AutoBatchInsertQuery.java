@@ -52,7 +52,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
       return;
     }
     executable = true;
-    executionSkipCause = null;
+    sqlExecutionSkipCause = null;
     currentEntity = entities.get(0);
     preInsert();
     prepareIdAndVersionPropertyTypes();
