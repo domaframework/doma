@@ -1,11 +1,7 @@
-import org.gradle.plugins.ide.eclipse.model.EclipseModel
-
 plugins {
-    eclipse
     `java-library`
     `maven-publish`
     signing
-    id("com.diffplug.eclipse.apt")
     id("com.diffplug.spotless")
     id("io.github.gradle-nexus.publish-plugin")
     id("net.researchgate.release")
@@ -66,32 +62,6 @@ fun replaceVersionInDocs(ver: String) {
     }
 }
 
-fun EclipseModel.configureWithJavaRuntimeName(javaRuntimeName: String) {
-    classpath {
-        file {
-            whenMerged {
-                val classpath = this as org.gradle.plugins.ide.eclipse.model.Classpath
-                classpath.entries.removeAll {
-                    when (it) {
-                        is org.gradle.plugins.ide.eclipse.model.Output -> it.path == ".apt_generated"
-                        else -> false
-                    }
-                }
-            }
-            withXml {
-                val node = asNode()
-                node.appendNode(
-                    "classpathentry",
-                    mapOf("kind" to "src", "output" to "bin/main", "path" to ".apt_generated")
-                )
-            }
-        }
-    }
-    jdt {
-        this.javaRuntimeName = javaRuntimeName
-    }
-}
-
 allprojects {
     apply(plugin = "base")
     apply(plugin = "com.diffplug.spotless")
@@ -131,7 +101,6 @@ configure(modularProjects) {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
-    apply(plugin = "com.diffplug.eclipse.apt")
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -179,10 +148,6 @@ configure(modularProjects) {
         val publishing = extensions.getByType(PublishingExtension::class)
         sign(publishing.publications)
         isRequired = isReleaseVersion
-    }
-
-    eclipse {
-        configureWithJavaRuntimeName("JavaSE-1.8")
     }
 
     class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
@@ -304,7 +269,6 @@ configure(modularProjects) {
 
 configure(integrationTestProjects) {
     apply(plugin = "java")
-    apply(plugin = "com.diffplug.eclipse.apt")
     apply(plugin = "com.diffplug.spotless")
     apply(plugin ="org.domaframework.doma.compile")
 
@@ -319,10 +283,6 @@ configure(integrationTestProjects) {
         testRuntimeOnly("org.testcontainers:oracle-xe")
         testRuntimeOnly("org.testcontainers:postgresql")
         testRuntimeOnly("org.testcontainers:mssqlserver")
-    }
-
-    eclipse {
-        configureWithJavaRuntimeName("JavaSE-17")
     }
 
     tasks {
