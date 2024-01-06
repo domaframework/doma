@@ -188,7 +188,7 @@ configure(modularProjects) {
 
     val javaModuleName = project.javaModuleName
     val moduleSourceDir = file("src/module/$javaModuleName")
-    val moduleOutputDir = file("$buildDir/classes/java/module")
+    val moduleOutputDir = layout.buildDirectory.dir("classes/java/module")
 
     val compileModule by tasks.registering(JavaCompile::class) {
         dependsOn("classes")
@@ -226,7 +226,7 @@ configure(modularProjects) {
             manifest {
                 attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
             }
-            from("$moduleOutputDir/$javaModuleName") {
+            from("${moduleOutputDir.get().asFile}/$javaModuleName") {
                 include("module-info.class")
             }
         }
