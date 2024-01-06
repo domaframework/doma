@@ -5,13 +5,13 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.diffplug.eclipse.apt") apply false
+    id("com.diffplug.eclipse.apt")
     id("com.diffplug.spotless")
     id("io.github.gradle-nexus.publish-plugin")
     id("net.researchgate.release")
-    id("org.domaframework.doma.compile") apply false
-    kotlin("jvm") apply false
-    kotlin("kapt") apply false
+    id("org.domaframework.doma.compile")
+    kotlin("jvm")
+    kotlin("kapt")
 }
 
 val Project.javaModuleName: String
@@ -309,16 +309,16 @@ configure(integrationTestProjects) {
     apply(plugin ="org.domaframework.doma.compile")
 
     dependencies {
-        "testImplementation"(platform("org.testcontainers:testcontainers-bom:1.19.3"))
-        "testRuntimeOnly"("com.h2database:h2:1.4.200")
-        "testRuntimeOnly"("mysql:mysql-connector-java:8.0.33")
-        "testRuntimeOnly"("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
-        "testRuntimeOnly"("org.postgresql:postgresql:42.7.1")
-        "testRuntimeOnly"("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
-        "testRuntimeOnly"("org.testcontainers:mysql")
-        "testRuntimeOnly"("org.testcontainers:oracle-xe")
-        "testRuntimeOnly"("org.testcontainers:postgresql")
-        "testRuntimeOnly"("org.testcontainers:mssqlserver")
+        testImplementation(platform("org.testcontainers:testcontainers-bom:1.19.3"))
+        testRuntimeOnly("com.h2database:h2:1.4.200")
+        testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
+        testRuntimeOnly("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
+        testRuntimeOnly("org.postgresql:postgresql:42.7.1")
+        testRuntimeOnly("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
+        testRuntimeOnly("org.testcontainers:mysql")
+        testRuntimeOnly("org.testcontainers:oracle-xe")
+        testRuntimeOnly("org.testcontainers:postgresql")
+        testRuntimeOnly("org.testcontainers:mssqlserver")
     }
 
     eclipse {
