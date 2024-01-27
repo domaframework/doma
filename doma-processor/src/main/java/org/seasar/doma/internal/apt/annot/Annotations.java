@@ -166,6 +166,9 @@ public class Annotations {
     assertNotNull(typeElement);
     AnnotationMirror embeddableMirror =
         ctx.getMoreElements().getAnnotationMirror(typeElement, Embeddable.class);
+    if (embeddableMirror == null) {
+      return null;
+    }
     Map<String, AnnotationValue> valuesWithoutDefaults =
         ctx.getMoreElements().getValuesWithoutDefaults(embeddableMirror);
     AnnotationValue metamodel = valuesWithoutDefaults.get(EmbeddableAnnot.METAMODEL);

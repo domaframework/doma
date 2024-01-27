@@ -12,6 +12,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Transient;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 
 public class EntityPropertyNameCollector {
 
@@ -33,8 +34,20 @@ public class EntityPropertyNameCollector {
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
       for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
-        if (isPersistent(field)) {
-          names.add(field.getSimpleName().toString());
+        TypeElement filedTypeElement = ctx.getMoreTypes().toTypeElement(field.asType());
+        EmbeddableAnnot embeddableAnnot = ctx.getAnnotations().newEmbeddableAnnot(filedTypeElement);
+        String name = field.getSimpleName().toString();
+        if (embeddableAnnot == null) {
+          if (isPersistent(field)) {
+            names.add(name);
+          }
+        } else {
+          EmbeddableMetaFactory embeddableMetaFactory = new EmbeddableMetaFactory(ctx);
+          EmbeddableMeta embeddableMeta =
+              embeddableMetaFactory.createTypeElementMeta(filedTypeElement);
+          for (EmbeddablePropertyMeta propertyMeta : embeddableMeta.getEmbeddablePropertyMetas()) {
+            names.add(name + "." + propertyMeta.getName());
+          }
         }
       }
     }
