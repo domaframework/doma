@@ -11,6 +11,8 @@ public class IncludeAndExcludeDaoImpl implements org.seasar.doma.internal.apt.pr
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDao.class, "update", org.seasar.doma.internal.apt.processor.entity.Emp.class);
 
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDao.class, "update", org.seasar.doma.internal.apt.processor.entity.ImmutableUser.class);
+
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
@@ -85,6 +87,40 @@ public class IncludeAndExcludeDaoImpl implements org.seasar.doma.internal.apt.pr
             org.seasar.doma.jdbc.command.UpdateCommand __command = __support.getCommandImplementors().createUpdateCommand(__method0, __query);
             int __result = __command.execute();
             __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDaoImpl", "update", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDaoImpl", "update", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.processor.entity.ImmutableUser> update(org.seasar.doma.internal.apt.processor.entity.ImmutableUser user) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDaoImpl", "update", user);
+        try {
+            if (user == null) {
+                throw new org.seasar.doma.DomaNullPointerException("user");
+            }
+            org.seasar.doma.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableUser> __query = __support.getQueryImplementors().createAutoUpdateQuery(__method1, org.seasar.doma.internal.apt.processor.entity._ImmutableUser.getSingletonInternal());
+            __query.setMethod(__method1);
+            __query.setConfig(__support.getConfig());
+            __query.setEntity(user);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDaoImpl");
+            __query.setCallerMethodName("update");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setNullExcluded(false);
+            __query.setVersionIgnored(false);
+            __query.setIncludedPropertyNames("address.city");
+            __query.setExcludedPropertyNames("address.street");
+            __query.setUnchangedPropertyIncluded(false);
+            __query.setOptimisticLockExceptionSuppressed(false);
+            __query.prepare();
+            org.seasar.doma.jdbc.command.UpdateCommand __command = __support.getCommandImplementors().createUpdateCommand(__method1, __query);
+            int __count = __command.execute();
+            __query.complete();
+            org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.processor.entity.ImmutableUser> __result = new org.seasar.doma.jdbc.Result<org.seasar.doma.internal.apt.processor.entity.ImmutableUser>(__count, __query.getEntity());
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.IncludeAndExcludeDaoImpl", "update", __result);
             return __result;
         } catch (java.lang.RuntimeException __e) {

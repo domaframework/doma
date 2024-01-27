@@ -23,6 +23,12 @@ public interface StaffDao {
   @Update
   int update(Staff staff);
 
+  @Update(include = "staffInfo.salary")
+  int updateSalary(Staff staff);
+
+  @Update(exclude = "staffInfo.salary")
+  int updateExceptSalary(Staff staff);
+
   @Update(sqlFile = true)
   int updateBySqlFile(Staff staff);
 

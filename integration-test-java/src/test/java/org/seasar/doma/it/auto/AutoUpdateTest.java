@@ -304,4 +304,48 @@ public class AutoUpdateTest {
     salesman.departmentId = tenantId;
     dao.update(salesman);
   }
+
+  @Test
+  public void testUpdate_IncludeEmbeddedProperty(Config config) throws Exception {
+    StaffDao dao = new StaffDaoImpl(config);
+    Staff staff = dao.selectById(1);
+    staff.employeeName = "hoge";
+    staff.staffInfo =
+        new StaffInfo(staff.staffInfo.managerId, staff.staffInfo.hiredate, new Salary("5000"));
+    int result = dao.updateSalary(staff);
+    assertEquals(1, result);
+    assertEquals(2, staff.version.intValue());
+
+    staff = dao.selectById(1);
+    assertEquals(7369, staff.employeeNo.intValue());
+    assertEquals(2, staff.version.intValue());
+    assertEquals("SMITH", staff.employeeName);
+    assertEquals(5000L, staff.staffInfo.salary.getValue().longValue());
+    assertEquals(java.sql.Date.valueOf("1980-12-17"), staff.staffInfo.hiredate);
+    assertEquals(13, staff.staffInfo.managerId);
+    assertEquals(2, staff.departmentId.intValue());
+    assertEquals(1, staff.addressId.intValue());
+  }
+
+  @Test
+  public void testUpdate_ExcludeEmbeddedProperty(Config config) throws Exception {
+    StaffDao dao = new StaffDaoImpl(config);
+    Staff staff = dao.selectById(1);
+    staff.employeeName = "hoge";
+    staff.staffInfo =
+        new StaffInfo(staff.staffInfo.managerId, staff.staffInfo.hiredate, new Salary("5000"));
+    int result = dao.updateExceptSalary(staff);
+    assertEquals(1, result);
+    assertEquals(2, staff.version.intValue());
+
+    staff = dao.selectById(1);
+    assertEquals(7369, staff.employeeNo.intValue());
+    assertEquals(2, staff.version.intValue());
+    assertEquals("hoge", staff.employeeName);
+    assertEquals(800L, staff.staffInfo.salary.getValue().longValue());
+    assertEquals(java.sql.Date.valueOf("1980-12-17"), staff.staffInfo.hiredate);
+    assertEquals(13, staff.staffInfo.managerId);
+    assertEquals(2, staff.departmentId.intValue());
+    assertEquals(1, staff.addressId.intValue());
+  }
 }
