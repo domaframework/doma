@@ -34,13 +34,18 @@ public class EntityPropertyNameCollector {
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
       for (VariableElement field : ElementFilter.fieldsIn(t.getEnclosedElements())) {
-        TypeElement filedTypeElement = ctx.getMoreTypes().toTypeElement(field.asType());
-        EmbeddableAnnot embeddableAnnot = ctx.getAnnotations().newEmbeddableAnnot(filedTypeElement);
+        if (!isPersistent(field)) {
+          continue;
+        }
         String name = field.getSimpleName().toString();
+        TypeElement filedTypeElement = ctx.getMoreTypes().toTypeElement(field.asType());
+        if (filedTypeElement == null) {
+          names.add(name);
+          continue;
+        }
+        EmbeddableAnnot embeddableAnnot = ctx.getAnnotations().newEmbeddableAnnot(filedTypeElement);
         if (embeddableAnnot == null) {
-          if (isPersistent(field)) {
-            names.add(name);
-          }
+          names.add(name);
         } else {
           EmbeddableMetaFactory embeddableMetaFactory = new EmbeddableMetaFactory(ctx);
           EmbeddableMeta embeddableMeta =
