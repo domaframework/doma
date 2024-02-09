@@ -150,7 +150,7 @@ public enum Message implements MessageResource {
   DOMA2119(
       "Failed to build the SQL on line {1} at column {2}. "
           + "When the directive starts with \"/*%\", "
-          + "the following string must be either \"if\", \"else\", \"elseif\", \"for\", \"end\", \"expand\" or \"populate\". SQL=[{0}]"),
+          + "the following string must be either \"!\", \"if\", \"else\", \"elseif\", \"for\", \"end\", \"expand\" or \"populate\". SQL=[{0}]"),
   DOMA2120(
       "Failed to parse the SQL on line {1} at column {2}. "
           + "While the bind variable directive \"{3}\" is defined, the expression is none. SQL=[{0}]"),

@@ -16,6 +16,8 @@ public enum SqlTokenType {
 
   BLOCK_COMMENT,
 
+  PARSER_LEVEL_BLOCK_COMMENT,
+
   BIND_VARIABLE_BLOCK_COMMENT {
 
     @Override

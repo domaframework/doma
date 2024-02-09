@@ -28,6 +28,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.PARSER_LEVEL_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.POPULATE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
@@ -380,94 +381,99 @@ public class SqlTokenizer {
         } else if (c3 == '%') {
           if (buf.hasRemaining()) {
             char c4 = buf.get();
-            if (buf.hasRemaining()) {
-              char c5 = buf.get();
-              if (c4 == 'i' && c5 == 'f') {
-                if (isBlockCommentDirectiveTerminated()) {
-                  type = IF_BLOCK_COMMENT;
-                }
-              } else if (buf.hasRemaining()) {
-                char c6 = buf.get();
-                if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
+            if (c4 == '!') {
+              type = PARSER_LEVEL_BLOCK_COMMENT;
+            } else {
+              if (buf.hasRemaining()) {
+                char c5 = buf.get();
+                if (c4 == 'i' && c5 == 'f') {
                   if (isBlockCommentDirectiveTerminated()) {
-                    type = FOR_BLOCK_COMMENT;
-                  }
-                } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
-                  if (isBlockCommentDirectiveTerminated()) {
-                    type = END_BLOCK_COMMENT;
+                    type = IF_BLOCK_COMMENT;
                   }
                 } else if (buf.hasRemaining()) {
-                  char c7 = buf.get();
-                  if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
+                  char c6 = buf.get();
+                  if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
                     if (isBlockCommentDirectiveTerminated()) {
-                      type = ELSE_BLOCK_COMMENT;
-                    } else {
-                      if (buf.hasRemaining()) {
-                        char c8 = buf.get();
-                        if (buf.hasRemaining()) {
-                          char c9 = buf.get();
-                          if (c8 == 'i' && c9 == 'f') {
-                            if (isBlockCommentDirectiveTerminated()) {
-                              type = ELSEIF_BLOCK_COMMENT;
-                            }
-                          } else {
-                            buf.position(buf.position() - 6);
-                          }
-                        } else {
-                          buf.position(buf.position() - 5);
-                        }
-                      }
+                      type = FOR_BLOCK_COMMENT;
+                    }
+                  } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
+                    if (isBlockCommentDirectiveTerminated()) {
+                      type = END_BLOCK_COMMENT;
                     }
                   } else if (buf.hasRemaining()) {
-                    char c8 = buf.get();
-                    if (buf.hasRemaining()) {
-                      char c9 = buf.get();
-                      if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a' && c8 == 'n'
-                          && c9 == 'd') {
-                        if (isBlockCommentDirectiveTerminated()) {
-                          type = EXPAND_BLOCK_COMMENT;
-                        }
-                      } else if (buf.hasRemaining()) {
-                        char c10 = buf.get();
+                    char c7 = buf.get();
+                    if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
+                      if (isBlockCommentDirectiveTerminated()) {
+                        type = ELSE_BLOCK_COMMENT;
+                      } else {
                         if (buf.hasRemaining()) {
-                          char c11 = buf.get();
-                          if (c4 == 'p'
-                              && c5 == 'o'
-                              && c6 == 'p'
-                              && c7 == 'u'
-                              && c8 == 'l'
-                              && c9 == 'a'
-                              && c10 == 't'
-                              && c11 == 'e') {
-                            if (isBlockCommentDirectiveTerminated()) {
-                              type = POPULATE_BLOCK_COMMENT;
+                          char c8 = buf.get();
+                          if (buf.hasRemaining()) {
+                            char c9 = buf.get();
+                            if (c8 == 'i' && c9 == 'f') {
+                              if (isBlockCommentDirectiveTerminated()) {
+                                type = ELSEIF_BLOCK_COMMENT;
+                              }
+                            } else {
+                              buf.position(buf.position() - 6);
                             }
                           } else {
-                            buf.position(buf.position() - 8);
+                            buf.position(buf.position() - 5);
+                          }
+                        }
+                      }
+                    } else if (buf.hasRemaining()) {
+                      char c8 = buf.get();
+                      if (buf.hasRemaining()) {
+                        char c9 = buf.get();
+                        if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a' && c8 == 'n'
+                            && c9 == 'd') {
+                          if (isBlockCommentDirectiveTerminated()) {
+                            type = EXPAND_BLOCK_COMMENT;
+                          }
+                        } else if (buf.hasRemaining()) {
+                          char c10 = buf.get();
+                          if (buf.hasRemaining()) {
+                            char c11 = buf.get();
+                            if (c4 == 'p'
+                                && c5 == 'o'
+                                && c6 == 'p'
+                                && c7 == 'u'
+                                && c8 == 'l'
+                                && c9 == 'a'
+                                && c10 == 't'
+                                && c11 == 'e') {
+                              if (isBlockCommentDirectiveTerminated()) {
+                                type = POPULATE_BLOCK_COMMENT;
+                              }
+                            } else {
+                              buf.position(buf.position() - 8);
+                            }
+                          } else {
+                            buf.position(buf.position() - 7);
                           }
                         } else {
-                          buf.position(buf.position() - 7);
+                          buf.position(buf.position() - 6);
                         }
                       } else {
-                        buf.position(buf.position() - 6);
+                        buf.position(buf.position() - 5);
                       }
                     } else {
-                      buf.position(buf.position() - 5);
+                      buf.position(buf.position() - 4);
                     }
                   } else {
-                    buf.position(buf.position() - 4);
+                    buf.position(buf.position() - 3);
                   }
                 } else {
-                  buf.position(buf.position() - 3);
+                  buf.position(buf.position() - 2);
                 }
               } else {
-                buf.position(buf.position() - 2);
+                buf.position(buf.position() - 1);
               }
-            } else {
-              buf.position(buf.position() - 1);
             }
           }
-          if (type != IF_BLOCK_COMMENT
+          if (type != PARSER_LEVEL_BLOCK_COMMENT
+              && type != IF_BLOCK_COMMENT
               && type != FOR_BLOCK_COMMENT
               && type != END_BLOCK_COMMENT
               && type != ELSE_BLOCK_COMMENT

@@ -172,6 +172,11 @@ public class SqlParser {
             parseEmbeddedVariableBlockComment();
             break;
           }
+        case PARSER_LEVEL_BLOCK_COMMENT:
+          {
+            parseParserLevelBlockComment();
+            break;
+          }
         case IF_BLOCK_COMMENT:
           {
             parseIfBlockComment();
@@ -454,6 +459,10 @@ public class SqlParser {
     EmbeddedVariableNode node = new EmbeddedVariableNode(getLocation(), variableName, token);
     appendNode(node);
     push(node);
+  }
+
+  protected void parseParserLevelBlockComment() {
+    // do nothing
   }
 
   protected void parseIfBlockComment() {
