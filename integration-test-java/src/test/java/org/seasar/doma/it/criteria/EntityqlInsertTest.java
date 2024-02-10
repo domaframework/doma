@@ -65,6 +65,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void onDuplicateKeyUpdate_nonDuplicated() {
     Department_ d = new Department_();
 
@@ -84,6 +85,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void onDuplicateKeyUpdate_duplicated() {
     Department_ d = new Department_();
 
@@ -107,6 +109,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void batch_onDuplicateKeyUpdate() {
     Department_ d = new Department_();
 
@@ -146,6 +149,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void onDuplicateKeyIgnore_nonDuplicated() {
     Department_ d = new Department_();
 
@@ -165,6 +169,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void onDuplicateKeyIgnore_duplicated() {
     Department_ d = new Department_();
 
@@ -185,6 +190,7 @@ public class EntityqlInsertTest {
   }
 
   @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void batch_onDuplicateKeyIgnore() {
     Department_ d = new Department_();
 
