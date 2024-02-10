@@ -79,6 +79,7 @@ public class EntityqlInsertTest {
     assertEquals(department, result1.getEntity());
     Department resultDepartment =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    // inserted
     assertEquals(50, resultDepartment.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment.getDepartmentName());
     assertEquals("TOKYO", resultDepartment.getLocation());
@@ -103,6 +104,7 @@ public class EntityqlInsertTest {
     assertEquals(department, result1.getEntity());
     Department resultDepartment =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    // updated
     assertEquals(60, resultDepartment.getDepartmentNo());
     assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
     assertEquals("KYOTO", resultDepartment.getLocation());
@@ -138,11 +140,11 @@ public class EntityqlInsertTest {
         entityql.from(d).where(c -> c.eq(d.departmentId, department1.getDepartmentId())).fetchOne();
     Department resultDepartment2 =
         entityql.from(d).where(c -> c.eq(d.departmentId, department2.getDepartmentId())).fetchOne();
-    assertEquals(department1.getDepartmentId(), resultDepartment1.getDepartmentId());
-    assertEquals(department2.getDepartmentId(), resultDepartment2.getDepartmentId());
+    // inserted
     assertEquals(50, resultDepartment1.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment1.getDepartmentName());
     assertEquals("TOKYO", resultDepartment1.getLocation());
+    // updated
     assertEquals(60, resultDepartment2.getDepartmentNo());
     assertEquals("DEVELOPMENT", resultDepartment2.getDepartmentName());
     assertEquals("KYOTO", resultDepartment2.getLocation());
@@ -163,6 +165,7 @@ public class EntityqlInsertTest {
     assertEquals(department, result1.getEntity());
     Department resultDepartment =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    // inserted
     assertEquals(50, resultDepartment.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment.getDepartmentName());
     assertEquals("TOKYO", resultDepartment.getLocation());
@@ -183,7 +186,7 @@ public class EntityqlInsertTest {
     assertEquals(department, result1.getEntity());
     Department resultDepartment =
         entityql.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
-    // not updated
+    // ignored
     assertEquals(10, resultDepartment.getDepartmentNo());
     assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
     assertEquals("NEW YORK", resultDepartment.getLocation());
@@ -215,12 +218,11 @@ public class EntityqlInsertTest {
         entityql.from(d).where(c -> c.eq(d.departmentId, department1.getDepartmentId())).fetchOne();
     Department resultDepartment2 =
         entityql.from(d).where(c -> c.eq(d.departmentId, department2.getDepartmentId())).fetchOne();
-    assertEquals(department1.getDepartmentId(), resultDepartment1.getDepartmentId());
-    assertEquals(department2.getDepartmentId(), resultDepartment2.getDepartmentId());
+    // inserted
     assertEquals(50, resultDepartment1.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment1.getDepartmentName());
     assertEquals("TOKYO", resultDepartment1.getLocation());
-    // not updated
+    // ignored
     assertEquals(10, resultDepartment2.getDepartmentNo());
     assertEquals("ACCOUNTING", resultDepartment2.getDepartmentName());
     assertEquals("NEW YORK", resultDepartment2.getLocation());
