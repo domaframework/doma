@@ -105,14 +105,14 @@ public class Entityql {
     return new EntityqlDeleteStatement<>(config, entityMetamodel, entity, settings);
   }
 
-  public <ENTITY> Statement<Result<ENTITY>> insert(
+  public <ENTITY> EntityqlInsertStatement<ENTITY> insert(
       EntityMetamodel<ENTITY> entityMetamodel, ENTITY entity) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entity);
     return insert(entityMetamodel, entity, settings -> {});
   }
 
-  public <ENTITY> Statement<Result<ENTITY>> insert(
+  public <ENTITY> EntityqlInsertStatement<ENTITY> insert(
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       Consumer<InsertSettings> settingsConsumer) {
@@ -162,14 +162,14 @@ public class Entityql {
     return new EntityqlBatchDeleteStatement<>(config, entityMetamodel, entities, settings);
   }
 
-  public <ENTITY> Statement<BatchResult<ENTITY>> insert(
+  public <ENTITY> EntityqlBatchInsertStatement<ENTITY> insert(
       EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(entities);
     return insert(entityMetamodel, entities, settings -> {});
   }
 
-  public <ENTITY> Statement<BatchResult<ENTITY>> insert(
+  public <ENTITY> EntityqlBatchInsertStatement<ENTITY> insert(
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
       Consumer<InsertSettings> settingsConsumer) {

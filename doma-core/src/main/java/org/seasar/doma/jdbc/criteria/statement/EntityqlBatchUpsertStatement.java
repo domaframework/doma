@@ -4,39 +4,46 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlKind;
+import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
+import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
+import org.seasar.doma.jdbc.query.AutoBatchUpsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
 
-public class EntityqlBatchInsertStatement<ENTITY>
-    extends AbstractStatement<EntityqlBatchInsertStatement<ENTITY>, BatchResult<ENTITY>> {
+public class EntityqlBatchUpsertStatement<ENTITY>
+    extends AbstractStatement<EntityqlBatchUpsertStatement<ENTITY>, BatchResult<ENTITY>>
+    implements Statement<BatchResult<ENTITY>> {
 
-  private static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.BATCH_INSERT);
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
+  private final DuplicateKeyType duplicateKeyType;
 
-  public EntityqlBatchInsertStatement(
+  public EntityqlBatchUpsertStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
-      InsertSettings settings) {
+      InsertSettings settings,
+      DuplicateKeyType duplicateKeyType) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
+    this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
   }
 
   /**
    * {@inheritDoc}
    *
+   * @throws EmptyWhereClauseException if {@link UpdateSettings#getAllowEmptyWhere()} returns
+   *     {@literal false} and the WHERE clause is empty
+   * @throws OptimisticLockException if the entity has a version property and an update count is
+   *     {@literal 0}
    * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
    * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
    */
@@ -49,11 +56,12 @@ public class EntityqlBatchInsertStatement<ENTITY>
   @Override
   protected Command<BatchResult<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoBatchInsertQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoBatchInsertQuery(EXECUTE_METHOD, entityType);
+    AutoBatchUpsertQuery<ENTITY> query =
+        config.getQueryImplementors().createAutoBatchUpsertQuery(EXECUTE_METHOD, entityType);
     query.setMethod(EXECUTE_METHOD);
     query.setConfig(config);
     query.setEntities(entities);
+    query.setDuplicateKeyType(duplicateKeyType);
     query.setCallerClassName(getClass().getName());
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
@@ -79,23 +87,5 @@ public class EntityqlBatchInsertStatement<ENTITY>
         return new BatchResult<>(counts, query.getEntities());
       }
     };
-  }
-
-  @Override
-  public Sql<?> asSql() {
-    if (entities.isEmpty()) {
-      return EMPTY_SQL;
-    }
-    return super.asSql();
-  }
-
-  public Statement<BatchResult<ENTITY>> onDuplicateKeyUpdate() {
-    return new EntityqlBatchUpsertStatement<>(
-        config, entityMetamodel, entities, settings, DuplicateKeyType.UPDATE);
-  }
-
-  public Statement<BatchResult<ENTITY>> onDuplicateKeyIgnore() {
-    return new EntityqlBatchUpsertStatement<>(
-        config, entityMetamodel, entities, settings, DuplicateKeyType.IGNORE);
   }
 }

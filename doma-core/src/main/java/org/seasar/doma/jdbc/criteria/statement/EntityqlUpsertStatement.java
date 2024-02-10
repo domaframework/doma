@@ -9,58 +9,46 @@ import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoUpsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
 
-public class EntityqlInsertStatement<ENTITY>
-    extends AbstractStatement<EntityqlInsertStatement<ENTITY>, Result<ENTITY>> {
+public class EntityqlUpsertStatement<ENTITY>
+    extends AbstractStatement<EntityqlUpsertStatement<ENTITY>, Result<ENTITY>>
+    implements Statement<Result<ENTITY>> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final InsertSettings settings;
+  private final DuplicateKeyType duplicateKeyType;
 
-  public EntityqlInsertStatement(
+  public EntityqlUpsertStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
-      InsertSettings settings) {
+      InsertSettings settings,
+      DuplicateKeyType duplicateKeyType) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
+    this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
-   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
-   */
   @SuppressWarnings("EmptyMethod")
   @Override
   public Result<ENTITY> execute() {
     return super.execute();
   }
 
-  public Statement<Result<ENTITY>> onDuplicateKeyUpdate() {
-    return new EntityqlUpsertStatement<>(
-        config, entityMetamodel, entity, settings, DuplicateKeyType.UPDATE);
-  }
-
-  public Statement<Result<ENTITY>> onDuplicateKeyIgnore() {
-    return new EntityqlUpsertStatement<>(
-        config, entityMetamodel, entity, settings, DuplicateKeyType.IGNORE);
-  }
-
-  @Override
   protected Command<Result<ENTITY>> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoInsertQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
+    AutoUpsertQuery<ENTITY> query =
+        config.getQueryImplementors().createAutoUpsertQuery(EXECUTE_METHOD, entityType);
     query.setMethod(EXECUTE_METHOD);
     query.setConfig(config);
     query.setEntity(entity);
+    query.setDuplicateKeyType(duplicateKeyType);
     query.setCallerClassName(getClass().getName());
     query.setCallerMethodName(EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());

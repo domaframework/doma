@@ -18,6 +18,8 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
+import org.seasar.doma.jdbc.query.UpsertBuilder;
+import org.seasar.doma.jdbc.query.UpsertContext;
 
 /** A dialect for MySQL. */
 public class MysqlDialect extends StandardDialect {
@@ -188,5 +190,10 @@ public class MysqlDialect extends StandardDialect {
       buf.appendSql(" offset ");
       buf.appendSql(Integer.toString(offset));
     }
+  }
+
+  @Override
+  public UpsertBuilder getUpsertBuilder(UpsertContext context) {
+    return new MysqlUpsertBuilder(context);
   }
 }

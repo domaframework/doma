@@ -24,6 +24,20 @@ public class InsertDeclaration {
     block.accept(declaration);
   }
 
+  public void duplicateKeyUpdate(Consumer<DuplicateKeyUpdateDeclaration> block) {
+    Objects.requireNonNull(block);
+    DuplicateKeyUpdateDeclaration declaration = new DuplicateKeyUpdateDeclaration(context);
+    block.accept(declaration);
+    context.validateUpsertFields();
+  }
+
+  public void duplicateKeyIgnore(Consumer<DuplicateKeyIgnoreDeclaration> block) {
+    Objects.requireNonNull(block);
+    DuplicateKeyIgnoreDeclaration declaration = new DuplicateKeyIgnoreDeclaration(context);
+    block.accept(declaration);
+    context.validateUpsertFields();
+  }
+
   public void select(Function<InsertSelectDeclaration, SubSelectContext<?>> block) {
     InsertSelectDeclaration declaration = new InsertSelectDeclaration();
     SubSelectContext<?> subSelectContext = block.apply(declaration);

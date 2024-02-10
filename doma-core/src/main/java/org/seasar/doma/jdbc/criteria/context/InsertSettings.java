@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /** Represents the settings for an INSERT criteria query. */
 public class InsertSettings extends Settings {
@@ -14,6 +15,7 @@ public class InsertSettings extends Settings {
   private final List<PropertyMetamodel<?>> excludedProperties = new ArrayList<>();
 
   private boolean ignoreGeneratedKeys;
+  private DuplicateKeyType duplicateKeyType;
 
   /**
    * Returns the batch size.
@@ -111,5 +113,13 @@ public class InsertSettings extends Settings {
    */
   public void setIgnoreGeneratedKeys(boolean ignoreGeneratedKeys) {
     this.ignoreGeneratedKeys = ignoreGeneratedKeys;
+  }
+
+  public DuplicateKeyType getDuplicateKeyType() {
+    return duplicateKeyType;
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 }

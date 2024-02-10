@@ -9,6 +9,9 @@ public enum SqlKind {
   /** insert */
   INSERT,
 
+  /** upsert */
+  UPSERT,
+
   /** update */
   UPDATE,
 
@@ -17,6 +20,9 @@ public enum SqlKind {
 
   /** batch insert */
   BATCH_INSERT,
+
+  /** batch upsert */
+  BATCH_UPSERT,
 
   /** batch update */
   BATCH_UPDATE,

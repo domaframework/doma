@@ -963,6 +963,8 @@ public enum Message implements MessageResource {
   DOMA6011(
       "The number of propertyMetamodels in the specified derived table does not match for the propertyMetamodels in the　entityMetamodel."
           + "The number of propertyMetamodels in the entityMetamodel is {0} but the number of propertyMetamodels in the derived table is {1}."),
+  DOMA6012("The keys-methods arguments is empty."),
+  DOMA6013("The set-methods arguments is empty."),
   ;
 
   private final String messagePattern;
