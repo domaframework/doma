@@ -6,6 +6,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
@@ -14,6 +15,8 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
   private String entitiesParameterName;
 
   private BatchModifyAnnot batchModifyAnnot;
+
+  private DuplicateKeyType duplicateKeyType;
 
   public AutoBatchModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -73,6 +76,14 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
   public Boolean getIgnoreGeneratedKeysValues() {
     return batchModifyAnnot.getIgnoreGeneratedKeysValues();
+  }
+
+  public DuplicateKeyType getDuplicateKeyType() {
+    return this.duplicateKeyType;
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 
   @Override

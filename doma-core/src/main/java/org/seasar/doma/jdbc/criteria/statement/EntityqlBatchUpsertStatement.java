@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.OptimisticLockException;
-import org.seasar.doma.jdbc.command.BatchInsertCommand;
+import org.seasar.doma.jdbc.command.BatchUpsertCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
@@ -72,8 +72,8 @@ public class EntityqlBatchUpsertStatement<ENTITY>
     query.setGeneratedKeysIgnored(settings.getIgnoreGeneratedKeys());
     query.setMessage(settings.getComment());
     query.prepare();
-    BatchInsertCommand command =
-        config.getCommandImplementors().createBatchInsertCommand(EXECUTE_METHOD, query);
+    BatchUpsertCommand command =
+        config.getCommandImplementors().createBatchUpsertCommand(EXECUTE_METHOD, query);
     return new Command<BatchResult<ENTITY>>() {
       @Override
       public Query getQuery() {

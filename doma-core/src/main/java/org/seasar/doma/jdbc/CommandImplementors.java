@@ -56,6 +56,17 @@ public interface CommandImplementors {
   }
 
   /**
+   * Creates an {@link UpsertCommand} object.
+   *
+   * @param method the DAO method
+   * @param query the query
+   * @return the command
+   */
+  default UpsertCommand createUpsertCommand(Method method, UpsertQuery query) {
+    return new UpsertCommand(query);
+  }
+
+  /**
    * Creates a {@link BatchDeleteCommand} object.
    *
    * @param method the DAO method
@@ -86,6 +97,17 @@ public interface CommandImplementors {
    */
   default BatchUpdateCommand createBatchUpdateCommand(Method method, BatchUpdateQuery query) {
     return new BatchUpdateCommand(query);
+  }
+
+  /**
+   * Creates a {@link BatchUpsertCommand} object.
+   *
+   * @param method the DAO method
+   * @param query the query
+   * @return the command
+   */
+  default BatchUpsertCommand createBatchUpsertCommand(Method method, BatchUpsertQuery query) {
+    return new BatchUpsertCommand(query);
   }
 
   /**

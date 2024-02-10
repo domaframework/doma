@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.UpsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -60,8 +60,8 @@ public class EntityqlUpsertStatement<ENTITY>
         settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setMessage(settings.getComment());
     query.prepare();
-    InsertCommand command =
-        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+    UpsertCommand command =
+        config.getCommandImplementors().createUpsertCommand(EXECUTE_METHOD, query);
     return new Command<Result<ENTITY>>() {
       @Override
       public Query getQuery() {

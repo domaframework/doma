@@ -20,7 +20,7 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
-public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements InsertQuery {
+public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements UpsertQuery {
   protected boolean nullExcluded;
 
   protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
@@ -160,6 +160,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     this.nullExcluded = nullExcluded;
   }
 
+  @Override
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
   }

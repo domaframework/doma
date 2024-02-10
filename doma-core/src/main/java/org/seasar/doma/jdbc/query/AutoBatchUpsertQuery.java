@@ -25,7 +25,7 @@ import org.seasar.doma.jdbc.id.ReservedIdProvider;
 import org.seasar.doma.message.Message;
 
 public class AutoBatchUpsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
-    implements BatchInsertQuery {
+    implements BatchUpsertQuery {
   protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
   protected IdGenerationConfig idGenerationConfig;
@@ -194,6 +194,7 @@ public class AutoBatchUpsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  @Override
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
   }

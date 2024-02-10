@@ -10,6 +10,7 @@ import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public abstract class ModifyAnnot extends AbstractAnnot {
 
@@ -32,6 +33,8 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private static final String SQL_LOG = "sqlLog";
 
+  private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
+
   private final AnnotationValue sqlFile;
 
   private final AnnotationValue queryTimeout;
@@ -50,6 +53,8 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private final AnnotationValue sqlLog;
 
+  private final AnnotationValue duplicateKeyType;
+
   ModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
@@ -65,6 +70,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     this.includeUnchanged = values.get(INCLUDE_UNCHANGED);
     this.include = values.get(INCLUDE);
     this.exclude = values.get(EXCLUDE);
+    this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
   }
 
   public AnnotationValue getSqlFile() {
@@ -101,6 +107,14 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   public AnnotationValue getSqlLog() {
     return sqlLog;
+  }
+
+  public DuplicateKeyType getDuplicateKeyType() {
+    VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(duplicateKeyType);
+    if (enumConstant == null) {
+      throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
+    }
+    return DuplicateKeyType.valueOf(enumConstant.getSimpleName().toString());
   }
 
   public int getQueryTimeoutValue() {

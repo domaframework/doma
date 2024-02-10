@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.meta.query;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
 import org.seasar.doma.jdbc.command.BatchUpdateCommand;
+import org.seasar.doma.jdbc.command.BatchUpsertCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.CreateCommand;
 import org.seasar.doma.jdbc.command.DeleteCommand;
@@ -13,15 +14,18 @@ import org.seasar.doma.jdbc.command.ScriptCommand;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.command.SqlProcessorCommand;
 import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.command.UpsertCommand;
 import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
+import org.seasar.doma.jdbc.query.AutoBatchUpsertQuery;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
+import org.seasar.doma.jdbc.query.AutoUpsertQuery;
 import org.seasar.doma.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.jdbc.query.ClobCreateQuery;
 import org.seasar.doma.jdbc.query.NClobCreateQuery;
@@ -168,6 +172,18 @@ public enum QueryKind {
       return UpdateCommand.class;
     }
   },
+  AUTO_UPSERT {
+    @Override
+    public Class<? extends Query> getQueryClass() {
+      return AutoUpsertQuery.class;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Class<? extends Command> getCommandClass() {
+      return UpsertCommand.class;
+    }
+  },
   AUTO_DELETE {
 
     @Override
@@ -205,6 +221,18 @@ public enum QueryKind {
     @Override
     public Class<? extends Command> getCommandClass() {
       return BatchUpdateCommand.class;
+    }
+  },
+  AUTO_BATCH_UPSERT {
+    @Override
+    public Class<? extends Query> getQueryClass() {
+      return AutoBatchUpsertQuery.class;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Class<? extends Command> getCommandClass() {
+      return BatchUpsertCommand.class;
     }
   },
   AUTO_BATCH_DELETE {

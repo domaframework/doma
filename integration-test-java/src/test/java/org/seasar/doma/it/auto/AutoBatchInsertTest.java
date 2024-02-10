@@ -37,6 +37,7 @@ import org.seasar.doma.it.dao.TableStrategyDaoImpl;
 import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.dao.WorkerDaoImpl;
 import org.seasar.doma.it.domain.Identity;
+import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.embeddable.StaffInfo;
 import org.seasar.doma.it.entity.Businessman;
@@ -330,5 +331,79 @@ public class AutoBatchInsertTest {
     staff = dao.selectById(9999);
     assertEquals(Date.valueOf("2016-04-01"), staff.staffInfo.hiredate);
     assertEquals(5678L, staff.staffInfo.salary.getValue().longValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department1 = new Department();
+    department1.setDepartmentId(new Identity<>(5));
+    department1.setDepartmentNo(50);
+    department1.setDepartmentName("PLANNING");
+    department1.setLocation(new Location<>("TOKYO"));
+    Department department2 = new Department();
+    department2.setDepartmentId(new Identity<>(1));
+    department2.setDepartmentNo(60);
+    department2.setDepartmentName("DEVELOPMENT");
+    department2.setLocation(new Location<>("KYOTO"));
+    int[] result = dao.insertOnDuplicateKeyUpdate(Arrays.asList(department1, department2));
+    assertEquals(2, result.length);
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(1, result[0]);
+      assertEquals(2, result[1]);
+    } else {
+      assertEquals(1, result[0]);
+      assertEquals(1, result[1]);
+    }
+    assertEquals(Integer.valueOf(1), department1.getVersion());
+    assertEquals(Integer.valueOf(1), department2.getVersion());
+
+    Department resultDepartment1 = dao.selectById(department1.getDepartmentId().getValue());
+    Department resultDepartment2 = dao.selectById(department2.getDepartmentId().getValue());
+
+    // inserted
+    assertEquals(50, resultDepartment1.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment1.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment1.getLocation().getValue());
+    // updated
+    assertEquals(60, resultDepartment2.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment2.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment2.getLocation().getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department1 = new Department();
+    department1.setDepartmentId(new Identity<>(5));
+    department1.setDepartmentNo(50);
+    department1.setDepartmentName("PLANNING");
+    department1.setLocation(new Location<>("TOKYO"));
+    Department department2 = new Department();
+    department2.setDepartmentId(new Identity<>(1));
+    department2.setDepartmentNo(60);
+    department2.setDepartmentName("DEVELOPMENT");
+    department2.setLocation(new Location<>("KYOTO"));
+    int[] result = dao.insertOnDuplicateKeyIgnore(Arrays.asList(department1, department2));
+    assertEquals(2, result.length);
+    assertEquals(1, result[0]);
+    assertEquals(0, result[1]); // ignored
+    assertEquals(Integer.valueOf(1), department1.getVersion());
+    assertEquals(Integer.valueOf(1), department2.getVersion());
+
+    Department resultDepartment1 = dao.selectById(department1.getDepartmentId().getValue());
+    Department resultDepartment2 = dao.selectById(department2.getDepartmentId().getValue());
+
+    // inserted
+    assertEquals(50, resultDepartment1.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment1.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment1.getLocation().getValue());
+    // ignored
+    assertEquals(10, resultDepartment2.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment2.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment2.getLocation().getValue());
   }
 }

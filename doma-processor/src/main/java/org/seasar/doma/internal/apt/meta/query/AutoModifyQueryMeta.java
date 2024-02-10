@@ -6,6 +6,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
@@ -14,6 +15,8 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
   private String entityParameterName;
 
   private ModifyAnnot modifyAnnot;
+
+  private DuplicateKeyType duplicateKeyType;
 
   public AutoModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -77,6 +80,14 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
   public SqlLogType getSqlLogType() {
     return modifyAnnot.getSqlLogValue();
+  }
+
+  public DuplicateKeyType getDuplicateKeyType() {
+    return this.duplicateKeyType;
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 
   @Override

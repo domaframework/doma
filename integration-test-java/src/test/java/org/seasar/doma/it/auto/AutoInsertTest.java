@@ -329,4 +329,85 @@ public class AutoInsertTest {
       assertEquals("foo", location.getValue());
     }
   }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department = new Department();
+    department.setDepartmentId(new Identity<>(5));
+    department.setDepartmentNo(50);
+    department.setDepartmentName("PLANNING");
+    department.setLocation(new Location<>("TOKYO"));
+    int result = dao.insertOnDuplicateKeyUpdate(department);
+    assertEquals(1, result);
+    assertEquals(Integer.valueOf(1), department.getVersion());
+    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation().getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department = new Department();
+    department.setDepartmentId(new Identity<>(1));
+    department.setDepartmentNo(60);
+    department.setDepartmentName("DEVELOPMENT");
+    department.setLocation(new Location<>("KYOTO"));
+    int result = dao.insertOnDuplicateKeyUpdate(department);
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(2, result);
+    } else {
+      assertEquals(1, result);
+    }
+    assertEquals(Integer.valueOf(1), department.getVersion());
+    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation().getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department = new Department();
+    department.setDepartmentId(new Identity<>(5));
+    department.setDepartmentNo(50);
+    department.setDepartmentName("PLANNING");
+    department.setLocation(new Location<>("TOKYO"));
+    int result = dao.insertOnDuplicateKeyIgnore(department);
+    assertEquals(1, result);
+    assertEquals(Integer.valueOf(1), department.getVersion());
+    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation().getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
+  public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department = new Department();
+    department.setDepartmentId(new Identity<>(1));
+    department.setDepartmentNo(60);
+    department.setDepartmentName("DEVELOPMENT");
+    department.setLocation(new Location<>("KYOTO"));
+    int result = dao.insertOnDuplicateKeyIgnore(department);
+    assertEquals(0, result);
+    assertEquals(Integer.valueOf(1), department.getVersion());
+    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation().getValue());
+  }
 }

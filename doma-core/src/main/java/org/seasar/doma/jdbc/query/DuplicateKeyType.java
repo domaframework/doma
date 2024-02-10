@@ -2,5 +2,7 @@ package org.seasar.doma.jdbc.query;
 
 public enum DuplicateKeyType {
   UPDATE,
-  IGNORE
+  IGNORE,
+  INSERT_ONLY,
+  ;
 }

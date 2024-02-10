@@ -11,6 +11,7 @@ import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
@@ -41,9 +42,17 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(daoElement, methodElement);
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
-      return queryMeta;
+      DuplicateKeyType duplicateKeyType = modifyAnnot.getDuplicateKeyType();
+      queryMeta.setDuplicateKeyType(duplicateKeyType);
+      if (duplicateKeyType == DuplicateKeyType.INSERT_ONLY) {
+        queryMeta.setModifyAnnot(modifyAnnot);
+        queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
+        return queryMeta;
+      } else {
+        queryMeta.setModifyAnnot(modifyAnnot);
+        queryMeta.setQueryKind(QueryKind.AUTO_UPSERT);
+        return queryMeta;
+      }
     }
     modifyAnnot = ctx.getAnnotations().newUpdateAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
