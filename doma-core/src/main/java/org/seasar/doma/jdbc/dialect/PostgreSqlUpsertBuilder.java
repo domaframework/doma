@@ -1,34 +1,33 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
-import java.util.Map;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.UpsertBuilder;
 import org.seasar.doma.jdbc.query.UpsertBuilderSupport;
 import org.seasar.doma.jdbc.query.UpsertContext;
+import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class PostgreSqlUpsertBuilder implements UpsertBuilder {
   private final PreparedSqlBuilder buf;
   private final EntityType<?> entityType;
   private final DuplicateKeyType duplicateKeyType;
-  private final List<EntityPropertyType<?, ?>> insertPropertyTypes;
-  private final List<EntityPropertyType<?, ?>> updatePropertyTypes;
-  private final List<EntityPropertyType<?, ?>> keys;
   private final UpsertBuilderSupport upsertBuilderSupport;
-  private final Map<EntityPropertyType<?, ?>, InParameter<?>> values;
+  private final List<EntityPropertyType<?, ?>> keys;
+  private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
+  private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
 
   public PostgreSqlUpsertBuilder(UpsertContext context) {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
-    this.insertPropertyTypes = context.insertPropertyTypes;
-    this.updatePropertyTypes = context.updatePropertyTypes;
-    this.values = context.propertyValuePairs;
+    this.insertValues = context.insertValues;
+    this.setValues = context.setValues;
     UpsertBuilderSupport.DefaultUpsertAliasManager aliasManager =
         new UpsertBuilderSupport.DefaultUpsertAliasManager();
     this.upsertBuilderSupport =
@@ -40,14 +39,14 @@ public class PostgreSqlUpsertBuilder implements UpsertBuilder {
     buf.appendSql("insert into ");
     tableNameAndAlias(entityType);
     buf.appendSql(" (");
-    for (EntityPropertyType<?, ?> targetPropertyType : insertPropertyTypes) {
-      column(targetPropertyType);
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+      column(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (EntityPropertyType<?, ?> targetPropertyType : insertPropertyTypes) {
-      param(targetPropertyType, values);
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+      buf.appendParameter(insertValue.component2());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
@@ -62,10 +61,10 @@ public class PostgreSqlUpsertBuilder implements UpsertBuilder {
       buf.appendSql(" do nothing");
     } else if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" do update set ");
-      for (EntityPropertyType<?, ?> p : updatePropertyTypes) {
-        column(p);
+      for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
+        column(setValue.component1());
         buf.appendSql(" = ");
-        updateParam(p);
+        setValue.component2().accept(new UpsertSetValueVisitor());
         buf.appendSql(", ");
       }
       buf.cutBackSql(2);
@@ -84,14 +83,18 @@ public class PostgreSqlUpsertBuilder implements UpsertBuilder {
     buf.appendSql(sql);
   }
 
-  private void param(
-      EntityPropertyType<?, ?> propertyType, Map<EntityPropertyType<?, ?>, InParameter<?>> values) {
-    InParameter<?> param = this.upsertBuilderSupport.param(propertyType, values);
-    buf.appendParameter(param);
-  }
+  class UpsertSetValueVisitor implements UpsertSetValue.Visitor {
+    @Override
+    public void visit(UpsertSetValue.Param param) {
+      buf.appendParameter(param.inParameter);
+    }
 
-  private void updateParam(EntityPropertyType<?, ?> propertyType) {
-    String sql = this.upsertBuilderSupport.updateParam(propertyType);
-    buf.appendSql(sql);
+    @Override
+    public void visit(UpsertSetValue.Prop prop) {
+      String sql =
+          upsertBuilderSupport.updateParam(
+              prop.propertyType, UpsertBuilderSupport.ColumnNameType.NAME_ALIAS);
+      buf.appendSql(sql);
+    }
   }
 }

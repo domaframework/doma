@@ -1,12 +1,12 @@
 package org.seasar.doma.jdbc.query;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -32,14 +32,11 @@ public class UpsertContext {
    */
   public final List<EntityPropertyType<?, ?>> keys;
 
-  /** inserting properties */
-  public final List<EntityPropertyType<?, ?>> insertPropertyTypes;
+  /** values clause property-parameter pair list */
+  public final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
 
-  /** Updating properties. */
-  public final List<EntityPropertyType<?, ?>> updatePropertyTypes;
-
-  /** The values to be set for the entity. */
-  public final Map<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePairs;
+  /** set clause property-value pair list */
+  public final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
 
   @SuppressWarnings("unchecked")
   public static <ENTITY> UpsertContext fromEntity(
@@ -51,8 +48,11 @@ public class UpsertContext {
       List<EntityPropertyType<ENTITY, ?>> keys,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity) {
-    List<EntityPropertyType<?, ?>> castInsertPropertyTypes =
-        (List<EntityPropertyType<?, ?>>) (Object) insertPropertyTypes;
+    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
+        toInsertValues(insertPropertyTypes, entity);
+    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
+        toSetValues(filterUpdatePropertyTypes(insertValues));
+
     return new UpsertContext(
         buf,
         entityType,
@@ -60,9 +60,8 @@ public class UpsertContext {
         naming,
         dialect,
         (List<EntityPropertyType<?, ?>>) (Object) keys,
-        castInsertPropertyTypes,
-        filterUpdatePropertyTypes(castInsertPropertyTypes),
-        toPropertyValuePairs(entityType, entity));
+        insertValues,
+        setValues);
   }
 
   public UpsertContext(
@@ -72,24 +71,22 @@ public class UpsertContext {
       Naming naming,
       Dialect dialect,
       List<EntityPropertyType<?, ?>> keys,
-      List<EntityPropertyType<?, ?>> insertPropertyTypes,
-      List<EntityPropertyType<?, ?>> updatePropertyTypes,
-      Map<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePairs) {
+      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
+      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
     this.buf = buf;
     this.entityType = entityType;
     this.duplicateKeyType = duplicateKeyType;
     this.naming = naming;
     this.dialect = dialect;
     this.keys = keys;
-    this.insertPropertyTypes = insertPropertyTypes;
-    this.updatePropertyTypes = updatePropertyTypes;
-    this.propertyValuePairs = propertyValuePairs;
+    this.insertValues = insertValues;
+    this.setValues = setValues;
   }
 
-  private static List<EntityPropertyType<?, ?>> filterUpdatePropertyTypes(
-      List<EntityPropertyType<?, ?>> propertyTypes) {
-    return propertyTypes.stream()
-        .filter(UpsertContext::isUpdatePropertyTypes)
+  private static List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> filterUpdatePropertyTypes(
+      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> propertyValuePairs) {
+    return propertyValuePairs.stream()
+        .filter(p -> isUpdatePropertyTypes(p.component1()))
         .collect(Collectors.toList());
   }
 
@@ -97,13 +94,26 @@ public class UpsertContext {
     return property.isUpdatable() && !property.isId() && !property.isTenantId();
   }
 
-  private static <ENTITY> Map<EntityPropertyType<?, ?>, InParameter<?>> toPropertyValuePairs(
-      EntityType<ENTITY> entityType, ENTITY entity) {
-    Map<EntityPropertyType<?, ?>, InParameter<?>> entityPropertyTypeToInParameter = new HashMap<>();
-    for (EntityPropertyType<ENTITY, ?> propertyType : entityType.getEntityPropertyTypes()) {
+  private static List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> toSetValues(
+      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> propertyValuePairs) {
+    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = new ArrayList<>();
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePair : propertyValuePairs) {
+      setValues.add(
+          new Tuple2<>(
+              propertyValuePair.component1(),
+              new UpsertSetValue.Prop(propertyValuePair.component1())));
+    }
+    return setValues;
+  }
+
+  private static <ENTITY> List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> toInsertValues(
+      List<EntityPropertyType<ENTITY, ?>> propertyTypes, ENTITY entity) {
+    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> entityPropertyTypeToInParameter =
+        new ArrayList<>();
+    for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
       Property<ENTITY, ?> property = propertyType.createProperty();
       property.load(entity);
-      entityPropertyTypeToInParameter.put(propertyType, property.asInParameter());
+      entityPropertyTypeToInParameter.add(new Tuple2<>(propertyType, property.asInParameter()));
     }
     return entityPropertyTypeToInParameter;
   }

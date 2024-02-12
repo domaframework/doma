@@ -1,17 +1,13 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
-import org.seasar.doma.jdbc.criteria.declaration.DuplicateKeyIgnoreDeclaration;
-import org.seasar.doma.jdbc.criteria.declaration.DuplicateKeyUpdateDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
-import org.seasar.doma.jdbc.criteria.declaration.ValuesDeclaration;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.query.InsertBuilder;
 
@@ -25,22 +21,22 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
     this.declaration = declaration;
   }
 
-  public NativeSqlInsertTerminal values(Consumer<ValuesDeclaration> block) {
-    Objects.requireNonNull(block);
-    declaration.values(block);
-    return new NativeSqlInsertTerminal(config, declaration);
+  /**
+   * Create statement builder that inserts or updates
+   *
+   * @return statement builder
+   */
+  public NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys onDuplicateKeyUpdate() {
+    return new NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys(config, declaration);
   }
 
-  public NativeSqlUpsertTerminal onDuplicateKeyUpdate(
-      Consumer<DuplicateKeyUpdateDeclaration> block) {
-    declaration.duplicateKeyUpdate(block);
-    return new NativeSqlUpsertTerminal(config, declaration);
-  }
-
-  public NativeSqlUpsertTerminal onDuplicateKeyIgnore(
-      Consumer<DuplicateKeyIgnoreDeclaration> block) {
-    declaration.duplicateKeyIgnore(block);
-    return new NativeSqlUpsertTerminal(config, declaration);
+  /**
+   * Create statement builder that inserts or ignore
+   *
+   * @return statement builder
+   */
+  public NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys onDuplicateKeyIgnore() {
+    return new NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys(config, declaration);
   }
 
   /**

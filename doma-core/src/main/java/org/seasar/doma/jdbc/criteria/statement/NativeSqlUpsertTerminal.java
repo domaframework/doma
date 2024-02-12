@@ -2,7 +2,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,9 +19,11 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.query.UpsertBuilder;
 import org.seasar.doma.jdbc.query.UpsertContext;
+import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
 
@@ -56,25 +58,38 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   }
 
   private PreparedSql getPreparedSql(InsertSettings settings, InsertContext context) {
-    List<EntityPropertyType<?, ?>> insertPropertyTypes =
-        toEntityPropertyTypes(context.entityMetamodel.allPropertyMetamodels());
-    List<EntityPropertyType<?, ?>> keysPropertyTypes = toEntityPropertyTypes(context.upsertKeys);
-    List<EntityPropertyType<?, ?>> updatePropertyTypes =
-        toEntityPropertyTypes(context.upsertSetPropertyMetamodels);
+    List<EntityPropertyType<?, ?>> keys = toEntityPropertyTypes(context.upsertKeys);
+    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
+        insertValues(context.values);
+    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
+        setValues(context.upsertSetValues);
 
-    Map<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePairs =
-        toPropertyValuePairs(context.values);
-
-    PreparedSqlBuilder sql =
-        buildQuery(
-            settings,
-            context,
-            keysPropertyTypes,
-            insertPropertyTypes,
-            updatePropertyTypes,
-            propertyValuePairs);
+    PreparedSqlBuilder sql = buildQuery(settings, context, keys, insertValues, setValues);
 
     return sql.build(createCommenter(settings.getComment()));
+  }
+
+  private List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues(
+      Map<Operand.Prop, Operand.Param> insertContextValue) {
+    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> list = new ArrayList<>();
+    for (Map.Entry<Operand.Prop, Operand.Param> entry : insertContextValue.entrySet()) {
+      Operand.Prop prop = entry.getKey();
+      Operand.Param param = entry.getValue();
+      list.add(new Tuple2<>(prop.value.asType(), param.createInParameter(config)));
+    }
+    return list;
+  }
+
+  private List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues(
+      List<Tuple2<Operand.Prop, Operand>> upsertSetValues) {
+    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> list = new ArrayList<>();
+    for (Tuple2<Operand.Prop, Operand> upsertSetValue : upsertSetValues) {
+      Operand.Prop prop = upsertSetValue.getItem1();
+      Operand operand = upsertSetValue.getItem2();
+      UpsertSetValue jdbcQueryUpsertSetValue = operand.accept(new OperandVisitor());
+      list.add(new Tuple2<>(prop.value.asType(), jdbcQueryUpsertSetValue));
+    }
+    return list;
   }
 
   private static List<EntityPropertyType<?, ?>> toEntityPropertyTypes(
@@ -86,9 +101,8 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
       InsertSettings settings,
       InsertContext context,
       List<EntityPropertyType<?, ?>> keys,
-      List<EntityPropertyType<?, ?>> insertPropertyTypes,
-      List<EntityPropertyType<?, ?>> updatePropertyTypes,
-      Map<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePairs) {
+      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
+      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
     PreparedSqlBuilder sql =
         new PreparedSqlBuilder(config, SqlKind.UPSERT, settings.getSqlLogType());
     UpsertContext upsertContext =
@@ -99,22 +113,23 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
             config.getNaming(),
             config.getDialect(),
             keys,
-            insertPropertyTypes,
-            updatePropertyTypes,
-            propertyValuePairs);
+            insertValues,
+            setValues);
     UpsertBuilder upsertQuery = config.getDialect().getUpsertBuilder(upsertContext);
     upsertQuery.build();
     return sql;
   }
 
-  private Map<EntityPropertyType<?, ?>, InParameter<?>> toPropertyValuePairs(
-      Map<Operand.Prop, Operand.Param> insertContextValue) {
-    Map<EntityPropertyType<?, ?>, InParameter<?>> map = new HashMap<>();
-    for (Map.Entry<Operand.Prop, Operand.Param> entry : insertContextValue.entrySet()) {
-      Operand.Prop prop = entry.getKey();
-      Operand.Param param = entry.getValue();
-      map.put(prop.value.asType(), param.createInParameter(config));
+  /** A visitor for converting {@link Operand} to {@link UpsertSetValue}. */
+  private class OperandVisitor implements Operand.Visitor<UpsertSetValue> {
+    @Override
+    public UpsertSetValue visit(Operand.Param param) {
+      return new UpsertSetValue.Param(param.createInParameter(config));
     }
-    return map;
+
+    @Override
+    public UpsertSetValue visit(Operand.Prop prop) {
+      return new UpsertSetValue.Prop(prop.value.asType());
+    }
   }
 }

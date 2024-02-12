@@ -87,10 +87,13 @@ public class NativeSqlInsertTest {
                   c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
-            .onDuplicateKeyUpdate(
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId)
+            .set(
                 c -> {
-                  c.keys(d.departmentId);
-                  c.set(d.departmentName, d.location, d.version);
+                  c.value(d.departmentName, c.excluded(d.departmentName));
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 3);
                 })
             .execute();
 
@@ -105,7 +108,7 @@ public class NativeSqlInsertTest {
     assertEquals(10, resultDepartment.getDepartmentNo()); // not updated
     assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
     assertEquals("KYOTO", resultDepartment.getLocation());
-    assertEquals(2, resultDepartment.getVersion());
+    assertEquals(3, resultDepartment.getVersion());
   }
 
   @Test
@@ -124,10 +127,13 @@ public class NativeSqlInsertTest {
                   c.value(d.location, "TOKYO");
                   c.value(d.version, 2);
                 })
-            .onDuplicateKeyUpdate(
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId)
+            .set(
                 c -> {
-                  c.keys(d.departmentId);
-                  c.set(d.departmentName, d.location, d.version);
+                  c.value(d.departmentName, c.excluded(d.departmentName));
+                  c.value(d.location, "TOKYO");
+                  c.value(d.version, 2);
                 })
             .execute();
 
@@ -157,7 +163,8 @@ public class NativeSqlInsertTest {
                   c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
-            .onDuplicateKeyIgnore(c -> c.keys(d.departmentId))
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId)
             .execute();
 
     assertEquals(0, count);
@@ -186,7 +193,8 @@ public class NativeSqlInsertTest {
                   c.value(d.location, "TOKYO");
                   c.value(d.version, 2);
                 })
-            .onDuplicateKeyIgnore(c -> c.keys(d.departmentId))
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId)
             .execute();
 
     assertEquals(1, count);

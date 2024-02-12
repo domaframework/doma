@@ -43,11 +43,21 @@ public class EntityqlInsertStatement<ENTITY>
     return super.execute();
   }
 
+  /**
+   * Create statement that inserts or updates
+   *
+   * @return statement
+   */
   public Statement<Result<ENTITY>> onDuplicateKeyUpdate() {
     return new EntityqlUpsertStatement<>(
         config, entityMetamodel, entity, settings, DuplicateKeyType.UPDATE);
   }
 
+  /**
+   * Create statement that inserts or ignore
+   *
+   * @return statement
+   */
   public Statement<Result<ENTITY>> onDuplicateKeyIgnore() {
     return new EntityqlUpsertStatement<>(
         config, entityMetamodel, entity, settings, DuplicateKeyType.IGNORE);
