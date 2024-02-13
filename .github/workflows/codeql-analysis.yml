@@ -35,7 +35,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3.0.0
+        uses: gradle/gradle-build-action@v3.1.0
 
       - name: Build
         run: >
