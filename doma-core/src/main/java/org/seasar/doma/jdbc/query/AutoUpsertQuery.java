@@ -47,7 +47,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoInsertQuery<ENTITY> implements 
     PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.BATCH_UPSERT, sqlLogType);
 
     UpsertContext context =
-        UpsertContext.fromEntity(
+        UpsertContextBuilder.fromEntity(
             builder,
             entityType,
             duplicateKeyType,
