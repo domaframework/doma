@@ -1,31 +1,17 @@
 package org.seasar.doma.jdbc.query;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
 import java.lang.reflect.Method;
-import java.sql.Statement;
-import java.util.ArrayList;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
-import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
-import org.seasar.doma.message.Message;
 
-public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements UpsertQuery {
-  protected boolean nullExcluded;
-
-  protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
-
-  protected IdGenerationConfig idGenerationConfig;
+public class AutoUpsertQuery<ENTITY> extends AutoInsertQuery<ENTITY> implements UpsertQuery {
   private DuplicateKeyType duplicateKeyType;
 
   public AutoUpsertQuery(EntityType<ENTITY> entityType) {
@@ -33,21 +19,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   @Override
-  public void prepare() {
-    super.prepare();
-    assertNotNull(method, entityType, entity);
-    executable = true;
-    preUpsert();
-    prepareSpecialPropertyTypes();
-    prepareOptions();
-    prepareTargetPropertyType();
-    prepareIdValue();
-    prepareVersionValue();
-    prepareSql();
-    assertNotNull(sql);
-  }
-
-  protected void preUpsert() {
+  protected void preInsert() {
     AutoPreUpsertContext<ENTITY> context =
         new AutoPreUpsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.preInsert(entity, context);
@@ -68,52 +40,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
-  protected void prepareTargetPropertyType() {
-    targetPropertyTypes = new ArrayList<>(entityType.getEntityPropertyTypes().size());
-    for (EntityPropertyType<ENTITY, ?> propertyType : entityType.getEntityPropertyTypes()) {
-      if (!propertyType.isInsertable()) {
-        continue;
-      }
-      Property<ENTITY, ?> property = propertyType.createProperty();
-      property.load(entity);
-      if (propertyType.isId()) {
-        if (propertyType != generatedIdPropertyType
-            || generatedIdPropertyType.isIncluded(idGenerationConfig)) {
-          targetPropertyTypes.add(propertyType);
-        }
-        if (generatedIdPropertyType == null && property.getWrapper().get() == null) {
-          throw new JdbcException(Message.DOMA2020, entityType.getName(), propertyType.getName());
-        }
-        continue;
-      }
-      if (propertyType.isVersion()) {
-        targetPropertyTypes.add(propertyType);
-        continue;
-      }
-      if (nullExcluded) {
-        if (property.getWrapper().get() == null) {
-          continue;
-        }
-      }
-      if (!isTargetPropertyName(propertyType.getName())) {
-        continue;
-      }
-      targetPropertyTypes.add(propertyType);
-    }
-  }
-
-  protected void prepareIdValue() {
-    if (generatedIdPropertyType != null && idGenerationConfig != null) {
-      entity = generatedIdPropertyType.preInsert(entityType, entity, idGenerationConfig);
-    }
-  }
-
-  protected void prepareVersionValue() {
-    if (versionPropertyType != null) {
-      entity = versionPropertyType.setIfNecessary(entityType, entity, 1);
-    }
-  }
-
+  @Override
   protected void prepareSql() {
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
@@ -135,29 +62,13 @@ public class AutoUpsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   @Override
-  public void generateId(Statement statement) {
-    if (generatedIdPropertyType != null && idGenerationConfig != null) {
-      entity =
-          generatedIdPropertyType.postInsert(entityType, entity, idGenerationConfig, statement);
-    }
-  }
-
-  @Override
-  public void complete() {
-    postUpsert();
-  }
-
-  protected void postUpsert() {
+  protected void postInsert() {
     AutoPostUpsertContext<ENTITY> context =
         new AutoPostUpsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.postInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
     }
-  }
-
-  public void setNullExcluded(boolean nullExcluded) {
-    this.nullExcluded = nullExcluded;
   }
 
   @Override
