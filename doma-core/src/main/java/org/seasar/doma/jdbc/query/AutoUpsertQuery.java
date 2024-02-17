@@ -86,6 +86,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoInsertQuery<ENTITY> implements 
       this.duplicateKeyType = duplicateKeyType;
     }
 
+    @Override
     public java.util.Optional<DuplicateKeyType> getDuplicateKeyType() {
       return java.util.Optional.of(duplicateKeyType);
     }
@@ -101,6 +102,7 @@ public class AutoUpsertQuery<ENTITY> extends AutoInsertQuery<ENTITY> implements 
       this.duplicateKeyType = duplicateKeyType;
     }
 
+    @Override
     public java.util.Optional<DuplicateKeyType> getDuplicateKeyType() {
       return java.util.Optional.of(duplicateKeyType);
     }
