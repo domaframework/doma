@@ -15,6 +15,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlDeleteStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlInsertStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlSelectStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlUpdateStatement
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KStatement
 
 class KEntityql(config: Config) {
@@ -26,6 +27,15 @@ class KEntityql(config: Config) {
         block: SelectSettings.() -> Unit = {},
     ): KEntityqlSelectStarting<ENTITY> {
         val statement = entityql.from(entityMetamodel, block)
+        return KEntityqlSelectStarting(statement)
+    }
+
+    fun <ENTITY> from(
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        setOperandForSubQuery: KSetOperand<*>,
+        block: SelectSettings.() -> Unit = {},
+    ): KEntityqlSelectStarting<ENTITY> {
+        val statement = entityql.from(entityMetamodel, setOperandForSubQuery.asSetOperand(), block)
         return KEntityqlSelectStarting(statement)
     }
 

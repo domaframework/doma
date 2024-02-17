@@ -55,6 +55,18 @@ internal class KNativeSqlSelectTest {
     }
 
     @Test
+    fun from_with_subQuery() {
+        val e = Emp_()
+        val subQueryStmt = nativeSql.from(e)
+        val stmt = nativeSql.from(e, subQueryStmt)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from (select t0_.ID AS ID, t0_.NAME AS NAME, t0_.SALARY AS SALARY, t0_.VERSION AS VERSION from EMP t0_) t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
     fun where_eq() {
         val e = Emp_()
         val stmt = nativeSql
