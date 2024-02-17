@@ -27,6 +27,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.PARSER_LEVEL_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.POPULATE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
@@ -119,6 +120,21 @@ public class SqlTokenizerTest {
     assertEquals(" ", tokenizer.getToken());
     assertEquals(BLOCK_COMMENT, tokenizer.next());
     assertEquals("/**/", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("bbb", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testParserLevelBlockComment() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where /*%!aaa*/bbb");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(PARSER_LEVEL_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%!aaa*/", tokenizer.getToken());
     assertEquals(WORD, tokenizer.next());
     assertEquals("bbb", tokenizer.getToken());
     assertEquals(EOF, tokenizer.next());

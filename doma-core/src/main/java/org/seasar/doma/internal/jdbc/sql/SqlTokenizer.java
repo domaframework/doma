@@ -28,6 +28,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OPTION_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ORDER_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OR_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.OTHER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.PARSER_LEVEL_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.POPULATE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.QUOTE;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.SELECT_WORD;
@@ -380,7 +381,9 @@ public class SqlTokenizer {
         } else if (c3 == '%') {
           if (buf.hasRemaining()) {
             char c4 = buf.get();
-            if (buf.hasRemaining()) {
+            if (c4 == '!') {
+              type = PARSER_LEVEL_BLOCK_COMMENT;
+            } else if (buf.hasRemaining()) {
               char c5 = buf.get();
               if (c4 == 'i' && c5 == 'f') {
                 if (isBlockCommentDirectiveTerminated()) {
@@ -467,7 +470,8 @@ public class SqlTokenizer {
               buf.position(buf.position() - 1);
             }
           }
-          if (type != IF_BLOCK_COMMENT
+          if (type != PARSER_LEVEL_BLOCK_COMMENT
+              && type != IF_BLOCK_COMMENT
               && type != FOR_BLOCK_COMMENT
               && type != END_BLOCK_COMMENT
               && type != ELSE_BLOCK_COMMENT

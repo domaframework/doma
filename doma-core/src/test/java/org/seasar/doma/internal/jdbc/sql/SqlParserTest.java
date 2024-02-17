@@ -802,6 +802,18 @@ public class SqlParserTest {
   }
 
   @Test
+  public void testParserLevelBlockComment() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    SqlParser parser = new SqlParser("select /*%! comment */a from b");
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select a from b", sql.getRawSql());
+  }
+
+  @Test
   public void testFor_index() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     ArrayList<String> list = new ArrayList<>();
