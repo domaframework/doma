@@ -1,13 +1,10 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
-import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class InsertDeclaration {
 
@@ -32,9 +29,7 @@ public class InsertDeclaration {
     UpsertSetValuesDeclaration declaration = new UpsertSetValuesDeclaration(context);
     block.accept(declaration);
     if (context.upsertSetValues.isEmpty()) {
-      for (Map.Entry<Operand.Prop, Operand.Param> entry : context.values.entrySet()) {
-        context.upsertSetValues.add(new Tuple2<>(entry.getKey(), entry.getValue()));
-      }
+      context.upsertSetValues.putAll(context.values);
     }
   }
 

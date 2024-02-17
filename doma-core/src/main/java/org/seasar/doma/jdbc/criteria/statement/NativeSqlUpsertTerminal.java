@@ -71,9 +71,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
 
   private void setUpsertSetValuesIfEmpty(InsertContext context) {
     if (context.upsertSetValues.isEmpty()) {
-      for (Map.Entry<Operand.Prop, Operand.Param> entry : context.values.entrySet()) {
-        context.upsertSetValues.add(new Tuple2<>(entry.getKey(), entry.getValue()));
-      }
+      context.upsertSetValues.putAll(context.values);
     }
   }
 
@@ -101,11 +99,11 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   }
 
   private List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues(
-      List<Tuple2<Operand.Prop, Operand>> upsertSetValues) {
+      Map<Operand.Prop, Operand> upsertSetValues) {
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> list = new ArrayList<>();
-    for (Tuple2<Operand.Prop, Operand> upsertSetValue : upsertSetValues) {
-      Operand.Prop prop = upsertSetValue.getItem1();
-      Operand operand = upsertSetValue.getItem2();
+    for (Map.Entry<Operand.Prop, Operand> upsertSetValue : upsertSetValues.entrySet()) {
+      Operand.Prop prop = upsertSetValue.getKey();
+      Operand operand = upsertSetValue.getValue();
       UpsertSetValue jdbcQueryUpsertSetValue = operand.accept(new OperandVisitor());
       list.add(new Tuple2<>(prop.value.asType(), jdbcQueryUpsertSetValue));
     }

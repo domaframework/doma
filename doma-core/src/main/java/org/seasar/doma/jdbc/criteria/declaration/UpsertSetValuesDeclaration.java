@@ -4,7 +4,6 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class UpsertSetValuesDeclaration {
 
@@ -23,8 +22,7 @@ public class UpsertSetValuesDeclaration {
    */
   public <PROPERTY> void value(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    this.context.upsertSetValues.add(
-        new Tuple2<>(new Operand.Prop(left), new Operand.Param(left, right)));
+    this.context.upsertSetValues.put(new Operand.Prop(left), new Operand.Param(left, right));
   }
 
   /**
@@ -36,7 +34,7 @@ public class UpsertSetValuesDeclaration {
    */
   public <PROPERTY> void value(PropertyMetamodel<PROPERTY> left, Operand.Prop right) {
     Objects.requireNonNull(left);
-    this.context.upsertSetValues.add(new Tuple2<>(new Operand.Prop(left), right));
+    this.context.upsertSetValues.put(new Operand.Prop(left), right);
   }
 
   /**

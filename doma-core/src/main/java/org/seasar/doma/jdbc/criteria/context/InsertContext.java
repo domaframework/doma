@@ -1,6 +1,5 @@
 package org.seasar.doma.jdbc.criteria.context;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Objects;
 import java.util.Optional;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class InsertContext implements Context {
@@ -19,7 +17,7 @@ public class InsertContext implements Context {
 
   public Optional<DuplicateKeyType> duplicateKeyType = Optional.empty();
   public List<PropertyMetamodel<?>> upsertKeys = Collections.emptyList();
-  public final List<Tuple2<Operand.Prop, Operand>> upsertSetValues = new ArrayList<>();
+  public final Map<Operand.Prop, Operand> upsertSetValues = new LinkedHashMap<>();
   public final InsertSettings settings = new InsertSettings();
   public SelectContext selectContext;
 
