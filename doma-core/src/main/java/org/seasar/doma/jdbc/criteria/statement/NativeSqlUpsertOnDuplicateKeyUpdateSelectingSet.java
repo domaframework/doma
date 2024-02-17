@@ -36,7 +36,7 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet
 
   @Override
   protected Command<Integer> createCommand() {
-    NativeSqlUpsertTerminal query = new NativeSqlUpsertTerminal(config, declaration);
-    return query.createCommand();
+    NativeSqlUpsertTerminal statement = new NativeSqlUpsertTerminal(config, declaration);
+    return statement.createCommand();
   }
 }
