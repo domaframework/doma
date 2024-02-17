@@ -52,26 +52,32 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
-    setUpsertKeysIfEmpty(context);
-    setUpsertSetValuesIfEmpty(context);
+    List<PropertyMetamodel<?>> upsertKeys = setUpsertKeysIfEmpty(context);
+    setUpsertSetValuesIfEmpty(context, upsertKeys);
     PreparedSql sql = getPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
   }
 
-  private void setUpsertKeysIfEmpty(InsertContext context) {
+  private List<PropertyMetamodel<?>> setUpsertKeysIfEmpty(InsertContext context) {
     if (context.upsertKeys.isEmpty()) {
       context.upsertKeys =
           this.declaration.getContext().entityMetamodel.allPropertyMetamodels().stream()
               .filter(propertyMetamodel -> propertyMetamodel.asType().isId())
               .collect(Collectors.toList());
     }
+    return context.upsertKeys;
   }
 
-  private void setUpsertSetValuesIfEmpty(InsertContext context) {
+  private void setUpsertSetValuesIfEmpty(
+      InsertContext context, List<PropertyMetamodel<?>> upsertKeys) {
     if (context.upsertSetValues.isEmpty()) {
-      context.upsertSetValues.putAll(context.values);
+      for (Operand.Prop prop : context.values.keySet()) {
+        if (!upsertKeys.contains(prop.value)) {
+          context.upsertSetValues.put(prop, prop);
+        }
+      }
     }
   }
 

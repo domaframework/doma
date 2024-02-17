@@ -157,29 +157,33 @@ public class NativeSqlInsertTest {
             .insert(d)
             .values(
                 c -> {
-                  c.value(d.departmentId, 5);
-                  c.value(d.departmentNo, 50);
-                  c.value(d.departmentName, "PLANNING");
-                  c.value(d.location, "TOKYO");
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
             .onDuplicateKeyUpdate()
             .set(
                 c -> {
                   c.value(d.departmentName, c.excluded(d.departmentName));
-                  c.value(d.location, "TOKYO");
-                  c.value(d.version, 2);
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 3);
                 })
             .execute();
 
-    assertEquals(1, count);
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
 
-    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
-    // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation());
-    assertEquals(2, resultDepartment.getVersion());
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(10, resultDepartment.getDepartmentNo()); // not updated
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(3, resultDepartment.getVersion());
   }
 
   @Test
@@ -192,23 +196,27 @@ public class NativeSqlInsertTest {
             .insert(d)
             .values(
                 c -> {
-                  c.value(d.departmentId, 5);
-                  c.value(d.departmentNo, 50);
-                  c.value(d.departmentName, "PLANNING");
-                  c.value(d.location, "TOKYO");
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
             .onDuplicateKeyUpdate()
             .keys(d.departmentId)
             .execute();
 
-    assertEquals(1, count);
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
 
-    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
-    // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation());
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
     assertEquals(2, resultDepartment.getVersion());
   }
 
@@ -222,22 +230,26 @@ public class NativeSqlInsertTest {
             .insert(d)
             .values(
                 c -> {
-                  c.value(d.departmentId, 5);
-                  c.value(d.departmentNo, 50);
-                  c.value(d.departmentName, "PLANNING");
-                  c.value(d.location, "TOKYO");
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
             .onDuplicateKeyUpdate()
             .execute();
 
-    assertEquals(1, count);
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
 
-    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
-    // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation());
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
     assertEquals(2, resultDepartment.getVersion());
   }
 
@@ -311,23 +323,23 @@ public class NativeSqlInsertTest {
             .insert(d)
             .values(
                 c -> {
-                  c.value(d.departmentId, 5);
-                  c.value(d.departmentNo, 50);
-                  c.value(d.departmentName, "PLANNING");
-                  c.value(d.location, "TOKYO");
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
                   c.value(d.version, 2);
                 })
             .onDuplicateKeyIgnore()
             .execute();
 
-    assertEquals(1, count);
+    assertEquals(0, count);
 
-    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
-    // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation());
-    assertEquals(2, resultDepartment.getVersion());
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation());
+    assertEquals(1, resultDepartment.getVersion());
   }
 
   @Test
