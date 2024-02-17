@@ -1,11 +1,13 @@
 package org.seasar.doma.jdbc.criteria.declaration;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
+import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
+import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 
 public class InsertDeclaration {
 
@@ -30,9 +32,9 @@ public class InsertDeclaration {
     UpsertSetValuesDeclaration declaration = new UpsertSetValuesDeclaration(context);
     block.accept(declaration);
     if (context.upsertSetValues.isEmpty()) {
-      throw new DomaIllegalArgumentException(
-          "upsertSetValues",
-          "upsertSetValues are not set. Should be set by method UpsertSetValuesDeclaration#value");
+      for (Map.Entry<Operand.Prop, Operand.Param> entry : context.values.entrySet()) {
+        context.upsertSetValues.add(new Tuple2<>(entry.getKey(), entry.getValue()));
+      }
     }
   }
 

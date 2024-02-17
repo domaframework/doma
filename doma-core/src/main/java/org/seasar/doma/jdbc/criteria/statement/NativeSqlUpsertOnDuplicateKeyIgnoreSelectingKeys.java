@@ -3,18 +3,21 @@ package org.seasar.doma.jdbc.criteria.statement;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
-import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
-public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys {
+public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys
+    extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
   private final Config config;
   private final InsertDeclaration declaration;
 
   public NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys(
       Config config, InsertDeclaration declaration) {
+    super(Objects.requireNonNull(config));
     Objects.requireNonNull(config);
     this.config = config;
     Objects.requireNonNull(declaration);
@@ -23,17 +26,23 @@ public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys {
   }
 
   /**
-   * Specify the keys used for duplicate checking UPSERT statement.
+   * Specify the keys used for duplicate checking UPSERT statement. if no keys are specified, the
+   * primary keys are used for duplicate checking.
    *
    * @param keys keys the keys used for duplicate checking
    * @return the
    */
   public NativeSqlUpsertTerminal keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
-    if (keys.length == 0) {
-      throw new DomaIllegalArgumentException("keys", "keys are empty");
-    }
+    InsertContext context = this.declaration.getContext();
+    context.upsertKeys = Arrays.asList(keys);
     this.declaration.getContext().upsertKeys = Arrays.asList(keys);
     return new NativeSqlUpsertTerminal(config, declaration);
+  }
+
+  @Override
+  protected Command<Integer> createCommand() {
+    NativeSqlUpsertTerminal query = new NativeSqlUpsertTerminal(config, declaration);
+    return query.createCommand();
   }
 }

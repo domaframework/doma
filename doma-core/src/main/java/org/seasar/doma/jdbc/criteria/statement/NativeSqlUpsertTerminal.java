@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
@@ -51,10 +52,29 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
+    setUpsertKeysIfEmpty(context);
+    setUpsertSetValuesIfEmpty(context);
     PreparedSql sql = getPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
+  }
+
+  private void setUpsertKeysIfEmpty(InsertContext context) {
+    if (context.upsertKeys.isEmpty()) {
+      context.upsertKeys =
+          this.declaration.getContext().entityMetamodel.allPropertyMetamodels().stream()
+              .filter(propertyMetamodel -> propertyMetamodel.asType().isId())
+              .collect(Collectors.toList());
+    }
+  }
+
+  private void setUpsertSetValuesIfEmpty(InsertContext context) {
+    if (context.upsertSetValues.isEmpty()) {
+      for (Map.Entry<Operand.Prop, Operand.Param> entry : context.values.entrySet()) {
+        context.upsertSetValues.add(new Tuple2<>(entry.getKey(), entry.getValue()));
+      }
+    }
   }
 
   private PreparedSql getPreparedSql(InsertSettings settings, InsertContext context) {
