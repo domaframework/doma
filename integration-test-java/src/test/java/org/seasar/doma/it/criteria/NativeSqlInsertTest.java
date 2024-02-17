@@ -1,10 +1,12 @@
 package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
@@ -148,6 +150,66 @@ public class NativeSqlInsertTest {
   }
 
   @Test
+  void insert_onDuplicateKeyUpdate_emptyKeyException() {
+    Department_ d = new Department_();
+
+    DomaIllegalArgumentException ex =
+        assertThrows(
+            DomaIllegalArgumentException.class,
+            () -> {
+              nativeSql
+                  .insert(d)
+                  .values(
+                      c -> {
+                        c.value(d.departmentId, 5);
+                        c.value(d.departmentNo, 50);
+                        c.value(d.departmentName, "PLANNING");
+                        c.value(d.location, "TOKYO");
+                        c.value(d.version, 2);
+                      })
+                  .onDuplicateKeyUpdate()
+                  .keys()
+                  .set(
+                      c -> {
+                        c.value(d.departmentName, c.excluded(d.departmentName));
+                        c.value(d.location, "TOKYO");
+                        c.value(d.version, 2);
+                      })
+                  .execute();
+            });
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_emptySetValueException() {
+    Department_ d = new Department_();
+
+    DomaIllegalArgumentException ex =
+        assertThrows(
+            DomaIllegalArgumentException.class,
+            () -> {
+              nativeSql
+                  .insert(d)
+                  .values(
+                      c -> {
+                        c.value(d.departmentId, 5);
+                        c.value(d.departmentNo, 50);
+                        c.value(d.departmentName, "PLANNING");
+                        c.value(d.location, "TOKYO");
+                        c.value(d.version, 2);
+                      })
+                  .onDuplicateKeyUpdate()
+                  .keys(d.departmentId)
+                  .set(
+                      c -> {
+                        // nothing
+                      })
+                  .execute();
+            });
+    System.out.println(ex.getMessage());
+  }
+
+  @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyIgnore_duplicate() {
     Department_ d = new Department_();
@@ -205,6 +267,31 @@ public class NativeSqlInsertTest {
     assertEquals("PLANNING", resultDepartment.getDepartmentName());
     assertEquals("TOKYO", resultDepartment.getLocation());
     assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_emptyKeyException() {
+    Department_ d = new Department_();
+
+    DomaIllegalArgumentException ex =
+        assertThrows(
+            DomaIllegalArgumentException.class,
+            () -> {
+              nativeSql
+                  .insert(d)
+                  .values(
+                      c -> {
+                        c.value(d.departmentId, 5);
+                        c.value(d.departmentNo, 50);
+                        c.value(d.departmentName, "PLANNING");
+                        c.value(d.location, "TOKYO");
+                        c.value(d.version, 2);
+                      })
+                  .onDuplicateKeyIgnore()
+                  .keys()
+                  .execute();
+            });
+    System.out.println(ex.getMessage());
   }
 
   @Test

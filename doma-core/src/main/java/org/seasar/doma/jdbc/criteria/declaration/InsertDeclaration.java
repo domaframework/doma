@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc.criteria.declaration;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
 
@@ -28,6 +29,11 @@ public class InsertDeclaration {
     Objects.requireNonNull(block);
     UpsertSetValuesDeclaration declaration = new UpsertSetValuesDeclaration(context);
     block.accept(declaration);
+    if (context.upsertSetValues.isEmpty()) {
+      throw new DomaIllegalArgumentException(
+          "upsertSetValues",
+          "upsertSetValues are not set. Should be set by method UpsertSetValuesDeclaration#value");
+    }
   }
 
   public void select(Function<InsertSelectDeclaration, SubSelectContext<?>> block) {
