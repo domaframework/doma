@@ -76,8 +76,8 @@ public class AutoBatchUpsertQuery<ENTITY> extends AutoBatchInsertQuery<ENTITY>
     }
 
     @Override
-    public java.util.Optional<DuplicateKeyType> getDuplicateKeyType() {
-      return java.util.Optional.of(duplicateKeyType);
+    public DuplicateKeyType getDuplicateKeyType() {
+      return duplicateKeyType;
     }
   }
 
@@ -92,8 +92,8 @@ public class AutoBatchUpsertQuery<ENTITY> extends AutoBatchInsertQuery<ENTITY>
     }
 
     @Override
-    public java.util.Optional<DuplicateKeyType> getDuplicateKeyType() {
-      return java.util.Optional.of(duplicateKeyType);
+    public DuplicateKeyType getDuplicateKeyType() {
+      return duplicateKeyType;
     }
   }
 }

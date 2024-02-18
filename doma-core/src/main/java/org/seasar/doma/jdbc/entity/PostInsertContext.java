@@ -1,7 +1,6 @@
 package org.seasar.doma.jdbc.entity;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Insert;
 import org.seasar.doma.jdbc.Config;
@@ -55,10 +54,9 @@ public interface PostInsertContext<E> {
   /**
    * Retrieves the type of the duplicate key when inserting a new entity.
    *
-   * @return an Optional containing the DuplicateKeyType if the entity is a duplicate, or an empty
-   *     Optional if it is not a duplicate
+   * @return the type of the duplicate key
    */
-  default Optional<DuplicateKeyType> getDuplicateKeyType() {
-    return Optional.empty();
+  default DuplicateKeyType getDuplicateKeyType() {
+    return DuplicateKeyType.INSERT_ONLY;
   }
 }
