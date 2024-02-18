@@ -14,6 +14,12 @@ public class UpsertBuilderSupport {
   private final Dialect dialect;
   private final UpsertAliasManager aliasManager;
 
+  public UpsertBuilderSupport(Naming naming, Dialect dialect) {
+    this.naming = Objects.requireNonNull(naming);
+    this.dialect = Objects.requireNonNull(dialect);
+    this.aliasManager = new DefaultUpsertAliasManager();
+  }
+
   public UpsertBuilderSupport(Naming naming, Dialect dialect, UpsertAliasManager aliasManager) {
     this.naming = Objects.requireNonNull(naming);
     this.dialect = Objects.requireNonNull(dialect);

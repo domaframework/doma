@@ -28,8 +28,8 @@ public class InsertDeclaration {
     Objects.requireNonNull(block);
     UpsertSetValuesDeclaration declaration = new UpsertSetValuesDeclaration(context);
     block.accept(declaration);
-    if (context.upsertSetValues.isEmpty()) {
-      context.upsertSetValues.putAll(context.values);
+    if (context.onDuplicateContext.setValues.isEmpty()) {
+      context.onDuplicateContext.setValues.putAll(context.values);
     }
   }
 

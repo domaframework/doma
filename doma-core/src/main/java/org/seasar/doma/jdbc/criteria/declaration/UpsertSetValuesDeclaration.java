@@ -22,7 +22,8 @@ public class UpsertSetValuesDeclaration {
    */
   public <PROPERTY> void value(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
     Objects.requireNonNull(left);
-    this.context.upsertSetValues.put(new Operand.Prop(left), new Operand.Param(left, right));
+    this.context.onDuplicateContext.setValues.put(
+        new Operand.Prop(left), new Operand.Param(left, right));
   }
 
   /**
@@ -34,7 +35,7 @@ public class UpsertSetValuesDeclaration {
    */
   public <PROPERTY> void value(PropertyMetamodel<PROPERTY> left, Operand.Prop right) {
     Objects.requireNonNull(left);
-    this.context.upsertSetValues.put(new Operand.Prop(left), right);
+    this.context.onDuplicateContext.setValues.put(new Operand.Prop(left), right);
   }
 
   /**

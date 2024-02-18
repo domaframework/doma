@@ -2,7 +2,6 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
@@ -22,7 +21,7 @@ public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys
     this.config = config;
     Objects.requireNonNull(declaration);
     this.declaration = declaration;
-    this.declaration.getContext().duplicateKeyType = Optional.of(DuplicateKeyType.IGNORE);
+    this.declaration.getContext().onDuplicateContext.duplicateKeyType = DuplicateKeyType.IGNORE;
   }
 
   /**
@@ -35,8 +34,7 @@ public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys
   public NativeSqlUpsertTerminal keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
     InsertContext context = this.declaration.getContext();
-    context.upsertKeys = Arrays.asList(keys);
-    this.declaration.getContext().upsertKeys = Arrays.asList(keys);
+    context.onDuplicateContext.keys = Arrays.asList(keys);
     return new NativeSqlUpsertTerminal(config, declaration);
   }
 

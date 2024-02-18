@@ -28,10 +28,7 @@ public class PostgreSqlUpsertBuilder implements UpsertBuilder {
     this.keys = context.keys;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
-    UpsertBuilderSupport.DefaultUpsertAliasManager aliasManager =
-        new UpsertBuilderSupport.DefaultUpsertAliasManager();
-    this.upsertBuilderSupport =
-        new UpsertBuilderSupport(context.naming, context.dialect, aliasManager);
+    this.upsertBuilderSupport = new UpsertBuilderSupport(context.naming, context.dialect);
   }
 
   @Override

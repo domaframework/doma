@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.query;
 
 import java.util.List;
+import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
@@ -52,5 +53,14 @@ public class UpsertContext {
     this.keys = keys;
     this.insertValues = insertValues;
     this.setValues = setValues;
+    validate();
+  }
+
+  private void validate() {
+    if (this.duplicateKeyType == DuplicateKeyType.INSERT_ONLY) {
+      throw new DomaIllegalArgumentException(
+          "duplicateKeyType",
+          "The duplicateKeyType must not be set to INSERT_ONLY when performing an upsert.");
+    }
   }
 }

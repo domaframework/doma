@@ -26,10 +26,7 @@ public class MysqlUpsertBuilder implements UpsertBuilder {
     this.duplicateKeyType = context.duplicateKeyType;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
-    UpsertBuilderSupport.DefaultUpsertAliasManager aliasManager =
-        new UpsertBuilderSupport.DefaultUpsertAliasManager();
-    this.upsertBuilderSupport =
-        new UpsertBuilderSupport(context.naming, context.dialect, aliasManager);
+    this.upsertBuilderSupport = new UpsertBuilderSupport(context.naming, context.dialect);
   }
 
   @Override
