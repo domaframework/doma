@@ -48,9 +48,9 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys
    * @return terminal statement
    */
   public NativeSqlUpsertTerminal set(Consumer<UpsertSetValuesDeclaration> block) {
-    Objects.requireNonNull(block);
-    declaration.upsertSetValues(block);
-    return new NativeSqlUpsertTerminal(config, declaration);
+    NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet statement =
+        new NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet(config, declaration);
+    return statement.set(block);
   }
 
   @Override
