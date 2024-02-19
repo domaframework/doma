@@ -10,6 +10,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlDeleteStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlInsertStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlSelectStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlUpdateStarting
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 
 class KNativeSql(config: Config?) {
 
@@ -20,6 +21,15 @@ class KNativeSql(config: Config?) {
         block: SelectSettings.() -> Unit = {},
     ): KNativeSqlSelectStarting<ENTITY> {
         val statement = nativeSql.from(entityMetamodel, block)
+        return KNativeSqlSelectStarting(statement)
+    }
+
+    fun <ENTITY> from(
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        setOperandForSubQuery: KSetOperand<*>,
+        block: SelectSettings.() -> Unit = {},
+    ): KNativeSqlSelectStarting<ENTITY> {
+        val statement = nativeSql.from(entityMetamodel, setOperandForSubQuery.asSetOperand(), block)
         return KNativeSqlSelectStarting(statement)
     }
 

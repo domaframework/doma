@@ -15,6 +15,7 @@ import org.seasar.doma.message.Message
 internal class KEntityqlSelectTest {
 
     private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
 
     @Test
     fun from() {
@@ -23,6 +24,18 @@ internal class KEntityqlSelectTest {
         val sql = stmt.asSql()
         assertEquals(
             "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun from_with_subQuery() {
+        val e = Emp_()
+        val subQueryStmt = nativeSql.from(e)
+        val stmt = entityql.from(e, subQueryStmt)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from (select t0_.ID AS ID, t0_.NAME AS NAME, t0_.SALARY AS SALARY, t0_.VERSION AS VERSION from EMP t0_) t0_",
             sql.formattedSql,
         )
     }
