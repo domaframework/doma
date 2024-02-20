@@ -45,16 +45,10 @@ public class AutoBatchModifyQueryMetaFactory
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(methodElement);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
       DuplicateKeyType duplicateKeyType = batchModifyAnnot.getDuplicateKeyType();
+      queryMeta.setBatchModifyAnnot(batchModifyAnnot);
+      queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       queryMeta.setDuplicateKeyType(duplicateKeyType);
-      if (duplicateKeyType == DuplicateKeyType.INSERT_ONLY) {
-        queryMeta.setBatchModifyAnnot(batchModifyAnnot);
-        queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
-        return queryMeta;
-      } else {
-        queryMeta.setBatchModifyAnnot(batchModifyAnnot);
-        queryMeta.setQueryKind(QueryKind.AUTO_BATCH_UPSERT);
-        return queryMeta;
-      }
+      return queryMeta;
     }
     batchModifyAnnot = ctx.getAnnotations().newBatchUpdateAnnot(methodElement);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {

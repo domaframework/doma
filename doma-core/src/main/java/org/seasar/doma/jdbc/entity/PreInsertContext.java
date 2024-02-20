@@ -56,7 +56,5 @@ public interface PreInsertContext<E> {
    *
    * @return the type of the duplicate key
    */
-  default DuplicateKeyType getDuplicateKeyType() {
-    return DuplicateKeyType.INSERT_ONLY;
-  }
+  DuplicateKeyType getDuplicateKeyType();
 }

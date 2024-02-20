@@ -19,6 +19,7 @@ public class EntityqlInsertStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final InsertSettings settings;
+  private DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
   public EntityqlInsertStatement(
       Config config,
@@ -49,8 +50,8 @@ public class EntityqlInsertStatement<ENTITY>
    * @return statement
    */
   public Statement<Result<ENTITY>> onDuplicateKeyUpdate() {
-    return new EntityqlUpsertStatement<>(
-        config, entityMetamodel, entity, settings, DuplicateKeyType.UPDATE);
+    this.duplicateKeyType = DuplicateKeyType.UPDATE;
+    return this;
   }
 
   /**
@@ -59,8 +60,8 @@ public class EntityqlInsertStatement<ENTITY>
    * @return statement
    */
   public Statement<Result<ENTITY>> onDuplicateKeyIgnore() {
-    return new EntityqlUpsertStatement<>(
-        config, entityMetamodel, entity, settings, DuplicateKeyType.IGNORE);
+    this.duplicateKeyType = DuplicateKeyType.IGNORE;
+    return this;
   }
 
   @Override
@@ -81,6 +82,7 @@ public class EntityqlInsertStatement<ENTITY>
     query.setExcludedPropertyNames(
         settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setMessage(settings.getComment());
+    query.setDuplicateKeyType(duplicateKeyType);
     query.prepare();
     InsertCommand command =
         config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);

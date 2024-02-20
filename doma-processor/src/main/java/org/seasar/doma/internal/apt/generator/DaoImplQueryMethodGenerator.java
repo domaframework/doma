@@ -20,8 +20,6 @@ import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.command.*;
 import org.seasar.doma.internal.jdbc.sql.*;
-import org.seasar.doma.jdbc.query.BatchUpsertQuery;
-import org.seasar.doma.jdbc.query.UpsertQuery;
 
 public class DaoImplQueryMethodGenerator extends AbstractGenerator
     implements QueryMetaVisitor<Void> {
@@ -202,7 +200,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
-    if (UpsertQuery.class.isAssignableFrom(m.getQueryClass())) {
+    if (m.getDuplicateKeyType() != null) {
       iprint(
           "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
           m.getDuplicateKeyType());
@@ -367,7 +365,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
-    if (BatchUpsertQuery.class.isAssignableFrom(m.getQueryClass())) {
+    if (m.getDuplicateKeyType() != null) {
       iprint(
           "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
           m.getDuplicateKeyType());

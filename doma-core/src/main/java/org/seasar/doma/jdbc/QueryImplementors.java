@@ -6,13 +6,11 @@ import org.seasar.doma.jdbc.query.ArrayCreateQuery;
 import org.seasar.doma.jdbc.query.AutoBatchDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
 import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
-import org.seasar.doma.jdbc.query.AutoBatchUpsertQuery;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
-import org.seasar.doma.jdbc.query.AutoUpsertQuery;
 import org.seasar.doma.jdbc.query.BlobCreateQuery;
 import org.seasar.doma.jdbc.query.ClobCreateQuery;
 import org.seasar.doma.jdbc.query.NClobCreateQuery;
@@ -73,11 +71,6 @@ public interface QueryImplementors {
   default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoInsertQuery<>(entityType);
-  }
-
-  default <ENTITY> AutoUpsertQuery<ENTITY> createAutoUpsertQuery(
-      Method method, EntityType<ENTITY> entityType) {
-    return new AutoUpsertQuery<>(entityType);
   }
 
   default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
@@ -147,11 +140,6 @@ public interface QueryImplementors {
   default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoBatchInsertQuery<>(entityType);
-  }
-
-  default <ENTITY> AutoBatchUpsertQuery<ENTITY> createAutoBatchUpsertQuery(
-      Method method, EntityType<ENTITY> entityType) {
-    return new AutoBatchUpsertQuery<>(entityType);
   }
 
   default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(

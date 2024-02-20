@@ -28,6 +28,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected IdGenerationConfig idGenerationConfig;
 
+  protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
+
   public AutoInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -48,7 +50,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preInsert() {
-    AutoPreInsertContext<ENTITY> context = new AutoPreInsertContext<>(entityType, method, config);
+    AutoPreInsertContext<ENTITY> context =
+        new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.preInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -117,6 +120,15 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.INSERT, sqlLogType);
+    if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
+      assembleInsertSql(builder, naming, dialect);
+    } else {
+      assembleUpsertSql(builder, naming, dialect);
+    }
+    sql = builder.build(this::comment);
+  }
+
+  private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     builder.appendSql("insert into ");
     builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" (");
@@ -138,6 +150,21 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       builder.cutBackSql(2);
     }
     builder.appendSql(")");
+  }
+
+  private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
+    UpsertContext context =
+        UpsertContextBuilder.fromEntity(
+            builder,
+            entityType,
+            duplicateKeyType,
+            naming,
+            dialect,
+            idPropertyTypes,
+            targetPropertyTypes,
+            entity);
+    UpsertBuilder upsertBuilderQuery = dialect.getUpsertBuilder(context);
+    upsertBuilderQuery.build();
     sql = builder.build(this::comment);
   }
 
@@ -155,7 +182,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postInsert() {
-    AutoPostInsertContext<ENTITY> context = new AutoPostInsertContext<>(entityType, method, config);
+    AutoPostInsertContext<ENTITY> context =
+        new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.postInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -166,17 +194,23 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     this.nullExcluded = nullExcluded;
   }
 
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
+  }
+
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
-    public AutoPreInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+    public AutoPreInsertContext(
+        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+      super(entityType, method, config, duplicateKeyType);
     }
   }
 
   protected static class AutoPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
-    public AutoPostInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+    public AutoPostInsertContext(
+        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+      super(entityType, method, config, duplicateKeyType);
     }
   }
 }

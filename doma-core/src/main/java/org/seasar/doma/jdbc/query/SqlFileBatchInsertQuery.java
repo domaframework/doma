@@ -106,14 +106,14 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
   protected static class SqlFileBatchPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
     public SqlFileBatchPreInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+      super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
   }
 
   protected static class SqlFileBatchPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
     public SqlFileBatchPostInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+      super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
   }
 }

@@ -43,16 +43,10 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
       DuplicateKeyType duplicateKeyType = modifyAnnot.getDuplicateKeyType();
+      queryMeta.setModifyAnnot(modifyAnnot);
+      queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       queryMeta.setDuplicateKeyType(duplicateKeyType);
-      if (duplicateKeyType == DuplicateKeyType.INSERT_ONLY) {
-        queryMeta.setModifyAnnot(modifyAnnot);
-        queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
-        return queryMeta;
-      } else {
-        queryMeta.setModifyAnnot(modifyAnnot);
-        queryMeta.setQueryKind(QueryKind.AUTO_UPSERT);
-        return queryMeta;
-      }
+      return queryMeta;
     }
     modifyAnnot = ctx.getAnnotations().newUpdateAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {

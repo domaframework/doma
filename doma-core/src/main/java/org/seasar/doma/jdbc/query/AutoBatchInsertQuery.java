@@ -35,12 +35,18 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected boolean generatedKeysIgnored = false;
 
+  protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
+
   public AutoBatchInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
 
   public void setGeneratedKeysIgnored(boolean generatedKeysIgnored) {
     this.generatedKeysIgnored = generatedKeysIgnored;
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 
   @Override
@@ -76,7 +82,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void preInsert() {
     AutoBatchPreInsertContext<ENTITY> context =
-        new AutoBatchPreInsertContext<>(entityType, method, config);
+        new AutoBatchPreInsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.preInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -150,6 +156,16 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.BATCH_INSERT, sqlLogType);
+    if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
+      assembleInsertSql(builder, naming, dialect);
+    } else {
+      assembleUpsertSql(builder, naming, dialect);
+    }
+    PreparedSql sql = builder.build(this::comment);
+    sqls.add(sql);
+  }
+
+  private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     builder.appendSql("insert into ");
     builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
     builder.appendSql(" (");
@@ -167,8 +183,21 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
     builder.cutBackSql(2);
     builder.appendSql(")");
-    PreparedSql sql = builder.build(this::comment);
-    sqls.add(sql);
+  }
+
+  private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
+    UpsertContext context =
+        UpsertContextBuilder.fromEntity(
+            builder,
+            entityType,
+            duplicateKeyType,
+            naming,
+            dialect,
+            idPropertyTypes,
+            targetPropertyTypes,
+            currentEntity);
+    UpsertBuilder upsertBuilderQuery = dialect.getUpsertBuilder(context);
+    upsertBuilderQuery.build();
   }
 
   @Override
@@ -197,7 +226,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected void postInsert() {
     AutoBatchPostInsertContext<ENTITY> context =
-        new AutoBatchPostInsertContext<>(entityType, method, config);
+        new AutoBatchPostInsertContext<>(entityType, method, config, duplicateKeyType);
     entityType.postInsert(currentEntity, context);
     if (context.getNewEntity() != null) {
       currentEntity = context.getNewEntity();
@@ -206,15 +235,17 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected static class AutoBatchPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
-    public AutoBatchPreInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+    public AutoBatchPreInsertContext(
+        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+      super(entityType, method, config, duplicateKeyType);
     }
   }
 
   protected static class AutoBatchPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
-    public AutoBatchPostInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+    public AutoBatchPostInsertContext(
+        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+      super(entityType, method, config, duplicateKeyType);
     }
   }
 }

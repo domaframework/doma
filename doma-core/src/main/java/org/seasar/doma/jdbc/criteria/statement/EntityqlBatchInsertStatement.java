@@ -22,6 +22,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
+  private DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
   public EntityqlBatchInsertStatement(
       Config config,
@@ -63,6 +64,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
     query.setExcludedPropertyNames();
     query.setGeneratedKeysIgnored(settings.getIgnoreGeneratedKeys());
     query.setMessage(settings.getComment());
+    query.setDuplicateKeyType(this.duplicateKeyType);
     query.prepare();
     BatchInsertCommand command =
         config.getCommandImplementors().createBatchInsertCommand(EXECUTE_METHOD, query);
@@ -90,12 +92,12 @@ public class EntityqlBatchInsertStatement<ENTITY>
   }
 
   public Statement<BatchResult<ENTITY>> onDuplicateKeyUpdate() {
-    return new EntityqlBatchUpsertStatement<>(
-        config, entityMetamodel, entities, settings, DuplicateKeyType.UPDATE);
+    this.duplicateKeyType = DuplicateKeyType.UPDATE;
+    return this;
   }
 
   public Statement<BatchResult<ENTITY>> onDuplicateKeyIgnore() {
-    return new EntityqlBatchUpsertStatement<>(
-        config, entityMetamodel, entities, settings, DuplicateKeyType.IGNORE);
+    this.duplicateKeyType = DuplicateKeyType.IGNORE;
+    return this;
   }
 }

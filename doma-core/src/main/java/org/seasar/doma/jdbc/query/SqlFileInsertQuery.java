@@ -107,14 +107,14 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
   protected static class SqlFilePreInsertContext<E> extends AbstractPreInsertContext<E> {
 
     public SqlFilePreInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+      super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
   }
 
   protected static class SqlFilePostInsertContext<E> extends AbstractPostInsertContext<E> {
 
     public SqlFilePostInsertContext(EntityType<E> entityType, Method method, Config config) {
-      super(entityType, method, config);
+      super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
   }
 }

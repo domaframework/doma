@@ -40,6 +40,7 @@ public class AnnotationConfigDaoImpl implements org.seasar.doma.internal.apt.pro
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntity(emp);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AnnotationConfigDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);

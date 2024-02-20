@@ -23,7 +23,7 @@ public class InsertContext implements Context {
   }
 
   public class OnDuplicateContext {
-    public DuplicateKeyType duplicateKeyType = DuplicateKeyType.INSERT_ONLY;
+    public DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
     public List<PropertyMetamodel<?>> keys = Collections.emptyList();
     public final Map<Operand.Prop, Operand> setValues = new LinkedHashMap<>();
   }

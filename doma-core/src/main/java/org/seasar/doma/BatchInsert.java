@@ -113,5 +113,5 @@ public @interface BatchInsert {
    *
    * @return the type of duplicate key handling strategy for an insert operation.
    */
-  DuplicateKeyType duplicateKeyType() default DuplicateKeyType.INSERT_ONLY;
+  DuplicateKeyType duplicateKeyType() default DuplicateKeyType.EXCEPTION;
 }

@@ -71,6 +71,7 @@ public class AutoInsertDaoImpl implements org.seasar.doma.internal.apt.processor
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntity(entity);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);

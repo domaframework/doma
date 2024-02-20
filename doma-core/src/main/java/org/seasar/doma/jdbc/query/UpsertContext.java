@@ -57,7 +57,7 @@ public class UpsertContext {
   }
 
   private void validate() {
-    if (this.duplicateKeyType == DuplicateKeyType.INSERT_ONLY) {
+    if (this.duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",
           "The duplicateKeyType must not be set to INSERT_ONLY when performing an upsert.");
