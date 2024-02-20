@@ -277,7 +277,7 @@ configure(integrationTestProjects) {
         testRuntimeOnly("com.h2database:h2:1.4.200")
         testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
         testRuntimeOnly("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
-        testRuntimeOnly("org.postgresql:postgresql:42.7.1")
+        testRuntimeOnly("org.postgresql:postgresql:42.7.2")
         testRuntimeOnly("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
         testRuntimeOnly("org.testcontainers:mysql")
         testRuntimeOnly("org.testcontainers:oracle-xe")
