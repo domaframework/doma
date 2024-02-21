@@ -33,18 +33,6 @@ public class EntityqlInsertStatement<ENTITY>
   }
 
   /**
-   * {@inheritDoc}
-   *
-   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
-   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
-   */
-  @SuppressWarnings("EmptyMethod")
-  @Override
-  public Result<ENTITY> execute() {
-    return super.execute();
-  }
-
-  /**
    * Create statement that inserts or updates
    *
    * @return statement
@@ -62,6 +50,18 @@ public class EntityqlInsertStatement<ENTITY>
   public Statement<Result<ENTITY>> onDuplicateKeyIgnore() {
     this.duplicateKeyType = DuplicateKeyType.IGNORE;
     return this;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated
+   * @throws org.seasar.doma.jdbc.JdbcException if a JDBC related error occurs
+   */
+  @SuppressWarnings("EmptyMethod")
+  @Override
+  public Result<ENTITY> execute() {
+    return super.execute();
   }
 
   @Override

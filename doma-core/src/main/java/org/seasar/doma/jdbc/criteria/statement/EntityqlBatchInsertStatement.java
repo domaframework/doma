@@ -35,6 +35,16 @@ public class EntityqlBatchInsertStatement<ENTITY>
     this.settings = Objects.requireNonNull(settings);
   }
 
+  public Statement<BatchResult<ENTITY>> onDuplicateKeyUpdate() {
+    this.duplicateKeyType = DuplicateKeyType.UPDATE;
+    return this;
+  }
+
+  public Statement<BatchResult<ENTITY>> onDuplicateKeyIgnore() {
+    this.duplicateKeyType = DuplicateKeyType.IGNORE;
+    return this;
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -89,15 +99,5 @@ public class EntityqlBatchInsertStatement<ENTITY>
       return EMPTY_SQL;
     }
     return super.asSql();
-  }
-
-  public Statement<BatchResult<ENTITY>> onDuplicateKeyUpdate() {
-    this.duplicateKeyType = DuplicateKeyType.UPDATE;
-    return this;
-  }
-
-  public Statement<BatchResult<ENTITY>> onDuplicateKeyIgnore() {
-    this.duplicateKeyType = DuplicateKeyType.IGNORE;
-    return this;
   }
 }
