@@ -45,6 +45,11 @@ public class UpsertContext {
       List<EntityPropertyType<?, ?>> keys,
       List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
       List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+    if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
+      throw new DomaIllegalArgumentException(
+          "duplicateKeyType",
+          "The duplicateKeyType must not be set to EXCEPTION when performing an upsert.");
+    }
     this.buf = buf;
     this.entityType = entityType;
     this.duplicateKeyType = duplicateKeyType;
@@ -53,14 +58,5 @@ public class UpsertContext {
     this.keys = keys;
     this.insertValues = insertValues;
     this.setValues = setValues;
-    validate();
-  }
-
-  private void validate() {
-    if (this.duplicateKeyType == DuplicateKeyType.EXCEPTION) {
-      throw new DomaIllegalArgumentException(
-          "duplicateKeyType",
-          "The duplicateKeyType must not be set to INSERT_ONLY when performing an upsert.");
-    }
   }
 }
