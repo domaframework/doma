@@ -128,7 +128,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
       List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
       List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
     PreparedSqlBuilder sql =
-        new PreparedSqlBuilder(config, SqlKind.UPSERT, settings.getSqlLogType());
+        new PreparedSqlBuilder(config, SqlKind.INSERT, settings.getSqlLogType());
     UpsertContext upsertContext =
         new UpsertContext(
             sql,
