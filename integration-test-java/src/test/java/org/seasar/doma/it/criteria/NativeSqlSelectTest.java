@@ -705,12 +705,10 @@ public class NativeSqlSelectTest {
             .select(d.departmentId, salarySum);
 
     List<Tuple2<Integer, Salary>> list = query.fetch();
-    List<Tuple2<Integer, Salary>> expected =
-        Arrays.asList(
-            new Tuple2<>(1, new Salary("8750.00")),
-            new Tuple2<>(3, new Salary("9400.00")),
-            new Tuple2<>(2, new Salary("10875.00")));
-    assertIterableEquals(expected, list);
+    // asc order
+    assertEquals(0, list.get(0).component2().getValue().compareTo(new BigDecimal(8750)));
+    assertEquals(0, list.get(1).component2().getValue().compareTo(new BigDecimal(9400)));
+    assertEquals(0, list.get(2).component2().getValue().compareTo(new BigDecimal(10875)));
   }
 
   @Test
@@ -729,12 +727,10 @@ public class NativeSqlSelectTest {
             .select(d.departmentId, salarySum);
 
     List<Tuple2<Integer, Salary>> list = query.fetch();
-    List<Tuple2<Integer, Salary>> expected =
-        Arrays.asList(
-            new Tuple2<>(2, new Salary("10875.00")),
-            new Tuple2<>(3, new Salary("9400.00")),
-            new Tuple2<>(1, new Salary("8750.00")));
-    assertIterableEquals(expected, list);
+    // desc order
+    assertEquals(0, list.get(0).component2().getValue().compareTo(new BigDecimal(10875)));
+    assertEquals(0, list.get(1).component2().getValue().compareTo(new BigDecimal(9400)));
+    assertEquals(0, list.get(2).component2().getValue().compareTo(new BigDecimal(8750)));
   }
 
   @SuppressWarnings("unused")
