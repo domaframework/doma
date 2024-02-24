@@ -292,4 +292,11 @@ public class Expressions {
         block.apply(new SelectExpression.Declaration());
     return new SelectExpression<>(subSelectContext);
   }
+
+  public static <PROPERTY> AliasExpression<PROPERTY> alias(
+      PropertyMetamodel<PROPERTY> propertyMetamodel, String alias) {
+    Objects.requireNonNull(propertyMetamodel);
+    Objects.requireNonNull(alias);
+    return new AliasExpression<>(propertyMetamodel, alias);
+  }
 }

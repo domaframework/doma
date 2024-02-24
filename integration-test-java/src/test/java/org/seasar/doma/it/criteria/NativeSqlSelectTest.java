@@ -41,7 +41,6 @@ import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
-import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
@@ -151,8 +150,8 @@ public class NativeSqlSelectTest {
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .select(
-                new AliasExpression<>(Expressions.sum(e.salary), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()));
+                Expressions.alias(Expressions.sum(e.salary), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -176,7 +175,7 @@ public class NativeSqlSelectTest {
             .from(e)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
-            .select(new AliasExpression<>(d.departmentName, t.name.getName()));
+            .select(Expressions.alias(d.departmentName, t.name.getName()));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -195,15 +194,15 @@ public class NativeSqlSelectTest {
             .from(d)
             .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
             .select(
-                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()))
+                Expressions.alias(Expressions.literal(1200), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()))
             .union(
                 nativeSql
                     .from(d)
                     .where(c -> c.eq(d.departmentName, "OPERATIONS"))
                     .select(
-                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
-                        new AliasExpression<>(d.departmentName, t.name.getName())));
+                        Expressions.alias(Expressions.literal(900), t.amount.getName()),
+                        Expressions.alias(d.departmentName, t.name.getName())));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -225,15 +224,15 @@ public class NativeSqlSelectTest {
             .from(d)
             .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
             .select(
-                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()))
+                Expressions.alias(Expressions.literal(1200), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()))
             .unionAll(
                 nativeSql
                     .from(d)
                     .where(c -> c.eq(d.departmentName, "OPERATIONS"))
                     .select(
-                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
-                        new AliasExpression<>(d.departmentName, t.name.getName())));
+                        Expressions.alias(Expressions.literal(900), t.amount.getName()),
+                        Expressions.alias(d.departmentName, t.name.getName())));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
