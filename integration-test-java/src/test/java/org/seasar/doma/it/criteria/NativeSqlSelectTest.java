@@ -41,6 +41,7 @@ import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
@@ -686,6 +687,54 @@ public class NativeSqlSelectTest {
             .fetch();
 
     assertEquals(4, list.size());
+  }
+
+  @Test
+  void alias_orderBy_asc() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+
+    AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
+
+    SetOperand<Tuple3<Integer, String, Salary>> query =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentId)
+            .orderBy(c -> c.asc(salarySum))
+            .select(d.departmentId, d.departmentName, salarySum);
+
+    List<Tuple3<Integer, String, Salary>> list = query.fetch();
+    List<Tuple3<Integer, String, Salary>> expected =
+        Arrays.asList(
+            new Tuple3<>(1, "ACCOUNTING", new Salary("8750.00")),
+            new Tuple3<>(3, "SALES", new Salary("9400.00")),
+            new Tuple3<>(2, "RESEARCH", new Salary("10875.00")));
+    assertIterableEquals(expected, list);
+  }
+
+  @Test
+  void alias_orderBy_desc() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+
+    AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
+
+    SetOperand<Tuple3<Integer, String, Salary>> query =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentId)
+            .orderBy(c -> c.desc(salarySum))
+            .select(d.departmentId, d.departmentName, salarySum);
+
+    List<Tuple3<Integer, String, Salary>> list = query.fetch();
+    List<Tuple3<Integer, String, Salary>> expected =
+        Arrays.asList(
+            new Tuple3<>(2, "RESEARCH", new Salary("10875.00")),
+            new Tuple3<>(3, "SALES", new Salary("9400.00")),
+            new Tuple3<>(1, "ACCOUNTING", new Salary("8750.00")));
+    assertIterableEquals(expected, list);
   }
 
   @SuppressWarnings("unused")

@@ -6,8 +6,9 @@ import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 
 /**
- * Used to add an alias to a column in the select clause. Do not use it outside the {@link
- * NativeSqlSelectStarting#select} clause.
+ * Used to add an alias to a column in the select clause. For in adherence to standard SQL, It is
+ * recommended to specify only in the {@link NativeSqlSelectStarting#select} and {@link
+ * NativeSqlSelectStarting#orderBy} method.
  *
  * @param <PROPERTY> the property type
  */
