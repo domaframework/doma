@@ -696,20 +696,20 @@ public class NativeSqlSelectTest {
 
     AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
 
-    SetOperand<Tuple3<Integer, String, Salary>> query =
+    SetOperand<Tuple2<Integer, Salary>> query =
         nativeSql
             .from(e)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentId)
             .orderBy(c -> c.asc(salarySum))
-            .select(d.departmentId, d.departmentName, salarySum);
+            .select(d.departmentId, salarySum);
 
-    List<Tuple3<Integer, String, Salary>> list = query.fetch();
-    List<Tuple3<Integer, String, Salary>> expected =
+    List<Tuple2<Integer, Salary>> list = query.fetch();
+    List<Tuple2<Integer, Salary>> expected =
         Arrays.asList(
-            new Tuple3<>(1, "ACCOUNTING", new Salary("8750.00")),
-            new Tuple3<>(3, "SALES", new Salary("9400.00")),
-            new Tuple3<>(2, "RESEARCH", new Salary("10875.00")));
+            new Tuple2<>(1, new Salary("8750.00")),
+            new Tuple2<>(3, new Salary("9400.00")),
+            new Tuple2<>(2, new Salary("10875.00")));
     assertIterableEquals(expected, list);
   }
 
@@ -720,20 +720,20 @@ public class NativeSqlSelectTest {
 
     AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
 
-    SetOperand<Tuple3<Integer, String, Salary>> query =
+    SetOperand<Tuple2<Integer, Salary>> query =
         nativeSql
             .from(e)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentId)
             .orderBy(c -> c.desc(salarySum))
-            .select(d.departmentId, d.departmentName, salarySum);
+            .select(d.departmentId, salarySum);
 
-    List<Tuple3<Integer, String, Salary>> list = query.fetch();
-    List<Tuple3<Integer, String, Salary>> expected =
+    List<Tuple2<Integer, Salary>> list = query.fetch();
+    List<Tuple2<Integer, Salary>> expected =
         Arrays.asList(
-            new Tuple3<>(2, "RESEARCH", new Salary("10875.00")),
-            new Tuple3<>(3, "SALES", new Salary("9400.00")),
-            new Tuple3<>(1, "ACCOUNTING", new Salary("8750.00")));
+            new Tuple2<>(2, new Salary("10875.00")),
+            new Tuple2<>(3, new Salary("9400.00")),
+            new Tuple2<>(1, new Salary("8750.00")));
     assertIterableEquals(expected, list);
   }
 
