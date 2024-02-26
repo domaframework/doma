@@ -2,8 +2,16 @@ package org.seasar.doma.jdbc.criteria.expression;
 
 import java.util.Objects;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 
+/**
+ * Used to add an alias to a column in the select clause. For in adherence to standard SQL, It is
+ * recommended to specify only in the {@link NativeSqlSelectStarting#select} and {@link
+ * NativeSqlSelectStarting#orderBy} method.
+ *
+ * @param <PROPERTY> the property type
+ */
 public class AliasExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
 
   private final PropertyMetamodel<PROPERTY> originalPropertyMetamodel;
@@ -21,7 +29,7 @@ public class AliasExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
 
   @Override
   public Class<?> asClass() {
-    return originalPropertyMetamodel.getClass();
+    return originalPropertyMetamodel.asClass();
   }
 
   @Override

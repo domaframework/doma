@@ -151,8 +151,8 @@ public class NativeSqlSelectTest {
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .select(
-                new AliasExpression<>(Expressions.sum(e.salary), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()));
+                Expressions.alias(Expressions.sum(e.salary), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -176,7 +176,7 @@ public class NativeSqlSelectTest {
             .from(e)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
-            .select(new AliasExpression<>(d.departmentName, t.name.getName()));
+            .select(Expressions.alias(d.departmentName, t.name.getName()));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -195,15 +195,15 @@ public class NativeSqlSelectTest {
             .from(d)
             .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
             .select(
-                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()))
+                Expressions.alias(Expressions.literal(1200), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()))
             .union(
                 nativeSql
                     .from(d)
                     .where(c -> c.eq(d.departmentName, "OPERATIONS"))
                     .select(
-                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
-                        new AliasExpression<>(d.departmentName, t.name.getName())));
+                        Expressions.alias(Expressions.literal(900), t.amount.getName()),
+                        Expressions.alias(d.departmentName, t.name.getName())));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -225,15 +225,15 @@ public class NativeSqlSelectTest {
             .from(d)
             .where(c -> c.eq(d.departmentName, "ACCOUNTING"))
             .select(
-                new AliasExpression<>(Expressions.literal(1200), t.amount.getName()),
-                new AliasExpression<>(d.departmentName, t.name.getName()))
+                Expressions.alias(Expressions.literal(1200), t.amount.getName()),
+                Expressions.alias(d.departmentName, t.name.getName()))
             .unionAll(
                 nativeSql
                     .from(d)
                     .where(c -> c.eq(d.departmentName, "OPERATIONS"))
                     .select(
-                        new AliasExpression<>(Expressions.literal(900), t.amount.getName()),
-                        new AliasExpression<>(d.departmentName, t.name.getName())));
+                        Expressions.alias(Expressions.literal(900), t.amount.getName()),
+                        Expressions.alias(d.departmentName, t.name.getName())));
 
     NativeSqlSelectStarting<NameAndAmount> query =
         nativeSql.from(t, subquery).orderBy(c -> c.asc(t.name));
@@ -687,6 +687,50 @@ public class NativeSqlSelectTest {
             .fetch();
 
     assertEquals(4, list.size());
+  }
+
+  @Test
+  void alias_orderBy_asc() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+
+    AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
+
+    SetOperand<Tuple2<Integer, Salary>> query =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentId)
+            .orderBy(c -> c.asc(salarySum))
+            .select(d.departmentId, salarySum);
+
+    List<Tuple2<Integer, Salary>> list = query.fetch();
+    // asc order
+    assertEquals(0, list.get(0).component2().getValue().compareTo(new BigDecimal(8750)));
+    assertEquals(0, list.get(1).component2().getValue().compareTo(new BigDecimal(9400)));
+    assertEquals(0, list.get(2).component2().getValue().compareTo(new BigDecimal(10875)));
+  }
+
+  @Test
+  void alias_orderBy_desc() {
+    Department_ d = new Department_();
+    Employee_ e = new Employee_();
+
+    AliasExpression<Salary> salarySum = Expressions.alias(sum(e.salary), "SALARY_SUM");
+
+    SetOperand<Tuple2<Integer, Salary>> query =
+        nativeSql
+            .from(e)
+            .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
+            .groupBy(d.departmentId)
+            .orderBy(c -> c.desc(salarySum))
+            .select(d.departmentId, salarySum);
+
+    List<Tuple2<Integer, Salary>> list = query.fetch();
+    // desc order
+    assertEquals(0, list.get(0).component2().getValue().compareTo(new BigDecimal(10875)));
+    assertEquals(0, list.get(1).component2().getValue().compareTo(new BigDecimal(9400)));
+    assertEquals(0, list.get(2).component2().getValue().compareTo(new BigDecimal(8750)));
   }
 
   @SuppressWarnings("unused")

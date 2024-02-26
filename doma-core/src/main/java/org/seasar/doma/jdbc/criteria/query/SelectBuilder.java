@@ -89,7 +89,7 @@ public class SelectBuilder {
       buf.appendSql("*");
     } else {
       for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-        column(propertyMetamodel);
+        selectColumn(propertyMetamodel);
         buf.appendSql(", ");
       }
       buf.cutBackSql(2);
@@ -232,6 +232,10 @@ public class SelectBuilder {
 
   private void column(PropertyMetamodel<?> propertyMetamodel) {
     support.column(propertyMetamodel);
+  }
+
+  private void selectColumn(PropertyMetamodel<?> propertyMetamodel) {
+    support.selectColumn(propertyMetamodel);
   }
 
   private void visitCriterion(int index, Criterion criterion) {

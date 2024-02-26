@@ -175,6 +175,17 @@ public class BuilderSupport {
         });
   }
 
+  public void selectColumn(PropertyMetamodel<?> propertyMetamodel) {
+    propertyMetamodel.accept(
+        new PropertyMetamodelVisitor() {
+          @Override
+          public void visit(AliasExpression<?> aliasExpression) {
+            aliasExpression.getOriginalPropertyMetamodel().accept(this);
+            buf.appendSql(" AS " + aliasExpression.getAlias());
+          }
+        });
+  }
+
   public void param(Operand.Param param) {
     InParameter<?> parameter = param.createInParameter(config);
     param(parameter);
@@ -627,8 +638,7 @@ public class BuilderSupport {
 
     @Override
     public void visit(AliasExpression<?> aliasExpression) {
-      aliasExpression.getOriginalPropertyMetamodel().accept(this);
-      buf.appendSql(" AS " + aliasExpression.getAlias());
+      buf.appendSql(aliasExpression.getAlias());
     }
 
     protected Optional<String> getAlias(PropertyMetamodel<?> propertyMetamodel) {
