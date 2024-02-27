@@ -168,7 +168,6 @@ public enum QueryKind {
       return UpdateCommand.class;
     }
   },
-
   AUTO_DELETE {
 
     @Override

@@ -23,7 +23,7 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet
 
   /**
    * Specify the set clause for the UPSERT statement. if no set-value are specified, the insert
-   * value are used for set value.
+   * value that exclude {@link org.seasar.doma.Id} properties are used for set value.
    *
    * @param block the consumer to set the clause
    * @return terminal statement

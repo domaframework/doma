@@ -24,7 +24,7 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
   /**
    * Create statement builder that inserts or updates
    *
-   * @return statement builder
+   * @return selecting keys statement builder
    */
   public NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys onDuplicateKeyUpdate() {
     return new NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys(config, declaration);
@@ -33,7 +33,7 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
   /**
    * Create statement builder that inserts or ignore
    *
-   * @return statement builder
+   * @return selecting keys statement builder
    */
   public NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys onDuplicateKeyIgnore() {
     return new NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys(config, declaration);

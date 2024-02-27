@@ -29,10 +29,10 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys
 
   /**
    * Specify the keys used for duplicate checking UPSERT statement. if no keys are specified, the
-   * primary keys are used for duplicate checking.
+   * {@link org.seasar.doma.Id} property are used for duplicate checking.
    *
    * @param keys keys the keys used for duplicate checking
-   * @return the
+   * @return selecting set statement builder
    */
   public NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
@@ -42,7 +42,8 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys
   }
 
   /**
-   * Specify the set clause for the UPSERT statement.
+   * Specify the set clause for the UPSERT statement. if no set-value are specified, the insert
+   * value that exclude {@link org.seasar.doma.Id} properties are used for set value.
    *
    * @param block the consumer to set the clause
    * @return terminal statement

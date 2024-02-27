@@ -95,9 +95,10 @@ public @interface Insert {
 
   /**
    * This variable represents the type of duplicate key handling strategy for an insert operation.
-   * It can have one of two values: - UPDATE: If a duplicate key is encountered, the existing row in
-   * the table will be updated. - IGNORE: If a duplicate key is encountered, the insert operation
-   * will be ignored and no changes will be made to the table.
+   * It can have one of three values: - UPDATE: If a duplicate key is encountered, the existing row
+   * in the table will be updated. - IGNORE: If a duplicate key is encountered, the insert operation
+   * will be ignored, and no changes will be made to the table. - EXCEPTION: If a duplicate key is
+   * encountered, the operation will throw an exception, indicating that a duplicate key exists.
    *
    * @return the type of duplicate key handling strategy for an insert operation.
    */

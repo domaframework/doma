@@ -26,10 +26,10 @@ public class NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys
 
   /**
    * Specify the keys used for duplicate checking UPSERT statement. if no keys are specified, the
-   * primary keys are used for duplicate checking.
+   * {@link org.seasar.doma.Id} property are used for duplicate checking.
    *
    * @param keys keys the keys used for duplicate checking
-   * @return the
+   * @return selecting set statement builder
    */
   public NativeSqlUpsertTerminal keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
