@@ -11,12 +11,12 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
- * The UpsertContext class represents the context for executing an upsert operation in a database.
- * It holds information about the entity to be upserted, the prepared SQL statement, the entity
- * type, the duplicate key type, naming and dialect information, and the values to be set for the
- * entity.
+ * The UpsertAssemblerContext class represents the context for executing an upsert operation in a
+ * database. It holds information about the entity to be upserted, the prepared SQL statement, the
+ * entity type, the duplicate key type, naming and dialect information, and the values to be set for
+ * the entity.
  */
-public class UpsertContext {
+public class UpsertAssemblerContext {
   public final PreparedSqlBuilder buf;
   public final EntityType<?> entityType;
   public final DuplicateKeyType duplicateKeyType;
@@ -36,7 +36,7 @@ public class UpsertContext {
   /** set clause property-value pair list */
   public final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
 
-  public UpsertContext(
+  public UpsertAssemblerContext(
       PreparedSqlBuilder buf,
       EntityType<?> entityType,
       DuplicateKeyType duplicateKeyType,

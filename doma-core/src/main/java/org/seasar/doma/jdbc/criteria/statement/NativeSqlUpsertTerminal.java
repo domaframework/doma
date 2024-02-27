@@ -22,8 +22,8 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.query.UpsertBuilder;
-import org.seasar.doma.jdbc.query.UpsertContext;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
@@ -129,8 +129,8 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
       List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
     PreparedSqlBuilder sql =
         new PreparedSqlBuilder(config, SqlKind.INSERT, settings.getSqlLogType());
-    UpsertContext upsertContext =
-        new UpsertContext(
+    UpsertAssemblerContext upsertAssemblerContext =
+        new UpsertAssemblerContext(
             sql,
             context.entityMetamodel.asType(),
             context.onDuplicateContext.duplicateKeyType,
@@ -139,7 +139,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
             keys,
             insertValues,
             setValues);
-    UpsertBuilder upsertQuery = config.getDialect().getUpsertBuilder(upsertContext);
+    UpsertAssembler upsertQuery = config.getDialect().getUpsertAssembler(upsertAssemblerContext);
     upsertQuery.build();
     return sql;
   }

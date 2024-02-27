@@ -18,8 +18,8 @@ import org.seasar.doma.jdbc.SelectForUpdateType;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
-import org.seasar.doma.jdbc.query.UpsertBuilder;
-import org.seasar.doma.jdbc.query.UpsertContext;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for MySQL. */
 public class MysqlDialect extends StandardDialect {
@@ -193,7 +193,7 @@ public class MysqlDialect extends StandardDialect {
   }
 
   @Override
-  public UpsertBuilder getUpsertBuilder(UpsertContext context) {
-    return new MysqlUpsertBuilder(context);
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new MysqlUpsertAssembler(context);
   }
 }

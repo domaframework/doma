@@ -9,18 +9,18 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-public class UpsertBuilderSupport {
+public class UpsertAssemblerSupport {
   private final Naming naming;
   private final Dialect dialect;
   private final UpsertAliasManager aliasManager;
 
-  public UpsertBuilderSupport(Naming naming, Dialect dialect) {
+  public UpsertAssemblerSupport(Naming naming, Dialect dialect) {
     this.naming = Objects.requireNonNull(naming);
     this.dialect = Objects.requireNonNull(dialect);
     this.aliasManager = new DefaultUpsertAliasManager();
   }
 
-  public UpsertBuilderSupport(Naming naming, Dialect dialect, UpsertAliasManager aliasManager) {
+  public UpsertAssemblerSupport(Naming naming, Dialect dialect, UpsertAliasManager aliasManager) {
     this.naming = Objects.requireNonNull(naming);
     this.dialect = Objects.requireNonNull(dialect);
     this.aliasManager = aliasManager;

@@ -12,9 +12,9 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
-public class UpsertContextBuilder {
+public class UpsertAssemblerContextBuilder {
   @SuppressWarnings("unchecked")
-  public static <ENTITY> UpsertContext fromEntity(
+  public static <ENTITY> UpsertAssemblerContext fromEntity(
       PreparedSqlBuilder buf,
       EntityType<ENTITY> entityType,
       DuplicateKeyType duplicateKeyType,
@@ -28,7 +28,7 @@ public class UpsertContextBuilder {
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
         toSetValues(filterUpdatePropertyTypes(insertValues));
 
-    return new UpsertContext(
+    return new UpsertAssemblerContext(
         buf,
         entityType,
         duplicateKeyType,

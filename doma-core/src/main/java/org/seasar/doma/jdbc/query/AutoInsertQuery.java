@@ -153,8 +153,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
-    UpsertContext context =
-        UpsertContextBuilder.fromEntity(
+    UpsertAssemblerContext context =
+        UpsertAssemblerContextBuilder.fromEntity(
             builder,
             entityType,
             duplicateKeyType,
@@ -163,8 +163,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
             idPropertyTypes,
             targetPropertyTypes,
             entity);
-    UpsertBuilder upsertBuilderQuery = dialect.getUpsertBuilder(context);
-    upsertBuilderQuery.build();
+    UpsertAssembler upsertAssemblerQuery = dialect.getUpsertAssembler(context);
+    upsertAssemblerQuery.build();
     sql = builder.build(this::comment);
   }
 

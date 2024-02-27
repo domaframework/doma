@@ -186,8 +186,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
-    UpsertContext context =
-        UpsertContextBuilder.fromEntity(
+    UpsertAssemblerContext context =
+        UpsertAssemblerContextBuilder.fromEntity(
             builder,
             entityType,
             duplicateKeyType,
@@ -196,8 +196,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             idPropertyTypes,
             targetPropertyTypes,
             currentEntity);
-    UpsertBuilder upsertBuilderQuery = dialect.getUpsertBuilder(context);
-    upsertBuilderQuery.build();
+    UpsertAssembler upsertAssemblerQuery = dialect.getUpsertAssembler(context);
+    upsertAssemblerQuery.build();
   }
 
   @Override

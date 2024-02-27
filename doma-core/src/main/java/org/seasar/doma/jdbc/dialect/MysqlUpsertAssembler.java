@@ -7,26 +7,26 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
-import org.seasar.doma.jdbc.query.UpsertBuilder;
-import org.seasar.doma.jdbc.query.UpsertBuilderSupport;
-import org.seasar.doma.jdbc.query.UpsertContext;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
-public class MysqlUpsertBuilder implements UpsertBuilder {
+public class MysqlUpsertAssembler implements UpsertAssembler {
   private final PreparedSqlBuilder buf;
   private final EntityType<?> entityType;
   private final DuplicateKeyType duplicateKeyType;
-  private final UpsertBuilderSupport upsertBuilderSupport;
+  private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
 
-  public MysqlUpsertBuilder(UpsertContext context) {
+  public MysqlUpsertAssembler(UpsertAssemblerContext context) {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
-    this.upsertBuilderSupport = new UpsertBuilderSupport(context.naming, context.dialect);
+    this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
 
   @Override
@@ -64,12 +64,12 @@ public class MysqlUpsertBuilder implements UpsertBuilder {
 
   private void tableNameOnly(EntityType<?> entityType) {
     String sql =
-        this.upsertBuilderSupport.table(entityType, UpsertBuilderSupport.TableNameType.NAME);
+        this.upsertAssemblerSupport.table(entityType, UpsertAssemblerSupport.TableNameType.NAME);
     buf.appendSql(sql);
   }
 
   private void column(EntityPropertyType<?, ?> propertyType) {
-    String sql = this.upsertBuilderSupport.column(propertyType);
+    String sql = this.upsertAssemblerSupport.column(propertyType);
     buf.appendSql(sql);
   }
 
@@ -82,8 +82,8 @@ public class MysqlUpsertBuilder implements UpsertBuilder {
     @Override
     public void visit(UpsertSetValue.Prop prop) {
       String sql =
-          upsertBuilderSupport.updateParam(
-              prop.propertyType, UpsertBuilderSupport.ColumnNameType.NAME);
+          upsertAssemblerSupport.updateParam(
+              prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
       buf.appendSql("values(");
       buf.appendSql(sql);
       buf.appendSql(")");
