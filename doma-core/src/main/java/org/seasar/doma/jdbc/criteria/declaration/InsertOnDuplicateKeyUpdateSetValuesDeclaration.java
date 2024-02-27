@@ -5,11 +5,11 @@ import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
-public class UpsertSetValuesDeclaration {
+public class InsertOnDuplicateKeyUpdateSetValuesDeclaration {
 
   private final InsertContext context;
 
-  public UpsertSetValuesDeclaration(InsertContext context) {
+  public InsertOnDuplicateKeyUpdateSetValuesDeclaration(InsertContext context) {
     this.context = Objects.requireNonNull(context);
   }
 

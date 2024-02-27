@@ -24,9 +24,10 @@ public class InsertDeclaration {
     block.accept(declaration);
   }
 
-  public void upsertSetValues(Consumer<UpsertSetValuesDeclaration> block) {
+  public void upsertSetValues(Consumer<InsertOnDuplicateKeyUpdateSetValuesDeclaration> block) {
     Objects.requireNonNull(block);
-    UpsertSetValuesDeclaration declaration = new UpsertSetValuesDeclaration(context);
+    InsertOnDuplicateKeyUpdateSetValuesDeclaration declaration =
+        new InsertOnDuplicateKeyUpdateSetValuesDeclaration(context);
     block.accept(declaration);
     if (context.onDuplicateContext.setValues.isEmpty()) {
       context.onDuplicateContext.setValues.putAll(context.values);

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
-import org.seasar.doma.jdbc.criteria.declaration.UpsertSetValuesDeclaration;
+import org.seasar.doma.jdbc.criteria.declaration.InsertOnDuplicateKeyUpdateSetValuesDeclaration;
 
 public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet
     extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
@@ -28,7 +28,8 @@ public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet
    * @param block the consumer to set the clause
    * @return terminal statement
    */
-  public NativeSqlUpsertTerminal set(Consumer<UpsertSetValuesDeclaration> block) {
+  public NativeSqlUpsertTerminal set(
+      Consumer<InsertOnDuplicateKeyUpdateSetValuesDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.upsertSetValues(block);
     return new NativeSqlUpsertTerminal(config, declaration);
