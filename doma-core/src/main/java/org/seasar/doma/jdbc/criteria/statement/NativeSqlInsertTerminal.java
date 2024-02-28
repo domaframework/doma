@@ -55,17 +55,12 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
-    PreparedSql sql = getPreparedSql(context, settings);
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
-    query.setQueryTimeout(settings.getQueryTimeout());
-    return new InsertCommand(query);
-  }
-
-  private PreparedSql getPreparedSql(InsertContext context, InsertSettings settings) {
     InsertBuilder builder =
         new InsertBuilder(
             config, context, createCommenter(settings.getComment()), settings.getSqlLogType());
     PreparedSql sql = builder.build();
-    return sql;
+    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
+    query.setQueryTimeout(settings.getQueryTimeout());
+    return new InsertCommand(query);
   }
 }
