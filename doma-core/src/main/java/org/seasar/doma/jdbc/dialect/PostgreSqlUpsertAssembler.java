@@ -32,7 +32,7 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   }
 
   @Override
-  public void build() {
+  public void assemble() {
     buf.appendSql("insert into ");
     tableNameAndAlias(entityType);
     buf.appendSql(" (");

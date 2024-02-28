@@ -12,18 +12,17 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class UpsertAssemblerSupport {
   private final Naming naming;
   private final Dialect dialect;
-  private final UpsertAliasManager aliasManager;
+  private final UpsertAliasConstants aliasConstants;
 
   public UpsertAssemblerSupport(Naming naming, Dialect dialect) {
-    this.naming = Objects.requireNonNull(naming);
-    this.dialect = Objects.requireNonNull(dialect);
-    this.aliasManager = new DefaultUpsertAliasManager();
+    this(naming, dialect, new DefaultUpsertAliasConstants());
   }
 
-  public UpsertAssemblerSupport(Naming naming, Dialect dialect, UpsertAliasManager aliasManager) {
+  public UpsertAssemblerSupport(
+      Naming naming, Dialect dialect, UpsertAliasConstants aliasConstants) {
     this.naming = Objects.requireNonNull(naming);
     this.dialect = Objects.requireNonNull(dialect);
-    this.aliasManager = aliasManager;
+    this.aliasConstants = Objects.requireNonNull(aliasConstants);
   }
 
   public enum TableNameType {
@@ -39,7 +38,7 @@ public class UpsertAssemblerSupport {
     NAME_ALIAS,
   }
 
-  public static class DefaultUpsertAliasManager implements UpsertAliasManager {
+  public static class DefaultUpsertAliasConstants implements UpsertAliasConstants {
     @Override
     public String getTargetAlias() {
       return "target";
@@ -51,7 +50,7 @@ public class UpsertAssemblerSupport {
     }
   }
 
-  public interface UpsertAliasManager {
+  public interface UpsertAliasConstants {
     String getTargetAlias();
 
     String getExcludedAlias();
@@ -62,17 +61,17 @@ public class UpsertAssemblerSupport {
       case NAME:
         return entityType.getQualifiedTableName(naming::apply, dialect::applyQuote);
       case ALIAS:
-        return aliasManager.getTargetAlias();
+        return aliasConstants.getTargetAlias();
       case AS_ALIAS:
-        return " as " + aliasManager.getTargetAlias();
+        return " as " + aliasConstants.getTargetAlias();
       case NAME_ALIAS:
         return entityType.getQualifiedTableName(naming::apply, dialect::applyQuote)
             + " "
-            + aliasManager.getTargetAlias();
+            + aliasConstants.getTargetAlias();
       case NAME_AS_ALIAS:
         return entityType.getQualifiedTableName(naming::apply, dialect::applyQuote)
             + " as "
-            + aliasManager.getTargetAlias();
+            + aliasConstants.getTargetAlias();
       default:
         throw new IllegalArgumentException("Unknown table name type: " + tableNameType);
     }
@@ -82,13 +81,12 @@ public class UpsertAssemblerSupport {
       List<EntityPropertyType<?, ?>> entityPropertyTypes, TableNameType tableNameType) {
     switch (tableNameType) {
       case NAME:
-        throw new UnsupportedOperationException();
-      case ALIAS:
-        return aliasManager.getTargetAlias();
-      case AS_ALIAS:
-        return " as " + aliasManager.getTargetAlias();
       case NAME_ALIAS:
         throw new UnsupportedOperationException();
+      case ALIAS:
+        return aliasConstants.getTargetAlias();
+      case AS_ALIAS:
+        return " as " + aliasConstants.getTargetAlias();
       default:
         throw new IllegalArgumentException("Unknown table name type: " + tableNameType);
     }
@@ -103,7 +101,7 @@ public class UpsertAssemblerSupport {
       case NAME:
         return propertyType.getColumnName(naming::apply, dialect::applyQuote);
       case NAME_ALIAS:
-        return aliasManager.getExcludedAlias()
+        return aliasConstants.getExcludedAlias()
             + "."
             + propertyType.getColumnName(naming::apply, dialect::applyQuote);
       default:
@@ -112,7 +110,7 @@ public class UpsertAssemblerSupport {
   }
 
   public String updateParam(EntityPropertyType<?, ?> propertyType) {
-    return aliasManager.getExcludedAlias()
+    return aliasConstants.getExcludedAlias()
         + "."
         + propertyType.getColumnName(naming::apply, dialect::applyQuote);
   }

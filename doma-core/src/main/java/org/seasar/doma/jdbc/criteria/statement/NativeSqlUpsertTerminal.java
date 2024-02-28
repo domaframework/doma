@@ -89,7 +89,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
         setValues(context.onDuplicateContext.setValues);
 
-    PreparedSqlBuilder sql = buildQuery(settings, context, keys, insertValues, setValues);
+    PreparedSqlBuilder sql = assembleQuery(settings, context, keys, insertValues, setValues);
     return sql.build(createCommenter(settings.getComment()));
   }
 
@@ -121,7 +121,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
     return propertyMetamodels.stream().map(PropertyMetamodel::asType).collect(toList());
   }
 
-  private PreparedSqlBuilder buildQuery(
+  private PreparedSqlBuilder assembleQuery(
       InsertSettings settings,
       InsertContext context,
       List<EntityPropertyType<?, ?>> keys,
@@ -140,7 +140,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
             insertValues,
             setValues);
     UpsertAssembler upsertQuery = config.getDialect().getUpsertAssembler(upsertAssemblerContext);
-    upsertQuery.build();
+    upsertQuery.assemble();
     return sql;
   }
 

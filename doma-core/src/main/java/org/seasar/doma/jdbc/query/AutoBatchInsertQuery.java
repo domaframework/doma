@@ -197,7 +197,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             targetPropertyTypes,
             currentEntity);
     UpsertAssembler upsertAssemblerQuery = dialect.getUpsertAssembler(context);
-    upsertAssemblerQuery.build();
+    upsertAssemblerQuery.assemble();
   }
 
   @Override

@@ -164,7 +164,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
             targetPropertyTypes,
             entity);
     UpsertAssembler upsertAssemblerQuery = dialect.getUpsertAssembler(context);
-    upsertAssemblerQuery.build();
+    upsertAssemblerQuery.assemble();
     sql = builder.build(this::comment);
   }
 
