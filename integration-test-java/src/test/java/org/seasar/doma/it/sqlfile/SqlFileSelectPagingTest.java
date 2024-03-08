@@ -70,6 +70,18 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
+  public void testLimitOnly_distinct(Config config) throws Exception {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
+    List<Employee> employees = dao.selectDistinctAll(SelectOptions.get().limit(5));
+    assertEquals(5, employees.size());
+    assertEquals(Integer.valueOf(1), employees.get(0).getEmployeeId());
+    assertEquals(Integer.valueOf(2), employees.get(1).getEmployeeId());
+    assertEquals(Integer.valueOf(3), employees.get(2).getEmployeeId());
+    assertEquals(Integer.valueOf(4), employees.get(3).getEmployeeId());
+    assertEquals(Integer.valueOf(5), employees.get(4).getEmployeeId());
+  }
+
+  @Test
   public void testOffsetOnly(Config config) throws Exception {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().offset(10));

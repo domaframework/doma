@@ -1,0 +1,1 @@
+select distinct * from EMPLOYEE order by EMPLOYEE_ID

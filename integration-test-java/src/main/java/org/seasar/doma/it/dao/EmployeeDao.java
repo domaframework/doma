@@ -69,6 +69,9 @@ public interface EmployeeDao {
   @Select
   List<Employee> selectAll(SelectOptions options);
 
+  @Select
+  List<Employee> selectDistinctAll(SelectOptions options);
+
   @Select(ensureResultMapping = true)
   List<Employee> selectOnlyNameWithMappingCheck();
 

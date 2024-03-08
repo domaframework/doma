@@ -12,6 +12,7 @@ import org.seasar.doma.internal.jdbc.sql.node.AppendableSqlNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
@@ -129,6 +130,11 @@ public class SqlParser {
         case OPTION_WORD:
           {
             parseOptionWord();
+            break;
+          }
+        case DISTINCT_WORD:
+          {
+            parseDistinctWord();
             break;
           }
         case UPDATE_WORD:
@@ -397,6 +403,11 @@ public class SqlParser {
 
   protected void parseWord() {
     WordNode node = new WordNode(token);
+    appendNode(node);
+  }
+
+  protected void parseDistinctWord() {
+    DistinctNode node = new DistinctNode(token);
     appendNode(node);
   }
 

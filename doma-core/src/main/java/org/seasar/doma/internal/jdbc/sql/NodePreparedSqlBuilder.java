@@ -26,6 +26,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
@@ -686,6 +687,12 @@ public class NodePreparedSqlBuilder
     p.appendRawSql(word);
     p.appendFormattedSql(word);
     return null;
+  }
+
+  @Override
+  public Void visitDistinctNode(DistinctNode node, Context context) {
+    WordNode wordNode = node.getWordNode();
+    return wordNode.accept(this, context);
   }
 
   @Override

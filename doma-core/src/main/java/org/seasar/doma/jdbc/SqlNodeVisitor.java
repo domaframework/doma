@@ -18,6 +18,8 @@ public interface SqlNodeVisitor<R, P> {
 
   R visitCommentNode(CommentNode node, P p);
 
+  R visitDistinctNode(DistinctNode node, P p);
+
   R visitElseifNode(ElseifNode node, P p);
 
   R visitElseNode(ElseNode node, P p);

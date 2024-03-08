@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.CLOSED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DISTINCT_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EMBEDDED_VARIABLE_BLOCK_COMMENT;
@@ -243,6 +244,18 @@ public class SqlTokenizer {
       type = OPTION_WORD;
       buf.position(buf.position() - 2);
       return;
+    } else if ((c == 'd' || c == 'D')
+        && (c2 == 'i' || c2 == 'I')
+        && (c3 == 's' || c3 == 'S')
+        && (c4 == 't' || c4 == 'T')
+        && (c5 == 'i' || c5 == 'I')
+        && (c6 == 'n' || c6 == 'N')
+        && (c7 == 'c' || c7 == 'C')
+        && (c8 == 't' || c8 == 'T')) {
+      type = DISTINCT_WORD;
+      if (isWordTerminated()) {
+        return;
+      }
     }
     buf.position(buf.position() - 1);
     peekSevenChars(c, c2, c3, c4, c5, c6, c7);
