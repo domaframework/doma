@@ -44,7 +44,7 @@ public class AutoBatchModifyQueryMetaFactory
     AutoBatchModifyQueryMeta queryMeta = new AutoBatchModifyQueryMeta(daoElement, methodElement);
     BatchModifyAnnot batchModifyAnnot = ctx.getAnnotations().newBatchInsertAnnot(methodElement);
     if (batchModifyAnnot != null && !batchModifyAnnot.getSqlFileValue()) {
-      DuplicateKeyType duplicateKeyType = batchModifyAnnot.getDuplicateKeyType();
+      DuplicateKeyType duplicateKeyType = batchModifyAnnot.getDuplicateKeyValue();
       queryMeta.setBatchModifyAnnot(batchModifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_BATCH_INSERT);
       queryMeta.setDuplicateKeyType(duplicateKeyType);

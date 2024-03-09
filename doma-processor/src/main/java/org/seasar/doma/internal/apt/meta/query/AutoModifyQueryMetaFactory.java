@@ -42,7 +42,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(daoElement, methodElement);
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      DuplicateKeyType duplicateKeyType = modifyAnnot.getDuplicateKeyType();
+      DuplicateKeyType duplicateKeyType = modifyAnnot.getDuplicateKeyValue();
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
       queryMeta.setDuplicateKeyType(duplicateKeyType);

@@ -20,6 +20,7 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final List<EntityPropertyType<?, ?>> keys;
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
+  private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
 
   public PostgreSqlUpsertAssembler(UpsertAssemblerContext context) {
     this.buf = context.buf;
@@ -61,7 +62,7 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
       for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
         column(setValue.component1());
         buf.appendSql(" = ");
-        setValue.component2().accept(new UpsertSetValueVisitor());
+        setValue.component2().accept(upsertSetValueVisitor);
         buf.appendSql(", ");
       }
       buf.cutBackSql(2);

@@ -101,7 +101,7 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     return ignoreGeneratedKeys;
   }
 
-  public DuplicateKeyType getDuplicateKeyType() {
+  public DuplicateKeyType getDuplicateKeyValue() {
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(duplicateKeyType);
     if (enumConstant == null) {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
