@@ -3,6 +3,7 @@ package org.seasar.doma.internal.jdbc.sql;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
@@ -54,6 +55,11 @@ public class SimpleSqlNodeVisitor<R, P> implements SqlNodeVisitor<R, P> {
 
   @Override
   public R visitCommentNode(CommentNode node, P p) {
+    return defaultAction(node, p);
+  }
+
+  @Override
+  public R visitDistinctNode(DistinctNode node, P p) {
     return defaultAction(node, p);
   }
 
