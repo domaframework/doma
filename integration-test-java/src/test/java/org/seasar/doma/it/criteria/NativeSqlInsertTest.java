@@ -5,9 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
-import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
@@ -72,7 +70,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyUpdate_duplicate() {
     Department_ d = new Department_();
 
@@ -112,7 +109,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyUpdate_nonDuplicate() {
     Department_ d = new Department_();
 
@@ -148,7 +144,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyUpdate_emptyKey() {
     Department_ d = new Department_();
 
@@ -187,7 +182,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyUpdate_emptySetValue() {
     Department_ d = new Department_();
 
@@ -221,7 +215,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyUpdate_emptyKey_emptySetValue() {
     Department_ d = new Department_();
 
@@ -254,7 +247,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyIgnore_duplicate() {
     Department_ d = new Department_();
 
@@ -284,7 +276,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyIgnore_nonDuplicate() {
     Department_ d = new Department_();
 
@@ -314,7 +305,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   void insert_onDuplicateKeyIgnore_emptyKey() {
     Department_ d = new Department_();
 

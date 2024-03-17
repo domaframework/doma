@@ -370,7 +370,7 @@ public class EntityqlSelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
   void where_in3() {
     Employee_ e = new Employee_();
 
@@ -392,7 +392,7 @@ public class EntityqlSelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
   void where_in3_subQuery() {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();

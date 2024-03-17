@@ -10,9 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
-import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -69,7 +67,6 @@ public class EntityqlBatchInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void batch_onDuplicateKeyUpdate() {
     Department_ d = new Department_();
 
@@ -109,7 +106,6 @@ public class EntityqlBatchInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void batch_onDuplicateKeyIgnore() {
     Department_ d = new Department_();
 

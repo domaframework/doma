@@ -331,7 +331,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -355,7 +354,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -385,7 +383,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -409,7 +406,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
