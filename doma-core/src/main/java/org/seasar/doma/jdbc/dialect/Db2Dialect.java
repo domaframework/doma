@@ -21,6 +21,8 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.query.AliasManager;
 import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for Db2. */
 public class Db2Dialect extends StandardDialect {
@@ -194,5 +196,10 @@ public class Db2Dialect extends StandardDialect {
             }
           });
     }
+  }
+
+  @Override
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new Db2UpsertAssembler(context);
   }
 }
