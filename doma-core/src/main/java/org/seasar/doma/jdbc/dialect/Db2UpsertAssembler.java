@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.dialect;
 
+import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
@@ -10,8 +11,6 @@ import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
-
-import java.util.List;
 
 public class Db2UpsertAssembler implements UpsertAssembler {
   private final PreparedSqlBuilder buf;
