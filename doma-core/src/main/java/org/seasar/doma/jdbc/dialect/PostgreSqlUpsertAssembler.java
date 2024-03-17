@@ -71,13 +71,13 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
 
   private void tableNameAndAlias(EntityType<?> entityType) {
     String sql =
-        this.upsertAssemblerSupport.table(
+        this.upsertAssemblerSupport.targetTable(
             entityType, UpsertAssemblerSupport.TableNameType.NAME_AS_ALIAS);
     buf.appendSql(sql);
   }
 
   private void column(EntityPropertyType<?, ?> propertyType) {
-    String sql = this.upsertAssemblerSupport.column(propertyType);
+    String sql = this.upsertAssemblerSupport.prop(propertyType);
     buf.appendSql(sql);
   }
 
@@ -90,7 +90,7 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
     @Override
     public void visit(UpsertSetValue.Prop prop) {
       String sql =
-          upsertAssemblerSupport.updateParam(
+          upsertAssemblerSupport.excludeProp(
               prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
       buf.appendSql(sql);
     }

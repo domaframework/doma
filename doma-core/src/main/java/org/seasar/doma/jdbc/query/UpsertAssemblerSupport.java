@@ -56,7 +56,7 @@ public class UpsertAssemblerSupport {
     String getExcludedAlias();
   }
 
-  public String table(EntityType<?> entityType, TableNameType tableNameType) {
+  public String targetTable(EntityType<?> entityType, TableNameType tableNameType) {
     switch (tableNameType) {
       case NAME:
         return entityType.getQualifiedTableName(naming::apply, dialect::applyQuote);
@@ -77,7 +77,7 @@ public class UpsertAssemblerSupport {
     }
   }
 
-  public String table(
+  public String targetTable(
       List<EntityPropertyType<?, ?>> entityPropertyTypes, TableNameType tableNameType) {
     switch (tableNameType) {
       case NAME:
@@ -92,11 +92,24 @@ public class UpsertAssemblerSupport {
     }
   }
 
-  public String column(EntityPropertyType<?, ?> propertyType) {
-    return propertyType.getColumnName(naming::apply, dialect::applyQuote);
+  public String targetProp(EntityPropertyType<?, ?> propertyType, ColumnNameType columnNameType) {
+    switch (columnNameType) {
+      case NAME:
+        return propertyType.getColumnName(naming::apply, dialect::applyQuote);
+      case NAME_ALIAS:
+        return aliasConstants.getTargetAlias()
+            + "."
+            + propertyType.getColumnName(naming::apply, dialect::applyQuote);
+      default:
+        throw new IllegalArgumentException("Unknown table name type: " + columnNameType);
+    }
   }
 
-  public String updateParam(EntityPropertyType<?, ?> propertyType, ColumnNameType columnNameType) {
+  public String excludeAlias() {
+    return aliasConstants.getExcludedAlias();
+  }
+
+  public String excludeProp(EntityPropertyType<?, ?> propertyType, ColumnNameType columnNameType) {
     switch (columnNameType) {
       case NAME:
         return propertyType.getColumnName(naming::apply, dialect::applyQuote);
@@ -109,10 +122,8 @@ public class UpsertAssemblerSupport {
     }
   }
 
-  public String updateParam(EntityPropertyType<?, ?> propertyType) {
-    return aliasConstants.getExcludedAlias()
-        + "."
-        + propertyType.getColumnName(naming::apply, dialect::applyQuote);
+  public String prop(EntityPropertyType<?, ?> propertyType) {
+    return propertyType.getColumnName(naming::apply, dialect::applyQuote);
   }
 
   public InParameter<?> param(

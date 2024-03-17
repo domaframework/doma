@@ -12,19 +12,21 @@ import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
-public class MysqlUpsertAssembler implements UpsertAssembler {
+public class H2UpsertAssembler implements UpsertAssembler {
   private final PreparedSqlBuilder buf;
   private final EntityType<?> entityType;
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
+  private final List<EntityPropertyType<?, ?>> keys;
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
 
-  public MysqlUpsertAssembler(UpsertAssemblerContext context) {
+  public H2UpsertAssembler(UpsertAssemblerContext context) {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
+    this.keys = context.keys;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
@@ -32,13 +34,21 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
 
   @Override
   public void assemble() {
-    buf.appendSql("insert");
-    if (duplicateKeyType == DuplicateKeyType.IGNORE) {
-      buf.appendSql(" ignore");
+    buf.appendSql("merge into ");
+    tableNameAndAlias(entityType);
+    buf.appendSql(" using (");
+    excludeQuery();
+    buf.appendSql(") as ");
+    excludeAlias();
+    buf.appendSql(" on ");
+    for (EntityPropertyType<?, ?> key : keys) {
+      targetColumn(key);
+      buf.appendSql(" = ");
+      assignmentColumn(key);
+      buf.appendSql(" and ");
     }
-    buf.appendSql(" into ");
-    tableNameOnly(entityType);
-    buf.appendSql(" (");
+    buf.cutBackSql(5);
+    buf.appendSql(" when not matched then insert (");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
       column(insertValue.component1());
       buf.appendSql(", ");
@@ -46,15 +56,15 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     buf.cutBackSql(2);
     buf.appendSql(") values (");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
-      buf.appendParameter(insertValue.component2());
+      assignmentColumn(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(") ");
+    buf.appendSql(")");
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
-      buf.appendSql(" on duplicate key update ");
+      buf.appendSql(" when matched then update set ");
       for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
-        column(setValue.component1());
+        targetColumn(setValue.component1());
         buf.appendSql(" = ");
         setValue.component2().accept(upsertSetValueVisitor);
         buf.appendSql(", ");
@@ -63,15 +73,58 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     }
   }
 
-  private void tableNameOnly(EntityType<?> entityType) {
+  private void excludeQuery() {
+    buf.appendSql("select ");
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+      column(insertValue.component1());
+      buf.appendSql(", ");
+    }
+    buf.cutBackSql(2);
+    buf.appendSql(" from values (");
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+      buf.appendParameter(insertValue.component2());
+      buf.appendSql(", ");
+    }
+    buf.cutBackSql(2);
+    buf.appendSql(") as x (");
+    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+      column(insertValue.component1());
+      buf.appendSql(", ");
+    }
+    buf.cutBackSql(2);
+    buf.appendSql(")");
+  }
+
+  private void tableNameAndAlias(EntityType<?> entityType) {
     String sql =
         this.upsertAssemblerSupport.targetTable(
-            entityType, UpsertAssemblerSupport.TableNameType.NAME);
+            entityType, UpsertAssemblerSupport.TableNameType.NAME_AS_ALIAS);
+    buf.appendSql(sql);
+  }
+
+  private void excludeAlias() {
+    String sql = this.upsertAssemblerSupport.excludeAlias();
+    buf.appendSql(sql);
+  }
+
+  private void targetColumn(EntityPropertyType<?, ?> propertyType) {
+    String sql =
+        this.upsertAssemblerSupport.targetProp(
+            propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
+    buf.appendSql(sql);
+  }
+
+  private void assignmentColumn(EntityPropertyType<?, ?> propertyType) {
+    String sql =
+        this.upsertAssemblerSupport.excludeProp(
+            propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
     buf.appendSql(sql);
   }
 
   private void column(EntityPropertyType<?, ?> propertyType) {
-    String sql = this.upsertAssemblerSupport.prop(propertyType);
+    String sql =
+        this.upsertAssemblerSupport.excludeProp(
+            propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
     buf.appendSql(sql);
   }
 
@@ -85,10 +138,8 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     public void visit(UpsertSetValue.Prop prop) {
       String sql =
           upsertAssemblerSupport.excludeProp(
-              prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
-      buf.appendSql("values(");
+              prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
       buf.appendSql(sql);
-      buf.appendSql(")");
     }
   }
 }
