@@ -39,9 +39,9 @@ public class Db2UpsertAssembler implements UpsertAssembler {
     tableNameAndAlias(entityType);
     buf.appendSql(" using (");
     excludeQuery();
-    buf.appendSql(") as ");
+    buf.appendSql(") ");
     excludeAlias();
-    buf.appendSql(" on ");
+    buf.appendSql(" on (");
     for (EntityPropertyType<?, ?> key : keys) {
       targetColumn(key);
       buf.appendSql(" = ");
@@ -49,7 +49,7 @@ public class Db2UpsertAssembler implements UpsertAssembler {
       buf.appendSql(" and ");
     }
     buf.cutBackSql(5);
-    buf.appendSql(" when not matched then insert (");
+    buf.appendSql(") when not matched then insert (");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
       column(insertValue.component1());
       buf.appendSql(", ");
@@ -77,25 +77,19 @@ public class Db2UpsertAssembler implements UpsertAssembler {
   private void excludeQuery() {
     buf.appendSql("select ");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
-      column(insertValue.component1());
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(" from values (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
       buf.appendParameter(insertValue.component2());
       buf.appendSql(" as ");
       column(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(") as dual");
+    buf.appendSql(" from dual");
   }
 
   private void tableNameAndAlias(EntityType<?> entityType) {
     String sql =
         this.upsertAssemblerSupport.targetTable(
-            entityType, UpsertAssemblerSupport.TableNameType.NAME_AS_ALIAS);
+            entityType, UpsertAssemblerSupport.TableNameType.NAME_ALIAS);
     buf.appendSql(sql);
   }
 
