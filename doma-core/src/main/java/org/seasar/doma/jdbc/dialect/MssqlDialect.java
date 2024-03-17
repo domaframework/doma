@@ -13,6 +13,8 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for Microsoft SQL Server. */
 public class MssqlDialect extends Mssql2008Dialect {
@@ -133,4 +135,9 @@ public class MssqlDialect extends Mssql2008Dialect {
   }
 
   public static class MssqlScriptBlockContext extends Mssql2008ScriptBlockContext {}
+
+  @Override
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new MssqlUpsertAssembler(context);
+  }
 }
