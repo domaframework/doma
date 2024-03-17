@@ -7,6 +7,7 @@ import org.seasar.doma.jdbc.entity.PostUpdateContext;
 import org.seasar.doma.jdbc.entity.PreDeleteContext;
 import org.seasar.doma.jdbc.entity.PreInsertContext;
 import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class DeptListener implements EntityListener<Dept> {
 
@@ -28,7 +29,7 @@ public class DeptListener implements EntityListener<Dept> {
         new Dept(
             entity.departmentId,
             entity.departmentNo,
-            entity.departmentName + "_preI",
+            entity.departmentName + "_preI(" + initialLetters(context.getDuplicateKeyType()) + ")",
             entity.location,
             entity.version);
     context.setNewEntity(newEntity);
@@ -52,7 +53,7 @@ public class DeptListener implements EntityListener<Dept> {
         new Dept(
             entity.departmentId,
             entity.departmentNo,
-            entity.departmentName + "_postI",
+            entity.departmentName + "_postI(" + initialLetters(context.getDuplicateKeyType()) + ")",
             entity.location,
             entity.version);
     context.setNewEntity(newEntity);
@@ -80,5 +81,9 @@ public class DeptListener implements EntityListener<Dept> {
             entity.location,
             entity.version);
     context.setNewEntity(newEntity);
+  }
+
+  private String initialLetters(DuplicateKeyType duplicateKeyType) {
+    return duplicateKeyType.name().substring(0, 1);
   }
 }

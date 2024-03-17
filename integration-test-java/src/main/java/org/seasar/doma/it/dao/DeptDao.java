@@ -10,6 +10,7 @@ import org.seasar.doma.Update;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Result;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 @Dao
 public interface DeptDao {
@@ -40,4 +41,16 @@ public interface DeptDao {
 
   @BatchUpdate(sqlFile = true)
   BatchResult<Dept> updateBySqlFile(List<Dept> entity);
+
+  @Insert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  Result<Dept> insertOnDuplicateKeyUpdate(Dept entity);
+
+  @BatchInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  BatchResult<Dept> insertOnDuplicateKeyUpdate(List<Dept> entities);
+
+  @Insert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  Result<Dept> insertOnDuplicateKeyIgnore(Dept entity);
+
+  @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  BatchResult<Dept> insertOnDuplicateKeyIgnore(List<Dept> entities);
 }

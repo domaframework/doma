@@ -93,12 +93,12 @@ public class AutoInsertTest {
     assertEquals(1, result.getCount());
     dept = result.getEntity();
     assertEquals(Integer.valueOf(1), dept.getVersion());
-    assertEquals("hoge_preI_postI", dept.getDepartmentName());
+    assertEquals("hoge_preI(E)_postI(E)", dept.getDepartmentName());
 
     dept = dao.selectById(Integer.valueOf(99));
     assertEquals(Integer.valueOf(99), dept.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(99), dept.getDepartmentNo());
-    assertEquals("hoge_preI", dept.getDepartmentName());
+    assertEquals("hoge_preI(E)", dept.getDepartmentName());
     assertEquals("foo", dept.getLocation().getValue());
     assertEquals(Integer.valueOf(1), dept.getVersion());
   }
@@ -333,81 +333,102 @@ public class AutoInsertTest {
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) throws Exception {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    Department department = new Department();
-    department.setDepartmentId(new Identity<>(5));
-    department.setDepartmentNo(50);
-    department.setDepartmentName("PLANNING");
-    department.setLocation(new Location<>("TOKYO"));
-    int result = dao.insertOnDuplicateKeyUpdate(department);
-    assertEquals(1, result);
-    assertEquals(Integer.valueOf(1), department.getVersion());
-    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Result<Dept> result = dao.insertOnDuplicateKeyUpdate(dept);
+    // insert result entities
+    Dept resultDept = result.component1();
+    assertEquals(Integer.valueOf(5), resultDept.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(50), resultDept.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)_postI(U)", resultDept.getDepartmentName());
+    assertEquals("TOKYO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    assertEquals(1, result.component2()); // inserted
+    // reload from database
+    Dept reloadDept = dao.selectById(dept.getDepartmentId().getValue());
     // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation().getValue());
+    assertEquals(50, reloadDept.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)", reloadDept.getDepartmentName());
+    assertEquals("TOKYO", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
   }
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) throws Exception {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    Department department = new Department();
-    department.setDepartmentId(new Identity<>(1));
-    department.setDepartmentNo(60);
-    department.setDepartmentName("DEVELOPMENT");
-    department.setLocation(new Location<>("KYOTO"));
-    int result = dao.insertOnDuplicateKeyUpdate(department);
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Result<Dept> result = dao.insertOnDuplicateKeyUpdate(dept);
+    // insert result entities
+    Dept resultDept = result.component1();
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(60), resultDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)_postI(U)", resultDept.getDepartmentName());
+    assertEquals("KYOTO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    // updated
     if (config.getDialect().getName().equals("mysql")
         || config.getDialect().getName().equals("mariadb")) {
-      assertEquals(2, result);
+      assertEquals(2, result.component2());
     } else {
-      assertEquals(1, result);
+      assertEquals(1, result.component2());
     }
-    assertEquals(Integer.valueOf(1), department.getVersion());
-    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    // reload from database
+    Dept reloadDept = dao.selectById(dept.getDepartmentId().getValue());
     // updated
-    assertEquals(60, resultDepartment.getDepartmentNo());
-    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
-    assertEquals("KYOTO", resultDepartment.getLocation().getValue());
+    assertEquals(60, reloadDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept.getDepartmentName());
+    assertEquals("KYOTO", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
   }
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) throws Exception {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    Department department = new Department();
-    department.setDepartmentId(new Identity<>(5));
-    department.setDepartmentNo(50);
-    department.setDepartmentName("PLANNING");
-    department.setLocation(new Location<>("TOKYO"));
-    int result = dao.insertOnDuplicateKeyIgnore(department);
-    assertEquals(1, result);
-    assertEquals(Integer.valueOf(1), department.getVersion());
-    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Result<Dept> result = dao.insertOnDuplicateKeyIgnore(dept);
+    // insert result entities
+    Dept resultDept = result.component1();
+    assertEquals(Integer.valueOf(5), resultDept.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(50), resultDept.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)_postI(I)", resultDept.getDepartmentName());
+    assertEquals("TOKYO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    assertEquals(1, result.component2()); // inserted
+    // reload from database
+    Dept reloadDept = dao.selectById(dept.getDepartmentId().getValue());
     // inserted
-    assertEquals(50, resultDepartment.getDepartmentNo());
-    assertEquals("PLANNING", resultDepartment.getDepartmentName());
-    assertEquals("TOKYO", resultDepartment.getLocation().getValue());
+    assertEquals(50, reloadDept.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)", reloadDept.getDepartmentName());
+    assertEquals("TOKYO", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
   }
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.POSTGRESQL}) // TODO: Implement it to work in other dialects
   public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) throws Exception {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    Department department = new Department();
-    department.setDepartmentId(new Identity<>(1));
-    department.setDepartmentNo(60);
-    department.setDepartmentName("DEVELOPMENT");
-    department.setLocation(new Location<>("KYOTO"));
-    int result = dao.insertOnDuplicateKeyIgnore(department);
-    assertEquals(0, result);
-    assertEquals(Integer.valueOf(1), department.getVersion());
-    Department resultDepartment = dao.selectById(department.getDepartmentId().getValue());
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Result<Dept> result = dao.insertOnDuplicateKeyIgnore(dept);
+    // insert result entities
+    Dept resultDept = result.component1();
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(60), resultDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(I)_postI(I)", resultDept.getDepartmentName());
+    assertEquals("KYOTO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    assertEquals(0, result.component2()); // ignored
+    // reload from database
+    Dept reloadDept = dao.selectById(dept.getDepartmentId().getValue());
     // ignored
-    assertEquals(10, resultDepartment.getDepartmentNo());
-    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
-    assertEquals("NEW YORK", resultDepartment.getLocation().getValue());
+    assertEquals(10, reloadDept.getDepartmentNo());
+    assertEquals("ACCOUNTING", reloadDept.getDepartmentName());
+    assertEquals("NEW YORK", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
   }
 }
