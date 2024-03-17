@@ -69,6 +69,7 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
       }
       buf.cutBackSql(2);
     }
+    buf.appendSql(";");
   }
 
   private void excludeQuery() {
@@ -78,11 +79,11 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(") as ");
+    buf.appendSql(")) as ");
     excludeAlias();
     buf.appendSql(" (");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
-      buf.appendParameter(insertValue.component2());
+      column(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
