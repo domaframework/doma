@@ -12,8 +12,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.query.UpsertAssembler;
-import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for SQLite. */
 public class SqliteDialect extends StandardDialect {
@@ -124,10 +122,5 @@ public class SqliteDialect extends StandardDialect {
     protected SqliteExpressionFunctions(char escapeChar, char[] wildcards) {
       super(escapeChar, wildcards);
     }
-  }
-
-  @Override
-  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
-    return new SqliteUpsertAssembler(context);
   }
 }

@@ -12,8 +12,6 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.query.UpsertAssembler;
-import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for HSQLDB. */
 public class HsqldbDialect extends StandardDialect {
@@ -142,10 +140,5 @@ public class HsqldbDialect extends StandardDialect {
     protected HsqldbExpressionFunctions(char escapeChar, char[] wildcards) {
       super(escapeChar, wildcards);
     }
-  }
-
-  @Override
-  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
-    return new HsqldbUpsertAssembler(context);
   }
 }
