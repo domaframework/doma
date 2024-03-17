@@ -12,6 +12,7 @@ import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
+// Same as PostgreSqlUpsertAssembler
 public class SqliteUpsertAssembler implements UpsertAssembler {
   private final PreparedSqlBuilder buf;
   private final EntityType<?> entityType;
