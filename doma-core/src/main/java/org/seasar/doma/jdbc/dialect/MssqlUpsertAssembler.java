@@ -42,7 +42,7 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     for (EntityPropertyType<?, ?> key : keys) {
       targetColumn(key);
       buf.appendSql(" = ");
-      assignmentColumn(key);
+      excludeColumn(key);
       buf.appendSql(" and ");
     }
     buf.cutBackSql(5);
@@ -54,7 +54,7 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     buf.cutBackSql(2);
     buf.appendSql(") values (");
     for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
-      assignmentColumn(insertValue.component1());
+      excludeColumn(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
@@ -109,7 +109,7 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(sql);
   }
 
-  private void assignmentColumn(EntityPropertyType<?, ?> propertyType) {
+  private void excludeColumn(EntityPropertyType<?, ?> propertyType) {
     String sql =
         this.upsertAssemblerSupport.excludeProp(
             propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
