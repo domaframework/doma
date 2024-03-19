@@ -247,6 +247,48 @@ public class NativeSqlInsertTest {
   }
 
   @Test
+  void insert_onDuplicateKeyUpdate_compositeKey() {
+    CompKeyDepartment_ d = new CompKeyDepartment_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId1, 1);
+                  c.value(d.departmentId2, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId1, d.departmentId2)
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    CompKeyDepartment resultDepartment =
+        nativeSql
+            .from(d)
+            .where(
+                c -> {
+                  c.eq(d.departmentId1, 1);
+                  c.eq(d.departmentId2, 1);
+                })
+            .fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
   void insert_onDuplicateKeyIgnore_duplicate() {
     Department_ d = new Department_();
 
@@ -325,6 +367,44 @@ public class NativeSqlInsertTest {
     assertEquals(0, count);
 
     Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation());
+    assertEquals(1, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_compositeKey() {
+    CompKeyDepartment_ d = new CompKeyDepartment_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId1, 1);
+                  c.value(d.departmentId2, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId1, d.departmentId2)
+            .execute();
+
+    assertEquals(0, count);
+
+    CompKeyDepartment resultDepartment =
+        nativeSql
+            .from(d)
+            .where(
+                c -> {
+                  c.eq(d.departmentId1, 1);
+                  c.eq(d.departmentId2, 1);
+                })
+            .fetchOne();
     // ignored
     assertEquals(10, resultDepartment.getDepartmentNo());
     assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());

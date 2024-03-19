@@ -23,6 +23,8 @@ import org.seasar.doma.it.dao.BusinessmanDao;
 import org.seasar.doma.it.dao.BusinessmanDaoImpl;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
+import org.seasar.doma.it.dao.CompKeyDeptDao;
+import org.seasar.doma.it.dao.CompKeyDeptDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
@@ -47,6 +49,7 @@ import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.embeddable.StaffInfo;
 import org.seasar.doma.it.entity.Businessman;
 import org.seasar.doma.it.entity.CompKeyDepartment;
+import org.seasar.doma.it.entity.CompKeyDept;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
@@ -383,6 +386,39 @@ public class AutoInsertTest {
   }
 
   @Test
+  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
+    CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
+    CompKeyDept dept =
+        new CompKeyDept(
+            new Identity<>(1), new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Result<CompKeyDept> result = dao.insertOnDuplicateKeyUpdate(dept);
+    // insert result entities
+    CompKeyDept resultDept = result.component1();
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId2().getValue());
+    assertEquals(Integer.valueOf(60), resultDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)_postI(U)", resultDept.getDepartmentName());
+    assertEquals("KYOTO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    // updated
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(2, result.component2());
+    } else {
+      assertEquals(1, result.component2());
+    }
+    // reload from database
+    CompKeyDept reloadDept =
+        dao.selectByIds(dept.getDepartmentId1().getValue(), dept.getDepartmentId2().getValue());
+    // updated
+    assertEquals(60, reloadDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept.getDepartmentName());
+    assertEquals("KYOTO", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
+  }
+
+  @Test
   public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -421,6 +457,33 @@ public class AutoInsertTest {
     assertEquals(0, result.component2()); // ignored
     // reload from database
     Dept reloadDept = dao.selectById(dept.getDepartmentId().getValue());
+    // ignored
+    assertEquals(10, reloadDept.getDepartmentNo());
+    assertEquals("ACCOUNTING", reloadDept.getDepartmentName());
+    assertEquals("NEW YORK", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
+  }
+
+  @Test
+  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
+    CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
+    CompKeyDept dept =
+        new CompKeyDept(
+            new Identity<>(1), new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Result<CompKeyDept> result = dao.insertOnDuplicateKeyIgnore(dept);
+    // insert result entities
+    CompKeyDept resultDept = result.component1();
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getDepartmentId2().getValue());
+    assertEquals(Integer.valueOf(60), resultDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(I)_postI(I)", resultDept.getDepartmentName());
+    assertEquals("KYOTO", resultDept.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept.getVersion());
+    // insert result count
+    assertEquals(0, result.component2()); // ignored
+    // reload from database
+    CompKeyDept reloadDept =
+        dao.selectByIds(dept.getDepartmentId1().getValue(), dept.getDepartmentId2().getValue());
     // ignored
     assertEquals(10, reloadDept.getDepartmentNo());
     assertEquals("ACCOUNTING", reloadDept.getDepartmentName());
