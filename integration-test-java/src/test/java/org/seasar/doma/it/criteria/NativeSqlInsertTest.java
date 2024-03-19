@@ -144,7 +144,7 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  void insert_onDuplicateKeyUpdate_emptyKey() {
+  void insert_onDuplicateKeyUpdate_unsetKey() {
     Department_ d = new Department_();
 
     int count =
@@ -182,7 +182,7 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  void insert_onDuplicateKeyUpdate_emptySetValue() {
+  void insert_onDuplicateKeyUpdate_unsetSetValue() {
     Department_ d = new Department_();
 
     int count =
@@ -215,7 +215,7 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  void insert_onDuplicateKeyUpdate_emptyKey_emptySetValue() {
+  void insert_onDuplicateKeyUpdate_unsetKey_unsetSetValue() {
     Department_ d = new Department_();
 
     int count =
@@ -305,7 +305,7 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  void insert_onDuplicateKeyIgnore_emptyKey() {
+  void insert_onDuplicateKeyIgnore_unsetKey() {
     Department_ d = new Department_();
 
     int count =
