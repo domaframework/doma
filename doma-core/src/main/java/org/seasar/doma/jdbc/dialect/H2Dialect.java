@@ -3,6 +3,8 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for H2 version 1.4.200 and above. */
 public class H2Dialect extends H214199Dialect {
@@ -57,5 +59,10 @@ public class H2Dialect extends H214199Dialect {
     protected H2ExpressionFunctions(char escapeChar, char[] wildcards) {
       super(escapeChar, wildcards);
     }
+  }
+
+  @Override
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new H2UpsertAssembler(context);
   }
 }

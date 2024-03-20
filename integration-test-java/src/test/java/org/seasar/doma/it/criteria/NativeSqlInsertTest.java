@@ -9,14 +9,17 @@ import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class NativeSqlInsertTest {
 
   private final NativeSql nativeSql;
+  private final Dialect dialect;
 
   public NativeSqlInsertTest(Config config) {
     this.nativeSql = new NativeSql(config);
+    this.dialect = config.getDialect();
   }
 
   @Test
@@ -64,6 +67,349 @@ public class NativeSqlInsertTest {
             .execute();
 
     assertEquals(1, count);
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_duplicate() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId)
+            .set(
+                c -> {
+                  c.value(d.departmentName, c.excluded(d.departmentName));
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 3);
+                })
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(10, resultDepartment.getDepartmentNo()); // not updated
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(3, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_nonDuplicate() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 5);
+                  c.value(d.departmentNo, 50);
+                  c.value(d.departmentName, "PLANNING");
+                  c.value(d.location, "TOKYO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId)
+            .set(
+                c -> {
+                  c.value(d.departmentName, c.excluded(d.departmentName));
+                  c.value(d.location, "TOKYO");
+                  c.value(d.version, 2);
+                })
+            .execute();
+
+    assertEquals(1, count);
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_unsetKey() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .set(
+                c -> {
+                  c.value(d.departmentName, c.excluded(d.departmentName));
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 3);
+                })
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(10, resultDepartment.getDepartmentNo()); // not updated
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(3, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_unsetSetValue() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId)
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_unsetKey_unsetSetValue() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyUpdate_compositeKey() {
+    CompKeyDepartment_ d = new CompKeyDepartment_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId1, 1);
+                  c.value(d.departmentId2, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyUpdate()
+            .keys(d.departmentId1, d.departmentId2)
+            .execute();
+
+    if (dialect.getName().equals("mysql") || dialect.getName().equals("mariadb")) {
+      assertEquals(2, count);
+    } else {
+      assertEquals(1, count);
+    }
+
+    CompKeyDepartment resultDepartment =
+        nativeSql
+            .from(d)
+            .where(
+                c -> {
+                  c.eq(d.departmentId1, 1);
+                  c.eq(d.departmentId2, 1);
+                })
+            .fetchOne();
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_duplicate() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId)
+            .execute();
+
+    assertEquals(0, count);
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation());
+    assertEquals(1, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_nonDuplicate() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 5);
+                  c.value(d.departmentNo, 50);
+                  c.value(d.departmentName, "PLANNING");
+                  c.value(d.location, "TOKYO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId)
+            .execute();
+
+    assertEquals(1, count);
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 5)).fetchOne();
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation());
+    assertEquals(2, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_unsetKey() {
+    Department_ d = new Department_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyIgnore()
+            .execute();
+
+    assertEquals(0, count);
+
+    Department resultDepartment = nativeSql.from(d).where(c -> c.eq(d.departmentId, 1)).fetchOne();
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation());
+    assertEquals(1, resultDepartment.getVersion());
+  }
+
+  @Test
+  void insert_onDuplicateKeyIgnore_compositeKey() {
+    CompKeyDepartment_ d = new CompKeyDepartment_();
+
+    int count =
+        nativeSql
+            .insert(d)
+            .values(
+                c -> {
+                  c.value(d.departmentId1, 1);
+                  c.value(d.departmentId2, 1);
+                  c.value(d.departmentNo, 60);
+                  c.value(d.departmentName, "DEVELOPMENT");
+                  c.value(d.location, "KYOTO");
+                  c.value(d.version, 2);
+                })
+            .onDuplicateKeyIgnore()
+            .keys(d.departmentId1, d.departmentId2)
+            .execute();
+
+    assertEquals(0, count);
+
+    CompKeyDepartment resultDepartment =
+        nativeSql
+            .from(d)
+            .where(
+                c -> {
+                  c.eq(d.departmentId1, 1);
+                  c.eq(d.departmentId2, 1);
+                })
+            .fetchOne();
+    // ignored
+    assertEquals(10, resultDepartment.getDepartmentNo());
+    assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
+    assertEquals("NEW YORK", resultDepartment.getLocation());
+    assertEquals(1, resultDepartment.getVersion());
   }
 
   @Test

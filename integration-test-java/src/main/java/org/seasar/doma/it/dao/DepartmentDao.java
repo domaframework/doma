@@ -10,6 +10,7 @@ import org.seasar.doma.Update;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 @Dao
 public interface DepartmentDao {
@@ -75,4 +76,16 @@ public interface DepartmentDao {
 
   @BatchUpdate(suppressOptimisticLockException = true)
   int[] update_suppressOptimisticLockException(List<Department> entity);
+
+  @Insert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  int insertOnDuplicateKeyUpdate(Department entity);
+
+  @BatchInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  int[] insertOnDuplicateKeyUpdate(List<Department> entities);
+
+  @Insert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  int insertOnDuplicateKeyIgnore(Department entity);
+
+  @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  int[] insertOnDuplicateKeyIgnore(List<Department> entities);
 }

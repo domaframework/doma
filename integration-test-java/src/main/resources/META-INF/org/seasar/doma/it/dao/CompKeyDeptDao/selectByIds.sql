@@ -1,0 +1,1 @@
+select * from COMP_KEY_DEPARTMENT where DEPARTMENT_ID1 = /*departmentId1*/0 and DEPARTMENT_ID2 = /*departmentId2*/0

@@ -12,6 +12,7 @@ import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoBatchInsertQuery;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlBatchInsertStatement<ENTITY>
@@ -21,6 +22,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
+  private DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
   public EntityqlBatchInsertStatement(
       Config config,
@@ -31,6 +33,16 @@ public class EntityqlBatchInsertStatement<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
+  }
+
+  public Statement<BatchResult<ENTITY>> onDuplicateKeyUpdate() {
+    this.duplicateKeyType = DuplicateKeyType.UPDATE;
+    return this;
+  }
+
+  public Statement<BatchResult<ENTITY>> onDuplicateKeyIgnore() {
+    this.duplicateKeyType = DuplicateKeyType.IGNORE;
+    return this;
   }
 
   /**
@@ -62,6 +74,7 @@ public class EntityqlBatchInsertStatement<ENTITY>
     query.setExcludedPropertyNames();
     query.setGeneratedKeysIgnored(settings.getIgnoreGeneratedKeys());
     query.setMessage(settings.getComment());
+    query.setDuplicateKeyType(this.duplicateKeyType);
     query.prepare();
     BatchInsertCommand command =
         config.getCommandImplementors().createBatchInsertCommand(EXECUTE_METHOD, query);

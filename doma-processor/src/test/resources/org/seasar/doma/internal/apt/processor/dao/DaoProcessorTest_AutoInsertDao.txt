@@ -11,6 +11,10 @@ public class AutoInsertDaoImpl implements org.seasar.doma.internal.apt.processor
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoInsertDao.class, "insert", org.seasar.doma.internal.apt.processor.entity.Emp.class);
 
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoInsertDao.class, "insertOnDuplicateKeyUpdate", org.seasar.doma.internal.apt.processor.entity.Emp.class);
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoInsertDao.class, "insertOnDuplicateKeyIgnore", org.seasar.doma.internal.apt.processor.entity.Emp.class);
+
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
     /** */
@@ -71,6 +75,7 @@ public class AutoInsertDaoImpl implements org.seasar.doma.internal.apt.processor
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntity(entity);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
@@ -86,6 +91,68 @@ public class AutoInsertDaoImpl implements org.seasar.doma.internal.apt.processor
             return __result;
         } catch (java.lang.RuntimeException __e) {
             __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insert", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int insertOnDuplicateKeyUpdate(org.seasar.doma.internal.apt.processor.entity.Emp entity) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyUpdate", entity);
+        try {
+            if (entity == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entity");
+            }
+            org.seasar.doma.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoInsertQuery(__method1, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method1);
+            __query.setConfig(__support.getConfig());
+            __query.setEntity(entity);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.UPDATE);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl");
+            __query.setCallerMethodName("insertOnDuplicateKeyUpdate");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method1, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyUpdate", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyUpdate", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int insertOnDuplicateKeyIgnore(org.seasar.doma.internal.apt.processor.entity.Emp entity) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyIgnore", entity);
+        try {
+            if (entity == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entity");
+            }
+            org.seasar.doma.jdbc.query.AutoInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoInsertQuery(__method2, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method2);
+            __query.setConfig(__support.getConfig());
+            __query.setEntity(entity);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.IGNORE);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl");
+            __query.setCallerMethodName("insertOnDuplicateKeyIgnore");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setNullExcluded(false);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method2, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyIgnore", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoInsertDaoImpl", "insertOnDuplicateKeyIgnore", __e);
             throw __e;
         }
     }

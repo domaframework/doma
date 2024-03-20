@@ -28,6 +28,8 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.query.AliasManager;
 import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.type.AbstractResultSetType;
 import org.seasar.doma.jdbc.type.JdbcType;
 
@@ -324,5 +326,10 @@ public class PostgresDialect extends StandardDialect {
             }
           });
     }
+  }
+
+  @Override
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new PostgreSqlUpsertAssembler(context);
   }
 }

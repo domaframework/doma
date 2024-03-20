@@ -22,6 +22,24 @@ public class NativeSqlInsertTerminal extends AbstractStatement<NativeSqlInsertTe
   }
 
   /**
+   * Create statement builder that inserts or updates
+   *
+   * @return selecting keys statement builder
+   */
+  public NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys onDuplicateKeyUpdate() {
+    return new NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys(config, declaration);
+  }
+
+  /**
+   * Create statement builder that inserts or ignore
+   *
+   * @return selecting keys statement builder
+   */
+  public NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys onDuplicateKeyIgnore() {
+    return new NativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys(config, declaration);
+  }
+
+  /**
    * {@inheritDoc}
    *
    * @throws org.seasar.doma.jdbc.UniqueConstraintException if an unique constraint is violated

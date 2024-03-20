@@ -38,6 +38,7 @@ public class IgnoreGeneratedKeysDaoImpl implements org.seasar.doma.internal.apt.
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntities(employees);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.IgnoreGeneratedKeysDaoImpl");
             __query.setCallerMethodName("insert");
             __query.setQueryTimeout(-1);
@@ -69,6 +70,7 @@ public class IgnoreGeneratedKeysDaoImpl implements org.seasar.doma.internal.apt.
             __query.setMethod(__method1);
             __query.setConfig(__support.getConfig());
             __query.setEntities(employees);
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.IgnoreGeneratedKeysDaoImpl");
             __query.setCallerMethodName("batchInsert");
             __query.setQueryTimeout(-1);

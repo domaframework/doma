@@ -54,17 +54,17 @@ public class SqlFileBatchInsertTest {
     assertEquals(1, counts[0]);
     assertEquals(1, counts[1]);
     dept = result.getEntities().get(0);
-    assertEquals("hoge_preI_postI", dept.getDepartmentName());
+    assertEquals("hoge_preI(E)_postI(E)", dept.getDepartmentName());
     dept2 = result.getEntities().get(1);
-    assertEquals("foo_preI_postI", dept2.getDepartmentName());
+    assertEquals("foo_preI(E)_postI(E)", dept2.getDepartmentName());
 
     dept = dao.selectById(99);
     assertEquals(Integer.valueOf(99), dept.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(99), dept.getDepartmentNo());
-    assertEquals("hoge_preI", dept.getDepartmentName());
+    assertEquals("hoge_preI(E)", dept.getDepartmentName());
     dept2 = dao.selectById(98);
     assertEquals(Integer.valueOf(98), dept2.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(98), dept2.getDepartmentNo());
-    assertEquals("foo_preI", dept2.getDepartmentName());
+    assertEquals("foo_preI(E)", dept2.getDepartmentName());
   }
 }

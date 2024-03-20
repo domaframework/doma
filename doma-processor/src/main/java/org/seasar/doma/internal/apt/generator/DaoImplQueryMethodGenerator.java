@@ -200,6 +200,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
+    if (m.getDuplicateKeyType() != null) {
+      iprint(
+          "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
+          m.getDuplicateKeyType());
+    }
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
     iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
@@ -360,6 +365,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
+    if (m.getDuplicateKeyType() != null) {
+      iprint(
+          "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
+          m.getDuplicateKeyType());
+    }
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
     iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());

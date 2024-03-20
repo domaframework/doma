@@ -10,6 +10,7 @@ import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /**
  * Indicates a insert.
@@ -91,4 +92,15 @@ public @interface Insert {
    * @return the output format of SQL logs.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * This variable represents the type of duplicate key handling strategy for an insert operation.
+   * It can have one of three values: - UPDATE: If a duplicate key is encountered, the existing row
+   * in the table will be updated. - IGNORE: If a duplicate key is encountered, the insert operation
+   * will be ignored, and no changes will be made to the table. - EXCEPTION: If a duplicate key is
+   * encountered, the operation will throw an exception, indicating that a duplicate key exists.
+   *
+   * @return the type of duplicate key handling strategy for an insert operation.
+   */
+  DuplicateKeyType duplicateKeyType() default DuplicateKeyType.EXCEPTION;
 }

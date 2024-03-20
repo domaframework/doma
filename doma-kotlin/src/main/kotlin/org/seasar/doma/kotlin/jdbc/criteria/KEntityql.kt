@@ -61,7 +61,7 @@ class KEntityql(config: Config) {
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
         block: InsertSettings.() -> Unit = {},
-    ): KStatement<Result<ENTITY>> {
+    ): KEntityqlInsertStatement<ENTITY> {
         val statement = entityql.insert(entityMetamodel, entity, block)
         return KEntityqlInsertStatement(statement)
     }
@@ -88,7 +88,7 @@ class KEntityql(config: Config) {
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
         block: InsertSettings.() -> Unit = {},
-    ): KStatement<BatchResult<ENTITY>> {
+    ): KEntityqlBatchInsertStatement<ENTITY> {
         val statement = entityql.insert(entityMetamodel, entities, block)
         return KEntityqlBatchInsertStatement(statement)
     }

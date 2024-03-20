@@ -24,6 +24,16 @@ public class InsertDeclaration {
     block.accept(declaration);
   }
 
+  public void upsertSetValues(Consumer<InsertOnDuplicateKeyUpdateSetValuesDeclaration> block) {
+    Objects.requireNonNull(block);
+    InsertOnDuplicateKeyUpdateSetValuesDeclaration declaration =
+        new InsertOnDuplicateKeyUpdateSetValuesDeclaration(context);
+    block.accept(declaration);
+    if (context.onDuplicateContext.setValues.isEmpty()) {
+      context.onDuplicateContext.setValues.putAll(context.values);
+    }
+  }
+
   public void select(Function<InsertSelectDeclaration, SubSelectContext<?>> block) {
     InsertSelectDeclaration declaration = new InsertSelectDeclaration();
     SubSelectContext<?> subSelectContext = block.apply(declaration);
