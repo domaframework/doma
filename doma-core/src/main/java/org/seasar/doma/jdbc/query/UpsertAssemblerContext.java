@@ -77,6 +77,11 @@ public class UpsertAssemblerContext {
           "keys",
           "The keys must not be empty when performing an upsert. At least one key must be specified.");
     }
+    if (insertValues.isEmpty()) {
+      throw new DomaIllegalArgumentException(
+          "insertValues",
+          "The insertValues must not be empty when performing an upsert. At least one insert value must be specified.");
+    }
     if (duplicateKeyType == DuplicateKeyType.UPDATE && setValues.isEmpty()) {
       throw new DomaIllegalArgumentException(
           "setValues",
