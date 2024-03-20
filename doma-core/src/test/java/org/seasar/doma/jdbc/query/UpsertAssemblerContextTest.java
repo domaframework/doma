@@ -24,12 +24,45 @@ import org.seasar.doma.wrapper.Wrapper;
 
 class UpsertAssemblerContextTest {
   private final MockConfig config = new MockConfig();
-
   private final PreparedSqlBuilder buf =
       new PreparedSqlBuilder(config, SqlKind.BATCH_INSERT, SqlLogType.RAW);
   private final Dept_ metaDept = new Dept_();
   private final List<EntityPropertyType<?, ?>> propertyTypes =
       metaDept.allPropertyMetamodels().stream().map(PropertyMetamodel::asType).collect(toList());
+
+  @Test
+  void onDuplicateKeyException() {
+    List<EntityPropertyType<?, ?>> keys =
+        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
+    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
+        propertyTypes.stream()
+            .filter(c -> !c.isId())
+            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
+            .collect(toList());
+    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
+        propertyTypes.stream()
+            .filter(c -> !c.isId())
+            .map(
+                c ->
+                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
+                        c, new UpsertSetValue.Prop(c)))
+            .collect(toList());
+    DomaIllegalArgumentException ex =
+        assertThrows(
+            DomaIllegalArgumentException.class,
+            () -> {
+              new UpsertAssemblerContext(
+                  buf,
+                  metaDept.asType(),
+                  DuplicateKeyType.EXCEPTION,
+                  Naming.NONE,
+                  config.getDialect(),
+                  keys,
+                  insertValues,
+                  setValues);
+            });
+    System.out.println(ex.getMessage());
+  }
 
   @Test
   void onDuplicateKeyUpdate() {
