@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.query;
 
 import java.util.List;
+import java.util.Objects;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.InParameter;
@@ -36,6 +37,20 @@ public class UpsertAssemblerContext {
   /** set clause property-value pair list */
   public final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
 
+  /**
+   * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
+   * entity
+   *
+   * @param buf the prepared SQL builder
+   * @param entityType the entity type
+   * @param duplicateKeyType the duplicate key type
+   * @param naming the naming
+   * @param dialect the dialect
+   * @param keys the conflicting keys
+   * @param insertValues the values clause property-parameter pair list
+   * @param setValues the set clause property-value pair list(optional).Required in case of
+   *     duplicateKeyType.UPDATE
+   */
   public UpsertAssemblerContext(
       PreparedSqlBuilder buf,
       EntityType<?> entityType,
@@ -45,6 +60,13 @@ public class UpsertAssemblerContext {
       List<EntityPropertyType<?, ?>> keys,
       List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
       List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+    Objects.requireNonNull(buf);
+    Objects.requireNonNull(entityType);
+    Objects.requireNonNull(duplicateKeyType);
+    Objects.requireNonNull(naming);
+    Objects.requireNonNull(dialect);
+    Objects.requireNonNull(keys);
+    Objects.requireNonNull(insertValues);
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",
