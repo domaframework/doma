@@ -8,8 +8,11 @@ import org.seasar.doma.jdbc.criteria.mock.MockConfig
 import java.math.BigDecimal
 
 internal class KEntityqlBatchInsertTest {
+    private val config = MockConfig().apply {
+        dialect = org.seasar.doma.jdbc.dialect.PostgresDialect()
+    }
 
-    private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(MockConfig())
+    private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(config)
 
     @Test
     fun insertInto() {
@@ -23,6 +26,38 @@ internal class KEntityqlBatchInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyUpdate() {
+        val emp = Emp()
+        emp.id = 1
+        emp.name = "aaa"
+        emp.salary = BigDecimal("1000")
+        emp.version = 1
+        val e = Emp_()
+        val stmt = entityql.insert(e, listOf(emp)).onDuplicateKeyUpdate()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1) on conflict (ID) do update set NAME = excluded.NAME, SALARY = excluded.SALARY, VERSION = excluded.VERSION",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyIgnore() {
+        val emp = Emp()
+        emp.id = 1
+        emp.name = "aaa"
+        emp.salary = BigDecimal("1000")
+        emp.version = 1
+        val e = Emp_()
+        val stmt = entityql.insert(e, listOf(emp)).onDuplicateKeyIgnore()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1) on conflict (ID) do nothing",
             sql.formattedSql,
         )
     }

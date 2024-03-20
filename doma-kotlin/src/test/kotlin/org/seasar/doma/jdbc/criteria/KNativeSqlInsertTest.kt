@@ -7,8 +7,11 @@ import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
 
 internal class KNativeSqlInsertTest {
+    private val config = MockConfig().apply {
+        dialect = org.seasar.doma.jdbc.dialect.PostgresDialect()
+    }
 
-    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
 
     @Test
     fun insert() {
@@ -24,6 +27,108 @@ internal class KNativeSqlInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyUpdate() {
+        val e = Emp_()
+        val stmt = nativeSql
+            .insert(e)
+            .values {
+                value(e.id, 99)
+                value(e.name, "aaa")
+                value(e.salary, null)
+                value(e.version, 1)
+            }
+            .onDuplicateKeyUpdate()
+            .keys(e.id)
+            .set {
+                it.value(e.name, "bbb")
+                it.value(e.salary, it.excluded(e.salary))
+            }
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do update set NAME = 'bbb', SALARY = excluded.SALARY",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyUpdate_unsetKeys() {
+        val e = Emp_()
+        val stmt = nativeSql
+            .insert(e)
+            .values {
+                value(e.id, 99)
+                value(e.name, "aaa")
+                value(e.salary, null)
+                value(e.version, 1)
+            }
+            .onDuplicateKeyUpdate()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do update set NAME = excluded.NAME, SALARY = excluded.SALARY, VERSION = excluded.VERSION",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyUpdate_unsetSet() {
+        val e = Emp_()
+        val stmt = nativeSql
+            .insert(e)
+            .values {
+                value(e.id, 99)
+                value(e.name, "aaa")
+                value(e.salary, null)
+                value(e.version, 1)
+            }
+            .onDuplicateKeyUpdate()
+            .keys(e.id)
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do update set NAME = excluded.NAME, SALARY = excluded.SALARY, VERSION = excluded.VERSION",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyIgnore() {
+        val e = Emp_()
+        val stmt = nativeSql
+            .insert(e)
+            .values {
+                value(e.id, 99)
+                value(e.name, "aaa")
+                value(e.salary, null)
+                value(e.version, 1)
+            }
+            .onDuplicateKeyIgnore()
+            .keys(e.id)
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do nothing",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun insertOnDuplicateKeyIgnore_unsetKeys() {
+        val e = Emp_()
+        val stmt = nativeSql
+            .insert(e)
+            .values {
+                value(e.id, 99)
+                value(e.name, "aaa")
+                value(e.salary, null)
+                value(e.version, 1)
+            }
+            .onDuplicateKeyIgnore()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do nothing",
             sql.formattedSql,
         )
     }

@@ -9,6 +9,14 @@ class KNativeSqlInsertTerminal(private val statement: NativeSqlInsertTerminal) :
         return statement.execute()
     }
 
+    fun onDuplicateKeyUpdate(): KNativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys {
+        return KNativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys(statement.onDuplicateKeyUpdate())
+    }
+
+    fun onDuplicateKeyIgnore(): KNativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys {
+        return KNativeSqlUpsertOnDuplicateKeyIgnoreSelectingKeys(statement.onDuplicateKeyIgnore())
+    }
+
     override fun asSql(): Sql<*> {
         return statement.asSql()
     }
