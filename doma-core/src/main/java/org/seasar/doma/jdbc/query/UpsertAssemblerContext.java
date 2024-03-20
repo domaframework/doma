@@ -50,6 +50,16 @@ public class UpsertAssemblerContext {
           "duplicateKeyType",
           "The duplicateKeyType must not be set to EXCEPTION when performing an upsert.");
     }
+    if (keys.isEmpty()) {
+      throw new DomaIllegalArgumentException(
+          "keys",
+          "The keys must not be empty when performing an upsert. At least one key must be specified.");
+    }
+    if (duplicateKeyType == DuplicateKeyType.UPDATE && setValues.isEmpty()) {
+      throw new DomaIllegalArgumentException(
+          "setValues",
+          "The setValues must not be empty when performing an upsert with the UPDATE duplicateKeyType. At least one set value must be specified.");
+    }
     this.buf = buf;
     this.entityType = entityType;
     this.duplicateKeyType = duplicateKeyType;
