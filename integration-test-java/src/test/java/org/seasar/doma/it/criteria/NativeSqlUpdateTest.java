@@ -147,7 +147,7 @@ public class NativeSqlUpdateTest {
   }
 
   @Test
-  @Run(unless = Dbms.MYSQL)
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
   void expression_select() {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
