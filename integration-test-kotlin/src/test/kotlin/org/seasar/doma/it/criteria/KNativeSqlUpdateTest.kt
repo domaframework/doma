@@ -114,7 +114,7 @@ class KNativeSqlUpdateTest(config: Config) {
     }
 
     @Test
-    @Run(unless = [Dbms.MYSQL])
+    @Run(unless = [Dbms.MYSQL, Dbms.MYSQL8])
     fun expression_select() {
         val e = Employee_()
         val e2 = Employee_()

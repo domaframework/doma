@@ -312,6 +312,10 @@ configure(integrationTestProjects) {
             prepare("mysql")
         }
 
+        val mysql8 by registering(Test::class) {
+            prepare("mysql8")
+        }
+
         val oracle by registering(Test::class) {
             prepare("oracle")
         }

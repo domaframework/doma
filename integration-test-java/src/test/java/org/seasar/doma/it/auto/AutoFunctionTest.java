@@ -69,7 +69,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSet(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     List<Employee> result = dao.func_resultset(Integer.valueOf(1));
@@ -77,7 +77,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSet_check(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     try {
@@ -89,7 +89,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSet_nocheck(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     List<Employee> result = dao.func_resultset_nocheck(Integer.valueOf(1));
@@ -97,7 +97,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSet_map(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     List<Map<String, Object>> result = dao.func_resultset_map(Integer.valueOf(1));
@@ -105,7 +105,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSetAndUpdate(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     List<Employee> result = dao.func_resultset_update(Integer.valueOf(1));
@@ -116,7 +116,7 @@ public class AutoFunctionTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testResultSetAndUpdate2(Config config) throws Exception {
     FunctionDao dao = new FunctionDaoImpl(config);
     List<Employee> result = dao.func_resultset_update2(Integer.valueOf(1));

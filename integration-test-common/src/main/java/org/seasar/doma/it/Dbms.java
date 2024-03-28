@@ -9,6 +9,8 @@ public enum Dbms {
 
   MYSQL,
 
+  MYSQL8,
+
   POSTGRESQL,
 
   SQLSERVER,

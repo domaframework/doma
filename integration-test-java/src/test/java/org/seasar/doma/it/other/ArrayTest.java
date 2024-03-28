@@ -17,7 +17,17 @@ import org.seasar.doma.jdbc.Config;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 @Run(
-    unless = {Dbms.HSQLDB, Dbms.H2, Dbms.MYSQL, Dbms.ORACLE, Dbms.DB2, Dbms.SQLSERVER, Dbms.SQLITE})
+    unless = {
+      Dbms.HSQLDB,
+      Dbms.H2,
+      Dbms.MYSQL,
+      Dbms.MYSQL8,
+      Dbms.MYSQL8,
+      Dbms.ORACLE,
+      Dbms.DB2,
+      Dbms.SQLSERVER,
+      Dbms.SQLITE
+    })
 public class ArrayTest {
 
   @Test
