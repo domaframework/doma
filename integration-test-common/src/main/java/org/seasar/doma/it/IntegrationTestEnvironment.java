@@ -69,6 +69,8 @@ public class IntegrationTestEnvironment
         return Dbms.H2;
       case "mysql":
         return Dbms.MYSQL;
+      case "mysql8":
+        return Dbms.MYSQL8;
       case "oracle":
         return Dbms.ORACLE;
       case "postgresql":
@@ -90,6 +92,8 @@ public class IntegrationTestEnvironment
         return new SqliteDialect();
       case MYSQL:
         return new MysqlDialect();
+      case MYSQL8:
+        return new MysqlDialect(MysqlDialect.MySqlVersion.V8);
       case POSTGRESQL:
         return new PostgresDialect();
       case SQLSERVER:

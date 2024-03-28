@@ -21,7 +21,16 @@ import org.seasar.doma.message.Message;
 public class SqlFileSelectForUpdateTest {
 
   @Test
-  @Run(unless = {Dbms.H2, Dbms.POSTGRESQL, Dbms.ORACLE, Dbms.MYSQL, Dbms.DB2, Dbms.SQLSERVER})
+  @Run(
+      unless = {
+        Dbms.H2,
+        Dbms.POSTGRESQL,
+        Dbms.ORACLE,
+        Dbms.MYSQL,
+        Dbms.MYSQL8,
+        Dbms.DB2,
+        Dbms.SQLSERVER
+      })
   public void testUnsupported(Config config) throws Exception {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     try {
@@ -47,6 +56,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.H2,
         Dbms.POSTGRESQL,
         Dbms.MYSQL,
+        Dbms.MYSQL8,
         Dbms.DB2,
         Dbms.SQLSERVER,
         Dbms.SQLITE
@@ -65,6 +75,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.H2,
         Dbms.ORACLE,
         Dbms.MYSQL,
+        Dbms.MYSQL8,
         Dbms.DB2,
         Dbms.SQLSERVER,
         Dbms.SQLITE
@@ -90,6 +101,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.H2,
         Dbms.POSTGRESQL,
         Dbms.MYSQL,
+        Dbms.MYSQL8,
         Dbms.DB2,
         Dbms.SQLSERVER,
         Dbms.SQLITE
@@ -106,8 +118,27 @@ public class SqlFileSelectForUpdateTest {
       unless = {
         Dbms.HSQLDB,
         Dbms.H2,
+        Dbms.ORACLE,
+        Dbms.MYSQL,
+        Dbms.DB2,
+        Dbms.SQLSERVER,
+        Dbms.SQLITE
+      })
+  public void testForUpdateNowaitWithTables(Config config) throws Exception {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
+    Employee employee = dao.selectById(1, SelectOptions.get().forUpdateNowait("EMPLOYEE"));
+
+    assertNotNull(employee);
+  }
+
+  @Test
+  @Run(
+      unless = {
+        Dbms.HSQLDB,
+        Dbms.H2,
         Dbms.POSTGRESQL,
         Dbms.MYSQL,
+        Dbms.MYSQL8,
         Dbms.DB2,
         Dbms.SQLSERVER,
         Dbms.SQLITE
@@ -125,6 +156,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.H2,
         Dbms.POSTGRESQL,
         Dbms.MYSQL,
+        Dbms.MYSQL8,
         Dbms.DB2,
         Dbms.SQLSERVER,
         Dbms.SQLITE

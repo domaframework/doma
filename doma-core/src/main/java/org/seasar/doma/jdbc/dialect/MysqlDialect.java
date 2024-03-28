@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -34,35 +35,84 @@ public class MysqlDialect extends StandardDialect {
   /** the quotation mark of the end */
   protected static final char CLOSE_QUOTE = '`';
 
+  public static final MySqlVersion DEFAULT_VERSION = MySqlVersion.V5;
+
+  protected final MySqlVersion version;
+
   public MysqlDialect() {
+    this(DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(MySqlVersion version) {
     this(
         new MysqlJdbcMappingVisitor(),
         new MysqlSqlLogFormattingVisitor(),
-        new MysqlExpressionFunctions());
+        new MysqlExpressionFunctions(),
+        version);
   }
 
   public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor) {
-    this(jdbcMappingVisitor, new MysqlSqlLogFormattingVisitor(), new MysqlExpressionFunctions());
+    this(jdbcMappingVisitor, DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(JdbcMappingVisitor jdbcMappingVisitor, MySqlVersion version) {
+    this(
+        jdbcMappingVisitor,
+        new MysqlSqlLogFormattingVisitor(),
+        new MysqlExpressionFunctions(),
+        version);
   }
 
   public MysqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-    this(new MysqlJdbcMappingVisitor(), sqlLogFormattingVisitor, new MysqlExpressionFunctions());
+    this(sqlLogFormattingVisitor, DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(SqlLogFormattingVisitor sqlLogFormattingVisitor, MySqlVersion version) {
+    this(
+        new MysqlJdbcMappingVisitor(),
+        sqlLogFormattingVisitor,
+        new MysqlExpressionFunctions(),
+        version);
   }
 
   public MysqlDialect(ExpressionFunctions expressionFunctions) {
-    this(new MysqlJdbcMappingVisitor(), new MysqlSqlLogFormattingVisitor(), expressionFunctions);
+    this(expressionFunctions, DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(ExpressionFunctions expressionFunctions, MySqlVersion version) {
+    this(
+        new MysqlJdbcMappingVisitor(),
+        new MysqlSqlLogFormattingVisitor(),
+        expressionFunctions,
+        version);
   }
 
   public MysqlDialect(
       JdbcMappingVisitor jdbcMappingVisitor, SqlLogFormattingVisitor sqlLogFormattingVisitor) {
-    this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MysqlExpressionFunctions());
+    this(jdbcMappingVisitor, sqlLogFormattingVisitor, DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(
+      JdbcMappingVisitor jdbcMappingVisitor,
+      SqlLogFormattingVisitor sqlLogFormattingVisitor,
+      MySqlVersion version) {
+    this(jdbcMappingVisitor, sqlLogFormattingVisitor, new MysqlExpressionFunctions(), version);
   }
 
   public MysqlDialect(
       JdbcMappingVisitor jdbcMappingVisitor,
       SqlLogFormattingVisitor sqlLogFormattingVisitor,
       ExpressionFunctions expressionFunctions) {
+    this(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions, DEFAULT_VERSION);
+  }
+
+  public MysqlDialect(
+      JdbcMappingVisitor jdbcMappingVisitor,
+      SqlLogFormattingVisitor sqlLogFormattingVisitor,
+      ExpressionFunctions expressionFunctions,
+      MySqlVersion version) {
     super(jdbcMappingVisitor, sqlLogFormattingVisitor, expressionFunctions);
+    this.version = Objects.requireNonNull(version);
   }
 
   @Override
@@ -91,7 +141,14 @@ public class MysqlDialect extends StandardDialect {
 
   @Override
   public boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets) {
-    return type == SelectForUpdateType.NORMAL && !withTargets;
+    switch (version) {
+      case V5:
+        return type == SelectForUpdateType.NORMAL && !withTargets;
+      case V8:
+        return type == SelectForUpdateType.NORMAL || type == SelectForUpdateType.NOWAIT;
+      default:
+        throw new IllegalStateException(version.toString());
+    }
   }
 
   @Override
@@ -101,8 +158,15 @@ public class MysqlDialect extends StandardDialect {
 
   @Override
   protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
-    MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
-    return transformer.transform(sqlNode);
+    switch (version) {
+      case V5:
+        MysqlCountCalculatingTransformer transformer = new MysqlCountCalculatingTransformer();
+        return transformer.transform(sqlNode);
+      case V8:
+        return super.toCountCalculatingSqlNode(sqlNode);
+      default:
+        throw new IllegalStateException(version.toString());
+    }
   }
 
   @Override
@@ -121,8 +185,15 @@ public class MysqlDialect extends StandardDialect {
 
   @Override
   protected SqlNode toCountGettingSqlNode(SqlNode sqlNode) {
-    MysqlCountGettingTransformer transformer = new MysqlCountGettingTransformer();
-    return transformer.transform(sqlNode);
+    switch (version) {
+      case V5:
+        MysqlCountGettingTransformer transformer = new MysqlCountGettingTransformer();
+        return transformer.transform(sqlNode);
+      case V8:
+        return super.toCountGettingSqlNode(sqlNode);
+      default:
+        throw new IllegalStateException(version.toString());
+    }
   }
 
   @Override
@@ -179,6 +250,7 @@ public class MysqlDialect extends StandardDialect {
   }
 
   public static class MysqlCriteriaBuilder extends StandardCriteriaBuilder {
+
     @Override
     public void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit) {
       buf.appendSql(" limit ");
@@ -195,5 +267,10 @@ public class MysqlDialect extends StandardDialect {
   @Override
   public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
     return new MysqlUpsertAssembler(context);
+  }
+
+  public enum MySqlVersion {
+    V5,
+    V8
   }
 }

@@ -209,7 +209,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.SQLSERVER, Dbms.SQLITE})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER, Dbms.SQLITE})
   public void testId_sequence(Config config) throws Exception {
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
