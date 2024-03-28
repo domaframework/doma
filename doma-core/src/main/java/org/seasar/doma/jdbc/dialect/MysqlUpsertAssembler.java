@@ -20,13 +20,15 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
+  private final MysqlDialect.MySqlVersion version;
 
-  public MysqlUpsertAssembler(UpsertAssemblerContext context) {
+  public MysqlUpsertAssembler(UpsertAssemblerContext context, MysqlDialect.MySqlVersion version) {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
+    this.version = version;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
 
@@ -50,7 +52,17 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(") ");
+    switch (version) {
+      case V5:
+        buf.appendSql(") ");
+        break;
+      case V8:
+        buf.appendSql(") as ");
+        excludeAlias();
+        break;
+      default:
+        throw new IllegalStateException(version.toString());
+    }
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" on duplicate key update ");
       for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
@@ -70,6 +82,11 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(sql);
   }
 
+  private void excludeAlias() {
+    String sql = this.upsertAssemblerSupport.excludeAlias();
+    buf.appendSql(sql);
+  }
+
   private void column(EntityPropertyType<?, ?> propertyType) {
     String sql = this.upsertAssemblerSupport.prop(propertyType);
     buf.appendSql(sql);
@@ -83,12 +100,28 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
 
     @Override
     public void visit(UpsertSetValue.Prop prop) {
-      String sql =
-          upsertAssemblerSupport.excludeProp(
-              prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
-      buf.appendSql("values(");
-      buf.appendSql(sql);
-      buf.appendSql(")");
+      switch (version) {
+        case V5:
+          {
+            String sql =
+                upsertAssemblerSupport.excludeProp(
+                    prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
+            buf.appendSql("values(");
+            buf.appendSql(sql);
+            buf.appendSql(")");
+            break;
+          }
+        case V8:
+          {
+            String sql =
+                upsertAssemblerSupport.excludeProp(
+                    prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
+            buf.appendSql(sql);
+            break;
+          }
+        default:
+          throw new IllegalStateException(version.toString());
+      }
     }
   }
 }
