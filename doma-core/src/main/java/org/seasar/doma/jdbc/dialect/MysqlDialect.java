@@ -266,7 +266,7 @@ public class MysqlDialect extends StandardDialect {
 
   @Override
   public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
-    return new MysqlUpsertAssembler(context);
+    return new MysqlUpsertAssembler(context, version);
   }
 
   public enum MySqlVersion {
