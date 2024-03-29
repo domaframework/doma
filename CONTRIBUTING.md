@@ -18,7 +18,7 @@ To contribute, use GitHub Pull Requests, from your own fork.
 ## Setup
 
 - Install Git and configure your GitHub access
-- Install JDK 8
+- Install JDK 21
   - We recommend that you use [SDKMAN](https://sdkman.io/jdks) to get JDKs
 
 ### Build
