@@ -48,24 +48,14 @@ You can check the last publication date here:
 
 - https://oss.sonatype.org/content/repositories/snapshots/org/seasar/doma/
 
-### IDE
-
-#### IntelliJ IDEA
+### IDE - IntelliJ IDEA
 
 Import the root directory as a Gradle project.
-
-#### Eclipse
-
-Before importing, run the Gradle `eclipse` command in the root directory:
-
-```
-$ ./gradlew eclipse
-```
 
 ### Code Style
 
 We use [spotless](https://github.com/diffplug/spotless) and
-[google-java-format](https://github.com/google/google-java-format) 1.7 for code formatting.
+[google-java-format](https://github.com/google/google-java-format) for code formatting.
 
 To format, just run the Gradle `build` task:
 
@@ -78,28 +68,4 @@ see https://github.com/google/google-java-format#using-the-formatter.
 
 ### Documentation
 
-We use [Sphinx](http://sphinx-doc.org) to generate documents.
-The generated documents are hosted on the ReadTheDocs.
-
-- https://doma.readthedocs.io/
-
-To use Sphinx, you need Python.
-
-#### Install Sphinx
-
-Navigate to the docs directory and run the `pip install` command:
-
-```
-$ cd docs
-$ pip install -r requirements.txt
-```
-
-#### Generate HTML files
-
-Execute the `sphinx-autobuild` command in the docs directory:
-
-```
-$ sphinx-autobuild . _build/html
-```
-
-Visit the webpage served at http://127.0.0.1:8000.
+See https://github.com/domaframework/doma-docs

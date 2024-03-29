@@ -11,7 +11,6 @@ Doma has various strengths:
 - Has no dependence on other libraries.
 
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
-[![docs](https://readthedocs.org/projects/doma/badge/?version=latest)](https://doma.readthedocs.io/en/latest/)
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
@@ -85,11 +84,7 @@ for more information.
 
 ### More Examples
 
-Try [Getting started](https://doma.readthedocs.io/en/latest/getting-started/).
-
-For more complete examples,
-see [simple-examples](https://github.com/domaframework/simple-examples)
-and [spring-boot-jpetstore](https://github.com/domaframework/spring-boot-jpetstore).
+Try [Getting started](https://doma.readthedocs.io/en/latest/getting-started/) and [simple-examples](https://github.com/domaframework/simple-examples).
 
 Installing
 ----------
