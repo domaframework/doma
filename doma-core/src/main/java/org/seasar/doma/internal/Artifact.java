@@ -7,7 +7,7 @@ public final class Artifact {
 
   private static final String NAME = "Doma";
 
-  private static final String VERSION = "2.57.1-SNAPSHOT";
+  private static final String VERSION = "2.58.0";
 
   public static String getName() {
     return NAME;
