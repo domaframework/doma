@@ -319,7 +319,7 @@ class UpsertAssemblerContextTest {
       }
 
       @Override
-      public Wrapper getWrapper() {
+      public Wrapper<Object> getWrapper() {
         return null;
       }
     };
