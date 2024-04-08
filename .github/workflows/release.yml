@@ -57,7 +57,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3.2.0
+        uses: gradle/gradle-build-action@v3.2.1
 
       - name: Release ${{ env.RELEASE_VERSION }}
         run: >
