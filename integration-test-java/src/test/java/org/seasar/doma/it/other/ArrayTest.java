@@ -22,7 +22,6 @@ import org.seasar.doma.jdbc.Config;
       Dbms.H2,
       Dbms.MYSQL,
       Dbms.MYSQL8,
-      Dbms.MYSQL8,
       Dbms.ORACLE,
       Dbms.DB2,
       Dbms.SQLSERVER,
