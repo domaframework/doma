@@ -939,7 +939,8 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void select_userDefinedExpression_Domain_where_select() {
+  @Run(unless = {Dbms.SQLSERVER})
+  void select_userDefinedExpression_Domain_where_groupBy_orderBy_select() {
     Employee_ e = new Employee_();
 
     UserDefinedExpression<Salary> addSalary =
@@ -954,8 +955,13 @@ public class NativeSqlSelectTest {
     List<Row> list =
         nativeSql
             .from(e)
-            .orderBy(c -> c.asc(e.employeeId))
             .where(c -> c.ge(addSalary, new Salary(new BigDecimal(3_050))))
+            .groupBy(e.employeeId, addSalary)
+            .orderBy(
+                c -> {
+                  c.asc(e.employeeId);
+                  c.asc(addSalary);
+                })
             .selectAsRow(e.employeeId, e.salary, addSalary)
             .fetch();
 
@@ -969,20 +975,22 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  void select_userDefinedExpression_String_where_select() {
-    Employee_ e = new Employee_();
+  void select_userDefinedExpression_String_where_groupBy_orderBy_select() {
     Department_ d = new Department_();
 
     UserDefinedExpression<String> concatDepartmentIdAndEmployeeId =
-        concatWithUserDefined(d.departmentId, d.departmentName);
+        concatWithUserDefined(tpStringWithUserDefined(d.departmentId), d.departmentName);
 
     List<Row> list =
         nativeSql
             .from(d)
-            .innerJoin(e, on -> on.eq(d.departmentId, e.departmentId))
             .where(c -> c.eq(concatDepartmentIdAndEmployeeId, "2-RESEARCH"))
-            .groupBy(d.departmentId)
-            .orderBy(c -> c.asc(d.departmentId))
+            .groupBy(d.departmentId, concatDepartmentIdAndEmployeeId)
+            .orderBy(
+                c -> {
+                  c.asc(d.departmentId);
+                  c.asc(concatDepartmentIdAndEmployeeId);
+                })
             .selectAsRow(d.departmentId, concatDepartmentIdAndEmployeeId)
             .fetch();
 
@@ -1022,7 +1030,7 @@ public class NativeSqlSelectTest {
             c.cutBackSql(8);
             c.appendSql(")");
           } else if (c.dialect.getName().equals("mssql")) {
-            c.appendSql("concat(");
+            c.appendSql("(");
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
               c.visit(propertyMetamodel);
               c.appendSql(" + '-' + ");
@@ -1036,6 +1044,31 @@ public class NativeSqlSelectTest {
               c.appendSql(" || '-' || ");
             }
             c.cutBackSql(11);
+            c.appendSql(")");
+          }
+        });
+  }
+
+  private static UserDefinedExpression<String> tpStringWithUserDefined(
+      PropertyMetamodel<?> propertyMetamodel) {
+    return userDefined(
+        String.class,
+        c -> {
+          if (c.dialect.getName().equals("mysql")) {
+            c.appendSql("CAST(");
+            c.visit(propertyMetamodel);
+            c.appendSql(" AS CHAR)");
+          } else if (c.dialect.getName().equals("postgres")) {
+            c.appendSql("CAST(");
+            c.visit(propertyMetamodel);
+            c.appendSql(" AS TEXT)");
+          } else if (c.dialect.getName().equals("mssql") || c.dialect.getName().equals("h2")) {
+            c.appendSql("CAST(");
+            c.visit(propertyMetamodel);
+            c.appendSql(" AS VARCHAR)");
+          } else if (c.dialect.getName().equals("oracle")) {
+            c.appendSql("TO_CHAR(");
+            c.visit(propertyMetamodel);
             c.appendSql(")");
           }
         });
