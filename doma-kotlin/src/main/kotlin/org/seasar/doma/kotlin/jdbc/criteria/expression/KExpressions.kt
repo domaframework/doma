@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.criteria.expression.StringExpression.Ltrim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Rtrim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Trim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Upper
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -289,5 +290,22 @@ object KExpressions {
         block: KSelectExpression.Declaration.() -> SubSelectContext.Single<PROPERTY>,
     ): SelectExpression<PROPERTY> {
         return Expressions.select { block(KSelectExpression.Declaration()) }
+    }
+
+    inline fun <reified PROPERTY> userDefined(
+        noinline block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(PROPERTY::class.java, block)
+    }
+
+    fun <PROPERTY> userDefined(
+        propertyMetamodel: PropertyMetamodel<PROPERTY>,
+        block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(
+            propertyMetamodel.asClass() as Class<PROPERTY>,
+            propertyMetamodel.asType(),
+            block,
+        )
     }
 }

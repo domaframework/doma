@@ -299,4 +299,38 @@ public class Expressions {
     Objects.requireNonNull(alias);
     return new AliasExpression<>(propertyMetamodel, alias);
   }
+
+  /**
+   * Creates a user-defined expression with the specified class and block.
+   *
+   * @param <PROPERTY> the type of the property
+   * @param klass the class of the property
+   * @param block the block to configure the user-defined expression。
+   * @return a new UserDefinedExpression instance
+   * @see UserDefinedExpression.Declaration
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      Class<PROPERTY> klass, Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(klass);
+    Objects.requireNonNull(block);
+    return new UserDefinedExpression<>(klass, block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified class and block.
+   *
+   * @param <PROPERTY> the type of the property
+   * @param propertyMetamodel the property metamodel
+   * @param block the block to configure the user-defined expression。
+   * @return a new UserDefinedExpression instance
+   * @see UserDefinedExpression.Declaration
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<PROPERTY> propertyMetamodel,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(propertyMetamodel);
+    Objects.requireNonNull(block);
+    return new UserDefinedExpression<>(
+        (Class<PROPERTY>) propertyMetamodel.asClass(), propertyMetamodel.asType(), block);
+  }
 }

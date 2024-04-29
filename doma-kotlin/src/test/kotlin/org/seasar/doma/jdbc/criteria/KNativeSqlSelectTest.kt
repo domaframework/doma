@@ -9,6 +9,8 @@ import org.seasar.doma.jdbc.Commenter
 import org.seasar.doma.jdbc.criteria.entity.Dept_
 import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.entity.NoIdEmp_
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
 import org.seasar.doma.jdbc.criteria.option.DistinctOption
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption
@@ -35,6 +37,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.select
 import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.sum
 import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.trim
 import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.upper
+import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions.userDefined
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.message.Message
 import java.math.BigDecimal
@@ -1302,5 +1305,53 @@ internal class KNativeSqlSelectTest {
         val stmt = nativeSql.from(e).select(expression)
         val sql = stmt.asSql()
         assertEquals("select (select t1_.ID from EMP t1_) from EMP t0_", sql.rawSql)
+    }
+
+    @Test
+    fun expression_userDefined1() {
+        val e = Emp_()
+        val exp = countDistinctMultipleWithUserDefined1(e.id, e.name)
+        val stmt = nativeSql.from(e).select(exp)
+        val sql = stmt.asSql()
+        assertEquals("select count(distinct (t0_.ID, t0_.NAME)) from EMP t0_", sql.rawSql)
+    }
+
+    @Test
+    fun expression_userDefined2() {
+        val e = Emp_()
+        val count = count(e.id)
+        val exp = countDistinctMultipleWithUserDefined2(count, e.id, e.name)
+        val stmt = nativeSql.from(e).select(exp)
+        val sql = stmt.asSql()
+        assertEquals("select count(distinct (t0_.ID, t0_.NAME)) from EMP t0_", sql.rawSql)
+    }
+
+    private fun countDistinctMultipleWithUserDefined1(
+        vararg propertyMetamodels: PropertyMetamodel<*>,
+    ): UserDefinedExpression<Long> {
+        return userDefined {
+            appendSql("count(distinct (")
+            for (propertyMetamodel in propertyMetamodels) {
+                visit(propertyMetamodel)
+                appendSql(", ")
+            }
+            cutBackSql(2)
+            appendSql("))")
+        }
+    }
+
+    private fun countDistinctMultipleWithUserDefined2(
+        propertyMetamodel: PropertyMetamodel<Long>,
+        vararg propertyMetamodels: PropertyMetamodel<*>,
+    ): UserDefinedExpression<Long> {
+        return userDefined(propertyMetamodel) {
+            appendSql("count(distinct (")
+            for (propertyMetamodel in propertyMetamodels) {
+                visit(propertyMetamodel)
+                appendSql(", ")
+            }
+            cutBackSql(2)
+            appendSql("))")
+        }
     }
 }

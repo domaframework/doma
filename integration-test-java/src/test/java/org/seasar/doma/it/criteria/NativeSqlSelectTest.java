@@ -22,6 +22,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.userDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
@@ -43,6 +44,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
 import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
@@ -937,6 +939,58 @@ public class NativeSqlSelectTest {
   }
 
   @Test
+  void select_userDefinedExpression_Domain_where_select() {
+    Employee_ e = new Employee_();
+
+    UserDefinedExpression<Salary> addSalary =
+        userDefined(
+            e.salary,
+            c -> {
+              c.appendSql("(");
+              c.visit(e.salary);
+              c.appendSql(" + 100)");
+            });
+
+    List<Row> list =
+        nativeSql
+            .from(e)
+            .orderBy(c -> c.asc(e.employeeId))
+            .where(c -> c.ge(addSalary, new Salary(new BigDecimal(3_050))))
+            .selectAsRow(e.employeeId, e.salary, addSalary)
+            .fetch();
+
+    assertEquals(4, list.size());
+    for (Row row : list) {
+      Salary salary = row.get(e.salary);
+      assertTrue(
+          salary.getValue().add(BigDecimal.valueOf(100)).compareTo(new BigDecimal(3_050)) >= 0);
+      assertEquals(salary.getValue().add(BigDecimal.valueOf(100)), row.get(addSalary).getValue());
+    }
+  }
+
+  @Test
+  void select_userDefinedExpression_String_where_select() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    UserDefinedExpression<String> concatDepartmentIdAndEmployeeId =
+        concatWithUserDefined(d.departmentId, d.departmentName);
+
+    List<Row> list =
+        nativeSql
+            .from(d)
+            .innerJoin(e, on -> on.eq(d.departmentId, e.departmentId))
+            .where(c -> c.eq(concatDepartmentIdAndEmployeeId, "2-RESEARCH"))
+            .groupBy(d.departmentId)
+            .orderBy(c -> c.asc(d.departmentId))
+            .selectAsRow(d.departmentId, concatDepartmentIdAndEmployeeId)
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals("2-RESEARCH", list.get(0).get(concatDepartmentIdAndEmployeeId));
+  }
+
+  @Test
   void select_optional_property() {
     Person_ p = new Person_();
     Optional<Integer> result =
@@ -952,5 +1006,38 @@ public class NativeSqlSelectTest {
         nativeSql.from(p).select(Expressions.max(p.managerId)).fetchOptional();
     assertTrue(result.isPresent());
     assertEquals(13, result.get());
+  }
+
+  private static UserDefinedExpression<String> concatWithUserDefined(
+      PropertyMetamodel<?>... propertyMetamodels) {
+    return userDefined(
+        String.class,
+        c -> {
+          if (c.dialect.getName().equals("mysql")) {
+            c.appendSql("concat(");
+            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+              c.visit(propertyMetamodel);
+              c.appendSql(", '-' , ");
+            }
+            c.cutBackSql(8);
+            c.appendSql(")");
+          } else if (c.dialect.getName().equals("mssql")) {
+            c.appendSql("concat(");
+            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+              c.visit(propertyMetamodel);
+              c.appendSql(" + '-' + ");
+            }
+            c.cutBackSql(9);
+            c.appendSql(")");
+          } else {
+            c.appendSql("(");
+            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+              c.visit(propertyMetamodel);
+              c.appendSql(" || '-' || ");
+            }
+            c.cutBackSql(11);
+            c.appendSql(")");
+          }
+        });
   }
 }
