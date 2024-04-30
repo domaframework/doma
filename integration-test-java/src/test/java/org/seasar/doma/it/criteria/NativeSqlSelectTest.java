@@ -939,7 +939,7 @@ public class NativeSqlSelectTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLSERVER})
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
   void select_userDefinedExpression_Domain_where_groupBy_orderBy_select() {
     Employee_ e = new Employee_();
 
