@@ -3,6 +3,8 @@ package org.seasar.doma.it.criteria;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.seasar.doma.it.criteria.CustomExpressions.addSalaryUserDefined;
+import static org.seasar.doma.it.criteria.CustomExpressions.concatWithUserDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
@@ -144,6 +146,31 @@ public class NativeSqlUpdateTest {
             .execute();
 
     assertEquals(1, count);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
+  void expression_userDefined() {
+    Employee_ e = new Employee_();
+
+    int count =
+        nativeSql
+            .update(e)
+            .set(
+                c -> {
+                  c.value(
+                      e.employeeName,
+                      concatWithUserDefined(literal("["), e.employeeName, literal("]")));
+                  c.value(e.salary, addSalaryUserDefined(e));
+                })
+            .where(c -> c.eq(e.employeeId, 1))
+            .execute();
+
+    assertEquals(1, count);
+
+    Employee result = nativeSql.from(e).where(c -> c.eq(e.employeeId, 1)).fetchOne();
+    assertEquals("[-SMITH-]", result.getEmployeeName());
+    assertEquals(0, result.getSalary().getValue().compareTo(new BigDecimal(900)));
   }
 
   @Test

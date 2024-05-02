@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.seasar.doma.it.criteria.CustomExpressions.addSalaryUserDefined;
+import static org.seasar.doma.it.criteria.CustomExpressions.concatWithUserDefined;
+import static org.seasar.doma.it.criteria.CustomExpressions.tpStringWithUserDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
@@ -22,7 +25,6 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
-import static org.seasar.doma.jdbc.criteria.expression.Expressions.userDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
@@ -943,14 +945,7 @@ public class NativeSqlSelectTest {
   void select_userDefinedExpression_Domain_where_groupBy_orderBy_select() {
     Employee_ e = new Employee_();
 
-    UserDefinedExpression<Salary> addSalary =
-        userDefined(
-            e.salary,
-            c -> {
-              c.appendSql("(");
-              c.visit(e.salary);
-              c.appendSql(" + 100)");
-            });
+    UserDefinedExpression<Salary> addSalary = addSalaryUserDefined(e);
 
     List<Row> list =
         nativeSql
@@ -1014,63 +1009,5 @@ public class NativeSqlSelectTest {
         nativeSql.from(p).select(Expressions.max(p.managerId)).fetchOptional();
     assertTrue(result.isPresent());
     assertEquals(13, result.get());
-  }
-
-  private static UserDefinedExpression<String> concatWithUserDefined(
-      PropertyMetamodel<?>... propertyMetamodels) {
-    return userDefined(
-        String.class,
-        c -> {
-          if (c.dialect.getName().equals("mysql")) {
-            c.appendSql("concat(");
-            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
-              c.appendSql(", '-' , ");
-            }
-            c.cutBackSql(8);
-            c.appendSql(")");
-          } else if (c.dialect.getName().equals("mssql")) {
-            c.appendSql("(");
-            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
-              c.appendSql(" + '-' + ");
-            }
-            c.cutBackSql(9);
-            c.appendSql(")");
-          } else {
-            c.appendSql("(");
-            for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
-              c.appendSql(" || '-' || ");
-            }
-            c.cutBackSql(11);
-            c.appendSql(")");
-          }
-        });
-  }
-
-  private static UserDefinedExpression<String> tpStringWithUserDefined(
-      PropertyMetamodel<?> propertyMetamodel) {
-    return userDefined(
-        String.class,
-        c -> {
-          if (c.dialect.getName().equals("mysql")) {
-            c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
-            c.appendSql(" AS CHAR)");
-          } else if (c.dialect.getName().equals("postgres")) {
-            c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
-            c.appendSql(" AS TEXT)");
-          } else if (c.dialect.getName().equals("mssql") || c.dialect.getName().equals("h2")) {
-            c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
-            c.appendSql(" AS VARCHAR)");
-          } else if (c.dialect.getName().equals("oracle")) {
-            c.appendSql("TO_CHAR(");
-            c.visit(propertyMetamodel);
-            c.appendSql(")");
-          }
-        });
   }
 }
