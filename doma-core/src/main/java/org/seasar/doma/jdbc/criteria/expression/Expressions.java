@@ -330,7 +330,6 @@ public class Expressions {
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(propertyMetamodel);
     Objects.requireNonNull(block);
-    return new UserDefinedExpression<>(
-        (Class<PROPERTY>) propertyMetamodel.asClass(), propertyMetamodel.asType(), block);
+    return new UserDefinedExpression<>(propertyMetamodel, block);
   }
 }

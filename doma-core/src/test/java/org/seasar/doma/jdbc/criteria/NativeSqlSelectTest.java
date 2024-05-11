@@ -1597,7 +1597,7 @@ class NativeSqlSelectTest {
         c -> {
           c.appendSql("count(distinct (");
           for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-            c.visit(propertyMetamodel);
+            c.appendExpression(propertyMetamodel);
             c.appendSql(", ");
           }
           c.cutBackSql(2);

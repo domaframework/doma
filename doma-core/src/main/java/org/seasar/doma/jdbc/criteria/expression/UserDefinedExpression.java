@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-import org.seasar.doma.internal.jdbc.sql.SqlContext;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -27,9 +25,10 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
   }
 
   public UserDefinedExpression(
-      Class<PROPERTY> klass, EntityPropertyType<?, ?> type, Consumer<Declaration> block) {
-    this.klass = Objects.requireNonNull(klass);
-    this.type = Objects.requireNonNull(type);
+      PropertyMetamodel<PROPERTY> propertyMetamodel, Consumer<Declaration> block) {
+    Objects.requireNonNull(propertyMetamodel);
+    this.klass = (Class<PROPERTY>) propertyMetamodel.asClass();
+    this.type = propertyMetamodel.asType();
     this.block = Objects.requireNonNull(block);
   }
 
@@ -39,10 +38,10 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
    * @param dialect the database dialect
    * @return the context of the user-defined expression
    */
-  public UserDefinedExpressionContext getContext(Dialect dialect) {
+  public List<DeclarationItem> getDeclarationItems(Dialect dialect) {
     Declaration declaration = new Declaration(dialect);
     block.accept(declaration);
-    return new UserDefinedExpressionContext(declaration.declarationItems, declaration.parameters);
+    return declaration.declarationItems;
   }
 
   @Override
@@ -95,28 +94,15 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
 
   @Override
   public void accept(PropertyMetamodel.Visitor visitor) {
-    if (visitor instanceof Visitor) {
-      Visitor v = (Visitor) visitor;
+    if (visitor instanceof UserDefinedExpression.Visitor) {
+      UserDefinedExpression.Visitor v = (UserDefinedExpression.Visitor) visitor;
       v.visit(this);
     }
   }
 
-  /** Result data of Declaration */
-  public static class UserDefinedExpressionContext {
-    public final List<DeclarationItem> declarationItems;
-    public final List<Object> parameters;
-
-    public UserDefinedExpressionContext(
-        List<DeclarationItem> declarationItems, List<Object> parameters) {
-      this.declarationItems = declarationItems;
-      this.parameters = parameters;
-    }
-  }
-
   /** Declaration of UserDefinedExpression */
-  public static class Declaration implements SqlContext {
+  public static class Declaration {
     private final ArrayList<DeclarationItem> declarationItems = new ArrayList<>();
-    private final ArrayList<Object> parameters = new ArrayList<>(1);
 
     /**
      * Represents the specific database dialect. This is utilized to modify user-defined expressions
@@ -125,19 +111,8 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     public final Dialect dialect;
 
     public Declaration(Dialect dialect) {
+      Objects.requireNonNull(dialect);
       this.dialect = dialect;
-    }
-
-    /**
-     * Appends a parameter to the declaration.
-     *
-     * @param parameter the parameter to be appended
-     * @param <BASIC> the basic value type of the parameter
-     */
-    @Override
-    public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
-      declarationItems.add(new DeclarationItem.Sql("?"));
-      parameters.add(parameter);
     }
 
     /**
@@ -145,8 +120,8 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
      *
      * @param sql the SQL code to be appended
      */
-    @Override
     public void appendSql(String sql) {
+      Objects.requireNonNull(sql);
       declarationItems.add(new DeclarationItem.Sql(sql));
     }
 
@@ -155,24 +130,24 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
      *
      * @param length the length to cutback the SQL code
      */
-    @Override
     public void cutBackSql(int length) {
       declarationItems.add(new DeclarationItem.CutbackSql(length));
     }
 
     /**
-     * Append a column.
+     * Append a expression.
      *
-     * @param propertyMetamodel the {@link PropertyMetamodel} to be added as a column in the
+     * @param propertyMetamodel the {@link PropertyMetamodel} to be added as a expression in the
      *     declaration
      */
-    public void visit(PropertyMetamodel<?> propertyMetamodel) {
-      declarationItems.add(new DeclarationItem.Column(propertyMetamodel));
+    public void appendExpression(PropertyMetamodel<?> propertyMetamodel) {
+      Objects.requireNonNull(propertyMetamodel);
+      declarationItems.add(new DeclarationItem.Expression(propertyMetamodel));
     }
   }
 
   public interface DeclarationItem {
-    void accept(Visitor visitor);
+    void accept(UserDefinedExpression.DeclarationItem.Visitor visitor);
 
     final class Sql implements DeclarationItem {
       private final String sql;
@@ -186,7 +161,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       }
 
       @Override
-      public void accept(Visitor visitor) {
+      public void accept(UserDefinedExpression.DeclarationItem.Visitor visitor) {
         visitor.visit(this);
       }
     }
@@ -203,15 +178,15 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       }
 
       @Override
-      public void accept(Visitor visitor) {
+      public void accept(UserDefinedExpression.DeclarationItem.Visitor visitor) {
         visitor.visit(this);
       }
     }
 
-    final class Column implements DeclarationItem {
+    final class Expression implements DeclarationItem {
       private final PropertyMetamodel<?> propertyMetamodel;
 
-      public Column(PropertyMetamodel<?> propertyMetamodel) {
+      public Expression(PropertyMetamodel<?> propertyMetamodel) {
         this.propertyMetamodel = propertyMetamodel;
       }
 
@@ -220,7 +195,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       }
 
       @Override
-      public void accept(Visitor visitor) {
+      public void accept(UserDefinedExpression.DeclarationItem.Visitor visitor) {
         visitor.visit(this);
       }
     }
@@ -228,7 +203,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     interface Visitor {
       void visit(Sql sql);
 
-      void visit(Column column);
+      void visit(Expression column);
 
       void visit(CutbackSql length);
     }

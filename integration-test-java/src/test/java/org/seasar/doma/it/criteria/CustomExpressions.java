@@ -11,7 +11,7 @@ public class CustomExpressions {
         e.salary,
         c -> {
           c.appendSql("(");
-          c.visit(e.salary);
+          c.appendExpression(e.salary);
           c.appendSql(" + 100)");
         });
   }
@@ -24,7 +24,7 @@ public class CustomExpressions {
           if (c.dialect.getName().equals("mysql")) {
             c.appendSql("concat(");
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
+              c.appendExpression(propertyMetamodel);
               c.appendSql(", '-' , ");
             }
             c.cutBackSql(8);
@@ -32,7 +32,7 @@ public class CustomExpressions {
           } else if (c.dialect.getName().equals("mssql")) {
             c.appendSql("(");
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
+              c.appendExpression(propertyMetamodel);
               c.appendSql(" + '-' + ");
             }
             c.cutBackSql(9);
@@ -40,7 +40,7 @@ public class CustomExpressions {
           } else {
             c.appendSql("(");
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
-              c.visit(propertyMetamodel);
+              c.appendExpression(propertyMetamodel);
               c.appendSql(" || '-' || ");
             }
             c.cutBackSql(11);
@@ -56,19 +56,19 @@ public class CustomExpressions {
         c -> {
           if (c.dialect.getName().equals("mysql")) {
             c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
+            c.appendExpression(propertyMetamodel);
             c.appendSql(" AS CHAR)");
           } else if (c.dialect.getName().equals("postgres")) {
             c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
+            c.appendExpression(propertyMetamodel);
             c.appendSql(" AS TEXT)");
           } else if (c.dialect.getName().equals("mssql") || c.dialect.getName().equals("h2")) {
             c.appendSql("CAST(");
-            c.visit(propertyMetamodel);
+            c.appendExpression(propertyMetamodel);
             c.appendSql(" AS VARCHAR)");
           } else if (c.dialect.getName().equals("oracle")) {
             c.appendSql("TO_CHAR(");
-            c.visit(propertyMetamodel);
+            c.appendExpression(propertyMetamodel);
             c.appendSql(")");
           }
         });

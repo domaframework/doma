@@ -302,10 +302,6 @@ object KExpressions {
         propertyMetamodel: PropertyMetamodel<PROPERTY>,
         block: UserDefinedExpression.Declaration.() -> Unit,
     ): UserDefinedExpression<PROPERTY> {
-        return UserDefinedExpression(
-            propertyMetamodel.asClass() as Class<PROPERTY>,
-            propertyMetamodel.asType(),
-            block,
-        )
+        return UserDefinedExpression(propertyMetamodel, block)
     }
 }

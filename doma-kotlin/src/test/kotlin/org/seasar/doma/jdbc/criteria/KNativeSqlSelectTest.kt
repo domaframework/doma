@@ -1332,7 +1332,7 @@ internal class KNativeSqlSelectTest {
         return userDefined {
             appendSql("count(distinct (")
             for (propertyMetamodel in propertyMetamodels) {
-                visit(propertyMetamodel)
+                appendExpression(propertyMetamodel)
                 appendSql(", ")
             }
             cutBackSql(2)
@@ -1347,7 +1347,7 @@ internal class KNativeSqlSelectTest {
         return userDefined(propertyMetamodel) {
             appendSql("count(distinct (")
             for (propertyMetamodel in propertyMetamodels) {
-                visit(propertyMetamodel)
+                appendExpression(propertyMetamodel)
                 appendSql(", ")
             }
             cutBackSql(2)

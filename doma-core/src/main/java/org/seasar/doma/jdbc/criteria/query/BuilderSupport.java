@@ -6,15 +6,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.expr.ExpressionFunctions;
-import org.seasar.doma.internal.jdbc.scalar.Scalar;
-import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.ConvertToLogFormatFunction;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
@@ -653,16 +649,10 @@ public class BuilderSupport {
 
     @Override
     public void visit(UserDefinedExpression<?> userDefinedExpression) {
-      UserDefinedExpression.UserDefinedExpressionContext context =
-          userDefinedExpression.getContext(config.getDialect());
-      for (UserDefinedExpression.DeclarationItem declarationItem : context.declarationItems) {
+      List<UserDefinedExpression.DeclarationItem> declarationItems =
+          userDefinedExpression.getDeclarationItems(config.getDialect());
+      for (UserDefinedExpression.DeclarationItem declarationItem : declarationItems) {
         declarationItem.accept(userDefinedExpressionDeclarationItemVisitor);
-      }
-      for (Object value : context.parameters) {
-        Supplier<Scalar<?, ?>> supplier =
-            Scalars.wrap(value, value.getClass(), false, config.getClassHelper());
-        ScalarInParameter<?, ?> inParameter = new ScalarInParameter<>(supplier.get());
-        buf.appendParameter(inParameter);
       }
     }
 
@@ -847,8 +837,8 @@ public class BuilderSupport {
     }
 
     @Override
-    public void visit(UserDefinedExpression.DeclarationItem.Column column) {
-      column.get().accept(propertyMetamodelVisitor);
+    public void visit(UserDefinedExpression.DeclarationItem.Expression expression) {
+      expression.get().accept(propertyMetamodelVisitor);
     }
 
     @Override
