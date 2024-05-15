@@ -145,6 +145,10 @@ For Java projects:
                         <version>${doma.version}</version>
                     </path>
                 </annotationProcessorPaths>
+                <compilerArgs>
+                    <!-- if you are using a Maven project in Eclipse, this argument is required -->
+                    <arg>-Adoma.resources.dir=${project.basedir}/src/main/resources</arg>
+                </compilerArgs>
             </configuration>
         </plugin>
     </plugins>
