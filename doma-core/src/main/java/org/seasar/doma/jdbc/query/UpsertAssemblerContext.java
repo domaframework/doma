@@ -72,11 +72,6 @@ public class UpsertAssemblerContext {
           "duplicateKeyType",
           "The duplicateKeyType must not be set to EXCEPTION when performing an upsert.");
     }
-    if (keys.isEmpty()) {
-      throw new DomaIllegalArgumentException(
-          "keys",
-          "The keys must not be empty when performing an upsert. At least one key must be specified.");
-    }
     if (insertValues.isEmpty()) {
       throw new DomaIllegalArgumentException(
           "insertValues",
@@ -95,5 +90,18 @@ public class UpsertAssemblerContext {
     this.keys = keys;
     this.insertValues = insertValues;
     this.setValues = setValues;
+  }
+
+  /**
+   * Resolves the conflicting keys. If the keys are not specified, the ID properties of the entity
+   * are returned.
+   *
+   * @return the conflicting keys
+   */
+  public List<? extends EntityPropertyType<?, ?>> resolveKeys() {
+    if (keys.isEmpty()) {
+      return entityType.getIdPropertyTypes();
+    }
+    return keys;
   }
 }

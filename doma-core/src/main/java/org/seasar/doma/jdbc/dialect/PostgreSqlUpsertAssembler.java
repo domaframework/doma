@@ -18,6 +18,9 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<EntityPropertyType<?, ?>> keys;
+
+  private final List<? extends EntityPropertyType<?, ?>> keysOnConflictDoUpdate;
+
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
@@ -27,6 +30,7 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
+    this.keysOnConflictDoUpdate = context.resolveKeys();
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
@@ -48,16 +52,26 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(") on conflict (");
-    for (EntityPropertyType<?, ?> key : keys) {
-      column(key);
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(")");
     if (duplicateKeyType == DuplicateKeyType.IGNORE) {
+      buf.appendSql(") on conflict");
+      if (!keys.isEmpty()) {
+        buf.appendSql(" (");
+        for (EntityPropertyType<?, ?> key : keys) {
+          column(key);
+          buf.appendSql(", ");
+        }
+        buf.cutBackSql(2);
+        buf.appendSql(")");
+      }
       buf.appendSql(" do nothing");
     } else if (duplicateKeyType == DuplicateKeyType.UPDATE) {
+      buf.appendSql(") on conflict (");
+      for (EntityPropertyType<?, ?> key : keysOnConflictDoUpdate) {
+        column(key);
+        buf.appendSql(", ");
+      }
+      buf.cutBackSql(2);
+      buf.appendSql(")");
       buf.appendSql(" do update set ");
       for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
         column(setValue.component1());

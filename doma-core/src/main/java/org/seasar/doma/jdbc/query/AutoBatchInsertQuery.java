@@ -6,6 +6,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ListIterator;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
@@ -193,7 +194,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
             duplicateKeyType,
             naming,
             dialect,
-            idPropertyTypes,
+            Collections.emptyList(),
             targetPropertyTypes,
             currentEntity);
     UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);

@@ -110,21 +110,17 @@ class UpsertAssemblerContextTest {
                     new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
-    DomaIllegalArgumentException ex =
-        assertThrows(
-            DomaIllegalArgumentException.class,
-            () -> {
-              new UpsertAssemblerContext(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.UPDATE,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  insertValues,
-                  setValues);
-            });
-    System.out.println(ex.getMessage());
+    UpsertAssemblerContext context =
+        new UpsertAssemblerContext(
+            buf,
+            metaDept.asType(),
+            DuplicateKeyType.UPDATE,
+            Naming.NONE,
+            config.getDialect(),
+            keys,
+            insertValues,
+            setValues);
+    assertNotNull(context);
   }
 
   @Test
@@ -230,21 +226,17 @@ class UpsertAssemblerContextTest {
                     new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
-    DomaIllegalArgumentException ex =
-        assertThrows(
-            DomaIllegalArgumentException.class,
-            () -> {
-              new UpsertAssemblerContext(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.IGNORE,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  insertValues,
-                  setValues);
-            });
-    System.out.println(ex.getMessage());
+    UpsertAssemblerContext context =
+        new UpsertAssemblerContext(
+            buf,
+            metaDept.asType(),
+            DuplicateKeyType.IGNORE,
+            Naming.NONE,
+            config.getDialect(),
+            keys,
+            insertValues,
+            setValues);
+    assertNotNull(context);
   }
 
   @Test

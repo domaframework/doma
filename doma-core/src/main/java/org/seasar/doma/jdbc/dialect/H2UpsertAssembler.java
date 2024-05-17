@@ -13,20 +13,28 @@ import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class H2UpsertAssembler implements UpsertAssembler {
+
   private final PreparedSqlBuilder buf;
+
   private final EntityType<?> entityType;
+
   private final DuplicateKeyType duplicateKeyType;
+
   private final UpsertAssemblerSupport upsertAssemblerSupport;
-  private final List<EntityPropertyType<?, ?>> keys;
+
+  private final List<? extends EntityPropertyType<?, ?>> keys;
+
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
+
   private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
+
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
 
   public H2UpsertAssembler(UpsertAssemblerContext context) {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
-    this.keys = context.keys;
+    this.keys = context.resolveKeys();
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
@@ -129,6 +137,7 @@ public class H2UpsertAssembler implements UpsertAssembler {
   }
 
   class UpsertSetValueVisitor implements UpsertSetValue.Visitor {
+
     @Override
     public void visit(UpsertSetValue.Param param) {
       buf.appendParameter(param.inParameter);

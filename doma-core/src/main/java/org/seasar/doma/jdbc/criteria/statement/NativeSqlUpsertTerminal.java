@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
@@ -52,30 +51,26 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
-    List<PropertyMetamodel<?>> upsertKeys = setUpsertKeysIfEmpty(context.onDuplicateContext);
-    setUpsertSetValuesIfEmpty(context, upsertKeys);
+    setUpsertSetValuesIfEmpty(context);
     PreparedSql sql = getPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
   }
 
-  private List<PropertyMetamodel<?>> setUpsertKeysIfEmpty(
-      InsertContext.OnDuplicateContext context) {
-    if (context.keys.isEmpty()) {
-      context.keys =
-          this.declaration.getContext().entityMetamodel.allPropertyMetamodels().stream()
-              .filter(propertyMetamodel -> propertyMetamodel.asType().isId())
-              .collect(Collectors.toList());
-    }
-    return context.keys;
-  }
-
-  private void setUpsertSetValuesIfEmpty(
-      InsertContext context, List<PropertyMetamodel<?>> upsertKeys) {
+  private void setUpsertSetValuesIfEmpty(InsertContext context) {
     if (context.onDuplicateContext.setValues.isEmpty()) {
+      List<PropertyMetamodel<?>> keys;
+      if (context.onDuplicateContext.keys.isEmpty()) {
+        keys =
+            context.entityMetamodel.allPropertyMetamodels().stream()
+                .filter(propertyMetamodel -> propertyMetamodel.asType().isId())
+                .collect(toList());
+      } else {
+        keys = context.onDuplicateContext.keys;
+      }
       for (Operand.Prop prop : context.values.keySet()) {
-        if (!upsertKeys.contains(prop.value)) {
+        if (!keys.contains(prop.value)) {
           context.onDuplicateContext.setValues.put(prop, prop);
         }
       }

@@ -57,7 +57,7 @@ internal class KEntityqlInsertTest {
         val stmt = entityql.insert(e, emp).onDuplicateKeyIgnore()
         val sql = stmt.asSql()
         Assertions.assertEquals(
-            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1) on conflict (ID) do nothing",
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1) on conflict do nothing",
             sql.formattedSql,
         )
     }
