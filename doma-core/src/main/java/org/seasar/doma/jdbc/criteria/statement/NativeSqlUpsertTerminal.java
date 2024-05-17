@@ -51,30 +51,10 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
-    setUpsertSetValuesIfEmpty(context);
     PreparedSql sql = getPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
-  }
-
-  private void setUpsertSetValuesIfEmpty(InsertContext context) {
-    if (context.onDuplicateContext.setValues.isEmpty()) {
-      List<PropertyMetamodel<?>> keys;
-      if (context.onDuplicateContext.keys.isEmpty()) {
-        keys =
-            context.entityMetamodel.allPropertyMetamodels().stream()
-                .filter(propertyMetamodel -> propertyMetamodel.asType().isId())
-                .collect(toList());
-      } else {
-        keys = context.onDuplicateContext.keys;
-      }
-      for (Operand.Prop prop : context.values.keySet()) {
-        if (!keys.contains(prop.value)) {
-          context.onDuplicateContext.setValues.put(prop, prop);
-        }
-      }
-    }
   }
 
   private PreparedSql getPreparedSql(InsertSettings settings, InsertContext context) {

@@ -18,7 +18,8 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
-  private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
+  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
+      setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
   private final MysqlDialect.MySqlVersion version;
 
@@ -65,7 +66,8 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     }
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" on duplicate key update ");
-      for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
+      for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue> setValue :
+          setValues) {
         column(setValue.component1());
         buf.appendSql(" = ");
         setValue.component2().accept(upsertSetValueVisitor);

@@ -26,7 +26,8 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
 
-  private final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
+  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
+      setValues;
 
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
 
@@ -34,7 +35,7 @@ public class H2UpsertAssembler implements UpsertAssembler {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
-    this.keys = context.resolveKeys();
+    this.keys = context.keys;
     this.insertValues = context.insertValues;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
@@ -71,7 +72,8 @@ public class H2UpsertAssembler implements UpsertAssembler {
     buf.appendSql(")");
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" when matched then update set ");
-      for (Tuple2<EntityPropertyType<?, ?>, UpsertSetValue> setValue : setValues) {
+      for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue> setValue :
+          setValues) {
         targetColumn(setValue.component1());
         buf.appendSql(" = ");
         setValue.component2().accept(upsertSetValueVisitor);

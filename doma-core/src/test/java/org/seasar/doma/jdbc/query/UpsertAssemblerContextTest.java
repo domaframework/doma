@@ -163,21 +163,17 @@ class UpsertAssemblerContextTest {
             .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
             .collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = Collections.emptyList();
-    DomaIllegalArgumentException ex =
-        assertThrows(
-            DomaIllegalArgumentException.class,
-            () -> {
-              new UpsertAssemblerContext(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.UPDATE,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  insertValues,
-                  setValues);
-            });
-    System.out.println(ex.getMessage());
+    UpsertAssemblerContext context =
+        new UpsertAssemblerContext(
+            buf,
+            metaDept.asType(),
+            DuplicateKeyType.UPDATE,
+            Naming.NONE,
+            config.getDialect(),
+            keys,
+            insertValues,
+            setValues);
+    assertNotNull(context);
   }
 
   @Test
