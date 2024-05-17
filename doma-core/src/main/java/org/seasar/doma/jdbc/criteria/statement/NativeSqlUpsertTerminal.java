@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.Command;
@@ -19,12 +18,12 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.query.QueryOperand;
+import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContextBuilder;
-import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
 
@@ -52,57 +51,61 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
     InsertSettings settings = context.getSettings();
-    PreparedSql sql = getPreparedSql(settings, context);
+    PreparedSql sql = createPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
   }
 
-  private PreparedSql getPreparedSql(InsertSettings settings, InsertContext context) {
-    List<EntityPropertyType<?, ?>> keys = toEntityPropertyTypes(context.onDuplicateContext.keys);
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        insertValues(context.values);
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        setValues(context.onDuplicateContext.setValues);
+  private PreparedSql createPreparedSql(InsertSettings settings, InsertContext context) {
+    List<EntityPropertyType<?, ?>> keys = prepareKeys(context.onDuplicateContext.keys);
+    List<QueryOperandPair> insertValues = prepareInsertValues(context.values);
+    List<QueryOperandPair> setValues = prepareSetValues(context.onDuplicateContext.setValues);
 
-    PreparedSqlBuilder sql = assembleQuery(settings, context, keys, insertValues, setValues);
-    return sql.build(createCommenter(settings.getComment()));
+    PreparedSqlBuilder sqlBuilder = assembleQuery(settings, context, keys, insertValues, setValues);
+    return sqlBuilder.build(createCommenter(settings.getComment()));
   }
 
-  private List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues(
+  private List<EntityPropertyType<?, ?>> prepareKeys(
+      List<PropertyMetamodel<?>> propertyMetamodels) {
+    return propertyMetamodels.stream().map(PropertyMetamodel::asType).collect(toList());
+  }
+
+  private List<QueryOperandPair> prepareInsertValues(
       Map<Operand.Prop, Operand.Param> insertContextValue) {
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> list = new ArrayList<>();
+    List<QueryOperandPair> list = new ArrayList<>(insertContextValue.size());
     for (Map.Entry<Operand.Prop, Operand.Param> entry : insertContextValue.entrySet()) {
       Operand.Prop prop = entry.getKey();
       Operand.Param param = entry.getValue();
-      list.add(new Tuple2<>(prop.value.asType(), param.createInParameter(config)));
+      QueryOperand left = new QueryOperand.Prop(prop.getPropertyMetamodel().asType());
+      QueryOperand right =
+          new QueryOperand.Param(
+              param.getPropertyMetamodel().asType(), param.createInParameter(config));
+      QueryOperandPair pair = new QueryOperandPair(left, right);
+      list.add(pair);
     }
     return list;
   }
 
-  private List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues(
-      Map<Operand.Prop, Operand> upsertSetValues) {
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> list = new ArrayList<>();
+  private List<QueryOperandPair> prepareSetValues(Map<Operand.Prop, Operand> upsertSetValues) {
+    List<QueryOperandPair> list = new ArrayList<>(upsertSetValues.size());
     for (Map.Entry<Operand.Prop, Operand> upsertSetValue : upsertSetValues.entrySet()) {
       Operand.Prop prop = upsertSetValue.getKey();
       Operand operand = upsertSetValue.getValue();
-      UpsertSetValue jdbcQueryUpsertSetValue = operand.accept(new OperandVisitor());
-      list.add(new Tuple2<>(prop.value.asType(), jdbcQueryUpsertSetValue));
+      QueryOperand left = new QueryOperand.Prop(prop.getPropertyMetamodel().asType());
+      QueryOperand right = operand.accept(new OperandVisitor());
+      QueryOperandPair pair = new QueryOperandPair(left, right);
+      list.add(pair);
     }
     return list;
-  }
-
-  private static List<EntityPropertyType<?, ?>> toEntityPropertyTypes(
-      List<PropertyMetamodel<?>> propertyMetamodels) {
-    return propertyMetamodels.stream().map(PropertyMetamodel::asType).collect(toList());
   }
 
   private PreparedSqlBuilder assembleQuery(
       InsertSettings settings,
       InsertContext context,
       List<EntityPropertyType<?, ?>> keys,
-      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
-      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
     PreparedSqlBuilder sql =
         new PreparedSqlBuilder(config, SqlKind.INSERT, settings.getSqlLogType());
     UpsertAssemblerContext upsertAssemblerContext =
@@ -120,16 +123,17 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
     return sql;
   }
 
-  /** A visitor for converting {@link Operand} to {@link UpsertSetValue}. */
-  private class OperandVisitor implements Operand.Visitor<UpsertSetValue> {
+  /** A visitor for converting {@link Operand} to {@link QueryOperand}. */
+  private class OperandVisitor implements Operand.Visitor<QueryOperand> {
     @Override
-    public UpsertSetValue visit(Operand.Param param) {
-      return new UpsertSetValue.Param(param.createInParameter(config));
+    public QueryOperand visit(Operand.Param param) {
+      return new QueryOperand.Param(
+          param.getPropertyMetamodel().asType(), param.createInParameter(config));
     }
 
     @Override
-    public UpsertSetValue visit(Operand.Prop prop) {
-      return new UpsertSetValue.Prop(prop.value.asType());
+    public QueryOperand visit(Operand.Prop prop) {
+      return new QueryOperand.Prop(prop.value.asType());
     }
   }
 }

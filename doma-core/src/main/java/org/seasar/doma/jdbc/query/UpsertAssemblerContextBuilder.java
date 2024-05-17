@@ -4,9 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -21,9 +19,8 @@ public class UpsertAssemblerContextBuilder {
       Naming naming,
       Dialect dialect,
       List<EntityPropertyType<?, ?>> keys,
-      List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-          insertValues,
-      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
 
     List<? extends EntityPropertyType<?, ?>> resolvedKeys = resolveKeys(entityType, keys);
 
@@ -49,13 +46,15 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity) {
 
-    List<Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>> insertValues =
+    List<QueryOperandPair> insertValues =
         insertPropertyTypes.stream()
             .map(
                 p -> {
                   Property<ENTITY, ?> property = p.createProperty();
                   property.load(entity);
-                  return new Tuple2<>(p, property.asInParameter());
+                  QueryOperand left = new QueryOperand.Prop(p);
+                  QueryOperand right = new QueryOperand.Param(p, property.asInParameter());
+                  return new QueryOperandPair(left, right);
                 })
             .collect(Collectors.toList());
 
@@ -79,12 +78,10 @@ public class UpsertAssemblerContextBuilder {
       Dialect dialect,
       boolean isKeysSpecified,
       List<? extends EntityPropertyType<?, ?>> keys,
-      List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-          insertValues,
-      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
 
-    List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
-        resolvedSetValues = resolveSetValues(keys, insertValues, setValues);
+    List<QueryOperandPair> resolvedSetValues = resolveSetValues(keys, insertValues, setValues);
 
     return new UpsertAssemblerContext(
         buf,
@@ -106,21 +103,22 @@ public class UpsertAssemblerContextBuilder {
     return entityType.getIdPropertyTypes();
   }
 
-  private static List<
-          ? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
-      resolveSetValues(
-          List<? extends EntityPropertyType<?, ?>> keys,
-          List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-              insertValues,
-          List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+  private static List<QueryOperandPair> resolveSetValues(
+      List<? extends EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
     if (!setValues.isEmpty()) {
       return setValues;
     }
     return insertValues.stream()
-        .map(Tuple2::component1)
+        .map(pair -> pair.getLeft().getEntityPropertyType())
         .filter(p -> !keys.contains(p))
         .filter(p -> p.isUpdatable() && !p.isId() && !p.isTenantId())
-        .map(p -> new Tuple2<>(p, new UpsertSetValue.Prop(p)))
+        .map(
+            p -> {
+              QueryOperand operand = new QueryOperand.Prop(p);
+              return new QueryOperandPair(operand, operand);
+            })
         .collect(Collectors.toList());
   }
 }

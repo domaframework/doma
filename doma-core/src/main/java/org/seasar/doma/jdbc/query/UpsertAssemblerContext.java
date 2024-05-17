@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -34,12 +32,10 @@ public class UpsertAssemblerContext {
   public final List<? extends EntityPropertyType<?, ?>> keys;
 
   /** values clause property-parameter pair list */
-  public final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-      insertValues;
+  public final List<QueryOperandPair> insertValues;
 
   /** set clause property-value pair list */
-  public final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
-      setValues;
+  public final List<QueryOperandPair> setValues;
 
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
@@ -64,10 +60,8 @@ public class UpsertAssemblerContext {
       Dialect dialect,
       boolean isKeysSpecified,
       List<? extends EntityPropertyType<?, ?>> keys,
-      List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-          insertValues,
-      List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
-          setValues) {
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);

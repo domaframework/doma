@@ -11,6 +11,8 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 public interface Operand {
 
+  PropertyMetamodel<?> getPropertyMetamodel();
+
   <R> R accept(Visitor<R> visitor);
 
   final class Param implements Operand {
@@ -26,6 +28,11 @@ public interface Operand {
       Class<?> clazz = propertyMetamodel.asClass();
       Supplier<Scalar<?, ?>> supplier = Scalars.wrap(value, clazz, false, config.getClassHelper());
       return new ScalarInParameter<>(supplier.get());
+    }
+
+    @Override
+    public PropertyMetamodel<?> getPropertyMetamodel() {
+      return propertyMetamodel;
     }
 
     @Override
@@ -53,6 +60,11 @@ public interface Operand {
 
     public Prop(PropertyMetamodel<?> value) {
       this.value = Objects.requireNonNull(value);
+    }
+
+    @Override
+    public PropertyMetamodel<?> getPropertyMetamodel() {
+      return value;
     }
 
     @Override

@@ -8,21 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.SqlParameterVisitor;
 import org.seasar.doma.jdbc.criteria.entity.Dept;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.wrapper.Wrapper;
 
 class UpsertAssemblerContextBuilderTest {
   private final MockConfig config = new MockConfig();
@@ -31,24 +26,21 @@ class UpsertAssemblerContextBuilderTest {
   private final Dept_ metaDept = new Dept_();
   private final List<EntityPropertyType<Dept, ?>> propertyTypes =
       metaDept.asType().getEntityPropertyTypes();
+  private final List<EntityPropertyType<?, ?>> keys =
+      propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
+  private final List<QueryOperandPair> insertValues =
+      propertyTypes.stream()
+          .filter(p -> !p.isId())
+          .map(p -> mockQueryOperandPair(p, p))
+          .collect(toList());
+  private final List<QueryOperandPair> setValues =
+      propertyTypes.stream()
+          .filter(p -> !p.isId())
+          .map(p -> mockQueryOperandPair(p, p))
+          .collect(toList());
 
   @Test
   void build_onDuplicateKeyException() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
@@ -68,21 +60,6 @@ class UpsertAssemblerContextBuilderTest {
 
   @Test
   void build_onDuplicateKeyUpdate() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -98,21 +75,8 @@ class UpsertAssemblerContextBuilderTest {
   }
 
   @Test
-  void build_onDuplicateKeyUpdate_emptyKey() {
-    List<EntityPropertyType<?, ?>> keys = Collections.emptyList();
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
+  void build_onDuplicateKeyUpdate_emptyKeys() {
+    List<EntityPropertyType<?, ?>> emptyKeys = Collections.emptyList();
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -120,7 +84,7 @@ class UpsertAssemblerContextBuilderTest {
             DuplicateKeyType.UPDATE,
             Naming.NONE,
             config.getDialect(),
-            keys,
+            emptyKeys,
             insertValues,
             setValues);
     assertFalse(context.isKeysSpecified);
@@ -129,17 +93,7 @@ class UpsertAssemblerContextBuilderTest {
 
   @Test
   void build_onDuplicateKeyUpdate_emptyInsertValues() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues = Collections.emptyList();
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
+    List<QueryOperandPair> emptyInsertValues = Collections.emptyList();
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
@@ -151,7 +105,7 @@ class UpsertAssemblerContextBuilderTest {
                   Naming.NONE,
                   config.getDialect(),
                   keys,
-                  insertValues,
+                  emptyInsertValues,
                   setValues);
             });
     System.out.println(ex.getMessage());
@@ -159,14 +113,7 @@ class UpsertAssemblerContextBuilderTest {
 
   @Test
   void build_onDuplicateKeyUpdate_emptySetValues() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = Collections.emptyList();
+    List<QueryOperandPair> emptySetValues = Collections.emptyList();
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -176,27 +123,12 @@ class UpsertAssemblerContextBuilderTest {
             config.getDialect(),
             keys,
             insertValues,
-            setValues);
+            emptySetValues);
     assertFalse(context.setValues.isEmpty());
   }
 
   @Test
   void build_onDuplicateKeyIgnore() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -212,21 +144,8 @@ class UpsertAssemblerContextBuilderTest {
   }
 
   @Test
-  void build_onDuplicateKeyIgnore_emptyKey() {
-    List<EntityPropertyType<?, ?>> keys = Collections.emptyList();
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
+  void build_onDuplicateKeyIgnore_emptyKeys() {
+    List<EntityPropertyType<?, ?>> emptyKeys = Collections.emptyList();
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -234,7 +153,7 @@ class UpsertAssemblerContextBuilderTest {
             DuplicateKeyType.IGNORE,
             Naming.NONE,
             config.getDialect(),
-            keys,
+            emptyKeys,
             insertValues,
             setValues);
     assertFalse(context.isKeysSpecified);
@@ -243,17 +162,7 @@ class UpsertAssemblerContextBuilderTest {
 
   @Test
   void build_onDuplicateKeyIgnore_emptyInsertValues() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues = Collections.emptyList();
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(
-                c ->
-                    new Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>(
-                        c, new UpsertSetValue.Prop(c)))
-            .collect(toList());
+    List<QueryOperandPair> emptyInsertValues = Collections.emptyList();
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
@@ -265,7 +174,7 @@ class UpsertAssemblerContextBuilderTest {
                   Naming.NONE,
                   config.getDialect(),
                   keys,
-                  insertValues,
+                  emptyInsertValues,
                   setValues);
             });
     System.out.println(ex.getMessage());
@@ -273,14 +182,7 @@ class UpsertAssemblerContextBuilderTest {
 
   @Test
   void build_onDuplicateKeyIgnore_emptySetValues() {
-    List<EntityPropertyType<?, ?>> keys =
-        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        propertyTypes.stream()
-            .filter(c -> !c.isId())
-            .map(c -> new Tuple2<EntityPropertyType<?, ?>, InParameter<?>>(c, mockInParameter()))
-            .collect(toList());
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = Collections.emptyList();
+    List<QueryOperandPair> emptySetValues = Collections.emptyList();
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.build(
             buf,
@@ -290,7 +192,7 @@ class UpsertAssemblerContextBuilderTest {
             config.getDialect(),
             keys,
             insertValues,
-            setValues);
+            emptySetValues);
     assertNotNull(context);
     assertFalse(context.setValues.isEmpty());
   }
@@ -322,28 +224,21 @@ class UpsertAssemblerContextBuilderTest {
     assertFalse(context.setValues.isEmpty());
   }
 
-  private InParameter<Object> mockInParameter() {
-    return new InParameter<Object>() {
+  private QueryOperandPair mockQueryOperandPair(
+      EntityPropertyType<?, ?> left, EntityPropertyType<?, ?> right) {
+    return new QueryOperandPair(mockQueryOperand(left), mockQueryOperand(right));
+  }
+
+  private QueryOperand mockQueryOperand(final EntityPropertyType<?, ?> propertyType) {
+    return new QueryOperand() {
+
       @Override
-      public Object getValue() {
-        return null;
+      public EntityPropertyType<?, ?> getEntityPropertyType() {
+        return propertyType;
       }
 
       @Override
-      public <R, P, TH extends Throwable> R accept(SqlParameterVisitor<R, P, TH> visitor, P p)
-          throws TH {
-        return null;
-      }
-
-      @Override
-      public Optional<Class<?>> getDomainClass() {
-        return Optional.empty();
-      }
-
-      @Override
-      public Wrapper<Object> getWrapper() {
-        return null;
-      }
+      public void accept(Visitor visitor) {}
     };
   }
 }

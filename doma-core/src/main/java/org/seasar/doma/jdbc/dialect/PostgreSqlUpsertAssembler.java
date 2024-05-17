@@ -2,15 +2,14 @@ package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.QueryOperand;
+import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
-import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final PreparedSqlBuilder buf;
@@ -21,11 +20,9 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final boolean isKeysSpecified;
   private final List<? extends EntityPropertyType<?, ?>> keys;
 
-  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
-      insertValues;
-  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
-      setValues;
-  private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
+  private final List<QueryOperandPair> insertValues;
+  private final List<QueryOperandPair> setValues;
+  private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public PostgreSqlUpsertAssembler(UpsertAssemblerContext context) {
     this.buf = context.buf;
@@ -43,16 +40,14 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql("insert into ");
     tableNameAndAlias(entityType);
     buf.appendSql(" (");
-    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
-        insertValues) {
-      column(insertValue.component1());
+    for (QueryOperandPair pair : insertValues) {
+      column(pair.getLeft().getEntityPropertyType());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
-        insertValues) {
-      buf.appendParameter(insertValue.component2());
+    for (QueryOperandPair pair : insertValues) {
+      pair.getRight().accept(queryOperandVisitor);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
@@ -77,11 +72,10 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
       buf.cutBackSql(2);
       buf.appendSql(")");
       buf.appendSql(" do update set ");
-      for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue> setValue :
-          setValues) {
-        column(setValue.component1());
+      for (QueryOperandPair pair : setValues) {
+        column(pair.getLeft().getEntityPropertyType());
         buf.appendSql(" = ");
-        setValue.component2().accept(upsertSetValueVisitor);
+        pair.getRight().accept(queryOperandVisitor);
         buf.appendSql(", ");
       }
       buf.cutBackSql(2);
@@ -100,14 +94,14 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(sql);
   }
 
-  class UpsertSetValueVisitor implements UpsertSetValue.Visitor {
+  class QueryOperandVisitor implements QueryOperand.Visitor {
     @Override
-    public void visit(UpsertSetValue.Param param) {
+    public void visit(QueryOperand.Param param) {
       buf.appendParameter(param.inParameter);
     }
 
     @Override
-    public void visit(UpsertSetValue.Prop prop) {
+    public void visit(QueryOperand.Prop prop) {
       String sql =
           upsertAssemblerSupport.excludeProp(
               prop.propertyType, UpsertAssemblerSupport.ColumnNameType.NAME_ALIAS);
