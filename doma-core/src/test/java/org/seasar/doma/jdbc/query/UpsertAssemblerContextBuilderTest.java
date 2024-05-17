@@ -1,8 +1,10 @@
 package org.seasar.doma.jdbc.query;
 
 import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,22 +18,22 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
+import org.seasar.doma.jdbc.criteria.entity.Dept;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
-import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.wrapper.Wrapper;
 
-class UpsertAssemblerContextTest {
+class UpsertAssemblerContextBuilderTest {
   private final MockConfig config = new MockConfig();
   private final PreparedSqlBuilder buf =
       new PreparedSqlBuilder(config, SqlKind.BATCH_INSERT, SqlLogType.RAW);
   private final Dept_ metaDept = new Dept_();
-  private final List<EntityPropertyType<?, ?>> propertyTypes =
-      metaDept.allPropertyMetamodels().stream().map(PropertyMetamodel::asType).collect(toList());
+  private final List<EntityPropertyType<Dept, ?>> propertyTypes =
+      metaDept.asType().getEntityPropertyTypes();
 
   @Test
-  void onDuplicateKeyException() {
+  void build_onDuplicateKeyException() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
@@ -51,7 +53,7 @@ class UpsertAssemblerContextTest {
         assertThrows(
             DomaIllegalArgumentException.class,
             () -> {
-              new UpsertAssemblerContext(
+              UpsertAssemblerContextBuilder.build(
                   buf,
                   metaDept.asType(),
                   DuplicateKeyType.EXCEPTION,
@@ -65,7 +67,7 @@ class UpsertAssemblerContextTest {
   }
 
   @Test
-  void onDuplicateKeyUpdate() {
+  void build_onDuplicateKeyUpdate() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
@@ -82,7 +84,7 @@ class UpsertAssemblerContextTest {
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.UPDATE,
@@ -92,10 +94,11 @@ class UpsertAssemblerContextTest {
             insertValues,
             setValues);
     assertNotNull(context);
+    assertTrue(context.isKeysSpecified);
   }
 
   @Test
-  void onDuplicateKeyUpdate_emptyKey() {
+  void build_onDuplicateKeyUpdate_emptyKey() {
     List<EntityPropertyType<?, ?>> keys = Collections.emptyList();
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
         propertyTypes.stream()
@@ -111,7 +114,7 @@ class UpsertAssemblerContextTest {
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.UPDATE,
@@ -120,11 +123,12 @@ class UpsertAssemblerContextTest {
             keys,
             insertValues,
             setValues);
-    assertNotNull(context);
+    assertFalse(context.isKeysSpecified);
+    assertFalse(context.keys.isEmpty());
   }
 
   @Test
-  void onDuplicateKeyUpdate_emptyInsertValues() {
+  void build_onDuplicateKeyUpdate_emptyInsertValues() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues = Collections.emptyList();
@@ -140,7 +144,7 @@ class UpsertAssemblerContextTest {
         assertThrows(
             DomaIllegalArgumentException.class,
             () -> {
-              new UpsertAssemblerContext(
+              UpsertAssemblerContextBuilder.build(
                   buf,
                   metaDept.asType(),
                   DuplicateKeyType.UPDATE,
@@ -154,7 +158,7 @@ class UpsertAssemblerContextTest {
   }
 
   @Test
-  void onDuplicateKeyUpdate_emptySetValues() {
+  void build_onDuplicateKeyUpdate_emptySetValues() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
@@ -164,7 +168,7 @@ class UpsertAssemblerContextTest {
             .collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = Collections.emptyList();
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.UPDATE,
@@ -173,11 +177,11 @@ class UpsertAssemblerContextTest {
             keys,
             insertValues,
             setValues);
-    assertNotNull(context);
+    assertFalse(context.setValues.isEmpty());
   }
 
   @Test
-  void onDuplicateKeyIgnore() {
+  void build_onDuplicateKeyIgnore() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
@@ -194,7 +198,7 @@ class UpsertAssemblerContextTest {
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.IGNORE,
@@ -204,10 +208,11 @@ class UpsertAssemblerContextTest {
             insertValues,
             setValues);
     assertNotNull(context);
+    assertTrue(context.isKeysSpecified);
   }
 
   @Test
-  void onDuplicateKeyIgnore_emptyKey() {
+  void build_onDuplicateKeyIgnore_emptyKey() {
     List<EntityPropertyType<?, ?>> keys = Collections.emptyList();
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
         propertyTypes.stream()
@@ -223,7 +228,7 @@ class UpsertAssemblerContextTest {
                         c, new UpsertSetValue.Prop(c)))
             .collect(toList());
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.IGNORE,
@@ -232,11 +237,12 @@ class UpsertAssemblerContextTest {
             keys,
             insertValues,
             setValues);
-    assertNotNull(context);
+    assertFalse(context.isKeysSpecified);
+    assertFalse(context.keys.isEmpty());
   }
 
   @Test
-  void onDuplicateKeyIgnore_emptyInsertValues() {
+  void build_onDuplicateKeyIgnore_emptyInsertValues() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues = Collections.emptyList();
@@ -252,7 +258,7 @@ class UpsertAssemblerContextTest {
         assertThrows(
             DomaIllegalArgumentException.class,
             () -> {
-              new UpsertAssemblerContext(
+              UpsertAssemblerContextBuilder.build(
                   buf,
                   metaDept.asType(),
                   DuplicateKeyType.IGNORE,
@@ -266,7 +272,7 @@ class UpsertAssemblerContextTest {
   }
 
   @Test
-  void onDuplicateKeyIgnore_emptySetValues() {
+  void build_onDuplicateKeyIgnore_emptySetValues() {
     List<EntityPropertyType<?, ?>> keys =
         propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
@@ -276,7 +282,7 @@ class UpsertAssemblerContextTest {
             .collect(toList());
     List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = Collections.emptyList();
     UpsertAssemblerContext context =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             buf,
             metaDept.asType(),
             DuplicateKeyType.IGNORE,
@@ -286,6 +292,34 @@ class UpsertAssemblerContextTest {
             insertValues,
             setValues);
     assertNotNull(context);
+    assertFalse(context.setValues.isEmpty());
+  }
+
+  @Test
+  void buildFromEntity() {
+    List<EntityPropertyType<Dept, ?>> idPropertyTypes =
+        propertyTypes.stream().filter(EntityPropertyType::isId).collect(toList());
+    List<EntityPropertyType<Dept, ?>> insertPropertyTypes =
+        metaDept.asType().getEntityPropertyTypes().stream()
+            .filter(c -> !c.isId())
+            .collect(toList());
+    Dept dept = new Dept();
+    dept.setId(1);
+    dept.setName("a");
+    UpsertAssemblerContext context =
+        UpsertAssemblerContextBuilder.buildFromEntity(
+            buf,
+            metaDept.asType(),
+            DuplicateKeyType.IGNORE,
+            Naming.NONE,
+            config.getDialect(),
+            idPropertyTypes,
+            insertPropertyTypes,
+            dept);
+    assertFalse(context.isKeysSpecified);
+    assertFalse(context.keys.isEmpty());
+    assertFalse(context.insertValues.isEmpty());
+    assertFalse(context.setValues.isEmpty());
   }
 
   private InParameter<Object> mockInParameter() {

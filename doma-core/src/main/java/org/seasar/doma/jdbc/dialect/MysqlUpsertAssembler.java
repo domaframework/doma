@@ -17,7 +17,8 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
   private final EntityType<?> entityType;
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
-  private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
+  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
+      insertValues;
   private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
       setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
@@ -42,13 +43,15 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(" into ");
     tableNameOnly(entityType);
     buf.appendSql(" (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       column(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       buf.appendParameter(insertValue.component2());
       buf.appendSql(", ");
     }

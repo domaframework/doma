@@ -18,7 +18,8 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<? extends EntityPropertyType<?, ?>> keys;
-  private final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
+  private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>>>
+      insertValues;
   private final List<? extends Tuple2<? extends EntityPropertyType<?, ?>, ? extends UpsertSetValue>>
       setValues;
   private final UpsertSetValue.Visitor upsertSetValueVisitor = new UpsertSetValueVisitor();
@@ -48,13 +49,15 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     }
     buf.cutBackSql(5);
     buf.appendSql(" when not matched then insert (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       column(insertValue.component1());
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       excludeColumn(insertValue.component1());
       buf.appendSql(", ");
     }
@@ -76,7 +79,8 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
 
   private void excludeQuery() {
     buf.appendSql("values (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       buf.appendParameter(insertValue.component2());
       buf.appendSql(", ");
     }
@@ -84,7 +88,8 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(")) as ");
     excludeAlias();
     buf.appendSql(" (");
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> insertValue : insertValues) {
+    for (Tuple2<? extends EntityPropertyType<?, ?>, ? extends InParameter<?>> insertValue :
+        insertValues) {
       column(insertValue.component1());
       buf.appendSql(", ");
     }

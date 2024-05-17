@@ -23,6 +23,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContextBuilder;
 import org.seasar.doma.jdbc.query.UpsertSetValue;
 
 public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
@@ -105,7 +106,7 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
     PreparedSqlBuilder sql =
         new PreparedSqlBuilder(config, SqlKind.INSERT, settings.getSqlLogType());
     UpsertAssemblerContext upsertAssemblerContext =
-        new UpsertAssemblerContext(
+        UpsertAssemblerContextBuilder.build(
             sql,
             context.entityMetamodel.asType(),
             context.onDuplicateContext.duplicateKeyType,

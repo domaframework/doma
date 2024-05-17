@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -155,13 +154,13 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     UpsertAssemblerContext context =
-        UpsertAssemblerContextBuilder.fromEntity(
+        UpsertAssemblerContextBuilder.buildFromEntity(
             builder,
             entityType,
             duplicateKeyType,
             naming,
             dialect,
-            Collections.emptyList(),
+            idPropertyTypes,
             targetPropertyTypes,
             entity);
     UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
