@@ -107,10 +107,15 @@ public @interface BatchInsert {
 
   /**
    * This variable represents the type of duplicate key handling strategy for an insert operation.
-   * It can have one of three values: - UPDATE: If a duplicate key is encountered, the existing row
-   * in the table will be updated. - IGNORE: If a duplicate key is encountered, the insert operation
-   * will be ignored, and no changes will be made to the table. - EXCEPTION: If a duplicate key is
-   * encountered, the operation will throw an exception, indicating that a duplicate key exists.
+   * It can have one of three values:
+   *
+   * <ul>
+   *   <li>UPDATE: If a duplicate key is encountered, the existing row in the table will be updated.
+   *   <li>IGNORE: If a duplicate key is encountered, the insert operation will be ignored, and no
+   *       changes will be made to the table.
+   *   <li>EXCEPTION: If a duplicate key is encountered, the operation will throw an exception,
+   *       indicating that a duplicate key exists.
+   * </ul>
    *
    * @return the type of duplicate key handling strategy for an insert operation.
    */
