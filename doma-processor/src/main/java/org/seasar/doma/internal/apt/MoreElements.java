@@ -44,7 +44,7 @@ public class MoreElements implements Elements {
 
   private final Elements elementUtils;
 
-  private final Map<Class<?>, TypeElement> typeElementCache = new HashMap<>(64);
+  private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
 
   public MoreElements(Context ctx, ProcessingEnvironment env) {
     assertNotNull(ctx, env);
@@ -61,7 +61,17 @@ public class MoreElements implements Elements {
   // delegate to elementUtils
   @Override
   public TypeElement getTypeElement(CharSequence canonicalName) {
-    return elementUtils.getTypeElement(canonicalName);
+    assertNotNull(canonicalName);
+    return getTypeElementInternal(canonicalName.toString());
+  }
+
+  public TypeElement getTypeElement(Class<?> clazz) {
+    assertNotNull(clazz);
+    return getTypeElementInternal(clazz.getCanonicalName());
+  }
+
+  private TypeElement getTypeElementInternal(String canonicalName) {
+    return typeElementCache.computeIfAbsent(canonicalName, elementUtils::getTypeElement);
   }
 
   // delegate to elementUtils
@@ -206,12 +216,6 @@ public class MoreElements implements Elements {
     } catch (NullPointerException ignored) {
       return null;
     }
-  }
-
-  public TypeElement getTypeElement(Class<?> clazz) {
-    assertNotNull(clazz);
-    return typeElementCache.computeIfAbsent(
-        clazz, k -> elementUtils.getTypeElement(k.getCanonicalName()));
   }
 
   private TypeElement getEnclosedTypeElement(TypeElement typeElement, List<String> enclosedNames) {
