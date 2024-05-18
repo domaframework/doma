@@ -128,7 +128,7 @@ internal class KNativeSqlInsertTest {
             .onDuplicateKeyIgnore()
         val sql = stmt.asSql()
         Assertions.assertEquals(
-            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict (ID) do nothing",
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (99, 'aaa', null, 1) on conflict do nothing",
             sql.formattedSql,
         )
     }

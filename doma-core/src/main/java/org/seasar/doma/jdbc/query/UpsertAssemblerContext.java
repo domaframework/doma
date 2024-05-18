@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -24,18 +22,20 @@ public class UpsertAssemblerContext {
   public final Naming naming;
   public final Dialect dialect;
 
+  public final boolean isKeysSpecified;
+
   /**
    * conflicting keys
    *
    * @see EntityPropertyType
    */
-  public final List<EntityPropertyType<?, ?>> keys;
+  public final List<? extends EntityPropertyType<?, ?>> keys;
 
   /** values clause property-parameter pair list */
-  public final List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues;
+  public final List<QueryOperandPair> insertValues;
 
   /** set clause property-value pair list */
-  public final List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues;
+  public final List<QueryOperandPair> setValues;
 
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
@@ -46,20 +46,22 @@ public class UpsertAssemblerContext {
    * @param duplicateKeyType the duplicate key type
    * @param naming the naming
    * @param dialect the dialect
+   * @param isKeysSpecified whether the keys are specified
    * @param keys the conflicting keys
    * @param insertValues the values clause property-parameter pair list
    * @param setValues the set clause property-value pair list(optional).Required in case of
    *     duplicateKeyType.UPDATE
    */
-  public UpsertAssemblerContext(
+  UpsertAssemblerContext(
       PreparedSqlBuilder buf,
       EntityType<?> entityType,
       DuplicateKeyType duplicateKeyType,
       Naming naming,
       Dialect dialect,
-      List<EntityPropertyType<?, ?>> keys,
-      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues,
-      List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues) {
+      boolean isKeysSpecified,
+      List<? extends EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);
@@ -92,6 +94,7 @@ public class UpsertAssemblerContext {
     this.duplicateKeyType = duplicateKeyType;
     this.naming = naming;
     this.dialect = dialect;
+    this.isKeysSpecified = isKeysSpecified;
     this.keys = keys;
     this.insertValues = insertValues;
     this.setValues = setValues;

@@ -154,7 +154,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     UpsertAssemblerContext context =
-        UpsertAssemblerContextBuilder.fromEntity(
+        UpsertAssemblerContextBuilder.buildFromEntity(
             builder,
             entityType,
             duplicateKeyType,

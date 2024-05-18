@@ -1,32 +1,87 @@
 package org.seasar.doma.jdbc.query;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
-import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
 public class UpsertAssemblerContextBuilder {
-  @SuppressWarnings("unchecked")
-  public static <ENTITY> UpsertAssemblerContext fromEntity(
+
+  public static UpsertAssemblerContext build(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      DuplicateKeyType duplicateKeyType,
+      Naming naming,
+      Dialect dialect,
+      List<EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
+
+    List<? extends EntityPropertyType<?, ?>> resolvedKeys = resolveKeys(entityType, keys);
+
+    return buildInternal(
+        buf,
+        entityType,
+        duplicateKeyType,
+        naming,
+        dialect,
+        !keys.isEmpty(),
+        resolvedKeys,
+        insertValues,
+        setValues);
+  }
+
+  public static <ENTITY> UpsertAssemblerContext buildFromEntity(
       PreparedSqlBuilder buf,
       EntityType<ENTITY> entityType,
       DuplicateKeyType duplicateKeyType,
       Naming naming,
       Dialect dialect,
-      List<EntityPropertyType<ENTITY, ?>> keys,
+      List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity) {
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> insertValues =
-        toInsertValues(insertPropertyTypes, entity);
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues =
-        toSetValues(filterUpdatePropertyTypes(insertValues));
+
+    List<QueryOperandPair> insertValues =
+        insertPropertyTypes.stream()
+            .map(
+                p -> {
+                  Property<ENTITY, ?> property = p.createProperty();
+                  property.load(entity);
+                  QueryOperand left = new QueryOperand.Prop(p);
+                  QueryOperand right = new QueryOperand.Param(p, property.asInParameter());
+                  return new QueryOperandPair(left, right);
+                })
+            .collect(Collectors.toList());
+
+    return buildInternal(
+        buf,
+        entityType,
+        duplicateKeyType,
+        naming,
+        dialect,
+        false,
+        idPropertyTypes,
+        insertValues,
+        Collections.emptyList());
+  }
+
+  private static UpsertAssemblerContext buildInternal(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      DuplicateKeyType duplicateKeyType,
+      Naming naming,
+      Dialect dialect,
+      boolean isKeysSpecified,
+      List<? extends EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
+
+    List<QueryOperandPair> resolvedSetValues = resolveSetValues(keys, insertValues, setValues);
 
     return new UpsertAssemblerContext(
         buf,
@@ -34,43 +89,36 @@ public class UpsertAssemblerContextBuilder {
         duplicateKeyType,
         naming,
         dialect,
-        (List<EntityPropertyType<?, ?>>) (Object) keys,
+        isKeysSpecified,
+        keys,
         insertValues,
-        setValues);
+        resolvedSetValues);
   }
 
-  private static List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> filterUpdatePropertyTypes(
-      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> propertyValuePairs) {
-    return propertyValuePairs.stream()
-        .filter(p -> isUpdatePropertyTypes(p.component1()))
+  private static List<? extends EntityPropertyType<?, ?>> resolveKeys(
+      EntityType<?> entityType, List<? extends EntityPropertyType<?, ?>> keys) {
+    if (!keys.isEmpty()) {
+      return keys;
+    }
+    return entityType.getIdPropertyTypes();
+  }
+
+  private static List<QueryOperandPair> resolveSetValues(
+      List<? extends EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues) {
+    if (!setValues.isEmpty()) {
+      return setValues;
+    }
+    return insertValues.stream()
+        .map(pair -> pair.getLeft().getEntityPropertyType())
+        .filter(p -> !keys.contains(p))
+        .filter(p -> p.isUpdatable() && !p.isId() && !p.isTenantId())
+        .map(
+            p -> {
+              QueryOperand operand = new QueryOperand.Prop(p);
+              return new QueryOperandPair(operand, operand);
+            })
         .collect(Collectors.toList());
-  }
-
-  private static boolean isUpdatePropertyTypes(EntityPropertyType<?, ?> property) {
-    return property.isUpdatable() && !property.isId() && !property.isTenantId();
-  }
-
-  private static List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> toSetValues(
-      List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> propertyValuePairs) {
-    List<Tuple2<EntityPropertyType<?, ?>, UpsertSetValue>> setValues = new ArrayList<>();
-    for (Tuple2<EntityPropertyType<?, ?>, InParameter<?>> propertyValuePair : propertyValuePairs) {
-      setValues.add(
-          new Tuple2<>(
-              propertyValuePair.component1(),
-              new UpsertSetValue.Prop(propertyValuePair.component1())));
-    }
-    return setValues;
-  }
-
-  private static <ENTITY> List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> toInsertValues(
-      List<EntityPropertyType<ENTITY, ?>> propertyTypes, ENTITY entity) {
-    List<Tuple2<EntityPropertyType<?, ?>, InParameter<?>>> entityPropertyTypeToInParameter =
-        new ArrayList<>();
-    for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
-      Property<ENTITY, ?> property = propertyType.createProperty();
-      property.load(entity);
-      entityPropertyTypeToInParameter.add(new Tuple2<>(propertyType, property.asInParameter()));
-    }
-    return entityPropertyTypeToInParameter;
   }
 }
