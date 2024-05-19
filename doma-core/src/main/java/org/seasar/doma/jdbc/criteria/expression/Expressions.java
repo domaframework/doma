@@ -5,6 +5,9 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -303,33 +306,233 @@ public class Expressions {
   /**
    * Creates a user-defined expression with the specified class and block.
    *
-   * @param <PROPERTY> the type of the property
-   * @param klass the class of the property
-   * @param block the block to configure the user-defined expression。
-   * @return a new UserDefinedExpression instance
-   * @see UserDefinedExpression.Declaration
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param klass the class of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operands the operand list used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
    */
   public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
-      Class<PROPERTY> klass, Consumer<UserDefinedExpression.Declaration> block) {
+      Class<PROPERTY> klass,
+      String name,
+      PropertyMetamodel<?>[] operands,
+      Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
     Objects.requireNonNull(block);
-    return new UserDefinedExpression<>(klass, block);
+    return userDefined(klass, name, Arrays.asList(operands), block);
   }
 
   /**
    * Creates a user-defined expression with the specified class and block.
    *
-   * @param <PROPERTY> the type of the property
-   * @param propertyMetamodel the property metamodel
-   * @param block the block to configure the user-defined expression。
-   * @return a new UserDefinedExpression instance
-   * @see UserDefinedExpression.Declaration
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param klass the class of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
    */
   public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
-      org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<PROPERTY> propertyMetamodel,
+      Class<PROPERTY> klass,
+      String name,
+      PropertyMetamodel<?> operand,
       Consumer<UserDefinedExpression.Declaration> block) {
-    Objects.requireNonNull(propertyMetamodel);
+    Objects.requireNonNull(klass);
     Objects.requireNonNull(block);
-    return new UserDefinedExpression<>(propertyMetamodel, block);
+    return userDefined(klass, name, Collections.singletonList(operand), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified class and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param klass the class of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand1 the operand used in the expression
+   * @param operand2 the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      Class<PROPERTY> klass,
+      String name,
+      PropertyMetamodel<?> operand1,
+      PropertyMetamodel<?> operand2,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(klass);
+    Objects.requireNonNull(block);
+    return userDefined(klass, name, Arrays.asList(operand1, operand2), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified class and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param klass the class of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand1 the operand used in the expression
+   * @param operand2 the operand used in the expression
+   * @param operand3 the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      Class<PROPERTY> klass,
+      String name,
+      PropertyMetamodel<?> operand1,
+      PropertyMetamodel<?> operand2,
+      PropertyMetamodel<?> operand3,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(klass);
+    Objects.requireNonNull(block);
+    return userDefined(klass, name, Arrays.asList(operand1, operand2, operand3), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified class and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param klass the class of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operands the operand list used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      Class<PROPERTY> klass,
+      String name,
+      List<? extends PropertyMetamodel<?>> operands,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(klass);
+    Objects.requireNonNull(block);
+    return new UserDefinedExpression<>(klass, name, operands, block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified resultPropertyMetamodel and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param resultPropertyMetamodel the property metamodel of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operands the operand list used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      PropertyMetamodel<?>[] operands,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(block);
+    return userDefined(resultPropertyMetamodel, name, Arrays.asList(operands), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified resultPropertyMetamodel and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param resultPropertyMetamodel the property metamodel of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      PropertyMetamodel<?> operand,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(block);
+    return userDefined(resultPropertyMetamodel, name, Collections.singletonList(operand), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified resultPropertyMetamodel and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param resultPropertyMetamodel the property metamodel of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand1 the operand used in the expression
+   * @param operand2 the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      PropertyMetamodel<?> operand1,
+      PropertyMetamodel<?> operand2,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(block);
+    return userDefined(resultPropertyMetamodel, name, Arrays.asList(operand1, operand2), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified resultPropertyMetamodel and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param resultPropertyMetamodel the property metamodel of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operand1 the operand used in the expression
+   * @param operand2 the operand used in the expression
+   * @param operand3 the operand used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      PropertyMetamodel<?> operand1,
+      PropertyMetamodel<?> operand2,
+      PropertyMetamodel<?> operand3,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(block);
+    return userDefined(
+        resultPropertyMetamodel, name, Arrays.asList(operand1, operand2, operand3), block);
+  }
+
+  /**
+   * Creates a user-defined expression with the specified resultPropertyMetamodel and block.
+   *
+   * <p>The klass and name operands are used to determine identity of the expression.
+   *
+   * @param <PROPERTY> type of expression result
+   * @param resultPropertyMetamodel the property metamodel of PROPERTY
+   * @param name the name that must be unique among user-defined column expressions
+   * @param operands the operand list used in the expression
+   * @param block the SQL builder
+   * @return user defined expression
+   */
+  public static <PROPERTY> UserDefinedExpression<PROPERTY> userDefined(
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      List<? extends PropertyMetamodel<?>> operands,
+      Consumer<UserDefinedExpression.Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(block);
+    return new UserDefinedExpression<>(resultPropertyMetamodel, name, operands, block);
   }
 }

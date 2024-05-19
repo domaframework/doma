@@ -9,6 +9,8 @@ public class CustomExpressions {
   static UserDefinedExpression<Salary> addSalaryUserDefined(Employee_ e) {
     return userDefined(
         e.salary,
+        "addSalaryUserDefined",
+        e.salary,
         c -> {
           c.appendSql("(");
           c.appendExpression(e.salary);
@@ -20,6 +22,8 @@ public class CustomExpressions {
       PropertyMetamodel<?>... propertyMetamodels) {
     return userDefined(
         String.class,
+        "concatWithUserDefined",
+        propertyMetamodels,
         c -> {
           if (c.dialect.getName().equals("mysql")) {
             c.appendSql("concat(");
@@ -53,6 +57,8 @@ public class CustomExpressions {
       PropertyMetamodel<?> propertyMetamodel) {
     return userDefined(
         String.class,
+        "tpStringWithUserDefined",
+        propertyMetamodel,
         c -> {
           if (c.dialect.getName().equals("mysql")) {
             c.appendSql("CAST(");

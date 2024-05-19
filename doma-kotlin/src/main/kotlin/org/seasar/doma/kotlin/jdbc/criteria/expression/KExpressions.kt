@@ -293,15 +293,36 @@ object KExpressions {
     }
 
     inline fun <reified PROPERTY> userDefined(
+        name: String,
+        operands: List<PropertyMetamodel<*>>,
         noinline block: UserDefinedExpression.Declaration.() -> Unit,
     ): UserDefinedExpression<PROPERTY> {
-        return UserDefinedExpression(PROPERTY::class.java, block)
+        return UserDefinedExpression(PROPERTY::class.java, name, operands, block)
+    }
+
+    inline fun <reified PROPERTY> userDefined(
+        name: String,
+        vararg operands: PropertyMetamodel<*>,
+        noinline block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(PROPERTY::class.java, name, operands.toList(), block)
     }
 
     fun <PROPERTY> userDefined(
-        propertyMetamodel: PropertyMetamodel<PROPERTY>,
+        resultPropertyMetamodel: PropertyMetamodel<PROPERTY>,
+        name: String,
+        operands: List<PropertyMetamodel<*>>,
         block: UserDefinedExpression.Declaration.() -> Unit,
     ): UserDefinedExpression<PROPERTY> {
-        return UserDefinedExpression(propertyMetamodel, block)
+        return UserDefinedExpression(resultPropertyMetamodel, name, operands, block)
+    }
+
+    fun <PROPERTY> userDefined(
+        resultPropertyMetamodel: PropertyMetamodel<PROPERTY>,
+        name: String,
+        vararg operands: PropertyMetamodel<*>,
+        block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(resultPropertyMetamodel, name, operands.toList(), block)
     }
 }

@@ -1308,28 +1308,47 @@ internal class KNativeSqlSelectTest {
     }
 
     @Test
-    fun expression_userDefined1() {
+    fun expression_userDefinedByClass1() {
         val e = Emp_()
-        val exp = countDistinctMultipleWithUserDefined1(e.id, e.name)
+        val exp = countDistinctMultipleWithUserDefinedByClass1(e.id, e.name)
         val stmt = nativeSql.from(e).select(exp)
         val sql = stmt.asSql()
         assertEquals("select count(distinct (t0_.ID, t0_.NAME)) from EMP t0_", sql.rawSql)
     }
 
     @Test
-    fun expression_userDefined2() {
+    fun expression_userDefinedByClass2() {
         val e = Emp_()
         val count = count(e.id)
-        val exp = countDistinctMultipleWithUserDefined2(count, e.id, e.name)
+        val exp = countDistinctMultipleWithUserDefinedByClass2(count, e.id, e.name)
         val stmt = nativeSql.from(e).select(exp)
         val sql = stmt.asSql()
         assertEquals("select count(distinct (t0_.ID, t0_.NAME)) from EMP t0_", sql.rawSql)
     }
 
-    private fun countDistinctMultipleWithUserDefined1(
+    @Test
+    fun expression_userDefinedByPropertyMeta1() {
+        val e = Emp_()
+        val exp = addSalaryUserDefinedByPropertyMeta1(e.salary)
+        val stmt = nativeSql.from(e).select(exp)
+        val sql = stmt.asSql()
+        assertEquals("select (t0_.SALARY + 100) from EMP t0_", sql.rawSql)
+    }
+
+    @Test
+    fun expression_userDefinedByPropertyMeta2() {
+        val e = Emp_()
+        val count = count(e.id)
+        val exp = addSalaryUserDefinedByPropertyMeta2(e.salary)
+        val stmt = nativeSql.from(e).select(exp)
+        val sql = stmt.asSql()
+        assertEquals("select (t0_.SALARY + 100) from EMP t0_", sql.rawSql)
+    }
+
+    private fun countDistinctMultipleWithUserDefinedByClass1(
         vararg propertyMetamodels: PropertyMetamodel<*>,
     ): UserDefinedExpression<Long> {
-        return userDefined {
+        return userDefined("countDistinctMultipleWithUserDefined1", propertyMetamodels.toList()) {
             appendSql("count(distinct (")
             for (propertyMetamodel in propertyMetamodels) {
                 appendExpression(propertyMetamodel)
@@ -1340,11 +1359,11 @@ internal class KNativeSqlSelectTest {
         }
     }
 
-    private fun countDistinctMultipleWithUserDefined2(
-        propertyMetamodel: PropertyMetamodel<Long>,
+    private fun countDistinctMultipleWithUserDefinedByClass2(
+        resultPropertyMetamodel: PropertyMetamodel<Long>,
         vararg propertyMetamodels: PropertyMetamodel<*>,
     ): UserDefinedExpression<Long> {
-        return userDefined(propertyMetamodel) {
+        return userDefined("countDistinctMultipleWithUserDefined2", resultPropertyMetamodel) {
             appendSql("count(distinct (")
             for (propertyMetamodel in propertyMetamodels) {
                 appendExpression(propertyMetamodel)
@@ -1352,6 +1371,26 @@ internal class KNativeSqlSelectTest {
             }
             cutBackSql(2)
             appendSql("))")
+        }
+    }
+
+    private fun addSalaryUserDefinedByPropertyMeta1(
+        salary: PropertyMetamodel<BigDecimal>,
+    ): UserDefinedExpression<BigDecimal> {
+        return userDefined(salary, "addSalaryUserDefined1", listOf(salary)) {
+            appendSql("(")
+            appendExpression(salary)
+            appendSql(" + 100)")
+        }
+    }
+
+    private fun addSalaryUserDefinedByPropertyMeta2(
+        salary: PropertyMetamodel<BigDecimal>,
+    ): UserDefinedExpression<BigDecimal> {
+        return userDefined(salary, "addSalaryUserDefined2", salary) {
+            appendSql("(")
+            appendExpression(salary)
+            appendSql(" + 100)")
         }
     }
 }

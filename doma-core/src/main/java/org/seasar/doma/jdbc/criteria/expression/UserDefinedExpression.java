@@ -14,29 +14,41 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
  * @param <PROPERTY> the type of the property
  */
 public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
+  private final String name;
+  private final List<? extends PropertyMetamodel<?>> operands;
   private final Class<PROPERTY> klass;
   private final EntityPropertyType<?, ?> type;
   private final Consumer<Declaration> block;
 
-  public UserDefinedExpression(Class<PROPERTY> klass, Consumer<Declaration> block) {
+  public UserDefinedExpression(
+      Class<PROPERTY> klass,
+      String name,
+      List<? extends PropertyMetamodel<?>> operands,
+      Consumer<Declaration> block) {
     this.klass = Objects.requireNonNull(klass);
-    this.type = getTypeByKlass();
+    this.type = getTypeByKlass(this.klass);
+    this.name = name;
+    this.operands = operands;
     this.block = Objects.requireNonNull(block);
   }
 
   public UserDefinedExpression(
-      PropertyMetamodel<PROPERTY> propertyMetamodel, Consumer<Declaration> block) {
-    Objects.requireNonNull(propertyMetamodel);
-    this.klass = (Class<PROPERTY>) propertyMetamodel.asClass();
-    this.type = propertyMetamodel.asType();
+      PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
+      String name,
+      List<? extends PropertyMetamodel<?>> operands,
+      Consumer<Declaration> block) {
+    this.klass = (Class<PROPERTY>) resultPropertyMetamodel.asClass();
+    this.type = resultPropertyMetamodel.asType();
+    this.name = name;
+    this.operands = operands;
     this.block = Objects.requireNonNull(block);
   }
 
   /**
-   * Returns the context of the user-defined expression. This is used to build a query.
+   * Returns the declarationItem the user-defined expression. This is used to build a query.
    *
    * @param dialect the database dialect
-   * @return the context of the user-defined expression
+   * @return declarationItem of the user-defined expression
    */
   public List<DeclarationItem> getDeclarationItems(Dialect dialect) {
     Declaration declaration = new Declaration(dialect);
@@ -54,7 +66,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     return type;
   }
 
-  private EntityPropertyType<?, ?> getTypeByKlass() {
+  private static EntityPropertyType<?, ?> getTypeByKlass(Class<?> klass) {
     if (klass == java.math.BigDecimal.class) {
       return new BigDecimalPropertyType(null);
     } else if (klass == java.math.BigInteger.class) {
@@ -82,14 +94,18 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     } else if (klass == java.lang.String.class) {
       return new StringPropertyType(null);
     } else {
-      throw new UnsupportedOperationException("Does not support for " + klass.getName() + " type.");
+      throw new UnsupportedOperationException(
+          "Does not support for "
+              + klass.getName()
+              + " type. if "
+              + klass.getName()
+              + " is a domain class, please use another constructor of UserDefinedExpression.");
     }
   }
 
   @Override
   public String getName() {
-    // un-used method
-    return null;
+    return name;
   }
 
   @Override
@@ -144,6 +160,21 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       Objects.requireNonNull(propertyMetamodel);
       declarationItems.add(new DeclarationItem.Expression(propertyMetamodel));
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserDefinedExpression<?> that = (UserDefinedExpression<?>) o;
+    return Objects.equals(name, that.name)
+        && Objects.equals(operands, that.operands)
+        && Objects.equals(klass, that.klass);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, operands, klass);
   }
 
   public interface DeclarationItem {

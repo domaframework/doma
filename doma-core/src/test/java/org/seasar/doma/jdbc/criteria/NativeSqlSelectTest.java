@@ -18,6 +18,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.userDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
@@ -1592,8 +1593,10 @@ class NativeSqlSelectTest {
 
   private static UserDefinedExpression<Long> countDistinctMultiple(
       PropertyMetamodel<?>... propertyMetamodels) {
-    return new UserDefinedExpression<>(
+    return userDefined(
         Long.class,
+        "countDistinctMultiple",
+        propertyMetamodels,
         c -> {
           c.appendSql("count(distinct (");
           for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
