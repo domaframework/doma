@@ -27,8 +27,8 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       Consumer<Declaration> block) {
     this.klass = Objects.requireNonNull(klass);
     this.type = getTypeByKlass(this.klass);
-    this.name = name;
-    this.operands = operands;
+    this.name = Objects.requireNonNull(name);
+    this.operands = Objects.requireNonNull(operands);
     this.block = Objects.requireNonNull(block);
   }
 
@@ -37,10 +37,11 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
       String name,
       List<? extends PropertyMetamodel<?>> operands,
       Consumer<Declaration> block) {
+    Objects.requireNonNull(resultPropertyMetamodel);
     this.klass = (Class<PROPERTY>) resultPropertyMetamodel.asClass();
     this.type = resultPropertyMetamodel.asType();
-    this.name = name;
-    this.operands = operands;
+    this.name = Objects.requireNonNull(name);
+    this.operands = Objects.requireNonNull(operands);
     this.block = Objects.requireNonNull(block);
   }
 
