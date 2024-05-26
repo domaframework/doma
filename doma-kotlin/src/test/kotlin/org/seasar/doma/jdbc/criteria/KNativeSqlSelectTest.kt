@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.criteria.option.DistinctOption
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption
 import org.seasar.doma.jdbc.criteria.option.LikeOption
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2
+import org.seasar.doma.jdbc.criteria.tuple.Tuple3
 import org.seasar.doma.jdbc.dialect.Db2Dialect
 import org.seasar.doma.jdbc.dialect.Dialect
 import org.seasar.doma.jdbc.dialect.Mssql2008Dialect
@@ -649,25 +650,401 @@ internal class KNativeSqlSelectTest {
     }
 
     @Test
-    fun join_on() {
+    fun join_on_eq() {
         val e = Emp_()
         val d = Dept_()
         val stmt = nativeSql
             .from(e)
             .innerJoin(d) {
+                eq(e.id, 1)
                 eq(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = 1 and t0_.ID = t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_ne() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                ne(e.id, 1)
                 ne(e.id, d.id)
-                ge(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID <> 1 and t0_.ID <> t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_gt() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                gt(e.id, 1)
                 gt(e.id, d.id)
-                le(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID > 1 and t0_.ID > t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_ge() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                ge(e.id, 1)
+                ge(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID >= 1 and t0_.ID >= t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_lt() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                lt(e.id, 1)
                 lt(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID < 1 and t0_.ID < t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_le() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                le(e.id, 1)
+                le(e.id, d.id)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID <= 1 and t0_.ID <= t1_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_isNull() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
                 isNull(e.name)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME is null)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_isNotNull() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
                 isNotNull(e.name)
             }
             .select(e.id)
         val sql = stmt.asSql()
         assertEquals(
-            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID and t0_.ID <> t1_.ID and t0_.ID >= t1_.ID and t0_.ID > t1_.ID and t0_.ID <= t1_.ID and t0_.ID < t1_.ID and t0_.NAME is null and t0_.NAME is not null)",
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME is not null)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_eqOrIsNull() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                eqOrIsNull(e.name, "a")
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME = 'a')",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_neOrIsNotNull() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                neOrIsNotNull(e.name, "a")
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME <> 'a')",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_like() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                like(e.name, "%a%")
+                like(e.name, "%a%", LikeOption.escape())
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME like '%a%' and t0_.NAME like '\$%a\$%' escape '\$')",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_notLike() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                notLike(e.name, "%a%")
+                notLike(e.name, "%a%", LikeOption.escape())
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.NAME not like '%a%' and t0_.NAME not like '\$%a\$%' escape '\$')",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_between() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                between(e.id, 1, 3)
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID between 1 and 3)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_in1() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                `in`(e.id, listOf(1, 2, 3))
+                `in`(e.id, from(d).select(d.id))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID in (1, 2, 3) and t0_.ID in (select t1_.ID from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_notIn1() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                notIn(e.id, listOf(1, 2, 3))
+                notIn(e.id, from(d).select(d.id))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (t0_.ID not in (1, 2, 3) and t0_.ID not in (select t1_.ID from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_in2() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                `in`(Tuple2(e.id, e.name), listOf(Tuple2(1, "a")))
+                `in`(Tuple2(e.id, e.name), from(d).select(d.id, d.name))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on ((t0_.ID, t0_.NAME) in ((1, 'a')) and (t0_.ID, t0_.NAME) in (select t1_.ID, t1_.NAME from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_notin2() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                notIn(Tuple2(e.id, e.name), listOf(Tuple2(2, "b")))
+                notIn(Tuple2(e.id, e.name), from(d).select(d.id, d.name))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on ((t0_.ID, t0_.NAME) not in ((2, 'b')) and (t0_.ID, t0_.NAME) not in (select t1_.ID, t1_.NAME from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_in3() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                `in`(Tuple3(e.id, e.name, e.version), listOf(Tuple3(1, "a", 10)))
+                `in`(Tuple3(e.id, e.name, e.version), from(d).select(d.id, d.name, literal(10)))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on ((t0_.ID, t0_.NAME, t0_.VERSION) in ((1, 'a', 10)) and (t0_.ID, t0_.NAME, t0_.VERSION) in (select t1_.ID, t1_.NAME, 10 from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_notin3() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                notIn(Tuple3(e.id, e.name, e.version), listOf(Tuple3(2, "b", 20)))
+                notIn(Tuple3(e.id, e.name, e.version), from(d).select(d.id, d.name, literal(20)))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on ((t0_.ID, t0_.NAME, t0_.VERSION) not in ((2, 'b', 20)) and (t0_.ID, t0_.NAME, t0_.VERSION) not in (select t1_.ID, t1_.NAME, 20 from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_exists() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                exists(from(d).select(d.id))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (exists (select t1_.ID from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_notExists() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                notExists(from(d).select(d.id))
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on (not exists (select t1_.ID from CATA.DEPT t1_))",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun join_on_and_or_not() {
+        val e = Emp_()
+        val d = Dept_()
+        val stmt = nativeSql
+            .from(e)
+            .innerJoin(d) {
+                and {
+                    eq(e.id, 100)
+                    or {
+                        not {
+                            eq(e.id, d.id)
+                            eq(e.id, d.id)
+                        }
+                        and {
+                            eq(e.id, 200)
+                            eq(e.id, 300)
+                        }
+                    }
+                }
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ inner join CATA.DEPT t1_ on ((t0_.ID = 100 or (not (t0_.ID = t1_.ID and t0_.ID = t1_.ID) and (t0_.ID = 200 and t0_.ID = 300))))",
             sql.formattedSql,
         )
     }
