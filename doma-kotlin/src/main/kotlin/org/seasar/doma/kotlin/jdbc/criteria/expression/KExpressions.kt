@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.criteria.expression.StringExpression.Ltrim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Rtrim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Trim
 import org.seasar.doma.jdbc.criteria.expression.StringExpression.Upper
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -289,5 +290,39 @@ object KExpressions {
         block: KSelectExpression.Declaration.() -> SubSelectContext.Single<PROPERTY>,
     ): SelectExpression<PROPERTY> {
         return Expressions.select { block(KSelectExpression.Declaration()) }
+    }
+
+    inline fun <reified PROPERTY> userDefined(
+        name: String,
+        operands: List<PropertyMetamodel<*>>,
+        noinline block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(PROPERTY::class.java, name, operands, block)
+    }
+
+    inline fun <reified PROPERTY> userDefined(
+        name: String,
+        vararg operands: PropertyMetamodel<*>,
+        noinline block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(PROPERTY::class.java, name, operands.toList(), block)
+    }
+
+    fun <PROPERTY> userDefined(
+        resultPropertyMetamodel: PropertyMetamodel<PROPERTY>,
+        name: String,
+        operands: List<PropertyMetamodel<*>>,
+        block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(resultPropertyMetamodel, name, operands, block)
+    }
+
+    fun <PROPERTY> userDefined(
+        resultPropertyMetamodel: PropertyMetamodel<PROPERTY>,
+        name: String,
+        vararg operands: PropertyMetamodel<*>,
+        block: UserDefinedExpression.Declaration.() -> Unit,
+    ): UserDefinedExpression<PROPERTY> {
+        return UserDefinedExpression(resultPropertyMetamodel, name, operands.toList(), block)
     }
 }

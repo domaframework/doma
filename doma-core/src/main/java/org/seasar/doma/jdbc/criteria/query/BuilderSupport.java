@@ -25,6 +25,7 @@ import org.seasar.doma.jdbc.criteria.expression.CaseExpression;
 import org.seasar.doma.jdbc.criteria.expression.LiteralExpression;
 import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.expression.StringExpression;
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
@@ -43,6 +44,8 @@ public class BuilderSupport {
   private final AliasManager aliasManager;
   private final Operand.Visitor<Void> operandVisitor;
   private final PropertyMetamodelVisitor propertyMetamodelVisitor;
+  private final UserDefinedExpressionDeclarationItemVisitor
+      userDefinedExpressionDeclarationItemVisitor;
 
   public BuilderSupport(
       Config config,
@@ -55,6 +58,8 @@ public class BuilderSupport {
     this.aliasManager = Objects.requireNonNull(aliasManager);
     this.operandVisitor = new OperandVisitor();
     this.propertyMetamodelVisitor = new PropertyMetamodelVisitor();
+    this.userDefinedExpressionDeclarationItemVisitor =
+        new UserDefinedExpressionDeclarationItemVisitor();
   }
 
   public void subQuery(
@@ -616,6 +621,7 @@ public class BuilderSupport {
   class PropertyMetamodelVisitor
       implements PropertyMetamodel.Visitor,
           AliasExpression.Visitor,
+          UserDefinedExpression.Visitor,
           ArithmeticExpression.Visitor,
           StringExpression.Visitor,
           LiteralExpression.Visitor,
@@ -639,6 +645,15 @@ public class BuilderSupport {
     @Override
     public void visit(AliasExpression<?> aliasExpression) {
       buf.appendSql(aliasExpression.getAlias());
+    }
+
+    @Override
+    public void visit(UserDefinedExpression<?> userDefinedExpression) {
+      List<UserDefinedExpression.DeclarationItem> declarationItems =
+          userDefinedExpression.getDeclarationItems(config.getDialect());
+      for (UserDefinedExpression.DeclarationItem declarationItem : declarationItems) {
+        declarationItem.accept(userDefinedExpressionDeclarationItemVisitor);
+      }
     }
 
     protected Optional<String> getAlias(PropertyMetamodel<?> propertyMetamodel) {
@@ -811,6 +826,24 @@ public class BuilderSupport {
       buf.appendSql("(");
       argument.accept(this);
       buf.appendSql(")");
+    }
+  }
+
+  class UserDefinedExpressionDeclarationItemVisitor
+      implements UserDefinedExpression.DeclarationItem.Visitor {
+    @Override
+    public void visit(UserDefinedExpression.DeclarationItem.Sql sql) {
+      buf.appendSql(sql.get());
+    }
+
+    @Override
+    public void visit(UserDefinedExpression.DeclarationItem.Expression expression) {
+      expression.get().accept(propertyMetamodelVisitor);
+    }
+
+    @Override
+    public void visit(UserDefinedExpression.DeclarationItem.CutbackSql cutbackSql) {
+      buf.cutBackSql(cutbackSql.get());
     }
   }
 }

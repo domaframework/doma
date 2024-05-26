@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.seasar.doma.it.criteria.CustomExpressions.addSalaryUserDefined;
+import static org.seasar.doma.it.criteria.CustomExpressions.concatWithUserDefined;
+import static org.seasar.doma.it.criteria.CustomExpressions.tpStringWithUserDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.add;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.count;
@@ -43,6 +46,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
 import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 import org.seasar.doma.jdbc.criteria.statement.NativeSqlSelectStarting;
@@ -934,6 +938,59 @@ public class NativeSqlSelectTest {
         nativeSql.from(e).select(select(c -> c.from(e2).select(count(e2.employeeId)))).fetchOne();
 
     assertEquals(14L, count);
+  }
+
+  @Test
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
+  void select_userDefinedExpression_Domain_where_groupBy_orderBy_select() {
+    Employee_ e = new Employee_();
+
+    UserDefinedExpression<Salary> addSalary = addSalaryUserDefined(e);
+
+    List<Row> list =
+        nativeSql
+            .from(e)
+            .where(c -> c.ge(addSalary, new Salary(new BigDecimal(3_050))))
+            .groupBy(e.employeeId, addSalary)
+            .orderBy(
+                c -> {
+                  c.asc(e.employeeId);
+                  c.asc(addSalary);
+                })
+            .selectAsRow(e.employeeId, e.salary, addSalary)
+            .fetch();
+
+    assertEquals(4, list.size());
+    for (Row row : list) {
+      Salary salary = row.get(e.salary);
+      assertTrue(
+          salary.getValue().add(BigDecimal.valueOf(100)).compareTo(new BigDecimal(3_050)) >= 0);
+      assertEquals(salary.getValue().add(BigDecimal.valueOf(100)), row.get(addSalary).getValue());
+    }
+  }
+
+  @Test
+  void select_userDefinedExpression_String_where_groupBy_orderBy_select() {
+    Department_ d = new Department_();
+
+    UserDefinedExpression<String> concatDepartmentIdAndEmployeeId =
+        concatWithUserDefined(tpStringWithUserDefined(d.departmentId), d.departmentName);
+
+    List<Row> list =
+        nativeSql
+            .from(d)
+            .where(c -> c.eq(concatDepartmentIdAndEmployeeId, "2-RESEARCH"))
+            .groupBy(d.departmentId, concatDepartmentIdAndEmployeeId)
+            .orderBy(
+                c -> {
+                  c.asc(d.departmentId);
+                  c.asc(concatDepartmentIdAndEmployeeId);
+                })
+            .selectAsRow(d.departmentId, concatDepartmentIdAndEmployeeId)
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals("2-RESEARCH", list.get(0).get(concatDepartmentIdAndEmployeeId));
   }
 
   @Test

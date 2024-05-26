@@ -16,6 +16,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.mod;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.mul;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sub;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.userDefined;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -266,5 +267,47 @@ class ExpressionsTest {
     assertNotEquals(mul, add);
 
     assertNotEquals(sub, add);
+  }
+
+  @Test
+  void testUserDefinedByClass() {
+    PropertyMetamodel<?> userDefined1 =
+        userDefined(Integer.class, "userDefined1", e.id, c -> c.appendExpression(e.id));
+
+    assertEquals(
+        userDefined1, userDefined(e.id, "userDefined1", e.id, c -> c.appendExpression(e.id)));
+    assertEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined1", e.id, c -> c.appendExpression(e.id)));
+
+    assertNotEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined2", e.id, c -> c.appendExpression(e.id)));
+    assertNotEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined1", e.name, c -> c.appendExpression(e.id)));
+    assertNotEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined1", e.id, e.name, c -> c.appendExpression(e.id)));
+  }
+
+  @Test
+  void testUserDefinedByPropertyMeta() {
+    PropertyMetamodel<?> userDefined1 =
+        userDefined(e.id, "userDefined1", e.id, c -> c.appendExpression(e.id));
+
+    assertEquals(
+        userDefined1, userDefined(e.id, "userDefined1", e.id, c -> c.appendExpression(e.id)));
+    assertEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined1", e.id, c -> c.appendExpression(e.id)));
+
+    assertNotEquals(
+        userDefined1, userDefined(e.id, "userDefined2", e.id, c -> c.appendExpression(e.id)));
+    assertNotEquals(
+        userDefined1, userDefined(e.id, "userDefined1", e.name, c -> c.appendExpression(e.id)));
+    assertNotEquals(
+        userDefined1,
+        userDefined(Integer.class, "userDefined1", e.id, e.name, c -> c.appendExpression(e.id)));
   }
 }

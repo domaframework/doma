@@ -2,6 +2,7 @@ package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.alias;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avgAsDouble;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.concat;
@@ -17,6 +18,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.select;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.sum;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.trim;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.upper;
+import static org.seasar.doma.jdbc.criteria.expression.Expressions.userDefined;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
@@ -33,7 +35,10 @@ import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.entity.NoIdEmp_;
+import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
+import org.seasar.doma.jdbc.criteria.expression.UserDefinedExpression;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
@@ -1569,5 +1574,37 @@ class NativeSqlSelectTest {
     Buildable<?> stmt = nativeSql.from(e).select(avgAsDouble(e.salary));
     Sql<?> sql = stmt.asSql();
     assertEquals("select avg(t0_.SALARY) from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void userDefinedExpression_countDistinctMultiple() {
+    Emp_ e = new Emp_();
+
+    AliasExpression<String> nameAliasExpression = alias(e.name, "name");
+    UserDefinedExpression<Long> userDefinedExpression =
+        countDistinctMultiple(nameAliasExpression, e.salary);
+    Buildable<?> stmt = nativeSql.from(e).select(e.id, nameAliasExpression, userDefinedExpression);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID, t0_.NAME AS name, count(distinct (name, t0_.SALARY)) from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  private static UserDefinedExpression<Long> countDistinctMultiple(
+      PropertyMetamodel<?>... propertyMetamodels) {
+    return userDefined(
+        Long.class,
+        "countDistinctMultiple",
+        propertyMetamodels,
+        c -> {
+          c.appendSql("count(distinct (");
+          for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
+            c.appendExpression(propertyMetamodel);
+            c.appendSql(", ");
+          }
+          c.cutBackSql(2);
+          c.appendSql("))");
+        });
   }
 }
