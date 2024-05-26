@@ -839,6 +839,13 @@ public class NativeSqlSelectStarting<ENTITY>
   }
 
   @Override
+  public Stream<ENTITY> openStream() {
+    NativeSqlSelectIntermediate<ENTITY> intermediate =
+        new NativeSqlSelectIntermediate<>(config, declaration, createEntityProviderFactory());
+    return intermediate.openStream();
+  }
+
+  @Override
   public <RESULT> RESULT mapStream(Function<Stream<ENTITY>, RESULT> streamMapper) {
     NativeSqlSelectIntermediate<ENTITY> intermediate =
         new NativeSqlSelectIntermediate<>(config, declaration, createEntityProviderFactory());

@@ -21,6 +21,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.KNativeSql
 import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions
 import java.math.BigDecimal
 import java.time.LocalDate
+import kotlin.streams.asSequence
 
 @ExtendWith(IntegrationTestEnvironment::class)
 class KNativeSqlSelectTest(config: Config) {
@@ -58,6 +59,15 @@ class KNativeSqlSelectTest(config: Config) {
         val e = Employee_()
         val list = nativeSql.from(e).fetch()
         assertEquals(14, list.size)
+    }
+
+    @Test
+    fun openStream() {
+        val e = Employee_()
+        val map = nativeSql.from(e).openStream().use {
+            it.asSequence().groupBy { employee -> employee.departmentId }
+        }
+        assertEquals(3, map.size)
     }
 
     @Test
@@ -310,6 +320,18 @@ class KNativeSqlSelectTest(config: Config) {
             .union(nativeSql.from(d).select(d.departmentId, d.departmentName))
             .fetch()
         assertEquals(18, list.size)
+    }
+
+    @Test
+    fun union_openStream() {
+        val e = Employee_()
+        val d = Department_()
+        val count = nativeSql
+            .from(e)
+            .select(e.employeeId, e.employeeName)
+            .union(nativeSql.from(d).select(d.departmentId, d.departmentName))
+            .openStream().use { it.count() }
+        assertEquals(18, count)
     }
 
     @Test

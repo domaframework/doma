@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
+import org.seasar.doma.FetchType;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.command.Command;
@@ -18,11 +19,22 @@ public class NativeSqlSelectTerminal<RESULT>
   private final SelectFromDeclaration declaration;
   private final ResultSetHandler<RESULT> resultSetHandler;
 
+  private final Boolean returnsStream;
+
   public NativeSqlSelectTerminal(
       Config config, SelectFromDeclaration declaration, ResultSetHandler<RESULT> resultSetHandler) {
+    this(config, declaration, resultSetHandler, false);
+  }
+
+  public NativeSqlSelectTerminal(
+      Config config,
+      SelectFromDeclaration declaration,
+      ResultSetHandler<RESULT> resultSetHandler,
+      boolean returnsStream) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.resultSetHandler = Objects.requireNonNull(resultSetHandler);
+    this.returnsStream = returnsStream;
   }
 
   /**
@@ -46,10 +58,7 @@ public class NativeSqlSelectTerminal<RESULT>
         new SelectBuilder(
             config, context, createCommenter(settings.getComment()), settings.getSqlLogType());
     PreparedSql sql = builder.build();
-    CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
-    query.setFetchSize(settings.getFetchSize());
-    query.setMaxRows(settings.getMaxRows());
-    query.setQueryTimeout(settings.getQueryTimeout());
+    CriteriaQuery query = createCriteriaQuery(sql, settings);
     return new SelectCommand<RESULT>(query, resultSetHandler) {
       @Override
       public RESULT execute() {
@@ -61,5 +70,25 @@ public class NativeSqlSelectTerminal<RESULT>
         return super.execute();
       }
     };
+  }
+
+  private CriteriaQuery createCriteriaQuery(PreparedSql sql, SelectSettings settings) {
+    CriteriaQuery query =
+        new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME) {
+
+          @Override
+          public boolean isResultStream() {
+            return returnsStream;
+          }
+
+          @Override
+          public FetchType getFetchType() {
+            return returnsStream ? FetchType.LAZY : FetchType.EAGER;
+          }
+        };
+    query.setFetchSize(settings.getFetchSize());
+    query.setMaxRows(settings.getMaxRows());
+    query.setQueryTimeout(settings.getQueryTimeout());
+    return query;
   }
 }

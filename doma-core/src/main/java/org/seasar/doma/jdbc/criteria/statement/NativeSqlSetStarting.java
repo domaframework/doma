@@ -44,23 +44,30 @@ public class NativeSqlSetStarting<ELEMENT>
   }
 
   @Override
+  public Stream<ELEMENT> openStream() {
+    NativeSqlSetTerminal<Stream<ELEMENT>> terminal =
+        createNativeSqlSetTerminal(Function.identity(), true);
+    return terminal.execute();
+  }
+
+  @Override
   public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
     Objects.requireNonNull(streamMapper);
-    NativeSqlSetTerminal<RESULT> terminal = createNativeSqlSetTerminal(streamMapper);
+    NativeSqlSetTerminal<RESULT> terminal = createNativeSqlSetTerminal(streamMapper, false);
     return terminal.execute();
   }
 
   @Override
   protected Command<List<ELEMENT>> createCommand() {
     NativeSqlSetTerminal<List<ELEMENT>> terminal =
-        createNativeSqlSetTerminal(stream -> stream.collect(toList()));
+        createNativeSqlSetTerminal(stream -> stream.collect(toList()), false);
     return terminal.createCommand();
   }
 
   private <RESULT> NativeSqlSetTerminal<RESULT> createNativeSqlSetTerminal(
-      Function<Stream<ELEMENT>, RESULT> streamMapper) {
+      Function<Stream<ELEMENT>, RESULT> streamMapper, boolean returnsStream) {
     ResultSetHandler<RESULT> handler =
         new MappedResultStreamHandler<>(streamMapper, objectProviderFactory);
-    return new NativeSqlSetTerminal<>(config, context, handler);
+    return new NativeSqlSetTerminal<>(config, context, handler, returnsStream);
   }
 }

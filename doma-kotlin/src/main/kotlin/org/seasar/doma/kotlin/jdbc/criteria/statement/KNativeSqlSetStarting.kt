@@ -5,6 +5,7 @@ import org.seasar.doma.jdbc.criteria.context.SetOperationContext
 import org.seasar.doma.jdbc.criteria.statement.SetOperand
 import org.seasar.doma.jdbc.criteria.statement.SetOperator
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KOrderByIndexDeclaration
+import java.util.stream.Stream
 import kotlin.streams.asSequence
 
 class KNativeSqlSetStarting<ELEMENT>(val statement: SetOperator<ELEMENT>) : KSetOperator<ELEMENT> {
@@ -25,6 +26,17 @@ class KNativeSqlSetStarting<ELEMENT>(val statement: SetOperator<ELEMENT>) : KSet
 
     override fun asSql(): Sql<*> {
         return statement.asSql()
+    }
+
+    /**
+     * Open a stream.
+     *
+     * You must close the stream after using it.
+     *
+     * @return the opened stream
+     */
+    override fun openStream(): Stream<ELEMENT> {
+        return statement.openStream()
     }
 
     override fun <RESULT> mapSequence(sequenceMapper: (Sequence<ELEMENT>) -> RESULT): RESULT {
