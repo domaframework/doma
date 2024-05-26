@@ -34,23 +34,30 @@ public class NativeSqlSelectIntermediate<ELEMENT>
   }
 
   @Override
+  public Stream<ELEMENT> openStream() {
+    NativeSqlSelectTerminal<Stream<ELEMENT>> terminal =
+        createNativeSqlSelectTerminal(Function.identity(), true);
+    return terminal.execute();
+  }
+
+  @Override
   public <RESULT> RESULT mapStream(Function<Stream<ELEMENT>, RESULT> streamMapper) {
     Objects.requireNonNull(streamMapper);
-    NativeSqlSelectTerminal<RESULT> terminal = createNativeSqlSelectTerminal(streamMapper);
+    NativeSqlSelectTerminal<RESULT> terminal = createNativeSqlSelectTerminal(streamMapper, false);
     return terminal.execute();
   }
 
   @Override
   protected Command<List<ELEMENT>> createCommand() {
     NativeSqlSelectTerminal<List<ELEMENT>> terminal =
-        createNativeSqlSelectTerminal(stream -> stream.collect(toList()));
+        createNativeSqlSelectTerminal(stream -> stream.collect(toList()), false);
     return terminal.createCommand();
   }
 
   private <RESULT> NativeSqlSelectTerminal<RESULT> createNativeSqlSelectTerminal(
-      Function<Stream<ELEMENT>, RESULT> streamMapper) {
+      Function<Stream<ELEMENT>, RESULT> streamMapper, boolean returnsStream) {
     ResultSetHandler<RESULT> handler =
         new MappedResultStreamHandler<>(streamMapper, objectProviderFactory);
-    return new NativeSqlSelectTerminal<>(config, declaration, handler);
+    return new NativeSqlSelectTerminal<>(config, declaration, handler, returnsStream);
   }
 }

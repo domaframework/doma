@@ -1,7 +1,9 @@
 package org.seasar.doma.jdbc.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.alias;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avg;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.avgAsDouble;
@@ -24,6 +26,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
@@ -57,7 +60,9 @@ import org.seasar.doma.message.Message;
 
 class NativeSqlSelectTest {
 
-  private final NativeSql nativeSql = new NativeSql(new MockConfig());
+  private final MockConfig config = new MockConfig();
+
+  private final NativeSql nativeSql = new NativeSql(config);
 
   @Test
   void from() {
@@ -1606,5 +1611,25 @@ class NativeSqlSelectTest {
           c.cutBackSql(2);
           c.appendSql("))");
         });
+  }
+
+  @Test
+  void openStream() {
+    Emp_ e = new Emp_();
+
+    Stream<Emp> stream = nativeSql.from(e).openStream();
+    assertFalse(config.dataSource.connection.closed);
+    stream.close();
+    assertTrue(config.dataSource.connection.closed);
+  }
+
+  @Test
+  void openStream_union() {
+    Emp_ e = new Emp_();
+
+    Stream<Emp> stream = nativeSql.from(e).union(nativeSql.from(e)).openStream();
+    assertFalse(config.dataSource.connection.closed);
+    stream.close();
+    assertTrue(config.dataSource.connection.closed);
   }
 }

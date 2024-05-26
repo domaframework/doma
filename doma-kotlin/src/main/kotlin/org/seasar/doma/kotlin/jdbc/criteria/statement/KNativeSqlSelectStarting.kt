@@ -26,6 +26,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.declaration.KJoinDeclaration
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KOrderByNameDeclaration
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KWhereDeclaration
 import java.util.function.Function
+import java.util.stream.Stream
 import kotlin.streams.asSequence
 
 class KNativeSqlSelectStarting<ENTITY>(private val statement: NativeSqlSelectStarting<ENTITY>) :
@@ -399,6 +400,10 @@ class KNativeSqlSelectStarting<ENTITY>(private val statement: NativeSqlSelectSta
 
     override fun execute(): List<ENTITY> {
         return statement.execute()
+    }
+
+    override fun openStream(): Stream<ENTITY> {
+        return statement.openStream()
     }
 
     override fun <RESULT> mapSequence(sequenceMapper: (Sequence<ENTITY>) -> RESULT): RESULT {

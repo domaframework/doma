@@ -15,6 +15,15 @@ import org.seasar.doma.jdbc.Sql;
 public interface StreamMappable<ELEMENT> extends Listable<ELEMENT> {
 
   /**
+   * Open a stream.
+   *
+   * <p>You must close the stream after using it.
+   *
+   * @return the opened stream
+   */
+  Stream<ELEMENT> openStream();
+
+  /**
    * Map a stream.
    *
    * @param streamMapper the mapper

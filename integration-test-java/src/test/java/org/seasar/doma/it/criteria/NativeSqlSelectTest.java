@@ -299,6 +299,36 @@ public class NativeSqlSelectTest {
   }
 
   @Test
+  void openStream() {
+    Employee_ e = new Employee_();
+
+    Map<Integer, List<Employee>> map;
+    try (Stream<Employee> stream = nativeSql.from(e).openStream()) {
+      map = stream.collect(groupingBy(Employee::getDepartmentId));
+    }
+
+    assertEquals(3, map.size());
+  }
+
+  @Test
+  void openStream_union() {
+    Employee_ e = new Employee_();
+    Department_ d = new Department_();
+
+    long count;
+    try (Stream<Tuple2<Integer, String>> stream =
+        nativeSql
+            .from(e)
+            .select(e.employeeId, e.employeeName)
+            .union(nativeSql.from(d).select(d.departmentId, d.departmentName))
+            .openStream()) {
+      count = stream.count();
+    }
+
+    assertEquals(18L, count);
+  }
+
+  @Test
   void mapStream() {
     Employee_ e = new Employee_();
 

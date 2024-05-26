@@ -1,9 +1,11 @@
 package org.seasar.doma.jdbc.criteria
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.seasar.doma.DomaException
+import org.seasar.doma.internal.util.AssertionUtil.assertTrue
 import org.seasar.doma.jdbc.CommentContext
 import org.seasar.doma.jdbc.Commenter
 import org.seasar.doma.jdbc.criteria.entity.Dept_
@@ -45,7 +47,8 @@ import java.math.BigDecimal
 
 internal class KNativeSqlSelectTest {
 
-    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(MockConfig())
+    private val config = MockConfig()
+    private val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
 
     @Test
     fun from() {
@@ -1769,5 +1772,16 @@ internal class KNativeSqlSelectTest {
             appendExpression(salary)
             appendSql(" + 100)")
         }
+    }
+
+    @Test
+    fun openStream() {
+        val e = Emp_()
+        val stream = nativeSql
+            .from(e)
+            .openStream()
+        assertFalse(config.dataSource.connection.closed)
+        stream.use { }
+        assertTrue(config.dataSource.connection.closed)
     }
 }
