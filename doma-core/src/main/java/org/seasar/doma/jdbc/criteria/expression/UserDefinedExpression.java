@@ -20,7 +20,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
   private final EntityPropertyType<?, ?> type;
   private final Consumer<Declaration> block;
 
-  public UserDefinedExpression(
+  UserDefinedExpression(
       Class<PROPERTY> klass,
       String name,
       List<? extends PropertyMetamodel<?>> operands,
@@ -32,7 +32,7 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     this.block = Objects.requireNonNull(block);
   }
 
-  public UserDefinedExpression(
+  UserDefinedExpression(
       PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
       String name,
       List<? extends PropertyMetamodel<?>> operands,
