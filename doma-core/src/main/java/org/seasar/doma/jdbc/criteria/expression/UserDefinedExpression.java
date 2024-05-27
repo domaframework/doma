@@ -16,11 +16,11 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPERTY> {
   private final String name;
   private final List<? extends PropertyMetamodel<?>> operands;
-  private final Class<PROPERTY> klass;
+  private final Class<?> klass;
   private final EntityPropertyType<?, ?> type;
   private final Consumer<Declaration> block;
 
-  public UserDefinedExpression(
+  UserDefinedExpression(
       Class<PROPERTY> klass,
       String name,
       List<? extends PropertyMetamodel<?>> operands,
@@ -32,13 +32,13 @@ public class UserDefinedExpression<PROPERTY> implements PropertyMetamodel<PROPER
     this.block = Objects.requireNonNull(block);
   }
 
-  public UserDefinedExpression(
+  UserDefinedExpression(
       PropertyMetamodel<PROPERTY> resultPropertyMetamodel,
       String name,
       List<? extends PropertyMetamodel<?>> operands,
       Consumer<Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
-    this.klass = (Class<PROPERTY>) resultPropertyMetamodel.asClass();
+    this.klass = resultPropertyMetamodel.asClass();
     this.type = resultPropertyMetamodel.asType();
     this.name = Objects.requireNonNull(name);
     this.operands = Objects.requireNonNull(operands);

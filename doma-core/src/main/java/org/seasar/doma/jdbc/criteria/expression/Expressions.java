@@ -321,6 +321,8 @@ public class Expressions {
       PropertyMetamodel<?>[] operands,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operands);
     Objects.requireNonNull(block);
     return userDefined(klass, name, Arrays.asList(operands), block);
   }
@@ -343,6 +345,8 @@ public class Expressions {
       PropertyMetamodel<?> operand,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operand);
     Objects.requireNonNull(block);
     return userDefined(klass, name, Collections.singletonList(operand), block);
   }
@@ -367,6 +371,9 @@ public class Expressions {
       PropertyMetamodel<?> operand2,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operand1);
+    Objects.requireNonNull(operand2);
     Objects.requireNonNull(block);
     return userDefined(klass, name, Arrays.asList(operand1, operand2), block);
   }
@@ -393,6 +400,10 @@ public class Expressions {
       PropertyMetamodel<?> operand3,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operand1);
+    Objects.requireNonNull(operand2);
+    Objects.requireNonNull(operand3);
     Objects.requireNonNull(block);
     return userDefined(klass, name, Arrays.asList(operand1, operand2, operand3), block);
   }
@@ -415,6 +426,8 @@ public class Expressions {
       List<? extends PropertyMetamodel<?>> operands,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(klass);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operands);
     Objects.requireNonNull(block);
     return new UserDefinedExpression<>(klass, name, operands, block);
   }
@@ -437,6 +450,8 @@ public class Expressions {
       PropertyMetamodel<?>[] operands,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operands);
     Objects.requireNonNull(block);
     return userDefined(resultPropertyMetamodel, name, Arrays.asList(operands), block);
   }
@@ -459,6 +474,8 @@ public class Expressions {
       PropertyMetamodel<?> operand,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operand);
     Objects.requireNonNull(block);
     return userDefined(resultPropertyMetamodel, name, Collections.singletonList(operand), block);
   }
@@ -483,6 +500,9 @@ public class Expressions {
       PropertyMetamodel<?> operand2,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operand1);
+    Objects.requireNonNull(operand2);
     Objects.requireNonNull(block);
     return userDefined(resultPropertyMetamodel, name, Arrays.asList(operand1, operand2), block);
   }
@@ -509,6 +529,9 @@ public class Expressions {
       PropertyMetamodel<?> operand3,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(operand1);
+    Objects.requireNonNull(operand2);
+    Objects.requireNonNull(operand3);
     Objects.requireNonNull(block);
     return userDefined(
         resultPropertyMetamodel, name, Arrays.asList(operand1, operand2, operand3), block);
@@ -532,6 +555,8 @@ public class Expressions {
       List<? extends PropertyMetamodel<?>> operands,
       Consumer<UserDefinedExpression.Declaration> block) {
     Objects.requireNonNull(resultPropertyMetamodel);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operands);
     Objects.requireNonNull(block);
     return new UserDefinedExpression<>(resultPropertyMetamodel, name, operands, block);
   }
