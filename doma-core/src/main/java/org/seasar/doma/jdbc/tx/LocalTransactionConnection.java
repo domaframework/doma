@@ -152,7 +152,6 @@ class LocalTransactionConnection implements Connection {
 
   @Override
   public int getTransactionIsolation() throws SQLException {
-    //noinspection MagicConstant
     return connection.getTransactionIsolation();
   }
 
