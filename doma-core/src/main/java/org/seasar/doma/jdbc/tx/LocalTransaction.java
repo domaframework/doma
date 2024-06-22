@@ -133,21 +133,25 @@ public class LocalTransaction {
         () -> {
           Connection connection = JdbcUtil.getConnection(dataSource);
 
-          int transactionIsolation;
-          try {
-            transactionIsolation = connection.getTransactionIsolation();
-          } catch (SQLException e) {
-            closeConnection(connection);
-            throw new JdbcException(Message.DOMA2056, e, e);
-          }
+          @SuppressWarnings("ReassignedVariable")
+          Integer currentTransactionIsolation = null;
           if (transactionIsolationLevel != null
               && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
-            int level = transactionIsolationLevel.getLevel();
             try {
-              connection.setTransactionIsolation(level);
+              currentTransactionIsolation = connection.getTransactionIsolation();
             } catch (SQLException e) {
               closeConnection(connection);
-              throw new JdbcException(Message.DOMA2055, e, transactionIsolationLevel.name(), e);
+              throw new JdbcException(Message.DOMA2056, e, e);
+            }
+            int level = transactionIsolationLevel.getLevel();
+            if (currentTransactionIsolation != level) {
+              try {
+                //noinspection MagicConstant
+                connection.setTransactionIsolation(level);
+              } catch (SQLException e) {
+                closeConnection(connection);
+                throw new JdbcException(Message.DOMA2055, e, transactionIsolationLevel.name(), e);
+              }
             }
           }
 
@@ -167,7 +171,8 @@ public class LocalTransaction {
             }
           }
 
-          return new LocalTransactionConnection(connection, transactionIsolation, isAutoCommit);
+          return new LocalTransactionConnection(
+              connection, currentTransactionIsolation, isAutoCommit);
         });
     jdbcLogger.logTransactionBegun(className, callerMethodName, context.getId());
   }
@@ -422,9 +427,10 @@ public class LocalTransaction {
     LocalTransactionConnection localTransactionConnection = context.getConnection();
     Connection connection = localTransactionConnection.getWrappedConnection();
 
-    int isolationLevel = localTransactionConnection.getPreservedTransactionIsolation();
-    if (isolationLevel != Connection.TRANSACTION_NONE) {
+    Integer isolationLevel = localTransactionConnection.getPreservedTransactionIsolation();
+    if (isolationLevel != null && isolationLevel != Connection.TRANSACTION_NONE) {
       try {
+        //noinspection MagicConstant
         connection.setTransactionIsolation(isolationLevel);
       } catch (SQLException e) {
         jdbcLogger.logTransactionIsolationSettingFailure(
