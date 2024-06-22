@@ -415,7 +415,7 @@ public class LocalTransaction {
    */
   protected void release(LocalTransactionContext context, String callerMethodName) {
     assertNotNull(context, callerMethodName);
-    localTxContextHolder.set(null);
+    localTxContextHolder.remove();
     if (!context.hasConnection()) {
       return;
     }
