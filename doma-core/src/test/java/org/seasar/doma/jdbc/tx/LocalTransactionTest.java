@@ -105,7 +105,7 @@ public class LocalTransactionTest {
     LocalTransaction transaction = dataSource.getLocalTransaction(jdbcLogger);
 
     try {
-      transaction.begin(TransactionIsolationLevel.READ_COMMITTED);
+      transaction.begin(TransactionIsolationLevel.SERIALIZABLE);
       dataSource.getConnection();
       fail();
     } catch (JdbcException expected) {

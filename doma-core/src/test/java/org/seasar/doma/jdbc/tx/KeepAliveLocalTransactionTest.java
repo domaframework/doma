@@ -106,7 +106,7 @@ public class KeepAliveLocalTransactionTest {
         new LocalTransactionDataSource(new MockDataSource(connection));
     LocalTransaction transaction = dataSource.getKeepAliveLocalTransaction(jdbcLogger);
     try {
-      transaction.begin(TransactionIsolationLevel.READ_COMMITTED);
+      transaction.begin(TransactionIsolationLevel.SERIALIZABLE);
       dataSource.getConnection();
       fail();
     } catch (JdbcException expected) {
