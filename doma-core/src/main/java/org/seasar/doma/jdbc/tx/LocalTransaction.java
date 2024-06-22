@@ -134,7 +134,7 @@ public class LocalTransaction {
           Connection connection = JdbcUtil.getConnection(dataSource);
 
           @SuppressWarnings("ReassignedVariable")
-          int currentTransactionIsolation = TransactionIsolationLevel.DEFAULT.getLevel();
+          Integer currentTransactionIsolation = null;
           if (transactionIsolationLevel != null
               && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
             try {
@@ -427,9 +427,8 @@ public class LocalTransaction {
     LocalTransactionConnection localTransactionConnection = context.getConnection();
     Connection connection = localTransactionConnection.getWrappedConnection();
 
-    int isolationLevel = localTransactionConnection.getPreservedTransactionIsolation();
-    if (isolationLevel != TransactionIsolationLevel.DEFAULT.getLevel()
-        && isolationLevel != Connection.TRANSACTION_NONE) {
+    Integer isolationLevel = localTransactionConnection.getPreservedTransactionIsolation();
+    if (isolationLevel != null && isolationLevel != Connection.TRANSACTION_NONE) {
       try {
         //noinspection MagicConstant
         connection.setTransactionIsolation(isolationLevel);

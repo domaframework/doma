@@ -19,7 +19,7 @@ class LocalTransactionConnection implements Connection {
 
   private final Connection connection;
 
-  private final int preservedTransactionIsolation;
+  private final Integer preservedTransactionIsolation;
 
   private final boolean preservedAutoCommitState;
 
@@ -31,7 +31,9 @@ class LocalTransactionConnection implements Connection {
    * @param preservedAutoCommitState the auto commit state to be preserved
    */
   public LocalTransactionConnection(
-      Connection connection, int preservedTransactionIsolation, boolean preservedAutoCommitState) {
+      Connection connection,
+      Integer preservedTransactionIsolation,
+      boolean preservedAutoCommitState) {
     assertNotNull(connection);
     assertTrue(!(connection instanceof LocalTransactionConnection));
     this.connection = connection;
@@ -39,7 +41,7 @@ class LocalTransactionConnection implements Connection {
     this.preservedAutoCommitState = preservedAutoCommitState;
   }
 
-  protected int getPreservedTransactionIsolation() {
+  protected Integer getPreservedTransactionIsolation() {
     return this.preservedTransactionIsolation;
   }
 
