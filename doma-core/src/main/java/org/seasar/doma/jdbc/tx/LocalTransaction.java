@@ -221,7 +221,7 @@ public class LocalTransaction {
     if (!isActiveInternal(context)) {
       throw new TransactionNotYetBegunException(Message.DOMA2046);
     }
-    localTxContextHolder.set(null);
+    localTxContextHolder.remove();
     return context;
   }
 
