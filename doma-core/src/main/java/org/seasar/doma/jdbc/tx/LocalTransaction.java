@@ -134,9 +134,10 @@ public class LocalTransaction {
           Connection connection = JdbcUtil.getConnection(dataSource);
 
           @SuppressWarnings("ReassignedVariable")
-          Integer currentTransactionIsolation = null;
+          Integer preservedTransactionIsolation = null;
           if (transactionIsolationLevel != null
               && transactionIsolationLevel != TransactionIsolationLevel.DEFAULT) {
+            int currentTransactionIsolation;
             try {
               currentTransactionIsolation = connection.getTransactionIsolation();
             } catch (SQLException e) {
@@ -148,6 +149,7 @@ public class LocalTransaction {
               try {
                 //noinspection MagicConstant
                 connection.setTransactionIsolation(level);
+                preservedTransactionIsolation = currentTransactionIsolation;
               } catch (SQLException e) {
                 closeConnection(connection);
                 throw new JdbcException(Message.DOMA2055, e, transactionIsolationLevel.name(), e);
@@ -172,7 +174,7 @@ public class LocalTransaction {
           }
 
           return new LocalTransactionConnection(
-              connection, currentTransactionIsolation, isAutoCommit);
+              connection, preservedTransactionIsolation, isAutoCommit);
         });
     jdbcLogger.logTransactionBegun(className, callerMethodName, context.getId());
   }
