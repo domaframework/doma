@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
@@ -14,23 +15,20 @@ import org.seasar.doma.jdbc.UtilLoggingJdbcLogger;
 public class LocalTransactionDataSourceTest {
 
   @Test
-  public void testGetConnection() {
+  public void testGetConnection() throws Exception {
     UtilLoggingJdbcLogger jdbcLogger = new UtilLoggingJdbcLogger();
     LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
     dataSource.getLocalTransaction(jdbcLogger).begin();
-    dataSource.getConnection();
+    Connection connection = dataSource.getConnection();
+    assertFalse(connection.getAutoCommit());
     dataSource.getLocalTransaction(jdbcLogger).commit();
   }
 
   @Test
-  public void testGetConnection_notYetBegun() {
+  public void testGetConnection_notYetBegun() throws Exception {
     LocalTransactionDataSource dataSource = new LocalTransactionDataSource(new MockDataSource());
-    try {
-      dataSource.getConnection();
-      fail();
-    } catch (TransactionNotYetBegunException expected) {
-      System.out.println(expected.getMessage());
-    }
+    Connection connection = dataSource.getConnection();
+    assertTrue(connection.getAutoCommit());
   }
 
   @Test
