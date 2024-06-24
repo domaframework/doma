@@ -61,12 +61,13 @@ public final class LocalTransactionDataSource implements DataSource {
   }
 
   /**
-   * {@inheritDoc}
+   * Returns a connection.
    *
-   * <p>
+   * <p>If a transaction has started, it returns the connection under transaction management; if
+   * not, it returns the connection provided by the internal data source.
    *
+   * @return the connection
    * @see LocalTransaction
-   * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
   public Connection getConnection() {
@@ -74,12 +75,13 @@ public final class LocalTransactionDataSource implements DataSource {
   }
 
   /**
-   * {@inheritDoc}
+   * Returns a connection.
    *
-   * <p>
+   * <p>If a transaction has started, it returns the connection under transaction management; if
+   * not, it returns the connection provided by the internal data source.
    *
+   * @return the connection
    * @see LocalTransaction
-   * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
   public Connection getConnection(String username, String password) {
