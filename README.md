@@ -15,6 +15,20 @@ Doma has various strengths:
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
 
+Supporters
+---------------------
+
+Our top supporters are shown below! [[Become a supporter](https://opencollective.com/doma#category-CONTRIBUTE)]
+
+
+<a href="https://opencollective.com/doma/supporter/0/website" target="_blank"><img src="https://opencollective.com/doma/supporter/0/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/1/website" target="_blank"><img src="https://opencollective.com/doma/supporter/1/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/2/website" target="_blank"><img src="https://opencollective.com/doma/supporter/2/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/3/website" target="_blank"><img src="https://opencollective.com/doma/supporter/3/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/4/website" target="_blank"><img src="https://opencollective.com/doma/supporter/4/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/5/website" target="_blank"><img src="https://opencollective.com/doma/supporter/5/avatar.svg"></a>
+<a href="https://opencollective.com/doma/supporter/6/website" target="_blank"><img src="https://opencollective.com/doma/supporter/6/avatar.svg"></a>
+
 Examples
 ---------------------
 
@@ -206,13 +220,5 @@ Major versions
 | Java 20 |        | v      |
 | Java 21 |        | v      |
 | Java 22 |        | v      |
-
-Backers & Sponsors
-------------------
-
-If you use Doma in your project or enterprise and would like to support ongoing development, please consider becoming a backer or a sponsor.
-Sponsor logos will show up here with a link to your website.
-
-[[Become a backer or a sponsor](https://opencollective.com/doma#category-CONTRIBUTE)]
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
