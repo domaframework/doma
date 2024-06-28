@@ -7,9 +7,9 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.seasar.doma.DomaNullPointerException;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SimpleDataSource;
-import org.seasar.doma.message.Message;
 
 /**
  * A data source for local transactions.
@@ -61,12 +61,13 @@ public final class LocalTransactionDataSource implements DataSource {
   }
 
   /**
-   * {@inheritDoc}
+   * Returns a connection.
    *
-   * <p>
+   * <p>If a transaction has started, it returns the connection under transaction management; if
+   * not, it returns the connection provided by the internal data source.
    *
+   * @return the connection
    * @see LocalTransaction
-   * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
   public Connection getConnection() {
@@ -74,12 +75,13 @@ public final class LocalTransactionDataSource implements DataSource {
   }
 
   /**
-   * {@inheritDoc}
+   * Returns a connection.
    *
-   * <p>
+   * <p>If a transaction has started, it returns the connection under transaction management; if
+   * not, it returns the connection provided by the internal data source.
    *
+   * @return the connection
    * @see LocalTransaction
-   * @throws TransactionNotYetBegunException if the transaction is not yet begun
    */
   @Override
   public Connection getConnection(String username, String password) {
@@ -89,7 +91,7 @@ public final class LocalTransactionDataSource implements DataSource {
   private Connection getConnectionInternal() {
     LocalTransactionContext context = localTxContextHolder.get();
     if (context == null) {
-      throw new TransactionNotYetBegunException(Message.DOMA2048);
+      return JdbcUtil.getConnection(dataSource);
     }
     return context.getConnection();
   }
