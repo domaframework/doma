@@ -21,4 +21,8 @@ tasks {
     compileJava {
         options.incrementalAfterFailure.set(false)
     }
+
+    compileTestJava {
+        options.compilerArgs.addAll(listOf("-proc:none"))
+    }
 }
