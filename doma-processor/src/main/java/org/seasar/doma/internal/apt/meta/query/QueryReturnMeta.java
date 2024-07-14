@@ -86,6 +86,19 @@ public class QueryReturnMeta {
         null);
   }
 
+  public boolean isMultiResult(EntityCtType entityCtType) {
+    return ctType.accept(
+        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
+          @Override
+          public Boolean visitMultiResultCtType(MultiResultCtType ctType, Void aVoid)
+              throws RuntimeException {
+            CtType elementCtType = ctType.getElementCtType();
+            return elementCtType.isSameType(entityCtType);
+          }
+        },
+        null);
+  }
+
   public TypeMirror getType() {
     return ctType.getType();
   }

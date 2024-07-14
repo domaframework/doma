@@ -7,6 +7,7 @@ import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.entity.Staff;
@@ -43,4 +44,7 @@ public interface StaffDao {
 
   @BatchDelete
   int[] delete(List<Staff> staff);
+
+  @MultiInsert
+  int insertMultiRows(List<Staff> entities);
 }

@@ -5,10 +5,12 @@ import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.jdbc.BatchResult;
+import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
@@ -53,4 +55,7 @@ public interface DeptDao {
 
   @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
   BatchResult<Dept> insertOnDuplicateKeyIgnore(List<Dept> entities);
+
+  @MultiInsert
+  MultiResult<Dept> insertMultiRows(List<Dept> entities);
 }

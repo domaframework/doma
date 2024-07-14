@@ -30,6 +30,7 @@ import org.seasar.doma.DomainConverters;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.NClobFactory;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
@@ -213,6 +214,11 @@ public class Annotations {
   public InsertAnnot newInsertAnnot(ExecutableElement method) {
     assertNotNull(method);
     return newInstance(method, Insert.class, InsertAnnot::new);
+  }
+
+  public MultiInsertAnnot newMultiInsertAnnot(ExecutableElement method) {
+    assertNotNull(method);
+    return newInstance(method, MultiInsert.class, MultiInsertAnnot::new);
   }
 
   public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {

@@ -351,6 +351,60 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
   }
 
   @Override
+  public Void visitAutoMultiInsertQueryMeta(AutoMultiInsertQueryMeta m) {
+    printEnteringStatements(m);
+    printPrerequisiteStatements(m);
+
+    iprint(
+        "%1$s<%2$s> __query = __support.getQueryImplementors().create%4$s(%5$s, %3$s);%n",
+        /* 1 */ m.getQueryClass().getName(),
+        /* 2 */ m.getEntityCtType().getType(),
+        /* 3 */ m.getEntityCtType().getTypeCode(),
+        /* 4 */ m.getQueryClass().getSimpleName(),
+        /* 5 */ methodName);
+    iprint("__query.setMethod(%1$s);%n", methodName);
+    iprint("__query.setConfig(__support.getConfig());%n");
+    iprint("__query.setEntities(%1$s);%n", m.getEntityParameterName());
+    iprint("__query.setCallerClassName(\"%1$s\");%n", className);
+    iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
+    iprint("__query.setQueryTimeout(%1$s);%n", m.getQueryTimeout());
+    iprint("__query.setSqlLogType(%1$s.%2$s);%n", m.getSqlLogType().getClass(), m.getSqlLogType());
+
+    List<String> include = m.getInclude();
+    if (include != null) {
+      iprint("__query.setIncludedPropertyNames(%1$s);%n", toConstants(include));
+    }
+
+    List<String> exclude = m.getExclude();
+    if (exclude != null) {
+      iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
+    }
+
+    iprint("__query.prepare();%n");
+    iprint(
+        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
+        m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
+
+    EntityCtType entityCtType = m.getEntityCtType();
+    if (entityCtType != null && entityCtType.isImmutable()) {
+      iprint("int __count = __command.execute();%n");
+      iprint("__query.complete();%n");
+      iprint(
+          "%1$s __result = new %1$s(__count, __query.getEntities());%n",
+          m.getReturnMeta().getType());
+    } else {
+      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getType());
+      iprint("__query.complete();%n");
+    }
+
+    iprint("__support.exiting(\"%1$s\", \"%2$s\", __result);%n", className, m.getName());
+    iprint("return __result;%n");
+
+    printThrowingStatements(m);
+    return null;
+  }
+
+  @Override
   public Void visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m) {
     printEnteringStatements(m);
     printPrerequisiteStatements(m);

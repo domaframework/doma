@@ -3,8 +3,12 @@ package org.seasar.doma.jdbc.id;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import org.seasar.doma.GenerationType;
+import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -96,6 +100,25 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
                 entityType.isQuoteRequired(),
                 entityType.getGeneratedIdPropertyType().isQuoteRequired());
     return getGeneratedValue(config, sql);
+  }
+
+  @Override
+  public List<Long> generateValuesPostInsert(IdGenerationConfig config, Statement statement) {
+    JdbcLogger logger = config.getJdbcLogger();
+    List<Long> values = new ArrayList<>();
+    ResultSet resultSet = null;
+    try {
+      resultSet = statement.getGeneratedKeys();
+      while (resultSet.next()) {
+        long value = resultSet.getLong(1);
+        values.add(value);
+      }
+    } catch (final SQLException e) {
+      throw new JdbcException(Message.DOMA2018, e, config.getEntityType().getName(), e);
+    } finally {
+      JdbcUtil.close(resultSet, logger);
+    }
+    return values;
   }
 
   @Override

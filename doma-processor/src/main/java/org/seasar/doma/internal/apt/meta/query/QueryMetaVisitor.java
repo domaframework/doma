@@ -12,6 +12,8 @@ public interface QueryMetaVisitor<R> {
 
   R visitAutoModifyQueryMeta(AutoModifyQueryMeta m);
 
+  R visitAutoMultiInsertQueryMeta(AutoMultiInsertQueryMeta m);
+
   R visitAutoBatchModifyQueryMeta(AutoBatchModifyQueryMeta m);
 
   R visitAutoFunctionQueryMeta(AutoFunctionQueryMeta m);

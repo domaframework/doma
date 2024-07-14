@@ -165,6 +165,16 @@ public class Oracle11Dialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsMultiRowInsertStatement() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsAutoIncrementWhenInsertingMultipleRows() {
+    return false;
+  }
+
+  @Override
   public JdbcType<ResultSet> getResultSetType() {
     return RESULT_SET;
   }

@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoMultiInsertQuery;
 import org.seasar.doma.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.BlobCreateQuery;
@@ -155,6 +156,20 @@ public enum QueryKind {
       return InsertCommand.class;
     }
   },
+  AUTO_MULTI_INSERT {
+
+    @Override
+    public Class<? extends Query> getQueryClass() {
+      return AutoMultiInsertQuery.class;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Class<? extends Command> getCommandClass() {
+      return InsertCommand.class;
+    }
+  },
+
   AUTO_UPDATE {
 
     @Override

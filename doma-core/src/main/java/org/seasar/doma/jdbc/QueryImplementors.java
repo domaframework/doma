@@ -9,6 +9,7 @@ import org.seasar.doma.jdbc.query.AutoBatchUpdateQuery;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.AutoFunctionQuery;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
+import org.seasar.doma.jdbc.query.AutoMultiInsertQuery;
 import org.seasar.doma.jdbc.query.AutoProcedureQuery;
 import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.BlobCreateQuery;
@@ -71,6 +72,11 @@ public interface QueryImplementors {
   default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoInsertQuery<>(entityType);
+  }
+
+  default <ENTITY> AutoMultiInsertQuery<ENTITY> createAutoMultiInsertQuery(
+      Method method, EntityType<ENTITY> entityType) {
+    return new AutoMultiInsertQuery<>(entityType);
   }
 
   default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(

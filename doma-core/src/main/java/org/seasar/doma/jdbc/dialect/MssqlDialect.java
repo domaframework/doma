@@ -111,6 +111,11 @@ public class MssqlDialect extends Mssql2008Dialect {
   }
 
   @Override
+  public boolean supportsAutoIncrementWhenInsertingMultipleRows() {
+    return false;
+  }
+
+  @Override
   public ScriptBlockContext createScriptBlockContext() {
     return new MssqlScriptBlockContext();
   }

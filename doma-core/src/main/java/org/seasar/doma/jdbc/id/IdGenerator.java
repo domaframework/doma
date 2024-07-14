@@ -1,6 +1,8 @@
 package org.seasar.doma.jdbc.id;
 
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.List;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.JdbcException;
 
@@ -49,6 +51,10 @@ public interface IdGenerator {
    */
   Long generatePreInsert(IdGenerationConfig config);
 
+  default List<Long> generateValuesPreInsert(IdGenerationConfig config, int count) {
+    return Collections.emptyList();
+  }
+
   /**
    * Generates the identity value after an insert.
    *
@@ -58,6 +64,10 @@ public interface IdGenerator {
    * @throws JdbcException if the generation is failed
    */
   Long generatePostInsert(IdGenerationConfig config, Statement statement);
+
+  default List<Long> generateValuesPostInsert(IdGenerationConfig config, Statement statement) {
+    return Collections.emptyList();
+  }
 
   /**
    * Returns the generation type.

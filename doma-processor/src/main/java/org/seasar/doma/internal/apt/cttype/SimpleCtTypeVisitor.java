@@ -128,4 +128,9 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
   public R visitPreparedSqlCtType(PreparedSqlCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }
+
+  @Override
+  public R visitMultiResultCtType(MultiResultCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
 }

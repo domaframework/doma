@@ -1,6 +1,8 @@
 package org.seasar.doma.jdbc.id;
 
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.seasar.doma.jdbc.JdbcException;
@@ -52,6 +54,17 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
   public Long generatePreInsert(IdGenerationConfig config) {
     IdContext idContext = getIdContext(config);
     return idContext.getNextValue(config);
+  }
+
+  @Override
+  public List<Long> generateValuesPreInsert(IdGenerationConfig config, int count) {
+    IdContext idContext = getIdContext(config);
+    List<Long> values = new ArrayList<>(count);
+    for (int i = 0; i < count; i++) {
+      long value = idContext.getNextValue(config);
+      values.add(value);
+    }
+    return values;
   }
 
   @Override

@@ -164,6 +164,14 @@ public interface Dialect {
     return true;
   }
 
+  default boolean supportsMultiRowInsertStatement() {
+    return true;
+  }
+
+  default boolean supportsAutoIncrementWhenInsertingMultipleRows() {
+    return true;
+  }
+
   /**
    * Returns an SQL object to get IDENTITY values that are generated in the database.
    *

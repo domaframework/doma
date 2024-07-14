@@ -131,7 +131,8 @@ class DaoProcessorTest extends CompilerSupport {
               ApplicationScopedDao.class,
               "-Adoma.cdi.ApplicationScoped=" + ApplicationScoped.class.getCanonicalName()),
           invocationContext(MultipleAnnotateWithDao.class),
-          invocationContext(IgnoreGeneratedKeysDao.class));
+          invocationContext(IgnoreGeneratedKeysDao.class),
+          invocationContext(AutoMultiInsertDao.class));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {
@@ -211,7 +212,13 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(SqlProcessorRawTypeDao.class, Message.DOMA4438),
           invocationContext(SqlProcessorWildcardTypeDao.class, Message.DOMA4439),
           invocationContext(NotOnlyDefaultMethodsExtendsDao.class, Message.DOMA4440),
-          invocationContext(MultiDaoExtendsDao.class, Message.DOMA4188));
+          invocationContext(MultiDaoExtendsDao.class, Message.DOMA4188),
+          invocationContext(MultiInsertIllegalParameterTypeDao.class, Message.DOMA4042),
+          invocationContext(MultiInsertIllegalParameterSizeDao.class, Message.DOMA4002),
+          invocationContext(MultiInsertIllegalTypeArgumentDao.class, Message.DOMA4043),
+          invocationContext(MultiInsertIllegalReturnTypeDao.class, Message.DOMA4001),
+          invocationContext(
+              MultiInsertIllegalReturnTypeForImmutableEntityDao.class, Message.DOMA4461));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, Message message) {

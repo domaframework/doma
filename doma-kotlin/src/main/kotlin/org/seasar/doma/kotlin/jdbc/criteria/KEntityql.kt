@@ -13,6 +13,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlBatchInsertStatem
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlBatchUpdateStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlDeleteStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlInsertStatement
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlMultiInsertStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlSelectStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlUpdateStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
@@ -91,5 +92,14 @@ class KEntityql(config: Config) {
     ): KEntityqlBatchInsertStatement<ENTITY> {
         val statement = entityql.insert(entityMetamodel, entities, block)
         return KEntityqlBatchInsertStatement(statement)
+    }
+
+    fun <ENTITY> insertMulti(
+        entityMetamodel: EntityMetamodel<ENTITY>,
+        entities: List<ENTITY>,
+        block: InsertSettings.() -> Unit = {},
+    ): KEntityqlMultiInsertStatement<ENTITY> {
+        val statement = entityql.insertMulti(entityMetamodel, entities, block)
+        return KEntityqlMultiInsertStatement(statement)
     }
 }

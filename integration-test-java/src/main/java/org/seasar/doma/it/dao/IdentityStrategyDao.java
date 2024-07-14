@@ -4,6 +4,7 @@ import java.util.List;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.it.entity.IdentityStrategy;
 
@@ -21,4 +22,7 @@ public interface IdentityStrategyDao {
 
   @BatchInsert(ignoreGeneratedKeys = true)
   int[] insertWithoutRetrievingGeneratedKeys(List<IdentityStrategy> entities);
+
+  @MultiInsert
+  int insertMultiRows(List<IdentityStrategy> entities);
 }

@@ -47,6 +47,8 @@ import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.AutoFunctionQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.AutoModifyQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.AutoMultiInsertQueryMeta;
+import org.seasar.doma.internal.apt.meta.query.AutoMultiInsertQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.AutoProcedureQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.BlobCreateQueryMeta;
@@ -90,6 +92,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     this.ctx = ctx;
     providers.add((dao, method) -> new SqlFileSelectQueryMetaFactory(ctx, dao, method));
     providers.add((dao, method) -> new AutoModifyQueryMetaFactory(ctx, dao, method));
+    providers.add((dao, method) -> new AutoMultiInsertQueryMetaFactory(ctx, dao, method));
     providers.add((dao, method) -> new AutoBatchModifyQueryMetaFactory(ctx, dao, method));
     providers.add((dao, method) -> new AutoFunctionQueryMetaFactory(ctx, dao, method));
     providers.add((dao, method) -> new AutoProcedureQueryMetaFactory(ctx, dao, method));
@@ -461,6 +464,11 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     public Void visitSqlFileScriptQueryMeta(SqlFileScriptQueryMeta m) {
       // always OK
       return null;
+    }
+
+    @Override
+    public Void visitAutoMultiInsertQueryMeta(AutoMultiInsertQueryMeta m) {
+      return handleConflict(m.getMultiInsertAnnot());
     }
 
     @Override
