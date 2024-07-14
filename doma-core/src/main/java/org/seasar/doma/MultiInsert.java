@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 import java.sql.Statement;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
-import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
 
