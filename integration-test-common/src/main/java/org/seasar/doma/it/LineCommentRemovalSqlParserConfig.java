@@ -5,12 +5,12 @@ import org.seasar.doma.jdbc.SqlParserConfig;
 public class LineCommentRemovalSqlParserConfig implements SqlParserConfig {
 
   @Override
-  public boolean shouldRemoveBlockComments() {
+  public boolean shouldRemoveBlockComment(String comment) {
     return false;
   }
 
   @Override
-  public boolean shouldRemoveLineComments() {
+  public boolean shouldRemoveLineComment(String comment) {
     return true;
   }
 }

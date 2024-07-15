@@ -424,14 +424,14 @@ public class SqlParser {
   }
 
   protected void parseBlockComment() {
-    if (!config.shouldRemoveBlockComments()) {
+    if (!config.shouldRemoveBlockComment(token)) {
       CommentNode node = new CommentNode(token);
       appendNode(node);
     }
   }
 
   protected void parseLineComment() {
-    if (!config.shouldRemoveLineComments()) {
+    if (!config.shouldRemoveLineComment(token)) {
       CommentNode node = new CommentNode(token);
       appendNode(node);
     }

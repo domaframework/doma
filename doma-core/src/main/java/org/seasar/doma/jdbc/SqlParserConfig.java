@@ -7,12 +7,12 @@ public interface SqlParserConfig {
   SqlParserConfig DEFAULT =
       new SqlParserConfig() {
         @Override
-        public boolean shouldRemoveBlockComments() {
+        public boolean shouldRemoveBlockComment(String comment) {
           return false;
         }
 
         @Override
-        public boolean shouldRemoveLineComments() {
+        public boolean shouldRemoveLineComment(String comment) {
           return false;
         }
       };
@@ -20,14 +20,16 @@ public interface SqlParserConfig {
   /**
    * Returns whether block comments should be removed.
    *
+   * @param comment the block comment
    * @return whether block comments should be removed
    */
-  boolean shouldRemoveBlockComments();
+  boolean shouldRemoveBlockComment(String comment);
 
   /**
    * Returns whether line comments should be removed.
    *
+   * @param comment the line comment
    * @return whether line comments should be removed
    */
-  boolean shouldRemoveLineComments();
+  boolean shouldRemoveLineComment(String comment);
 }
