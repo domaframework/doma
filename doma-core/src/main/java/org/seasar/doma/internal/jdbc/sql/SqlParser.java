@@ -48,6 +48,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.SqlParserConfig;
 import org.seasar.doma.message.Message;
 
 public class SqlParser {
@@ -59,6 +60,8 @@ public class SqlParser {
 
   protected final String sql;
 
+  protected final SqlParserConfig config;
+
   protected final SqlTokenizer tokenizer;
 
   protected final AnonymousNode rootNode;
@@ -68,8 +71,13 @@ public class SqlParser {
   protected String token;
 
   public SqlParser(String sql) {
-    assertNotNull(sql);
+    this(sql, SqlParserConfig.DEFAULT);
+  }
+
+  public SqlParser(String sql, SqlParserConfig config) {
+    assertNotNull(sql, config);
     this.sql = sql;
+    this.config = config;
     tokenizer = new SqlTokenizer(sql);
     rootNode = new AnonymousNode();
     nodeStack.push(rootNode);
@@ -227,9 +235,13 @@ public class SqlParser {
             break;
           }
         case BLOCK_COMMENT:
+          {
+            parseBlockComment();
+            break;
+          }
         case LINE_COMMENT:
           {
-            parseComment();
+            parseLineComment();
             break;
           }
         case OTHER:
@@ -411,9 +423,18 @@ public class SqlParser {
     appendNode(node);
   }
 
-  protected void parseComment() {
-    CommentNode node = new CommentNode(token);
-    appendNode(node);
+  protected void parseBlockComment() {
+    if (!config.shouldRemoveBlockComment(token)) {
+      CommentNode node = new CommentNode(token);
+      appendNode(node);
+    }
+  }
+
+  protected void parseLineComment() {
+    if (!config.shouldRemoveLineComment(token)) {
+      CommentNode node = new CommentNode(token);
+      appendNode(node);
+    }
   }
 
   protected void parseOpenedParens() {

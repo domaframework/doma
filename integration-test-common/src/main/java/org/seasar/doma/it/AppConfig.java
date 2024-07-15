@@ -3,10 +3,12 @@ package org.seasar.doma.it;
 import java.util.Objects;
 import javax.sql.DataSource;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.GreedyCacheSqlFileRepository;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SimpleDataSource;
+import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.tx.LocalTransaction;
 import org.seasar.doma.jdbc.tx.LocalTransactionDataSource;
@@ -27,6 +29,9 @@ public class AppConfig implements Config {
   private final LocalTransactionDataSource dataSource;
 
   private final LocalTransactionManager transactionManager;
+
+  private final SqlFileRepository sqlFileRepository =
+      new GreedyCacheSqlFileRepository(new LineCommentRemovalSqlParserConfig());
 
   public AppConfig(Dialect dialect, Dbms dbms, String url, String user, String password) {
     Objects.requireNonNull(dialect);
@@ -100,5 +105,10 @@ public class AppConfig implements Config {
   @Override
   public JdbcLogger getJdbcLogger() {
     return jdbcLogger;
+  }
+
+  @Override
+  public SqlFileRepository getSqlFileRepository() {
+    return sqlFileRepository;
   }
 }
