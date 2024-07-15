@@ -6,6 +6,12 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /** An SQL file repository that does not cache the results of SQL parsing. */
 public class NoCacheSqlFileRepository extends AbstractSqlFileRepository {
 
+  public NoCacheSqlFileRepository() {}
+
+  public NoCacheSqlFileRepository(SqlParserConfig sqlParserConfig) {
+    super(sqlParserConfig);
+  }
+
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
     return createSqlFile(method, path, dialect);

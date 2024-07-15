@@ -16,6 +16,16 @@ import org.seasar.doma.message.Message;
 /** A skeletal implementation of the {@link SqlFileRepository} interface. */
 public abstract class AbstractSqlFileRepository implements SqlFileRepository {
 
+  protected final SqlParserConfig sqlParserConfig;
+
+  protected AbstractSqlFileRepository() {
+    this(SqlParserConfig.DEFAULT);
+  }
+
+  protected AbstractSqlFileRepository(SqlParserConfig sqlParserConfig) {
+    this.sqlParserConfig = Objects.requireNonNull(sqlParserConfig);
+  }
+
   @Override
   public final SqlFile getSqlFile(Method method, String path, Dialect dialect) {
     if (method == null) {
@@ -100,7 +110,7 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
    * @return the SQL node
    */
   protected final SqlNode parse(String sql) {
-    SqlParser parser = new SqlParser(sql);
+    SqlParser parser = new SqlParser(sql, sqlParserConfig);
     return parser.parse();
   }
 

@@ -10,6 +10,12 @@ public class GreedyCacheSqlFileRepository extends AbstractSqlFileRepository {
 
   protected final ConcurrentMap<CacheKey, SqlFile> sqlFileMap = new ConcurrentHashMap<>(200);
 
+  public GreedyCacheSqlFileRepository() {}
+
+  public GreedyCacheSqlFileRepository(SqlParserConfig sqlParserConfig) {
+    super(sqlParserConfig);
+  }
+
   @Override
   protected SqlFile getSqlFileWithCacheControl(Method method, String path, Dialect dialect) {
     CacheKey key = new CacheKey(method, path);
