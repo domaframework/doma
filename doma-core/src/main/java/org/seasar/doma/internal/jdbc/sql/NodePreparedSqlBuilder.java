@@ -787,6 +787,8 @@ public class NodePreparedSqlBuilder
 
     void appendWhitespaceIfNecessary();
 
+    boolean endsWithWordPart();
+
     void appendRawSql(CharSequence sql);
 
     void appendFormattedSql(CharSequence sql);
@@ -872,7 +874,8 @@ public class NodePreparedSqlBuilder
       }
     }
 
-    protected boolean endsWithWordPart() {
+    @Override
+    public boolean endsWithWordPart() {
       if (rawSqlBuf.length() == 0) {
         return false;
       }
@@ -1011,19 +1014,7 @@ public class NodePreparedSqlBuilder
 
     private static final WhitespaceNode WHITESPACE = WhitespaceNode.of(" ");
 
-    private final Config config;
-
-    private final ExpressionEvaluator evaluator;
-
-    private final SqlLogFormattingFunction formattingFunction = new ConvertToLogFormatFunction();
-
-    private final StringBuilder rawSqlBuf = new StringBuilder(200);
-
-    private final StringBuilder formattedSqlBuf = new StringBuilder(200);
-
-    private final List<InParameter<?>> parameters = new ArrayList<>();
-
-    private boolean available;
+    private final Context context;
 
     private final List<BlankNode> blankNodes = new ArrayList<>();
 
@@ -1034,18 +1025,17 @@ public class NodePreparedSqlBuilder
     }
 
     public BlankLineRemovalContext(Config config, ExpressionEvaluator evaluator) {
-      this.config = config;
-      this.evaluator = evaluator;
+      this.context = new DefaultContext(config, evaluator);
     }
 
     @Override
     public Config getConfig() {
-      return config;
+      return context.getConfig();
     }
 
     @Override
     public ExpressionEvaluator getExpressionEvaluator() {
-      return evaluator;
+      return context.getExpressionEvaluator();
     }
 
     @Override
@@ -1055,18 +1045,18 @@ public class NodePreparedSqlBuilder
       }
     }
 
-    protected boolean endsWithWordPart() {
-      if (rawSqlBuf.length() == 0 || !blankNodes.isEmpty()) {
+    @Override
+    public boolean endsWithWordPart() {
+      if (!blankNodes.isEmpty()) {
         return false;
       }
-      char c = rawSqlBuf.charAt(rawSqlBuf.length() - 1);
-      return SqlTokenUtil.isWordPart(c);
+      return context.endsWithWordPart();
     }
 
     @Override
     public void appendRawSql(CharSequence sql) {
       flushBlankNodes();
-      rawSqlBuf.append(sql);
+      context.appendRawSql(sql);
     }
 
     @Override
@@ -1083,26 +1073,23 @@ public class NodePreparedSqlBuilder
     @Override
     public void appendFormattedSql(CharSequence sql) {
       flushBlankNodes();
-      formattedSqlBuf.append(sql);
+      context.appendFormattedSql(sql);
     }
 
     private void flushBlankNodes() {
       if (blankNodes.isEmpty()) {
         return;
       }
+
       String blank = toString(blankNodes, eolNodeCount);
-      rawSqlBuf.append(blank);
-      formattedSqlBuf.append(blank);
+      context.appendRawSql(blank);
+      context.appendFormattedSql(blank);
 
       blankNodes.clear();
       eolNodeCount = 0;
     }
 
-    static String toString(List<BlankNode> nodes, int eolNodeCount) {
-      if (nodes.isEmpty()) {
-        return "";
-      }
-
+    private static String toString(List<BlankNode> nodes, int eolNodeCount) {
       if (eolNodeCount > 1) {
         int seenEolNodeCount = 0;
         ListIterator<BlankNode> iterator = nodes.listIterator();
@@ -1117,119 +1104,90 @@ public class NodePreparedSqlBuilder
           iterator.remove();
         }
       }
-
       return nodes.stream().map(BlankNode::getBlank).collect(Collectors.joining());
     }
 
     @Override
     public void cutBackSqlBuf(int size) {
       flushBlankNodes();
-      rawSqlBuf.setLength(rawSqlBuf.length() - size);
+      cutBackSqlBuf(size);
     }
 
     @Override
     public void cutBackFormattedSqlBuf(int size) {
       flushBlankNodes();
-      formattedSqlBuf.setLength(formattedSqlBuf.length() - size);
+      context.cutBackFormattedSqlBuf(size);
     }
 
     @Override
     public CharSequence getSqlBuf() {
       flushBlankNodes();
-      return rawSqlBuf;
+      return context.getSqlBuf();
     }
 
     @Override
     public CharSequence getFormattedSqlBuf() {
       flushBlankNodes();
-      return formattedSqlBuf;
+      return context.getFormattedSqlBuf();
     }
 
     @Override
     public <BASIC, CONTAINER> void addLiteralValue(Scalar<BASIC, CONTAINER> scalar) {
       flushBlankNodes();
-
-      String literal =
-          scalar
-              .getWrapper()
-              .accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
-      rawSqlBuf.append(literal);
-      formattedSqlBuf.append(literal);
+      addLiteralValue(scalar);
     }
 
     @Override
     public <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar) {
-      appendParameterInternal(new ScalarInParameter<>(scalar));
+      flushBlankNodes();
+      context.addBindValue(scalar);
     }
 
     @Override
     public <BASIC> void appendParameter(InParameter<BASIC> parameter) {
-      appendParameterInternal(parameter);
-    }
-
-    protected <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
       flushBlankNodes();
-
-      parameters.add(parameter);
-      rawSqlBuf.append("?");
-      String formatted =
-          parameter
-              .getWrapper()
-              .accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
-      formattedSqlBuf.append(formatted);
+      context.appendParameter(parameter);
     }
 
     @Override
     public void addAllParameters(List<InParameter<?>> values) {
-      parameters.addAll(values);
+      context.addAllParameters(values);
     }
 
     @Override
     public List<InParameter<?>> getParameters() {
-      return parameters;
+      return context.getParameters();
     }
 
     @Override
     public void setAvailable(@SuppressWarnings("SameParameterValue") boolean available) {
-      this.available = available;
+      context.setAvailable(available);
     }
 
     @Override
     public boolean isAvailable() {
-      return available;
+      return context.isAvailable();
     }
 
     @Override
     public void putValue(String variableName, Value value) {
-      evaluator.putValue(variableName, value);
+      context.putValue(variableName, value);
     }
 
     @Override
     public Value removeValue(String variableName) {
-      return evaluator.removeValue(variableName);
+      return context.removeValue(variableName);
     }
 
     @Override
     public EvaluationResult evaluate(SqlLocation location, String expression) {
-      try {
-        ExpressionParser parser = new ExpressionParser(expression);
-        ExpressionNode expressionNode = parser.parse();
-        return evaluator.evaluate(expressionNode);
-      } catch (ExpressionException e) {
-        throw new JdbcException(
-            Message.DOMA2111,
-            e,
-            location.getSql(),
-            location.getLineNumber(),
-            location.getPosition(),
-            e);
-      }
+      return context.evaluate(location, expression);
     }
 
     @Override
     public String toString() {
       flushBlankNodes();
-      return rawSqlBuf.toString();
+      return context.toString();
     }
   }
 
