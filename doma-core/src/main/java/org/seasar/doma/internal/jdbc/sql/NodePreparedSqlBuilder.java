@@ -86,6 +86,8 @@ public class NodePreparedSqlBuilder
 
   protected final Config config;
 
+  protected final boolean shouldRemoveBlankLines;
+
   protected final SqlKind kind;
 
   protected final String sqlFilePath;
@@ -154,6 +156,7 @@ public class NodePreparedSqlBuilder
       BiConsumer<PopulateNode, SqlContext> valuesPopulater) {
     assertNotNull(config, kind, evaluator, columnsExpander, valuesPopulater);
     this.config = config;
+    this.shouldRemoveBlankLines = config.getSqlBuilderSettings().shouldRemoveBlankLines();
     this.kind = kind;
     this.sqlFilePath = sqlFilePath;
     this.evaluator = evaluator;
@@ -766,14 +769,14 @@ public class NodePreparedSqlBuilder
   }
 
   private Context createContext(Context context) {
-    if (config.getSqlBuilderSettings().shouldRemoveBlankLines()) {
+    if (shouldRemoveBlankLines) {
       return new BlankLineRemovalContext(context);
     }
     return new DefaultContext(context);
   }
 
   private Context createContext(Config config, ExpressionEvaluator evaluator) {
-    if (config.getSqlBuilderSettings().shouldRemoveBlankLines()) {
+    if (shouldRemoveBlankLines) {
       return new BlankLineRemovalContext(config, evaluator);
     }
     return new DefaultContext(config, evaluator);

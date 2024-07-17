@@ -246,6 +246,29 @@ public class BlankLineRemovalContextTest {
   }
 
   @Test
+  public void testMultipleBlankLines() {
+    String template =
+        """
+        aaa
+
+          bbb
+
+
+            ccc
+
+
+
+              ddd
+        """;
+    String expected = """
+        aaa
+          bbb
+            ccc
+              ddd""";
+    assertEquals(expected, parse(template));
+  }
+
+  @Test
   public void testElse_or() {
     String template =
         """
