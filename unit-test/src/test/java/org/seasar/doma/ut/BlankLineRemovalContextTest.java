@@ -20,7 +20,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlParserConfig;
 
-public class RemovalOfEmptyLinesTest {
+public class BlankLineRemovalContextTest {
 
   private final MockConfig config =
       new MockConfig() {
@@ -28,7 +28,8 @@ public class RemovalOfEmptyLinesTest {
         public SqlBuilderSettings getSqlBuilderSettings() {
           return new SqlBuilderSettings() {
             @Override
-            public boolean shouldRemoveEmptyLines() {
+            public boolean shouldRemoveBlankLines() {
+              // use NodePreparedSqlBuilder.BlankLineRemovalContext
               return true;
             }
           };

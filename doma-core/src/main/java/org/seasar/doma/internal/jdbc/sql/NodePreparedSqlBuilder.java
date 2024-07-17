@@ -766,15 +766,15 @@ public class NodePreparedSqlBuilder
   }
 
   private Context createContext(Context context) {
-    if (config.getSqlBuilderSettings().shouldRemoveEmptyLines()) {
-      return new EmptyLineRemovalContext(context);
+    if (config.getSqlBuilderSettings().shouldRemoveBlankLines()) {
+      return new BlankLineRemovalContext(context);
     }
     return new DefaultContext(context);
   }
 
   private Context createContext(Config config, ExpressionEvaluator evaluator) {
-    if (config.getSqlBuilderSettings().shouldRemoveEmptyLines()) {
-      return new EmptyLineRemovalContext(config, evaluator);
+    if (config.getSqlBuilderSettings().shouldRemoveBlankLines()) {
+      return new BlankLineRemovalContext(config, evaluator);
     }
     return new DefaultContext(config, evaluator);
   }
@@ -1007,7 +1007,7 @@ public class NodePreparedSqlBuilder
     }
   }
 
-  protected static class EmptyLineRemovalContext implements Context {
+  protected static class BlankLineRemovalContext implements Context {
 
     private static final WhitespaceNode WHITESPACE = WhitespaceNode.of(" ");
 
@@ -1029,11 +1029,11 @@ public class NodePreparedSqlBuilder
 
     int eolNodeCount = 0;
 
-    public EmptyLineRemovalContext(Context context) {
+    public BlankLineRemovalContext(Context context) {
       this(context.getConfig(), context.getExpressionEvaluator());
     }
 
-    public EmptyLineRemovalContext(Config config, ExpressionEvaluator evaluator) {
+    public BlankLineRemovalContext(Config config, ExpressionEvaluator evaluator) {
       this.config = config;
       this.evaluator = evaluator;
     }
