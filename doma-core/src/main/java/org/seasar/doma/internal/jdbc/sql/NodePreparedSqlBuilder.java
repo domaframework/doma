@@ -27,6 +27,7 @@ import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.scalar.Scalars;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
+import org.seasar.doma.internal.jdbc.sql.node.BlankNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
 import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
@@ -194,8 +195,7 @@ public class NodePreparedSqlBuilder
 
   @Override
   public Void visitWhitespaceNode(WhitespaceNode node, Context p) {
-    p.appendWhitespaceAsRawSql(node);
-    p.appendWhitespaceAsFormattedSql(node);
+    p.appendWhitespaceNode(node);
     return null;
   }
 
@@ -730,8 +730,7 @@ public class NodePreparedSqlBuilder
 
   @Override
   public Void visitEolNode(EolNode node, Context p) {
-    p.appendEolAsRawSql(node);
-    p.appendEolAsFormattedSql(node);
+    p.appendEolNode(node);
     return null;
   }
 
@@ -780,7 +779,7 @@ public class NodePreparedSqlBuilder
     return new DefaultContext(config, evaluator);
   }
 
-  protected interface Context {
+  interface Context {
 
     Config getConfig();
 
@@ -788,19 +787,13 @@ public class NodePreparedSqlBuilder
 
     void appendWhitespaceIfNecessary();
 
-    boolean endsWithWordPart();
-
     void appendRawSql(CharSequence sql);
-
-    void appendWhitespaceAsRawSql(WhitespaceNode node);
-
-    void appendEolAsRawSql(EolNode node);
 
     void appendFormattedSql(CharSequence sql);
 
-    void appendWhitespaceAsFormattedSql(WhitespaceNode node);
+    void appendWhitespaceNode(WhitespaceNode node);
 
-    void appendEolAsFormattedSql(EolNode node);
+    void appendEolNode(EolNode node);
 
     void cutBackSqlBuf(int size);
 
@@ -815,8 +808,6 @@ public class NodePreparedSqlBuilder
     <BASIC, CONTAINER> void addBindValue(Scalar<BASIC, CONTAINER> scalar);
 
     <BASIC> void appendParameter(InParameter<BASIC> parameter);
-
-    <BASIC> void appendParameterInternal(InParameter<BASIC> parameter);
 
     void addAllParameters(List<InParameter<?>> values);
 
@@ -854,7 +845,6 @@ public class NodePreparedSqlBuilder
 
     private boolean available;
 
-    @SuppressWarnings("CopyConstructorMissesField")
     protected DefaultContext(Context context) {
       this(context.getConfig(), context.getExpressionEvaluator());
     }
@@ -882,8 +872,7 @@ public class NodePreparedSqlBuilder
       }
     }
 
-    @Override
-    public boolean endsWithWordPart() {
+    protected boolean endsWithWordPart() {
       if (rawSqlBuf.length() == 0) {
         return false;
       }
@@ -897,28 +886,22 @@ public class NodePreparedSqlBuilder
     }
 
     @Override
-    public void appendWhitespaceAsRawSql(WhitespaceNode node) {
-      rawSqlBuf.append(node.getWhitespace());
-    }
-
-    @Override
-    public void appendEolAsRawSql(EolNode node) {
-      rawSqlBuf.append(node.getEol());
-    }
-
-    @Override
     public void appendFormattedSql(CharSequence sql) {
       formattedSqlBuf.append(sql);
     }
 
     @Override
-    public void appendWhitespaceAsFormattedSql(WhitespaceNode node) {
-      formattedSqlBuf.append(node.getWhitespace());
+    public void appendWhitespaceNode(WhitespaceNode node) {
+      String whitespace = node.getWhitespace();
+      rawSqlBuf.append(whitespace);
+      formattedSqlBuf.append(whitespace);
     }
 
     @Override
-    public void appendEolAsFormattedSql(EolNode node) {
-      formattedSqlBuf.append(node.getEol());
+    public void appendEolNode(EolNode node) {
+      String eol = node.getEol();
+      rawSqlBuf.append(eol);
+      formattedSqlBuf.append(eol);
     }
 
     @Override
@@ -961,8 +944,7 @@ public class NodePreparedSqlBuilder
       appendParameterInternal(parameter);
     }
 
-    @Override
-    public <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
+    protected <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
       parameters.add(parameter);
       rawSqlBuf.append("?");
       String formatted =
@@ -1037,19 +1019,16 @@ public class NodePreparedSqlBuilder
 
     private final StringBuilder rawSqlBuf = new StringBuilder(200);
 
-    // TODO
-    private final List<SqlNode> emptyRawSqlBuf = new ArrayList<>();
-
     private final StringBuilder formattedSqlBuf = new StringBuilder(200);
-
-    // TODO
-    private final List<SqlNode> emptyFormattedSqlBuf = new ArrayList<>();
 
     private final List<InParameter<?>> parameters = new ArrayList<>();
 
     private boolean available;
 
-    @SuppressWarnings("CopyConstructorMissesField")
+    private final List<BlankNode> blankNodes = new ArrayList<>();
+
+    int eolNodeCount = 0;
+
     public EmptyLineRemovalContext(Context context) {
       this(context.getConfig(), context.getExpressionEvaluator());
     }
@@ -1072,14 +1051,12 @@ public class NodePreparedSqlBuilder
     @Override
     public void appendWhitespaceIfNecessary() {
       if (endsWithWordPart()) {
-        appendWhitespaceAsRawSql(WHITESPACE);
-        appendWhitespaceAsFormattedSql(WHITESPACE);
+        appendWhitespaceNode(WHITESPACE);
       }
     }
 
-    @Override
-    public boolean endsWithWordPart() {
-      if (rawSqlBuf.length() == 0 || !emptyRawSqlBuf.isEmpty()) {
+    protected boolean endsWithWordPart() {
+      if (rawSqlBuf.length() == 0 || !blankNodes.isEmpty()) {
         return false;
       }
       char c = rawSqlBuf.charAt(rawSqlBuf.length() - 1);
@@ -1088,46 +1065,50 @@ public class NodePreparedSqlBuilder
 
     @Override
     public void appendRawSql(CharSequence sql) {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
+      flushBlankNodes();
       rawSqlBuf.append(sql);
     }
 
     @Override
-    public void appendWhitespaceAsRawSql(WhitespaceNode node) {
-      emptyRawSqlBuf.add(node);
+    public void appendWhitespaceNode(WhitespaceNode node) {
+      blankNodes.add(node);
     }
 
     @Override
-    public void appendEolAsRawSql(EolNode node) {
-      emptyRawSqlBuf.add(node);
+    public void appendEolNode(EolNode node) {
+      eolNodeCount++;
+      blankNodes.add(node);
     }
 
     @Override
     public void appendFormattedSql(CharSequence sql) {
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
+      flushBlankNodes();
       formattedSqlBuf.append(sql);
     }
 
-    @Override
-    public void appendWhitespaceAsFormattedSql(WhitespaceNode node) {
-      emptyFormattedSqlBuf.add(node);
+    private void flushBlankNodes() {
+      if (blankNodes.isEmpty()) {
+        return;
+      }
+      String blank = toString(blankNodes, eolNodeCount);
+      rawSqlBuf.append(blank);
+      formattedSqlBuf.append(blank);
+
+      blankNodes.clear();
+      eolNodeCount = 0;
     }
 
-    @Override
-    public void appendEolAsFormattedSql(EolNode node) {
-      emptyFormattedSqlBuf.add(node);
-    }
+    static String toString(List<BlankNode> nodes, int eolNodeCount) {
+      if (nodes.isEmpty()) {
+        return "";
+      }
 
-    private void flushNodes(List<SqlNode> nodes, StringBuilder buf) {
-      if (nodes.isEmpty()) return;
-
-      long eolNodeCount = nodes.stream().filter(n -> n instanceof EolNode).count();
       if (eolNodeCount > 1) {
         int seenEolNodeCount = 0;
-        ListIterator<SqlNode> iterator = nodes.listIterator();
+        ListIterator<BlankNode> iterator = nodes.listIterator();
         while (iterator.hasNext()) {
-          SqlNode node = iterator.next();
-          if (node instanceof EolNode) {
+          BlankNode node = iterator.next();
+          if (node.isEol()) {
             seenEolNodeCount++;
             if (seenEolNodeCount >= eolNodeCount) {
               break;
@@ -1137,52 +1118,36 @@ public class NodePreparedSqlBuilder
         }
       }
 
-      String result =
-          nodes.stream()
-              .map(
-                  node -> {
-                    if (node instanceof WhitespaceNode) {
-                      return ((WhitespaceNode) node).getWhitespace();
-                    }
-                    if (node instanceof EolNode) {
-                      return ((EolNode) node).getEol();
-                    }
-                    return "";
-                  })
-              .collect(Collectors.joining());
-
-      buf.append(result);
-      nodes.clear();
+      return nodes.stream().map(BlankNode::getBlank).collect(Collectors.joining());
     }
 
     @Override
     public void cutBackSqlBuf(int size) {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
+      flushBlankNodes();
       rawSqlBuf.setLength(rawSqlBuf.length() - size);
     }
 
     @Override
     public void cutBackFormattedSqlBuf(int size) {
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
+      flushBlankNodes();
       formattedSqlBuf.setLength(formattedSqlBuf.length() - size);
     }
 
     @Override
     public CharSequence getSqlBuf() {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
+      flushBlankNodes();
       return rawSqlBuf;
     }
 
     @Override
     public CharSequence getFormattedSqlBuf() {
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
+      flushBlankNodes();
       return formattedSqlBuf;
     }
 
     @Override
     public <BASIC, CONTAINER> void addLiteralValue(Scalar<BASIC, CONTAINER> scalar) {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
+      flushBlankNodes();
 
       String literal =
           scalar
@@ -1202,10 +1167,8 @@ public class NodePreparedSqlBuilder
       appendParameterInternal(parameter);
     }
 
-    @Override
-    public <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
+    protected <BASIC> void appendParameterInternal(InParameter<BASIC> parameter) {
+      flushBlankNodes();
 
       parameters.add(parameter);
       rawSqlBuf.append("?");
@@ -1265,9 +1228,7 @@ public class NodePreparedSqlBuilder
 
     @Override
     public String toString() {
-      flushNodes(emptyRawSqlBuf, rawSqlBuf);
-      flushNodes(emptyFormattedSqlBuf, formattedSqlBuf);
-
+      flushBlankNodes();
       return rawSqlBuf.toString();
     }
   }

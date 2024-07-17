@@ -7,7 +7,7 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-public class EolNode extends AbstractSqlNode {
+public class EolNode extends AbstractSqlNode implements BlankNode {
 
   protected final String eol;
 
@@ -18,6 +18,16 @@ public class EolNode extends AbstractSqlNode {
 
   public String getEol() {
     return eol;
+  }
+
+  @Override
+  public String getBlank() {
+    return eol;
+  }
+
+  @Override
+  public boolean isEol() {
+    return true;
   }
 
   @Override

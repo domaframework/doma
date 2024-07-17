@@ -9,7 +9,7 @@ import org.seasar.doma.jdbc.JdbcUnsupportedOperationException;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.SqlNodeVisitor;
 
-public class WhitespaceNode extends AbstractSqlNode {
+public class WhitespaceNode extends AbstractSqlNode implements BlankNode {
 
   protected static final Map<String, WhitespaceNode> nodeMap = new HashMap<>();
 
@@ -37,6 +37,16 @@ public class WhitespaceNode extends AbstractSqlNode {
 
   public String getWhitespace() {
     return whitespace;
+  }
+
+  @Override
+  public String getBlank() {
+    return whitespace;
+  }
+
+  @Override
+  public boolean isEol() {
+    return false;
   }
 
   @Override
