@@ -1113,7 +1113,7 @@ public class NodePreparedSqlBuilder
     @Override
     public void cutBackSqlBuf(int size) {
       flushBlankNodes();
-      cutBackSqlBuf(size);
+      context.cutBackSqlBuf(size);
     }
 
     @Override
@@ -1137,7 +1137,7 @@ public class NodePreparedSqlBuilder
     @Override
     public <BASIC, CONTAINER> void addLiteralValue(Scalar<BASIC, CONTAINER> scalar) {
       flushBlankNodes();
-      addLiteralValue(scalar);
+      context.addLiteralValue(scalar);
     }
 
     @Override
