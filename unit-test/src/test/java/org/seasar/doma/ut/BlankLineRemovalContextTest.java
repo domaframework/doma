@@ -269,6 +269,51 @@ public class BlankLineRemovalContextTest {
   }
 
   @Test
+  public void testTabs() {
+    String template =
+        """
+        aaa\t\t\t\t
+
+        \tbbb\t\t\t
+
+
+        \t\tccc\t\t
+
+
+
+        \t\t\tddd\t
+        """;
+    String expected = """
+        aaa
+        \tbbb
+        \t\tccc
+        \t\t\tddd""";
+    assertEquals(expected, parse(template));
+  }
+
+  @Test
+  public void testQuotes() {
+    String template = """
+        'aaa
+
+          bbb', '
+
+            ccc
+
+        '
+        """;
+    String expected = """
+        'aaa
+
+          bbb', '
+
+            ccc
+
+        '""";
+    assertEquals(expected, parse(template));
+  }
+
+  @Test
   public void testElse_or() {
     String template =
         """
