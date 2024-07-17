@@ -273,7 +273,7 @@ configure(integrationTestProjects) {
     apply(plugin ="org.domaframework.doma.compile")
 
     dependencies {
-        testImplementation(platform("org.testcontainers:testcontainers-bom:1.19.8"))
+        testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.0"))
         testRuntimeOnly("com.h2database:h2:1.4.200")
         testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
         testRuntimeOnly("com.oracle.database.jdbc:ojdbc8-production:18.15.0.0")
