@@ -103,9 +103,9 @@ public class CommentRemovalContextTest {
         /**
         This is block comment 1
         */
-        select\040
+        select
           *
-        from\040
+        from
           /**
           This is block comment 2
           */
@@ -155,7 +155,7 @@ public class CommentRemovalContextTest {
           EMPLOYEE -- line comment 3
         """;
     var expected = """
-        select\040
+        select
           *
         from
           EMPLOYEE""";

@@ -1108,7 +1108,7 @@ public class NodePreparedSqlBuilder
     }
 
     private static String toString(List<BlankNode> nodes, int eolNodeCount) {
-      if (eolNodeCount > 1) {
+      if (eolNodeCount > 0) {
         int seenEolNodeCount = 0;
         ListIterator<BlankNode> iterator = nodes.listIterator();
         while (iterator.hasNext()) {

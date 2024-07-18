@@ -593,8 +593,8 @@ public class BlankLineRemovalSqlParserTest {
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
-    assertEquals("select * from aaa where \nbbb = ?", sql.getRawSql());
-    assertEquals("select * from aaa where \nbbb = ''", sql.getFormattedSql());
+    assertEquals("select * from aaa where\nbbb = ?", sql.getRawSql());
+    assertEquals("select * from aaa where\nbbb = ''", sql.getFormattedSql());
     assertEquals(1, sql.getParameters().size());
     assertEquals("", sql.getParameters().get(0).getWrapper().get());
   }
