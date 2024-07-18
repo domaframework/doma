@@ -226,6 +226,11 @@ public interface Config {
     return ConfigSupport.defaultEntityListenerProvider;
   }
 
+  /**
+   * Returns the context for SQL builder settings.
+   *
+   * @return the context for SQL builder settings
+   */
   default SqlBuilderSettings getSqlBuilderSettings() {
     return ConfigSupport.defaultSqlBuilderSettings;
   }
