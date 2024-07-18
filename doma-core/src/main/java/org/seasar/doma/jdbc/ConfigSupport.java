@@ -30,4 +30,6 @@ public final class ConfigSupport {
 
   public static final EntityListenerProvider defaultEntityListenerProvider =
       new EntityListenerProvider() {};
+
+  public static final SqlBuilderSettings defaultSqlBuilderSettings = new SqlBuilderSettings() {};
 }

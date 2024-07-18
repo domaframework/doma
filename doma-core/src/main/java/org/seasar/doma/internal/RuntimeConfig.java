@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.QueryImplementors;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.ScriptFileLoader;
+import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
@@ -145,5 +146,14 @@ public class RuntimeConfig implements Config {
       throw new ConfigException(config.getClass().getName(), "getEntityListenerProvider");
     }
     return provider;
+  }
+
+  @Override
+  public SqlBuilderSettings getSqlBuilderSettings() {
+    SqlBuilderSettings settings = config.getSqlBuilderSettings();
+    if (settings == null) {
+      throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
+    }
+    return settings;
   }
 }

@@ -226,6 +226,10 @@ public interface Config {
     return ConfigSupport.defaultEntityListenerProvider;
   }
 
+  default SqlBuilderSettings getSqlBuilderSettings() {
+    return ConfigSupport.defaultSqlBuilderSettings;
+  }
+
   /**
    * Retrieves a {@link Config} object from the {@code provider} parameter.
    *
