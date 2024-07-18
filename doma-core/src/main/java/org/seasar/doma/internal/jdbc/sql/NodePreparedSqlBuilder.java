@@ -29,6 +29,7 @@ import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlankNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentType;
 import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -69,6 +70,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -86,7 +88,7 @@ public class NodePreparedSqlBuilder
 
   protected final Config config;
 
-  protected final boolean shouldRemoveBlankLines;
+  protected final SqlBuilderSettings sqlBuilderSettings;
 
   protected final SqlKind kind;
 
@@ -156,7 +158,7 @@ public class NodePreparedSqlBuilder
       BiConsumer<PopulateNode, SqlContext> valuesPopulater) {
     assertNotNull(config, kind, evaluator, columnsExpander, valuesPopulater);
     this.config = config;
-    this.shouldRemoveBlankLines = config.getSqlBuilderSettings().shouldRemoveBlankLines();
+    this.sqlBuilderSettings = config.getSqlBuilderSettings();
     this.kind = kind;
     this.sqlFilePath = sqlFilePath;
     this.evaluator = evaluator;
@@ -205,8 +207,21 @@ public class NodePreparedSqlBuilder
   @Override
   public Void visitCommentNode(CommentNode node, Context p) {
     String comment = node.getComment();
-    p.appendRawSql(comment);
-    p.appendFormattedSql(comment);
+    CommentType commentType = node.getCommentType();
+    switch (commentType) {
+      case BLOCK:
+        if (!sqlBuilderSettings.shouldRemoveBlockComment(comment)) {
+          p.appendRawSql(comment);
+          p.appendFormattedSql(comment);
+        }
+        break;
+      case LINE:
+        if (!sqlBuilderSettings.shouldRemoveLineComment(comment)) {
+          p.appendRawSql(comment);
+          p.appendFormattedSql(comment);
+        }
+        break;
+    }
     return null;
   }
 
@@ -769,14 +784,14 @@ public class NodePreparedSqlBuilder
   }
 
   private Context createContext(Context context) {
-    if (shouldRemoveBlankLines) {
+    if (sqlBuilderSettings.shouldRemoveBlankLines()) {
       return new BlankLineRemovalContext(context);
     }
     return new DefaultContext(context);
   }
 
   private Context createContext(Config config, ExpressionEvaluator evaluator) {
-    if (shouldRemoveBlankLines) {
+    if (sqlBuilderSettings.shouldRemoveBlankLines()) {
       return new BlankLineRemovalContext(config, evaluator);
     }
     return new DefaultContext(config, evaluator);
@@ -827,9 +842,6 @@ public class NodePreparedSqlBuilder
     Value removeValue(String variableName);
 
     EvaluationResult evaluate(SqlLocation location, String expression);
-
-    @Override
-    String toString();
   }
 
   protected static class DefaultContext implements Context {
@@ -1093,7 +1105,7 @@ public class NodePreparedSqlBuilder
     }
 
     private static String toString(List<BlankNode> nodes, int eolNodeCount) {
-      if (eolNodeCount > 1) {
+      if (eolNodeCount > 0) {
         int seenEolNodeCount = 0;
         ListIterator<BlankNode> iterator = nodes.listIterator();
         while (iterator.hasNext()) {
@@ -1189,7 +1201,6 @@ public class NodePreparedSqlBuilder
 
     @Override
     public String toString() {
-      flushBlankNodes();
       return context.toString();
     }
   }

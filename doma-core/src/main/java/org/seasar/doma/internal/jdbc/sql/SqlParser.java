@@ -12,6 +12,7 @@ import org.seasar.doma.internal.jdbc.sql.node.AppendableSqlNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentType;
 import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -48,7 +49,6 @@ import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.SqlParserConfig;
 import org.seasar.doma.message.Message;
 
 public class SqlParser {
@@ -60,8 +60,6 @@ public class SqlParser {
 
   protected final String sql;
 
-  protected final SqlParserConfig config;
-
   protected final SqlTokenizer tokenizer;
 
   protected final AnonymousNode rootNode;
@@ -71,13 +69,8 @@ public class SqlParser {
   protected String token;
 
   public SqlParser(String sql) {
-    this(sql, SqlParserConfig.DEFAULT);
-  }
-
-  public SqlParser(String sql, SqlParserConfig config) {
-    assertNotNull(sql, config);
+    assertNotNull(sql);
     this.sql = sql;
-    this.config = config;
     tokenizer = new SqlTokenizer(sql);
     rootNode = new AnonymousNode();
     nodeStack.push(rootNode);
@@ -239,6 +232,7 @@ public class SqlParser {
             parseBlockComment();
             break;
           }
+
         case LINE_COMMENT:
           {
             parseLineComment();
@@ -424,17 +418,13 @@ public class SqlParser {
   }
 
   protected void parseBlockComment() {
-    if (!config.shouldRemoveBlockComment(token)) {
-      CommentNode node = new CommentNode(token);
-      appendNode(node);
-    }
+    CommentNode node = new CommentNode(token, CommentType.BLOCK);
+    appendNode(node);
   }
 
   protected void parseLineComment() {
-    if (!config.shouldRemoveLineComment(token)) {
-      CommentNode node = new CommentNode(token);
-      appendNode(node);
-    }
+    CommentNode node = new CommentNode(token, CommentType.LINE);
+    appendNode(node);
   }
 
   protected void parseOpenedParens() {

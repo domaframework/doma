@@ -21,7 +21,6 @@ import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.SqlParserConfig;
 import org.seasar.doma.message.Message;
 
 /** This class is base on the org.seasar.doma.internal.jdbc.sql.SqlParserTest class.: */
@@ -594,8 +593,8 @@ public class BlankLineRemovalSqlParserTest {
         new NodePreparedSqlBuilder(
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
-    assertEquals("select * from aaa where \nbbb = ?", sql.getRawSql());
-    assertEquals("select * from aaa where \nbbb = ''", sql.getFormattedSql());
+    assertEquals("select * from aaa where\nbbb = ?", sql.getRawSql());
+    assertEquals("select * from aaa where\nbbb = ''", sql.getFormattedSql());
     assertEquals(1, sql.getParameters().size());
     assertEquals("", sql.getParameters().get(0).getWrapper().get());
   }
@@ -952,54 +951,6 @@ public class BlankLineRemovalSqlParserTest {
                 config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
             .build(sqlNode, Function.identity());
     assertEquals("select 1;", sql.getRawSql());
-  }
-
-  @Test
-  public void testSqlParserConfig_default() {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    evaluator.add("name", new Value(String.class, "hoge"));
-    evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
-    String testSql =
-        "select * from aaa where ename = /** block comment */bbb -- line comment 1\norder by ccc-- line comment 2";
-    SqlParser parser = new SqlParser(testSql, SqlParserConfig.DEFAULT);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
-        new NodePreparedSqlBuilder(
-                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
-            .build(sqlNode, Function.identity());
-    assertEquals(
-        "select * from aaa where ename = /** block comment */bbb -- line comment 1\norder by ccc-- line comment 2",
-        sql.getRawSql());
-  }
-
-  @Test
-  public void testSqlParserConfig_removeAllComments() {
-    SqlParserConfig sqlParserConfig =
-        new SqlParserConfig() {
-
-          @Override
-          public boolean shouldRemoveBlockComment(String comment) {
-            return true;
-          }
-
-          @Override
-          public boolean shouldRemoveLineComment(String comment) {
-            return true;
-          }
-        };
-
-    ExpressionEvaluator evaluator = new ExpressionEvaluator();
-    evaluator.add("name", new Value(String.class, "hoge"));
-    evaluator.add("salary", new Value(BigDecimal.class, new BigDecimal(10000)));
-    String testSql =
-        "select * from aaa where ename = /** block comment */bbb -- line comment 1\norder by ccc-- line comment 2";
-    SqlParser parser = new SqlParser(testSql, sqlParserConfig);
-    SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
-        new NodePreparedSqlBuilder(
-                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
-            .build(sqlNode, Function.identity());
-    assertEquals("select * from aaa where ename = bbb \norder by ccc", sql.getRawSql());
   }
 
   public enum MyEnum {

@@ -11,13 +11,20 @@ public class CommentNode extends AbstractSqlNode {
 
   protected final String comment;
 
-  public CommentNode(String comment) {
-    assertNotNull(comment);
+  protected final CommentType commentType;
+
+  public CommentNode(String comment, CommentType commentType) {
+    assertNotNull(comment, commentType);
     this.comment = comment;
+    this.commentType = commentType;
   }
 
   public String getComment() {
     return comment;
+  }
+
+  public CommentType getCommentType() {
+    return commentType;
   }
 
   @Override
