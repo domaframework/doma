@@ -5,6 +5,7 @@ import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.domain.Identity;
@@ -26,6 +27,9 @@ public interface DepartmentDao {
 
   @Insert(excludeNull = true)
   int insert_excludeNull(Department entity);
+
+  @MultiInsert
+  int insertMultiRows(List<Department> entities);
 
   @Update
   int update(Department entity);

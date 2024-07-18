@@ -7,5 +7,8 @@ public enum SqlExecutionSkipCause {
   STATE_UNCHANGED,
 
   /** there is no entity in the batch process */
-  BATCH_TARGET_NONEXISTENT
+  BATCH_TARGET_NONEXISTENT,
+
+  /** there is no entity in the multi-row insert process */
+  MULTI_INSERT_TARGET_NONEXISTENT
 }

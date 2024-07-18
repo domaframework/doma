@@ -256,6 +256,9 @@ public enum Message implements MessageResource {
   DOMA2232("The parameter is empty."),
   DOMA2233("The key \"{0}\" is not found in the map that is an element of Iterable."),
   DOMA2234("The savepoint \"{1}\" of the local transaction \"{0}\" is released."),
+  DOMA2235("The dialect \"{0}\" does not support auto-increment when inserting multiple rows."),
+
+  DOMA2236("The dialect \"{0}\" does not support multi-row insert statement."),
 
   // expression
   DOMA3001(
@@ -923,6 +926,9 @@ public enum Message implements MessageResource {
   DOMA4459("Must be a public method"),
   DOMA4460(
       "The first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter must not be a basic type. However, enum types are exceptionally allowed."),
+  DOMA4461(
+      "If a method annotated with @MultiInsert targets immutable entities for insertion, the return type must be org.seasar.doma.jdbc.MultiResult."
+          + "The type argument of org.seasar.doma.jdbc.MultiResult must be the immutable entity class."),
 
   // other
   DOMA5001(

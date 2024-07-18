@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchInsertStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlBatchUpdateStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlDeleteStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertStatement;
+import org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStatement;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlSelectStarting;
 import org.seasar.doma.jdbc.criteria.statement.EntityqlUpdateStatement;
 import org.seasar.doma.jdbc.criteria.statement.SetOperand;
@@ -179,5 +180,24 @@ public class Entityql {
     InsertSettings settings = new InsertSettings();
     settingsConsumer.accept(settings);
     return new EntityqlBatchInsertStatement<>(config, entityMetamodel, entities, settings);
+  }
+
+  public <ENTITY> EntityqlMultiInsertStatement<ENTITY> insertMulti(
+      EntityMetamodel<ENTITY> entityMetamodel, List<ENTITY> entities) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(entities);
+    return insertMulti(entityMetamodel, entities, settings -> {});
+  }
+
+  public <ENTITY> EntityqlMultiInsertStatement<ENTITY> insertMulti(
+      EntityMetamodel<ENTITY> entityMetamodel,
+      List<ENTITY> entities,
+      Consumer<InsertSettings> settingsConsumer) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(entities);
+    Objects.requireNonNull(settingsConsumer);
+    InsertSettings settings = new InsertSettings();
+    settingsConsumer.accept(settings);
+    return new EntityqlMultiInsertStatement<>(config, entityMetamodel, entities, settings);
   }
 }

@@ -1,5 +1,6 @@
 package org.seasar.doma.it.dao;
 
+import java.util.List;
 import org.seasar.doma.Column;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
@@ -8,6 +9,7 @@ import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Table;
 import org.seasar.doma.Update;
@@ -27,6 +29,9 @@ public interface BranchDao {
 
   @Delete
   int delete(Branch entity);
+
+  @MultiInsert
+  int insertMultiRows(List<Branch> entities);
 
   @Entity
   @Table(name = "DEPARTMENT")

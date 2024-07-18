@@ -62,6 +62,7 @@ import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Result;
@@ -418,6 +419,19 @@ public class CtTypes {
     return new ArrayCtType(ctx, type, elementCtType);
   }
 
+  private MultiResultCtType newMultiResultCtType(TypeMirror type) {
+    if (!ctx.getMoreTypes().isSameTypeWithErasure(type, MultiResult.class)) {
+      return null;
+    }
+    DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
+    if (declaredType == null) {
+      return null;
+    }
+    Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
+    CtType elementCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
+    return new MultiResultCtType(ctx, type, elementCtType);
+  }
+
   private MapCtType newMapCtType(TypeMirror type) {
     if (!ctx.getMoreTypes().isSameTypeWithErasure(type, Map.class)) {
       return null;
@@ -569,6 +583,7 @@ public class CtTypes {
             this::newConfigCtType,
             this::newResultCtType,
             this::newBatchResultCtType,
+            this::newMultiResultCtType,
             this::newArrayCtType);
     CtType ctType =
         functions.stream()

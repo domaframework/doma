@@ -24,6 +24,9 @@ public enum SqlKind {
   /** batch delete */
   BATCH_DELETE,
 
+  /** multi-row insert */
+  MULTI_INSERT,
+
   /** stored procedure */
   PROCEDURE,
 

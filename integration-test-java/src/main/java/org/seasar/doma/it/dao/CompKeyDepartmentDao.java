@@ -5,6 +5,7 @@ import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.it.entity.CompKeyDepartment;
@@ -26,4 +27,7 @@ public interface CompKeyDepartmentDao {
 
   @BatchUpdate
   int[] update(List<CompKeyDepartment> entities);
+
+  @MultiInsert
+  int insertMultiRows(List<CompKeyDepartment> entities);
 }
