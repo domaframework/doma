@@ -842,9 +842,6 @@ public class NodePreparedSqlBuilder
     Value removeValue(String variableName);
 
     EvaluationResult evaluate(SqlLocation location, String expression);
-
-    @Override
-    String toString();
   }
 
   protected static class DefaultContext implements Context {
@@ -1204,7 +1201,6 @@ public class NodePreparedSqlBuilder
 
     @Override
     public String toString() {
-      flushBlankNodes();
       return context.toString();
     }
   }
