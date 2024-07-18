@@ -12,6 +12,7 @@ import org.seasar.doma.internal.jdbc.sql.node.AppendableSqlNode;
 import org.seasar.doma.internal.jdbc.sql.node.BindVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.BlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.CommentNode;
+import org.seasar.doma.internal.jdbc.sql.node.CommentType;
 import org.seasar.doma.internal.jdbc.sql.node.DistinctNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseNode;
 import org.seasar.doma.internal.jdbc.sql.node.ElseifNode;
@@ -227,9 +228,14 @@ public class SqlParser {
             break;
           }
         case BLOCK_COMMENT:
+          {
+            parseBlockComment();
+            break;
+          }
+
         case LINE_COMMENT:
           {
-            parseComment();
+            parseLineComment();
             break;
           }
         case OTHER:
@@ -411,8 +417,13 @@ public class SqlParser {
     appendNode(node);
   }
 
-  protected void parseComment() {
-    CommentNode node = new CommentNode(token);
+  protected void parseBlockComment() {
+    CommentNode node = new CommentNode(token, CommentType.BLOCK);
+    appendNode(node);
+  }
+
+  protected void parseLineComment() {
+    CommentNode node = new CommentNode(token, CommentType.LINE);
     appendNode(node);
   }
 

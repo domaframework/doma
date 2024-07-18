@@ -18,7 +18,6 @@ import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.SqlParserConfig;
 
 public class BlankLineRemovalContextTest {
 
@@ -33,19 +32,6 @@ public class BlankLineRemovalContextTest {
               return true;
             }
           };
-        }
-      };
-  private final SqlParserConfig sqlParserConfig =
-      new SqlParserConfig() {
-
-        @Override
-        public boolean shouldRemoveBlockComment(String comment) {
-          return false;
-        }
-
-        @Override
-        public boolean shouldRemoveLineComment(String comment) {
-          return false;
         }
       };
 
@@ -550,7 +536,7 @@ public class BlankLineRemovalContextTest {
     ExpressionEvaluator evaluator =
         new ExpressionEvaluator(
             map, config.getDialect().getExpressionFunctions(), config.getClassHelper());
-    SqlParser parser = new SqlParser(template, sqlParserConfig);
+    SqlParser parser = new SqlParser(template);
     SqlNode sqlNode = parser.parse();
     return new NodePreparedSqlBuilder(
             config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
