@@ -51,7 +51,7 @@ public class BlankLineRemovalContextTest {
 
   @Test
   public void testIfOneLine() {
-    String template =
+    var template =
         """
         select
           *
@@ -62,7 +62,7 @@ public class BlankLineRemovalContextTest {
           /*%if false */bbb/*%end */
           /*%if true */ccc/*%end */
           ddd""";
-    String expected =
+    var expected =
         """
         select
           *
@@ -72,12 +72,14 @@ public class BlankLineRemovalContextTest {
           aaa
           ccc
           ddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testIf_and() {
-    String template =
+    var template =
         """
         select
           *
@@ -96,7 +98,7 @@ public class BlankLineRemovalContextTest {
           and
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -106,12 +108,14 @@ public class BlankLineRemovalContextTest {
           aaa = 1
           and
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testIf_or() {
-    String template =
+    var template =
         """
         select
           *
@@ -130,7 +134,7 @@ public class BlankLineRemovalContextTest {
           or
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -140,12 +144,14 @@ public class BlankLineRemovalContextTest {
           aaa = 1
           or
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testElseif_and() {
-    String template =
+    var template =
         """
         select
           *
@@ -164,7 +170,7 @@ public class BlankLineRemovalContextTest {
           and
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -174,12 +180,14 @@ public class BlankLineRemovalContextTest {
           bbb = 2
           and
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testElseif_or() {
-    String template =
+    var template =
         """
         select
           *
@@ -198,7 +206,7 @@ public class BlankLineRemovalContextTest {
           or
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -208,12 +216,14 @@ public class BlankLineRemovalContextTest {
           bbb = 2
           or
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testElse_and() {
-    String template =
+    var template =
         """
         select
           *
@@ -232,7 +242,7 @@ public class BlankLineRemovalContextTest {
           and
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -242,12 +252,14 @@ public class BlankLineRemovalContextTest {
           ccc = 3
           and
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testMultipleBlankLines() {
-    String template =
+    var template =
         """
         aaa
 
@@ -260,17 +272,19 @@ public class BlankLineRemovalContextTest {
 
               ddd
         """;
-    String expected = """
+    var expected = """
         aaa
           bbb
             ccc
               ddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testTabs() {
-    String template =
+    var template =
         """
         aaa\t\t\t\t
 
@@ -283,17 +297,19 @@ public class BlankLineRemovalContextTest {
 
         \t\t\tddd\t
         """;
-    String expected = """
+    var expected = """
         aaa
         \tbbb
         \t\tccc
         \t\t\tddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testQuotes() {
-    String template = """
+    var template = """
         'aaa
 
           bbb', '
@@ -302,7 +318,7 @@ public class BlankLineRemovalContextTest {
 
         '
         """;
-    String expected = """
+    var expected = """
         'aaa
 
           bbb', '
@@ -310,12 +326,14 @@ public class BlankLineRemovalContextTest {
             ccc
 
         '""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testElse_or() {
-    String template =
+    var template =
         """
         select
           *
@@ -334,7 +352,7 @@ public class BlankLineRemovalContextTest {
           or
           ddd = 4
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -344,12 +362,14 @@ public class BlankLineRemovalContextTest {
           ccc = 3
           or
           ddd = 4""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testNestedIf_true_true() {
-    String template =
+    var template =
         """
         select
           *
@@ -363,7 +383,7 @@ public class BlankLineRemovalContextTest {
           /*%end */
           ddd
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -372,12 +392,14 @@ public class BlankLineRemovalContextTest {
         where
           aaa
           ddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testNestedIf_true_false() {
-    String template =
+    var template =
         """
         select
           *
@@ -391,7 +413,7 @@ public class BlankLineRemovalContextTest {
           /*%end */
           ddd
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -399,12 +421,14 @@ public class BlankLineRemovalContextTest {
           EMPLOYEE
         where
           ddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testNestedIf_false() {
-    String template =
+    var template =
         """
         select
           *
@@ -418,7 +442,7 @@ public class BlankLineRemovalContextTest {
           /*%end */
           ddd
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -426,14 +450,16 @@ public class BlankLineRemovalContextTest {
           EMPLOYEE
         where
           ddd""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testFor() {
     Map<String, Value> map = new HashMap<>();
     map.put("list", new Value(List.class, Arrays.asList("a", "b", "c")));
-    String template =
+    var template =
         """
         select
           *
@@ -448,7 +474,7 @@ public class BlankLineRemovalContextTest {
           /*%end*/
           ddd
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -461,12 +487,13 @@ public class BlankLineRemovalContextTest {
           or
           name = ?
           ddd""";
-    assertEquals(expected, parse(template, map));
+    var sql = parse(template, map);
+    assertEquals(expected, sql.getRawSql());
   }
 
   @Test
   public void testWhere() {
-    String template =
+    var template =
         """
         select
           *
@@ -477,17 +504,19 @@ public class BlankLineRemovalContextTest {
           aaa = 1
           /*%end*/
         """;
-    String expected = """
+    var expected = """
         select
           *
         from
           EMPLOYEE""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
   @Test
   public void testWhere_orderBy() {
-    String template =
+    var template =
         """
         select
           *
@@ -500,7 +529,7 @@ public class BlankLineRemovalContextTest {
         order by
           bbb, ccc
         """;
-    String expected =
+    var expected =
         """
         select
           *
@@ -508,23 +537,23 @@ public class BlankLineRemovalContextTest {
           EMPLOYEE
         order by
           bbb, ccc""";
-    assertEquals(expected, parse(template));
+    var sql = parse(template);
+    assertEquals(expected, sql.getRawSql());
+    assertEquals(expected, sql.getFormattedSql());
   }
 
-  private String parse(String template) {
+  private PreparedSql parse(String template) {
     return parse(template, Collections.emptyMap());
   }
 
-  private String parse(String template, Map<String, Value> map) {
+  private PreparedSql parse(String template, Map<String, Value> map) {
     ExpressionEvaluator evaluator =
         new ExpressionEvaluator(
             map, config.getDialect().getExpressionFunctions(), config.getClassHelper());
     SqlParser parser = new SqlParser(template, sqlParserConfig);
     SqlNode sqlNode = parser.parse();
-    PreparedSql sql =
-        new NodePreparedSqlBuilder(
-                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
-            .build(sqlNode, Function.identity());
-    return sql.getRawSql();
+    return new NodePreparedSqlBuilder(
+            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+        .build(sqlNode, Function.identity());
   }
 }
