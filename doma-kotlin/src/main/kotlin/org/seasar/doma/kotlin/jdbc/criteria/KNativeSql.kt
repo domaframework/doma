@@ -16,7 +16,7 @@ class KNativeSql(config: Config?) {
 
     private val nativeSql = org.seasar.doma.jdbc.criteria.NativeSql(config)
 
-    fun <ENTITY> from(
+    fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: SelectSettings.() -> Unit = {},
     ): KNativeSqlSelectStarting<ENTITY> {
@@ -24,7 +24,7 @@ class KNativeSql(config: Config?) {
         return KNativeSqlSelectStarting(statement)
     }
 
-    fun <ENTITY> from(
+    fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         setOperandForSubQuery: KSetOperand<*>,
         block: SelectSettings.() -> Unit = {},
@@ -33,7 +33,7 @@ class KNativeSql(config: Config?) {
         return KNativeSqlSelectStarting(statement)
     }
 
-    fun <ENTITY> update(
+    fun <ENTITY : Any> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: UpdateSettings.() -> Unit = {},
     ): KNativeSqlUpdateStarting {
@@ -41,7 +41,7 @@ class KNativeSql(config: Config?) {
         return KNativeSqlUpdateStarting(statement)
     }
 
-    fun <ENTITY> delete(
+    fun <ENTITY : Any> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: DeleteSettings.() -> Unit = {},
     ): KNativeSqlDeleteStarting {
@@ -49,7 +49,7 @@ class KNativeSql(config: Config?) {
         return KNativeSqlDeleteStarting(statement)
     }
 
-    fun <ENTITY> insert(
+    fun <ENTITY : Any> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: InsertSettings.() -> Unit = {},
     ): KNativeSqlInsertStarting {
