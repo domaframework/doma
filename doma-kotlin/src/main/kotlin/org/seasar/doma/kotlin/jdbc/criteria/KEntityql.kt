@@ -23,7 +23,7 @@ class KEntityql(config: Config) {
 
     private val entityql = org.seasar.doma.jdbc.criteria.Entityql(config)
 
-    fun <ENTITY> from(
+    fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: SelectSettings.() -> Unit = {},
     ): KEntityqlSelectStarting<ENTITY> {
@@ -31,7 +31,7 @@ class KEntityql(config: Config) {
         return KEntityqlSelectStarting(statement)
     }
 
-    fun <ENTITY> from(
+    fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         setOperandForSubQuery: KSetOperand<*>,
         block: SelectSettings.() -> Unit = {},
@@ -40,7 +40,7 @@ class KEntityql(config: Config) {
         return KEntityqlSelectStarting(statement)
     }
 
-    fun <ENTITY> update(
+    fun <ENTITY : Any> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
         block: UpdateSettings.() -> Unit = {},
@@ -49,7 +49,7 @@ class KEntityql(config: Config) {
         return KEntityqlUpdateStatement(statement)
     }
 
-    fun <ENTITY> delete(
+    fun <ENTITY : Any> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
         block: DeleteSettings.() -> Unit = {},
@@ -58,7 +58,7 @@ class KEntityql(config: Config) {
         return KEntityqlDeleteStatement(statement)
     }
 
-    fun <ENTITY> insert(
+    fun <ENTITY : Any> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entity: ENTITY,
         block: InsertSettings.() -> Unit = {},
@@ -67,7 +67,7 @@ class KEntityql(config: Config) {
         return KEntityqlInsertStatement(statement)
     }
 
-    fun <ENTITY> update(
+    fun <ENTITY : Any> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
         block: UpdateSettings.() -> Unit = {},
@@ -76,7 +76,7 @@ class KEntityql(config: Config) {
         return KEntityqlBatchUpdateStatement(statement)
     }
 
-    fun <ENTITY> delete(
+    fun <ENTITY : Any> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
         block: DeleteSettings.() -> Unit = {},
@@ -85,7 +85,7 @@ class KEntityql(config: Config) {
         return KEntityqlBatchDeleteStatement(statement)
     }
 
-    fun <ENTITY> insert(
+    fun <ENTITY : Any> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
         block: InsertSettings.() -> Unit = {},
