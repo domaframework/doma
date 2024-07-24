@@ -364,6 +364,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
         /* 5 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
+    if (m.getDuplicateKeyType() != null) {
+      iprint(
+          "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
+          m.getDuplicateKeyType());
+    }
     iprint("__query.setEntities(%1$s);%n", m.getEntityParameterName());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());

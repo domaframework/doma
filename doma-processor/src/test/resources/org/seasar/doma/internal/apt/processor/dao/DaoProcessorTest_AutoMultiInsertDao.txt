@@ -19,7 +19,13 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
 
     private static final java.lang.reflect.Method __method4 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertWithSqlLog", java.util.List.class);
 
-    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertImmutableEntities", java.util.List.class);
+    private static final java.lang.reflect.Method __method5 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertDuplicateKeyIgnore", java.util.List.class);
+
+    private static final java.lang.reflect.Method __method6 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertDuplicateKeyUpdate", java.util.List.class);
+
+    private static final java.lang.reflect.Method __method7 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertDuplicateKeyException", java.util.List.class);
+
+    private static final java.lang.reflect.Method __method8 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDao.class, "insertImmutableEntities", java.util.List.class);
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
@@ -80,6 +86,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insert");
@@ -109,6 +116,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method1, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method1);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insertWithExclude");
@@ -138,6 +146,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method2, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method2);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insertWithInclude");
@@ -167,6 +176,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method3, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method3);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insertWithQueryTimeout");
@@ -196,6 +206,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method4, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
             __query.setMethod(__method4);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insertWithSqlLog");
@@ -216,15 +227,106 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
     }
 
     @Override
+    public int insertDuplicateKeyIgnore(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> entities) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyIgnore", entities);
+        try {
+            if (entities == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entities");
+            }
+            org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method5, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method5);
+            __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.IGNORE);
+            __query.setEntities(entities);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
+            __query.setCallerMethodName("insertDuplicateKeyIgnore");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method5, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyIgnore", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyIgnore", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int insertDuplicateKeyUpdate(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> entities) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyUpdate", entities);
+        try {
+            if (entities == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entities");
+            }
+            org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method6, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method6);
+            __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.UPDATE);
+            __query.setEntities(entities);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
+            __query.setCallerMethodName("insertDuplicateKeyUpdate");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method6, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyUpdate", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyUpdate", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public int insertDuplicateKeyException(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp> entities) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyException", entities);
+        try {
+            if (entities == null) {
+                throw new org.seasar.doma.DomaNullPointerException("entities");
+            }
+            org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method7, org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
+            __query.setMethod(__method7);
+            __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
+            __query.setEntities(entities);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
+            __query.setCallerMethodName("insertDuplicateKeyException");
+            __query.setQueryTimeout(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setIncludedPropertyNames();
+            __query.setExcludedPropertyNames();
+            __query.prepare();
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method7, __query);
+            int __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyException", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertDuplicateKeyException", __e);
+            throw __e;
+        }
+    }
+
+    @Override
     public org.seasar.doma.jdbc.MultiResult<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> insertImmutableEntities(java.util.List<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> entities) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl", "insertImmutableEntities", entities);
         try {
             if (entities == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entities");
             }
-            org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method5, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
-            __query.setMethod(__method5);
+            org.seasar.doma.jdbc.query.AutoMultiInsertQuery<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __query = __support.getQueryImplementors().createAutoMultiInsertQuery(__method8, org.seasar.doma.internal.apt.processor.entity._ImmutableEmp.getSingletonInternal());
+            __query.setMethod(__method8);
             __query.setConfig(__support.getConfig());
+            __query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.EXCEPTION);
             __query.setEntities(entities);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.AutoMultiInsertDaoImpl");
             __query.setCallerMethodName("insertImmutableEntities");
@@ -233,7 +335,7 @@ public class AutoMultiInsertDaoImpl implements org.seasar.doma.internal.apt.proc
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.prepare();
-            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method5, __query);
+            org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method8, __query);
             int __count = __command.execute();
             __query.complete();
             org.seasar.doma.jdbc.MultiResult<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp> __result = new org.seasar.doma.jdbc.MultiResult<org.seasar.doma.internal.apt.processor.entity.ImmutableEmp>(__count, __query.getEntities());

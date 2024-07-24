@@ -9,6 +9,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UniqueConstraintException;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /**
  * Indicates a multi-row insert.
@@ -70,4 +71,20 @@ public @interface MultiInsert {
    * @return the output format of SQL logs.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * This variable represents the type of duplicate key handling strategy for an insert operation.
+   * It can have one of three values:
+   *
+   * <ul>
+   *   <li>UPDATE: If a duplicate key is encountered, the existing row in the table will be updated.
+   *   <li>IGNORE: If a duplicate key is encountered, the insert operation will be ignored, and no
+   *       changes will be made to the table.
+   *   <li>EXCEPTION: If a duplicate key is encountered, the operation will throw an exception,
+   *       indicating that a duplicate key exists.
+   * </ul>
+   *
+   * @return the type of duplicate key handling strategy for an insert operation.
+   */
+  DuplicateKeyType duplicateKeyType() default DuplicateKeyType.EXCEPTION;
 }

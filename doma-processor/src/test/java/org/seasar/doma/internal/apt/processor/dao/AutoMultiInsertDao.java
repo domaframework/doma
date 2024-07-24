@@ -7,6 +7,7 @@ import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 @SuppressWarnings("deprecation")
 @Dao(config = MyConfig.class)
@@ -26,6 +27,15 @@ public interface AutoMultiInsertDao {
 
   @MultiInsert(sqlLog = SqlLogType.NONE)
   int insertWithSqlLog(List<Emp> entities);
+
+  @MultiInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  int insertDuplicateKeyIgnore(List<Emp> entities);
+
+  @MultiInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  int insertDuplicateKeyUpdate(List<Emp> entities);
+
+  @MultiInsert(duplicateKeyType = DuplicateKeyType.EXCEPTION)
+  int insertDuplicateKeyException(List<Emp> entities);
 
   @MultiInsert
   MultiResult<ImmutableEmp> insertImmutableEntities(List<ImmutableEmp> entities);

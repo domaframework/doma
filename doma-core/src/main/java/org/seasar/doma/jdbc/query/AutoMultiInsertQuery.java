@@ -232,6 +232,10 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
+  }
+
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
     public AutoPreInsertContext(

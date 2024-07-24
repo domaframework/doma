@@ -6,6 +6,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.MultiInsertAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
 
@@ -14,6 +15,8 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
   private String entityParameterName;
 
   private MultiInsertAnnot multiInsertAnnot;
+
+  private DuplicateKeyType duplicateKeyType;
 
   public AutoMultiInsertQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -57,6 +60,14 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
 
   public SqlLogType getSqlLogType() {
     return multiInsertAnnot.getSqlLogValue();
+  }
+
+  public DuplicateKeyType getDuplicateKeyType() {
+    return this.duplicateKeyType;
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 
   @Override

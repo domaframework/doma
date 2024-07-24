@@ -58,4 +58,10 @@ public interface DeptDao {
 
   @MultiInsert
   MultiResult<Dept> insertMultiRows(List<Dept> entities);
+
+  @MultiInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
+  MultiResult<Dept> insertMultiRowsOnDuplicateKeyIgnore(List<Dept> entities);
+
+  @MultiInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
+  MultiResult<Dept> insertMultiRowsOnDuplicateKeyUpdate(List<Dept> entities);
 }
