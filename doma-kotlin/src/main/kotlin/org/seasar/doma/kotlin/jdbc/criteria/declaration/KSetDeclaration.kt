@@ -5,7 +5,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 
 class KSetDeclaration(private val declaration: SetDeclaration) {
 
-    fun <PROPERTY> value(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY> value(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
         declaration.value(left, right)
     }
 
