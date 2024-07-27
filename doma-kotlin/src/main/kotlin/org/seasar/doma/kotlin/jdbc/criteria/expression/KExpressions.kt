@@ -200,6 +200,13 @@ object KExpressions {
         return Expressions.concat(left, right)
     }
 
+    fun <PROPERTY> concat(
+        left: PropertyMetamodel<PROPERTY>,
+        right: PropertyMetamodel<PROPERTY>,
+    ): Concat<PROPERTY> {
+        return Expressions.concat(left, right)
+    }
+
     fun <PROPERTY> lower(
         propertyMetamodel: PropertyMetamodel<PROPERTY>,
     ): StringExpression.Lower<PROPERTY> {
