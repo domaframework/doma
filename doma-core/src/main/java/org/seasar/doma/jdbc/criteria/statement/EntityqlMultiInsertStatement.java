@@ -13,6 +13,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoMultiInsertQuery;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlMultiInsertStatement<ENTITY>
@@ -23,6 +24,7 @@ public class EntityqlMultiInsertStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
+  private DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
   public EntityqlMultiInsertStatement(
       Config config,
@@ -33,6 +35,26 @@ public class EntityqlMultiInsertStatement<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
+  }
+
+  /**
+   * Create statement that inserts or updates
+   *
+   * @return statement
+   */
+  public EntityqlMultiInsertStatement<ENTITY> onDuplicateKeyUpdate() {
+    this.duplicateKeyType = DuplicateKeyType.UPDATE;
+    return this;
+  }
+
+  /**
+   * Create statement that inserts or ignore
+   *
+   * @return statement
+   */
+  public EntityqlMultiInsertStatement<ENTITY> onDuplicateKeyIgnore() {
+    this.duplicateKeyType = DuplicateKeyType.IGNORE;
+    return this;
   }
 
   /**
@@ -64,6 +86,7 @@ public class EntityqlMultiInsertStatement<ENTITY>
     query.setExcludedPropertyNames(
         settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setMessage(settings.getComment());
+    query.setDuplicateKeyType(this.duplicateKeyType);
     query.prepare();
     InsertCommand command =
         config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
