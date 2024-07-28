@@ -1,12 +1,14 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.QueryOperand;
-import org.seasar.doma.jdbc.query.QueryOperandPair;
+import org.seasar.doma.jdbc.query.QueryOperandPairList;
+import org.seasar.doma.jdbc.query.QueryRows;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -17,8 +19,8 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<? extends EntityPropertyType<?, ?>> keys;
-  private final List<QueryOperandPair> insertValues;
-  private final List<QueryOperandPair> setValues;
+  private final QueryRows insertValues;
+  private final QueryOperandPairList setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public MssqlUpsertAssembler(UpsertAssemblerContext context) {
@@ -38,55 +40,84 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     buf.appendSql(" using (");
     excludeQuery();
     buf.appendSql(" on ");
-    for (EntityPropertyType<?, ?> key : keys) {
-      targetColumn(key);
-      buf.appendSql(" = ");
-      excludeColumn(key);
-      buf.appendSql(" and ");
-    }
-    buf.cutBackSql(5);
-    buf.appendSql(" when not matched then insert (");
-    for (QueryOperandPair pair : insertValues) {
-      column(pair.getLeft().getEntityPropertyType());
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(") values (");
-    for (QueryOperandPair pair : insertValues) {
-      excludeColumn(pair.getLeft().getEntityPropertyType());
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(")");
+    join(
+        keys,
+        " and ",
+        "",
+        "",
+        buf,
+        key -> {
+          targetColumn(key);
+          buf.appendSql(" = ");
+          excludeColumn(key);
+        });
+    buf.appendSql(" when not matched then insert ");
+    join(
+        setValues.getPairs(),
+        ", ",
+        "(",
+        ")",
+        buf,
+        p -> {
+          column(p.getLeft().getEntityPropertyType());
+        });
+    buf.appendSql(" values ");
+    join(
+        insertValues.getRows(),
+        ", ",
+        "",
+        "",
+        buf,
+        row -> {
+          join(
+              row.getPairs(),
+              ", ",
+              "(",
+              ")",
+              buf,
+              p -> {
+                excludeColumn(p.getLeft().getEntityPropertyType());
+              });
+        });
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" when matched then update set ");
-      for (QueryOperandPair pair : setValues) {
-        targetColumn(pair.getLeft().getEntityPropertyType());
-        buf.appendSql(" = ");
-        pair.getRight().accept(queryOperandVisitor);
-        buf.appendSql(", ");
-      }
-      buf.cutBackSql(2);
+      join(
+          setValues.getPairs(),
+          ", ",
+          "",
+          "",
+          buf,
+          p -> {
+            targetColumn(p.getLeft().getEntityPropertyType());
+            buf.appendSql(" = ");
+            p.getRight().accept(queryOperandVisitor);
+          });
     }
     buf.appendSql(";");
   }
 
   private void excludeQuery() {
-    buf.appendSql("values (");
-    for (QueryOperandPair pair : insertValues) {
-      pair.getRight().accept(queryOperandVisitor);
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(")) as ");
+    buf.appendSql("values ");
+    join(
+        insertValues.first().getPairs(),
+        ", ",
+        "(",
+        ")",
+        buf,
+        p -> {
+          p.getRight().accept(queryOperandVisitor);
+        });
+    buf.appendSql(") as ");
     excludeAlias();
-    buf.appendSql(" (");
-    for (QueryOperandPair pair : insertValues) {
-      column(pair.getLeft().getEntityPropertyType());
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(")");
+    join(
+        insertValues.first().getPairs(),
+        ", ",
+        " (",
+        ")",
+        buf,
+        p -> {
+          column(p.getLeft().getEntityPropertyType());
+        });
   }
 
   private void tableNameAndAlias(EntityType<?> entityType) {
@@ -120,6 +151,22 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
         this.upsertAssemblerSupport.excludeProp(
             propertyType, UpsertAssemblerSupport.ColumnNameType.NAME);
     buf.appendSql(sql);
+  }
+
+  private <T> void join(
+      List<T> list,
+      String delimiter,
+      String start,
+      String end,
+      PreparedSqlBuilder buf,
+      Consumer<T> consumer) {
+    buf.appendSql(start);
+    for (T val : list) {
+      consumer.accept(val);
+      buf.appendSql(delimiter);
+    }
+    buf.cutBackSql(delimiter.length());
+    buf.appendSql(end);
   }
 
   class QueryOperandVisitor implements QueryOperand.Visitor {

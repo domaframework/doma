@@ -433,7 +433,12 @@ public class AutoMultiInsertTest {
     assertEquals("KYOTO", resultDept2.getLocation().getValue());
     assertEquals(Integer.valueOf(1), resultDept2.getVersion());
     // insert result count
-    assertEquals(2, result.component2());
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(3, result.component2());
+    } else {
+      assertEquals(2, result.component2());
+    }
     // reload from database
     Dept reloadDept1 = dao.selectById(dept1.getDepartmentId().getValue());
     Dept reloadDept2 = dao.selectById(dept2.getDepartmentId().getValue());
@@ -470,7 +475,7 @@ public class AutoMultiInsertTest {
     assertEquals("KYOTO", resultDept2.getLocation().getValue());
     assertEquals(Integer.valueOf(1), resultDept2.getVersion());
     // insert result count
-    assertEquals(2, result.component2());
+    assertEquals(1, result.component2());
     // reload from database
     Dept reloadDept1 = dao.selectById(dept1.getDepartmentId().getValue());
     Dept reloadDept2 = dao.selectById(dept2.getDepartmentId().getValue());
@@ -513,7 +518,12 @@ public class AutoMultiInsertTest {
     assertEquals("KYOTO", resultDept2.getLocation().getValue());
     assertEquals(Integer.valueOf(1), resultDept2.getVersion());
     // insert result count
-    assertEquals(2, result.component2());
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(3, result.component2());
+    } else {
+      assertEquals(2, result.component2());
+    }
     // reload from database
     CompKeyDept reloadDept1 =
         dao.selectByIds(dept1.getDepartmentId1().getValue(), dept1.getDepartmentId2().getValue());
@@ -558,7 +568,7 @@ public class AutoMultiInsertTest {
     assertEquals("KYOTO", resultDept2.getLocation().getValue());
     assertEquals(Integer.valueOf(1), resultDept2.getVersion());
     // insert result count
-    assertEquals(2, result.component2());
+    assertEquals(1, result.component2());
     // reload from database
     CompKeyDept reloadDept1 =
         dao.selectByIds(dept1.getDepartmentId1().getValue(), dept1.getDepartmentId2().getValue());
