@@ -94,7 +94,7 @@ class KEntityql(config: Config) {
         return KEntityqlBatchInsertStatement(statement)
     }
 
-    fun <ENTITY> insertMulti(
+    fun <ENTITY : Any> insertMulti(
         entityMetamodel: EntityMetamodel<ENTITY>,
         entities: List<ENTITY>,
         block: InsertSettings.() -> Unit = {},
