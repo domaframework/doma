@@ -1533,9 +1533,13 @@ internal class KNativeSqlSelectTest {
     @Test
     fun expression_concat() {
         val e = Emp_()
-        val stmt = nativeSql.from(e).select(concat(e.name, "a"))
+        val stmt = nativeSql.from(e).select(
+            concat(e.name, "a"),
+            concat("a", e.name),
+            concat(e.name, e.name),
+        )
         val sql = stmt.asSql()
-        assertEquals("select concat(t0_.NAME, 'a') from EMP t0_", sql.formattedSql)
+        assertEquals("select concat(t0_.NAME, 'a'), concat('a', t0_.NAME), concat(t0_.NAME, t0_.NAME) from EMP t0_", sql.formattedSql)
     }
 
     @Test
