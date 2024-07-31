@@ -65,11 +65,11 @@ class KSubSelectFromDeclaration<ENTITY>(private val declaration: SubSelectFromDe
         return declaration.select(entityMetamodel)
     }
 
-    fun <PROPERTY> select(propertyMetamodel: PropertyMetamodel<PROPERTY>): SubSelectContext.Single<PROPERTY> {
+    fun <PROPERTY : Any> select(propertyMetamodel: PropertyMetamodel<PROPERTY>): SubSelectContext.Single<PROPERTY> {
         return declaration.select(propertyMetamodel)
     }
 
-    fun <PROPERTY1, PROPERTY2> select(
+    fun <PROPERTY1 : Any, PROPERTY2 : Any> select(
         first: PropertyMetamodel<PROPERTY1>,
         second: PropertyMetamodel<PROPERTY2>,
     ): SubSelectContext<Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>>> {
