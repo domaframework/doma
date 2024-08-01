@@ -414,7 +414,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
   public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -456,7 +456,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
   public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -494,7 +494,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -545,7 +545,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  @Run(unless = {Dbms.SQLSERVER, Dbms.ORACLE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
