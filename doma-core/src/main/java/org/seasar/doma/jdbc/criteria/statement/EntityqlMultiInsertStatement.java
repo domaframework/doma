@@ -42,7 +42,7 @@ public class EntityqlMultiInsertStatement<ENTITY>
    *
    * @return statement
    */
-  public EntityqlMultiInsertStatement<ENTITY> onDuplicateKeyUpdate() {
+  public Statement<MultiResult<ENTITY>> onDuplicateKeyUpdate() {
     this.duplicateKeyType = DuplicateKeyType.UPDATE;
     return this;
   }
@@ -52,7 +52,7 @@ public class EntityqlMultiInsertStatement<ENTITY>
    *
    * @return statement
    */
-  public EntityqlMultiInsertStatement<ENTITY> onDuplicateKeyIgnore() {
+  public Statement<MultiResult<ENTITY>> onDuplicateKeyIgnore() {
     this.duplicateKeyType = DuplicateKeyType.IGNORE;
     return this;
   }
