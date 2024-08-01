@@ -65,7 +65,7 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE})
   void testIgnore() {
     Department_ d = new Department_();
 
@@ -112,7 +112,7 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE})
   void testUpdate() {
     Department_ d = new Department_();
 
