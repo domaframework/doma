@@ -6,9 +6,9 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
-import org.seasar.doma.jdbc.query.QueryOperandPairList;
-import org.seasar.doma.jdbc.query.QueryRows;
+import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -18,8 +18,9 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
   private final EntityType<?> entityType;
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
-  private final QueryRows insertValues;
-  private final QueryOperandPairList setValues;
+  private final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
+  private final List<InsertRow> insertRows;
+  private final List<QueryOperandPair> setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
   private final MysqlDialect.MySqlVersion version;
 
@@ -27,7 +28,8 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
-    this.insertValues = context.insertValues;
+    this.insertPropertyTypes = context.insertPropertyTypes;
+    this.insertRows = context.insertRows;
     this.setValues = context.setValues;
     this.version = version;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
@@ -41,33 +43,15 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     }
     buf.appendSql(" into ");
     tableNameOnly(entityType);
-    join(
-        insertValues.first().getPairs(),
-        ", ",
-        " (",
-        ")",
-        buf,
-        p -> {
-          column(p.getLeft().getEntityPropertyType());
-        });
+    join(insertPropertyTypes, ", ", " (", ")", buf, this::column);
     buf.appendSql(" values ");
     join(
-        insertValues.getRows(),
+        insertRows,
         ", ",
         "",
         "",
         buf,
-        row -> {
-          join(
-              row.getPairs(),
-              ", ",
-              "(",
-              ")",
-              buf,
-              p -> {
-                p.getRight().accept(queryOperandVisitor);
-              });
-        });
+        row -> join(row, ", ", "(", ")", buf, p -> p.accept(queryOperandVisitor)));
     switch (version) {
       case V5:
         buf.appendSql(" ");
@@ -82,7 +66,7 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
     if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" on duplicate key update ");
       join(
-          setValues.getPairs(),
+          setValues,
           ", ",
           "",
           "",
@@ -113,14 +97,14 @@ public class MysqlUpsertAssembler implements UpsertAssembler {
   }
 
   private <T> void join(
-      List<T> list,
+      Iterable<T> iterable,
       String delimiter,
       String start,
       String end,
       PreparedSqlBuilder buf,
       Consumer<T> consumer) {
     buf.appendSql(start);
-    for (T val : list) {
+    for (T val : iterable) {
       consumer.accept(val);
       buf.appendSql(delimiter);
     }

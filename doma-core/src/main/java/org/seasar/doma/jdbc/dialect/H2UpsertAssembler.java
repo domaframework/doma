@@ -5,10 +5,9 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
-import org.seasar.doma.jdbc.query.QueryOperandPairList;
-import org.seasar.doma.jdbc.query.QueryRows;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -25,7 +24,9 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   private final List<? extends EntityPropertyType<?, ?>> keys;
 
-  private final QueryRows insertValues;
+  private final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
+
+  private final List<InsertRow> insertRows;
 
   private final List<QueryOperandPair> setValues;
 
@@ -36,8 +37,9 @@ public class H2UpsertAssembler implements UpsertAssembler {
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
-    this.insertValues = context.insertValues;
-    this.setValues = context.setValues.getPairs();
+    this.insertPropertyTypes = context.insertPropertyTypes;
+    this.insertRows = context.insertRows;
+    this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
 
@@ -58,14 +60,14 @@ public class H2UpsertAssembler implements UpsertAssembler {
     }
     buf.cutBackSql(5);
     buf.appendSql(" when not matched then insert (");
-    for (QueryOperandPair pair : insertValues.first().getPairs()) {
-      column(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      column(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (QueryOperandPair pair : insertValues.first().getPairs()) {
-      excludeColumn(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      excludeColumn(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
@@ -84,16 +86,16 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   private void excludeQuery() {
     buf.appendSql("select ");
-    for (QueryOperandPair pair : insertValues.first().getPairs()) {
-      column(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      column(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(" from values ");
-    for (QueryOperandPairList row : insertValues.getRows()) {
+    for (InsertRow row : insertRows) {
       buf.appendSql("(");
-      for (QueryOperandPair pair : row.getPairs()) {
-        pair.getRight().accept(queryOperandVisitor);
+      for (QueryOperand value : row) {
+        value.accept(queryOperandVisitor);
         buf.appendSql(", ");
       }
       buf.cutBackSql(2);
@@ -101,8 +103,8 @@ public class H2UpsertAssembler implements UpsertAssembler {
     }
     buf.cutBackSql(2);
     buf.appendSql(" as x (");
-    for (QueryOperandPair pair : insertValues.first().getPairs()) {
-      column(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      column(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);

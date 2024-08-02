@@ -1,10 +1,14 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.internal.util.Zip;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
@@ -17,7 +21,10 @@ public class OracleUpsertAssembler implements UpsertAssembler {
   private final DuplicateKeyType duplicateKeyType;
   private final UpsertAssemblerSupport upsertAssemblerSupport;
   private final List<? extends EntityPropertyType<?, ?>> keys;
-  private final List<QueryOperandPair> insertValues;
+
+  private final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
+
+  private final List<InsertRow> insertValues;
   private final List<QueryOperandPair> setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
@@ -26,10 +33,11 @@ public class OracleUpsertAssembler implements UpsertAssembler {
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
-    this.insertValues = context.insertValues.first().getPairs();
-    this.setValues = context.setValues.getPairs();
+    this.insertPropertyTypes = context.insertPropertyTypes;
+    this.insertValues = context.insertRows;
+    this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
-    if (context.insertValues.getRows().size() > 1) {
+    if (context.insertRows.size() > 1) {
       throw new UnsupportedOperationException();
     }
   }
@@ -51,14 +59,14 @@ public class OracleUpsertAssembler implements UpsertAssembler {
     }
     buf.cutBackSql(5);
     buf.appendSql(") when not matched then insert (");
-    for (QueryOperandPair pair : insertValues) {
-      column(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      column(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
     buf.appendSql(") values (");
-    for (QueryOperandPair pair : insertValues) {
-      excludeColumn(pair.getLeft().getEntityPropertyType());
+    for (EntityPropertyType<?, ?> p : insertPropertyTypes) {
+      excludeColumn(p);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
@@ -76,11 +84,17 @@ public class OracleUpsertAssembler implements UpsertAssembler {
   }
 
   private void excludeQuery() {
+    // TODO
+    InsertRow row =
+        insertValues.stream().findFirst().orElseThrow(UnsupportedOperationException::new);
+    List<Pair<? extends EntityPropertyType<?, ?>, QueryOperand>> pairs =
+        Zip.stream(insertPropertyTypes, row).collect(Collectors.toList());
+
     buf.appendSql("select ");
-    for (QueryOperandPair pair : insertValues) {
-      pair.getRight().accept(queryOperandVisitor);
+    for (Pair<? extends EntityPropertyType<?, ?>, QueryOperand> pair : pairs) {
+      pair.snd.accept(queryOperandVisitor);
       buf.appendSql(" as ");
-      column(pair.getLeft().getEntityPropertyType());
+      column(pair.fst);
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);

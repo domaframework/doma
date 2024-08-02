@@ -31,11 +31,13 @@ public class UpsertAssemblerContext {
    */
   public final List<? extends EntityPropertyType<?, ?>> keys;
 
+  public final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
+
   /** values clause property-parameter pair list */
-  public final QueryRows insertValues;
+  public final List<InsertRow> insertRows;
 
   /** set clause property-value pair list */
-  public final QueryOperandPairList setValues;
+  public final List<QueryOperandPair> setValues;
 
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
@@ -48,7 +50,8 @@ public class UpsertAssemblerContext {
    * @param dialect the dialect
    * @param isKeysSpecified whether the keys are specified
    * @param keys the conflicting keys
-   * @param insertValues the values clause property-parameter pair list
+   * @param insertPropertyTypes the insert property types
+   * @param insertRows the insert rows
    * @param setValues the set clause property-value pair list(optional).Required in case of
    *     duplicateKeyType.UPDATE
    */
@@ -60,15 +63,16 @@ public class UpsertAssemblerContext {
       Dialect dialect,
       boolean isKeysSpecified,
       List<? extends EntityPropertyType<?, ?>> keys,
-      QueryRows insertValues,
-      QueryOperandPairList setValues) {
+      List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
+      List<InsertRow> insertRows,
+      List<QueryOperandPair> setValues) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);
     Objects.requireNonNull(naming);
     Objects.requireNonNull(dialect);
     Objects.requireNonNull(keys);
-    Objects.requireNonNull(insertValues);
+    Objects.requireNonNull(insertRows);
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",
@@ -79,10 +83,15 @@ public class UpsertAssemblerContext {
           "keys",
           "The keys must not be empty when performing an upsert. At least one key must be specified.");
     }
-    if (insertValues.isEmpty() || insertValues.hasEmptyValueRow()) {
+    if (insertPropertyTypes.isEmpty()) {
       throw new DomaIllegalArgumentException(
-          "insertValues",
-          "The insertValues must not be empty when performing an upsert. At least one insert value must be specified.");
+          "insertPropertyTypes",
+          "The insertPropertyTypes must not be empty when performing an upsert. At least one property must be specified.");
+    }
+    if (insertRows.isEmpty() || insertRows.stream().anyMatch(row -> !row.iterator().hasNext())) {
+      throw new DomaIllegalArgumentException(
+          "insertRows",
+          "The insertRows must not be empty when performing an upsert. At least one insert value must be specified.");
     }
     if (duplicateKeyType == DuplicateKeyType.UPDATE && setValues.isEmpty()) {
       throw new DomaIllegalArgumentException(
@@ -96,7 +105,8 @@ public class UpsertAssemblerContext {
     this.dialect = dialect;
     this.isKeysSpecified = isKeysSpecified;
     this.keys = keys;
-    this.insertValues = insertValues;
+    this.insertPropertyTypes = insertPropertyTypes;
+    this.insertRows = insertRows;
     this.setValues = setValues;
   }
 }

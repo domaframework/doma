@@ -23,6 +23,13 @@ public class UpsertAssemblerContextBuilder {
       List<QueryOperandPair> setValues) {
 
     List<? extends EntityPropertyType<?, ?>> resolvedKeys = resolveKeys(entityType, keys);
+    List<? extends EntityPropertyType<?, ?>> insertPropertyTypes =
+        insertValues.stream()
+            .map(pair -> pair.getLeft().getEntityPropertyType())
+            .collect(Collectors.toList());
+    List<QueryOperand> values =
+        insertValues.stream().map(QueryOperandPair::getRight).collect(Collectors.toList());
+    List<InsertRow> rows = Collections.singletonList(new InsertRow(values));
 
     return buildInternal(
         buf,
@@ -32,8 +39,9 @@ public class UpsertAssemblerContextBuilder {
         dialect,
         !keys.isEmpty(),
         resolvedKeys,
-        new QueryRows(Collections.singletonList(new QueryOperandPairList(insertValues))),
-        new QueryOperandPairList(setValues));
+        insertPropertyTypes,
+        rows,
+        setValues);
   }
 
   public static <ENTITY> UpsertAssemblerContext buildFromEntity(
@@ -46,28 +54,15 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity) {
 
-    List<QueryOperandPair> insertValues =
-        insertPropertyTypes.stream()
-            .map(
-                p -> {
-                  Property<ENTITY, ?> property = p.createProperty();
-                  property.load(entity);
-                  QueryOperand left = new QueryOperand.Prop(p);
-                  QueryOperand right = new QueryOperand.Param(p, property.asInParameter());
-                  return new QueryOperandPair(left, right);
-                })
-            .collect(Collectors.toList());
-
-    return buildInternal(
+    return buildFromEntityList(
         buf,
         entityType,
         duplicateKeyType,
         naming,
         dialect,
-        false,
         idPropertyTypes,
-        new QueryRows(Collections.singletonList(new QueryOperandPairList(insertValues))),
-        new QueryOperandPairList(Collections.emptyList()));
+        insertPropertyTypes,
+        Collections.singletonList(entity));
   }
 
   public static <ENTITY> UpsertAssemblerContext buildFromEntityList(
@@ -80,7 +75,7 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       List<ENTITY> entities) {
 
-    List<QueryOperandPairList> rows =
+    List<InsertRow> rows =
         entities.stream()
             .map(
                 entity ->
@@ -89,14 +84,13 @@ public class UpsertAssemblerContextBuilder {
                             p -> {
                               Property<ENTITY, ?> property = p.createProperty();
                               property.load(entity);
-                              QueryOperand left = new QueryOperand.Prop(p);
-                              QueryOperand right =
+                              return (QueryOperand)
                                   new QueryOperand.Param(p, property.asInParameter());
-                              return new QueryOperandPair(left, right);
                             })
                         .collect(Collectors.toList()))
-            .map(QueryOperandPairList::new)
+            .map(InsertRow::new)
             .collect(Collectors.toList());
+
     return buildInternal(
         buf,
         entityType,
@@ -105,8 +99,9 @@ public class UpsertAssemblerContextBuilder {
         dialect,
         false,
         idPropertyTypes,
-        new QueryRows(rows),
-        new QueryOperandPairList(Collections.emptyList()));
+        insertPropertyTypes,
+        rows,
+        Collections.emptyList());
   }
 
   private static UpsertAssemblerContext buildInternal(
@@ -117,10 +112,12 @@ public class UpsertAssemblerContextBuilder {
       Dialect dialect,
       boolean isKeysSpecified,
       List<? extends EntityPropertyType<?, ?>> keys,
-      QueryRows insertValues,
-      QueryOperandPairList setValues) {
+      List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
+      List<InsertRow> insertRows,
+      List<QueryOperandPair> setValues) {
 
-    QueryOperandPairList resolvedSetValues = resolveSetValues(keys, insertValues, setValues);
+    List<QueryOperandPair> resolvedSetValues =
+        resolveSetValues(keys, insertPropertyTypes, setValues);
 
     return new UpsertAssemblerContext(
         buf,
@@ -130,7 +127,8 @@ public class UpsertAssemblerContextBuilder {
         dialect,
         isKeysSpecified,
         keys,
-        insertValues,
+        insertPropertyTypes,
+        insertRows,
         resolvedSetValues);
   }
 
@@ -142,25 +140,21 @@ public class UpsertAssemblerContextBuilder {
     return entityType.getIdPropertyTypes();
   }
 
-  private static QueryOperandPairList resolveSetValues(
+  private static List<QueryOperandPair> resolveSetValues(
       List<? extends EntityPropertyType<?, ?>> keys,
-      QueryRows insertValues,
-      QueryOperandPairList setValues) {
+      List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
+      List<QueryOperandPair> setValues) {
     if (!setValues.isEmpty()) {
       return setValues;
     }
-    QueryOperandPairList firstInsertValues = insertValues.getRows().get(0);
-    List<QueryOperandPair> result =
-        firstInsertValues.getPairs().stream()
-            .map(pair -> pair.getLeft().getEntityPropertyType())
-            .filter(p -> !keys.contains(p))
-            .filter(p -> p.isUpdatable() && !p.isId() && !p.isTenantId())
-            .map(
-                p -> {
-                  QueryOperand operand = new QueryOperand.Prop(p);
-                  return new QueryOperandPair(operand, operand);
-                })
-            .collect(Collectors.toList());
-    return new QueryOperandPairList(result);
+    return insertPropertyTypes.stream()
+        .filter(p -> !keys.contains(p))
+        .filter(p -> p.isUpdatable() && !p.isId() && !p.isTenantId())
+        .map(
+            p -> {
+              QueryOperand operand = new QueryOperand.Prop(p);
+              return new QueryOperandPair(operand, operand);
+            })
+        .collect(Collectors.toList());
   }
 }
