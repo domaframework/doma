@@ -157,33 +157,11 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
   }
 
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
-    builder.appendSql("insert into ");
-    builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
-    builder.appendSql(" (");
-    if (!targetPropertyTypes.isEmpty()) {
-      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-        builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
-        builder.appendSql(", ");
-      }
-      builder.cutBackSql(2);
-    }
-    builder.appendSql(") values ");
-    if (!entities.isEmpty()) {
-      for (ENTITY entity : entities) {
-        builder.appendSql("(");
-        if (!targetPropertyTypes.isEmpty()) {
-          for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-            Property<ENTITY, ?> property = propertyType.createProperty();
-            property.load(entity);
-            builder.appendParameter(property.asInParameter());
-            builder.appendSql(", ");
-          }
-          builder.cutBackSql(2);
-        }
-        builder.appendSql("), ");
-      }
-      builder.cutBackSql(2);
-    }
+    MultiInsertAssemblerContext<ENTITY> context =
+        MultiInsertAssemblerContextBuilder.buildFromEntityList(
+            builder, entityType, naming, dialect, targetPropertyTypes, entities);
+    MultiInsertAssembler assembler = dialect.getMultiInsertAssembler(context);
+    assembler.assemble();
   }
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
@@ -197,9 +175,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
             idPropertyTypes,
             targetPropertyTypes,
             entities);
-    UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
-    upsertAssembler.assemble();
-    sql = builder.build(this::comment);
+    UpsertAssembler assembler = dialect.getUpsertAssembler(context);
+    assembler.assemble();
   }
 
   @Override

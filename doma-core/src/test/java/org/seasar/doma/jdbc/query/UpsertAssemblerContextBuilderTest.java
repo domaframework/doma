@@ -220,7 +220,7 @@ class UpsertAssemblerContextBuilderTest {
             dept);
     assertFalse(context.isKeysSpecified);
     assertFalse(context.keys.isEmpty());
-    assertFalse(context.insertValues.isEmpty());
+    assertFalse(context.insertRows.isEmpty());
     assertFalse(context.setValues.isEmpty());
   }
 

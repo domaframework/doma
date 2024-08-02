@@ -6,9 +6,9 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
-import org.seasar.doma.jdbc.query.QueryOperandPairList;
-import org.seasar.doma.jdbc.query.QueryRows;
+import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -22,8 +22,10 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final boolean isKeysSpecified;
   private final List<? extends EntityPropertyType<?, ?>> keys;
 
-  private final QueryRows insertValues;
-  private final QueryOperandPairList setValues;
+  private final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
+
+  private final List<InsertRow> insertRows;
+  private final List<QueryOperandPair> setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public PostgreSqlUpsertAssembler(UpsertAssemblerContext context) {
@@ -32,7 +34,8 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
     this.isKeysSpecified = context.isKeysSpecified;
-    this.insertValues = context.insertValues;
+    this.insertPropertyTypes = context.insertPropertyTypes;
+    this.insertRows = context.insertRows;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
@@ -41,61 +44,27 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   public void assemble() {
     buf.appendSql("insert into ");
     tableNameAndAlias(entityType);
-    join(
-        insertValues.first().getPairs(),
-        ", ",
-        " (",
-        ")",
-        buf,
-        p -> {
-          column(p.getLeft().getEntityPropertyType());
-        });
+    join(insertPropertyTypes, ", ", " (", ")", buf, this::column);
     buf.appendSql(" values ");
     join(
-        insertValues.getRows(),
+        insertRows,
         ", ",
         "",
         "",
         buf,
-        row -> {
-          join(
-              row.getPairs(),
-              ", ",
-              "(",
-              ")",
-              buf,
-              p -> {
-                p.getRight().accept(queryOperandVisitor);
-              });
-        });
+        row -> join(row, ", ", "(", ")", buf, p -> p.accept(queryOperandVisitor)));
     if (duplicateKeyType == DuplicateKeyType.IGNORE) {
       buf.appendSql(" on conflict");
       if (isKeysSpecified) {
-        join(
-            keys,
-            ", ",
-            " (",
-            ")",
-            buf,
-            key -> {
-              column(key);
-            });
+        join(keys, ", ", " (", ")", buf, this::column);
       }
       buf.appendSql(" do nothing");
     } else if (duplicateKeyType == DuplicateKeyType.UPDATE) {
       buf.appendSql(" on conflict");
-      join(
-          keys,
-          ", ",
-          " (",
-          ")",
-          buf,
-          key -> {
-            column(key);
-          });
+      join(keys, ", ", " (", ")", buf, this::column);
       buf.appendSql(" do update set ");
       join(
-          setValues.getPairs(),
+          setValues,
           ", ",
           "",
           "",
@@ -121,14 +90,14 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   }
 
   private <T> void join(
-      List<T> list,
+      Iterable<T> iterable,
       String delimiter,
       String start,
       String end,
       PreparedSqlBuilder buf,
       Consumer<T> consumer) {
     buf.appendSql(start);
-    for (T val : list) {
+    for (T val : iterable) {
       consumer.accept(val);
       buf.appendSql(delimiter);
     }
