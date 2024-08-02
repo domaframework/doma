@@ -73,7 +73,6 @@ import org.seasar.doma.message.Message;
 public class AutoMultiInsertTest {
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void test(Config config) throws Exception {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
@@ -108,7 +107,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testImmutable(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(99), 99, "hoge", new Location<>("foo"), null);
@@ -143,7 +141,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void test_UniqueConstraintException(Config config) throws Exception {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
@@ -161,7 +158,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testCompositeKey(Config config) throws Exception {
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
 
@@ -200,7 +196,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testIdNotAssigned(Config config) throws Exception {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
@@ -245,7 +240,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
   public void testId_sequence(Config config) throws Exception {
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     SequenceStrategy entity1 = new SequenceStrategy();
@@ -262,7 +257,7 @@ public class AutoMultiInsertTest {
   // it seems that sqlite doesn't support requiresNew transaction
   // so ignore this test case
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLITE})
+  @Run(unless = {Dbms.SQLITE})
   public void testId_table(Config config) throws Exception {
     TableStrategyDao dao = new TableStrategyDaoImpl(config);
     TableStrategy entity1 = new TableStrategy();
@@ -277,7 +272,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testNoId(Config config) throws Exception {
     NoIdDao dao = new NoIdDaoImpl(config);
 
@@ -299,7 +293,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testOptional(Config config) throws Exception {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
@@ -322,7 +315,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testOptionalInt(Config config) throws Exception {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
@@ -344,7 +336,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL, Dbms.SQLSERVER})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL, Dbms.SQLSERVER, Dbms.ORACLE})
   public void testEmbeddable(Config config) throws Exception {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
@@ -363,7 +355,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testEmbeddable_null(Config config) throws Exception {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
@@ -381,7 +372,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void testNestedEntity(Config config) throws Exception {
     BranchDao dao = new BranchDaoImpl(config);
     {
@@ -406,7 +396,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void whenListIsEmpty(Config config) throws Exception {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     int result = dao.insertMultiRows(Collections.emptyList());
@@ -414,7 +403,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -456,7 +444,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -494,7 +481,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -545,7 +531,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =

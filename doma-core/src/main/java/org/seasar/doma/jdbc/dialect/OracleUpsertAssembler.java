@@ -24,7 +24,7 @@ public class OracleUpsertAssembler implements UpsertAssembler {
 
   private final List<? extends EntityPropertyType<?, ?>> insertPropertyTypes;
 
-  private final List<InsertRow> insertValues;
+  private final List<InsertRow> insertRows;
   private final List<QueryOperandPair> setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
@@ -34,12 +34,9 @@ public class OracleUpsertAssembler implements UpsertAssembler {
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
     this.insertPropertyTypes = context.insertPropertyTypes;
-    this.insertValues = context.insertRows;
+    this.insertRows = context.insertRows;
     this.setValues = context.setValues;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
-    if (context.insertRows.size() > 1) {
-      throw new UnsupportedOperationException();
-    }
   }
 
   @Override
@@ -84,21 +81,21 @@ public class OracleUpsertAssembler implements UpsertAssembler {
   }
 
   private void excludeQuery() {
-    // TODO
-    InsertRow row =
-        insertValues.stream().findFirst().orElseThrow(UnsupportedOperationException::new);
-    List<Pair<? extends EntityPropertyType<?, ?>, QueryOperand>> pairs =
-        Zip.stream(insertPropertyTypes, row).collect(Collectors.toList());
-
-    buf.appendSql("select ");
-    for (Pair<? extends EntityPropertyType<?, ?>, QueryOperand> pair : pairs) {
-      pair.snd.accept(queryOperandVisitor);
-      buf.appendSql(" as ");
-      column(pair.fst);
-      buf.appendSql(", ");
+    for (InsertRow row : insertRows) {
+      List<Pair<? extends EntityPropertyType<?, ?>, QueryOperand>> pairs =
+          Zip.stream(insertPropertyTypes, row).collect(Collectors.toList());
+      buf.appendSql("select ");
+      for (Pair<? extends EntityPropertyType<?, ?>, QueryOperand> pair : pairs) {
+        pair.snd.accept(queryOperandVisitor);
+        buf.appendSql(" as ");
+        column(pair.fst);
+        buf.appendSql(", ");
+      }
+      buf.cutBackSql(2);
+      buf.appendSql(" from dual");
+      buf.appendSql(" union all ");
     }
-    buf.cutBackSql(2);
-    buf.appendSql(" from dual");
+    buf.cutBackSql(11);
   }
 
   private void tableNameAndAlias(EntityType<?> entityType) {

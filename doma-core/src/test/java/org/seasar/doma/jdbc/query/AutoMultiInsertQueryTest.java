@@ -116,7 +116,7 @@ public class AutoMultiInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     JdbcException ex = assertThrows(JdbcException.class, query::prepare);
 
-    assertEquals(Message.DOMA2236, ex.getMessageResource());
+    assertEquals(Message.DOMA2235, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
 

@@ -12,9 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
-import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -31,7 +29,6 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   void test() {
     Department_ d = new Department_();
 
@@ -65,7 +62,6 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   void testIgnore() {
     Department_ d = new Department_();
 
@@ -112,7 +108,6 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   void testUpdate() {
     Department_ d = new Department_();
 
@@ -164,7 +159,6 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE})
   void empty() {
     Employee_ e = new Employee_();
 
