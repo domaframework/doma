@@ -4,67 +4,67 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 
 abstract class KComparisonDeclaration<DECLARATION : org.seasar.doma.jdbc.criteria.declaration.ComparisonDeclaration>(protected val declaration: DECLARATION) {
 
-    fun <PROPERTY> eq(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> eq(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.eq(left, right)
     }
 
-    fun <PROPERTY> eq(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> eq(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.eq(left, right)
     }
 
-    fun <PROPERTY> ne(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> ne(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.ne(left, right)
     }
 
-    fun <PROPERTY> ne(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> ne(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.ne(left, right)
     }
 
-    fun <PROPERTY> gt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> gt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.gt(left, right)
     }
 
-    fun <PROPERTY> gt(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> gt(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.gt(left, right)
     }
 
-    fun <PROPERTY> ge(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> ge(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.ge(left, right)
     }
 
-    fun <PROPERTY> ge(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> ge(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.ge(left, right)
     }
 
-    fun <PROPERTY> lt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> lt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.lt(left, right)
     }
 
-    fun <PROPERTY> lt(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> lt(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.lt(left, right)
     }
 
-    fun <PROPERTY> le(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> le(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.le(left, right)
     }
 
-    fun <PROPERTY> le(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> le(left: PropertyMetamodel<PROPERTY>, right: PropertyMetamodel<PROPERTY>) {
         declaration.le(left, right)
     }
 
-    fun <PROPERTY> isNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> isNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
         declaration.isNull(propertyMetamodel)
     }
 
-    fun <PROPERTY> isNotNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
+    fun <PROPERTY : Any> isNotNull(propertyMetamodel: PropertyMetamodel<PROPERTY>) {
         declaration.isNotNull(propertyMetamodel)
     }
 
-    fun <PROPERTY> eqOrIsNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> eqOrIsNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.eqOrIsNull(left, right)
     }
 
-    fun <PROPERTY> neOrIsNotNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
+    fun <PROPERTY : Any> neOrIsNotNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.neOrIsNotNull(left, right)
     }
 

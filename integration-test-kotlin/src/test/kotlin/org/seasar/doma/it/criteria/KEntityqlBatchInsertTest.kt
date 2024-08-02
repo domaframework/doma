@@ -32,7 +32,7 @@ class KEntityqlBatchInsertTest(config: Config) {
         val result = entityql.insert(d, departments).execute()
         assertEquals(departments, result.entities)
 
-        val ids = departments.map { it.departmentId }
+        val ids = departments.mapNotNull { it.departmentId }
         val departments2 = entityql
             .from(d)
             .where { `in`(d.departmentId, ids) }
