@@ -26,9 +26,12 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
     this.entityType = context.entityType;
     this.duplicateKeyType = context.duplicateKeyType;
     this.keys = context.keys;
-    this.insertValues = context.insertValues;
-    this.setValues = context.setValues;
+    this.insertValues = context.insertValues.first().getPairs();
+    this.setValues = context.setValues.getPairs();
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
+    if (context.insertValues.getRows().size() > 1) {
+      throw new UnsupportedOperationException();
+    }
   }
 
   @Override

@@ -27,6 +27,8 @@ import org.seasar.doma.it.dao.BusinessmanDao;
 import org.seasar.doma.it.dao.BusinessmanDaoImpl;
 import org.seasar.doma.it.dao.CompKeyDepartmentDao;
 import org.seasar.doma.it.dao.CompKeyDepartmentDaoImpl;
+import org.seasar.doma.it.dao.CompKeyDeptDao;
+import org.seasar.doma.it.dao.CompKeyDeptDaoImpl;
 import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
@@ -51,6 +53,7 @@ import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.embeddable.StaffInfo;
 import org.seasar.doma.it.entity.Businessman;
 import org.seasar.doma.it.entity.CompKeyDepartment;
+import org.seasar.doma.it.entity.CompKeyDept;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
@@ -408,5 +411,182 @@ public class AutoMultiInsertTest {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     int result = dao.insertMultiRows(Collections.emptyList());
     assertEquals(0, result);
+  }
+
+  @Test
+  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    MultiResult<Dept> result = dao.insertMultiRowsOnDuplicateKeyUpdate(Arrays.asList(dept1, dept2));
+    // insert result entities
+    Dept resultDept1 = result.component1().get(0);
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(50), resultDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)_postI(U)", resultDept1.getDepartmentName());
+    assertEquals("TOKYO", resultDept1.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept1.getVersion());
+    Dept resultDept2 = result.component1().get(1);
+    assertEquals(Integer.valueOf(1), resultDept2.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(60), resultDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)_postI(U)", resultDept2.getDepartmentName());
+    assertEquals("KYOTO", resultDept2.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept2.getVersion());
+    // insert result count
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(3, result.component2());
+    } else {
+      assertEquals(2, result.component2());
+    }
+    // reload from database
+    Dept reloadDept1 = dao.selectById(dept1.getDepartmentId().getValue());
+    Dept reloadDept2 = dao.selectById(dept2.getDepartmentId().getValue());
+    // inserted
+    assertEquals(50, reloadDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)", reloadDept1.getDepartmentName());
+    assertEquals("TOKYO", reloadDept1.getLocation().getValue());
+    assertEquals(1, reloadDept1.getVersion());
+    // updated
+    assertEquals(60, reloadDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept2.getDepartmentName());
+    assertEquals("KYOTO", reloadDept2.getLocation().getValue());
+    assertEquals(1, reloadDept2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    MultiResult<Dept> result = dao.insertMultiRowsOnDuplicateKeyIgnore(Arrays.asList(dept1, dept2));
+
+    // insert result entities
+    Dept resultDept1 = result.component1().get(0);
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(50), resultDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)_postI(I)", resultDept1.getDepartmentName());
+    assertEquals("TOKYO", resultDept1.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept1.getVersion());
+    Dept resultDept2 = result.component1().get(1);
+    assertEquals(Integer.valueOf(1), resultDept2.getDepartmentId().getValue());
+    assertEquals(Integer.valueOf(60), resultDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(I)_postI(I)", resultDept2.getDepartmentName());
+    assertEquals("KYOTO", resultDept2.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept2.getVersion());
+    // insert result count
+    assertEquals(1, result.component2());
+    // reload from database
+    Dept reloadDept1 = dao.selectById(dept1.getDepartmentId().getValue());
+    Dept reloadDept2 = dao.selectById(dept2.getDepartmentId().getValue());
+    // inserted
+    assertEquals(50, reloadDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)", reloadDept1.getDepartmentName());
+    assertEquals("TOKYO", reloadDept1.getLocation().getValue());
+    assertEquals(1, reloadDept1.getVersion());
+    // ignored
+    assertEquals(10, reloadDept2.getDepartmentNo());
+    assertEquals("ACCOUNTING", reloadDept2.getDepartmentName());
+    assertEquals("NEW YORK", reloadDept2.getLocation().getValue());
+    assertEquals(1, reloadDept2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
+    CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
+    CompKeyDept dept1 =
+        new CompKeyDept(
+            new Identity<>(5), new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    CompKeyDept dept2 =
+        new CompKeyDept(
+            new Identity<>(1), new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    MultiResult<CompKeyDept> result =
+        dao.insertMultiRowsOnDuplicateKeyUpdate(Arrays.asList(dept1, dept2));
+
+    // insert result entities
+    CompKeyDept resultDept1 = result.component1().get(0);
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId2().getValue());
+    assertEquals(Integer.valueOf(50), resultDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)_postI(U)", resultDept1.getDepartmentName());
+    assertEquals("TOKYO", resultDept1.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept1.getVersion());
+    CompKeyDept resultDept2 = result.component1().get(1);
+    assertEquals(Integer.valueOf(1), resultDept2.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(60), resultDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)_postI(U)", resultDept2.getDepartmentName());
+    assertEquals("KYOTO", resultDept2.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept2.getVersion());
+    // insert result count
+    if (config.getDialect().getName().equals("mysql")
+        || config.getDialect().getName().equals("mariadb")) {
+      assertEquals(3, result.component2());
+    } else {
+      assertEquals(2, result.component2());
+    }
+    // reload from database
+    CompKeyDept reloadDept1 =
+        dao.selectByIds(dept1.getDepartmentId1().getValue(), dept1.getDepartmentId2().getValue());
+    CompKeyDept reloadDept2 =
+        dao.selectByIds(dept2.getDepartmentId1().getValue(), dept2.getDepartmentId2().getValue());
+    // inserted
+    assertEquals(50, reloadDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)", reloadDept1.getDepartmentName());
+    assertEquals("TOKYO", reloadDept1.getLocation().getValue());
+    assertEquals(1, reloadDept1.getVersion());
+    // updated
+    assertEquals(60, reloadDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept2.getDepartmentName());
+    assertEquals("KYOTO", reloadDept2.getLocation().getValue());
+    assertEquals(1, reloadDept2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.H2, Dbms.SQLSERVER, Dbms.ORACLE})
+  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
+    CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
+    CompKeyDept dept1 =
+        new CompKeyDept(
+            new Identity<>(5), new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    CompKeyDept dept2 =
+        new CompKeyDept(
+            new Identity<>(1), new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    MultiResult<CompKeyDept> result =
+        dao.insertMultiRowsOnDuplicateKeyIgnore(Arrays.asList(dept1, dept2));
+
+    // insert result entities
+    CompKeyDept resultDept1 = result.component1().get(0);
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(5), resultDept1.getDepartmentId2().getValue());
+    assertEquals(Integer.valueOf(50), resultDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)_postI(I)", resultDept1.getDepartmentName());
+    assertEquals("TOKYO", resultDept1.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept1.getVersion());
+    CompKeyDept resultDept2 = result.component1().get(1);
+    assertEquals(Integer.valueOf(1), resultDept2.getDepartmentId1().getValue());
+    assertEquals(Integer.valueOf(60), resultDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(I)_postI(I)", resultDept2.getDepartmentName());
+    assertEquals("KYOTO", resultDept2.getLocation().getValue());
+    assertEquals(Integer.valueOf(1), resultDept2.getVersion());
+    // insert result count
+    assertEquals(1, result.component2());
+    // reload from database
+    CompKeyDept reloadDept1 =
+        dao.selectByIds(dept1.getDepartmentId1().getValue(), dept1.getDepartmentId2().getValue());
+    CompKeyDept reloadDept2 =
+        dao.selectByIds(dept2.getDepartmentId1().getValue(), dept2.getDepartmentId2().getValue());
+    // inserted
+    assertEquals(50, reloadDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(I)", reloadDept1.getDepartmentName());
+    assertEquals("TOKYO", reloadDept1.getLocation().getValue());
+    assertEquals(1, reloadDept1.getVersion());
+    // ignored
+    assertEquals(10, reloadDept2.getDepartmentNo());
+    assertEquals("ACCOUNTING", reloadDept2.getDepartmentName());
+    assertEquals("NEW YORK", reloadDept2.getLocation().getValue());
+    assertEquals(1, reloadDept2.getVersion());
   }
 }

@@ -1,12 +1,14 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.QueryOperand;
-import org.seasar.doma.jdbc.query.QueryOperandPair;
+import org.seasar.doma.jdbc.query.QueryOperandPairList;
+import org.seasar.doma.jdbc.query.QueryRows;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -20,8 +22,8 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private final boolean isKeysSpecified;
   private final List<? extends EntityPropertyType<?, ?>> keys;
 
-  private final List<QueryOperandPair> insertValues;
-  private final List<QueryOperandPair> setValues;
+  private final QueryRows insertValues;
+  private final QueryOperandPairList setValues;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public PostgreSqlUpsertAssembler(UpsertAssemblerContext context) {
@@ -39,46 +41,70 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   public void assemble() {
     buf.appendSql("insert into ");
     tableNameAndAlias(entityType);
-    buf.appendSql(" (");
-    for (QueryOperandPair pair : insertValues) {
-      column(pair.getLeft().getEntityPropertyType());
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
-    buf.appendSql(") values (");
-    for (QueryOperandPair pair : insertValues) {
-      pair.getRight().accept(queryOperandVisitor);
-      buf.appendSql(", ");
-    }
-    buf.cutBackSql(2);
+    join(
+        insertValues.first().getPairs(),
+        ", ",
+        " (",
+        ")",
+        buf,
+        p -> {
+          column(p.getLeft().getEntityPropertyType());
+        });
+    buf.appendSql(" values ");
+    join(
+        insertValues.getRows(),
+        ", ",
+        "",
+        "",
+        buf,
+        row -> {
+          join(
+              row.getPairs(),
+              ", ",
+              "(",
+              ")",
+              buf,
+              p -> {
+                p.getRight().accept(queryOperandVisitor);
+              });
+        });
     if (duplicateKeyType == DuplicateKeyType.IGNORE) {
-      buf.appendSql(") on conflict");
+      buf.appendSql(" on conflict");
       if (isKeysSpecified) {
-        buf.appendSql(" (");
-        for (EntityPropertyType<?, ?> key : keys) {
-          column(key);
-          buf.appendSql(", ");
-        }
-        buf.cutBackSql(2);
-        buf.appendSql(")");
+        join(
+            keys,
+            ", ",
+            " (",
+            ")",
+            buf,
+            key -> {
+              column(key);
+            });
       }
       buf.appendSql(" do nothing");
     } else if (duplicateKeyType == DuplicateKeyType.UPDATE) {
-      buf.appendSql(") on conflict (");
-      for (EntityPropertyType<?, ?> key : keys) {
-        column(key);
-        buf.appendSql(", ");
-      }
-      buf.cutBackSql(2);
-      buf.appendSql(")");
+      buf.appendSql(" on conflict");
+      join(
+          keys,
+          ", ",
+          " (",
+          ")",
+          buf,
+          key -> {
+            column(key);
+          });
       buf.appendSql(" do update set ");
-      for (QueryOperandPair pair : setValues) {
-        column(pair.getLeft().getEntityPropertyType());
-        buf.appendSql(" = ");
-        pair.getRight().accept(queryOperandVisitor);
-        buf.appendSql(", ");
-      }
-      buf.cutBackSql(2);
+      join(
+          setValues.getPairs(),
+          ", ",
+          "",
+          "",
+          buf,
+          p -> {
+            column(p.getLeft().getEntityPropertyType());
+            buf.appendSql(" = ");
+            p.getRight().accept(queryOperandVisitor);
+          });
     }
   }
 
@@ -92,6 +118,22 @@ public class PostgreSqlUpsertAssembler implements UpsertAssembler {
   private void column(EntityPropertyType<?, ?> propertyType) {
     String sql = this.upsertAssemblerSupport.prop(propertyType);
     buf.appendSql(sql);
+  }
+
+  private <T> void join(
+      List<T> list,
+      String delimiter,
+      String start,
+      String end,
+      PreparedSqlBuilder buf,
+      Consumer<T> consumer) {
+    buf.appendSql(start);
+    for (T val : list) {
+      consumer.accept(val);
+      buf.appendSql(delimiter);
+    }
+    buf.cutBackSql(delimiter.length());
+    buf.appendSql(end);
   }
 
   class QueryOperandVisitor implements QueryOperand.Visitor {

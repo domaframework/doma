@@ -32,10 +32,10 @@ public class UpsertAssemblerContext {
   public final List<? extends EntityPropertyType<?, ?>> keys;
 
   /** values clause property-parameter pair list */
-  public final List<QueryOperandPair> insertValues;
+  public final QueryRows insertValues;
 
   /** set clause property-value pair list */
-  public final List<QueryOperandPair> setValues;
+  public final QueryOperandPairList setValues;
 
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
@@ -60,8 +60,8 @@ public class UpsertAssemblerContext {
       Dialect dialect,
       boolean isKeysSpecified,
       List<? extends EntityPropertyType<?, ?>> keys,
-      List<QueryOperandPair> insertValues,
-      List<QueryOperandPair> setValues) {
+      QueryRows insertValues,
+      QueryOperandPairList setValues) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);
@@ -79,7 +79,7 @@ public class UpsertAssemblerContext {
           "keys",
           "The keys must not be empty when performing an upsert. At least one key must be specified.");
     }
-    if (insertValues.isEmpty()) {
+    if (insertValues.isEmpty() || insertValues.hasEmptyValueRow()) {
       throw new DomaIllegalArgumentException(
           "insertValues",
           "The insertValues must not be empty when performing an upsert. At least one insert value must be specified.");

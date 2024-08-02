@@ -188,7 +188,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     UpsertAssemblerContext context =
-        UpsertAssemblerContextBuilder.buildFromEntity(
+        UpsertAssemblerContextBuilder.buildFromEntityList(
             builder,
             entityType,
             duplicateKeyType,
@@ -196,7 +196,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
             dialect,
             idPropertyTypes,
             targetPropertyTypes,
-            entity);
+            entities);
     UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
     upsertAssembler.assemble();
     sql = builder.build(this::comment);
@@ -230,6 +230,10 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
         iterator.set(newEntity);
       }
     }
+  }
+
+  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
+    this.duplicateKeyType = duplicateKeyType;
   }
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
