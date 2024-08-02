@@ -15,7 +15,7 @@ public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssemble
   public final EntityType<?> entityType;
   public final Naming naming;
   public final Dialect dialect;
-  public final List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
+  public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final List<ENTITY> entities;
 
   public StandardMultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
@@ -23,7 +23,7 @@ public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssemble
     this.entityType = context.entityType;
     this.naming = context.naming;
     this.dialect = context.dialect;
-    this.targetPropertyTypes = context.targetPropertyTypes;
+    this.insertPropertyTypes = context.insertPropertyTypes;
     this.entities = context.entities;
   }
 
@@ -32,8 +32,8 @@ public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssemble
     buf.appendSql("insert into ");
     buf.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
     buf.appendSql(" (");
-    if (!targetPropertyTypes.isEmpty()) {
-      for (EntityPropertyType<?, ?> propertyType : targetPropertyTypes) {
+    if (!insertPropertyTypes.isEmpty()) {
+      for (EntityPropertyType<?, ?> propertyType : insertPropertyTypes) {
         buf.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
         buf.appendSql(", ");
       }
@@ -43,8 +43,8 @@ public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssemble
     if (!entities.isEmpty()) {
       for (ENTITY entity : entities) {
         buf.appendSql("(");
-        if (!targetPropertyTypes.isEmpty()) {
-          for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
+        if (!insertPropertyTypes.isEmpty()) {
+          for (EntityPropertyType<ENTITY, ?> propertyType : insertPropertyTypes) {
             Property<ENTITY, ?> property = propertyType.createProperty();
             property.load(entity);
             buf.appendParameter(property.asInParameter());

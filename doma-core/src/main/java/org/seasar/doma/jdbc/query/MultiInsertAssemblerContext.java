@@ -19,7 +19,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
   public final EntityType<ENTITY> entityType;
   public final Naming naming;
   public final Dialect dialect;
-  public final List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
+  public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final List<ENTITY> entities;
 
   /**
@@ -29,7 +29,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
    * @param entityType the entity type
    * @param naming the naming convention
    * @param dialect the SQL dialect
-   * @param targetPropertyTypes the property types that are targets for the insert
+   * @param insertPropertyTypes the property types that are targets for the insert
    * @param entities the entities
    */
   MultiInsertAssemblerContext(
@@ -37,13 +37,13 @@ public class MultiInsertAssemblerContext<ENTITY> {
       EntityType<ENTITY> entityType,
       Naming naming,
       Dialect dialect,
-      List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes,
+      List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       List<ENTITY> entities) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(naming);
     Objects.requireNonNull(dialect);
-    Objects.requireNonNull(targetPropertyTypes);
+    Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(entities);
     if (entities.isEmpty()) {
       throw new DomaIllegalArgumentException(
@@ -53,7 +53,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
     this.entityType = entityType;
     this.naming = naming;
     this.dialect = dialect;
-    this.targetPropertyTypes = targetPropertyTypes;
+    this.insertPropertyTypes = insertPropertyTypes;
     this.entities = entities;
   }
 }

@@ -72,7 +72,9 @@ public class UpsertAssemblerContext {
     Objects.requireNonNull(naming);
     Objects.requireNonNull(dialect);
     Objects.requireNonNull(keys);
+    Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(insertRows);
+    Objects.requireNonNull(setValues);
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",

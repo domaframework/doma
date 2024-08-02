@@ -175,9 +175,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
             idPropertyTypes,
             targetPropertyTypes,
             entities);
-    UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
-    upsertAssembler.assemble();
-    sql = builder.build(this::comment);
+    UpsertAssembler assembler = dialect.getUpsertAssembler(context);
+    assembler.assemble();
   }
 
   @Override

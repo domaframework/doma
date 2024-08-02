@@ -15,7 +15,7 @@ public class OracleMultiInsertAssembler<ENTITY> implements MultiInsertAssembler 
   public final EntityType<?> entityType;
   public final Naming naming;
   public final Dialect dialect;
-  public final List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes;
+  public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final List<ENTITY> entities;
 
   public OracleMultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
@@ -23,7 +23,7 @@ public class OracleMultiInsertAssembler<ENTITY> implements MultiInsertAssembler 
     this.entityType = context.entityType;
     this.naming = context.naming;
     this.dialect = context.dialect;
-    this.targetPropertyTypes = context.targetPropertyTypes;
+    this.insertPropertyTypes = context.insertPropertyTypes;
     this.entities = context.entities;
   }
 
@@ -34,19 +34,21 @@ public class OracleMultiInsertAssembler<ENTITY> implements MultiInsertAssembler 
       buf.appendSql("into ");
       buf.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
       buf.appendSql(" (");
-      if (!targetPropertyTypes.isEmpty()) {
-        for (EntityPropertyType<?, ?> propertyType : targetPropertyTypes) {
+      if (!insertPropertyTypes.isEmpty()) {
+        for (EntityPropertyType<?, ?> propertyType : insertPropertyTypes) {
           buf.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
           buf.appendSql(", ");
         }
         buf.cutBackSql(2);
       }
       buf.appendSql(") values (");
-      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-        Property<ENTITY, ?> property = propertyType.createProperty();
-        property.load(entity);
-        buf.appendParameter(property.asInParameter());
-        buf.appendSql(", ");
+      if (!insertPropertyTypes.isEmpty()) {
+        for (EntityPropertyType<ENTITY, ?> propertyType : insertPropertyTypes) {
+          Property<ENTITY, ?> property = propertyType.createProperty();
+          property.load(entity);
+          buf.appendParameter(property.asInParameter());
+          buf.appendSql(", ");
+        }
       }
       buf.cutBackSql(2);
       buf.appendSql(") ");

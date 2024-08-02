@@ -14,21 +14,10 @@ public class MultiInsertAssemblerContextBuilder {
       EntityType<ENTITY> entityType,
       Naming naming,
       Dialect dialect,
-      List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes,
+      List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       List<ENTITY> entities) {
 
-    return buildInternal(buf, entityType, naming, dialect, targetPropertyTypes, entities);
-  }
-
-  private static <ENTITY> MultiInsertAssemblerContext<ENTITY> buildInternal(
-      PreparedSqlBuilder buf,
-      EntityType<ENTITY> entityType,
-      Naming naming,
-      Dialect dialect,
-      List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes,
-      List<ENTITY> entities) {
-
-    return new MultiInsertAssemblerContext<ENTITY>(
-        buf, entityType, naming, dialect, targetPropertyTypes, entities);
+    return new MultiInsertAssemblerContext<>(
+        buf, entityType, naming, dialect, insertPropertyTypes, entities);
   }
 }
