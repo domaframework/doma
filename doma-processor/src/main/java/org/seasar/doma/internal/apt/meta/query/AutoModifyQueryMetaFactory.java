@@ -118,6 +118,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
         entityCtType.getType(),
         modifyAnnot.getAnnotationMirror(),
         modifyAnnot.getInclude(),
-        modifyAnnot.getExclude());
+        modifyAnnot.getExclude(),
+        modifyAnnot.getDuplicateKeys());
   }
 }

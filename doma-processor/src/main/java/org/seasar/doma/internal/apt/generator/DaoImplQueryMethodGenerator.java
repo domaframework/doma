@@ -230,6 +230,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
+    }
+
     Boolean includeUnchanged = m.getIncludeUnchanged();
     if (includeUnchanged != null) {
       iprint("__query.setUnchangedPropertyIncluded(%1$s);%n", includeUnchanged);
@@ -385,6 +390,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
     }
 
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
+    }
+
     iprint("__query.prepare();%n");
     iprint(
         "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
@@ -448,6 +458,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     List<String> exclude = m.getExclude();
     if (exclude != null) {
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
+    }
+
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
     }
 
     Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();

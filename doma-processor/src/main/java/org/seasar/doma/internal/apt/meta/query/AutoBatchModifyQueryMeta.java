@@ -70,6 +70,10 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     return batchModifyAnnot.getExcludeValue();
   }
 
+  public List<String> getDuplicateKeys() {
+    return batchModifyAnnot.getDuplicateKeysValue();
+  }
+
   public SqlLogType getSqlLogType() {
     return batchModifyAnnot.getSqlLogValue();
   }

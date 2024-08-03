@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.dialect.MysqlDialect;
+import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoInsertQueryTest {
@@ -170,5 +171,37 @@ public class AutoInsertQueryTest {
     assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals(new BigDecimal(200), parameters.get(1).getWrapper().get());
     assertEquals(1, parameters.get(2).getWrapper().get());
+  }
+
+  @Test
+  public void testOption_duplicateKey() {
+    runtimeConfig.dialect = new PostgresDialect();
+
+    Emp emp = new Emp();
+    emp.setId(10);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal(200));
+
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(emp);
+    query.setDuplicateKeyType(DuplicateKeyType.UPDATE);
+    query.setDuplicateKeyNames("name");
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    PreparedSql sql = query.getSql();
+    assertEquals(
+        "insert into EMP as target (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?) on conflict (NAME) do update set SALARY = excluded.SALARY, VERSION = excluded.VERSION",
+        sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(4, parameters.size());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals("aaa", parameters.get(1).getWrapper().get());
+    assertEquals(new BigDecimal(200), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
   }
 }

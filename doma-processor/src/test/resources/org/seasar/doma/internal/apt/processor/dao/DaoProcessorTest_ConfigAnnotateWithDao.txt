@@ -50,6 +50,7 @@ public class ConfigAnnotateWithDaoImpl implements org.seasar.doma.internal.apt.p
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
+            __query.setDuplicateKeyNames();
             __query.prepare();
             org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method0, __query);
             int __result = __command.execute();

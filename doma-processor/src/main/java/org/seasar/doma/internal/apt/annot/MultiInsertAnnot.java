@@ -23,6 +23,8 @@ public class MultiInsertAnnot extends AbstractAnnot {
 
   private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
 
+  private static final String DUPLICATE_KEYS = "duplicateKeys";
+
   private final AnnotationValue queryTimeout;
   private final AnnotationValue include;
 
@@ -31,6 +33,8 @@ public class MultiInsertAnnot extends AbstractAnnot {
   private final AnnotationValue sqlLog;
 
   private final AnnotationValue duplicateKeyType;
+
+  private final AnnotationValue duplicateKeys;
 
   MultiInsertAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
@@ -43,6 +47,7 @@ public class MultiInsertAnnot extends AbstractAnnot {
     this.include = values.get(INCLUDE);
     this.exclude = values.get(EXCLUDE);
     this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
+    this.duplicateKeys = values.get(DUPLICATE_KEYS);
   }
 
   public AnnotationValue getQueryTimeout() {
@@ -55,6 +60,10 @@ public class MultiInsertAnnot extends AbstractAnnot {
 
   public AnnotationValue getExclude() {
     return exclude;
+  }
+
+  public AnnotationValue getDuplicateKeys() {
+    return duplicateKeys;
   }
 
   public AnnotationValue getSqlLog() {
@@ -83,6 +92,10 @@ public class MultiInsertAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
     }
     return DuplicateKeyType.valueOf(enumConstant.getSimpleName().toString());
+  }
+
+  public List<String> getDuplicateKeysValue() {
+    return AnnotationValueUtil.toStringList(duplicateKeys);
   }
 
   public SqlLogType getSqlLogValue() {

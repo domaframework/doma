@@ -101,6 +101,7 @@ public class ImmutableEmpDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setNullExcluded(false);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
+            __query.setDuplicateKeyNames();
             __query.prepare();
             org.seasar.doma.jdbc.command.InsertCommand __command = __support.getCommandImplementors().createInsertCommand(__method0, __query);
             int __count = __command.execute();
@@ -197,6 +198,7 @@ public class ImmutableEmpDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
+            __query.setDuplicateKeyNames();
             __query.setGeneratedKeysIgnored(false);
             __query.prepare();
             org.seasar.doma.jdbc.command.BatchInsertCommand __command = __support.getCommandImplementors().createBatchInsertCommand(__method3, __query);

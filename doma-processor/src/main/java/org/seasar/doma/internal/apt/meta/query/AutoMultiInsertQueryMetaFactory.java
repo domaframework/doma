@@ -121,6 +121,7 @@ public class AutoMultiInsertQueryMetaFactory
         entityCtType.getType(),
         insertAnnot.getAnnotationMirror(),
         insertAnnot.getInclude(),
-        insertAnnot.getExclude());
+        insertAnnot.getExclude(),
+        insertAnnot.getDuplicateKeys());
   }
 }

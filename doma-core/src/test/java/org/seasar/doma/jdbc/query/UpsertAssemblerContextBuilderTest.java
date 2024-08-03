@@ -213,6 +213,7 @@ class UpsertAssemblerContextBuilderTest {
             buf,
             metaDept.asType(),
             DuplicateKeyType.IGNORE,
+            Collections.emptyList(),
             Naming.NONE,
             config.getDialect(),
             idPropertyTypes,

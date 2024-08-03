@@ -58,6 +58,10 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
     return multiInsertAnnot.getExcludeValue();
   }
 
+  public List<String> getDuplicateKeys() {
+    return multiInsertAnnot.getDuplicateKeysValue();
+  }
+
   public SqlLogType getSqlLogType() {
     return multiInsertAnnot.getSqlLogValue();
   }

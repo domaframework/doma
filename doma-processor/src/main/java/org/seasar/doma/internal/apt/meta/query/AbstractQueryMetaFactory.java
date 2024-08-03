@@ -50,7 +50,8 @@ abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta> implements 
       TypeMirror entityType,
       AnnotationMirror annotationMirror,
       AnnotationValue includeValue,
-      AnnotationValue excludeValue) {
+      AnnotationValue excludeValue,
+      AnnotationValue duplicateKeysValue) {
     List<String> includedPropertyNames = AnnotationValueUtil.toStringList(includeValue);
     if (includedPropertyNames == null) {
       includedPropertyNames = Collections.emptyList();
@@ -59,7 +60,13 @@ abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta> implements 
     if (excludedPropertyNames == null) {
       excludedPropertyNames = Collections.emptyList();
     }
-    if (!includedPropertyNames.isEmpty() || !excludedPropertyNames.isEmpty()) {
+    List<String> duplicateKeys = AnnotationValueUtil.toStringList(duplicateKeysValue);
+    if (duplicateKeys == null) {
+      duplicateKeys = Collections.emptyList();
+    }
+    if (!includedPropertyNames.isEmpty()
+        || !excludedPropertyNames.isEmpty()
+        || !duplicateKeys.isEmpty()) {
       EntityPropertyNameCollector collector = new EntityPropertyNameCollector(ctx);
       Set<String> names = collector.collect(entityType);
       for (String included : includedPropertyNames) {
@@ -80,6 +87,16 @@ abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta> implements 
               annotationMirror,
               excludeValue,
               new Object[] {excluded, entityType});
+        }
+      }
+      for (String duplicateKey : duplicateKeys) {
+        if (!names.contains(duplicateKey)) {
+          throw new AptException(
+              Message.DOMA4462,
+              methodElement,
+              annotationMirror,
+              duplicateKeysValue,
+              new Object[] {duplicateKey, entityType});
         }
       }
     }

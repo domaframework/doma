@@ -517,4 +517,29 @@ public class AutoBatchInsertTest {
     assertEquals("NEW YORK", reloadDept2.getLocation().getValue());
     assertEquals(1, reloadDept2.getVersion());
   }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
+  public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) throws Exception {
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Dept dept2 = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    dao.insertOnDuplicateKeyUpdateWithDepartmentNo(Arrays.asList(dept1, dept2));
+
+    // reload from database
+    Dept reloadDept1 = dao.selectByDepartmentNo(dept1.getDepartmentNo());
+    Dept reloadDept2 = dao.selectByDepartmentNo(dept2.getDepartmentNo());
+    // inserted
+    assertEquals(5, reloadDept1.getDepartmentId().getValue());
+    assertEquals(50, reloadDept1.getDepartmentNo());
+    assertEquals("PLANNING_preI(U)", reloadDept1.getDepartmentName());
+    assertEquals("TOKYO", reloadDept1.getLocation().getValue());
+    assertEquals(1, reloadDept1.getVersion());
+    // updated
+    assertEquals(1, reloadDept2.getDepartmentId().getValue());
+    assertEquals(10, reloadDept2.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept2.getDepartmentName());
+    assertEquals("KYOTO", reloadDept2.getLocation().getValue());
+    assertEquals(1, reloadDept2.getVersion());
+  }
 }

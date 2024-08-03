@@ -138,6 +138,7 @@ public class AutoBatchModifyQueryMetaFactory
         entityCtType.getType(),
         batchModifyAnnot.getAnnotationMirror(),
         batchModifyAnnot.getInclude(),
-        batchModifyAnnot.getExclude());
+        batchModifyAnnot.getExclude(),
+        batchModifyAnnot.getDuplicateKeys());
   }
 }

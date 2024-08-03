@@ -46,6 +46,7 @@ public class IgnoreGeneratedKeysDaoImpl implements org.seasar.doma.internal.apt.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
+            __query.setDuplicateKeyNames();
             __query.setGeneratedKeysIgnored(true);
             __query.prepare();
             org.seasar.doma.jdbc.command.BatchInsertCommand __command = __support.getCommandImplementors().createBatchInsertCommand(__method0, __query);
@@ -78,6 +79,7 @@ public class IgnoreGeneratedKeysDaoImpl implements org.seasar.doma.internal.apt.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
+            __query.setDuplicateKeyNames();
             __query.setGeneratedKeysIgnored(true);
             __query.prepare();
             org.seasar.doma.jdbc.command.BatchInsertCommand __command = __support.getCommandImplementors().createBatchInsertCommand(__method1, __query);

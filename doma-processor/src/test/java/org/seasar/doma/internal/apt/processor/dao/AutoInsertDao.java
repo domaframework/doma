@@ -17,4 +17,9 @@ public interface AutoInsertDao {
 
   @Insert(duplicateKeyType = DuplicateKeyType.IGNORE)
   int insertOnDuplicateKeyIgnore(Emp entity);
+
+  @Insert(
+      duplicateKeyType = DuplicateKeyType.UPDATE,
+      duplicateKeys = {"name", "salary"})
+  int insertOnDuplicateKeyUpdateWithDuplicateKeys(Emp entity);
 }

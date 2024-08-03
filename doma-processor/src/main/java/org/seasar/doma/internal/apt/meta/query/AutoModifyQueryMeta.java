@@ -78,6 +78,10 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     return modifyAnnot.getExcludeValue();
   }
 
+  public List<String> getDuplicateKeys() {
+    return modifyAnnot.getDuplicateKeysValue();
+  }
+
   public SqlLogType getSqlLogType() {
     return modifyAnnot.getSqlLogValue();
   }

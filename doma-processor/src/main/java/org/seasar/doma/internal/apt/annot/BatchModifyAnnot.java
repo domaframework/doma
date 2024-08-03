@@ -27,6 +27,8 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
 
   private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
 
+  private static final String DUPLICATE_KEYS = "duplicateKeys";
+
   private final AnnotationValue sqlFile;
 
   private final AnnotationValue queryTimeout;
@@ -47,6 +49,8 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
 
   private final AnnotationValue duplicateKeyType;
 
+  private final AnnotationValue duplicateKeys;
+
   BatchModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
@@ -63,6 +67,7 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     this.exclude = values.get(EXCLUDE);
     this.ignoreGeneratedKeys = values.get(IGNORE_GENERATED_KEYS);
     this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
+    this.duplicateKeys = values.get(DUPLICATE_KEYS);
   }
 
   public AnnotationValue getSqlFile() {
@@ -93,6 +98,10 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
     return exclude;
   }
 
+  public AnnotationValue getDuplicateKeys() {
+    return duplicateKeys;
+  }
+
   public AnnotationValue getSqlLog() {
     return sqlLog;
   }
@@ -107,6 +116,10 @@ public abstract class BatchModifyAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
     }
     return DuplicateKeyType.valueOf(enumConstant.getSimpleName().toString());
+  }
+
+  public List<String> getDuplicateKeysValue() {
+    return AnnotationValueUtil.toStringList(duplicateKeys);
   }
 
   public int getQueryTimeoutValue() {
