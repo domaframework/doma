@@ -86,7 +86,10 @@ public class MultiInsertAnnot extends AbstractAnnot {
     return AnnotationValueUtil.toStringList(exclude);
   }
 
-  public DuplicateKeyType getDuplicateKeyValue() {
+  public DuplicateKeyType getDuplicateKeyTypeValue() {
+    if (duplicateKeys == null) {
+      return null;
+    }
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(duplicateKeyType);
     if (enumConstant == null) {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);

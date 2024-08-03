@@ -16,8 +16,6 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
 
   private MultiInsertAnnot multiInsertAnnot;
 
-  private DuplicateKeyType duplicateKeyType;
-
   public AutoMultiInsertQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
   }
@@ -67,11 +65,7 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
   }
 
   public DuplicateKeyType getDuplicateKeyType() {
-    return this.duplicateKeyType;
-  }
-
-  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
-    this.duplicateKeyType = duplicateKeyType;
+    return multiInsertAnnot.getDuplicateKeyTypeValue();
   }
 
   @Override

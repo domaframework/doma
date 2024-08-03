@@ -118,7 +118,10 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     return sqlLog;
   }
 
-  public DuplicateKeyType getDuplicateKeyValue() {
+  public DuplicateKeyType getDuplicateKeyTypeValue() {
+    if (duplicateKeyType == null) {
+      return null;
+    }
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(duplicateKeyType);
     if (enumConstant == null) {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
