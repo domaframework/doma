@@ -178,7 +178,6 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
             entity);
     UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
     upsertAssembler.assemble();
-    sql = builder.build(this::comment);
   }
 
   @Override
