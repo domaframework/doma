@@ -490,4 +490,21 @@ public class AutoInsertTest {
     assertEquals("NEW YORK", reloadDept.getLocation().getValue());
     assertEquals(1, reloadDept.getVersion());
   }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
+  public void insert_DuplicateKeyType_UPDATE_duplicated_on_specified_keys(Config config)
+      throws Exception {
+    DeptDao dao = new DeptDaoImpl(config);
+    Dept dept = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    dao.insertOnDuplicateKeyUpdateWithDepartmentNo(dept);
+    // reload from database
+    Dept reloadDept = dao.selectByDepartmentNo(10);
+    // updated
+    assertEquals(1, reloadDept.getDepartmentId().getValue());
+    assertEquals(10, reloadDept.getDepartmentNo());
+    assertEquals("DEVELOPMENT_preI(U)", reloadDept.getDepartmentName());
+    assertEquals("KYOTO", reloadDept.getLocation().getValue());
+    assertEquals(1, reloadDept.getVersion());
+  }
 }

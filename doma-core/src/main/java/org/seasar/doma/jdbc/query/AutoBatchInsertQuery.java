@@ -6,7 +6,11 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostInsertContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreInsertContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -37,6 +41,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
+  protected String[] duplicateKeyNames = EMPTY_STRINGS;
+
   public AutoBatchInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -47,6 +53,10 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
+  }
+
+  public void setDuplicateKeyNames(String... duplicateKeyNames) {
+    this.duplicateKeyNames = duplicateKeyNames;
   }
 
   @Override
@@ -186,11 +196,18 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   }
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
+    List<EntityPropertyType<ENTITY, ?>> duplicateKeys =
+        Arrays.stream(this.duplicateKeyNames)
+            .map(entityType::getEntityPropertyType)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
     UpsertAssemblerContext context =
         UpsertAssemblerContextBuilder.buildFromEntity(
             builder,
             entityType,
             duplicateKeyType,
+            duplicateKeys,
             naming,
             dialect,
             idPropertyTypes,

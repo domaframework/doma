@@ -20,6 +20,9 @@ public interface DeptDao {
   @Select
   Dept selectById(Integer departmentId);
 
+  @Select
+  Dept selectByDepartmentNo(Integer departmentNo);
+
   @Insert
   Result<Dept> insert(Dept d);
 
@@ -47,8 +50,18 @@ public interface DeptDao {
   @Insert(duplicateKeyType = DuplicateKeyType.UPDATE)
   Result<Dept> insertOnDuplicateKeyUpdate(Dept entity);
 
+  @Insert(
+      duplicateKeyType = DuplicateKeyType.UPDATE,
+      duplicateKeys = {"departmentNo"})
+  Result<Dept> insertOnDuplicateKeyUpdateWithDepartmentNo(Dept entity);
+
   @BatchInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
   BatchResult<Dept> insertOnDuplicateKeyUpdate(List<Dept> entities);
+
+  @BatchInsert(
+      duplicateKeyType = DuplicateKeyType.UPDATE,
+      duplicateKeys = {"departmentNo"})
+  BatchResult<Dept> insertOnDuplicateKeyUpdateWithDepartmentNo(List<Dept> entities);
 
   @Insert(duplicateKeyType = DuplicateKeyType.IGNORE)
   Result<Dept> insertOnDuplicateKeyIgnore(Dept entity);
@@ -64,4 +77,9 @@ public interface DeptDao {
 
   @MultiInsert(duplicateKeyType = DuplicateKeyType.UPDATE)
   MultiResult<Dept> insertMultiRowsOnDuplicateKeyUpdate(List<Dept> entities);
+
+  @MultiInsert(
+      duplicateKeyType = DuplicateKeyType.UPDATE,
+      duplicateKeys = {"departmentNo"})
+  MultiResult<Dept> insertMultiRowsOnDuplicateKeyUpdateWithDepartmentNo(List<Dept> entities);
 }

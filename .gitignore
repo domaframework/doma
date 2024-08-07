@@ -7,5 +7,6 @@
 /target/
 /.metadata
 .idea
+.kotlin
 out
 .factorypath

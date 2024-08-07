@@ -35,6 +35,8 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
 
+  private static final String DUPLICATE_KEYS = "duplicateKeys";
+
   private final AnnotationValue sqlFile;
 
   private final AnnotationValue queryTimeout;
@@ -55,6 +57,8 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private final AnnotationValue duplicateKeyType;
 
+  private final AnnotationValue duplicateKeys;
+
   ModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
@@ -71,6 +75,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     this.include = values.get(INCLUDE);
     this.exclude = values.get(EXCLUDE);
     this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
+    this.duplicateKeys = values.get(DUPLICATE_KEYS);
   }
 
   public AnnotationValue getSqlFile() {
@@ -105,16 +110,27 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     return exclude;
   }
 
+  public AnnotationValue getDuplicateKeys() {
+    return duplicateKeys;
+  }
+
   public AnnotationValue getSqlLog() {
     return sqlLog;
   }
 
-  public DuplicateKeyType getDuplicateKeyValue() {
+  public DuplicateKeyType getDuplicateKeyTypeValue() {
+    if (duplicateKeyType == null) {
+      return null;
+    }
     VariableElement enumConstant = AnnotationValueUtil.toEnumConstant(duplicateKeyType);
     if (enumConstant == null) {
       throw new AptIllegalStateException(DUPLICATE_KEY_TYPE);
     }
     return DuplicateKeyType.valueOf(enumConstant.getSimpleName().toString());
+  }
+
+  public List<String> getDuplicateKeysValue() {
+    return AnnotationValueUtil.toStringList(duplicateKeys);
   }
 
   public int getQueryTimeoutValue() {

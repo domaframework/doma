@@ -16,8 +16,6 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
 
   private BatchModifyAnnot batchModifyAnnot;
 
-  private DuplicateKeyType duplicateKeyType;
-
   public AutoBatchModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
   }
@@ -70,6 +68,10 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
     return batchModifyAnnot.getExcludeValue();
   }
 
+  public List<String> getDuplicateKeys() {
+    return batchModifyAnnot.getDuplicateKeysValue();
+  }
+
   public SqlLogType getSqlLogType() {
     return batchModifyAnnot.getSqlLogValue();
   }
@@ -79,11 +81,7 @@ public class AutoBatchModifyQueryMeta extends AbstractQueryMeta {
   }
 
   public DuplicateKeyType getDuplicateKeyType() {
-    return this.duplicateKeyType;
-  }
-
-  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
-    this.duplicateKeyType = duplicateKeyType;
+    return batchModifyAnnot.getDuplicateKeyTypeValue();
   }
 
   @Override

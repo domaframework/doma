@@ -20,6 +20,7 @@ import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.command.*;
 import org.seasar.doma.internal.jdbc.sql.*;
+import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class DaoImplQueryMethodGenerator extends AbstractGenerator
     implements QueryMetaVisitor<Void> {
@@ -200,10 +201,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntity(%1$s);%n", m.getEntityParameterName());
-    if (m.getDuplicateKeyType() != null) {
+    DuplicateKeyType duplicateKeyType = m.getDuplicateKeyType();
+    if (duplicateKeyType != null) {
       iprint(
           "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
-          m.getDuplicateKeyType());
+          duplicateKeyType);
     }
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -228,6 +230,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     List<String> exclude = m.getExclude();
     if (exclude != null) {
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
+    }
+
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
     }
 
     Boolean includeUnchanged = m.getIncludeUnchanged();
@@ -364,10 +371,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
         /* 5 */ methodName);
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
-    if (m.getDuplicateKeyType() != null) {
+    DuplicateKeyType duplicateKeyType = m.getDuplicateKeyType();
+    if (duplicateKeyType != null) {
       iprint(
           "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
-          m.getDuplicateKeyType());
+          duplicateKeyType);
     }
     iprint("__query.setEntities(%1$s);%n", m.getEntityParameterName());
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
@@ -383,6 +391,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     List<String> exclude = m.getExclude();
     if (exclude != null) {
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
+    }
+
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
     }
 
     iprint("__query.prepare();%n");
@@ -424,10 +437,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     iprint("__query.setMethod(%1$s);%n", methodName);
     iprint("__query.setConfig(__support.getConfig());%n");
     iprint("__query.setEntities(%1$s);%n", m.getEntitiesParameterName());
-    if (m.getDuplicateKeyType() != null) {
+    DuplicateKeyType duplicateKeyType = m.getDuplicateKeyType();
+    if (duplicateKeyType != null) {
       iprint(
           "__query.setDuplicateKeyType(org.seasar.doma.jdbc.query.DuplicateKeyType.%1$s);%n",
-          m.getDuplicateKeyType());
+          duplicateKeyType);
     }
     iprint("__query.setCallerClassName(\"%1$s\");%n", className);
     iprint("__query.setCallerMethodName(\"%1$s\");%n", m.getName());
@@ -448,6 +462,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     List<String> exclude = m.getExclude();
     if (exclude != null) {
       iprint("__query.setExcludedPropertyNames(%1$s);%n", toConstants(exclude));
+    }
+
+    List<String> duplicateKeys = m.getDuplicateKeys();
+    if (duplicateKeys != null) {
+      iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
     }
 
     Boolean suppressOptimisticLockException = m.getSuppressOptimisticLockException();

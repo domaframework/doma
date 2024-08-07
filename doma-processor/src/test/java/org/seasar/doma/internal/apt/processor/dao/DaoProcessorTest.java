@@ -218,7 +218,10 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(MultiInsertIllegalTypeArgumentDao.class, Message.DOMA4043),
           invocationContext(MultiInsertIllegalReturnTypeDao.class, Message.DOMA4001),
           invocationContext(
-              MultiInsertIllegalReturnTypeForImmutableEntityDao.class, Message.DOMA4461));
+              MultiInsertIllegalReturnTypeForImmutableEntityDao.class, Message.DOMA4461),
+          invocationContext(InsertIllegalDuplicateKeyDao.class, Message.DOMA4462),
+          invocationContext(BatchInsertIllegalDuplicateKeyDao.class, Message.DOMA4462),
+          invocationContext(MultiInsertIllegalDuplicateKeyDao.class, Message.DOMA4462));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, Message message) {

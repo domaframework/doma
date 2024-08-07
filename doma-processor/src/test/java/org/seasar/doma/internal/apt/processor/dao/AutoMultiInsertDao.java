@@ -22,6 +22,11 @@ public interface AutoMultiInsertDao {
   @MultiInsert(exclude = {"salary"})
   int insertWithInclude(List<Emp> entities);
 
+  @MultiInsert(
+      duplicateKeyType = DuplicateKeyType.UPDATE,
+      duplicateKeys = {"name", "salary"})
+  int insertWithDuplicateKeys(List<Emp> entities);
+
   @MultiInsert(queryTimeout = 10)
   int insertWithQueryTimeout(List<Emp> entities);
 

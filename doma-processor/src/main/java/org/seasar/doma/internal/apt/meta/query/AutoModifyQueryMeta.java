@@ -16,8 +16,6 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
 
   private ModifyAnnot modifyAnnot;
 
-  private DuplicateKeyType duplicateKeyType;
-
   public AutoModifyQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
   }
@@ -78,16 +76,16 @@ public class AutoModifyQueryMeta extends AbstractQueryMeta {
     return modifyAnnot.getExcludeValue();
   }
 
+  public List<String> getDuplicateKeys() {
+    return modifyAnnot.getDuplicateKeysValue();
+  }
+
   public SqlLogType getSqlLogType() {
     return modifyAnnot.getSqlLogValue();
   }
 
   public DuplicateKeyType getDuplicateKeyType() {
-    return this.duplicateKeyType;
-  }
-
-  public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
-    this.duplicateKeyType = duplicateKeyType;
+    return modifyAnnot.getDuplicateKeyTypeValue();
   }
 
   @Override

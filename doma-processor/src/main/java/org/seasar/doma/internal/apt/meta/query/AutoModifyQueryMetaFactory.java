@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
@@ -42,10 +41,8 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(daoElement, methodElement);
     ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
     if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      DuplicateKeyType duplicateKeyType = modifyAnnot.getDuplicateKeyValue();
       queryMeta.setModifyAnnot(modifyAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
-      queryMeta.setDuplicateKeyType(duplicateKeyType);
       return queryMeta;
     }
     modifyAnnot = ctx.getAnnotations().newUpdateAnnot(methodElement);
@@ -118,6 +115,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
         entityCtType.getType(),
         modifyAnnot.getAnnotationMirror(),
         modifyAnnot.getInclude(),
-        modifyAnnot.getExclude());
+        modifyAnnot.getExclude(),
+        modifyAnnot.getDuplicateKeys());
   }
 }

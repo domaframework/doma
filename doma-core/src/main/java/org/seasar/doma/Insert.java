@@ -108,4 +108,18 @@ public @interface Insert {
    * @return the type of duplicate key handling strategy for an insert operation.
    */
   DuplicateKeyType duplicateKeyType() default DuplicateKeyType.EXCEPTION;
+
+  /**
+   * This variable represents the keys that should be used to determine if a duplicate key exists.
+   * If the duplicate key exists, the operation will use the {@link #duplicateKeyType()} strategy to
+   * handle the duplicate key.
+   *
+   * <p>Note: This value is only utilized when the {@link #duplicateKeyType()} value is either
+   * {@code DuplicateKeyType.UPDATE} or {@code DuplicateKeyType.IGNORE}.
+   *
+   * <p>Note: Certain DBMSs, such as MySQL, do not utilize this value.
+   *
+   * @return the keys that should be used to determine if a duplicate key exists.
+   */
+  String[] duplicateKeys() default {};
 }

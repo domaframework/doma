@@ -11,7 +11,6 @@ import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.message.Message;
 
 public class AutoMultiInsertQueryMetaFactory
@@ -39,10 +38,8 @@ public class AutoMultiInsertQueryMetaFactory
     AutoMultiInsertQueryMeta queryMeta = new AutoMultiInsertQueryMeta(daoElement, methodElement);
     MultiInsertAnnot insertAnnot = ctx.getAnnotations().newMultiInsertAnnot(methodElement);
     if (insertAnnot != null) {
-      DuplicateKeyType duplicateKeyType = insertAnnot.getDuplicateKeyValue();
       queryMeta.setMultiInsertAnnot(insertAnnot);
       queryMeta.setQueryKind(QueryKind.AUTO_MULTI_INSERT);
-      queryMeta.setDuplicateKeyType(duplicateKeyType);
       return queryMeta;
     }
     return null;
@@ -121,6 +118,7 @@ public class AutoMultiInsertQueryMetaFactory
         entityCtType.getType(),
         insertAnnot.getAnnotationMirror(),
         insertAnnot.getInclude(),
-        insertAnnot.getExclude());
+        insertAnnot.getExclude(),
+        insertAnnot.getDuplicateKeys());
   }
 }
