@@ -10,7 +10,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple2
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3
 
 class KJoinDeclaration(private val declaration: JoinDeclaration) {
-    fun <PROPERTY : Any> eq(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> eq(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.eq(left, right)
     }
 
@@ -18,7 +18,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.eq(left, right)
     }
 
-    fun <PROPERTY : Any> ne(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> ne(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.ne(left, right)
     }
 
@@ -26,7 +26,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.ne(left, right)
     }
 
-    fun <PROPERTY : Any> gt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> gt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.gt(left, right)
     }
 
@@ -34,7 +34,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.gt(left, right)
     }
 
-    fun <PROPERTY : Any> ge(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> ge(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.ge(left, right)
     }
 
@@ -42,7 +42,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.ge(left, right)
     }
 
-    fun <PROPERTY : Any> lt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> lt(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.lt(left, right)
     }
 
@@ -50,7 +50,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.lt(left, right)
     }
 
-    fun <PROPERTY : Any> le(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> le(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.le(left, right)
     }
 
@@ -66,11 +66,11 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.isNotNull(propertyMetamodel)
     }
 
-    fun <PROPERTY : Any> eqOrIsNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> eqOrIsNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.eqOrIsNull(left, right)
     }
 
-    fun <PROPERTY : Any> neOrIsNotNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY) {
+    fun <PROPERTY : Any> neOrIsNotNull(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) {
         declaration.neOrIsNotNull(left, right)
     }
 
@@ -90,7 +90,7 @@ class KJoinDeclaration(private val declaration: JoinDeclaration) {
         declaration.notLike(left, right, option)
     }
 
-    fun <PROPERTY : Any> between(propertyMetamodel: PropertyMetamodel<PROPERTY>, start: PROPERTY, end: PROPERTY) {
+    fun <PROPERTY : Any> between(propertyMetamodel: PropertyMetamodel<PROPERTY>, start: PROPERTY?, end: PROPERTY?) {
         declaration.between(propertyMetamodel, start, end)
     }
 
