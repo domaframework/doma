@@ -1,7 +1,7 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
-@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
 public class VirtualDefaultMethodDaoImpl implements org.seasar.doma.internal.apt.processor.dao.VirtualDefaultMethodDao, org.seasar.doma.jdbc.ConfigProvider {
 
