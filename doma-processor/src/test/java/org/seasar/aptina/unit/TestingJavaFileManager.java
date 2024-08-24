@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.tools.FileObject;
@@ -132,7 +133,7 @@ class TestingJavaFileManager extends ForwardingJavaFileManager<StandardJavaFileM
           super.getJavaFileForOutput(location, className, kind, sibling);
       uri = originalFileObject.toUri();
       content = IOUtils.readBytes(originalFileObject.openInputStream());
-    } catch (final FileNotFoundException ignore) {
+    } catch (final NoSuchFileException ignore) {
     }
     final InMemoryJavaFileObject fileObject =
         new InMemoryJavaFileObject(
