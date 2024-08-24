@@ -29,7 +29,6 @@ import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.message.Message;
 
@@ -131,7 +130,7 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
     @Override
     public void validateClass(TypeElement classElement, InternalDomainMeta domainMeta) {
       ElementKind kind = classElement.getKind();
-      if (kind == ElementKind.CLASS || ElementKindUtil.isRecord(kind)) {
+      if (kind == ElementKind.CLASS || kind == ElementKind.RECORD) {
         if (domainMeta.providesConstructor()
             && classElement.getModifiers().contains(Modifier.ABSTRACT)) {
           throw new AptException(Message.DOMA4132, classElement, new Object[] {});

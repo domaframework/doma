@@ -58,7 +58,6 @@ import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
-import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
@@ -380,7 +379,7 @@ public class CtTypes {
     }
     Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     ClassName typeClassName = ClassNames.newEntityTypeClassName(binaryName);
-    boolean immutable = ElementKindUtil.isRecord(typeElement.getKind()) || entity.immutable();
+    boolean immutable = typeElement.getKind() == ElementKind.RECORD || entity.immutable();
     return new EntityCtType(ctx, type, immutable, typeClassName);
   }
 

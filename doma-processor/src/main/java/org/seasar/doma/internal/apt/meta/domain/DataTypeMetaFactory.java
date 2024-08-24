@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
@@ -22,7 +23,6 @@ import org.seasar.doma.internal.apt.annot.DataTypeAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.message.Message;
 
 public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta> {
@@ -49,7 +49,7 @@ public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta>
   }
 
   private void validateTypeElement(TypeElement typeElement, DataTypeMeta dataTypeMeta) {
-    if (!ElementKindUtil.isRecord(typeElement.getKind())) {
+    if (typeElement.getKind() != ElementKind.RECORD) {
       throw new AptException(Message.DOMA4449, typeElement, new Object[] {});
     }
     if (typeElement.getNestingKind().isNested()) {

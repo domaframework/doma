@@ -42,7 +42,6 @@ import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
-import org.seasar.doma.internal.apt.util.ElementKindUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.NullEntityListener;
@@ -128,7 +127,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
   }
 
   private boolean resolveImmutable(TypeElement classElement, EntityAnnot entityAnnot) {
-    if (ElementKindUtil.isRecord(classElement.getKind())) {
+    if (classElement.getKind() == ElementKind.RECORD) {
       return true;
     }
     boolean result = false;
@@ -213,7 +212,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     void validateClass(TypeElement classElement, EntityMeta entityMeta) {
       EntityAnnot entityAnnot = entityMeta.getEntityAnnot();
       ElementKind kind = classElement.getKind();
-      if (kind != ElementKind.CLASS && !ElementKindUtil.isRecord(kind)) {
+      if (kind != ElementKind.CLASS && kind != ElementKind.RECORD) {
         throw new AptException(
             Message.DOMA4015, classElement, entityAnnot.getAnnotationMirror(), new Object[] {});
       }
