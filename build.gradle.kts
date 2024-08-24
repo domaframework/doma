@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree.Companion.test
-
 plugins {
     `java-library`
     `maven-publish`
@@ -11,9 +9,6 @@ plugins {
     kotlin("jvm")
     kotlin("kapt")
 }
-
-val Project.javaModuleName: String
-    get() = "org.seasar." + this.name.replace('-', '.')
 
 val modularProjects: List<Project> = subprojects.filter { it.name.startsWith("doma-") }
 val integrationTestProjects: List<Project> = subprojects.filter { it.name.startsWith("integration-test-") }
@@ -153,65 +148,6 @@ configure(modularProjects) {
         isRequired = isReleaseVersion
     }
 
-    class ModulePathArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
-        @get:CompileClasspath
-        val modulePath: Configuration = it.configurations["compileClasspath"]
-        override fun asArguments() = listOf("--module-path", modulePath.asPath)
-
-        @Internal
-        override fun getName() = "module-path"
-    }
-
-    class PatchModuleArgumentProvider(it: Project) : CommandLineArgumentProvider, Named {
-
-        @get:Input
-        val module: String = it.javaModuleName
-
-        @get:InputFiles
-        @get:PathSensitive(PathSensitivity.RELATIVE)
-        val patch: Provider<FileCollection> = provider {
-            val sourceSets = it.the<SourceSetContainer>()
-            if (it == project)
-                files(sourceSets.matching { it.name.startsWith("main") }.map { it.output })
-            else
-                files(sourceSets["main"].java.srcDirs)
-        }
-
-        override fun asArguments(): List<String> {
-            val path = patch.get().filter { it.exists() }.asPath
-            if (path.isEmpty()) {
-                return emptyList()
-            }
-            return listOf("--patch-module", "$module=$path")
-        }
-
-        @Internal
-        override fun getName() = "patch-module($module)"
-    }
-
-    val javaModuleName = project.javaModuleName
-    val moduleSourceDir = file("src/module/$javaModuleName")
-    val moduleOutputDir = layout.buildDirectory.dir("classes/java/module")
-
-    val compileModule by tasks.registering(JavaCompile::class) {
-        dependsOn("classes")
-        source = fileTree(moduleSourceDir)
-        destinationDirectory.set(moduleOutputDir)
-        sourceCompatibility = "9"
-        targetCompatibility = "9"
-        classpath = files()
-        options.release.set(9)
-        options.compilerArgs.addAll(
-            listOf(
-                "--module-version", "${project.version}",
-                "--module-source-path", files(modularProjects.map { "${it.projectDir}/src/module" }).asPath
-            )
-        )
-        options.compilerArgumentProviders.add(ModulePathArgumentProvider(project))
-        options.compilerArgumentProviders.addAll(modularProjects.map { PatchModuleArgumentProvider(it) })
-        modularity.inferModulePath.set(false)
-    }
-
     tasks {
         val replaceVersionInJava by registering {
             doLast {
@@ -225,18 +161,8 @@ configure(modularProjects) {
         }
 
         jar {
-            dependsOn(compileModule)
             manifest {
                 attributes(mapOf("Implementation-Title" to project.name, "Implementation-Version" to archiveVersion))
-            }
-            from("${moduleOutputDir.get().asFile}/$javaModuleName") {
-                include("module-info.class")
-            }
-        }
-
-        named<Jar>("sourcesJar") {
-            from(moduleSourceDir) {
-                include("module-info.java")
             }
         }
 
@@ -246,7 +172,8 @@ configure(modularProjects) {
                 charSet = encoding
                 docEncoding = encoding
                 use()
-                exclude("**/internal/**")
+                // TODO
+                addStringOption("Xdoclint:none", "-quiet")
             }
         }
 

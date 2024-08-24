@@ -24,6 +24,8 @@ public class CompilerExtension extends AptinaTestCase
     setCharset("UTF-8");
     setLocale(Locale.ENGLISH);
     TimeZone.setDefault(TimeZone.getTimeZone("GMT+9"));
+    String classpath = System.getProperty("classpath");
+    addOption("--module-path", classpath, "-implicit:class");
   }
 
   @Override
