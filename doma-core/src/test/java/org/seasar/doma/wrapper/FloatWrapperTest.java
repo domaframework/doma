@@ -11,7 +11,7 @@ public class FloatWrapperTest {
   public void testIncrement() {
     FloatWrapper wrapper = new FloatWrapper(10f);
     wrapper.increment();
-    assertEquals(new Float(11f), wrapper.get());
+    assertEquals(11f, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class FloatWrapperTest {
   public void testDecrement() {
     FloatWrapper wrapper = new FloatWrapper(10f);
     wrapper.decrement();
-    assertEquals(new Float(9f), wrapper.get());
+    assertEquals(9f, wrapper.get());
   }
 }

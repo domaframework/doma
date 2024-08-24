@@ -33,7 +33,7 @@ public class BuiltinIdentityIdGeneratorTest {
     Long value =
         identityIdGenerator.generatePostInsert(
             idGenerationConfig, config.dataSource.connection.preparedStatement);
-    assertEquals(new Long(11), value);
+    assertEquals(11L, value);
     assertEquals(
         "select currval(pg_catalog.pg_get_serial_sequence('\"CATA\".\"EMP\"', 'id'))",
         config.dataSource.connection.preparedStatement.sql);
@@ -53,14 +53,14 @@ public class BuiltinIdentityIdGeneratorTest {
     IdGenerationConfig idGenerationConfig =
         new IdGenerationConfig(config, entityType, new ReservedIdProvider(config, entityType, 3));
     Long value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-    assertEquals(new Long(11), value);
+    assertEquals(11L, value);
     assertEquals(
         "select nextval(pg_catalog.pg_get_serial_sequence('\"CATA\".\"EMP\"', 'id')) from generate_series(1, 3)",
         config.dataSource.connection.preparedStatement.sql);
     value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-    assertEquals(new Long(12), value);
+    assertEquals(12L, value);
     value = identityIdGenerator.generatePreInsert(idGenerationConfig);
-    assertEquals(new Long(13), value);
+    assertEquals(13L, value);
 
     try {
       identityIdGenerator.generatePreInsert(idGenerationConfig);

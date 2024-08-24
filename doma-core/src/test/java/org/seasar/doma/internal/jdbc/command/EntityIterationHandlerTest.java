@@ -63,7 +63,7 @@ public class EntityIterationHandlerTest {
               }
             });
     Integer result = handler.handle(resultSet, query, (i, next) -> {}).get();
-    assertEquals(new Integer(2), result);
+    assertEquals(2, result);
   }
 
   @Test
@@ -99,6 +99,6 @@ public class EntityIterationHandlerTest {
               }
             });
     Integer result = handler.handle(resultSet, query, (i, next) -> {}).get();
-    assertEquals(new Integer(1), result);
+    assertEquals(1, result);
   }
 }

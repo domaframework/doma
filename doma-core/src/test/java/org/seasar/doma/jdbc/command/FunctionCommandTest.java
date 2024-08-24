@@ -49,10 +49,10 @@ public class FunctionCommandTest {
     query.complete();
 
     assertNotNull(result);
-    assertEquals(new Integer(10), result);
-    assertEquals(new Integer(40), aaa.get());
-    assertEquals(new Integer(20), bbb.get());
-    assertEquals(new Integer(30), ccc.get());
+    assertEquals(10, result);
+    assertEquals(40, aaa.get());
+    assertEquals(20, bbb.get());
+    assertEquals(30, ccc.get());
 
     String sql = runtimeConfig.dataSource.connection.callableStatement.sql;
     assertEquals("{? = call xxx.yyy.aaa(?, ?, ?)}", sql);

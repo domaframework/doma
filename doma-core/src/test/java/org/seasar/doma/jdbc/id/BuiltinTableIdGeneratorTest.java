@@ -46,7 +46,7 @@ public class BuiltinTableIdGeneratorTest {
     IdGenerationConfig idGenerationConfig =
         new IdGenerationConfig(config, _IdGeneratedEmp.getSingletonInternal());
     Long value = idGenerator.generatePreInsert(idGenerationConfig);
-    assertEquals(new Long(10), value);
+    assertEquals(10L, value);
     assertEquals("update aaa set VALUE = VALUE + ? where PK = ?", connection.preparedStatement.sql);
     assertEquals(2, connection.preparedStatement.bindValues.size());
     assertEquals("select VALUE from aaa where PK = ?", connection2.preparedStatement.sql);

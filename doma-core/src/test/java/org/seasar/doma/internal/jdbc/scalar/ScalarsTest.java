@@ -124,7 +124,7 @@ public class ScalarsTest {
     assertTrue(scalar.get() instanceof Optional);
     assertTrue(scalar.getAsNonOptional() instanceof Integer);
     Optional<Integer> optional = (Optional<Integer>) scalar.get();
-    assertEquals(new Integer(10), optional.get());
+    assertEquals(10, optional.get());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(IntegerWrapper.class, wrapper.getClass());

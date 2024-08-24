@@ -25,7 +25,7 @@ public class BuiltinSequenceIdGeneratorTest {
     IdGenerationConfig idGenerationConfig =
         new IdGenerationConfig(config, _IdGeneratedEmp.getSingletonInternal());
     Long value = idGenerator.generatePreInsert(idGenerationConfig);
-    assertEquals(new Long(11), value);
+    assertEquals(11L, value);
     assertEquals("select nextval('aaa')", config.dataSource.connection.preparedStatement.sql);
   }
 }

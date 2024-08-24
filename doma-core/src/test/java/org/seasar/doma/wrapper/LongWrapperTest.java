@@ -11,7 +11,7 @@ public class LongWrapperTest {
   public void testIncrement() {
     LongWrapper wrapper = new LongWrapper(10L);
     wrapper.increment();
-    assertEquals(new Long(11L), wrapper.get());
+    assertEquals(11L, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class LongWrapperTest {
   public void testDecrement() {
     LongWrapper wrapper = new LongWrapper(10L);
     wrapper.decrement();
-    assertEquals(new Long(9L), wrapper.get());
+    assertEquals(9L, wrapper.get());
   }
 }

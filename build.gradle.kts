@@ -106,7 +106,7 @@ configure(modularProjects) {
     apply(plugin = "signing")
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
         withJavadocJar()
         withSourcesJar()
     }
@@ -118,7 +118,7 @@ configure(modularProjects) {
                 pom {
                     val projectUrl: String by project
                     name.set(project.name)
-                    description.set("DAO Oriented Database Mapping Framework for Java 8+")
+                    description.set("DAO Oriented Database Mapping Framework for Java 17+")
                     url.set(projectUrl)
                     licenses {
                         license {

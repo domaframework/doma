@@ -54,10 +54,10 @@ public class EntityResultListHandlerTest {
 
     assertEquals(2, entities.size());
     Emp emp = entities.get(0);
-    assertEquals(new Integer(1), emp.getId());
+    assertEquals(1, emp.getId());
     assertEquals("aaa", emp.getName());
     emp = entities.get(1);
-    assertEquals(new Integer(2), emp.getId());
+    assertEquals(2, emp.getId());
     assertEquals("bbb", emp.getName());
   }
 }

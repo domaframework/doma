@@ -11,7 +11,7 @@ public class DoubleWrapperTest {
   public void testIncrement() {
     DoubleWrapper wrapper = new DoubleWrapper(10d);
     wrapper.increment();
-    assertEquals(new Double(11d), wrapper.get());
+    assertEquals(11d, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class DoubleWrapperTest {
   public void testDecrement() {
     DoubleWrapper wrapper = new DoubleWrapper(10d);
     wrapper.decrement();
-    assertEquals(new Double(9d), wrapper.get());
+    assertEquals(9d, wrapper.get());
   }
 }
