@@ -10,6 +10,9 @@ plugins {
     kotlin("kapt")
 }
 
+val javaLangVersion: Int = project.properties["javaLangVersion"].toString().toInt()
+val testJavaLangVersion: Int = project.properties["testJavaLangVersion"].toString().toInt()
+
 val modularProjects: List<Project> = subprojects.filter { it.name.startsWith("doma-") }
 val integrationTestProjects: List<Project> = subprojects.filter { it.name.startsWith("integration-test-") }
 val unitTestProjects: List<Project> = subprojects.filter { it.name.startsWith("unit-test") }
@@ -101,7 +104,7 @@ configure(modularProjects) {
     apply(plugin = "signing")
 
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
         withJavadocJar()
         withSourcesJar()
     }
@@ -215,10 +218,8 @@ configure(integrationTestProjects) {
         testRuntimeOnly("org.testcontainers:mssqlserver")
     }
 
-    val javaLangVersion: Int = project.properties["testJavaLangVersion"].toString().toInt()
-
     java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(testJavaLangVersion))
     }
 
     tasks {
