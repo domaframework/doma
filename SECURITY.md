@@ -7,7 +7,9 @@ We take all security bugs very seriously.
 The community will fix security bugs for the latest major.minor version.
 
 | Version    | Supported          |
-| ---------- | ------------------ |
+|------------|--------------------|
+| latest 3.x | :white_check_mark: |
+| older 3.x  | :x:                |
 | latest 2.x | :white_check_mark: |
 | older 2.x  | :x:                |
 | latest 1.x | :white_check_mark: |
@@ -21,7 +23,3 @@ but we are only committing to the latest version released.
 Email to the below address:
 
 - toshihiro.nakamura at gmail.com
-
-Or contact us with Twitter:
-
-- [@domaframework](https://twitter.com/domaframework)
