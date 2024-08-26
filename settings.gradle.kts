@@ -24,5 +24,4 @@ include("doma-template")
 
 include("integration-test-common")
 include("integration-test-java")
-include("integration-test-java-additional")
 include("integration-test-kotlin")

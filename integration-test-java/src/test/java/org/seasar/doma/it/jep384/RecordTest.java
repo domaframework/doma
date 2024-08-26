@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
@@ -19,7 +20,7 @@ public class RecordTest {
   void selectAll(Config config) {
     var dao = new RecordDaoImpl(config);
     var list = dao.selectAll();
-    assertEquals(4, list.size());
+    Assertions.assertEquals(4, list.size());
   }
 
   @Test
