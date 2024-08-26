@@ -200,7 +200,7 @@ configure(modularProjects) {
 configure(integrationTestProjects) {
     apply(plugin = "java")
     apply(plugin = "com.diffplug.spotless")
-    apply(plugin ="org.domaframework.doma.compile")
+    apply(plugin = "org.domaframework.doma.compile")
 
     dependencies {
         testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.1"))
@@ -215,9 +215,23 @@ configure(integrationTestProjects) {
         testRuntimeOnly("org.testcontainers:mssqlserver")
     }
 
+    val javaLangVersion: Int = project.properties["testJavaLangVersion"].toString().toInt()
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
+    }
+
     tasks {
         withType<JavaCompile> {
             options.encoding = encoding
+        }
+
+        compileJava {
+            options.incrementalAfterFailure.set(false)
+        }
+
+        compileTestJava {
+            options.compilerArgs.addAll(listOf("-proc:none"))
         }
 
         fun Test.prepare(driver: String) {
