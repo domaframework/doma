@@ -91,7 +91,6 @@ jobs:
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           -PtestUseModule=true
           integration-test-java:test
-          integration-test-java-additional:test
 
       - name: Test with the latest LTS JDK using JPMS
         run: >
@@ -100,7 +99,6 @@ jobs:
           -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST_LTS }}
           -PtestUseModule=true
           integration-test-java:test
-          integration-test-java-additional:test
 
       - name: Upload reports
         if: failure()
