@@ -74,16 +74,8 @@ public class DaoMeta implements TypeElementMeta {
     return queryMetas;
   }
 
-  public boolean hasUserDefinedConfig() {
-    return daoAnnot.hasUserDefinedConfig();
-  }
-
   DaoAnnot getDaoAnnot() {
     return daoAnnot;
-  }
-
-  public TypeMirror getConfigType() {
-    return daoAnnot.getConfigValue();
   }
 
   public AccessLevel getAccessLevel() {

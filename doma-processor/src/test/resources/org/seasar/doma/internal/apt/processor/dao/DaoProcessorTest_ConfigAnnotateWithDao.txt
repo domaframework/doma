@@ -14,11 +14,6 @@ public class ConfigAnnotateWithDaoImpl implements org.seasar.doma.internal.apt.p
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
-    /** */
-    public ConfigAnnotateWithDaoImpl() {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new example.dao.ExampleConfig());
-    }
-
     /**
      * @param config the config
      */

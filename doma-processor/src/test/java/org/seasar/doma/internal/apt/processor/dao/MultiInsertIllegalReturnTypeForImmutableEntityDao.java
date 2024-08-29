@@ -6,8 +6,7 @@ import org.seasar.doma.MultiInsert;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.MultiResult;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface MultiInsertIllegalReturnTypeForImmutableEntityDao {
 
   @MultiInsert

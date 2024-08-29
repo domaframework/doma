@@ -4,8 +4,7 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.MultiInsert;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface MultiInsertIllegalTypeArgumentDao {
 
   @MultiInsert

@@ -9,8 +9,7 @@ import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface AutoMultiInsertDao {
 
   @MultiInsert

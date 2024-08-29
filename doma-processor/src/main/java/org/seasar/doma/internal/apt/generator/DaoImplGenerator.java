@@ -4,14 +4,11 @@ import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.util.function.Function;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.sql.DataSource;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DaoImplementation;
 import org.seasar.doma.internal.ClassName;
@@ -130,138 +127,6 @@ public class DaoImplGenerator extends AbstractGenerator {
   }
 
   private void printConstructors() {
-    if (daoMeta.hasUserDefinedConfig()) {
-      Code configCode = createConfigCode();
-      printNoArgConstructor(configCode);
-      if (daoMeta.getAnnotateWithAnnots().isEmpty()) {
-        boolean required = areJdbcConstructorsRequired();
-        if (required) {
-          printConnectionArgConstructor(configCode);
-          printDataSourceArgConstructor(configCode);
-        }
-        printConfigArgConstructor();
-        if (required) {
-          printConfigAndConnectionArgsConstructor();
-          printConfigAndDataSourceArgsConstructor();
-        }
-      } else {
-        printAnnotatedConstructor();
-      }
-    } else {
-      printAnnotatedConstructor();
-    }
-  }
-
-  private boolean areJdbcConstructorsRequired() {
-    ParentDaoMeta parentDaoMeta = daoMeta.getParentDaoMeta();
-    return parentDaoMeta == null || parentDaoMeta.hasUserDefinedConfig();
-  }
-
-  private Code createConfigCode() {
-    TypeMirror type = daoMeta.getConfigType();
-    String method = daoMeta.getSingletonMethodName();
-    String field = daoMeta.getSingletonFieldName();
-    return new Code(
-        p -> {
-          if (method == null) {
-            if (field == null) {
-              p.print("new %1$s()", type);
-            } else {
-              p.print("%1$s.%2$s", type, field);
-            }
-          } else {
-            p.print("%1$s.%2$s()", type, method);
-          }
-        });
-  }
-
-  private void printNoArgConstructor(Code configCode) {
-    iprint("/** */%n");
-    iprint("public %1$s() {%n", simpleName);
-    iprint("    __support = new %1$s(%2$s);%n", DaoImplSupport.class, configCode);
-    if (hasParentDao()) {
-      iprint("    __parent = new %1$s(%2$s);%n", parentDaoClassName, configCode);
-    }
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printConnectionArgConstructor(Code configCode) {
-    iprint("/**%n");
-    iprint(" * @param connection the connection%n");
-    iprint(" */%n");
-    iprint("public %1$s(%2$s connection) {%n", simpleName, Connection.class);
-    iprint("    __support = new %1$s(%2$s, connection);%n", DaoImplSupport.class, configCode);
-    if (hasParentDao()) {
-      iprint("    __parent = new %1$s(%2$s, connection);%n", parentDaoClassName, configCode);
-    }
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printDataSourceArgConstructor(Code configCode) {
-    iprint("/**%n");
-    iprint(" * @param dataSource the dataSource%n");
-    iprint(" */%n");
-    iprint("public %1$s(%2$s dataSource) {%n", simpleName, DataSource.class);
-    iprint("    __support = new %1$s(%2$s, dataSource);%n", DaoImplSupport.class, configCode);
-    if (hasParentDao()) {
-      iprint("    __parent = new %1$s(%2$s, dataSource);%n", parentDaoClassName, configCode);
-    }
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printConfigArgConstructor() {
-    iprint("/**%n");
-    iprint(" * @param config the configuration%n");
-    iprint(" */%n");
-    iprint("protected %1$s(%2$s config) {%n", simpleName, Config.class);
-    iprint("    __support = new %1$s(config);%n", DaoImplSupport.class);
-    if (hasParentDao()) {
-      iprint("    __parent = new %1$s(config);%n", parentDaoClassName);
-    }
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printConfigAndConnectionArgsConstructor() {
-    iprint("/**%n");
-    iprint(" * @param config the configuration%n");
-    iprint(" * @param connection the connection%n");
-    iprint(" */%n");
-    iprint(
-        "protected %1$s(%2$s config, %3$s connection) {%n",
-        simpleName, Config.class, Connection.class);
-    indent();
-    iprint("__support = new %1$s(config, connection);%n", DaoImplSupport.class);
-    if (hasParentDao()) {
-      iprint("__parent = new %1$s(config, connection);%n", parentDaoClassName);
-    }
-    unindent();
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printConfigAndDataSourceArgsConstructor() {
-    iprint("/**%n");
-    iprint(" * @param config the configuration%n");
-    iprint(" * @param dataSource the dataSource%n");
-    iprint(" */%n");
-    iprint(
-        "protected %1$s(%2$s config, %3$s dataSource) {%n",
-        simpleName, Config.class, DataSource.class);
-    indent();
-    iprint("__support = new %1$s(config, dataSource);%n", DaoImplSupport.class);
-    if (hasParentDao()) {
-      iprint("__parent = new %1$s(config, dataSource);%n", parentDaoClassName);
-    }
-    unindent();
-    iprint("}%n");
-    print("%n");
-  }
-
-  private void printAnnotatedConstructor() {
     iprint("/**%n");
     iprint(" * @param config the config%n");
     iprint(" */%n");

@@ -4,8 +4,7 @@ import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface IterableWildcardTypeParamDao {
 
   @Select

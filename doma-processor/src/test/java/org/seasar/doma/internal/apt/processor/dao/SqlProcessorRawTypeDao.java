@@ -4,8 +4,7 @@ import java.util.function.BiFunction;
 import org.seasar.doma.Dao;
 import org.seasar.doma.SqlProcessor;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface SqlProcessorRawTypeDao {
 
   @SqlProcessor

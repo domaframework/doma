@@ -11,8 +11,8 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.jdbc.Reference;
 
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
-@Dao(config = MyConfig.class)
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
+@Dao
 public interface AutoFunctionOptionalParameterDao {
 
   @Function

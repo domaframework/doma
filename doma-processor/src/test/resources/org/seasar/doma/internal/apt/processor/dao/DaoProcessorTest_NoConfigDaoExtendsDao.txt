@@ -17,16 +17,10 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
 
     private final org.seasar.doma.internal.apt.processor.dao.NoConfigEmpDaoImpl __parent;
 
-    /** */
-    public NoConfigDaoExtendsDaoImpl() {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
-        __parent = new org.seasar.doma.internal.apt.processor.dao.NoConfigEmpDaoImpl(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
-    }
-
     /**
-     * @param config the configuration
+     * @param config the config
      */
-    protected NoConfigDaoExtendsDaoImpl(org.seasar.doma.jdbc.Config config) {
+    public NoConfigDaoExtendsDaoImpl(org.seasar.doma.jdbc.Config config) {
         __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
         __parent = new org.seasar.doma.internal.apt.processor.dao.NoConfigEmpDaoImpl(config);
     }

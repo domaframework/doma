@@ -7,8 +7,7 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.internal.apt.processor.entity.EmpDto;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface EmpDtoParameterDao {
 
   @Select

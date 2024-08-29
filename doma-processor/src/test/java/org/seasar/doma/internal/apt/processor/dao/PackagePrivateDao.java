@@ -4,8 +4,7 @@ import example.entity.Emp;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Update;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 interface PackagePrivateDao {
 
   @Update

@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.seasar.doma.jdbc.Config;
 
 /**
  * Indicates a DAO interface.
@@ -59,23 +58,6 @@ import org.seasar.doma.jdbc.Config;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dao {
-
-  /**
-   * The runtime configuration.
-   *
-   * <p>If a user defined class is specified, a generated DAO implementation class has a public
-   * no-arg constructor that instantiates the user defined class in the constructor.
-   *
-   * <p>If it is not specified, a generated DAO implementation class has a public constructor that
-   * accepts a single {@link Config} instance as an argument. In this case, the {@link Config}
-   * instance can be injected by using {@link AnnotateWith}.
-   *
-   * @return the configuration
-   * @deprecated always pass a {@link Config} instance to the constructor of DAO implementation
-   *     class
-   */
-  @Deprecated
-  Class<? extends Config> config() default Config.class;
 
   /**
    * @return the access level of the DAO implementation class.

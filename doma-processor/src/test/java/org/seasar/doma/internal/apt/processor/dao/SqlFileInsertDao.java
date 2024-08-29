@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface SqlFileInsertDao {
 
   @Insert(sqlFile = true)

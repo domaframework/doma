@@ -5,8 +5,7 @@ import org.seasar.doma.BatchInsert;
 import org.seasar.doma.Dao;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface IllegalBatchModifyImmutableEmpDao {
 
   @BatchInsert

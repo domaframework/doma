@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.Config;
  * annotations.
  *
  * <p>This annotation is mainly intended to inject a {@link Config} instance to a DAO
- * implementation's constructor. Don't use {@link Dao#config()} with this annotation.
+ * implementation's constructor.
  *
  * <p>There are 2 ways to use this annotation:
  *
