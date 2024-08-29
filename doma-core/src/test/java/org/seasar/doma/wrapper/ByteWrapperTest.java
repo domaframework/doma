@@ -11,7 +11,7 @@ public class ByteWrapperTest {
   public void testIncrement() {
     ByteWrapper wrapper = new ByteWrapper((byte) 10);
     wrapper.increment();
-    assertEquals(new Byte((byte) 11), wrapper.get());
+    assertEquals((byte) 11, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class ByteWrapperTest {
   public void testDecrement() {
     ByteWrapper wrapper = new ByteWrapper((byte) 10);
     wrapper.decrement();
-    assertEquals(new Byte((byte) 9), wrapper.get());
+    assertEquals((byte) 9, wrapper.get());
   }
 }

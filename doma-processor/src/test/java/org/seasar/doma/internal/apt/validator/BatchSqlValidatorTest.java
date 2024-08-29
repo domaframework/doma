@@ -21,6 +21,11 @@ class BatchSqlValidatorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addSourcePath("src/main/java");
+    addOption(
+        "--add-modules",
+        "org.seasar.doma.mock",
+        "--add-reads",
+        "org.seasar.doma.processor=org.seasar.doma.mock");
   }
 
   @Test

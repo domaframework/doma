@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import javax.sql.DataSource;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;

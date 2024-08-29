@@ -11,7 +11,7 @@ public class IntegerWrapperTest {
   public void testIncrement() {
     IntegerWrapper wrapper = new IntegerWrapper(10);
     wrapper.increment();
-    assertEquals(new Integer(11), wrapper.get());
+    assertEquals(11, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class IntegerWrapperTest {
   public void testDecrement() {
     IntegerWrapper wrapper = new IntegerWrapper(10);
     wrapper.decrement();
-    assertEquals(new Integer(9), wrapper.get());
+    assertEquals(9, wrapper.get());
   }
 }

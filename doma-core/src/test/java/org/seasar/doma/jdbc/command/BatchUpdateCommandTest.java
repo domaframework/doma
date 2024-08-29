@@ -55,8 +55,8 @@ public class BatchUpdateCommandTest {
     String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
     assertEquals(
         "update EMP set NAME = ?, SALARY = ?, VERSION = ? + 1 where ID = ? and VERSION = ?", sql);
-    assertEquals(new Integer(11), emp1.getVersion());
-    assertEquals(new Integer(21), emp2.getVersion());
+    assertEquals(11, emp1.getVersion());
+    assertEquals(21, emp2.getVersion());
   }
 
   @Test

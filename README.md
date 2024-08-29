@@ -1,7 +1,7 @@
 Doma
 ====
 
-Doma 2 is a database access framework for Java 8+.
+Doma is a database access framework for Java.
 Doma has various strengths:
 
 - Verifies and generates source code **at compile time** using [annotation processing][apt].
@@ -20,7 +20,7 @@ Examples
 
 ### Type-safe Criteria API
 
-Written in Java 8:
+Written in Java:
 
 ```java
 Entityql entityql = new Entityql(config);
@@ -61,7 +61,7 @@ for more information.
 
 ### SQL templates
 
-Written in Java 15 or above:
+Written in Java:
 
 ```java
 @Dao
@@ -183,29 +183,30 @@ Major versions
 | Version                                | Status | Repository                             | Branch |
 |----------------------------------------|--------|----------------------------------------|--------|
 | [Doma 1](http://doma.seasar.org/)      | stable | https://github.com/seasarorg/doma/     | master |
-| [Doma 2](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | master |
+| [Doma 2](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | 2.x    |
+| [Doma 3](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | master |
 
 ### Compatibility matrix
 
-|         | Doma 1 | Doma 2 |
-|---------|--------|--------|
-| Java 6  | v      |        |
-| Java 7  | v      |        |
-| Java 8  | v      | v      |
-| Java 9  |        | v      |
-| Java 10 |        | v      |
-| Java 11 |        | v      |
-| Java 12 |        | v      |
-| Java 13 |        | v      |
-| Java 14 |        | v      |
-| Java 15 |        | v      |
-| Java 16 |        | v      |
-| Java 17 |        | v      |
-| Java 18 |        | v      |
-| Java 19 |        | v      |
-| Java 20 |        | v      |
-| Java 21 |        | v      |
-| Java 22 |        | v      |
+|         | Doma 1 | Doma 2 | Doma 3 |
+|---------|--------|--------|--------|
+| Java 6  | v      |        |        |
+| Java 7  | v      |        |        |
+| Java 8  | v      | v      |        |
+| Java 9  |        | v      |        |
+| Java 10 |        | v      |        |
+| Java 11 |        | v      |        |
+| Java 12 |        | v      |        |
+| Java 13 |        | v      |        |
+| Java 14 |        | v      |        |
+| Java 15 |        | v      |        |
+| Java 16 |        | v      |        |
+| Java 17 |        | v      | v      |
+| Java 18 |        | v      | v      |
+| Java 19 |        | v      | v      |
+| Java 20 |        | v      | v      |
+| Java 21 |        | v      | v      |
+| Java 22 |        | v      | v      |
 
 Backers
 ---------------------

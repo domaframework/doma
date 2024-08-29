@@ -22,7 +22,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
-import javax.lang.model.util.SimpleTypeVisitor6;
+import javax.lang.model.util.SimpleTypeVisitor14;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.TypeKindVisitor8;
 import javax.lang.model.util.Types;
@@ -190,7 +190,7 @@ public class MoreTypes implements Types {
   public ArrayType toArrayType(TypeMirror typeMirror) {
     assertNotNull(typeMirror);
     return typeMirror.accept(
-        new SimpleTypeVisitor6<ArrayType, Void>() {
+        new SimpleTypeVisitor14<ArrayType, Void>() {
 
           public ArrayType visitArray(ArrayType t, Void p) {
             return t;

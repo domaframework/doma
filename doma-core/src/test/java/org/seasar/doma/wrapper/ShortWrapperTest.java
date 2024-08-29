@@ -11,7 +11,7 @@ public class ShortWrapperTest {
   public void testIncrement() {
     ShortWrapper wrapper = new ShortWrapper((short) 10);
     wrapper.increment();
-    assertEquals(new Short((short) 11), wrapper.get());
+    assertEquals((short) 11, wrapper.get());
   }
 
   /** */
@@ -19,6 +19,6 @@ public class ShortWrapperTest {
   public void testDecrement() {
     ShortWrapper wrapper = new ShortWrapper((short) 10);
     wrapper.decrement();
-    assertEquals(new Short((short) 9), wrapper.get());
+    assertEquals((short) 9, wrapper.get());
   }
 }

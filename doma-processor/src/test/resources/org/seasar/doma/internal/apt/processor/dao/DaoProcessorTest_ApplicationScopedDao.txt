@@ -2,7 +2,7 @@ package org.seasar.doma.internal.apt.processor.dao;
 
 /** */
 @org.seasar.doma.internal.apt.cdi.ApplicationScoped()
-@javax.annotation.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.DaoImplementation
 public class ApplicationScopedDaoImpl implements org.seasar.doma.internal.apt.processor.dao.ApplicationScopedDao, org.seasar.doma.jdbc.ConfigProvider {
 

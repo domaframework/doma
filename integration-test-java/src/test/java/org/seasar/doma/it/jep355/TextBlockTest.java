@@ -1,8 +1,8 @@
 package org.seasar.doma.it.jep355;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
@@ -15,7 +15,7 @@ public class TextBlockTest {
   void selectAll(Config config) {
     var dao = new TextBlockDaoImpl(config);
     var list = dao.selectAll();
-    assertEquals(14, list.size());
+    Assertions.assertEquals(14, list.size());
   }
 
   @Test

@@ -1,4 +1,4 @@
-package org.seasar.doma.ut;
+package org.seasar.doma.internal.jdbc.sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,8 +8,7 @@ import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
-import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
-import org.seasar.doma.internal.jdbc.sql.SqlParser;
+import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlBuilderSettings;

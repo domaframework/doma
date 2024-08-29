@@ -9,7 +9,7 @@ on:
 
 env:
   JDK_DISTRIBUTION: zulu
-  JDK_VERSION_OLDEST: 8
+  JDK_VERSION_OLDEST: 17
   JDK_VERSION_LATEST: 22
   JDK_VERSION_LATEST_LTS: 21
 
@@ -83,24 +83,22 @@ jobs:
           integration-test-java:test
           integration-test-kotlin:test
 
-      - name: Test with the latest JDK using JPMS
+      - name: Test with the latest JDK
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
-          -PtestUseModule=true
           integration-test-java:test
-          integration-test-java-additional:test
+          integration-test-kotlin:test
 
-      - name: Test with the latest LTS JDK using JPMS
+      - name: Test with the latest LTS JDK
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST_LTS }}
-          -PtestUseModule=true
           integration-test-java:test
-          integration-test-java-additional:test
+          integration-test-kotlin:test
 
       - name: Upload reports
         if: failure()

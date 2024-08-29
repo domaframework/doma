@@ -15,8 +15,8 @@ public final class ClassUtil {
 
   public static <T> T newInstance(Class<T> clazz) throws WrapException {
     try {
-      return clazz.newInstance();
-    } catch (InstantiationException | IllegalAccessException e) {
+      return clazz.getDeclaredConstructor().newInstance();
+    } catch (ReflectiveOperationException e) {
       throw new WrapException(e);
     }
   }
