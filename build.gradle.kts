@@ -175,7 +175,6 @@ configure(modularProjects) {
                 charSet = encoding
                 docEncoding = encoding
                 use()
-                // TODO
                 addStringOption("Xdoclint:none", "-quiet")
             }
         }
