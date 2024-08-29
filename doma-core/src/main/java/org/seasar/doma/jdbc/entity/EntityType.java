@@ -46,38 +46,10 @@ public interface EntityType<ENTITY> {
   /**
    * Returns the table name.
    *
-   * @return the table name
-   * @deprecated Use {@link #getTableName(BiFunction)}
-   */
-  @Deprecated
-  String getTableName();
-
-  /**
-   * Returns the table name.
-   *
    * @param namingFunction the function that applies naming convention
    * @return the table name
    */
   String getTableName(BiFunction<NamingType, String, String> namingFunction);
-
-  /**
-   * Returns the qualified table name.
-   *
-   * @return the qualified table name
-   * @deprecated Use {@link #getQualifiedTableName(BiFunction, Function)}
-   */
-  @Deprecated
-  String getQualifiedTableName();
-
-  /**
-   * Returns the qualified table name.
-   *
-   * @param quoteFunction the function that applies quotation marks
-   * @return the qualified table name
-   * @deprecated Use {@link #getQualifiedTableName(BiFunction, Function)}
-   */
-  @Deprecated
-  String getQualifiedTableName(Function<String, String> quoteFunction);
 
   /**
    * Returns the qualified table name.

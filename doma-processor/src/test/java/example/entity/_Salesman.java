@@ -207,12 +207,6 @@ public class _Salesman extends AbstractEntityType<Salesman> {
   }
 
   @Override
-  @Deprecated
-  public String getTableName() {
-    return getTableName((namingType, text) -> namingType.apply(text));
-  }
-
-  @Override
   public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
     if (__tableName.isEmpty()) {
       return namingFunction.apply(getNamingType(), getName());

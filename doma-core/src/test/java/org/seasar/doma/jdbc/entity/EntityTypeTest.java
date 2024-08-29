@@ -46,31 +46,10 @@ public class EntityTypeTest {
     assertNull(newEmp.getVersion());
   }
 
-  @SuppressWarnings("deprecation")
-  @Test
-  public void testGetTableName() {
-    EntityType<Dept> entityType = _Dept.getSingletonInternal();
-    assertEquals("DEPT", entityType.getTableName());
-  }
-
   @Test
   public void testGetTableName_naming() {
     EntityType<Dept> entityType = _Dept.getSingletonInternal();
     assertEquals("dept", entityType.getTableName((namingType, text) -> text.toLowerCase()));
-  }
-
-  @SuppressWarnings("deprecation")
-  @Test
-  public void testGetQualifiedName() {
-    EntityType<Dept> entityType = _Dept.getSingletonInternal();
-    assertEquals("CATA.DEPT", entityType.getQualifiedTableName());
-  }
-
-  @SuppressWarnings("deprecation")
-  @Test
-  public void testGetQualifiedName_quote() {
-    EntityType<Dept> entityType = _Dept.getSingletonInternal();
-    assertEquals("[CATA].[DEPT]", entityType.getQualifiedTableName(text -> "[" + text + "]"));
   }
 
   @Test

@@ -74,13 +74,6 @@ public class _Emp extends AbstractEntityType<Emp> {
   }
 
   @Override
-  @Deprecated
-  public String getTableName() {
-
-    return null;
-  }
-
-  @Override
   public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
 
     return null;

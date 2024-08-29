@@ -198,12 +198,6 @@ public class _ImmutableEmp extends AbstractEntityType<ImmutableEmp> {
   }
 
   @Override
-  @Deprecated
-  public String getTableName() {
-    return __tableName;
-  }
-
-  @Override
   public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
     if (__tableName.isEmpty()) {
       return namingFunction.apply(getNamingType(), getName());

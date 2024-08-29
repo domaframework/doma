@@ -67,26 +67,8 @@ public class EntityTypeProxy<ENTITY> implements EntityType<ENTITY> {
   }
 
   @Override
-  @Deprecated
-  public String getTableName() {
-    return entityType.getTableName();
-  }
-
-  @Override
   public String getTableName(BiFunction<NamingType, String, String> namingFunction) {
     return entityType.getTableName(namingFunction);
-  }
-
-  @Override
-  @Deprecated
-  public String getQualifiedTableName() {
-    return entityType.getQualifiedTableName();
-  }
-
-  @Override
-  @Deprecated
-  public String getQualifiedTableName(Function<String, String> quoteFunction) {
-    return entityType.getQualifiedTableName(quoteFunction);
   }
 
   @Override
