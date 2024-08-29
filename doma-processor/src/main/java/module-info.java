@@ -10,6 +10,5 @@ module org.seasar.doma.processor {
       org.seasar.doma.internal.apt.processor.EmbeddableProcessor,
       org.seasar.doma.internal.apt.processor.EntityProcessor,
       org.seasar.doma.internal.apt.processor.DaoProcessor,
-      org.seasar.doma.internal.apt.processor.ScopeProcessor,
-      org.seasar.doma.internal.apt.processor.SingletonConfigProcessor;
+      org.seasar.doma.internal.apt.processor.ScopeProcessor;
 }

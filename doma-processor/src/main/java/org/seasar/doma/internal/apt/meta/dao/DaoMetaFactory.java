@@ -149,60 +149,35 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   private void validateUserDefinedConfig(
       TypeElement configElement, DaoMeta daoMeta, DaoAnnot daoAnnot) {
-    @SuppressWarnings("deprecation")
-    org.seasar.doma.SingletonConfig singletonConfig =
-        configElement.getAnnotation(org.seasar.doma.SingletonConfig.class);
-    if (singletonConfig == null) {
-      if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+    if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
+      throw new AptException(
+          Message.DOMA4163,
+          daoMeta.getTypeElement(),
+          daoAnnot.getAnnotationMirror(),
+          daoAnnot.getConfig(),
+          new Object[] {configElement.getQualifiedName()});
+    }
+    ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(configElement);
+    if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
+      Optional<VariableElement> field =
+          ElementFilter.fieldsIn(configElement.getEnclosedElements()).stream()
+              .filter(e -> e.getSimpleName().contentEquals(SINGLETON_CONFIG_FIELD_NAME))
+              .filter(
+                  e ->
+                      e.getModifiers()
+                          .containsAll(
+                              EnumSet.of(Modifier.STATIC, Modifier.PUBLIC, Modifier.FINAL)))
+              .filter(e -> ctx.getMoreTypes().isAssignableWithErasure(e.asType(), Config.class))
+              .findFirst();
+      if (field.isPresent()) {
+        daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
+      } else {
         throw new AptException(
-            Message.DOMA4163,
+            Message.DOMA4164,
             daoMeta.getTypeElement(),
             daoAnnot.getAnnotationMirror(),
             daoAnnot.getConfig(),
             new Object[] {configElement.getQualifiedName()});
-      }
-      ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(configElement);
-      if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-        Optional<VariableElement> field =
-            ElementFilter.fieldsIn(configElement.getEnclosedElements()).stream()
-                .filter(e -> e.getSimpleName().contentEquals(SINGLETON_CONFIG_FIELD_NAME))
-                .filter(
-                    e ->
-                        e.getModifiers()
-                            .containsAll(
-                                EnumSet.of(Modifier.STATIC, Modifier.PUBLIC, Modifier.FINAL)))
-                .filter(e -> ctx.getMoreTypes().isAssignableWithErasure(e.asType(), Config.class))
-                .findFirst();
-        if (field.isPresent()) {
-          daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
-        } else {
-          throw new AptException(
-              Message.DOMA4164,
-              daoMeta.getTypeElement(),
-              daoAnnot.getAnnotationMirror(),
-              daoAnnot.getConfig(),
-              new Object[] {configElement.getQualifiedName()});
-        }
-      }
-    } else {
-      String methodName = singletonConfig.method();
-      boolean present =
-          ElementFilter.methodsIn(configElement.getEnclosedElements()).stream()
-              .filter(
-                  m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-              .filter(
-                  m -> ctx.getMoreTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
-              .filter(m -> m.getParameters().isEmpty())
-              .anyMatch(m -> m.getSimpleName().toString().equals(methodName));
-      if (present) {
-        daoMeta.setSingletonMethodName(methodName);
-      } else {
-        throw new AptException(
-            Message.DOMA4255,
-            daoMeta.getTypeElement(),
-            daoAnnot.getAnnotationMirror(),
-            daoAnnot.getConfig(),
-            new Object[] {configElement.getQualifiedName(), methodName});
       }
     }
   }

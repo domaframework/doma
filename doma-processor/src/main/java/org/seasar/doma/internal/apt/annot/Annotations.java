@@ -260,13 +260,6 @@ public class Annotations {
     return newInstance(field, SequenceGenerator.class, SequenceGeneratorAnnot::new);
   }
 
-  @SuppressWarnings("deprecation")
-  public SingletonConfigAnnot newSingletonConfigAnnot(TypeElement typeElement) {
-    assertNotNull(typeElement);
-    return newInstance(
-        typeElement, org.seasar.doma.SingletonConfig.class, SingletonConfigAnnot::new);
-  }
-
   public SqlAnnot newSqlAnnot(ExecutableElement method) {
     assertNotNull(method);
     return newInstance(method, Sql.class, SqlAnnot::new);
