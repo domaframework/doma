@@ -43,5 +43,14 @@ jobs:
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           assemble check
 
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CodeQL-Build
+          path: |
+            ./**/build/reports
+            /home/runner/work/doma/doma/.gradle
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
