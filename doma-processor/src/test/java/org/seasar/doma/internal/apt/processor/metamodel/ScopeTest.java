@@ -26,7 +26,6 @@ public class ScopeTest extends CompilerSupport {
   void setup() {
     addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
-    addOption("--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED");
   }
 
   @TestTemplate
