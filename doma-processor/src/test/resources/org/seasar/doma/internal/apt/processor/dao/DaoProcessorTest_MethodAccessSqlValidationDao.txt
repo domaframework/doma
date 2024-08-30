@@ -13,46 +13,11 @@ public class MethodAccessSqlValidationDaoImpl implements org.seasar.doma.interna
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
-    /** */
-    public MethodAccessSqlValidationDaoImpl() {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
-    }
-
     /**
-     * @param connection the connection
+     * @param config the config
      */
-    public MethodAccessSqlValidationDaoImpl(java.sql.Connection connection) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
-    }
-
-    /**
-     * @param dataSource the dataSource
-     */
-    public MethodAccessSqlValidationDaoImpl(javax.sql.DataSource dataSource) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
-    }
-
-    /**
-     * @param config the configuration
-     */
-    protected MethodAccessSqlValidationDaoImpl(org.seasar.doma.jdbc.Config config) {
+    public MethodAccessSqlValidationDaoImpl(org.seasar.doma.jdbc.Config config) {
         __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
-    }
-
-    /**
-     * @param config the configuration
-     * @param connection the connection
-     */
-    protected MethodAccessSqlValidationDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
-    }
-
-    /**
-     * @param config the configuration
-     * @param dataSource the dataSource
-     */
-    protected MethodAccessSqlValidationDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
     }
 
     @Override

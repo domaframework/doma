@@ -9,7 +9,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -75,7 +73,6 @@ import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.SqlProcessorQueryMetaFactory;
 import org.seasar.doma.internal.jdbc.util.SqlFileUtil;
-import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
@@ -136,75 +133,6 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     daoMeta.setType(interfaceElement.asType());
     doAnnotateWith(daoMeta);
     doParentDao(daoMeta);
-
-    DaoAnnot daoAnnot = daoMeta.getDaoAnnot();
-    if (daoAnnot.hasUserDefinedConfig()) {
-      TypeElement configElement = ctx.getMoreTypes().toTypeElement(daoAnnot.getConfigValue());
-      if (configElement == null) {
-        throw new AptIllegalStateException("failed to convert to TypeElement.");
-      }
-      validateUserDefinedConfig(configElement, daoMeta, daoAnnot);
-    }
-  }
-
-  private void validateUserDefinedConfig(
-      TypeElement configElement, DaoMeta daoMeta, DaoAnnot daoAnnot) {
-    @SuppressWarnings("deprecation")
-    org.seasar.doma.SingletonConfig singletonConfig =
-        configElement.getAnnotation(org.seasar.doma.SingletonConfig.class);
-    if (singletonConfig == null) {
-      if (configElement.getModifiers().contains(Modifier.ABSTRACT)) {
-        throw new AptException(
-            Message.DOMA4163,
-            daoMeta.getTypeElement(),
-            daoAnnot.getAnnotationMirror(),
-            daoAnnot.getConfig(),
-            new Object[] {configElement.getQualifiedName()});
-      }
-      ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(configElement);
-      if (constructor == null || !constructor.getModifiers().contains(Modifier.PUBLIC)) {
-        Optional<VariableElement> field =
-            ElementFilter.fieldsIn(configElement.getEnclosedElements()).stream()
-                .filter(e -> e.getSimpleName().contentEquals(SINGLETON_CONFIG_FIELD_NAME))
-                .filter(
-                    e ->
-                        e.getModifiers()
-                            .containsAll(
-                                EnumSet.of(Modifier.STATIC, Modifier.PUBLIC, Modifier.FINAL)))
-                .filter(e -> ctx.getMoreTypes().isAssignableWithErasure(e.asType(), Config.class))
-                .findFirst();
-        if (field.isPresent()) {
-          daoMeta.setSingletonFieldName(SINGLETON_CONFIG_FIELD_NAME);
-        } else {
-          throw new AptException(
-              Message.DOMA4164,
-              daoMeta.getTypeElement(),
-              daoAnnot.getAnnotationMirror(),
-              daoAnnot.getConfig(),
-              new Object[] {configElement.getQualifiedName()});
-        }
-      }
-    } else {
-      String methodName = singletonConfig.method();
-      boolean present =
-          ElementFilter.methodsIn(configElement.getEnclosedElements()).stream()
-              .filter(
-                  m -> m.getModifiers().containsAll(EnumSet.of(Modifier.STATIC, Modifier.PUBLIC)))
-              .filter(
-                  m -> ctx.getMoreTypes().isAssignableWithErasure(m.getReturnType(), Config.class))
-              .filter(m -> m.getParameters().isEmpty())
-              .anyMatch(m -> m.getSimpleName().toString().equals(methodName));
-      if (present) {
-        daoMeta.setSingletonMethodName(methodName);
-      } else {
-        throw new AptException(
-            Message.DOMA4255,
-            daoMeta.getTypeElement(),
-            daoAnnot.getAnnotationMirror(),
-            daoAnnot.getConfig(),
-            new Object[] {configElement.getQualifiedName(), methodName});
-      }
-    }
   }
 
   private void validateInterface(TypeElement interfaceElement, DaoMeta daoMeta) {

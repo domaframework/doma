@@ -10,8 +10,7 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.message.Message;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface ResultStreamDao {
 
   @Select

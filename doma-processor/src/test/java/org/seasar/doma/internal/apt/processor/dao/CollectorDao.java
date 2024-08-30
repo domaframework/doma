@@ -14,8 +14,7 @@ import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface CollectorDao {
 
   @Select(strategy = SelectType.COLLECT)

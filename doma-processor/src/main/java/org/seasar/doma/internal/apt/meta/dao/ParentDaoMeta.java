@@ -29,8 +29,4 @@ public class ParentDaoMeta {
   public List<ExecutableElement> getMethods() {
     return methods;
   }
-
-  public boolean hasUserDefinedConfig() {
-    return daoAnnot.hasUserDefinedConfig();
-  }
 }

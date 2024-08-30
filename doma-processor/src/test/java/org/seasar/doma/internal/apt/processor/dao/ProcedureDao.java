@@ -8,8 +8,7 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface ProcedureDao {
 
   @Procedure(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)

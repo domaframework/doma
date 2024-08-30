@@ -12,8 +12,8 @@ import org.seasar.doma.Out;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.jdbc.Reference;
 
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
-@Dao(config = MyConfig.class)
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
+@Dao
 public interface FunctionDao {
 
   @Function(mapKeyNaming = MapKeyNamingType.CAMEL_CASE)

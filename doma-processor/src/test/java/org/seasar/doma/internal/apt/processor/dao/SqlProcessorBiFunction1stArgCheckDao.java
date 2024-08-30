@@ -5,8 +5,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.jdbc.PreparedSql;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface SqlProcessorBiFunction1stArgCheckDao {
 
   @SqlProcessor

@@ -350,16 +350,6 @@ public class SqlFileUpdateQueryTest {
 
     protected final _Emp emp;
 
-    @Deprecated
-    public String getQualifiedTableName() {
-      return emp.getQualifiedTableName();
-    }
-
-    @Deprecated
-    public String getQualifiedTableName(Function<String, String> quoteFunction) {
-      return emp.getQualifiedTableName(quoteFunction);
-    }
-
     public String getQualifiedTableName(
         BiFunction<NamingType, String, String> namingFunction,
         Function<String, String> quoteFunction) {
@@ -445,11 +435,6 @@ public class SqlFileUpdateQueryTest {
 
     public String getSchemaName() {
       return emp.getSchemaName();
-    }
-
-    @Deprecated
-    public String getTableName() {
-      return emp.getTableName();
     }
 
     public String getTableName(BiFunction<NamingType, String, String> namingFunction) {

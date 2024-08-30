@@ -5,8 +5,7 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface AutoInsertDao {
 
   @Insert

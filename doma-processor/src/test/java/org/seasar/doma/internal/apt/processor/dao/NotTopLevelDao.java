@@ -4,7 +4,6 @@ import org.seasar.doma.Dao;
 
 public interface NotTopLevelDao {
 
-  @SuppressWarnings("deprecation")
-  @Dao(config = MyConfig.class)
+  @Dao
   interface Hoge {}
 }

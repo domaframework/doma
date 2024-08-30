@@ -5,8 +5,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class, accessLevel = AccessLevel.PACKAGE)
+@Dao(accessLevel = AccessLevel.PACKAGE)
 public interface PackageAccessLevelDao {
 
   @Insert

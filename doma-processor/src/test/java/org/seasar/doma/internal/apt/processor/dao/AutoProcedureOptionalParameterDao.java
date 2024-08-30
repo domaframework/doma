@@ -7,8 +7,8 @@ import org.seasar.doma.Out;
 import org.seasar.doma.Procedure;
 import org.seasar.doma.jdbc.Reference;
 
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "deprecation"})
-@Dao(config = MyConfig.class)
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
+@Dao
 public interface AutoProcedureOptionalParameterDao {
 
   @Procedure

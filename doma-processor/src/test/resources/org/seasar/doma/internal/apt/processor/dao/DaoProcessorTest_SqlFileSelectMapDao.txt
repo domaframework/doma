@@ -15,46 +15,11 @@ public class SqlFileSelectMapDaoImpl implements org.seasar.doma.internal.apt.pro
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
-    /** */
-    public SqlFileSelectMapDaoImpl() {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig());
-    }
-
     /**
-     * @param connection the connection
+     * @param config the config
      */
-    public SqlFileSelectMapDaoImpl(java.sql.Connection connection) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), connection);
-    }
-
-    /**
-     * @param dataSource the dataSource
-     */
-    public SqlFileSelectMapDaoImpl(javax.sql.DataSource dataSource) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(new org.seasar.doma.internal.apt.processor.dao.MyConfig(), dataSource);
-    }
-
-    /**
-     * @param config the configuration
-     */
-    protected SqlFileSelectMapDaoImpl(org.seasar.doma.jdbc.Config config) {
+    public SqlFileSelectMapDaoImpl(org.seasar.doma.jdbc.Config config) {
         __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
-    }
-
-    /**
-     * @param config the configuration
-     * @param connection the connection
-     */
-    protected SqlFileSelectMapDaoImpl(org.seasar.doma.jdbc.Config config, java.sql.Connection connection) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, connection);
-    }
-
-    /**
-     * @param config the configuration
-     * @param dataSource the dataSource
-     */
-    protected SqlFileSelectMapDaoImpl(org.seasar.doma.jdbc.Config config, javax.sql.DataSource dataSource) {
-        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config, dataSource);
     }
 
     @Override

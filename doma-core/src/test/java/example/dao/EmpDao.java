@@ -14,8 +14,7 @@ import org.seasar.doma.SelectType;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.SelectOptions;
 
-@SuppressWarnings("deprecation")
-@Dao(config = ExampleConfig.class)
+@Dao
 public interface EmpDao {
 
   @Select

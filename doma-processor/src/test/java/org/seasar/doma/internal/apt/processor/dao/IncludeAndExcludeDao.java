@@ -6,8 +6,7 @@ import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableUser;
 import org.seasar.doma.jdbc.Result;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface IncludeAndExcludeDao {
 
   @Update(

@@ -11,8 +11,7 @@ import org.seasar.doma.ResultSet;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.jdbc.Reference;
 
-@SuppressWarnings("deprecation")
-@Dao(config = MyConfig.class)
+@Dao
 public interface AutoFunctionDao {
 
   @Function
