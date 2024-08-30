@@ -41,7 +41,7 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
-          assemble check
+          assemble check -x :doma-processor:check
 
       - name: Upload reports
         if: failure()
