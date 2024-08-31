@@ -32,14 +32,11 @@ If the above command is successful, the following directories will contain the n
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-kotlin/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-processor/
 - https://repo1.maven.org/maven2/org/seasar/doma/doma-slf4j/
+- https://repo1.maven.org/maven2/org/seasar/doma/doma-template/
 
 ## Publish documentation
 
-(No operation required)
-
-The webhook publishes documentation to the [ReadTheDocs](https://doma.readthedocs.io/en/latest/).
-
-See also [Incoming Webhooks and Automation](https://docs.readthedocs.io/en/stable/webhooks.html).
+Creating a new tag at [domaframework/doma-docs](https://github.com/domaframework/doma-docs) will trigger synchronization with [ReadTheDocs](https://doma.readthedocs.io/en/latest/).
 
 ## Publish release notes
 
@@ -49,6 +46,5 @@ and publish release notes.
 ## Announce the release
 
 Announce the release of new version using
-[Twitter](https://twitter.com/domaframework),
-[Zulip](https://domaframework.zulipchat.com), and
-[Google Group](https://groups.google.com/g/doma-user).
+[Twitter](https://twitter.com/domaframework) and
+[Zulip](https://domaframework.zulipchat.com).
