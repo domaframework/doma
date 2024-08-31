@@ -210,7 +210,7 @@ configure(integrationTestProjects) {
         testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
         testRuntimeOnly("com.oracle.database.jdbc:ojdbc11-production:23.5.0.24.07")
         testRuntimeOnly("org.postgresql:postgresql:42.7.4")
-        testRuntimeOnly("com.microsoft.sqlserver:mssql-jdbc:8.4.1.jre8")
+        testRuntimeOnly("com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11")
         testRuntimeOnly("org.testcontainers:mysql")
         testRuntimeOnly("org.testcontainers:oracle-xe")
         testRuntimeOnly("org.testcontainers:postgresql")
