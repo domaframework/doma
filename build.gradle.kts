@@ -226,10 +226,6 @@ configure(integrationTestProjects) {
             options.encoding = encoding
         }
 
-        compileJava {
-            options.incrementalAfterFailure.set(false)
-        }
-
         compileTestJava {
             options.compilerArgs.addAll(listOf("-proc:none"))
         }
