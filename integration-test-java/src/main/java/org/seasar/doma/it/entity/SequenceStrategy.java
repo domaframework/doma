@@ -1,5 +1,6 @@
 package org.seasar.doma.it.entity;
 
+import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -17,6 +18,7 @@ public class SequenceStrategy {
   @SequenceGenerator(sequence = "SEQUENCE_STRATEGY_ID", allocationSize = 50)
   Integer id;
 
+  @Column(quote = true)
   String value;
 
   @OriginalStates SequenceStrategy originalStates;

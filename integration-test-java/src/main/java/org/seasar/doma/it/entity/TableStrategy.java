@@ -1,5 +1,6 @@
 package org.seasar.doma.it.entity;
 
+import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -14,9 +15,10 @@ public class TableStrategy {
 
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE)
-  @TableGenerator(pkColumnValue = "TABLE_STRATEGY_ID", allocationSize = 50)
+  @TableGenerator(pkColumnValue = "TABLE_STRATEGY_ID", valueColumnName = "VAL", allocationSize = 50)
   Integer id;
 
+  @Column(quote = true)
   String value;
 
   @OriginalStates TableStrategy originalStates;

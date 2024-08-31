@@ -1,5 +1,6 @@
 package org.seasar.doma.it.entity;
 
+import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -15,6 +16,7 @@ public class PrimitiveIdentityStrategy {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   int id = -1;
 
+  @Column(quote = true)
   Integer value;
 
   @OriginalStates PrimitiveIdentityStrategy originalStates;

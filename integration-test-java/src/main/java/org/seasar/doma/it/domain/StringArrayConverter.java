@@ -2,6 +2,7 @@ package org.seasar.doma.it.domain;
 
 import java.sql.Array;
 import java.sql.SQLException;
+import java.util.Arrays;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
@@ -22,7 +23,8 @@ public class StringArrayConverter implements DomainConverter<String[], Object> {
     if (value instanceof Array) {
       Array a = (Array) value;
       try {
-        return (String[]) a.getArray();
+        Object[] objects = (Object[]) a.getArray();
+        return Arrays.stream(objects).map(Object::toString).toArray(String[]::new);
       } catch (SQLException e) {
         return null;
       }

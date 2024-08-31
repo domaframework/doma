@@ -63,7 +63,7 @@ public class H2PagingTransformerTest {
 
   @Test
   public void testOffsetOnly() {
-    String expected = "select * from emp order by emp.id limit -1 offset 5";
+    String expected = "select * from emp order by emp.id offset 5";
     H2PagingTransformer transformer = new H2PagingTransformer(5, -1);
     SqlParser parser = new SqlParser("select * from emp order by emp.id");
     SqlNode sqlNode = transformer.transform(parser.parse());

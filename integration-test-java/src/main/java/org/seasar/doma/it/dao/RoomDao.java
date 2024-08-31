@@ -1,5 +1,7 @@
 package org.seasar.doma.it.dao;
 
+import java.sql.Array;
+import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
@@ -16,4 +18,7 @@ public interface RoomDao {
 
   @Insert
   int insert(Room room);
+
+  @ArrayFactory(typeName = "VARCHAR")
+  Array createArray(String[] elements);
 }
