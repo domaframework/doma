@@ -116,6 +116,11 @@ public class MssqlDialect extends Mssql2008Dialect {
   }
 
   @Override
+  public boolean supportsUpsertEmulationWithMergeStatement() {
+    return true;
+  }
+
+  @Override
   public ScriptBlockContext createScriptBlockContext() {
     return new MssqlScriptBlockContext();
   }

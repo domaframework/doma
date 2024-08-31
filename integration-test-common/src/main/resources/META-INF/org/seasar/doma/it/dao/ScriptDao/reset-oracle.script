@@ -1,0 +1,2 @@
+alter table IDENTITY_STRATEGY modify(id generated as identity (start with 1));
+alter table IDENTITY_STRATEGY2 modify(id generated as identity (start with 1));

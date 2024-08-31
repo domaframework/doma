@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -105,7 +106,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
     if (generatedIdPropertyType != null) {
       if (idGenerationConfig == null) {
-        if (generatedKeysIgnored) {
+        // TODO should we stop supporting ReservedIdProvider?
+        if (generatedKeysIgnored || duplicateKeyType != DuplicateKeyType.EXCEPTION) {
           idGenerationConfig = new IdGenerationConfig(config, entityType);
         } else {
           idGenerationConfig =
@@ -169,7 +171,14 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       assembleInsertSql(builder, naming, dialect);
     } else {
-      assembleUpsertSql(builder, naming, dialect);
+      if (dialect.supportsUpsertEmulationWithMergeStatement()
+          && QueryUtil.isIdentityKeyIncludedInDuplicateKeys(
+              generatedIdPropertyType, duplicateKeyNames)) {
+        // fallback to INSERT
+        assembleInsertSql(builder, naming, dialect);
+      } else {
+        assembleUpsertSql(builder, naming, dialect);
+      }
     }
     PreparedSql sql = builder.build(this::comment);
     sqls.add(sql);
@@ -225,9 +234,14 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   @Override
   public void generateId(Statement statement, int index) {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
+      ENTITY entity = entities.get(index);
       ENTITY newEntity =
-          generatedIdPropertyType.postInsert(
-              entityType, entities.get(index), idGenerationConfig, statement);
+          generatedIdPropertyType
+              .postInsert(
+                  entityType, Collections.singletonList(entity), idGenerationConfig, statement)
+              .stream()
+              .findFirst()
+              .orElse(entity);
       entities.set(index, newEntity);
     }
   }

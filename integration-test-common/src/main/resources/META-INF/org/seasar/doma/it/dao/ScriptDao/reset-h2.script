@@ -1,0 +1,2 @@
+alter table IDENTITY_STRATEGY alter column id restart with 1;
+alter table IDENTITY_STRATEGY2 alter column id restart with 1;

@@ -1,0 +1,3 @@
+alter table IDENTITY_STRATEGY auto_increment = 1;
+alter table IDENTITY_STRATEGY2 auto_increment = 1;
+

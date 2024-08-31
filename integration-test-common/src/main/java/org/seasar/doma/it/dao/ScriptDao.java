@@ -10,6 +10,9 @@ public interface ScriptDao {
   @Script(sqlLog = SqlLogType.NONE)
   void create();
 
+  @Script(sqlLog = SqlLogType.NONE)
+  void reset();
+
   @Script(haltOnError = false, sqlLog = SqlLogType.NONE)
   void drop();
 }

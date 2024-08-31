@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.NativeSql;
@@ -410,6 +412,137 @@ public class NativeSqlInsertTest {
     assertEquals("ACCOUNTING", resultDepartment.getDepartmentName());
     assertEquals("NEW YORK", resultDepartment.getLocation());
     assertEquals(1, resultDepartment.getVersion());
+  }
+
+  @Test
+  public void onDuplicateKeyUpdate_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "A");
+            })
+        .onDuplicateKeyUpdate()
+        .keys(i.uniqueValue)
+        .execute();
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "2");
+              c.value(i.value, "B");
+            })
+        .onDuplicateKeyUpdate()
+        .keys(i.uniqueValue)
+        .execute();
+
+    var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  public void onDuplicateKeyUpdate_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "A");
+            })
+        .onDuplicateKeyUpdate()
+        .keys(i.uniqueValue)
+        .execute();
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "B");
+            })
+        .onDuplicateKeyUpdate()
+        .keys(i.uniqueValue)
+        .execute();
+
+    var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("B", entities.get(0).getValue());
+  }
+
+  @Test
+  public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "A");
+            })
+        .onDuplicateKeyIgnore()
+        .execute();
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "2");
+              c.value(i.value, "B");
+            })
+        .onDuplicateKeyIgnore()
+        .execute();
+
+    var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void onDuplicateKeyIgnore_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "A");
+            })
+        .onDuplicateKeyIgnore()
+        .execute();
+    nativeSql
+        .insert(i)
+        .values(
+            c -> {
+              c.value(i.uniqueValue, "1");
+              c.value(i.value, "B");
+            })
+        .onDuplicateKeyIgnore()
+        .execute();
+
+    var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
   }
 
   @Test

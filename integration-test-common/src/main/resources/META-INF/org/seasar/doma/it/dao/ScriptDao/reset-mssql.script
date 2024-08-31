@@ -1,0 +1,4 @@
+truncate table IDENTITY_STRATEGY;
+truncate table IDENTITY_STRATEGY2;
+dbcc checkident ('IDENTITY_STRATEGY', reseed, 1);
+dbcc checkident ('IDENTITY_STRATEGY2', reseed, 1);

@@ -174,6 +174,10 @@ public interface Dialect {
     return true;
   }
 
+  default boolean supportsUpsertEmulationWithMergeStatement() {
+    return false;
+  }
+
   /**
    * Returns an SQL object to get IDENTITY values that are generated in the database.
    *

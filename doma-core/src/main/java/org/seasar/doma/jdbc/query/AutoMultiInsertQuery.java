@@ -156,7 +156,14 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       assembleInsertSql(builder, naming, dialect);
     } else {
-      assembleUpsertSql(builder, naming, dialect);
+      if (dialect.supportsUpsertEmulationWithMergeStatement()
+          && QueryUtil.isIdentityKeyIncludedInDuplicateKeys(
+              generatedIdPropertyType, duplicateKeyNames)) {
+        // fallback to INSERT
+        assembleInsertSql(builder, naming, dialect);
+      } else {
+        assembleUpsertSql(builder, naming, dialect);
+      }
     }
     sql = builder.build(this::comment);
   }

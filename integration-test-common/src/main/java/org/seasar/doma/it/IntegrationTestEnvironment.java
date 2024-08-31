@@ -121,6 +121,7 @@ public class IntegrationTestEnvironment
 
   @Override
   public void beforeTestExecution(ExtensionContext context) {
+    scriptDao.reset();
     config.getLocalTransaction().begin();
   }
 
