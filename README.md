@@ -20,14 +20,12 @@ Examples
 
 ### Type-safe Criteria API
 
-Written in Java:
-
 ```java
-Entityql entityql = new Entityql(config);
-Employee_ e = new Employee_();
-Department_ d = new Department_();
+var entityql = new Entityql(config);
+var e = new Employee_();
+var d = new Department_();
 
-List<Employee> list = entityql
+var employees = entityql
     .from(e)
     .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
     .where(c -> c.eq(d.departmentName, "SALES"))
@@ -38,30 +36,10 @@ List<Employee> list = entityql
     .fetch();
 ```
 
-Written in Kotlin:
-
-```kotlin
-val entityql = KEntityql(config)
-val e = Employee_()
-val d = Department_()
-
-val list = entityql
-    .from(e)
-    .innerJoin(d) { eq(e.departmentId, d.departmentId) }
-    .where { eq(d.departmentName, "SALES") }
-    .associate(e, d) { employee, department ->
-        employee.department = department
-        department.employeeList += employee
-    }
-    .fetch()
-```
-
 See [Criteria API](https://doma.readthedocs.io/en/latest/criteria-api/)
 for more information.
 
 ### SQL templates
-
-Written in Java:
 
 ```java
 @Dao
