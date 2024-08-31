@@ -160,11 +160,11 @@ Major versions
 
 ### Status and Repository
 
-| Version                                | Status | Repository                             | Branch |
-|----------------------------------------|--------|----------------------------------------|--------|
-| [Doma 1](http://doma.seasar.org/)      | stable | https://github.com/seasarorg/doma/     | master |
-| [Doma 2](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | 2.x    |
-| [Doma 3](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | master |
+| Version                                | Status          | Repository                             | Branch |
+|----------------------------------------|-----------------|----------------------------------------|--------|
+| [Doma 1](http://doma.seasar.org/)      | limited-support | https://github.com/seasarorg/doma/     | master |
+| [Doma 2](http://doma.readthedocs.org/) | limited-support | https://github.com/domaframework/doma/ | 2.x    |
+| [Doma 3](http://doma.readthedocs.org/) | stable          | https://github.com/domaframework/doma/ | master |
 
 ### Compatibility matrix
 
