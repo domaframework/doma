@@ -603,8 +603,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
-  // TODO support other DBMSs
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);

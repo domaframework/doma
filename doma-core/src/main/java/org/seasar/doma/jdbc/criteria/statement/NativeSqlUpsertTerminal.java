@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.seasar.doma.GenerationType;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -19,6 +20,7 @@ import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.query.CriteriaQuery;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
@@ -50,11 +52,35 @@ public class NativeSqlUpsertTerminal extends AbstractStatement<NativeSqlUpsertTe
   @Override
   protected Command<Integer> createCommand() {
     InsertContext context = declaration.getContext();
+
+    if (config.getDialect().supportsUpsertEmulationWithMergeStatement()
+        && isIdentityKeyIncludedInDuplicateKeys(context)) {
+      // fallback to INSERT statement from MERGE statement
+      NativeSqlInsertTerminal terminal = new NativeSqlInsertTerminal(config, declaration);
+      return terminal.createCommand();
+    }
+
     InsertSettings settings = context.getSettings();
     PreparedSql sql = createPreparedSql(settings, context);
     CriteriaQuery query = new CriteriaQuery(config, sql, getClass().getName(), EXECUTE_METHOD_NAME);
     query.setQueryTimeout(settings.getQueryTimeout());
     return new InsertCommand(query);
+  }
+
+  static boolean isIdentityKeyIncludedInDuplicateKeys(InsertContext context) {
+    GeneratedIdPropertyType<?, ?, ?> generatedIdPropertyType =
+        context.entityMetamodel.asType().getGeneratedIdPropertyType();
+    if (generatedIdPropertyType == null) {
+      return false;
+    }
+    if (generatedIdPropertyType.getGenerationType() != GenerationType.IDENTITY) {
+      return false;
+    }
+    List<PropertyMetamodel<?>> keys = context.onDuplicateContext.keys;
+    if (keys.isEmpty()) {
+      return true;
+    }
+    return keys.stream().anyMatch(p -> p.getName().equals(generatedIdPropertyType.getName()));
   }
 
   private PreparedSql createPreparedSql(InsertSettings settings, InsertContext context) {

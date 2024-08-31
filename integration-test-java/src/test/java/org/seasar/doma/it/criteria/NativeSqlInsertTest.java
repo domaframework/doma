@@ -482,8 +482,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
-  // TODO other DMBSs
   public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 

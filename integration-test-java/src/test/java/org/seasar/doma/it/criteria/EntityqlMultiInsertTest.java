@@ -239,8 +239,7 @@ public class EntityqlMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
-  // TODO other DMBSs
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
