@@ -116,7 +116,7 @@ configure(modularProjects) {
                 pom {
                     val projectUrl: String by project
                     name.set(project.name)
-                    description.set("DAO Oriented Database Mapping Framework for Java 17+")
+                    description.set("DAO Oriented Database Mapping Framework for Java")
                     url.set(projectUrl)
                     licenses {
                         license {
