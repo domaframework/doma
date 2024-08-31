@@ -3,6 +3,7 @@ package org.seasar.doma.it.criteria;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -10,7 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
@@ -138,5 +141,108 @@ public class EntityqlBatchInsertTest {
     assertEquals(10, resultDepartment2.getDepartmentNo());
     assertEquals("ACCOUNTING", resultDepartment2.getDepartmentName());
     assertEquals("NEW YORK", resultDepartment2.getLocation());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void onDuplicateKeyUpdate_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyUpdate().execute();
+    assertEquals(2, result.getEntities().size());
+    assertEquals(1, result.getEntities().get(0).getId());
+    assertEquals(2, result.getEntities().get(1).getId());
+
+    var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  // TODO support postgres
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8})
+  public void onDuplicateKeyUpdate_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyUpdate().execute();
+    assertEquals(2, result.getEntities().size());
+    assertEquals(1, result.getEntities().get(0).getId());
+    assertEquals(1, result.getEntities().get(1).getId());
+
+    var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("B", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyIgnore().execute();
+    assertEquals(2, result.getEntities().size());
+    assertEquals(1, result.getEntities().get(0).getId());
+    assertEquals(2, result.getEntities().get(1).getId());
+
+    var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void onDuplicateKeyIgnore_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyIgnore().execute();
+    assertEquals(2, result.getEntities().size());
+    assertEquals(1, result.getEntities().get(0).getId());
+    assertNull(result.getEntities().get(1).getId());
+
+    var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
   }
 }

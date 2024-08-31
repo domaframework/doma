@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -184,7 +185,12 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   public void generateId(Statement statement) {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
       entity =
-          generatedIdPropertyType.postInsert(entityType, entity, idGenerationConfig, statement);
+          generatedIdPropertyType
+              .postInsert(
+                  entityType, Collections.singletonList(entity), idGenerationConfig, statement)
+              .stream()
+              .findFirst()
+              .orElse(entity);
     }
   }
 

@@ -33,6 +33,8 @@ import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.DeptDao;
 import org.seasar.doma.it.dao.DeptDaoImpl;
+import org.seasar.doma.it.dao.IdentityStrategy2Dao;
+import org.seasar.doma.it.dao.IdentityStrategy2DaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
@@ -57,6 +59,7 @@ import org.seasar.doma.it.entity.CompKeyDept;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
+import org.seasar.doma.it.entity.IdentityStrategy2;
 import org.seasar.doma.it.entity.NoId;
 import org.seasar.doma.it.entity.PrimitiveIdentityStrategy;
 import org.seasar.doma.it.entity.SequenceStrategy;
@@ -597,5 +600,103 @@ public class AutoMultiInsertTest {
     assertEquals("DEVELOPMENT_preI(U)", reloadDept2.getDepartmentName());
     assertEquals("KYOTO", reloadDept2.getLocation().getValue());
     assertEquals(1, reloadDept2.getVersion());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
+      throws Exception {
+    IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
+    var entity1 = new IdentityStrategy2();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityStrategy2();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    dao.insertOrIgnoreMultiRows(List.of(entity1, entity2));
+
+    assertEquals(1, entity1.getId());
+    assertEquals(2, entity2.getId());
+    var entities = dao.selectAll();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config)
+      throws Exception {
+    IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
+    var entity1 = new IdentityStrategy2();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityStrategy2();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    dao.insertOrIgnoreMultiRows(List.of(entity1, entity2));
+
+    assertEquals(1, entity1.getId());
+    assertNull(entity2.getId());
+    var entities = dao.selectAll();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
+      throws Exception {
+    IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
+    var entity1 = new IdentityStrategy2();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityStrategy2();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    dao.insertOrUpdateMultiRows(List.of(entity1, entity2));
+
+    assertEquals(1, entity1.getId());
+    assertEquals(2, entity2.getId());
+    var entities = dao.selectAll();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
+      throws Exception {
+    IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
+    var entity1 = new IdentityStrategy2();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityStrategy2();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    dao.insertOrUpdateMultiRows(List.of(entity1, entity2));
+
+    assertEquals(1, entity1.getId());
+    assertEquals(2, entity2.getId());
+    var entities = dao.selectAll();
+    assertEquals(1, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("B", entities.get(0).getValue());
   }
 }
