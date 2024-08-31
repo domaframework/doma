@@ -257,7 +257,8 @@ public class BlankLineRemovalContextTest {
 
               ddd
         """;
-    var expected = """
+    var expected =
+        """
         aaa
           bbb
             ccc
@@ -282,7 +283,8 @@ public class BlankLineRemovalContextTest {
 
         \t\t\tddd\t
         """;
-    var expected = """
+    var expected =
+        """
         aaa
         \tbbb
         \t\tccc
@@ -294,7 +296,8 @@ public class BlankLineRemovalContextTest {
 
   @Test
   public void testQuotes() {
-    var template = """
+    var template =
+        """
         'aaa
 
           bbb', '
@@ -303,7 +306,8 @@ public class BlankLineRemovalContextTest {
 
         '
         """;
-    var expected = """
+    var expected =
+        """
         'aaa
 
           bbb', '
@@ -489,7 +493,8 @@ public class BlankLineRemovalContextTest {
           aaa = 1
           /*%end*/
         """;
-    var expected = """
+    var expected =
+        """
         select
           *
         from
