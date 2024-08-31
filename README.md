@@ -10,6 +10,8 @@ Doma has various strengths:
 - Uses SQL templates, called "two-way SQL".
 - Has no dependence on other libraries.
 
+The latest major version of Doma supports Java 17 and above.
+
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
@@ -20,14 +22,12 @@ Examples
 
 ### Type-safe Criteria API
 
-Written in Java:
-
 ```java
-Entityql entityql = new Entityql(config);
-Employee_ e = new Employee_();
-Department_ d = new Department_();
+var entityql = new Entityql(config);
+var e = new Employee_();
+var d = new Department_();
 
-List<Employee> list = entityql
+var employees = entityql
     .from(e)
     .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
     .where(c -> c.eq(d.departmentName, "SALES"))
@@ -38,30 +38,10 @@ List<Employee> list = entityql
     .fetch();
 ```
 
-Written in Kotlin:
-
-```kotlin
-val entityql = KEntityql(config)
-val e = Employee_()
-val d = Department_()
-
-val list = entityql
-    .from(e)
-    .innerJoin(d) { eq(e.departmentId, d.departmentId) }
-    .where { eq(d.departmentName, "SALES") }
-    .associate(e, d) { employee, department ->
-        employee.department = department
-        department.employeeList += employee
-    }
-    .fetch()
-```
-
 See [Criteria API](https://doma.readthedocs.io/en/latest/criteria-api/)
 for more information.
 
 ### SQL templates
-
-Written in Java:
 
 ```java
 @Dao
@@ -180,11 +160,11 @@ Major versions
 
 ### Status and Repository
 
-| Version                                | Status | Repository                             | Branch |
-|----------------------------------------|--------|----------------------------------------|--------|
-| [Doma 1](http://doma.seasar.org/)      | stable | https://github.com/seasarorg/doma/     | master |
-| [Doma 2](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | 2.x    |
-| [Doma 3](http://doma.readthedocs.org/) | stable | https://github.com/domaframework/doma/ | master |
+| Version                                | Status          | Repository                             | Branch |
+|----------------------------------------|-----------------|----------------------------------------|--------|
+| [Doma 1](http://doma.seasar.org/)      | limited-support | https://github.com/seasarorg/doma/     | master |
+| [Doma 2](http://doma.readthedocs.org/) | limited-support | https://github.com/domaframework/doma/ | 2.x    |
+| [Doma 3](http://doma.readthedocs.org/) | stable          | https://github.com/domaframework/doma/ | master |
 
 ### Compatibility matrix
 
