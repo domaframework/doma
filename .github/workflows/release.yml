@@ -31,6 +31,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: 2.x
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: Prepare git config
