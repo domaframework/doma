@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: 'Release version'
-        required: false
+        required: true
 
 env:
   JDK_DISTRIBUTION: zulu
@@ -21,24 +21,6 @@ jobs:
       - name: Assign input version
         if: github.event.inputs.version != null
         run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-
-      - uses: actions/github-script@v7
-        if: github.event.inputs.version == null
-        id: candidate-version
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            const list = await github.rest.repos.listReleases({
-              owner: "domaframework",
-              repo: "doma",
-            });
-            console.log(list)
-            return list.data[0].name
-
-      - name: Assign candidate version
-        if: github.event.inputs.version == null
-        run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v4
