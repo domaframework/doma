@@ -548,6 +548,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  // TODO support for other DBMSs
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -596,7 +597,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -609,8 +609,10 @@ public class AutoBatchInsertTest {
 
     dao.insertOrUpdate(List.of(entity1, entity2));
 
-    assertEquals(1, entity1.getId());
-    assertEquals(2, entity2.getId());
+    if (!config.getDialect().getName().equals("oracle")) {
+      assertEquals(1, entity1.getId());
+      assertEquals(2, entity2.getId());
+    }
     var entities = dao.selectAll();
     assertEquals(2, entities.size());
     assertEquals(1, entities.get(0).getId());
@@ -622,7 +624,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -635,8 +636,10 @@ public class AutoBatchInsertTest {
 
     dao.insertOrUpdate(List.of(entity1, entity2));
 
-    assertEquals(1, entity1.getId());
-    assertEquals(1, entity2.getId());
+    if (!config.getDialect().getName().equals("oracle")) {
+      assertEquals(1, entity1.getId());
+      assertEquals(1, entity2.getId());
+    }
     var entities = dao.selectAll();
     assertEquals(1, entities.size());
     assertEquals(1, entities.get(0).getId());

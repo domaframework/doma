@@ -1,58 +1,53 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
-import java.util.Collections;
+import static org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStatement.EMPTY_SQL;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
-public class EntityqlMultiInsertStatement<ENTITY>
-    extends AbstractStatement<EntityqlMultiInsertStatement<ENTITY>, MultiResult<ENTITY>> {
-
-  static final EmptySql EMPTY_SQL = new EmptySql(SqlKind.MULTI_INSERT);
+public class EntityqlMultiInsertIntermediate<ENTITY>
+    extends AbstractStatement<EntityqlMultiInsertIntermediate<ENTITY>, MultiResult<ENTITY>> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final List<ENTITY> entities;
   private final InsertSettings settings;
-  private DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
+  private final DuplicateKeyType duplicateKeyType;
+  private final List<PropertyMetamodel<?>> keys = new ArrayList<>();
 
-  public EntityqlMultiInsertStatement(
+  public EntityqlMultiInsertIntermediate(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       List<ENTITY> entities,
-      InsertSettings settings) {
+      InsertSettings settings,
+      DuplicateKeyType duplicateKeyType) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
+    this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
   }
 
   /**
-   * Create statement that inserts or updates
+   * Specify the keys used for duplicate checking UPSERT statement. if no keys are specified, the
+   * {@link org.seasar.doma.Id} property are used for duplicate checking.
    *
-   * @return statement
+   * @param keys keys the keys used for duplicate checking
+   * @return selecting set statement builder
    */
-  public EntityqlMultiInsertIntermediate<ENTITY> onDuplicateKeyUpdate() {
-    this.duplicateKeyType = DuplicateKeyType.UPDATE;
-    return new EntityqlMultiInsertIntermediate<>(
-        config, entityMetamodel, entities, settings, duplicateKeyType);
-  }
-
-  /**
-   * Create statement that inserts or ignore
-   *
-   * @return statement
-   */
-  public EntityqlMultiInsertIntermediate<ENTITY> onDuplicateKeyIgnore() {
-    this.duplicateKeyType = DuplicateKeyType.IGNORE;
-    return new EntityqlMultiInsertIntermediate<>(
-        config, entityMetamodel, entities, settings, duplicateKeyType);
+  public Statement<MultiResult<ENTITY>> keys(PropertyMetamodel<?>... keys) {
+    Objects.requireNonNull(keys);
+    this.keys.addAll(Arrays.stream(keys).toList());
+    return this;
   }
 
   /**
@@ -71,7 +66,7 @@ public class EntityqlMultiInsertStatement<ENTITY>
   protected Command<MultiResult<ENTITY>> createCommand() {
     EntityqlMultiInsertTerminal<ENTITY> terminal =
         new EntityqlMultiInsertTerminal<>(
-            config, entityMetamodel, entities, settings, duplicateKeyType, Collections.emptyList());
+            config, entityMetamodel, entities, settings, duplicateKeyType, keys);
     return terminal.createCommand();
   }
 

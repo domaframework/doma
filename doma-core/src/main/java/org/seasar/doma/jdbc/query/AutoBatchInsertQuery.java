@@ -106,7 +106,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     generatedIdPropertyType = entityType.getGeneratedIdPropertyType();
     if (generatedIdPropertyType != null) {
       if (idGenerationConfig == null) {
-        // TODO
+        // TODO should we stop supporting ReservedIdProvider?
         if (generatedKeysIgnored || duplicateKeyType != DuplicateKeyType.EXCEPTION) {
           idGenerationConfig = new IdGenerationConfig(config, entityType);
         } else {

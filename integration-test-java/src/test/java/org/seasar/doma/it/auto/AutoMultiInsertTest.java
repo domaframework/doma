@@ -604,6 +604,7 @@ public class AutoMultiInsertTest {
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  // TODO support other DBMSs
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -652,7 +653,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -665,8 +666,10 @@ public class AutoMultiInsertTest {
 
     dao.insertOrUpdateMultiRows(List.of(entity1, entity2));
 
-    assertEquals(1, entity1.getId());
-    assertEquals(2, entity2.getId());
+    if (!config.getDialect().getName().equals("oracle")) {
+      assertEquals(1, entity1.getId());
+      assertEquals(2, entity2.getId());
+    }
     var entities = dao.selectAll();
     assertEquals(2, entities.size());
     assertEquals(1, entities.get(0).getId());
@@ -678,7 +681,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -689,10 +692,13 @@ public class AutoMultiInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    dao.insertOrUpdateMultiRows(List.of(entity1, entity2));
+    dao.insertOrUpdateMultiRows(List.of(entity1));
+    dao.insertOrUpdateMultiRows(List.of(entity2));
 
-    assertEquals(1, entity1.getId());
-    assertEquals(2, entity2.getId());
+    if (!config.getDialect().getName().equals("oracle")) {
+      assertEquals(1, entity1.getId());
+      assertEquals(1, entity2.getId());
+    }
     var entities = dao.selectAll();
     assertEquals(1, entities.size());
     assertEquals(1, entities.get(0).getId());

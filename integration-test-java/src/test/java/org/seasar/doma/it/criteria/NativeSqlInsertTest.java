@@ -415,7 +415,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void onDuplicateKeyUpdate_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -451,7 +450,6 @@ public class NativeSqlInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void onDuplicateKeyUpdate_duplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -485,6 +483,7 @@ public class NativeSqlInsertTest {
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  // TODO other DMBSs
   public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -496,7 +495,6 @@ public class NativeSqlInsertTest {
               c.value(i.value, "A");
             })
         .onDuplicateKeyIgnore()
-        .keys(i.uniqueValue)
         .execute();
     nativeSql
         .insert(i)
@@ -506,7 +504,6 @@ public class NativeSqlInsertTest {
               c.value(i.value, "B");
             })
         .onDuplicateKeyIgnore()
-        .keys(i.uniqueValue)
         .execute();
 
     var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();
@@ -532,7 +529,6 @@ public class NativeSqlInsertTest {
               c.value(i.value, "A");
             })
         .onDuplicateKeyIgnore()
-        .keys(i.uniqueValue)
         .execute();
     nativeSql
         .insert(i)
@@ -542,7 +538,6 @@ public class NativeSqlInsertTest {
               c.value(i.value, "B");
             })
         .onDuplicateKeyIgnore()
-        .keys(i.uniqueValue)
         .execute();
 
     var entities = nativeSql.from(i).orderBy(c -> c.asc(i.id)).fetch();

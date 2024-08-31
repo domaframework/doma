@@ -144,7 +144,6 @@ public class EntityqlBatchInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void onDuplicateKeyUpdate_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -155,10 +154,17 @@ public class EntityqlBatchInsertTest {
     entity2.setUniqueValue("2");
     entity2.setValue("B");
 
-    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyUpdate().execute();
+    var result =
+        entityql
+            .insert(i, List.of(entity1, entity2))
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .execute();
     assertEquals(2, result.getEntities().size());
-    assertEquals(1, result.getEntities().get(0).getId());
-    assertEquals(2, result.getEntities().get(1).getId());
+    if (!dialect.getName().equals("oracle")) {
+      assertEquals(1, result.getEntities().get(0).getId());
+      assertEquals(2, result.getEntities().get(1).getId());
+    }
 
     var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
     assertEquals(2, entities.size());
@@ -170,9 +176,7 @@ public class EntityqlBatchInsertTest {
     assertEquals("B", entities.get(1).getValue());
   }
 
-  // TODO support postgres
   @Test
-  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8})
   public void onDuplicateKeyUpdate_duplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -183,20 +187,30 @@ public class EntityqlBatchInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyUpdate().execute();
+    var result =
+        entityql
+            .insert(i, List.of(entity1, entity2))
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .execute();
     assertEquals(2, result.getEntities().size());
-    assertEquals(1, result.getEntities().get(0).getId());
-    assertEquals(1, result.getEntities().get(1).getId());
+    if (!dialect.getName().equals("oracle")) {
+      assertEquals(1, result.getEntities().get(0).getId());
+      assertEquals(1, result.getEntities().get(1).getId());
+    }
 
     var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
     assertEquals(1, entities.size());
-    assertEquals(1, entities.get(0).getId());
+    if (!dialect.getName().equals("oracle")) {
+      assertEquals(1, entities.get(0).getId());
+    }
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("B", entities.get(0).getValue());
   }
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
+  // TODO other DMBSs
   public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -209,8 +223,10 @@ public class EntityqlBatchInsertTest {
 
     var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyIgnore().execute();
     assertEquals(2, result.getEntities().size());
-    assertEquals(1, result.getEntities().get(0).getId());
-    assertEquals(2, result.getEntities().get(1).getId());
+    if (!dialect.getName().equals("oracle")) {
+      assertEquals(1, result.getEntities().get(0).getId());
+      assertEquals(2, result.getEntities().get(1).getId());
+    }
 
     var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
     assertEquals(2, entities.size());
@@ -236,7 +252,9 @@ public class EntityqlBatchInsertTest {
 
     var result = entityql.insert(i, List.of(entity1, entity2)).onDuplicateKeyIgnore().execute();
     assertEquals(2, result.getEntities().size());
-    assertEquals(1, result.getEntities().get(0).getId());
+    if (!dialect.getName().equals("oracle")) {
+      assertEquals(1, result.getEntities().get(0).getId());
+    }
     assertNull(result.getEntities().get(1).getId());
 
     var entities = entityql.from(i).orderBy(c -> c.asc(i.id)).fetch();
