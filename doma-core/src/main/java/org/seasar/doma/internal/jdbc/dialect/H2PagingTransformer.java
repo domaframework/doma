@@ -28,11 +28,9 @@ public class H2PagingTransformer extends H212126PagingTransformer {
     } else {
       orderBy = new OrderByClauseNode("");
     }
-    orderBy.appendNode(new FragmentNode(" limit "));
     if (limit > 0) {
+      orderBy.appendNode(new FragmentNode(" limit "));
       orderBy.appendNode(new FragmentNode(String.valueOf(limit)));
-    } else {
-      orderBy.appendNode(new FragmentNode("-1"));
     }
     if (offset >= 0) {
       orderBy.appendNode(new FragmentNode(" offset "));
