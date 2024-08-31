@@ -1,5 +1,6 @@
 package org.seasar.doma.it.criteria;
 
+import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
@@ -16,6 +17,7 @@ public class IdentityTable {
 
   String uniqueValue;
 
+  @Column(quote = true)
   String value;
 
   public Integer getId() {
