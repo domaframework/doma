@@ -153,7 +153,8 @@ public class CommentRemovalContextTest {
           */
           EMPLOYEE -- line comment 3
         """;
-    var expected = """
+    var expected =
+        """
         select
           *
         from

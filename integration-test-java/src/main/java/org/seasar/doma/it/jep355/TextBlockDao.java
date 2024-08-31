@@ -8,7 +8,8 @@ import org.seasar.doma.Sql;
 @Dao
 public interface TextBlockDao {
 
-  @Sql("""
+  @Sql(
+      """
         select
           /*%expand*/*
         from

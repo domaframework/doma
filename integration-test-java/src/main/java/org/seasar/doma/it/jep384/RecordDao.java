@@ -7,7 +7,8 @@ import org.seasar.doma.Sql;
 
 @Dao
 public interface RecordDao {
-  @Sql("""
+  @Sql(
+      """
         select
           /*%expand*/*
          from
