@@ -10,12 +10,32 @@ Doma has various strengths:
 - Uses SQL templates, called "two-way SQL".
 - Has no dependence on other libraries.
 
-The latest major version of Doma supports Java 17 and above.
-
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
+
+Prerequisite
+---------------------
+
+The latest major version of Doma supports Java 17 and above.
+If you are using Java 8, please use Doma 2.
+
+See also [Major versions](#major-versions).
+
+Supported databases
+---------------------
+
+We are testing against the following databases:
+
+| Database           |      version |   status   |
+|--------------------|-------------:|:----------:|
+| H2 Database        |        2.3.x |   stable   |
+| MySQL v5           |          5.7 |   stable   |
+| MySQL v8           |       8.0.36 |   stable   |
+| Oracle Database XE |          21c |   stable   |
+| PostgreSQL         |        12.20 |   stable   |
+| SQL Server         |         2019 |   stable   |
 
 Examples
 ---------------------
@@ -73,7 +93,11 @@ Installing
 
 For Java projects:
 
-```groovy
+```kotlin
+plugins {
+    id("org.domaframework.doma.compile") version "2.0.0"
+}
+
 dependencies {
     implementation("org.seasar.doma:doma-core:2.62.1")
     annotationProcessor("org.seasar.doma:doma-processor:2.62.1")
@@ -82,7 +106,11 @@ dependencies {
 
 For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place of annotationProcessor:
 
-```groovy
+```kotlin
+plugins {
+  id("org.domaframework.doma.compile") version "2.0.0"
+}
+
 dependencies {
     implementation("org.seasar.doma:doma-kotlin:2.62.1")
     kapt("org.seasar.doma:doma-processor:2.62.1")
@@ -116,8 +144,8 @@ For Java projects:
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version>
             <configuration>
-                <source>1.8</source> <!-- depending on your project -->
-                <target>1.8</target> <!-- depending on your project -->
+                <source>17</source> <!-- depending on your project -->
+                <target>17</target> <!-- depending on your project -->
                 <annotationProcessorPaths>
                     <path>
                         <groupId>org.seasar.doma</groupId>
