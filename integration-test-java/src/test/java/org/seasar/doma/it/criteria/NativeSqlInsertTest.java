@@ -629,7 +629,7 @@ public class NativeSqlInsertTest {
               c.value(d.version, 2);
             })
         .onDuplicateKeyUpdate()
-        .peek(System.out::println)
+        .peek(it -> invoked.set(true))
         .execute();
     assertTrue(invoked.get());
   }
