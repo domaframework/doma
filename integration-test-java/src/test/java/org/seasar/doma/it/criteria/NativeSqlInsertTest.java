@@ -629,14 +629,14 @@ public class NativeSqlInsertTest {
               c.value(d.version, 2);
             })
         .onDuplicateKeyUpdate()
-        .peek(it -> invoked.set(true))
+        .peek(System.out::println)
         .execute();
     assertTrue(invoked.get());
   }
 
   @Test
   void onDuplicateKeyUpdate_keys_peek() {
-    Department_ d = new Department_();
+    var d = new Department_();
     final AtomicBoolean invoked = new AtomicBoolean(false);
     nativeSql
         .insert(d)
@@ -649,7 +649,7 @@ public class NativeSqlInsertTest {
               c.value(d.version, 2);
             })
         .onDuplicateKeyUpdate()
-        .keys(d.departmentName)
+        .keys(d.departmentId)
         .peek(it -> invoked.set(true))
         .execute();
     assertTrue(invoked.get());
