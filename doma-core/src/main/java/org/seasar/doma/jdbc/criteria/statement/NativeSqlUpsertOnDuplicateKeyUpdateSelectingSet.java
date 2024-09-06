@@ -8,7 +8,7 @@ import org.seasar.doma.jdbc.criteria.declaration.InsertDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.InsertOnDuplicateKeyUpdateSetValuesDeclaration;
 
 public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet
-    extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
+    extends AbstractStatement<NativeSqlUpsertOnDuplicateKeyUpdateSelectingSet, Integer> {
   private final Config config;
   private final InsertDeclaration declaration;
 

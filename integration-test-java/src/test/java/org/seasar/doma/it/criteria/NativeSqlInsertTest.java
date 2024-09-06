@@ -1,8 +1,10 @@
 package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -590,5 +592,66 @@ public class NativeSqlInsertTest {
     int count = nativeSql.insert(da).select(c -> c.from(d)).execute();
 
     assertEquals(4, count);
+  }
+
+  @Test
+  void onDuplicateKeyIgnore_peek() {
+    Department_ d = new Department_();
+    final AtomicBoolean invoked = new AtomicBoolean(false);
+    nativeSql
+        .insert(d)
+        .values(
+            c -> {
+              c.value(d.departmentId, 1);
+              c.value(d.departmentNo, 60);
+              c.value(d.departmentName, "DEVELOPMENT");
+              c.value(d.location, "KYOTO");
+              c.value(d.version, 2);
+            })
+        .onDuplicateKeyIgnore()
+        .peek(it -> invoked.set(true))
+        .execute();
+    assertTrue(invoked.get());
+  }
+
+  @Test
+  void onDuplicateKeyUpdate_peek() {
+    Department_ d = new Department_();
+    final AtomicBoolean invoked = new AtomicBoolean(false);
+    nativeSql
+        .insert(d)
+        .values(
+            c -> {
+              c.value(d.departmentId, 1);
+              c.value(d.departmentNo, 60);
+              c.value(d.departmentName, "DEVELOPMENT");
+              c.value(d.location, "KYOTO");
+              c.value(d.version, 2);
+            })
+        .onDuplicateKeyUpdate()
+        .peek(it -> invoked.set(true))
+        .execute();
+    assertTrue(invoked.get());
+  }
+
+  @Test
+  void onDuplicateKeyUpdate_keys_peek() {
+    Department_ d = new Department_();
+    final AtomicBoolean invoked = new AtomicBoolean(false);
+    nativeSql
+        .insert(d)
+        .values(
+            c -> {
+              c.value(d.departmentId, 6);
+              c.value(d.departmentNo, 60);
+              c.value(d.departmentName, "DEVELOPMENT");
+              c.value(d.location, "KYOTO");
+              c.value(d.version, 2);
+            })
+        .onDuplicateKeyUpdate()
+        .keys(d.departmentName)
+        .peek(it -> invoked.set(true))
+        .execute();
+    assertTrue(invoked.get());
   }
 }

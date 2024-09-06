@@ -12,7 +12,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys
-    extends AbstractStatement<NativeSqlUpsertTerminal, Integer> {
+    extends AbstractStatement<NativeSqlUpsertOnDuplicateKeyUpdateSelectingKeys, Integer> {
   private final Config config;
   private final InsertDeclaration declaration;
 
