@@ -71,6 +71,10 @@ allprojects {
         mavenCentral()
     }
 
+    spotless {
+        lineEndings = com.diffplug.spotless.LineEnding.UNIX
+    }
+
     tasks {
         build {
             dependsOn(spotlessApply)
