@@ -15,7 +15,6 @@ val testJavaLangVersion: Int = project.properties["testJavaLangVersion"].toStrin
 
 val modularProjects: List<Project> = subprojects.filter { it.name.startsWith("doma-") }
 val integrationTestProjects: List<Project> = subprojects.filter { it.name.startsWith("integration-test-") }
-val unitTestProjects: List<Project> = subprojects.filter { it.name.startsWith("unit-test") }
 
 val encoding: String by project
 val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
@@ -274,17 +273,6 @@ configure(integrationTestProjects) {
 
         register("testAll") {
             dependsOn(h2, mysql, oracle, postgresql, sqlserver)
-        }
-    }
-}
-
-configure(unitTestProjects) {
-    apply(plugin = "java")
-    apply(plugin = "com.diffplug.spotless")
-
-    tasks {
-        test {
-            useJUnitPlatform()
         }
     }
 }
