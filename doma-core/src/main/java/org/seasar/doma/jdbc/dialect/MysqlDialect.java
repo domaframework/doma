@@ -157,6 +157,11 @@ public class MysqlDialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsBatchExecutionReturningGeneratedValues() {
+    return true;
+  }
+
+  @Override
   protected SqlNode toCountCalculatingSqlNode(SqlNode sqlNode) {
     switch (version) {
       case V5:

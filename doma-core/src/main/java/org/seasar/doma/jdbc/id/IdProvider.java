@@ -1,6 +1,7 @@
 package org.seasar.doma.jdbc.id;
 
 /** An identity provider. */
+@Deprecated
 public interface IdProvider {
 
   /**

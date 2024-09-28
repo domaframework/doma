@@ -47,6 +47,11 @@ public class H2Dialect extends H214199Dialect {
     return true;
   }
 
+  @Override
+  public boolean supportsBatchExecutionReturningGeneratedValues() {
+    return true;
+  }
+
   public static class H2JdbcMappingVisitor extends H214199JdbcMappingVisitor {}
 
   public static class H2SqlLogFormattingVisitor extends H214199SqlLogFormattingVisitor {}
