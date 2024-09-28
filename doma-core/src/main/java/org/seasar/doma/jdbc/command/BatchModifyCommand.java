@@ -119,8 +119,14 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
     }
   }
 
-  protected void postExecuteBatch(
-      PreparedStatement preparedStatement, int position, int length) {}
+  /**
+   * Invoked after the batch execution.
+   *
+   * @param preparedStatement the prepared statement
+   * @param position the position of the first element in the batch
+   * @param size the size of the executed batch
+   */
+  protected void postExecuteBatch(PreparedStatement preparedStatement, int position, int size) {}
 
   protected void log(PreparedSql sql) {
     JdbcLogger logger = query.getConfig().getJdbcLogger();

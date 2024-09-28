@@ -10,7 +10,7 @@ public interface BatchInsertQuery extends BatchModifyQuery {
 
   /**
    * Generates IDs for the batch.
-   * 
+   *
    * @param statement the statement
    * @param position the position of the first element in the batch
    * @param size the size of the executed batch
