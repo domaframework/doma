@@ -24,6 +24,7 @@ public class IdGenerationConfig {
     this(config, entityType, new UnavailableIdProvider());
   }
 
+  @Deprecated
   public IdGenerationConfig(Config config, EntityType<?> entityType, IdProvider idProvider) {
     assertNotNull(config, entityType, idProvider);
     this.config = config;

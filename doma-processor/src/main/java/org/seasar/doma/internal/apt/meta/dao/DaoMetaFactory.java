@@ -77,8 +77,6 @@ import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
-  private static final String SINGLETON_CONFIG_FIELD_NAME = "INSTANCE";
-
   private final Context ctx;
 
   private final List<BiFunction<TypeElement, ExecutableElement, QueryMetaFactory>> providers =
