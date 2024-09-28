@@ -123,7 +123,6 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(SQLXMLFactoryDao.class),
           invocationContext(Issue82Dao.class),
           invocationContext(ResultStreamDao.class),
-          invocationContext(PlainSingletonConfigDao.class),
           invocationContext(SqlProcessorDao.class),
           invocationContext(OnlyDefaultMethodsExtendsDao.class),
           invocationContext(
