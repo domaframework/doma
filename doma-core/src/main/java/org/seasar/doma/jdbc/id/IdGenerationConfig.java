@@ -17,6 +17,7 @@ public class IdGenerationConfig {
 
   protected final EntityType<?> entityType;
 
+  @SuppressWarnings("deprecation")
   protected final IdProvider idProvider;
 
   public IdGenerationConfig(Config config, EntityType<?> entityType) {
@@ -70,10 +71,12 @@ public class IdGenerationConfig {
     return entityType;
   }
 
+  @SuppressWarnings("deprecation")
   public IdProvider getIdProvider() {
     return idProvider;
   }
 
+  @SuppressWarnings("DeprecatedIsStillUsed")
   @Deprecated
   protected static class UnavailableIdProvider implements IdProvider {
     @Override

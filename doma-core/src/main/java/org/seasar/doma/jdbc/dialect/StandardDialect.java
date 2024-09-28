@@ -306,6 +306,7 @@ public class StandardDialect implements Dialect {
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean supportsIdentityReservation() {
     return false;
@@ -342,6 +343,7 @@ public class StandardDialect implements Dialect {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "getIdentitySelectSql");
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Sql<?> getIdentityReservationSql(
       String catalogName,
