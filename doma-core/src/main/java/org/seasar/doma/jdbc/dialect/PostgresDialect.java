@@ -228,6 +228,11 @@ public class PostgresDialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsBatchExecutionReturningGeneratedValues() {
+    return true;
+  }
+
+  @Override
   public JdbcType<ResultSet> getResultSetType() {
     return RESULT_SET;
   }

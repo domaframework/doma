@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 
 /** An identity provider that reserves identity values in advance. */
+@Deprecated
 public class ReservedIdProvider implements IdProvider {
 
   protected final Config config;

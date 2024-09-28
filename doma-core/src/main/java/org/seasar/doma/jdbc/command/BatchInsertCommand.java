@@ -46,4 +46,9 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
       throw e;
     }
   }
+
+  @Override
+  protected void postExecuteBatch(PreparedStatement preparedStatement, int position, int length) {
+    query.generateIds(preparedStatement, position, length);
+  }
 }

@@ -74,6 +74,7 @@ public class IdGenerationConfig {
     return idProvider;
   }
 
+  @Deprecated
   protected static class UnavailableIdProvider implements IdProvider {
     @Override
     public boolean isAvailable() {

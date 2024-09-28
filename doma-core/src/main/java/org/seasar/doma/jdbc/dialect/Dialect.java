@@ -129,6 +129,7 @@ public interface Dialect {
    *
    * @return {@code true}, if this object supports it
    */
+  @Deprecated
   boolean supportsIdentityReservation();
 
   /**
@@ -218,6 +219,7 @@ public interface Dialect {
    * @throws DomaNullPointerException if either the {@code tableName} or the {@code columnName} is
    *     {@code null}
    */
+  @Deprecated
   Sql<?> getIdentityReservationSql(
       String catalogName,
       String schemaName,

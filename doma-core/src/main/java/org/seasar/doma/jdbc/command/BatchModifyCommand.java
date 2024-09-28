@@ -96,6 +96,7 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
       if (i == sqlSize - 1 || (batchSize > 0 && (i + 1) % batchSize == 0)) {
         int[] rows = executeBatch(preparedStatement, sql);
         validateRows(preparedStatement, sql, rows);
+        postExecuteBatch(preparedStatement, pos, rows.length);
         System.arraycopy(rows, 0, updatedRows, pos, rows.length);
         pos = i + 1;
       }
@@ -117,6 +118,9 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
       throw e;
     }
   }
+
+  protected void postExecuteBatch(
+      PreparedStatement preparedStatement, int position, int length) {}
 
   protected void log(PreparedSql sql) {
     JdbcLogger logger = query.getConfig().getJdbcLogger();
