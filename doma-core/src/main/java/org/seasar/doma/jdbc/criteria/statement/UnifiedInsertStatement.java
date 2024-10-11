@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.MultiResult;
-import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.context.InsertContext;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
@@ -29,17 +26,17 @@ public class UnifiedInsertStatement<ENTITY> {
     this.settings = Objects.requireNonNull(settings);
   }
 
-  public Statement<Result<ENTITY>> single(ENTITY entity) {
+  public EntityqlInsertStatement<ENTITY> single(ENTITY entity) {
     Objects.requireNonNull(entity);
     return asEntityqlInsertStatement(entity);
   }
 
-  public Statement<BatchResult<ENTITY>> batch(List<ENTITY> entities) {
+  public EntityqlBatchInsertStatement<ENTITY> batch(List<ENTITY> entities) {
     Objects.requireNonNull(entities);
     return asEntityqlBatchInsertStatement(entities);
   }
 
-  public Statement<MultiResult<ENTITY>> multi(List<ENTITY> entities) {
+  public EntityqlMultiInsertStatement<ENTITY> multi(List<ENTITY> entities) {
     Objects.requireNonNull(entities);
     return asEntityqlMultiInsertStatement(entities);
   }
