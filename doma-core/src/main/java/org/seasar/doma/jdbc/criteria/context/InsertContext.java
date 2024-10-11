@@ -13,13 +13,18 @@ public class InsertContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
   public final List<EntityMetamodel<?>> entityMetamodels;
   public final Map<Operand.Prop, Operand.Param> values = new LinkedHashMap<>();
-  public final InsertSettings settings = new InsertSettings();
+  public final InsertSettings settings;
   public SelectContext selectContext;
   public OnDuplicateContext onDuplicateContext = new OnDuplicateContext();
 
   public InsertContext(EntityMetamodel<?> entityMetamodel) {
+    this(entityMetamodel, new InsertSettings());
+  }
+
+  public InsertContext(EntityMetamodel<?> entityMetamodel, InsertSettings settings) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entityMetamodels = Collections.singletonList(entityMetamodel);
+    this.settings = Objects.requireNonNull(settings);
   }
 
   public class OnDuplicateContext {
