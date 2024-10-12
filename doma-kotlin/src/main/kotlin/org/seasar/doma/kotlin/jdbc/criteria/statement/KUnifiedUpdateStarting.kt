@@ -5,7 +5,7 @@ import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.criteria.statement.UnifiedUpdateStarting
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KSetDeclaration
 
-class KUnifiedUpdateStating<ENTITY : Any>(private val statement: UnifiedUpdateStarting<ENTITY>) {
+class KUnifiedUpdateStarting<ENTITY : Any>(private val statement: UnifiedUpdateStarting<ENTITY>) {
 
     fun single(entity: ENTITY): KStatement<Result<ENTITY>> {
         return KEntityqlUpdateStatement(statement.single(entity))

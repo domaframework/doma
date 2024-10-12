@@ -5,7 +5,7 @@ import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.criteria.statement.UnifiedDeleteStarting
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KWhereDeclaration
 
-class KUnifiedDeleteStating<ENTITY : Any>(private val statement: UnifiedDeleteStarting<ENTITY>) {
+class KUnifiedDeleteStarting<ENTITY : Any>(private val statement: UnifiedDeleteStarting<ENTITY>) {
 
     fun single(entity: ENTITY): KStatement<Result<ENTITY>> {
         return KEntityqlDeleteStatement(statement.single(entity))

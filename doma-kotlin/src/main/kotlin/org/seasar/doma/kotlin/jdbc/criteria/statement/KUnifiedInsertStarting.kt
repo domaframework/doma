@@ -4,9 +4,8 @@ import org.seasar.doma.jdbc.criteria.context.SubSelectContext
 import org.seasar.doma.jdbc.criteria.statement.UnifiedInsertStarting
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KInsertSelectDeclaration
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KValuesDeclaration
-import java.util.*
 
-class KUnifiedInsertStating<ENTITY : Any>(private val statement: UnifiedInsertStarting<ENTITY>) {
+class KUnifiedInsertStarting<ENTITY : Any>(private val statement: UnifiedInsertStarting<ENTITY>) {
 
     fun single(entity: ENTITY): KEntityqlInsertStatement<ENTITY> {
         return KEntityqlInsertStatement(statement.single(entity))

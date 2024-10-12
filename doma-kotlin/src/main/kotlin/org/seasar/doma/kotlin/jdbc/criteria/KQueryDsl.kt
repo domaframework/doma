@@ -8,10 +8,10 @@ import org.seasar.doma.jdbc.criteria.context.SelectSettings
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedDeleteStating
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedInsertStating
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedSelectStating
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedUpdateStating
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedDeleteStarting
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedInsertStarting
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedSelectStarting
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedUpdateStarting
 
 class KQueryDsl(config: Config) {
 
@@ -20,41 +20,41 @@ class KQueryDsl(config: Config) {
     fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: SelectSettings.() -> Unit = {},
-    ): KUnifiedSelectStating<ENTITY> {
+    ): KUnifiedSelectStarting<ENTITY> {
         val statement = dsl.from(entityMetamodel, block)
-        return KUnifiedSelectStating(statement)
+        return KUnifiedSelectStarting(statement)
     }
 
     fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
         setOperandForSubQuery: KSetOperand<*>,
         block: SelectSettings.() -> Unit = {},
-    ): KUnifiedSelectStating<ENTITY> {
+    ): KUnifiedSelectStarting<ENTITY> {
         val statement = dsl.from(entityMetamodel, setOperandForSubQuery.asSetOperand(), block)
-        return KUnifiedSelectStating(statement)
+        return KUnifiedSelectStarting(statement)
     }
 
     fun <ENTITY : Any> update(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: UpdateSettings.() -> Unit = {},
-    ): KUnifiedUpdateStating<ENTITY> {
+    ): KUnifiedUpdateStarting<ENTITY> {
         val statement = dsl.update(entityMetamodel, block)
-        return KUnifiedUpdateStating(statement)
+        return KUnifiedUpdateStarting(statement)
     }
 
     fun <ENTITY : Any> delete(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: DeleteSettings.() -> Unit = {},
-    ): KUnifiedDeleteStating<ENTITY> {
+    ): KUnifiedDeleteStarting<ENTITY> {
         val statement = dsl.delete(entityMetamodel, block)
-        return KUnifiedDeleteStating(statement)
+        return KUnifiedDeleteStarting(statement)
     }
 
     fun <ENTITY : Any> insert(
         entityMetamodel: EntityMetamodel<ENTITY>,
         block: InsertSettings.() -> Unit = {},
-    ): KUnifiedInsertStating<ENTITY> {
+    ): KUnifiedInsertStarting<ENTITY> {
         val statement = dsl.insert(entityMetamodel, block)
-        return KUnifiedInsertStating(statement)
+        return KUnifiedInsertStarting(statement)
     }
 }

@@ -30,9 +30,9 @@ import java.util.function.Function
 import java.util.stream.Stream
 import kotlin.streams.asSequence
 
-class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectStarting<ENTITY>) : KSetOperand<ENTITY> {
+class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectStarting<ENTITY>) : KSetOperand<ENTITY> {
 
-    fun distinct(distinctOption: DistinctOption = DistinctOption.basic()): KUnifiedSelectStating<ENTITY> {
+    fun distinct(distinctOption: DistinctOption = DistinctOption.basic()): KUnifiedSelectStarting<ENTITY> {
         statement.distinct(distinctOption)
         return this
     }
@@ -40,7 +40,7 @@ class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectSt
     fun innerJoin(
         entityMetamodel: EntityMetamodel<*>,
         block: KJoinDeclaration.() -> Unit,
-    ): KUnifiedSelectStating<ENTITY> {
+    ): KUnifiedSelectStarting<ENTITY> {
         statement.innerJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
     }
@@ -48,7 +48,7 @@ class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectSt
     fun leftJoin(
         entityMetamodel: EntityMetamodel<*>,
         block: KJoinDeclaration.() -> Unit,
-    ): KUnifiedSelectStating<ENTITY> {
+    ): KUnifiedSelectStarting<ENTITY> {
         statement.leftJoin(entityMetamodel) { block(KJoinDeclaration(it)) }
         return this
     }
@@ -95,27 +95,27 @@ class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectSt
         }
     }
 
-    fun where(block: KWhereDeclaration.() -> Unit): KUnifiedSelectStating<ENTITY> {
+    fun where(block: KWhereDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.where { block(KWhereDeclaration(it)) }
         return this
     }
 
-    fun orderBy(block: KOrderByNameDeclaration.() -> Unit): KUnifiedSelectStating<ENTITY> {
+    fun orderBy(block: KOrderByNameDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.orderBy { block(KOrderByNameDeclaration(it)) }
         return this
     }
 
-    fun limit(limit: Int?): KUnifiedSelectStating<ENTITY> {
+    fun limit(limit: Int?): KUnifiedSelectStarting<ENTITY> {
         statement.limit(limit)
         return this
     }
 
-    fun offset(offset: Int?): KUnifiedSelectStating<ENTITY> {
+    fun offset(offset: Int?): KUnifiedSelectStarting<ENTITY> {
         statement.offset(offset)
         return this
     }
 
-    fun forUpdate(option: ForUpdateOption = ForUpdateOption.basic()): KUnifiedSelectStating<ENTITY> {
+    fun forUpdate(option: ForUpdateOption = ForUpdateOption.basic()): KUnifiedSelectStarting<ENTITY> {
         statement.forUpdate(option)
         return this
     }
@@ -159,12 +159,12 @@ class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectSt
         }
     }
 
-    fun groupBy(vararg propertyMetamodels: PropertyMetamodel<*>): KUnifiedSelectStating<ENTITY> {
+    fun groupBy(vararg propertyMetamodels: PropertyMetamodel<*>): KUnifiedSelectStarting<ENTITY> {
         statement.groupBy(*propertyMetamodels)
         return this
     }
 
-    fun having(block: KHavingDeclaration.() -> Unit): KUnifiedSelectStating<ENTITY> {
+    fun having(block: KHavingDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.having {
             block(KHavingDeclaration(it))
         }
@@ -503,7 +503,7 @@ class KUnifiedSelectStating<ENTITY : Any>(private val statement: UnifiedSelectSt
         return KNativeSqlSetStarting(setOperator)
     }
 
-    override fun peek(block: (Sql<*>) -> Unit): KUnifiedSelectStating<ENTITY> {
+    override fun peek(block: (Sql<*>) -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.peek(block)
         return this
     }
