@@ -12,13 +12,13 @@ import org.seasar.doma.jdbc.criteria.declaration.SetDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.UpdateDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
-public class UnifiedUpdateStatement<ENTITY> {
+public class UnifiedUpdateStarting<ENTITY> {
 
   private final Config config;
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final UpdateSettings settings;
 
-  public UnifiedUpdateStatement(
+  public UnifiedUpdateStarting(
       Config config, EntityMetamodel<ENTITY> entityMetamodel, UpdateSettings settings) {
     this.config = Objects.requireNonNull(config);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);

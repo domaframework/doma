@@ -13,13 +13,13 @@ import org.seasar.doma.jdbc.criteria.declaration.InsertSelectDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.ValuesDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
-public class UnifiedInsertStatement<ENTITY> {
+public class UnifiedInsertStarting<ENTITY> {
 
   private final Config config;
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final InsertSettings settings;
 
-  public UnifiedInsertStatement(
+  public UnifiedInsertStarting(
       Config config, EntityMetamodel<ENTITY> entityMetamodel, InsertSettings settings) {
     this.config = Objects.requireNonNull(config);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);

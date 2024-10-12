@@ -664,21 +664,20 @@ public class QueryDslEntityqlSelectTest {
   }
 
   @Test
-  void select() {
+  void project() {
     Employee_ e = new Employee_();
 
-    List<Employee> list = dsl.from(e).select(e).fetch();
+    List<Employee> list = dsl.from(e).project(e).fetch();
     assertEquals(14, list.size());
   }
 
   @Test
-  // TODO
-  void select_join() {
+  void project_join() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
     List<Department> list =
-        dsl.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId)).select(d).fetch();
+        dsl.from(e).innerJoin(d, on -> on.eq(e.departmentId, d.departmentId)).project(d).fetch();
     assertEquals(3, list.size());
   }
 
@@ -686,14 +685,14 @@ public class QueryDslEntityqlSelectTest {
   void selectTo() {
     Employee_ e = new Employee_();
 
-    List<Employee> list = dsl.from(e).selectTo(e, e.employeeName).fetch();
+    List<Employee> list = dsl.from(e).projectTo(e, e.employeeName).fetch();
     assertEquals(14, list.size());
     assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));
     assertTrue(list.stream().map(Employee::getEmployeeName).allMatch(Objects::nonNull));
   }
 
   @Test
-  void selectTo_associate() {
+  void projectTo_associate() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
 
@@ -701,7 +700,7 @@ public class QueryDslEntityqlSelectTest {
         dsl.from(e)
             .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
             .associate(e, d, Employee::setDepartment)
-            .selectTo(e, e.employeeName)
+            .projectTo(e, e.employeeName)
             .fetch();
     assertEquals(14, list.size());
     assertTrue(list.stream().map(Employee::getEmployeeId).allMatch(Objects::nonNull));

@@ -12,13 +12,13 @@ import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
-public class UnifiedDeleteStatement<ENTITY> {
+public class UnifiedDeleteStarting<ENTITY> {
 
   private final Config config;
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final DeleteSettings settings;
 
-  public UnifiedDeleteStatement(
+  public UnifiedDeleteStarting(
       Config config, EntityMetamodel<ENTITY> entityMetamodel, DeleteSettings settings) {
     this.config = Objects.requireNonNull(config);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);

@@ -34,32 +34,32 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple8;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
-public class UnifiedSelectStatement<ENTITY>
-    extends AbstractStatement<UnifiedSelectStatement<ENTITY>, List<ENTITY>>
+public class UnifiedSelectStarting<ENTITY>
+    extends AbstractStatement<UnifiedSelectStarting<ENTITY>, List<ENTITY>>
     implements SetOperand<ENTITY> {
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
 
-  public UnifiedSelectStatement(
+  public UnifiedSelectStarting(
       Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
     super(Objects.requireNonNull(config));
     this.declaration = Objects.requireNonNull(declaration);
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
-  public UnifiedSelectStatement<ENTITY> distinct() {
+  public UnifiedSelectStarting<ENTITY> distinct() {
     declaration.distinct(DistinctOption.basic());
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> distinct(DistinctOption distinctOption) {
+  public UnifiedSelectStarting<ENTITY> distinct(DistinctOption distinctOption) {
     Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> innerJoin(
+  public UnifiedSelectStarting<ENTITY> innerJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
@@ -67,7 +67,7 @@ public class UnifiedSelectStatement<ENTITY>
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> leftJoin(
+  public UnifiedSelectStarting<ENTITY> leftJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(block);
@@ -75,51 +75,51 @@ public class UnifiedSelectStatement<ENTITY>
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> where(Consumer<WhereDeclaration> block) {
+  public UnifiedSelectStarting<ENTITY> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
+  public UnifiedSelectStarting<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> limit(Integer limit) {
+  public UnifiedSelectStarting<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> offset(Integer offset) {
+  public UnifiedSelectStarting<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> forUpdate() {
+  public UnifiedSelectStarting<ENTITY> forUpdate() {
     declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 
-  public UnifiedSelectStatement<ENTITY> forUpdate(ForUpdateOption option) {
+  public UnifiedSelectStarting<ENTITY> forUpdate(ForUpdateOption option) {
     Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }
 
-  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associate(
+  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
-    declaration.associate(first, second, associator, AssociationOption.mandatory());
-    return asEntityqlSelectStarting();
+    return new UnifiedSelectTerminal<>(config, declaration, entityMetamodel)
+        .associate(first, second, associator);
   }
 
-  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associate(
+  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
@@ -128,22 +128,21 @@ public class UnifiedSelectStatement<ENTITY>
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
     Objects.requireNonNull(option);
-    declaration.associate(first, second, associator, option);
-    return asEntityqlSelectStarting();
+    return new UnifiedSelectTerminal<>(config, declaration, entityMetamodel)
+        .associate(first, second, associator, option);
   }
 
-  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associateWith(
+  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiFunction<ENTITY1, ENTITY2, ENTITY1> associator) {
     Objects.requireNonNull(first);
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
-    declaration.associateWith(first, second, associator, AssociationOption.mandatory());
-    return asEntityqlSelectStarting();
+    return asUnifiedSelectTerminal().associateWith(first, second, associator);
   }
 
-  public <ENTITY1, ENTITY2> EntityqlSelectStarting<ENTITY> associateWith(
+  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiFunction<ENTITY1, ENTITY2, ENTITY1> associator,
@@ -152,19 +151,19 @@ public class UnifiedSelectStatement<ENTITY>
     Objects.requireNonNull(second);
     Objects.requireNonNull(associator);
     Objects.requireNonNull(option);
-    declaration.associateWith(first, second, associator, option);
-    return asEntityqlSelectStarting();
+    return asUnifiedSelectTerminal().associateWith(first, second, associator, option);
   }
 
-  private EntityqlSelectStarting<ENTITY> asEntityqlSelectStarting() {
-    return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);
+  public <RESULT> EntityqlSelectTerminal<RESULT> project(EntityMetamodel<RESULT> entityMetamodel) {
+    Objects.requireNonNull(entityMetamodel);
+    return asEntityqlSelectStarting().select(entityMetamodel);
   }
 
-  @Override
-  protected Command<List<ENTITY>> createCommand() {
-    EntityqlSelectTerminal<ENTITY> terminal =
-        new EntityqlSelectTerminal<>(config, declaration, entityMetamodel);
-    return terminal.createCommand();
+  public <RESULT> EntityqlSelectTerminal<RESULT> projectTo(
+      EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(propertyMetamodels);
+    return asEntityqlSelectStarting().selectTo(entityMetamodel, propertyMetamodels);
   }
 
   public NativeSqlSelectStarting<ENTITY> groupBy(PropertyMetamodel<?>... propertyMetamodels) {
@@ -569,7 +568,20 @@ public class UnifiedSelectStatement<ENTITY>
     return asNativeSqlSelectStarting().unionAll(other);
   }
 
-  protected NativeSqlSelectStarting<ENTITY> asNativeSqlSelectStarting() {
+  @Override
+  protected Command<List<ENTITY>> createCommand() {
+    return asEntityqlSelectStarting().createCommand();
+  }
+
+  private UnifiedSelectTerminal<ENTITY> asUnifiedSelectTerminal() {
+    return new UnifiedSelectTerminal<>(config, declaration, entityMetamodel);
+  }
+
+  private EntityqlSelectStarting<ENTITY> asEntityqlSelectStarting() {
+    return new EntityqlSelectStarting<>(config, declaration, entityMetamodel);
+  }
+
+  private NativeSqlSelectStarting<ENTITY> asNativeSqlSelectStarting() {
     Function<SelectQuery, ObjectProvider<ENTITY>> factory =
         query -> new EntityProvider<>(entityMetamodel.asType(), query, false);
     return new NativeSqlSelectStarting<>(config, declaration, entityMetamodel, factory);

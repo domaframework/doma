@@ -262,7 +262,7 @@ class QueryDslNativeqlSelectTest {
   @Test
   void selectTo() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = dsl.from(e).selectTo(e, e.name);
+    Statement<List<Emp>> stmt = dsl.from(e).projectTo(e, e.name);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID, t0_.NAME from EMP t0_", sql.getFormattedSql());
@@ -271,7 +271,7 @@ class QueryDslNativeqlSelectTest {
   @Test
   void selectTo_no_propertyMetamodels() {
     Emp_ e = new Emp_();
-    Statement<List<Emp>> stmt = dsl.from(e).selectTo(e);
+    Statement<List<Emp>> stmt = dsl.from(e).projectTo(e);
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_", sql.getFormattedSql());
@@ -282,7 +282,7 @@ class QueryDslNativeqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    DomaException ex = assertThrows(DomaException.class, () -> dsl.from(e).selectTo(d, d.id));
+    DomaException ex = assertThrows(DomaException.class, () -> dsl.from(e).projectTo(d, d.id));
     assertEquals(Message.DOMA6007, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
@@ -292,7 +292,7 @@ class QueryDslNativeqlSelectTest {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
 
-    DomaException ex = assertThrows(DomaException.class, () -> dsl.from(e).selectTo(e, d.id));
+    DomaException ex = assertThrows(DomaException.class, () -> dsl.from(e).projectTo(e, d.id));
     assertEquals(Message.DOMA6008, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
