@@ -15,7 +15,7 @@ internal class KEntityqlMultiInsertTest {
     private val entityql = org.seasar.doma.kotlin.jdbc.criteria.KEntityql(config)
 
     @Test
-    fun insertInto() {
+    fun insert() {
         val emp = Emp()
         emp.id = 1
         emp.name = "aaa"
@@ -33,6 +33,43 @@ internal class KEntityqlMultiInsertTest {
         val sql = stmt.asSql()
         Assertions.assertEquals(
             "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1), (2, 'bbb', 2000, 1)",
+            sql.formattedSql,
+        )
+    }
+
+    private val items = listOf(
+        Emp().apply {
+            id = 1
+            name = "aaa"
+            salary = BigDecimal("1000")
+            version = 1
+        },
+        Emp().apply {
+            id = 2
+            name = "eee"
+            salary = BigDecimal("2000")
+            version = 2
+        },
+    )
+
+    @Test
+    fun onDuplicateKeyUpdate() {
+        val e = Emp_()
+        val stmt = entityql.insertMulti(e, items).onDuplicateKeyUpdate()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1), (2, 'eee', 2000, 2) on conflict (ID) do update set NAME = excluded.NAME, SALARY = excluded.SALARY, VERSION = excluded.VERSION",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun onDuplicateKeyIgnore() {
+        val e = Emp_()
+        val stmt = entityql.insertMulti(e, items).onDuplicateKeyIgnore()
+        val sql = stmt.asSql()
+        Assertions.assertEquals(
+            "insert into EMP as target (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1), (2, 'eee', 2000, 2) on conflict do nothing",
             sql.formattedSql,
         )
     }
