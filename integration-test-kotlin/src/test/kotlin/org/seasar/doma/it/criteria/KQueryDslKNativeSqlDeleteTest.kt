@@ -25,7 +25,7 @@ class KQueryDslKNativeSqlDeleteTest(config: Config) {
                 sqlLogType = SqlLogType.RAW
                 allowEmptyWhere = true
                 batchSize = 20
-            }.all()
+            }.where {}
             .execute()
         assertEquals(14, count)
     }
@@ -40,14 +40,21 @@ class KQueryDslKNativeSqlDeleteTest(config: Config) {
     @Test
     fun where_empty() {
         val e = Employee_()
-        val ex = assertThrows(EmptyWhereClauseException::class.java) { dsl.delete(e).all().execute() }
+        val ex = assertThrows(EmptyWhereClauseException::class.java) { dsl.delete(e).where {}.execute() }
         println(ex.message)
     }
 
     @Test
     fun where_empty_allowEmptyWhere_enabled() {
         val e = Employee_()
-        val count = dsl.delete(e) { allowEmptyWhere = true }.all().execute()
+        val count = dsl.delete(e) { allowEmptyWhere = true }.where {}.execute()
+        assertEquals(14, count)
+    }
+
+    @Test
+    fun all() {
+        val e = Employee_()
+        val count = dsl.delete(e).all().execute()
         assertEquals(14, count)
     }
 }

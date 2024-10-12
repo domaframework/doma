@@ -34,7 +34,7 @@ public class QueryDslNativeSqlDeleteTest {
                   settings.setAllowEmptyWhere(true);
                   settings.setBatchSize(20);
                 })
-            .all()
+            .where(__ -> {})
             .execute();
 
     assertEquals(14, count);
@@ -54,7 +54,8 @@ public class QueryDslNativeSqlDeleteTest {
     Employee_ e = new Employee_();
 
     EmptyWhereClauseException ex =
-        assertThrows(EmptyWhereClauseException.class, () -> dsl.delete(e).all().execute());
+        assertThrows(
+            EmptyWhereClauseException.class, () -> dsl.delete(e).where(__ -> {}).execute());
     System.out.println(ex.getMessage());
   }
 
@@ -62,7 +63,17 @@ public class QueryDslNativeSqlDeleteTest {
   void where_empty_allowEmptyWhere_enabled() {
     Employee_ e = new Employee_();
 
-    int count = dsl.delete(e, settings -> settings.setAllowEmptyWhere(true)).all().execute();
+    int count =
+        dsl.delete(e, settings -> settings.setAllowEmptyWhere(true)).where(__ -> {}).execute();
+
+    assertEquals(14, count);
+  }
+
+  @Test
+  void all() {
+    Employee_ e = new Employee_();
+
+    int count = dsl.delete(e).all().execute();
 
     assertEquals(14, count);
   }

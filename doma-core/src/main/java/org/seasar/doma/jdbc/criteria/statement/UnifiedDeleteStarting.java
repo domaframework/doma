@@ -41,6 +41,7 @@ public class UnifiedDeleteStarting<ENTITY> {
   }
 
   public Statement<Integer> all() {
+    settings.setAllowEmptyWhere(true);
     return asNativeSqlDeleteStarting();
   }
 
