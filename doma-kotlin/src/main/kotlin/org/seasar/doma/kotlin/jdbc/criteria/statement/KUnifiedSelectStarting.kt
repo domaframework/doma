@@ -30,14 +30,14 @@ import java.util.function.Function
 import java.util.stream.Stream
 import kotlin.streams.asSequence
 
-class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectStarting<ENTITY>) : KSetOperand<ENTITY> {
+class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectStarting<ENTITY>) : KSetOperand<ENTITY>, KEntityQueryable<ENTITY> {
 
-    fun distinct(distinctOption: DistinctOption = DistinctOption.basic()): KUnifiedSelectStarting<ENTITY> {
+    override fun distinct(distinctOption: DistinctOption): KUnifiedSelectStarting<ENTITY> {
         statement.distinct(distinctOption)
         return this
     }
 
-    fun innerJoin(
+    override fun innerJoin(
         entityMetamodel: EntityMetamodel<*>,
         block: KJoinDeclaration.() -> Unit,
     ): KUnifiedSelectStarting<ENTITY> {
@@ -45,7 +45,7 @@ class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectS
         return this
     }
 
-    fun leftJoin(
+    override fun leftJoin(
         entityMetamodel: EntityMetamodel<*>,
         block: KJoinDeclaration.() -> Unit,
     ): KUnifiedSelectStarting<ENTITY> {
@@ -53,74 +53,74 @@ class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectS
         return this
     }
 
-    fun <ENTITY1, ENTITY2> associate(
+    override fun <ENTITY1, ENTITY2> associate(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> Unit,
-    ): KUnifiedSelectTerminal<ENTITY> {
+    ): KEntityQueryable<ENTITY> {
         return statement.associate(first, second, associator, AssociationOption.mandatory()).let {
             KUnifiedSelectTerminal(it)
         }
     }
 
-    fun <ENTITY1, ENTITY2> associate(
+    override fun <ENTITY1, ENTITY2> associate(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> Unit,
         option: AssociationOption,
-    ): KUnifiedSelectTerminal<ENTITY> {
+    ): KEntityQueryable<ENTITY> {
         return statement.associate(first, second, associator, option).let {
             KUnifiedSelectTerminal(it)
         }
     }
 
-    fun <ENTITY1, ENTITY2> associateWith(
+    override fun <ENTITY1, ENTITY2> associateWith(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> ENTITY1,
-    ): KUnifiedSelectTerminal<ENTITY> {
+    ): KEntityQueryable<ENTITY> {
         return statement.associateWith(first, second, associator).let {
             KUnifiedSelectTerminal(it)
         }
     }
 
-    fun <ENTITY1, ENTITY2> associateWith(
+    override fun <ENTITY1, ENTITY2> associateWith(
         first: EntityMetamodel<ENTITY1>,
         second: EntityMetamodel<ENTITY2>,
         associator: (ENTITY1, ENTITY2) -> ENTITY1,
         option: AssociationOption,
-    ): KUnifiedSelectTerminal<ENTITY> {
+    ): KEntityQueryable<ENTITY> {
         return statement.associateWith(first, second, associator, option).let {
             KUnifiedSelectTerminal(it)
         }
     }
 
-    fun where(block: KWhereDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
+    override fun where(block: KWhereDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.where { block(KWhereDeclaration(it)) }
         return this
     }
 
-    fun orderBy(block: KOrderByNameDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
+    override fun orderBy(block: KOrderByNameDeclaration.() -> Unit): KUnifiedSelectStarting<ENTITY> {
         statement.orderBy { block(KOrderByNameDeclaration(it)) }
         return this
     }
 
-    fun limit(limit: Int?): KUnifiedSelectStarting<ENTITY> {
+    override fun limit(limit: Int?): KUnifiedSelectStarting<ENTITY> {
         statement.limit(limit)
         return this
     }
 
-    fun offset(offset: Int?): KUnifiedSelectStarting<ENTITY> {
+    override fun offset(offset: Int?): KUnifiedSelectStarting<ENTITY> {
         statement.offset(offset)
         return this
     }
 
-    fun forUpdate(option: ForUpdateOption = ForUpdateOption.basic()): KUnifiedSelectStarting<ENTITY> {
+    override fun forUpdate(option: ForUpdateOption): KUnifiedSelectStarting<ENTITY> {
         statement.forUpdate(option)
         return this
     }
 
-    fun <RESULT> project(entityMetamodel: EntityMetamodel<RESULT>): KListable<RESULT> {
+    override fun <RESULT> project(entityMetamodel: EntityMetamodel<RESULT>): KListable<RESULT> {
         val listable = statement.project(entityMetamodel)
         return object : KListable<RESULT> {
             override fun peek(block: (Sql<*>) -> Unit): KListable<RESULT> {
@@ -138,7 +138,7 @@ class KUnifiedSelectStarting<ENTITY : Any>(private val statement: UnifiedSelectS
         }
     }
 
-    fun <RESULT> projectTo(
+    override fun <RESULT> projectTo(
         entityMetamodel: EntityMetamodel<RESULT>,
         vararg propertyMetamodels: PropertyMetamodel<*>,
     ): KListable<RESULT> {

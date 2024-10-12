@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import org.seasar.doma.DomaException
 import org.seasar.doma.jdbc.criteria.entity.Dept_
+import org.seasar.doma.jdbc.criteria.entity.Emp
 import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
 import org.seasar.doma.jdbc.criteria.option.AssociationOption
 import org.seasar.doma.jdbc.criteria.option.DistinctOption
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityQueryable
 import org.seasar.doma.message.Message
 
 internal class KQueryDslKEntityqlSelectTest {
@@ -153,6 +155,28 @@ internal class KQueryDslKEntityqlSelectTest {
                 "inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) " +
                 "left outer join EMP t2_ on (t0_.ID = t2_.ID) " +
                 "left outer join CATA.DEPT t3_ on (t1_.ID = t3_.ID)",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun associate_using_extension_function() {
+        val e = Emp_()
+        val e2 = Emp_()
+        val d = Dept_()
+        val stmt = dsl.from(e)
+            .innerJoin(d) { eq(e.id, d.id) }
+            .innerJoin(e2) { eq(e.id, e2.id) }
+            .associateEmpAndDept(e, d)
+            .associateEmpAndEmp(e, e2)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select " +
+                "t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION, t1_.ID, t1_.NAME, " +
+                "t2_.ID, t2_.NAME, t2_.SALARY, t2_.VERSION " +
+                "from EMP t0_ " +
+                "inner join CATA.DEPT t1_ on (t0_.ID = t1_.ID) " +
+                "inner join EMP t2_ on (t0_.ID = t2_.ID)",
             sql.formattedSql,
         )
     }
@@ -312,4 +336,12 @@ internal class KQueryDslKEntityqlSelectTest {
             .peek { println(it.formattedSql) }
             .fetch()
     }
+}
+
+private fun KEntityQueryable<Emp>.associateEmpAndDept(e: Emp_, d: Dept_): KEntityQueryable<Emp> {
+    return this.associate(e, d, { _, _ -> })
+}
+
+private fun KEntityQueryable<Emp>.associateEmpAndEmp(e: Emp_, e2: Emp_): KEntityQueryable<Emp> {
+    return this.associate(e, e2, { _, _ -> })
 }

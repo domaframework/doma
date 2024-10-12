@@ -44,7 +44,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  */
 public class UnifiedSelectStarting<ENTITY>
     extends AbstractStatement<UnifiedSelectStarting<ENTITY>, List<ENTITY>>
-    implements SetOperand<ENTITY> {
+    implements SetOperand<ENTITY>, EntityQueryable<ENTITY> {
 
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
@@ -63,35 +63,20 @@ public class UnifiedSelectStarting<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
-  /**
-   * Specifies the distinct keyword.
-   *
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> distinct() {
     declaration.distinct(DistinctOption.basic());
     return this;
   }
 
-  /**
-   * Specifies the distinct keyword with the option.
-   *
-   * @param distinctOption the distinct option
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> distinct(DistinctOption distinctOption) {
     Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
 
-  /**
-   * Specify the inner join clause.
-   *
-   * @param entityMetamodel the entity metamodel to join
-   * @param block the block to declare the join condition
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> innerJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -100,13 +85,7 @@ public class UnifiedSelectStarting<ENTITY>
     return this;
   }
 
-  /**
-   * Specify the left join clause.
-   *
-   * @param entityMetamodel the entity metamodel to join
-   * @param block the block to declare the join condition
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> leftJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -115,83 +94,47 @@ public class UnifiedSelectStarting<ENTITY>
     return this;
   }
 
-  /**
-   * Specifies the where clause.
-   *
-   * @param block the block to declare the condition
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
-  /**
-   * Specifies the order by clause.
-   *
-   * @param block the block to declare the order by clause
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
 
-  /**
-   * Specifies the limit clause.
-   *
-   * @param limit the limit
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
-  /**
-   * Specifies the offset clause.
-   *
-   * @param offset the offset
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
-  /**
-   * Specifies the FOR UPDATE clause.
-   *
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> forUpdate() {
     declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 
-  /**
-   * Specifies the FOR UPDATE clause with the option.
-   *
-   * @param option the option
-   * @return the select statement
-   */
+  @Override
   public UnifiedSelectStarting<ENTITY> forUpdate(ForUpdateOption option) {
     Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }
 
-  /**
-   * Associate the mutable entities.
-   *
-   * @param first the first entity metamodel
-   * @param second the second entity metamodel
-   * @param associator the associator
-   * @return the select statement
-   */
-  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
+  @Override
+  public <ENTITY1, ENTITY2> EntityQueryable<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator) {
@@ -202,16 +145,8 @@ public class UnifiedSelectStarting<ENTITY>
         .associate(first, second, associator);
   }
 
-  /**
-   * Associate the mutable entities with the option.
-   *
-   * @param first the first entity metamodel
-   * @param second the second entity metamodel
-   * @param associator the associator
-   * @param option the option
-   * @return the select statement
-   */
-  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
+  @Override
+  public <ENTITY1, ENTITY2> EntityQueryable<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiConsumer<ENTITY1, ENTITY2> associator,
@@ -224,15 +159,8 @@ public class UnifiedSelectStarting<ENTITY>
         .associate(first, second, associator, option);
   }
 
-  /**
-   * Associate the immutable entities.
-   *
-   * @param first the first entity metamodel
-   * @param second the second entity metamodel
-   * @param associator the associator
-   * @return the select statement
-   */
-  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
+  @Override
+  public <ENTITY1, ENTITY2> EntityQueryable<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiFunction<ENTITY1, ENTITY2, ENTITY1> associator) {
@@ -242,16 +170,8 @@ public class UnifiedSelectStarting<ENTITY>
     return asUnifiedSelectTerminal().associateWith(first, second, associator);
   }
 
-  /**
-   * Associate the immutable entities with the option.
-   *
-   * @param first the first entity metamodel
-   * @param second the second entity metamodel
-   * @param associator the associator
-   * @param option the option
-   * @return the select statement
-   */
-  public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
+  @Override
+  public <ENTITY1, ENTITY2> EntityQueryable<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
       BiFunction<ENTITY1, ENTITY2, ENTITY1> associator,
@@ -263,25 +183,13 @@ public class UnifiedSelectStarting<ENTITY>
     return asUnifiedSelectTerminal().associateWith(first, second, associator, option);
   }
 
-  /**
-   * Projects the result to the entity. The duplicated entities are removed from the result.
-   *
-   * @param entityMetamodel the entity metamodel
-   * @return the select statement
-   */
+  @Override
   public <RESULT> Listable<RESULT> project(EntityMetamodel<RESULT> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     return asEntityqlSelectStarting().select(entityMetamodel);
   }
 
-  /**
-   * Projects the result to the entity with the specified properties. The duplicated entities are
-   * removed from the result.
-   *
-   * @param entityMetamodel the entity metamodel
-   * @param propertyMetamodels the property metamodels to project
-   * @return the select statement
-   */
+  @Override
   public <RESULT> Listable<RESULT> projectTo(
       EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(entityMetamodel);
