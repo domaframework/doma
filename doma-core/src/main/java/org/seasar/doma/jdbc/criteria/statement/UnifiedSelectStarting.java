@@ -34,6 +34,14 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple8;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * Represents a SELECT statement starting point.
+ *
+ * <p>Note: {@link #project(EntityMetamodel)} and {@link #projectTo(EntityMetamodel,
+ * PropertyMetamodel[])} will remove duplicate entities from the results.
+ *
+ * @param <ENTITY> the type of the entity
+ */
 public class UnifiedSelectStarting<ENTITY>
     extends AbstractStatement<UnifiedSelectStarting<ENTITY>, List<ENTITY>>
     implements SetOperand<ENTITY> {
@@ -41,6 +49,13 @@ public class UnifiedSelectStarting<ENTITY>
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
 
+  /**
+   * Creates an instance.
+   *
+   * @param config the configuration
+   * @param declaration the declaration
+   * @param entityMetamodel the entity metamodel
+   */
   public UnifiedSelectStarting(
       Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
     super(Objects.requireNonNull(config));
@@ -48,17 +63,35 @@ public class UnifiedSelectStarting<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
+  /**
+   * Specifies the distinct keyword.
+   *
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> distinct() {
     declaration.distinct(DistinctOption.basic());
     return this;
   }
 
+  /**
+   * Specifies the distinct keyword with the option.
+   *
+   * @param distinctOption the distinct option
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> distinct(DistinctOption distinctOption) {
     Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
 
+  /**
+   * Specify the inner join clause.
+   *
+   * @param entityMetamodel the entity metamodel to join
+   * @param block the block to declare the join condition
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> innerJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -67,6 +100,13 @@ public class UnifiedSelectStarting<ENTITY>
     return this;
   }
 
+  /**
+   * Specify the left join clause.
+   *
+   * @param entityMetamodel the entity metamodel to join
+   * @param block the block to declare the join condition
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> leftJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -75,39 +115,82 @@ public class UnifiedSelectStarting<ENTITY>
     return this;
   }
 
+  /**
+   * Specifies the where clause.
+   *
+   * @param block the block to declare the condition
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
+  /**
+   * Specifies the order by clause.
+   *
+   * @param block the block to declare the order by clause
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
 
+  /**
+   * Specifies the limit clause.
+   *
+   * @param limit the limit
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
+  /**
+   * Specifies the offset clause.
+   *
+   * @param offset the offset
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
+  /**
+   * Specifies the FOR UPDATE clause.
+   *
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> forUpdate() {
     declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 
+  /**
+   * Specifies the FOR UPDATE clause with the option.
+   *
+   * @param option the option
+   * @return the select statement
+   */
   public UnifiedSelectStarting<ENTITY> forUpdate(ForUpdateOption option) {
     Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }
 
+  /**
+   * Associate the mutable entities.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -119,6 +202,15 @@ public class UnifiedSelectStarting<ENTITY>
         .associate(first, second, associator);
   }
 
+  /**
+   * Associate the mutable entities with the option.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @param option the option
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -132,6 +224,14 @@ public class UnifiedSelectStarting<ENTITY>
         .associate(first, second, associator, option);
   }
 
+  /**
+   * Associate the immutable entities.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -142,6 +242,15 @@ public class UnifiedSelectStarting<ENTITY>
     return asUnifiedSelectTerminal().associateWith(first, second, associator);
   }
 
+  /**
+   * Associate the immutable entities with the option.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @param option the option
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -154,37 +263,83 @@ public class UnifiedSelectStarting<ENTITY>
     return asUnifiedSelectTerminal().associateWith(first, second, associator, option);
   }
 
-  public <RESULT> EntityqlSelectTerminal<RESULT> project(EntityMetamodel<RESULT> entityMetamodel) {
+  /**
+   * Projects the result to the entity. The duplicated entities are removed from the result.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @return the select statement
+   */
+  public <RESULT> Listable<RESULT> project(EntityMetamodel<RESULT> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     return asEntityqlSelectStarting().select(entityMetamodel);
   }
 
-  public <RESULT> EntityqlSelectTerminal<RESULT> projectTo(
+  /**
+   * Projects the result to the entity with the specified properties. The duplicated entities are
+   * removed from the result.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @param propertyMetamodels the property metamodels to project
+   * @return the select statement
+   */
+  public <RESULT> Listable<RESULT> projectTo(
       EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(entityMetamodel);
     Objects.requireNonNull(propertyMetamodels);
     return asEntityqlSelectStarting().selectTo(entityMetamodel, propertyMetamodels);
   }
 
+  /**
+   * Specifies the group by clause.
+   *
+   * @param propertyMetamodels the property metamodels to group by
+   * @return the select statement
+   */
   public NativeSqlSelectStarting<ENTITY> groupBy(PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodels);
     return asNativeSqlSelectStarting().groupBy(propertyMetamodels);
   }
 
+  /**
+   * Specifies the having clause.
+   *
+   * @param block the block to declare the having condition
+   * @return the select statement
+   */
   public NativeSqlSelectStarting<ENTITY> having(Consumer<HavingDeclaration> block) {
     Objects.requireNonNull(block);
     return asNativeSqlSelectStarting().having(block);
   }
 
+  /**
+   * Projects the result to the entity. The duplicated entities are NOT removed from the result.
+   *
+   * @return the result
+   */
   public SetOperand<ENTITY> select() {
     return asNativeSqlSelectStarting().select();
   }
 
+  /**
+   * Projects the result to the specified entity. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel the entity metamodel to project
+   * @return the result
+   */
   public <T> SetOperand<T> select(EntityMetamodel<T> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     return asNativeSqlSelectStarting().select(entityMetamodel);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @return the result
+   */
   public <T1, T2> SetOperand<Tuple2<T1, T2>> select(
       EntityMetamodel<T1> entityMetamodel1, EntityMetamodel<T2> entityMetamodel2) {
     Objects.requireNonNull(entityMetamodel1);
@@ -192,6 +347,15 @@ public class UnifiedSelectStarting<ENTITY>
     return asNativeSqlSelectStarting().select(entityMetamodel1, entityMetamodel2);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3> SetOperand<Tuple3<T1, T2, T3>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -202,6 +366,16 @@ public class UnifiedSelectStarting<ENTITY>
     return asNativeSqlSelectStarting().select(entityMetamodel1, entityMetamodel2, entityMetamodel3);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4> SetOperand<Tuple4<T1, T2, T3, T4>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -215,6 +389,17 @@ public class UnifiedSelectStarting<ENTITY>
         .select(entityMetamodel1, entityMetamodel2, entityMetamodel3, entityMetamodel4);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @param entityMetamodel5 the fifth entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5> SetOperand<Tuple5<T1, T2, T3, T4, T5>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -235,6 +420,18 @@ public class UnifiedSelectStarting<ENTITY>
             entityMetamodel5);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @param entityMetamodel5 the fifth entity metamodel to project
+   * @param entityMetamodel6 the sixth entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6> SetOperand<Tuple6<T1, T2, T3, T4, T5, T6>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -258,6 +455,19 @@ public class UnifiedSelectStarting<ENTITY>
             entityMetamodel6);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @param entityMetamodel5 the fifth entity metamodel to project
+   * @param entityMetamodel6 the sixth entity metamodel to project
+   * @param entityMetamodel7 the seventh entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7> SetOperand<Tuple7<T1, T2, T3, T4, T5, T6, T7>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -284,6 +494,20 @@ public class UnifiedSelectStarting<ENTITY>
             entityMetamodel7);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @param entityMetamodel5 the fifth entity metamodel to project
+   * @param entityMetamodel6 the sixth entity metamodel to project
+   * @param entityMetamodel7 the seventh entity metamodel to project
+   * @param entityMetamodel8 the eighth entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7, T8> SetOperand<Tuple8<T1, T2, T3, T4, T5, T6, T7, T8>> select(
       EntityMetamodel<T1> entityMetamodel1,
       EntityMetamodel<T2> entityMetamodel2,
@@ -313,6 +537,21 @@ public class UnifiedSelectStarting<ENTITY>
             entityMetamodel8);
   }
 
+  /**
+   * Projects the result to the specified entities. The duplicated entities are NOT removed from the
+   * result.
+   *
+   * @param entityMetamodel1 the first entity metamodel to project
+   * @param entityMetamodel2 the second entity metamodel to project
+   * @param entityMetamodel3 the third entity metamodel to project
+   * @param entityMetamodel4 the fourth entity metamodel to project
+   * @param entityMetamodel5 the fifth entity metamodel to project
+   * @param entityMetamodel6 the sixth entity metamodel to project
+   * @param entityMetamodel7 the seventh entity metamodel to project
+   * @param entityMetamodel8 the eighth entity metamodel to project
+   * @param entityMetamodel9 the ninth entity metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7, T8, T9>
       SetOperand<Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9>> select(
           EntityMetamodel<T1> entityMetamodel1,
@@ -346,11 +585,26 @@ public class UnifiedSelectStarting<ENTITY>
             entityMetamodel9);
   }
 
+  /**
+   * Projects the result with the specified property. The duplicated tuples are NOT removed from the
+   * result.
+   *
+   * @param propertyMetamodel the property metamodel to project
+   * @return the result
+   */
   public <T> SetOperand<T> select(PropertyMetamodel<T> propertyMetamodel) {
     Objects.requireNonNull(propertyMetamodel);
     return asNativeSqlSelectStarting().select(propertyMetamodel);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @return the result
+   */
   public <T1, T2> SetOperand<Tuple2<T1, T2>> select(
       PropertyMetamodel<T1> propertyMetamodel1, PropertyMetamodel<T2> propertyMetamodel2) {
     Objects.requireNonNull(propertyMetamodel1);
@@ -358,6 +612,15 @@ public class UnifiedSelectStarting<ENTITY>
     return asNativeSqlSelectStarting().select(propertyMetamodel1, propertyMetamodel2);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3> SetOperand<Tuple3<T1, T2, T3>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -369,6 +632,16 @@ public class UnifiedSelectStarting<ENTITY>
         .select(propertyMetamodel1, propertyMetamodel2, propertyMetamodel3);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4> SetOperand<Tuple4<T1, T2, T3, T4>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -382,6 +655,17 @@ public class UnifiedSelectStarting<ENTITY>
         .select(propertyMetamodel1, propertyMetamodel2, propertyMetamodel3, propertyMetamodel4);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @param propertyMetamodel5 the fifth property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5> SetOperand<Tuple5<T1, T2, T3, T4, T5>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -402,6 +686,18 @@ public class UnifiedSelectStarting<ENTITY>
             propertyMetamodel5);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @param propertyMetamodel5 the fifth property metamodel to project
+   * @param propertyMetamodel6 the sixth property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6> SetOperand<Tuple6<T1, T2, T3, T4, T5, T6>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -425,6 +721,19 @@ public class UnifiedSelectStarting<ENTITY>
             propertyMetamodel6);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @param propertyMetamodel5 the fifth property metamodel to project
+   * @param propertyMetamodel6 the sixth property metamodel to project
+   * @param propertyMetamodel7 the seventh property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7> SetOperand<Tuple7<T1, T2, T3, T4, T5, T6, T7>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -460,6 +769,20 @@ public class UnifiedSelectStarting<ENTITY>
             propertyMetamodel7);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @param propertyMetamodel5 the fifth property metamodel to project
+   * @param propertyMetamodel6 the sixth property metamodel to project
+   * @param propertyMetamodel7 the seventh property metamodel to project
+   * @param propertyMetamodel8 the eighth property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7, T8> SetOperand<Tuple8<T1, T2, T3, T4, T5, T6, T7, T8>> select(
       PropertyMetamodel<T1> propertyMetamodel1,
       PropertyMetamodel<T2> propertyMetamodel2,
@@ -489,6 +812,21 @@ public class UnifiedSelectStarting<ENTITY>
             propertyMetamodel8);
   }
 
+  /**
+   * Projects the result with the specified properties. The duplicated tuples are NOT removed from
+   * the result.
+   *
+   * @param propertyMetamodel1 the first property metamodel to project
+   * @param propertyMetamodel2 the second property metamodel to project
+   * @param propertyMetamodel3 the third property metamodel to project
+   * @param propertyMetamodel4 the fourth property metamodel to project
+   * @param propertyMetamodel5 the fifth property metamodel to project
+   * @param propertyMetamodel6 the sixth property metamodel to project
+   * @param propertyMetamodel7 the seventh property metamodel to project
+   * @param propertyMetamodel8 the eighth property metamodel to project
+   * @param propertyMetamodel9 the ninth property metamodel to project
+   * @return the result
+   */
   public <T1, T2, T3, T4, T5, T6, T7, T8, T9>
       SetOperand<Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9>> select(
           PropertyMetamodel<T1> propertyMetamodel1,
@@ -522,6 +860,13 @@ public class UnifiedSelectStarting<ENTITY>
             propertyMetamodel9);
   }
 
+  /**
+   * Projects the result as a List of {@link Row} implicitly with the specified properties. The
+   * duplicated rows are NOT removed from the result.
+   *
+   * @param propertyMetamodels the property metamodels to project
+   * @return the result
+   */
   public SetOperand<Row> select(
       PropertyMetamodel<?> propertyMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodel);
@@ -529,6 +874,13 @@ public class UnifiedSelectStarting<ENTITY>
     return asNativeSqlSelectStarting().select(propertyMetamodel, propertyMetamodels);
   }
 
+  /**
+   * Projects the result as a List of {@link Row} explicitly with the specified properties. The
+   * duplicated rows are NOT removed from the result.
+   *
+   * @param propertyMetamodels the property metamodels to project
+   * @return the result
+   */
   public SetOperand<Row> selectAsRow(
       PropertyMetamodel<?> propertyMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(propertyMetamodel);
@@ -536,6 +888,11 @@ public class UnifiedSelectStarting<ENTITY>
     return asNativeSqlSelectStarting().selectAsRow(propertyMetamodel, propertyMetamodels);
   }
 
+  /**
+   * Projects the result to the entity. The duplicated entities are NOT removed from the result.
+   *
+   * @return the result
+   */
   public <RESULT> SetOperand<RESULT> selectTo(
       EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(entityMetamodel);

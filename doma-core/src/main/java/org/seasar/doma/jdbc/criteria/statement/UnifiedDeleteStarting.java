@@ -12,12 +12,24 @@ import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
 import org.seasar.doma.jdbc.criteria.declaration.WhereDeclaration;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
+/**
+ * Represents a DELETE statement starting point.
+ *
+ * @param <ENTITY> the type of the entity
+ */
 public class UnifiedDeleteStarting<ENTITY> {
 
   private final Config config;
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final DeleteSettings settings;
 
+  /**
+   * Creates an instance.
+   *
+   * @param config the configuration
+   * @param entityMetamodel the entity metamodel
+   * @param settings the settings
+   */
   public UnifiedDeleteStarting(
       Config config, EntityMetamodel<ENTITY> entityMetamodel, DeleteSettings settings) {
     this.config = Objects.requireNonNull(config);
@@ -25,21 +37,44 @@ public class UnifiedDeleteStarting<ENTITY> {
     this.settings = Objects.requireNonNull(settings);
   }
 
+  /**
+   * Deletes the entity.
+   *
+   * @param entity the entity
+   * @return the delete statement
+   */
   public Statement<Result<ENTITY>> single(ENTITY entity) {
     Objects.requireNonNull(entity);
     return asEntityqlDeleteStatement(entity);
   }
 
+  /**
+   * Deletes the entities in batch.
+   *
+   * @param entities the entities
+   * @return the delete statement
+   */
   public Statement<BatchResult<ENTITY>> batch(List<ENTITY> entities) {
     Objects.requireNonNull(entities);
     return asEntityqlBatchDeleteStatement(entities);
   }
 
+  /**
+   * Specifies the where clause.
+   *
+   * @param block the block that provides the where declaration
+   * @return the delete statement
+   */
   public Statement<Integer> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     return asNativeSqlDeleteStarting().where(block);
   }
 
+  /**
+   * Deletes all the entities.
+   *
+   * @return the delete statement
+   */
   public Statement<Integer> all() {
     settings.setAllowEmptyWhere(true);
     return asNativeSqlDeleteStarting();

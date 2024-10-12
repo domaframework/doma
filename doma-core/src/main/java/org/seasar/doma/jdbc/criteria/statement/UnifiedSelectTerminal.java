@@ -17,6 +17,14 @@ import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
+/**
+ * Represents a SELECT statement terminal.
+ *
+ * <p>Note: {@link #project(EntityMetamodel)} and {@link #projectTo(EntityMetamodel,
+ * PropertyMetamodel[])} will remove duplicate entities from the results.
+ *
+ * @param <ENTITY> the type of the entity
+ */
 public class UnifiedSelectTerminal<ENTITY>
     extends AbstractStatement<UnifiedSelectTerminal<ENTITY>, List<ENTITY>>
     implements Listable<ENTITY> {
@@ -24,6 +32,13 @@ public class UnifiedSelectTerminal<ENTITY>
   private final SelectFromDeclaration declaration;
   private final EntityMetamodel<ENTITY> entityMetamodel;
 
+  /**
+   * Creates an instance.
+   *
+   * @param config the configuration
+   * @param declaration the declaration
+   * @param entityMetamodel the entity metamodel
+   */
   UnifiedSelectTerminal(
       Config config, SelectFromDeclaration declaration, EntityMetamodel<ENTITY> entityMetamodel) {
     super(Objects.requireNonNull(config));
@@ -31,17 +46,35 @@ public class UnifiedSelectTerminal<ENTITY>
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
   }
 
+  /**
+   * Specifies the distinct keyword.
+   *
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> distinct() {
     declaration.distinct(DistinctOption.basic());
     return this;
   }
 
+  /**
+   * Specifies the distinct keyword with the specified option.
+   *
+   * @param distinctOption the distinct option
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> distinct(DistinctOption distinctOption) {
     Objects.requireNonNull(distinctOption);
     declaration.distinct(distinctOption);
     return this;
   }
 
+  /**
+   * Specifies the inner join clause.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @param block the block that describes the join condition
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> innerJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -50,6 +83,13 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Specifies the left join clause.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @param block the block that describes the join condition
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> leftJoin(
       EntityMetamodel<?> entityMetamodel, Consumer<JoinDeclaration> block) {
     Objects.requireNonNull(entityMetamodel);
@@ -58,39 +98,82 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Specifies the where clause.
+   *
+   * @param block the block that describes the where condition
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> where(Consumer<WhereDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.where(block);
     return this;
   }
 
+  /**
+   * Specifies the order by clause.
+   *
+   * @param block the block that describes the order by condition
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> orderBy(Consumer<OrderByNameDeclaration> block) {
     Objects.requireNonNull(block);
     declaration.orderBy(block);
     return this;
   }
 
+  /**
+   * Specifies the limit clause.
+   *
+   * @param limit the limit
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> limit(Integer limit) {
     declaration.limit(limit);
     return this;
   }
 
+  /**
+   * Specifies the offset clause.
+   *
+   * @param offset the offset
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> offset(Integer offset) {
     declaration.offset(offset);
     return this;
   }
 
+  /**
+   * Specifies the for update clause.
+   *
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> forUpdate() {
     declaration.forUpdate(ForUpdateOption.basic());
     return this;
   }
 
+  /**
+   * Specifies the for update clause with the specified option.
+   *
+   * @param option the for update option
+   * @return the select statement
+   */
   public UnifiedSelectTerminal<ENTITY> forUpdate(ForUpdateOption option) {
     Objects.requireNonNull(option);
     declaration.forUpdate(option);
     return this;
   }
 
+  /**
+   * Associates the entities.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -102,6 +185,15 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Associates the entities with the option.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @param option the association option
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associate(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -115,6 +207,14 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Associates the immutable entities.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -126,6 +226,14 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Associates the immutable entities with the option.
+   *
+   * @param first the first entity metamodel
+   * @param second the second entity metamodel
+   * @param associator the associator
+   * @return the select statement
+   */
   public <ENTITY1, ENTITY2> UnifiedSelectTerminal<ENTITY> associateWith(
       EntityMetamodel<ENTITY1> first,
       EntityMetamodel<ENTITY2> second,
@@ -139,11 +247,25 @@ public class UnifiedSelectTerminal<ENTITY>
     return this;
   }
 
+  /**
+   * Projects the result to the entity. The duplicated entities are removed from the result.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @return the select statement
+   */
   public <RESULT> Listable<RESULT> project(EntityMetamodel<RESULT> entityMetamodel) {
     Objects.requireNonNull(entityMetamodel);
     return asEntityqlSelectStarting().select(entityMetamodel);
   }
 
+  /**
+   * Projects the result to the entity with the specified properties. The duplicated entities are
+   * removed from the result.
+   *
+   * @param entityMetamodel the entity metamodel
+   * @param propertyMetamodels the property metamodels to project
+   * @return the select statement
+   */
   public <RESULT> Listable<RESULT> projectTo(
       EntityMetamodel<RESULT> entityMetamodel, PropertyMetamodel<?>... propertyMetamodels) {
     Objects.requireNonNull(entityMetamodel);
