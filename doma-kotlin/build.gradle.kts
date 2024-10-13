@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") apply true
+    alias(libs.plugins.kotlin.jvm)
 }
 
 description = "doma-kotlin"

@@ -2,12 +2,12 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.diffplug.spotless")
-    id("io.github.gradle-nexus.publish-plugin")
-    id("net.researchgate.release")
-    id("org.domaframework.doma.compile")
-    kotlin("jvm")
-    kotlin("kapt")
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.publish)
+    alias(libs.plugins.release)
+    alias(libs.plugins.doma.compile)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 val javaLangVersion: Int = project.properties["javaLangVersion"].toString().toInt()
@@ -18,6 +18,10 @@ val integrationTestProjects: List<Project> = subprojects.filter { it.name.starts
 
 val encoding: String by project
 val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
+
+// Retain a reference to rootProject.libs to make the version catalog accessible within allprojects and subprojects.
+// See https://github.com/gradle/gradle/issues/16708
+val catalog = libs
 
 fun replaceVersionInArtifact(ver: String) {
     ant.withGroovyBuilder {
@@ -64,7 +68,7 @@ fun replaceVersionInDocs(ver: String) {
 
 allprojects {
     apply(plugin = "base")
-    apply(plugin = "com.diffplug.spotless")
+    apply(plugin = catalog.plugins.spotless.get().pluginId)
 
     repositories {
         mavenCentral()
@@ -85,16 +89,16 @@ subprojects {
     apply(plugin = "java")
 
     dependencies {
-        "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.11.2")
-        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:5.11.2")
+        testImplementation(catalog.junit.jupiter.api)
+        testRuntimeOnly(catalog.junit.jupiter.engine)
     }
 
     spotless {
         java {
-            googleJavaFormat("1.23.0")
+            googleJavaFormat(catalog.google.java.format.get().version)
         }
         kotlin {
-            ktlint("0.48.2")
+            ktlint(catalog.ktlint.get().version)
             trimTrailingWhitespace()
             endWithNewline()
         }
@@ -208,16 +212,16 @@ configure(integrationTestProjects) {
     apply(plugin = "org.domaframework.doma.compile")
 
     dependencies {
-        testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.2"))
-        testRuntimeOnly("com.h2database:h2:2.3.232")
-        testRuntimeOnly("mysql:mysql-connector-java:8.0.33")
-        testRuntimeOnly("com.oracle.database.jdbc:ojdbc11-production:23.5.0.24.07")
-        testRuntimeOnly("org.postgresql:postgresql:42.7.4")
-        testRuntimeOnly("com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11")
-        testRuntimeOnly("org.testcontainers:mysql")
-        testRuntimeOnly("org.testcontainers:oracle-xe")
-        testRuntimeOnly("org.testcontainers:postgresql")
-        testRuntimeOnly("org.testcontainers:mssqlserver")
+        testImplementation(platform(catalog.testcontainers.bom))
+        testRuntimeOnly(catalog.jdbc.h2)
+        testRuntimeOnly(catalog.jdbc.mysql)
+        testRuntimeOnly(catalog.jdbc.oracle)
+        testRuntimeOnly(catalog.jdbc.postgresql)
+        testRuntimeOnly(catalog.jdbc.sqlserver)
+        testRuntimeOnly(catalog.testcontainers.mysql)
+        testRuntimeOnly(catalog.testcontainers.oracle)
+        testRuntimeOnly(catalog.testcontainers.postgresql)
+        testRuntimeOnly(catalog.testcontainers.sqlserver)
     }
 
     java {

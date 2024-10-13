@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
-
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 dependencies {
