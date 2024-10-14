@@ -1668,7 +1668,7 @@ internal class KQueryDslKNativeSqlSelectTest {
                     "when t0_.NAME is null then 'm' " +
                     "when t0_.NAME is not null then 'n' " +
                     "else 'z' end from EMP t0_"
-                ),
+            ),
             sql.rawSql,
         )
     }
