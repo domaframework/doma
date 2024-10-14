@@ -8,7 +8,9 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import org.seasar.doma.jdbc.criteria.option.LikeOption
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2
 
-class KWhereDeclaration(declaration: WhereDeclaration) : org.seasar.doma.kotlin.jdbc.criteria.declaration.KComparisonDeclaration<WhereDeclaration>(declaration) {
+class KWhereDeclaration(declaration: WhereDeclaration) : KComparisonDeclaration<WhereDeclaration>(
+    declaration
+) {
 
     fun like(left: PropertyMetamodel<*>, right: CharSequence?, option: LikeOption = LikeOption.none()) {
         declaration.like(left, right, option)
