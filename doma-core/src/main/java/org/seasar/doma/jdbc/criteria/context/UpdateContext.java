@@ -13,11 +13,16 @@ public class UpdateContext implements Context {
   public final List<EntityMetamodel<?>> entityMetamodels;
   public final Map<Operand.Prop, Operand> set = new LinkedHashMap<>();
   public List<Criterion> where = new ArrayList<>();
-  public final UpdateSettings settings = new UpdateSettings();
+  public final UpdateSettings settings;
 
   public UpdateContext(EntityMetamodel<?> entityMetamodel) {
+    this(entityMetamodel, new UpdateSettings());
+  }
+
+  public UpdateContext(EntityMetamodel<?> entityMetamodel, UpdateSettings settings) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entityMetamodels = Collections.singletonList(entityMetamodel);
+    this.settings = Objects.requireNonNull(settings);
   }
 
   @Override

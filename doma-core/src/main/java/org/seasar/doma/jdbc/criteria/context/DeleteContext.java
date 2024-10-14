@@ -10,11 +10,16 @@ public class DeleteContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
   public final List<EntityMetamodel<?>> entityMetamodels;
   public List<Criterion> where = new ArrayList<>();
-  public final DeleteSettings settings = new DeleteSettings();
+  public final DeleteSettings settings;
 
   public DeleteContext(EntityMetamodel<?> entityMetamodel) {
+    this(entityMetamodel, new DeleteSettings());
+  }
+
+  public DeleteContext(EntityMetamodel<?> entityMetamodel, DeleteSettings settings) {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entityMetamodels = Collections.singletonList(entityMetamodel);
+    this.settings = Objects.requireNonNull(settings);
   }
 
   @Override
