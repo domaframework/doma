@@ -10,7 +10,7 @@ jdbc-postgresql = { module = "org.postgresql:postgresql", version = "42.7.4" }
 jdbc-sqlserver = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "12.8.1.jre11" }
 
 slf4j-api = { module = "org.slf4j:slf4j-api", version = "2.0.16" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.11" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12" }
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
