@@ -4,12 +4,6 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs")
-    }
-}
-
 rootProject.name = "doma"
 
 include("doma-core")

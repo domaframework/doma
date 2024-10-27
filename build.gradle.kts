@@ -76,6 +76,22 @@ allprojects {
 
     spotless {
         lineEndings = com.diffplug.spotless.LineEnding.UNIX
+        java {
+            googleJavaFormat(catalog.google.java.format.get().version)
+        }
+        kotlin {
+            ktlint(catalog.ktlint.get().version)
+        }
+        kotlinGradle {
+            ktlint(catalog.ktlint.get().version)
+        }
+        format("misc") {
+            target("**/*.gitignore", "docs/**/*.rst", "**/*.md")
+            targetExclude("**/bin/**", "**/build/**")
+            indentWithSpaces()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
     }
 
     tasks {
@@ -91,17 +107,6 @@ subprojects {
     dependencies {
         testImplementation(catalog.junit.jupiter.api)
         testRuntimeOnly(catalog.junit.jupiter.engine)
-    }
-
-    spotless {
-        java {
-            googleJavaFormat(catalog.google.java.format.get().version)
-        }
-        kotlin {
-            ktlint(catalog.ktlint.get().version)
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
     }
 }
 
@@ -140,8 +145,8 @@ configure(modularProjects) {
                     }
                     scm {
                         val githubUrl: String by project
-                        connection.set("scm:git:${githubUrl}")
-                        developerConnection.set("scm:git:${githubUrl}")
+                        connection.set("scm:git:$githubUrl")
+                        developerConnection.set("scm:git:$githubUrl")
                         url.set(projectUrl)
                     }
                 }
@@ -208,8 +213,7 @@ configure(modularProjects) {
 
 configure(integrationTestProjects) {
     apply(plugin = "java")
-    apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "org.domaframework.doma.compile")
+    apply(plugin = catalog.plugins.doma.compile.get().pluginId)
 
     dependencies {
         testImplementation(platform(catalog.testcontainers.bom))
@@ -294,21 +298,6 @@ rootProject.apply {
             sonatype()
         }
         packageGroup.set("org.seasar")
-    }
-
-    spotless {
-        format("misc") {
-            target("**/*.gradle.kts", "**/*.gitignore")
-            targetExclude("**/bin/**", "**/build/**")
-            indentWithSpaces()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-        format("documentation") {
-            target("docs/**/*.rst", "**/*.md")
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
     }
 
     tasks {
