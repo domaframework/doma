@@ -208,8 +208,8 @@ configure(modularProjects) {
 
 configure(integrationTestProjects) {
     apply(plugin = "java")
-    apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "org.domaframework.doma.compile")
+    apply(plugin = catalog.plugins.spotless.get().pluginId)
+    apply(plugin = catalog.plugins.doma.compile.get().pluginId)
 
     dependencies {
         testImplementation(platform(catalog.testcontainers.bom))
