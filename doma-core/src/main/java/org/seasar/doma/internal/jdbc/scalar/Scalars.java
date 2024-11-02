@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.function.Supplier;
+import org.seasar.doma.DataType;
 import org.seasar.doma.Domain;
 import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.domain.DomainType;
@@ -255,7 +256,8 @@ public final class Scalars {
   protected static <BASIC, DOMAIN> Supplier<Scalar<?, ?>> wrapDomainObject(
       Object value, Class<DOMAIN> valueClass, boolean optional, ClassHelper classHelper) {
     DomainType<BASIC, DOMAIN> domainType;
-    if (valueClass.isAnnotationPresent(Domain.class)) {
+    if (valueClass.isAnnotationPresent(Domain.class)
+        || valueClass.isAnnotationPresent(DataType.class)) {
       domainType = DomainTypeFactory.getDomainType(valueClass, classHelper);
     } else {
       domainType = DomainTypeFactory.getExternalDomainType(valueClass, classHelper);
