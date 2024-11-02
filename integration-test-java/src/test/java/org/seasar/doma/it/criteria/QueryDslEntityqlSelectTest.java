@@ -420,6 +420,14 @@ public class QueryDslEntityqlSelectTest {
   }
 
   @Test
+  void where_eq_dataType() {
+    Place_ p = new Place_();
+
+    List<Place> list = dsl.from(p).where(c -> c.eq(p.street, new Avenue("STREET 10"))).fetch();
+    assertEquals(1, list.size());
+  }
+
+  @Test
   void innerJoin() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
