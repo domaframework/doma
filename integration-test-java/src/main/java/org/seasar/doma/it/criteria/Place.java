@@ -6,7 +6,7 @@ import org.seasar.doma.Metamodel;
 import org.seasar.doma.Table;
 
 @Entity(metamodel = @Metamodel)
-@Table(name = "address")
+@Table(name = "ADDRESS")
 public class Place {
   @Id private Integer addressId;
   private Avenue street;
