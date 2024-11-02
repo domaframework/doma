@@ -30,7 +30,6 @@ import org.seasar.doma.jdbc.dialect.MssqlDialect;
 import org.seasar.doma.jdbc.dialect.MysqlDialect;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
-import org.seasar.doma.jdbc.dialect.SqliteDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,6 +74,8 @@ public class IntegrationTestEnvironment
         return Dbms.ORACLE;
       case "postgresql":
         return Dbms.POSTGRESQL;
+      case "sqlite":
+        return Dbms.SQLITE;
       case "sqlserver":
         return Dbms.SQLSERVER;
       default:
@@ -89,7 +90,7 @@ public class IntegrationTestEnvironment
       case HSQLDB:
         return new HsqldbDialect();
       case SQLITE:
-        return new SqliteDialect();
+        return new CustomSqliteDialect();
       case MYSQL:
         return new MysqlDialect();
       case MYSQL8:

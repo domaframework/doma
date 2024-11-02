@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.criteria.expression.SelectExpression;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
 
 @ExtendWith(IntegrationTestEnvironment.class)
+@Run(unless = Dbms.SQLITE)
 public class QueryDslNativeSqlUpdateTest {
 
   private final QueryDsl dsl;

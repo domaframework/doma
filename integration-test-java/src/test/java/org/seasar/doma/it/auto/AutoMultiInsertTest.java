@@ -213,7 +213,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
   public void testId_Identity(Config config) throws Exception {
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     IdentityStrategy entity1 = new IdentityStrategy();
@@ -228,7 +228,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
   public void testId_PrimitiveIdentity(Config config) throws Exception {
     PrimitiveIdentityStrategyDao dao = new PrimitiveIdentityStrategyDaoImpl(config);
     List<PrimitiveIdentityStrategy> entities = new ArrayList<>(110);
@@ -243,7 +243,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER, Dbms.SQLITE})
   public void testId_sequence(Config config) throws Exception {
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     SequenceStrategy entity1 = new SequenceStrategy();
@@ -406,6 +406,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -447,6 +448,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -484,6 +486,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -534,6 +537,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -579,7 +583,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) throws Exception {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -603,7 +607,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -652,7 +656,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
@@ -680,7 +684,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
       throws Exception {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);

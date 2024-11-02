@@ -14,14 +14,17 @@ public class CustomSqliteJdbcMappingVisitor extends SqliteJdbcMappingVisitor {
   public Void visitBigDecimalWrapper(
       BigDecimalWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q) throws SQLException {
     BigDecimal decimal = wrapper.get();
-    IntegerWrapper intergerWrapper;
+    IntegerWrapper integerWrapper;
     if (decimal == null) {
-      intergerWrapper = new IntegerWrapper(null);
+      integerWrapper = new IntegerWrapper(null);
     } else {
-      intergerWrapper = new IntegerWrapper(decimal.intValue());
+      integerWrapper = new IntegerWrapper(decimal.intValue());
     }
-    super.visitIntegerWrapper(intergerWrapper, p, q);
-    wrapper.set(intergerWrapper.get());
+    super.visitIntegerWrapper(integerWrapper, p, q);
+    Integer integer = integerWrapper.get();
+    if (integer != null) {
+      wrapper.set(integer);
+    }
     return null;
   }
 }

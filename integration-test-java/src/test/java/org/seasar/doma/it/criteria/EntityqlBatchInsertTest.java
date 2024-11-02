@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.criteria.Entityql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 @ExtendWith(IntegrationTestEnvironment.class)
+@Run(unless = Dbms.SQLITE)
 public class EntityqlBatchInsertTest {
   private final Entityql entityql;
   private final Dialect dialect;

@@ -221,6 +221,7 @@ configure(integrationTestProjects) {
         testRuntimeOnly(catalog.jdbc.mysql)
         testRuntimeOnly(catalog.jdbc.oracle)
         testRuntimeOnly(catalog.jdbc.postgresql)
+        testRuntimeOnly(catalog.jdbc.sqlite)
         testRuntimeOnly(catalog.jdbc.sqlserver)
         testRuntimeOnly(catalog.testcontainers.mysql)
         testRuntimeOnly(catalog.testcontainers.oracle)
@@ -273,6 +274,10 @@ configure(integrationTestProjects) {
 
         val postgresql by registering(Test::class) {
             prepare("postgresql")
+        }
+
+        val sqlite by registering(Test::class) {
+            prepare("sqlite")
         }
 
         val sqlserver by registering(Test::class) {
