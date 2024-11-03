@@ -95,7 +95,7 @@ For Java projects:
 
 ```kotlin
 plugins {
-    id("org.domaframework.doma.compile") version "2.0.0"
+    id("org.domaframework.doma.compile") version "3.0.1"
 }
 
 dependencies {
@@ -108,7 +108,7 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```kotlin
 plugins {
-  id("org.domaframework.doma.compile") version "2.0.0"
+  id("org.domaframework.doma.compile") version "3.0.1"
 }
 
 dependencies {
