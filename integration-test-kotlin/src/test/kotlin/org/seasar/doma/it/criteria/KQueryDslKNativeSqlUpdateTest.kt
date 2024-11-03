@@ -19,6 +19,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions
 import java.math.BigDecimal
 
 @ExtendWith(IntegrationTestEnvironment::class)
+@Run(unless = [Dbms.SQLITE])
 class KQueryDslKNativeSqlUpdateTest(config: Config) {
 
     private val dsl = KQueryDsl(config)

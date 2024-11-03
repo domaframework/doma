@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.it.entity.IdColumnOnlyEmployee;
 import org.seasar.doma.it.entity.IdColumnOnlyEmployee_;
 import org.seasar.doma.jdbc.BatchResult;
@@ -17,6 +19,7 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.criteria.Entityql;
 
 @ExtendWith(IntegrationTestEnvironment.class)
+@Run(unless = Dbms.SQLITE)
 public class EntityqlBatchUpdateTest {
 
   private final Entityql entityql;

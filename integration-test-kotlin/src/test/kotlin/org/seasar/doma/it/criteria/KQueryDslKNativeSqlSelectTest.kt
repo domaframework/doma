@@ -24,6 +24,7 @@ import java.time.LocalDate
 import kotlin.streams.asSequence
 
 @ExtendWith(IntegrationTestEnvironment::class)
+@Run(unless = [Dbms.SQLITE])
 class KQueryDslKNativeSqlSelectTest(config: Config) {
 
     private val dsl = KQueryDsl(config)
