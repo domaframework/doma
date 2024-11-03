@@ -15,7 +15,11 @@ public class LongWrapper extends AbstractWrapper<Long> implements NumberWrapper<
 
   @Override
   public void set(Number v) {
-    super.set(v.longValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.longValue());
+    }
   }
 
   @Override

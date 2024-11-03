@@ -15,7 +15,11 @@ public class IntegerWrapper extends AbstractWrapper<Integer> implements NumberWr
 
   @Override
   public void set(Number v) {
-    set(v.intValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.intValue());
+    }
   }
 
   @Override
