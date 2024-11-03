@@ -53,11 +53,6 @@ public class SqliteDialect extends StandardDialect {
   }
 
   @Override
-  public boolean includesIdentityColumn() {
-    return true;
-  }
-
-  @Override
   public PreparedSql getIdentitySelectSql(
       String catalogName,
       String schemaName,
