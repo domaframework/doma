@@ -15,7 +15,11 @@ public class ShortWrapper extends AbstractWrapper<Short> implements NumberWrappe
 
   @Override
   public void set(Number v) {
-    super.set(v.shortValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.shortValue());
+    }
   }
 
   @Override

@@ -15,7 +15,11 @@ public class DoubleWrapper extends AbstractWrapper<Double> implements NumberWrap
 
   @Override
   public void set(Number v) {
-    super.set(v.doubleValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.doubleValue());
+    }
   }
 
   @Override

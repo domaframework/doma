@@ -18,7 +18,9 @@ public class BigIntegerWrapper extends AbstractWrapper<BigInteger>
 
   @Override
   public void set(Number v) {
-    if (v instanceof BigInteger) {
+    if (v == null) {
+      super.set(null);
+    } else if (v instanceof BigInteger) {
       super.set((BigInteger) v);
     } else if (v instanceof BigDecimal) {
       super.set(((BigDecimal) v).toBigInteger());
