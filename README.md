@@ -43,11 +43,11 @@ Examples
 ### Type-safe Criteria API
 
 ```java
-var entityql = new Entityql(config);
+var queryDsl = new QueryDsl(config);
 var e = new Employee_();
 var d = new Department_();
 
-var employees = entityql
+var employees = queryDsl
     .from(e)
     .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
     .where(c -> c.eq(d.departmentName, "SALES"))
@@ -58,7 +58,7 @@ var employees = entityql
     .fetch();
 ```
 
-See [Criteria API](https://doma.readthedocs.io/en/latest/criteria-api/)
+See [Unified Criteria API](https://doma.readthedocs.io/en/latest/query-dsl/)
 for more information.
 
 ### SQL templates
