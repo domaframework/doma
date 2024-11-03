@@ -9,20 +9,23 @@ import org.junit.jupiter.api.Test;
 public class SqliteDialectTest {
 
   @Test
-  public void testIsUniqueConstraintViolated_true() {
+  public void testIsUniqueConstraintViolated_true_primaryKey() {
     SqliteDialect dialect = new SqliteDialect();
-    SQLException e =
-        new SQLException(
-            "[SQLITE_CONSTRAINT]  Abort due to constraint violation (PRIMARY KEY must be unique)");
+    SQLException e = new SQLException("[SQLITE_CONSTRAINT_PRIMARYKEY] ...");
+    assertTrue(dialect.isUniqueConstraintViolated(e));
+  }
+
+  @Test
+  public void testIsUniqueConstraintViolated_true_uniqueKey() {
+    SqliteDialect dialect = new SqliteDialect();
+    SQLException e = new SQLException("[SQLITE_CONSTRAINT_UNIQUE] ...");
     assertTrue(dialect.isUniqueConstraintViolated(e));
   }
 
   @Test
   public void testIsUniqueConstraintViolated_false() {
     SqliteDialect dialect = new SqliteDialect();
-    SQLException e =
-        new SQLException(
-            "[SQLITE_CONSTRAINT]  Abort due to constraint violation (hoge.foo may not be NULL)");
+    SQLException e = new SQLException("[SQLITE_CONSTRAINT_FOREIGNKEY] ...");
     assertFalse(dialect.isUniqueConstraintViolated(e));
   }
 }

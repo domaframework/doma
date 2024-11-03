@@ -110,7 +110,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void test_UniqueConstraintException(Config config) throws Exception {
+  public void test_UniqueConstraintException_primaryKey(Config config) throws Exception {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentId(new Identity<Department>(99));
@@ -119,6 +119,24 @@ public class AutoInsertTest {
     int result = dao.insert(department);
     assertEquals(1, result);
     assertEquals(Integer.valueOf(1), department.getVersion());
+    try {
+      dao.insert(department);
+      fail();
+    } catch (UniqueConstraintException e) {
+    }
+  }
+
+  @Test
+  public void test_UniqueConstraintException_uniqueKey(Config config) throws Exception {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    Department department = new Department();
+    department.setDepartmentId(new Identity<>(99));
+    department.setDepartmentNo(99);
+    department.setDepartmentName("hoge");
+    int result = dao.insert(department);
+    assertEquals(1, result);
+    assertEquals(Integer.valueOf(1), department.getVersion());
+    department.setDepartmentId(new Identity<>(100));
     try {
       dao.insert(department);
       fail();
