@@ -16,7 +16,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.12
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 
-testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.3" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.4" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-oracle = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
