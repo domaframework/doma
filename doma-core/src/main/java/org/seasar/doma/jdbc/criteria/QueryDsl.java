@@ -47,8 +47,7 @@ public class QueryDsl {
    *     sub-query
    */
   public WithQueryDsl with(EntityMetamodel<?> entityMetamodel, SetOperand<?> subQuery) {
-    List<WithContext> withContexts =
-        List.of(new WithContext(entityMetamodel, subQuery.getContext()));
+    List<WithContext> withContexts = List.of(new WithContext(entityMetamodel, subQuery));
     return with(withContexts);
   }
 
@@ -59,8 +58,8 @@ public class QueryDsl {
       SetOperand<?> subQuery2) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2));
     return with(withContexts);
   }
 
@@ -73,9 +72,9 @@ public class QueryDsl {
       SetOperand<?> subQuery3) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3));
     return with(withContexts);
   }
 
@@ -90,10 +89,10 @@ public class QueryDsl {
       SetOperand<?> subQuery4) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4));
     return with(withContexts);
   }
 
@@ -110,11 +109,11 @@ public class QueryDsl {
       SetOperand<?> subQuery5) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()),
-            new WithContext(entityMetamodel5, subQuery5.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4),
+            new WithContext(entityMetamodel5, subQuery5));
     return with(withContexts);
   }
 
@@ -133,12 +132,12 @@ public class QueryDsl {
       SetOperand<?> subQuery6) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()),
-            new WithContext(entityMetamodel5, subQuery5.getContext()),
-            new WithContext(entityMetamodel6, subQuery6.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4),
+            new WithContext(entityMetamodel5, subQuery5),
+            new WithContext(entityMetamodel6, subQuery6));
     return with(withContexts);
   }
 
@@ -159,13 +158,13 @@ public class QueryDsl {
       SetOperand<?> subQuery7) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()),
-            new WithContext(entityMetamodel5, subQuery5.getContext()),
-            new WithContext(entityMetamodel6, subQuery6.getContext()),
-            new WithContext(entityMetamodel7, subQuery7.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4),
+            new WithContext(entityMetamodel5, subQuery5),
+            new WithContext(entityMetamodel6, subQuery6),
+            new WithContext(entityMetamodel7, subQuery7));
     return with(withContexts);
   }
 
@@ -188,14 +187,14 @@ public class QueryDsl {
       SetOperand<?> subQuery8) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()),
-            new WithContext(entityMetamodel5, subQuery5.getContext()),
-            new WithContext(entityMetamodel6, subQuery6.getContext()),
-            new WithContext(entityMetamodel7, subQuery7.getContext()),
-            new WithContext(entityMetamodel8, subQuery8.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4),
+            new WithContext(entityMetamodel5, subQuery5),
+            new WithContext(entityMetamodel6, subQuery6),
+            new WithContext(entityMetamodel7, subQuery7),
+            new WithContext(entityMetamodel8, subQuery8));
     return with(withContexts);
   }
 
@@ -220,15 +219,15 @@ public class QueryDsl {
       SetOperand<?> subQuery9) {
     List<WithContext> withContexts =
         List.of(
-            new WithContext(entityMetamodel1, subQuery1.getContext()),
-            new WithContext(entityMetamodel2, subQuery2.getContext()),
-            new WithContext(entityMetamodel3, subQuery3.getContext()),
-            new WithContext(entityMetamodel4, subQuery4.getContext()),
-            new WithContext(entityMetamodel5, subQuery5.getContext()),
-            new WithContext(entityMetamodel6, subQuery6.getContext()),
-            new WithContext(entityMetamodel7, subQuery7.getContext()),
-            new WithContext(entityMetamodel8, subQuery8.getContext()),
-            new WithContext(entityMetamodel9, subQuery9.getContext()));
+            new WithContext(entityMetamodel1, subQuery1),
+            new WithContext(entityMetamodel2, subQuery2),
+            new WithContext(entityMetamodel3, subQuery3),
+            new WithContext(entityMetamodel4, subQuery4),
+            new WithContext(entityMetamodel5, subQuery5),
+            new WithContext(entityMetamodel6, subQuery6),
+            new WithContext(entityMetamodel7, subQuery7),
+            new WithContext(entityMetamodel8, subQuery8),
+            new WithContext(entityMetamodel9, subQuery9));
     return with(withContexts);
   }
 
