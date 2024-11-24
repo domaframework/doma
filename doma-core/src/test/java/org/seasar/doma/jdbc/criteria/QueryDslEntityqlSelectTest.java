@@ -33,6 +33,33 @@ class QueryDslEntityqlSelectTest {
   }
 
   @Test
+  void with1() {
+    Emp_ e = new Emp_();
+    Statement<List<Emp>> stmt = dsl.with(e, dsl.from(e).select()).from(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void with2() {
+    Emp_ e = new Emp_();
+    Emp_ e2 = new Emp_("EMP2");
+    Statement<List<Emp>> stmt =
+        dsl.with(
+                e, dsl.from(e).select(),
+                e2, dsl.from(e).select())
+            .from(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), EMP2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void innerJoin() {
     Emp_ e = new Emp_();
     Dept_ d = new Dept_();
