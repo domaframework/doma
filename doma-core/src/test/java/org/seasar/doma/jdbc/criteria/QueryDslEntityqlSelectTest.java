@@ -18,7 +18,7 @@ import org.seasar.doma.jdbc.criteria.option.DistinctOption;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.message.Message;
 
-class QueryDslNativeqlSelectTest {
+class QueryDslEntityqlSelectTest {
 
   private final QueryDsl dsl = new QueryDsl(new MockConfig());
 
