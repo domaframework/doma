@@ -88,6 +88,7 @@ public class QueryDslNativeSqlSelectTest {
     assertEquals(14, list.size());
   }
 
+  @Run(unless = Dbms.MYSQL)
   @Test
   void with_1() {
     var e = new Employee_();
@@ -110,6 +111,7 @@ public class QueryDslNativeSqlSelectTest {
     assertEquals(14, list.size());
   }
 
+  @Run(unless = Dbms.MYSQL)
   @Test
   void with_2() {
     var e = new Employee_();
@@ -146,6 +148,7 @@ public class QueryDslNativeSqlSelectTest {
     }
   }
 
+  @Run(unless = Dbms.MYSQL)
   @Test
   void with_multiple() {
     var e = new Employee_();
