@@ -34,6 +34,7 @@ import org.seasar.doma.jdbc.CommentContext;
 import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.criteria.context.WithContext;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
@@ -65,8 +66,8 @@ class QueryDslNativeSqlSelectTest {
   private final QueryDsl dsl = new QueryDsl(config);
 
   @Test
-  void with1() {
-    Emp_ e = new Emp_();
+  void with_1() {
+    var e = new Emp_();
     Buildable<?> stmt = dsl.with(e, dsl.from(e).select()).from(e).select(e.id);
 
     Sql<?> sql = stmt.asSql();
@@ -76,15 +77,31 @@ class QueryDslNativeSqlSelectTest {
   }
 
   @Test
-  void with2() {
-    Emp_ e = new Emp_();
-    Emp_ e2 = new Emp_("EMP2");
+  void with_2() {
+    var e = new Emp_();
+    var e2 = new Emp_("EMP2");
     Buildable<?> stmt =
         dsl.with(
                 e, dsl.from(e).select(),
                 e2, dsl.from(e).select())
             .from(e)
             .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), EMP2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void with_multiple() {
+    var e = new Emp_();
+    var e2 = new Emp_("EMP2");
+
+    var withContexts =
+        List.of(
+            new WithContext(e, dsl.from(e).select()), new WithContext(e2, dsl.from(e).select()));
+    Buildable<?> stmt = dsl.with(withContexts).from(e).select(e.id);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

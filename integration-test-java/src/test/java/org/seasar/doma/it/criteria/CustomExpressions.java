@@ -79,4 +79,15 @@ public class CustomExpressions {
           }
         });
   }
+
+  static UserDefinedExpression<Integer> addOne(PropertyMetamodel<?> propertyMetamodel) {
+    return userDefined(
+        Integer.class,
+        "addOne",
+        propertyMetamodel,
+        c -> {
+          c.appendExpression(propertyMetamodel);
+          c.appendSql(" + 1");
+        });
+  }
 }
