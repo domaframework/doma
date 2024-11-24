@@ -85,14 +85,13 @@ public class QueryDslEntityqlSelectTest {
     var dcCte = new DepartmentCount_();
     var dCteInner = new Department_();
     var eCteInner = new Employee_();
+    var dcCteQuery =
+        dsl.from(dCteInner)
+            .leftJoin(eCteInner, on -> on.eq(dCteInner.departmentId, eCteInner.departmentId))
+            .groupBy(dCteInner.departmentId)
+            .select(dCteInner.departmentId, Expressions.count(eCteInner.addressId));
     var query =
-        dsl.with(
-                dcCte,
-                dsl.from(dCteInner)
-                    .leftJoin(
-                        eCteInner, on -> on.eq(dCteInner.departmentId, eCteInner.departmentId))
-                    .groupBy(dCteInner.departmentId)
-                    .select(dCteInner.departmentId, Expressions.count(eCteInner.addressId)))
+        dsl.with(dcCte, dcCteQuery)
             .from(e)
             .leftJoin(dcCte, on -> on.eq(e.departmentId, dcCte.departmentId));
     var list = query.fetch();
@@ -110,21 +109,20 @@ public class QueryDslEntityqlSelectTest {
     var dcCte2 = new DepartmentCount_("dcCte2");
     var dCteInner2 = new Department_();
     var eCteInner2 = new Employee_();
+    var dcCte1Query =
+        dsl.from(dCteInner1)
+            .leftJoin(eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
+            .groupBy(dCteInner1.departmentId)
+            .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId));
+    var dcCte2Query =
+        dsl.from(dCteInner2)
+            .leftJoin(eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
+            .groupBy(dCteInner2.departmentId)
+            .select(dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)));
     var query =
         dsl.with(
-                dcCte1,
-                dsl.from(dCteInner1)
-                    .leftJoin(
-                        eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
-                    .groupBy(dCteInner1.departmentId)
-                    .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId)),
-                dcCte2,
-                dsl.from(dCteInner2)
-                    .leftJoin(
-                        eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
-                    .groupBy(dCteInner2.departmentId)
-                    .select(
-                        dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId))))
+                dcCte1, dcCte1Query,
+                dcCte2, dcCte2Query)
             .from(e)
             .leftJoin(dcCte1, on -> on.eq(e.departmentId, dcCte1.departmentId))
             .leftJoin(dcCte2, on -> on.eq(e.departmentId, dcCte2.departmentId));
@@ -143,23 +141,19 @@ public class QueryDslEntityqlSelectTest {
     var dcCte2 = new DepartmentCount_("dcCte2");
     var dCteInner2 = new Department_();
     var eCteInner2 = new Employee_();
+
+    var dcCte1Query =
+        dsl.from(dCteInner1)
+            .leftJoin(eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
+            .groupBy(dCteInner1.departmentId)
+            .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId));
+    var dcCte2Query =
+        dsl.from(dCteInner2)
+            .leftJoin(eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
+            .groupBy(dCteInner2.departmentId)
+            .select(dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)));
     var withContexts =
-        List.of(
-            new WithContext(
-                dcCte1,
-                dsl.from(dCteInner1)
-                    .leftJoin(
-                        eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
-                    .groupBy(dCteInner1.departmentId)
-                    .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId))),
-            new WithContext(
-                dcCte2,
-                dsl.from(dCteInner2)
-                    .leftJoin(
-                        eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
-                    .groupBy(dCteInner2.departmentId)
-                    .select(
-                        dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)))));
+        List.of(new WithContext(dcCte1, dcCte1Query), new WithContext(dcCte2, dcCte2Query));
     var query =
         dsl.with(withContexts)
             .from(e)
