@@ -47,6 +47,8 @@ public class QueryDsl {
    *     sub-query
    */
   public WithQueryDsl with(EntityMetamodel<?> entityMetamodel, SetOperand<?> subQuery) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(subQuery);
     List<WithContext> withContexts = List.of(new WithContext(entityMetamodel, subQuery));
     return with(withContexts);
   }
@@ -56,6 +58,10 @@ public class QueryDsl {
       SetOperand<?> subQuery1,
       EntityMetamodel<?> entityMetamodel2,
       SetOperand<?> subQuery2) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -70,6 +76,12 @@ public class QueryDsl {
       SetOperand<?> subQuery2,
       EntityMetamodel<?> entityMetamodel3,
       SetOperand<?> subQuery3) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -87,6 +99,14 @@ public class QueryDsl {
       SetOperand<?> subQuery3,
       EntityMetamodel<?> entityMetamodel4,
       SetOperand<?> subQuery4) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -107,6 +127,16 @@ public class QueryDsl {
       SetOperand<?> subQuery4,
       EntityMetamodel<?> entityMetamodel5,
       SetOperand<?> subQuery5) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
+    Objects.requireNonNull(entityMetamodel5);
+    Objects.requireNonNull(subQuery5);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -130,6 +160,18 @@ public class QueryDsl {
       SetOperand<?> subQuery5,
       EntityMetamodel<?> entityMetamodel6,
       SetOperand<?> subQuery6) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
+    Objects.requireNonNull(entityMetamodel5);
+    Objects.requireNonNull(subQuery5);
+    Objects.requireNonNull(entityMetamodel6);
+    Objects.requireNonNull(subQuery6);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -156,6 +198,20 @@ public class QueryDsl {
       SetOperand<?> subQuery6,
       EntityMetamodel<?> entityMetamodel7,
       SetOperand<?> subQuery7) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
+    Objects.requireNonNull(entityMetamodel5);
+    Objects.requireNonNull(subQuery5);
+    Objects.requireNonNull(entityMetamodel6);
+    Objects.requireNonNull(subQuery6);
+    Objects.requireNonNull(entityMetamodel7);
+    Objects.requireNonNull(subQuery7);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -185,6 +241,22 @@ public class QueryDsl {
       SetOperand<?> subQuery7,
       EntityMetamodel<?> entityMetamodel8,
       SetOperand<?> subQuery8) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
+    Objects.requireNonNull(entityMetamodel5);
+    Objects.requireNonNull(subQuery5);
+    Objects.requireNonNull(entityMetamodel6);
+    Objects.requireNonNull(subQuery6);
+    Objects.requireNonNull(entityMetamodel7);
+    Objects.requireNonNull(subQuery7);
+    Objects.requireNonNull(entityMetamodel8);
+    Objects.requireNonNull(subQuery8);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
@@ -217,6 +289,24 @@ public class QueryDsl {
       SetOperand<?> subQuery8,
       EntityMetamodel<?> entityMetamodel9,
       SetOperand<?> subQuery9) {
+    Objects.requireNonNull(entityMetamodel1);
+    Objects.requireNonNull(subQuery1);
+    Objects.requireNonNull(entityMetamodel2);
+    Objects.requireNonNull(subQuery2);
+    Objects.requireNonNull(entityMetamodel3);
+    Objects.requireNonNull(subQuery3);
+    Objects.requireNonNull(entityMetamodel4);
+    Objects.requireNonNull(subQuery4);
+    Objects.requireNonNull(entityMetamodel5);
+    Objects.requireNonNull(subQuery5);
+    Objects.requireNonNull(entityMetamodel6);
+    Objects.requireNonNull(subQuery6);
+    Objects.requireNonNull(entityMetamodel7);
+    Objects.requireNonNull(subQuery7);
+    Objects.requireNonNull(entityMetamodel8);
+    Objects.requireNonNull(subQuery8);
+    Objects.requireNonNull(entityMetamodel9);
+    Objects.requireNonNull(subQuery9);
     List<WithContext> withContexts =
         List.of(
             new WithContext(entityMetamodel1, subQuery1),
