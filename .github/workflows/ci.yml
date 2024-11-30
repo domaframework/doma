@@ -10,7 +10,7 @@ on:
 env:
   JDK_DISTRIBUTION: zulu
   JDK_VERSION_OLDEST: 17
-  JDK_VERSION_LATEST: 22
+  JDK_VERSION_LATEST: 23
   JDK_VERSION_LATEST_LTS: 21
 
 jobs:
@@ -74,7 +74,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4.2.1
 
-      - name: Test with the oldest JDK
+      - name: Test with the oldest JDK (Java, Kotlin)
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
@@ -83,16 +83,15 @@ jobs:
           integration-test-java:test
           integration-test-kotlin:test
 
-      - name: Test with the latest JDK
+      - name: Test with the latest JDK (Java)
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST }}
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           integration-test-java:test
-          integration-test-kotlin:test
 
-      - name: Test with the latest LTS JDK
+      - name: Test with the latest LTS JDK (Java, Kotlin)
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
