@@ -2,6 +2,7 @@ package org.seasar.doma.wrapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -27,6 +28,20 @@ public class BigDecimalWrapperTest {
     BigDecimalWrapper wrapper = new BigDecimalWrapper();
     wrapper.set(greaterThanLongMaxValue);
     assertEquals(new BigDecimal(greaterThanLongMaxValue), wrapper.get());
+  }
+
+  @Test
+  public void testSetNull() {
+    BigDecimalWrapper wrapper = new BigDecimalWrapper();
+    wrapper.set(null);
+    assertNull(wrapper.get());
+  }
+
+  @Test
+  public void testSetNullNumber() {
+    BigDecimalWrapper wrapper = new BigDecimalWrapper();
+    wrapper.set((Number) null);
+    assertNull(wrapper.get());
   }
 
   /** */

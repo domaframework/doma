@@ -41,6 +41,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
+@Run(unless = Dbms.SQLITE)
 public class EntityqlSelectTest {
 
   private final Entityql entityql;

@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.seasar.doma.it.Dbms
 import org.seasar.doma.it.IntegrationTestEnvironment
+import org.seasar.doma.it.Run
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.kotlin.jdbc.criteria.KEntityql
 
 @ExtendWith(IntegrationTestEnvironment::class)
+@Run(unless = [Dbms.SQLITE])
 class KEntityqlBatchUpdateTest(config: Config) {
 
     private val entityql = KEntityql(config)

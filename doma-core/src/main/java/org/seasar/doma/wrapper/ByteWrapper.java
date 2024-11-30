@@ -15,7 +15,11 @@ public class ByteWrapper extends AbstractWrapper<Byte> implements NumberWrapper<
 
   @Override
   public void set(Number v) {
-    super.set(v.byteValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.byteValue());
+    }
   }
 
   @Override

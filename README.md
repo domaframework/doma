@@ -43,11 +43,11 @@ Examples
 ### Type-safe Criteria API
 
 ```java
-var entityql = new Entityql(config);
+var queryDsl = new QueryDsl(config);
 var e = new Employee_();
 var d = new Department_();
 
-var employees = entityql
+var employees = queryDsl
     .from(e)
     .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
     .where(c -> c.eq(d.departmentName, "SALES"))
@@ -58,7 +58,7 @@ var employees = entityql
     .fetch();
 ```
 
-See [Criteria API](https://doma.readthedocs.io/en/latest/criteria-api/)
+See [Unified Criteria API](https://doma.readthedocs.io/en/latest/query-dsl/)
 for more information.
 
 ### SQL templates
@@ -95,12 +95,12 @@ For Java projects:
 
 ```kotlin
 plugins {
-    id("org.domaframework.doma.compile") version "2.0.0"
+    id("org.domaframework.doma.compile") version "3.0.1"
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-core:3.0.1")
-    annotationProcessor("org.seasar.doma:doma-processor:3.0.1")
+    implementation("org.seasar.doma:doma-core:3.1.0")
+    annotationProcessor("org.seasar.doma:doma-processor:3.1.0")
 }
 ```
 
@@ -108,12 +108,12 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```kotlin
 plugins {
-  id("org.domaframework.doma.compile") version "2.0.0"
+  id("org.domaframework.doma.compile") version "3.0.1"
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:3.0.1")
-    kapt("org.seasar.doma:doma-processor:3.0.1")
+    implementation("org.seasar.doma:doma-kotlin:3.1.0")
+    kapt("org.seasar.doma:doma-processor:3.1.0")
 }
 ```
 
@@ -126,7 +126,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>3.0.1</doma.version>
+    <doma.version>3.1.0</doma.version>
 </properties>
 ...
 <dependencies>

@@ -15,7 +15,11 @@ public class FloatWrapper extends AbstractWrapper<Float> implements NumberWrappe
 
   @Override
   public void set(Number v) {
-    super.set(v.floatValue());
+    if (v == null) {
+      super.set(null);
+    } else {
+      super.set(v.floatValue());
+    }
   }
 
   @Override

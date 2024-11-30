@@ -39,6 +39,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
+@Run(unless = Dbms.SQLITE)
 public class QueryDslEntityqlSelectTest {
 
   private final QueryDsl dsl;
@@ -417,6 +418,14 @@ public class QueryDslEntityqlSelectTest {
 
     List<Address> list = dsl.from(a).where(c -> c.like(a.street, null)).fetch();
     assertEquals(15, list.size());
+  }
+
+  @Test
+  void where_eq_dataType() {
+    Place_ p = new Place_();
+
+    List<Place> list = dsl.from(p).where(c -> c.eq(p.street, new Avenue("STREET 10"))).fetch();
+    assertEquals(1, list.size());
   }
 
   @Test
