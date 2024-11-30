@@ -55,7 +55,7 @@ public class SelectContext implements Context {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.setOperationContextForSubQuery = Objects.requireNonNull(setOperationContextForSubQuery);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
-    this.withContexts = withContexts;
+    this.withContexts = Objects.requireNonNull(withContexts);
   }
 
   @Override
