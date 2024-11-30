@@ -1,5 +1,6 @@
 package org.seasar.doma.jdbc.criteria;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +22,7 @@ import org.seasar.doma.jdbc.criteria.statement.UnifiedSelectStarting;
  */
 public class WithQueryDsl {
   private final Config config;
-  private final List<WithContext> withContexts;
+  private final ArrayList<WithContext> withContexts;
 
   /**
    * Creates an instance.
@@ -31,7 +32,39 @@ public class WithQueryDsl {
    */
   public WithQueryDsl(Config config, List<WithContext> withContexts) {
     this.config = Objects.requireNonNull(config);
-    this.withContexts = Objects.requireNonNull(withContexts);
+    Objects.requireNonNull(withContexts);
+    this.withContexts = new ArrayList<>(withContexts);
+  }
+
+  /**
+   * Creates a WithQueryDsl.
+   *
+   * @param entityMetamodel the entity metamodel to use for the context of the common table
+   *     expression
+   * @param subQuery the sub-query to use in the common table expression
+   * @return a new WithQueryDsl instance configured with the specified entity metamodel and
+   *     sub-query
+   */
+  public WithQueryDsl with(EntityMetamodel<?> entityMetamodel, SetOperand<?> subQuery) {
+    Objects.requireNonNull(entityMetamodel);
+    Objects.requireNonNull(subQuery);
+    var withContext = new WithContext(entityMetamodel, subQuery);
+    this.withContexts.add(withContext);
+    return this;
+  }
+
+  /**
+   * Creates a WithQueryDsl.
+   *
+   * @param withContexts the list of entity metamodel and sub-query pair in use for the context of
+   *     the common table expression
+   * @return a new WithQueryDsl instance configured with the specified entity metamodel and
+   *     sub-query
+   */
+  public WithQueryDsl with(List<WithContext> withContexts) {
+    Objects.requireNonNull(withContexts);
+    this.withContexts.addAll(withContexts);
+    return this;
   }
 
   /**

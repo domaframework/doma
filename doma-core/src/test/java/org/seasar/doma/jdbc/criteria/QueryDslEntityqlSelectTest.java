@@ -50,10 +50,7 @@ class QueryDslEntityqlSelectTest {
     var e = new Emp_();
     var e2 = new Emp_("EMP2");
     Statement<List<Emp>> stmt =
-        dsl.with(
-                e, dsl.from(e).select(),
-                e2, dsl.from(e).select())
-            .from(e);
+        dsl.with(e, dsl.from(e).select()).with(e2, dsl.from(e).select()).from(e);
 
     Sql<?> sql = stmt.asSql();
     assertEquals(

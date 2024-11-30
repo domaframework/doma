@@ -131,9 +131,8 @@ public class QueryDslNativeSqlSelectTest {
             .groupBy(dCteInner2.departmentId)
             .select(dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)));
     var query =
-        dsl.with(
-                dcCte1, dcCte1Query,
-                dcCte2, dcCte2Query)
+        dsl.with(dcCte1, dcCte1Query)
+            .with(dcCte2, dcCte2Query)
             .from(e)
             .leftJoin(dcCte1, on -> on.eq(e.departmentId, dcCte1.departmentId))
             .leftJoin(dcCte2, on -> on.eq(e.departmentId, dcCte2.departmentId))

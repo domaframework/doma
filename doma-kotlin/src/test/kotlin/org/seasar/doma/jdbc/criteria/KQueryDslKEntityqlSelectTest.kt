@@ -85,6 +85,22 @@ internal class KQueryDslKEntityqlSelectTest {
     }
 
     @Test
+    fun with_with() {
+        val e = Emp_()
+        val eCte1 = Emp_("eCte1")
+        val eCte2 = Emp_("eCte2")
+        val stmt = dsl
+            .with(eCte1 to dsl.from(e).select())
+            .with(eCte2 to dsl.from(e).select())
+            .from(e)
+        val sql = stmt.asSql()
+        assertEquals(
+            "with eCte1(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), eCte2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
     fun innerJoin() {
         val e = Emp_()
         val d = Dept_()
