@@ -18,6 +18,7 @@ import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
+import org.seasar.doma.jdbc.criteria.context.WithContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
@@ -60,6 +61,40 @@ public class BuilderSupport {
     this.propertyMetamodelVisitor = new PropertyMetamodelVisitor();
     this.userDefinedExpressionDeclarationItemVisitor =
         new UserDefinedExpressionDeclarationItemVisitor();
+  }
+
+  public void with(List<WithContext> withContexts) {
+    if (withContexts.isEmpty()) return;
+
+    buf.appendSql("with ");
+    for (WithContext withContext : withContexts) {
+      var entityMetamodel = withContext.entityMetamodel();
+      var setOperationContext = withContext.setOperationContext();
+      // cte name
+      buf.appendSql(
+          entityMetamodel
+              .asType()
+              .getQualifiedTableName(config.getNaming()::apply, config.getDialect()::applyQuote));
+      // cte column list
+      buf.appendSql("(");
+      for (PropertyMetamodel<?> propertyMetamodel : entityMetamodel.allPropertyMetamodels()) {
+        String columnName =
+            propertyMetamodel
+                .asType()
+                .getColumnName(config.getNaming()::apply, config.getDialect()::applyQuote);
+        buf.appendSql(columnName);
+        buf.appendSql(", ");
+      }
+      buf.cutBackSql(2);
+      buf.appendSql(") as (");
+      // cte body
+      SetOperationBuilder builder =
+          new SetOperationBuilder(config, setOperationContext, commenter, buf, aliasManager);
+      builder.build();
+      buf.appendSql("), ");
+    }
+    buf.cutBackSql(2);
+    buf.appendSql(" ");
   }
 
   public void subQuery(

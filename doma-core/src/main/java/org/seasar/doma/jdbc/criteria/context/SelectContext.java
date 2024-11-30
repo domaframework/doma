@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 
 public class SelectContext implements Context {
   public final EntityMetamodel<?> entityMetamodel;
+  public final List<WithContext> withContexts;
   public Projection projection;
   public DistinctOption distinct = DistinctOption.none();
   public final List<Join> joins = new ArrayList<>();
@@ -44,6 +45,17 @@ public class SelectContext implements Context {
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.setOperationContextForSubQuery = Objects.requireNonNull(setOperationContextForSubQuery);
     this.projection = new Projection.EntityMetamodels(entityMetamodel);
+    this.withContexts = new ArrayList<>();
+  }
+
+  public SelectContext(
+      EntityMetamodel<?> entityMetamodel,
+      Optional<SetOperationContext<?>> setOperationContextForSubQuery,
+      List<WithContext> withContexts) {
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.setOperationContextForSubQuery = Objects.requireNonNull(setOperationContextForSubQuery);
+    this.projection = new Projection.EntityMetamodels(entityMetamodel);
+    this.withContexts = Objects.requireNonNull(withContexts);
   }
 
   @Override

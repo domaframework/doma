@@ -74,6 +74,68 @@ internal class KQueryDslKNativeSqlSelectTest {
     }
 
     @Test
+    fun with_empty() {
+        val e = Emp_()
+        val stmt = dsl.with().from(e).select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun with_1() {
+        val e = Emp_()
+        val eCte = Emp_("eCte")
+        val stmt = dsl.with(
+            eCte to dsl.from(e).select(),
+        )
+            .from(e)
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "with eCte(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun with_2() {
+        val e = Emp_()
+        val eCte1 = Emp_("eCte1")
+        val eCte2 = Emp_("eCte2")
+        val stmt = dsl.with(
+            eCte1 to dsl.from(e).select(),
+            eCte2 to dsl.from(e).select(),
+        )
+            .from(e)
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "with eCte1(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), eCte2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
+    fun with_with() {
+        val e = Emp_()
+        val eCte1 = Emp_("eCte1")
+        val eCte2 = Emp_("eCte2")
+        val stmt = dsl
+            .with(eCte1 to dsl.from(e).select())
+            .with(eCte2 to dsl.from(e).select())
+            .from(e)
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "with eCte1(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), eCte2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID from EMP t0_",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
     fun where_eq() {
         val e = Emp_()
         val stmt = dsl

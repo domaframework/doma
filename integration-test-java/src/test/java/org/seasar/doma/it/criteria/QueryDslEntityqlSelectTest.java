@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.seasar.doma.it.criteria.CustomExpressions.addOne;
 import static org.seasar.doma.jdbc.criteria.expression.Expressions.literal;
 
 import java.math.BigDecimal;
@@ -28,6 +29,7 @@ import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.QueryDsl;
+import org.seasar.doma.jdbc.criteria.context.WithContext;
 import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.statement.EmptyWhereClauseException;
@@ -74,6 +76,91 @@ public class QueryDslEntityqlSelectTest {
     assertThrows(
         EmptyWhereClauseException.class,
         () -> dsl.from(e, settings -> settings.setAllowEmptyWhere(false)).fetch());
+  }
+
+  @Run(unless = Dbms.MYSQL)
+  @Test
+  void with_1() {
+    var e = new Employee_();
+    var dcCte = new DepartmentCount_();
+    var dCteInner = new Department_();
+    var eCteInner = new Employee_();
+    var dcCteQuery =
+        dsl.from(dCteInner)
+            .leftJoin(eCteInner, on -> on.eq(dCteInner.departmentId, eCteInner.departmentId))
+            .groupBy(dCteInner.departmentId)
+            .select(dCteInner.departmentId, Expressions.count(eCteInner.addressId));
+    var query =
+        dsl.with(dcCte, dcCteQuery)
+            .from(e)
+            .leftJoin(dcCte, on -> on.eq(e.departmentId, dcCte.departmentId));
+    var list = query.fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Run(unless = Dbms.MYSQL)
+  @Test
+  void with_2() {
+    var e = new Employee_();
+    var dcCte1 = new DepartmentCount_();
+    var dCteInner1 = new Department_();
+    var eCteInner1 = new Employee_();
+    var dcCte2 = new DepartmentCount_("dcCte2");
+    var dCteInner2 = new Department_();
+    var eCteInner2 = new Employee_();
+    var dcCte1Query =
+        dsl.from(dCteInner1)
+            .leftJoin(eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
+            .groupBy(dCteInner1.departmentId)
+            .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId));
+    var dcCte2Query =
+        dsl.from(dCteInner2)
+            .leftJoin(eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
+            .groupBy(dCteInner2.departmentId)
+            .select(dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)));
+    var query =
+        dsl.with(dcCte1, dcCte1Query)
+            .with(dcCte2, dcCte2Query)
+            .from(e)
+            .leftJoin(dcCte1, on -> on.eq(e.departmentId, dcCte1.departmentId))
+            .leftJoin(dcCte2, on -> on.eq(e.departmentId, dcCte2.departmentId));
+    var list = query.fetch();
+
+    assertEquals(14, list.size());
+  }
+
+  @Run(unless = Dbms.MYSQL)
+  @Test
+  void with_multiple() {
+    var e = new Employee_();
+    var dcCte1 = new DepartmentCount_();
+    var dCteInner1 = new Department_();
+    var eCteInner1 = new Employee_();
+    var dcCte2 = new DepartmentCount_("dcCte2");
+    var dCteInner2 = new Department_();
+    var eCteInner2 = new Employee_();
+
+    var dcCte1Query =
+        dsl.from(dCteInner1)
+            .leftJoin(eCteInner1, on -> on.eq(dCteInner1.departmentId, eCteInner1.departmentId))
+            .groupBy(dCteInner1.departmentId)
+            .select(dCteInner1.departmentId, Expressions.count(eCteInner1.addressId));
+    var dcCte2Query =
+        dsl.from(dCteInner2)
+            .leftJoin(eCteInner2, on -> on.eq(dCteInner2.departmentId, eCteInner2.departmentId))
+            .groupBy(dCteInner2.departmentId)
+            .select(dCteInner2.departmentId, addOne(Expressions.count(eCteInner2.addressId)));
+    var withContexts =
+        List.of(new WithContext(dcCte1, dcCte1Query), new WithContext(dcCte2, dcCte2Query));
+    var query =
+        dsl.with(withContexts)
+            .from(e)
+            .leftJoin(dcCte1, on -> on.eq(e.departmentId, dcCte1.departmentId))
+            .leftJoin(dcCte2, on -> on.eq(e.departmentId, dcCte2.departmentId));
+    var list = query.fetch();
+
+    assertEquals(14, list.size());
   }
 
   @Test

@@ -66,6 +66,7 @@ public class SelectBuilder {
   }
 
   void interpret() {
+    with();
     select();
     from();
     join();
@@ -75,6 +76,10 @@ public class SelectBuilder {
     orderBy();
     offsetAndFetch();
     forUpdate();
+  }
+
+  private void with() {
+    support.with(context.withContexts);
   }
 
   private void select() {

@@ -6,8 +6,18 @@ import java.util.List;
 import org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
+import org.seasar.doma.jdbc.entity.EntityType;
 
 public class Emp_ implements EntityMetamodel<Emp> {
+  private final String qualifiedTableName;
+
+  public Emp_() {
+    this.qualifiedTableName = "";
+  }
+
+  public Emp_(String qualifiedTableName) {
+    this.qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);
+  }
 
   private final _Emp entityType = new _Emp();
 
@@ -23,8 +33,12 @@ public class Emp_ implements EntityMetamodel<Emp> {
   public final PropertyMetamodel<Integer> version =
       new DefaultPropertyMetamodel<>(Integer.class, entityType, "version");
 
-  public _Emp asType() {
-    return entityType;
+  @Override
+  public EntityType<Emp> asType() {
+    return qualifiedTableName.isEmpty()
+        ? entityType
+        : new org.seasar.doma.jdbc.criteria.metamodel.EntityTypeProxy<>(
+            entityType, qualifiedTableName);
   }
 
   @Override

@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.criteria.context.WithContext;
 import org.seasar.doma.jdbc.criteria.entity.Dept;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.jdbc.criteria.option.AssociationOption;
 import org.seasar.doma.jdbc.criteria.option.DistinctOption;
+import org.seasar.doma.jdbc.criteria.statement.Buildable;
 import org.seasar.doma.jdbc.criteria.statement.Statement;
 import org.seasar.doma.message.Message;
 
@@ -30,6 +32,46 @@ class QueryDslEntityqlSelectTest {
     Sql<?> sql = stmt.asSql();
     assertEquals(
         "select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_", sql.getFormattedSql());
+  }
+
+  @Test
+  void with_1() {
+    var e = new Emp_();
+    Statement<List<Emp>> stmt = dsl.with(e, dsl.from(e).select()).from(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void with_2() {
+    var e = new Emp_();
+    var e2 = new Emp_("EMP2");
+    Statement<List<Emp>> stmt =
+        dsl.with(e, dsl.from(e).select()).with(e2, dsl.from(e).select()).from(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), EMP2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void with_multiple() {
+    var e = new Emp_();
+    var e2 = new Emp_("EMP2");
+
+    var withContexts =
+        List.of(
+            new WithContext(e, dsl.from(e).select()), new WithContext(e2, dsl.from(e).select()));
+    Buildable<?> stmt = dsl.with(withContexts).from(e);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "with EMP(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_), EMP2(ID, NAME, SALARY, VERSION) as (select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_) select t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
+        sql.getFormattedSql());
   }
 
   @Test

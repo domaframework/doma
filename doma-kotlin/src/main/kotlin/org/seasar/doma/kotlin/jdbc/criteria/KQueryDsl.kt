@@ -6,6 +6,7 @@ import org.seasar.doma.jdbc.criteria.context.DeleteSettings
 import org.seasar.doma.jdbc.criteria.context.InsertSettings
 import org.seasar.doma.jdbc.criteria.context.SelectSettings
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings
+import org.seasar.doma.jdbc.criteria.context.WithContext
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedDeleteStarting
@@ -16,6 +17,13 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KUnifiedUpdateStarting
 class KQueryDsl(config: Config) {
 
     private val dsl = QueryDsl(config)
+
+    fun with(
+        vararg pairs: Pair<EntityMetamodel<*>, KSetOperand<*>>,
+    ): KWithQueryDsl {
+        val withContexts = pairs.map { WithContext(it.first, it.second.asSetOperand().context) }
+        return KWithQueryDsl(dsl.with(withContexts))
+    }
 
     fun <ENTITY : Any> from(
         entityMetamodel: EntityMetamodel<ENTITY>,
