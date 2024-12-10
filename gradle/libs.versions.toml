@@ -22,7 +22,7 @@ testcontainers-oracle = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-sqlserver = { module = "org.testcontainers:mssqlserver" }
 
-google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.25.0" }
+google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.25.1" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.5.0" }
 
 [plugins]
