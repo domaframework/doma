@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.LinkedHashMap;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
@@ -17,16 +16,6 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
 class BatchSqlValidatorTest extends CompilerSupport {
-
-  @BeforeEach
-  void beforeEach() {
-    addSourcePath("src/main/java");
-    addOption(
-        "--add-modules",
-        "org.seasar.doma.mock",
-        "--add-reads",
-        "org.seasar.doma.processor=org.seasar.doma.mock");
-  }
 
   @Test
   void testEmbeddedVariable() throws Exception {
