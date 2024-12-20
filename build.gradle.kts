@@ -107,6 +107,7 @@ subprojects {
     dependencies {
         testImplementation(catalog.junit.jupiter.api)
         testRuntimeOnly(catalog.junit.jupiter.engine)
+        testRuntimeOnly(catalog.apiguardian)
     }
 }
 
