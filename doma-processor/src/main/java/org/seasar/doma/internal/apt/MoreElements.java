@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -46,10 +45,10 @@ public class MoreElements implements Elements {
 
   private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
 
-  public MoreElements(Context ctx, ProcessingEnvironment env) {
-    assertNotNull(ctx, env);
+  public MoreElements(Context ctx, Elements elementUtils) {
+    assertNotNull(ctx, elementUtils);
     this.ctx = ctx;
-    this.elementUtils = env.getElementUtils();
+    this.elementUtils = elementUtils;
   }
 
   // delegate to elementUtils

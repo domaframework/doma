@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt;
 
+import static java.util.Collections.emptyMap;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.io.IOException;
@@ -11,8 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.FileObject;
 import org.seasar.doma.internal.Artifact;
 
@@ -56,14 +55,41 @@ public final class Options {
 
   public static final String CDI_DEPENDENT = "doma.cdi.Dependent";
 
-  private final Context ctx;
-
   private final Map<String, String> options;
 
-  Options(Context ctx, ProcessingEnvironment env) {
-    assertNotNull(ctx, env);
-    this.ctx = ctx;
-    this.options = env.getOptions();
+  Options(Map<String, String> options, Resources resources) {
+    assertNotNull(options, resources);
+    var path = getConfigPath(options);
+    var config = loadConfig(resources, path);
+    var map = new HashMap<>(config);
+    map.putAll(options);
+    this.options = Collections.unmodifiableMap(map);
+  }
+
+  private static String getConfigPath(Map<String, String> options) {
+    String configPath = options.get(Options.CONFIG_PATH);
+    return configPath != null ? configPath : Options.Constants.DEFAULT_CONFIG_PATH;
+  }
+
+  private static Map<String, String> loadConfig(Resources resources, String path) {
+    try {
+      FileObject file = resources.getResource(path);
+      if (file == null) {
+        return emptyMap();
+      }
+      try (InputStream is = file.openInputStream();
+          InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+        Properties props = new Properties();
+        props.load(isr);
+        Map<String, String> map = new HashMap<>(props.size());
+        for (Map.Entry<Object, Object> entry : props.entrySet()) {
+          map.put(entry.getKey().toString(), entry.getValue().toString());
+        }
+        return map;
+      }
+    } catch (IOException ignored) {
+      return emptyMap();
+    }
   }
 
   public boolean isTestEnabled() {
@@ -145,11 +171,6 @@ public final class Options {
     return v == null || Boolean.parseBoolean(v);
   }
 
-  public String getConfigPath() {
-    String configPath = options.get(CONFIG_PATH);
-    return configPath != null ? configPath : Constants.DEFAULT_CONFIG_PATH;
-  }
-
   public String getLombokAllArgsConstructor() {
     String name = getOption(LOMBOK_ALL_ARGS_CONSTRUCTOR);
     return name != null ? name : Constants.DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR;
@@ -166,48 +187,7 @@ public final class Options {
   }
 
   private String getOption(String key) {
-    String v = options.get(key);
-    if (v != null) {
-      return v;
-    }
-
-    return getConfig().get(key);
-  }
-
-  private final Map<String, Map<String, String>> configCache = new ConcurrentHashMap<>();
-
-  private Map<String, String> getConfig() {
-    FileObject config = getFileObject(getConfigPath());
-    if (config == null) {
-      return Collections.emptyMap();
-    }
-    return configCache.computeIfAbsent(
-        config.toUri().getPath(),
-        configPath -> {
-          try {
-            return loadProperties(config);
-          } catch (IOException e) {
-            return Collections.emptyMap();
-          }
-        });
-  }
-
-  private FileObject getFileObject(String path) {
-    try {
-      return ctx.getResources().getResource(path);
-    } catch (IOException e) {
-      return null;
-    }
-  }
-
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  private Map<String, String> loadProperties(FileObject config) throws IOException {
-    try (InputStream is = config.openInputStream();
-        InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-      Properties props = new Properties();
-      props.load(isr);
-      return (Map<String, String>) new HashMap(props);
-    }
+    return options.get(key);
   }
 
   public static class Constants {

@@ -37,15 +37,15 @@ public class Context {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
-    moreElements = new MoreElements(this, env);
-    moreTypes = new MoreTypes(this, env);
-    options = new Options(this, env);
-    reporter = new Reporter(env);
-    resources = new Resources(this, env);
+    moreElements = new MoreElements(this, env.getElementUtils());
+    moreTypes = new MoreTypes(this, env.getTypeUtils());
+    reporter = new Reporter(env.getMessager());
     annotations = new Annotations(this);
     declarations = new Declarations(this);
     ctTypes = new CtTypes(this);
     names = new Names(this);
+    resources = new Resources(env.getFiler(), env.getOptions().get(Options.RESOURCES_DIR));
+    options = new Options(env.getOptions(), resources);
     initialized = true;
   }
 

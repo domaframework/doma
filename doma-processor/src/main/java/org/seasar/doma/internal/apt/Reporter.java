@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.message.MessageResource;
@@ -12,9 +11,9 @@ public final class Reporter {
 
   private final Messager messager;
 
-  Reporter(ProcessingEnvironment env) {
-    assertNotNull(env);
-    this.messager = env.getMessager();
+  Reporter(Messager messager) {
+    assertNotNull(messager);
+    this.messager = messager;
   }
 
   public void debug(MessageResource messageResource, Object[] args) {

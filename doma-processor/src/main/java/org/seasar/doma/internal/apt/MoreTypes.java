@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
@@ -33,10 +32,10 @@ public class MoreTypes implements Types {
 
   private final Types typeUtils;
 
-  public MoreTypes(Context ctx, ProcessingEnvironment env) {
-    assertNotNull(ctx, env);
+  public MoreTypes(Context ctx, Types typeUtils) {
+    assertNotNull(ctx, typeUtils);
     this.ctx = ctx;
-    this.typeUtils = env.getTypeUtils();
+    this.typeUtils = typeUtils;
   }
 
   // delegate to typeUtils
@@ -453,7 +452,7 @@ public class MoreTypes implements Types {
       }
       Iterator<? extends TypeMirror> it = bounds.iterator();
       TypeMirror first = it.next();
-      if (bounds.size() == 1 && ctx.getMoreTypes().isSameTypeWithErasure(first, Object.class)) {
+      if (bounds.size() == 1 && isSameTypeWithErasure(first, Object.class)) {
         return null;
       }
       p.append(" extends ");

@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -20,10 +19,10 @@ public class Resources {
 
   private final String resourcesDir;
 
-  Resources(Context ctx, ProcessingEnvironment env) {
-    assertNotNull(ctx, env);
-    this.filer = env.getFiler();
-    this.resourcesDir = env.getOptions().get(Options.RESOURCES_DIR);
+  Resources(Filer filer, String resourcesDir) {
+    assertNotNull(filer);
+    this.filer = filer;
+    this.resourcesDir = resourcesDir;
   }
 
   public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
