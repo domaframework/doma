@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,14 +19,20 @@ import javax.lang.model.type.TypeVariable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class MoreTypesTest extends CompilerSupport {
+
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
 
   @SuppressWarnings("InnerClassMayBeStatic")
   private class NumberList<E extends Number> extends ArrayList<E> {}
 
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     addCompilationUnit(getClass());
   }
 

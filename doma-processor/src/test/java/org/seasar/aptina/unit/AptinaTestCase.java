@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -39,7 +40,6 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
@@ -71,22 +71,25 @@ public abstract class AptinaTestCase {
 
   StandardJavaFileManager standardJavaFileManager;
 
-  JavaFileManager testingJavaFileManager;
-
   Boolean compiledResult;
 
   boolean compilationAssertion = true;
 
   protected AptinaTestCase() {}
 
+  public void setUp() {}
+
   public void tearDown() {
-    if (testingJavaFileManager != null) {
-      try {
-        testingJavaFileManager.close();
-      } catch (final Exception ignore) {
-      }
-    }
+    reset();
   }
+
+  protected abstract Path getSourceOutput();
+
+  protected abstract void setSourceOutput(Path sourceOutput);
+
+  protected abstract Path getClassOutput();
+
+  protected abstract void setClassOutput(Path classOutput);
 
   public void enableCompilationAssertion() {
     this.compilationAssertion = true;
@@ -171,17 +174,20 @@ public abstract class AptinaTestCase {
   }
 
   public void compile() throws IOException {
-    javaCompiler = ToolProvider.getSystemJavaCompiler();
+    addOption("-d", getClassOutput().toFile().getPath());
+
+    var javaCompiler = ToolProvider.getSystemJavaCompiler();
     diagnostics = new DiagnosticCollector<>();
     final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
 
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
     standardJavaFileManager.setLocation(StandardLocation.SOURCE_PATH, sourcePaths);
-    testingJavaFileManager = new TestingJavaFileManager(standardJavaFileManager, charset);
+    standardJavaFileManager.setLocation(
+        StandardLocation.SOURCE_OUTPUT, List.of(getSourceOutput().toFile()));
 
     final CompilationTask task =
         javaCompiler.getTask(
-            out, testingJavaFileManager, listener, options, null, getCompilationUnits());
+            out, standardJavaFileManager, listener, options, null, getCompilationUnits());
     task.setProcessors(processors);
     compiledResult = task.call();
     compilationUnits.clear();
@@ -237,7 +243,7 @@ public abstract class AptinaTestCase {
     assertNotEmpty("className", className);
     assertCompiled();
     final JavaFileObject javaFileObject =
-        testingJavaFileManager.getJavaFileForInput(
+        standardJavaFileManager.getJavaFileForInput(
             StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE);
     if (javaFileObject == null) {
       throw new SourceNotGeneratedException(className);
@@ -384,13 +390,6 @@ public abstract class AptinaTestCase {
     javaCompiler = null;
     diagnostics = null;
     standardJavaFileManager = null;
-    if (testingJavaFileManager != null) {
-      try {
-        testingJavaFileManager.close();
-      } catch (final Exception ignore) {
-      }
-    }
-    testingJavaFileManager = null;
     compiledResult = null;
   }
 
@@ -478,7 +477,7 @@ public abstract class AptinaTestCase {
     @Override
     public JavaFileObject getJavaFileObject() throws IOException {
       final JavaFileObject javaFileObject =
-          testingJavaFileManager.getJavaFileForOutput(
+          standardJavaFileManager.getJavaFileForOutput(
               StandardLocation.SOURCE_OUTPUT, className, Kind.SOURCE, null);
       final Writer writer = javaFileObject.openWriter();
       try {

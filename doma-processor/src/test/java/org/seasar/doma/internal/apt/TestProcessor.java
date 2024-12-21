@@ -39,6 +39,11 @@ public abstract class TestProcessor extends AbstractProcessor {
   }
 
   @Override
+  public Set<String> getSupportedOptions() {
+    return Set.of(Options.RESOURCES_DIR);
+  }
+
+  @Override
   public boolean process(
       final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {

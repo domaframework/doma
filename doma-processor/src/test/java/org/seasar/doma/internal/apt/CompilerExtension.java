@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -17,13 +18,38 @@ import org.seasar.doma.message.Message;
 public class CompilerExtension extends AptinaTestCase
     implements BeforeEachCallback, AfterEachCallback {
 
+  Path sourceOutput;
+
+  Path classOutput;
+
+  @Override
+  public Path getSourceOutput() {
+    return sourceOutput;
+  }
+
+  @Override
+  public void setSourceOutput(Path sourceOutput) {
+    this.sourceOutput = sourceOutput;
+  }
+
+  @Override
+  public Path getClassOutput() {
+    return classOutput;
+  }
+
+  @Override
+  public void setClassOutput(Path classOutput) {
+    this.classOutput = classOutput;
+  }
+
   @Override
   public void beforeEach(ExtensionContext context) {
+    super.setUp();
     addSourcePath("src/test/java");
-    addSourcePath("src/test/resources");
     setCharset("UTF-8");
     setLocale(Locale.ENGLISH);
     TimeZone.setDefault(TimeZone.getTimeZone("GMT+9"));
+    addOption("-Adoma.resources.dir=src/test/resources");
   }
 
   @Override

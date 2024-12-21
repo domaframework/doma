@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.dao.experimental;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.Sql;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
@@ -23,8 +25,13 @@ import org.seasar.doma.message.Message;
 /** Test case for {@link Sql} */
 class SqlTest extends CompilerSupport {
 
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
+
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     addOption("-Adoma.test=true");
   }
 

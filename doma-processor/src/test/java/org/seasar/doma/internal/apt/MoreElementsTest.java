@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,10 +21,14 @@ import javax.lang.model.element.VariableElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
 class MoreElementsTest extends CompilerSupport {
+
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
 
   @SuppressWarnings("unused")
   private void test(String arg1, @ParameterName("aaa") String arg2) {}
@@ -72,6 +77,8 @@ class MoreElementsTest extends CompilerSupport {
 
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     addCompilationUnit(getClass());
   }
 

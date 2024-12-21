@@ -2,6 +2,7 @@ package org.seasar.doma.internal.apt.decl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.file.Path;
 import java.util.List;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
@@ -9,13 +10,19 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
 
 class DeclarationsTest extends CompilerSupport {
 
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
+
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     addCompilationUnit(getClass());
   }
 

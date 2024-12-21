@@ -5,10 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.nio.file.Path;
 import java.util.Map;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
@@ -19,6 +22,15 @@ import org.seasar.doma.message.Message;
 
 @SuppressWarnings("ThrowablePrintedToSystemOut")
 class ExpressionValidatorTest extends CompilerSupport {
+
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
+
+  @BeforeEach
+  void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
+  }
 
   @Test
   void testVariable_notFound() throws Exception {

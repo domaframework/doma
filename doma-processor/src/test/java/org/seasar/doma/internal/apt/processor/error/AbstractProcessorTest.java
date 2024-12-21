@@ -2,17 +2,24 @@ package org.seasar.doma.internal.apt.processor.error;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.message.Message;
 
 class AbstractProcessorTest extends CompilerSupport {
 
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
+
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     disableCompilationAssertion();
   }
 

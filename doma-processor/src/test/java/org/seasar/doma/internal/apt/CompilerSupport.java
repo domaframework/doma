@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -18,6 +19,14 @@ import org.seasar.doma.message.Message;
 public abstract class CompilerSupport {
 
   @RegisterExtension final CompilerExtension compiler = new CompilerExtension();
+
+  protected void setSourceOutput(final Path sourceOutput) {
+    compiler.setSourceOutput(sourceOutput);
+  }
+
+  protected void setClassOutput(final Path classOutput) {
+    compiler.setClassOutput(classOutput);
+  }
 
   protected void enableCompilationAssertion() {
     compiler.enableCompilationAssertion();

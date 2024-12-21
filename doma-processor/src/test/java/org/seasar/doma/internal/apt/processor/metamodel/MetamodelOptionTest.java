@@ -3,6 +3,7 @@ package org.seasar.doma.internal.apt.processor.metamodel;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
@@ -24,8 +26,13 @@ class MetamodelOptionTest extends CompilerSupport {
   private static final String PREFIX = "Q";
   private static final String SUFFIX = "Metamodel";
 
+  @TempDir Path sourceOutput;
+  @TempDir Path classOutput;
+
   @BeforeEach
   void beforeEach() {
+    setSourceOutput(sourceOutput);
+    setClassOutput(classOutput);
     addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
     addOption("-Adoma.metamodel.prefix=" + PREFIX);
