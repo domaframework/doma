@@ -79,11 +79,7 @@ public abstract class AptinaTestCase {
 
   protected AptinaTestCase() {
     String compiler = System.getProperty("compiler");
-    compilerKind = determineCompilerKind(compiler);
-  }
-
-  private static CompilerKind determineCompilerKind(String compiler) {
-    return switch (compiler) {
+    compilerKind = switch (compiler) {
       case "javac" -> CompilerKind.JAVAC;
       case "eclipse" -> CompilerKind.ECLIPSE;
       default -> throw new IllegalArgumentException(compiler);
@@ -175,7 +171,7 @@ public abstract class AptinaTestCase {
 
   public void addCompilationUnit(final String className) {
     assertNotEmpty("className", className);
-    compilationUnits.add(new FileCompilationUnit(className));
+    compilationUnits.add(new InputCompilationUnit(className));
   }
 
   public void addCompilationUnit(final Class<?> clazz, final CharSequence source) {
@@ -187,11 +183,20 @@ public abstract class AptinaTestCase {
   public void addCompilationUnit(final String className, final CharSequence source) {
     assertNotEmpty("className", className);
     assertNotEmpty("source", source);
-    compilationUnits.add(new InMemoryCompilationUnit(className, source.toString()));
+    compilationUnits.add(new OutputCompilationUnit(className, source.toString()));
   }
 
   public void compile() throws IOException {
-    addOption("-d", getClassOutput().toFile().getPath());
+    Path sourceOutput = getSourceOutput();
+    if (sourceOutput == null) {
+      throw new IllegalStateException("sourceOutput is not set");
+    }
+    Path classOutput = getClassOutput();
+    if (classOutput == null) {
+      throw new IllegalStateException("classOutput is not set");
+    }
+    
+    addOption("-d", classOutput.toFile().getPath());
 
     javaCompiler = compilerKind.createJavaCompiler();
     diagnostics = new DiagnosticCollector<>();
@@ -201,7 +206,7 @@ public abstract class AptinaTestCase {
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
     standardJavaFileManager.setLocation(StandardLocation.SOURCE_PATH, sourcePaths);
     standardJavaFileManager.setLocation(
-        StandardLocation.SOURCE_OUTPUT, List.of(getSourceOutput().toFile()));
+        StandardLocation.SOURCE_OUTPUT, List.of(sourceOutput.toFile()));
 
     final CompilationTask task =
         javaCompiler.getTask(
@@ -467,11 +472,11 @@ public abstract class AptinaTestCase {
   /**
    * @author koichik
    */
-  class FileCompilationUnit implements CompilationUnit {
+  class InputCompilationUnit implements CompilationUnit {
 
     final String className;
 
-    public FileCompilationUnit(final String className) {
+    public InputCompilationUnit(final String className) {
       this.className = className;
     }
 
@@ -485,13 +490,13 @@ public abstract class AptinaTestCase {
   /**
    * @author koichik
    */
-  class InMemoryCompilationUnit implements CompilationUnit {
+  class OutputCompilationUnit implements CompilationUnit {
 
     final String className;
 
     final String source;
 
-    public InMemoryCompilationUnit(final String className, final String source) {
+    public OutputCompilationUnit(final String className, final String source) {
       this.className = className;
       this.source = source;
     }
