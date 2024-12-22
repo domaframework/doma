@@ -1,4 +1,4 @@
-package example.entity;
+package org.seasar.doma.internal.apt.processor.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,7 +8,7 @@ import org.seasar.doma.Version;
 import org.seasar.doma.jdbc.entity.NamingType;
 
 @Entity(naming = NamingType.SNAKE_UPPER_CASE, immutable = true)
-public class ImmutableEmp implements Serializable {
+public class ImmutableEmp2 implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class ImmutableEmp implements Serializable {
 
   @Version final Integer version;
 
-  public ImmutableEmp(Integer id, String name, BigDecimal salary, Integer version) {
+  public ImmutableEmp2(Integer id, String name, BigDecimal salary, Integer version) {
     super();
     this.id = id;
     this.name = name;

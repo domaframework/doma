@@ -65,7 +65,7 @@ public class ResultStreamDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public java.util.stream.Stream<example.domain.PhoneNumber> selectById(java.lang.Integer id) {
+    public java.util.stream.Stream<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> selectById(java.lang.Integer id) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "selectById", id);
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
@@ -84,8 +84,8 @@ public class ResultStreamDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setResultStream(true);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<example.domain.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, example.domain.PhoneNumber, java.util.stream.Stream<example.domain.PhoneNumber>>(example.domain._PhoneNumber.getSingletonInternal(), java.util.function.Function.identity()));
-            java.util.stream.Stream<example.domain.PhoneNumber> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.stream.Stream<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber, java.util.stream.Stream<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal(), java.util.function.Function.identity()));
+            java.util.stream.Stream<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.ResultStreamDaoImpl", "selectById", __result);
             return __result;

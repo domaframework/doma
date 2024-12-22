@@ -9,7 +9,7 @@ public class PackagePrivateDaoImpl implements org.seasar.doma.internal.apt.proce
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.PackagePrivateDao.class, "update", example.entity.Emp.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.PackagePrivateDao.class, "update", org.seasar.doma.internal.apt.processor.entity.Emp2.class);
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
@@ -26,13 +26,13 @@ public class PackagePrivateDaoImpl implements org.seasar.doma.internal.apt.proce
     }
 
     @Override
-    public int update(example.entity.Emp emp) {
+    public int update(org.seasar.doma.internal.apt.processor.entity.Emp2 emp) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.PackagePrivateDaoImpl", "update", emp);
         try {
             if (emp == null) {
                 throw new org.seasar.doma.DomaNullPointerException("emp");
             }
-            org.seasar.doma.jdbc.query.AutoUpdateQuery<example.entity.Emp> __query = __support.getQueryImplementors().createAutoUpdateQuery(__method0, example.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp2> __query = __support.getQueryImplementors().createAutoUpdateQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal());
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntity(emp);

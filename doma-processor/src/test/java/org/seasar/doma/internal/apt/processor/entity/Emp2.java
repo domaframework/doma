@@ -1,4 +1,4 @@
-package example.entity;
+package org.seasar.doma.internal.apt.processor.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 
 @Entity(naming = NamingType.SNAKE_UPPER_CASE)
 @Table(catalog = "CATA", quote = true)
-public class Emp implements Serializable {
+public class Emp2 implements Serializable {
 
   private static final long serialVersionUID = -6511179565163144602L;
 
@@ -23,7 +23,7 @@ public class Emp implements Serializable {
 
   @Version Integer version;
 
-  @OriginalStates public Emp originalStates;
+  @OriginalStates public Emp2 originalStates;
 
   public Integer getId() {
     return id;

@@ -3,8 +3,6 @@ package org.seasar.doma.internal.apt.processor.dao;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import example.domain.JobType;
-import example.domain.PhoneNumber;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +24,9 @@ import org.seasar.doma.internal.apt.processor.DomainProcessor;
 import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
+import org.seasar.doma.internal.apt.processor.entity.Emp2;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
+import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp2;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableUser;
 import org.seasar.doma.internal.apt.processor.entity.ParentEntity;
 import org.seasar.doma.internal.apt.processor.entity.UserAddress;
@@ -43,9 +43,9 @@ class DaoProcessorTest extends CompilerSupport {
     // Process the dependent entities
     addProcessor(new EntityProcessor());
     addCompilationUnit(Emp.class);
-    addCompilationUnit(example.entity.Emp.class);
+    addCompilationUnit(Emp2.class);
     addCompilationUnit(ImmutableEmp.class);
-    addCompilationUnit(example.entity.ImmutableEmp.class);
+    addCompilationUnit(ImmutableEmp2.class);
     addCompilationUnit(ImmutableUser.class);
     addCompilationUnit(Issue214Entity.class);
     addCompilationUnit(ParentEntity.class);

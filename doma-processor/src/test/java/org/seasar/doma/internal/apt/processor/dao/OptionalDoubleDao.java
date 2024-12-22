@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import example.entity.Emp;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.function.Function;
@@ -14,6 +13,7 @@ import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.Select;
 import org.seasar.doma.SelectType;
+import org.seasar.doma.internal.apt.processor.entity.Emp2;
 import org.seasar.doma.jdbc.Reference;
 
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType"})
@@ -21,7 +21,7 @@ import org.seasar.doma.jdbc.Reference;
 public interface OptionalDoubleDao {
 
   @Select
-  Emp selectById(OptionalDouble id);
+  Emp2 selectById(OptionalDouble id);
 
   @Select
   OptionalDouble selectAgeById(OptionalDouble id);

@@ -1,9 +1,9 @@
-package example.domain;
+package org.seasar.doma.internal.apt.processor.dao;
 
 import org.seasar.doma.Domain;
 
 @Domain(valueType = int.class)
-public class JobType {
+class JobType {
 
   private final int value;
 

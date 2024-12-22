@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import example.domain.PhoneNumber;
 import java.util.List;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Function;

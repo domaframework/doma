@@ -28,7 +28,7 @@ public class CollectorOptionalParameterDaoImpl implements org.seasar.doma.intern
     }
 
     @Override
-    public <R> R selectById(java.lang.Integer id, java.util.stream.Collector<java.util.Optional<example.domain.PhoneNumber>, ?, R> collector) {
+    public <R> R selectById(java.lang.Integer id, java.util.stream.Collector<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>, ?, R> collector) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl", "selectById", id, collector);
         try {
             if (collector == null) {
@@ -49,7 +49,7 @@ public class CollectorOptionalParameterDaoImpl implements org.seasar.doma.intern
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainCollectorHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), collector));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainCollectorHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber, R>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal(), collector));
             R __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.CollectorOptionalParameterDaoImpl", "selectById", __result);

@@ -11,7 +11,7 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
 
     private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "selectById", java.lang.Integer.class, org.seasar.doma.jdbc.SelectOptions.class);
 
-    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "update2", example.entity.Emp.class);
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDao.class, "update2", org.seasar.doma.internal.apt.processor.entity.Emp2.class);
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
@@ -32,30 +32,30 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
 
     /** */
     @Override
-    public java.util.List<example.entity.Emp> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+    public java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp2> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         return __parent.selectByNameAndSalary(name, salary, options);
     }
 
     /** */
     @Override
-    public int insert(example.entity.Emp entity) {
+    public int insert(org.seasar.doma.internal.apt.processor.entity.Emp2 entity) {
         return __parent.insert(entity);
     }
 
     /** */
     @Override
-    public int update(example.entity.Emp entity) {
+    public int update(org.seasar.doma.internal.apt.processor.entity.Emp2 entity) {
         return __parent.update(entity);
     }
 
     /** */
     @Override
-    public int delete(example.entity.Emp entity) {
+    public int delete(org.seasar.doma.internal.apt.processor.entity.Emp2 entity) {
         return __parent.delete(entity);
     }
 
     @Override
-    public example.entity.Emp selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
+    public org.seasar.doma.internal.apt.processor.entity.Emp2 selectById(java.lang.Integer id, org.seasar.doma.jdbc.SelectOptions options) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDaoImpl", "selectById", id, options);
         try {
             if (options == null) {
@@ -66,7 +66,7 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
             __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/NoConfigDaoExtendsDao/selectById.sql");
             __query.setOptions(options);
-            __query.setEntityType(example.entity._Emp.getSingletonInternal());
+            __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal());
             __query.addParameter("id", java.lang.Integer.class, id);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDaoImpl");
             __query.setCallerMethodName("selectById");
@@ -78,8 +78,8 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.entity.Emp> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<example.entity.Emp>(example.entity._Emp.getSingletonInternal()));
-            example.entity.Emp __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.entity.Emp2> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<org.seasar.doma.internal.apt.processor.entity.Emp2>(org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal()));
+            org.seasar.doma.internal.apt.processor.entity.Emp2 __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDaoImpl", "selectById", __result);
             return __result;
@@ -90,13 +90,13 @@ public class NoConfigDaoExtendsDaoImpl implements org.seasar.doma.internal.apt.p
     }
 
     @Override
-    public int update2(example.entity.Emp entity) {
+    public int update2(org.seasar.doma.internal.apt.processor.entity.Emp2 entity) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.NoConfigDaoExtendsDaoImpl", "update2", entity);
         try {
             if (entity == null) {
                 throw new org.seasar.doma.DomaNullPointerException("entity");
             }
-            org.seasar.doma.jdbc.query.AutoUpdateQuery<example.entity.Emp> __query = __support.getQueryImplementors().createAutoUpdateQuery(__method1, example.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoUpdateQuery<org.seasar.doma.internal.apt.processor.entity.Emp2> __query = __support.getQueryImplementors().createAutoUpdateQuery(__method1, org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal());
             __query.setMethod(__method1);
             __query.setConfig(__support.getConfig());
             __query.setEntity(entity);
