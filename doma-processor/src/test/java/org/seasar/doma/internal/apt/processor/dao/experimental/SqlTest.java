@@ -26,13 +26,12 @@ class SqlTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new DaoProcessor());
   }
 
   @Test
   void success() throws Exception {
     Class<?> target = SqlAnnotationDao.class;
-    DaoProcessor processor = new DaoProcessor();
-    addProcessor(processor);
     addCompilationUnit(target);
     compile();
     assertTrue(getCompiledResult());
@@ -42,7 +41,6 @@ class SqlTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new DaoProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

@@ -28,13 +28,13 @@ class ExternalDomainProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new ExternalDomainProcessor());
   }
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName)
       throws Exception {
-    addProcessor(new ExternalDomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -86,7 +86,6 @@ class ExternalDomainProcessorTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new ExternalDomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

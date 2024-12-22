@@ -28,13 +28,13 @@ public class IgnoreGeneratedKeysDaoImpl implements org.seasar.doma.internal.apt.
     }
 
     @Override
-    public int[] insert(java.util.List<example.entity.Emp> employees) {
+    public int[] insert(java.util.List<org.seasar.doma.internal.apt.processor.entity.Emp2> employees) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.IgnoreGeneratedKeysDaoImpl", "insert", employees);
         try {
             if (employees == null) {
                 throw new org.seasar.doma.DomaNullPointerException("employees");
             }
-            org.seasar.doma.jdbc.query.AutoBatchInsertQuery<example.entity.Emp> __query = __support.getQueryImplementors().createAutoBatchInsertQuery(__method0, example.entity._Emp.getSingletonInternal());
+            org.seasar.doma.jdbc.query.AutoBatchInsertQuery<org.seasar.doma.internal.apt.processor.entity.Emp2> __query = __support.getQueryImplementors().createAutoBatchInsertQuery(__method0, org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal());
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setEntities(employees);

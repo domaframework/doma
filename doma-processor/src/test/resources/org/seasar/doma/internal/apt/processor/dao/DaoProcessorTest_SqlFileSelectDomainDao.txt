@@ -32,7 +32,7 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
     }
 
     @Override
-    public example.domain.PhoneNumber selectPhoneNumberById(java.lang.Integer id) {
+    public org.seasar.doma.internal.apt.processor.dao.PhoneNumber selectPhoneNumberById(java.lang.Integer id) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", id);
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
@@ -50,8 +50,8 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            example.domain.PhoneNumber __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.internal.apt.processor.dao.PhoneNumber __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberById", __result);
             return __result;
@@ -62,7 +62,7 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
     }
 
     @Override
-    public java.util.List<example.domain.PhoneNumber> selectPhoneNumberByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+    public java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> selectPhoneNumberByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", name, salary, options);
         try {
             if (options == null) {
@@ -85,8 +85,8 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            java.util.List<example.domain.PhoneNumber> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectPhoneNumberByNameAndSalary", __result);
             return __result;
@@ -97,7 +97,7 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
     }
 
     @Override
-    public example.domain.JobType selectJobTypeById(java.lang.Integer id) {
+    public org.seasar.doma.internal.apt.processor.dao.JobType selectJobTypeById(java.lang.Integer id) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", id);
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
@@ -115,8 +115,8 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.domain.JobType> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
-            example.domain.JobType __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.JobType> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.JobType>(org.seasar.doma.internal.apt.processor.dao._JobType.getSingletonInternal()));
+            org.seasar.doma.internal.apt.processor.dao.JobType __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeById", __result);
             return __result;
@@ -127,7 +127,7 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
     }
 
     @Override
-    public java.util.List<example.domain.JobType> selectJobTypeByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+    public java.util.List<org.seasar.doma.internal.apt.processor.dao.JobType> selectJobTypeByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", name, salary, options);
         try {
             if (options == null) {
@@ -150,8 +150,8 @@ public class SqlFileSelectDomainDaoImpl implements org.seasar.doma.internal.apt.
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.JobType>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.Integer, example.domain.JobType>(example.domain._JobType.getSingletonInternal()));
-            java.util.List<example.domain.JobType> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.JobType>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.Integer, org.seasar.doma.internal.apt.processor.dao.JobType>(org.seasar.doma.internal.apt.processor.dao._JobType.getSingletonInternal()));
+            java.util.List<org.seasar.doma.internal.apt.processor.dao.JobType> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.SqlFileSelectDomainDaoImpl", "selectJobTypeByNameAndSalary", __result);
             return __result;

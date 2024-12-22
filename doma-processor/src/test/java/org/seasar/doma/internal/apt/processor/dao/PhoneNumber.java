@@ -1,9 +1,9 @@
-package example.domain;
+package org.seasar.doma.internal.apt.processor.dao;
 
 import org.seasar.doma.Domain;
 
 @Domain(valueType = String.class)
-public class PhoneNumber {
+class PhoneNumber {
 
   private final String value;
 

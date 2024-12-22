@@ -18,6 +18,8 @@ import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
+import org.seasar.doma.internal.apt.processor.DomainProcessor;
+import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.message.Message;
 
@@ -26,6 +28,15 @@ class MetamodelTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new EntityProcessor());
+
+    // Process the dependent domains
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(Name.class);
+
+    // Process the dependent embeddables
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(EmpInfo.class);
   }
 
   @TestTemplate
@@ -33,7 +44,6 @@ class MetamodelTest extends CompilerSupport {
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -78,7 +88,6 @@ class MetamodelTest extends CompilerSupport {
       Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -122,7 +131,6 @@ class MetamodelTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

@@ -20,7 +20,10 @@ import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
 import org.seasar.doma.internal.apt.lombok.Value;
+import org.seasar.doma.internal.apt.processor.DomainProcessor;
+import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
+import org.seasar.doma.internal.apt.processor.ExternalDomainProcessor;
 import org.seasar.doma.message.Message;
 
 class EntityProcessorTest extends CompilerSupport {
@@ -30,15 +33,35 @@ class EntityProcessorTest extends CompilerSupport {
     addOption(
         "-Adoma.test=true",
         "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
+    addProcessor(new EntityProcessor());
+
+    // Process the dependent domains
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(Identifier.class);
+    addCompilationUnit(Name.class);
+    addCompilationUnit(Names.class);
+    addCompilationUnit(Ver.class);
+    addCompilationUnit(Weight.class);
+
+    // Process the dependent external domains
+    addProcessor(new ExternalDomainProcessor());
+    addCompilationUnit(BranchConverter.class);
+    addCompilationUnit(PrimaryKeyConverter.class);
+    addCompilationUnit(VersionNoConverter.class);
+    addCompilationUnit(StringArrayConverter.class);
+
+    // Process the dependent embeddables
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(UserAddress.class);
   }
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+  void success(
+      Class<?>[] classes, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
-    addCompilationUnit(clazz);
+    addCompilationUnit(classes);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
     assertTrue(getCompiledResult());
@@ -74,16 +97,17 @@ class EntityProcessorTest extends CompilerSupport {
           invocationContext(NamingType2Entity.class),
           invocationContext(NamingType3Entity.class),
           invocationContext(ImmutableEntity.class),
-          invocationContext(ImmutableChildEntity.class),
+          invocationContext(new Class[] {ImmutableChildEntity.class, ImmutableParentEntity.class}),
           invocationContext(TenantIdEntity.class),
           invocationContext(ParameterizedPropertyEntity.class),
           invocationContext(AbstractEntity.class),
           invocationContext(EnumPropertyEntity.class),
           invocationContext(DomainPropertyEntity.class),
           invocationContext(TransientPropertyEntity.class),
-          invocationContext(OriginalStatesChildEntity.class),
-          invocationContext(Child2NoInheritingEntity.class),
-          invocationContext(Child2InheritingEntity.class),
+          invocationContext(
+              new Class[] {OriginalStatesChildEntity.class, OriginalStatesParentEntity.class}),
+          invocationContext(new Class[] {Child2NoInheritingEntity.class, Parent2Entity.class}),
+          invocationContext(new Class[] {Child2InheritingEntity.class, Parent2Entity.class}),
           invocationContext(ChildEntity.class),
           invocationContext(PrimitivePropertyEntity.class),
           invocationContext(NotTopLevelEntity.class, NotTopLevelEntity.Hoge.class),
@@ -99,18 +123,23 @@ class EntityProcessorTest extends CompilerSupport {
 
     private TestTemplateInvocationContext invocationContext(
         Class<?> compilationUnit, String... options) {
+      return invocationContext(new Class[] {compilationUnit}, options);
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?>[] compilationUnitArray, String... options) {
       return new TestTemplateInvocationContext() {
         @Override
         public String getDisplayName(int invocationIndex) {
-          return compilationUnit.getSimpleName();
+          return compilationUnitArray[0].getSimpleName();
         }
 
         @Override
         public List<Extension> getAdditionalExtensions() {
           return Arrays.asList(
-              new SimpleParameterResolver(compilationUnit),
-              new ResourceParameterResolver(compilationUnit),
-              new GeneratedClassNameParameterResolver(compilationUnit),
+              new SimpleParameterResolver(compilationUnitArray),
+              new ResourceParameterResolver(compilationUnitArray[0]),
+              new GeneratedClassNameParameterResolver(compilationUnitArray[0]),
               new SimpleParameterResolver(options));
         }
       };
@@ -127,7 +156,7 @@ class EntityProcessorTest extends CompilerSupport {
         @Override
         public List<Extension> getAdditionalExtensions() {
           return Arrays.asList(
-              new SimpleParameterResolver(compilationUnit),
+              new SimpleParameterResolver(new Class[] {compilationUnit}),
               new ResourceParameterResolver(compilationUnit),
               new GeneratedClassNameParameterResolver(annotatedClass),
               new SimpleParameterResolver(options));
@@ -140,7 +169,6 @@ class EntityProcessorTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

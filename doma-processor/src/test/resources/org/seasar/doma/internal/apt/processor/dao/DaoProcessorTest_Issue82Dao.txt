@@ -9,7 +9,7 @@ public class Issue82DaoImpl implements org.seasar.doma.internal.apt.processor.da
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.Issue82Dao.class, "update", example.entity.Emp.class, java.lang.String.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.Issue82Dao.class, "update", org.seasar.doma.internal.apt.processor.entity.Emp2.class, java.lang.String.class);
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
@@ -26,7 +26,7 @@ public class Issue82DaoImpl implements org.seasar.doma.internal.apt.processor.da
     }
 
     @Override
-    public int update(example.entity.Emp entity, java.lang.String name) {
+    public int update(org.seasar.doma.internal.apt.processor.entity.Emp2 entity, java.lang.String name) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.Issue82DaoImpl", "update", entity, name);
         try {
             if (entity == null) {
@@ -36,13 +36,13 @@ public class Issue82DaoImpl implements org.seasar.doma.internal.apt.processor.da
             __query.setMethod(__method0);
             __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/Issue82Dao/update.sql");
-            __query.addParameter("entity", example.entity.Emp.class, entity);
+            __query.addParameter("entity", org.seasar.doma.internal.apt.processor.entity.Emp2.class, entity);
             __query.addParameter("name", java.lang.String.class, name);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.Issue82DaoImpl");
             __query.setCallerMethodName("update");
             __query.setQueryTimeout(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
-            __query.setEntityAndEntityType("entity", entity, example.entity._Emp.getSingletonInternal());
+            __query.setEntityAndEntityType("entity", entity, org.seasar.doma.internal.apt.processor.entity._Emp2.getSingletonInternal());
             __query.setNullExcluded(false);
             __query.setVersionIgnored(false);
             __query.setIncludedPropertyNames();

@@ -20,6 +20,16 @@ import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.cdi.ApplicationScoped;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
+import org.seasar.doma.internal.apt.processor.DomainProcessor;
+import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
+import org.seasar.doma.internal.apt.processor.EntityProcessor;
+import org.seasar.doma.internal.apt.processor.entity.Emp;
+import org.seasar.doma.internal.apt.processor.entity.Emp2;
+import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
+import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp2;
+import org.seasar.doma.internal.apt.processor.entity.ImmutableUser;
+import org.seasar.doma.internal.apt.processor.entity.ParentEntity;
+import org.seasar.doma.internal.apt.processor.entity.UserAddress;
 import org.seasar.doma.message.Message;
 
 class DaoProcessorTest extends CompilerSupport {
@@ -27,15 +37,38 @@ class DaoProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+
+    addProcessor(new DaoProcessor());
+
+    // Process the dependent entities
+    addProcessor(new EntityProcessor());
+    addCompilationUnit(Emp.class);
+    addCompilationUnit(Emp2.class);
+    addCompilationUnit(ImmutableEmp.class);
+    addCompilationUnit(ImmutableEmp2.class);
+    addCompilationUnit(ImmutableUser.class);
+    addCompilationUnit(Issue214Entity.class);
+    addCompilationUnit(ParentEntity.class);
+
+    // Process the dependent embeddables
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(UserAddress.class);
+
+    // Process the dependent domains
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(PhoneNumber.class);
+    addCompilationUnit(JobType.class);
+    addCompilationUnit(Age.class);
+    addCompilationUnit(Height.class);
   }
 
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
-  void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
+  void success(
+      Class<?>[] classes, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new DaoProcessor());
-    addCompilationUnit(clazz);
+    addCompilationUnit(classes);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
     assertTrue(getCompiledResult());
@@ -78,9 +111,10 @@ class DaoProcessorTest extends CompilerSupport {
           invocationContext(BlobFactoryDao.class),
           invocationContext(ClobFactoryDao.class),
           invocationContext(NClobFactoryDao.class),
-          invocationContext(DaoExtendsDao.class),
-          invocationContext(NoConfigDaoExtendsDao.class),
-          invocationContext(NoConfigDaoExtendsNoConfigDao.class),
+          invocationContext(new Class[] {DaoExtendsDao.class, EmpDao.class}),
+          invocationContext(new Class[] {NoConfigDaoExtendsDao.class, NoConfigEmpDao.class}),
+          invocationContext(
+              new Class[] {NoConfigDaoExtendsNoConfigDao.class, NoConfigEmpDao.class}),
           invocationContext(NonDaoExtendsDao.class),
           invocationContext(IncludeAndExcludeDao.class),
           invocationContext(DomainParameterDao.class),
@@ -134,18 +168,23 @@ class DaoProcessorTest extends CompilerSupport {
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {
+      return invocationContext(new Class[] {clazz}, options);
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?>[] classArray, String... options) {
       return new TestTemplateInvocationContext() {
         @Override
         public String getDisplayName(int invocationIndex) {
-          return clazz.getSimpleName();
+          return classArray[0].getSimpleName();
         }
 
         @Override
         public List<Extension> getAdditionalExtensions() {
           return Arrays.asList(
-              new SimpleParameterResolver(clazz),
-              new ResourceParameterResolver(clazz),
-              new GeneratedClassNameParameterResolver(clazz),
+              new SimpleParameterResolver(classArray),
+              new ResourceParameterResolver(classArray[0]),
+              new GeneratedClassNameParameterResolver(classArray[0]),
               new SimpleParameterResolver(options));
         }
       };
@@ -155,7 +194,6 @@ class DaoProcessorTest extends CompilerSupport {
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message) throws Exception {
-    addProcessor(new DaoProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

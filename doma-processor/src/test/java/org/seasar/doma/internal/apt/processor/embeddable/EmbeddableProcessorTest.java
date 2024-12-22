@@ -26,8 +26,9 @@ import org.seasar.doma.message.Message;
 class EmbeddableProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  void setUp() {
+  void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new EmbeddableProcessor());
   }
 
   @TestTemplate
@@ -35,7 +36,6 @@ class EmbeddableProcessorTest extends CompilerSupport {
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EmbeddableProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -105,7 +105,6 @@ class EmbeddableProcessorTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new EmbeddableProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

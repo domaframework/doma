@@ -9,7 +9,7 @@ public class DomainParameterDaoImpl implements org.seasar.doma.internal.apt.proc
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.DomainParameterDao.class, "select", example.domain.PhoneNumber.class);
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.DomainParameterDao.class, "select", org.seasar.doma.internal.apt.processor.dao.PhoneNumber.class);
 
     private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
 
@@ -26,7 +26,7 @@ public class DomainParameterDaoImpl implements org.seasar.doma.internal.apt.proc
     }
 
     @Override
-    public org.seasar.doma.internal.apt.processor.entity.Emp select(example.domain.PhoneNumber phoneNumber) {
+    public org.seasar.doma.internal.apt.processor.entity.Emp select(org.seasar.doma.internal.apt.processor.dao.PhoneNumber phoneNumber) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl", "select", phoneNumber);
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
@@ -34,7 +34,7 @@ public class DomainParameterDaoImpl implements org.seasar.doma.internal.apt.proc
             __query.setConfig(__support.getConfig());
             __query.setSqlFilePath("META-INF/org/seasar/doma/internal/apt/processor/dao/DomainParameterDao/select.sql");
             __query.setEntityType(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal());
-            __query.addParameter("phoneNumber", example.domain.PhoneNumber.class, phoneNumber);
+            __query.addParameter("phoneNumber", org.seasar.doma.internal.apt.processor.dao.PhoneNumber.class, phoneNumber);
             __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.DomainParameterDaoImpl");
             __query.setCallerMethodName("select");
             __query.setResultEnsured(false);

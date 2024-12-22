@@ -305,7 +305,7 @@ class TypeDeclarationTest extends CompilerSupport {
             List<TypeParameterDeclaration> typeParams =
                 typeDeclaration.getAllTypeParameterDeclarations();
 
-            assertEquals(typeParams.size(), 1);
+            assertEquals(1, typeParams.size());
             TypeParameterDeclaration parameterDeclaration = typeParams.get(0);
             TypeMirror actualType = parameterDeclaration.getActualType();
             TypeMirror formalType = parameterDeclaration.getFormalType();

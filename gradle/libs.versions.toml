@@ -15,12 +15,15 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.15
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+apiguardian = { module = "org.apiguardian:apiguardian-api", version = "1.1.2" }
 
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.4" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-oracle = { module = "org.testcontainers:oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 testcontainers-sqlserver = { module = "org.testcontainers:mssqlserver" }
+
+ecj = { module = "org.eclipse.jdt:ecj", version = "3.40.0" }
 
 google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.25.2" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.5.0" }

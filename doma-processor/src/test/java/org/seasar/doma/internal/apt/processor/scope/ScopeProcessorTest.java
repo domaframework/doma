@@ -23,13 +23,13 @@ import org.seasar.doma.message.Message;
 public class ScopeProcessorTest extends CompilerSupport {
 
   @BeforeEach
-  void setup() {
+  void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new ScopeProcessor());
   }
 
   @Test
   void success() throws Exception {
-    addProcessor(new ScopeProcessor());
     addCompilationUnit(Item.class);
     addCompilationUnit(ItemScope.class);
     compile();
@@ -39,7 +39,6 @@ public class ScopeProcessorTest extends CompilerSupport {
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(List<Class<?>> compilationUnits, Message message) throws Exception {
-    addProcessor(new ScopeProcessor());
     compilationUnits.forEach(this::addCompilationUnit);
     compile();
     assertFalse(getCompiledResult());

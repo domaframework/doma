@@ -7,10 +7,12 @@ description = "doma-processor"
 dependencies {
     implementation(project(":doma-core"))
     testImplementation(project(":doma-mock"))
+    testImplementation(libs.ecj)
 }
 
 tasks {
     test {
-        systemProperty("classpath", classpath.asPath)
+        val compiler: String by project
+        systemProperty("compiler", compiler)
     }
 }

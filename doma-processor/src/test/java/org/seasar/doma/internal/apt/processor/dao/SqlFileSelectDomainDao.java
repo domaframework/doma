@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.processor.dao;
 
-import example.domain.JobType;
-import example.domain.PhoneNumber;
 import java.math.BigDecimal;
 import java.util.List;
 import org.seasar.doma.Dao;

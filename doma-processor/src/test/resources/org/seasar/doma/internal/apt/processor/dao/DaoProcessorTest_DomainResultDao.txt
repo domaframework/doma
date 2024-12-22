@@ -34,7 +34,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public example.domain.PhoneNumber selectSingleResult() {
+    public org.seasar.doma.internal.apt.processor.dao.PhoneNumber selectSingleResult() {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectSingleResult");
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
@@ -51,8 +51,8 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<example.domain.PhoneNumber> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            example.domain.PhoneNumber __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __command = __support.getCommandImplementors().createSelectCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.DomainSingleResultHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            org.seasar.doma.internal.apt.processor.dao.PhoneNumber __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectSingleResult", __result);
             return __result;
@@ -63,7 +63,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public java.util.Optional<example.domain.PhoneNumber> selectOptionalSingleResult() {
+    public java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> selectOptionalSingleResult() {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectOptionalSingleResult");
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
@@ -80,8 +80,8 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<example.domain.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            java.util.Optional<example.domain.PhoneNumber> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainSingleResultHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectOptionalSingleResult", __result);
             return __result;
@@ -92,7 +92,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public java.util.List<example.domain.PhoneNumber> selectResultList() {
+    public java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> selectResultList() {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectResultList");
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
@@ -109,8 +109,8 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<example.domain.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            java.util.List<example.domain.PhoneNumber> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> __command = __support.getCommandImplementors().createSelectCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.DomainResultListHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            java.util.List<org.seasar.doma.internal.apt.processor.dao.PhoneNumber> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectResultList", __result);
             return __result;
@@ -121,7 +121,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public java.util.List<java.util.Optional<example.domain.PhoneNumber>> selectOptionalResultList() {
+    public java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> selectOptionalResultList() {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectOptionalResultList");
         try {
             org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method3);
@@ -138,8 +138,8 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<example.domain.PhoneNumber>>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler<java.lang.String, example.domain.PhoneNumber>(example.domain._PhoneNumber.getSingletonInternal()));
-            java.util.List<java.util.Optional<example.domain.PhoneNumber>> __result = __command.execute();
+            org.seasar.doma.jdbc.command.SelectCommand<java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>>> __command = __support.getCommandImplementors().createSelectCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.OptionalDomainResultListHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal()));
+            java.util.List<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>> __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "selectOptionalResultList", __result);
             return __result;
@@ -150,7 +150,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
     }
 
     @Override
-    public <R> R stream(java.util.function.Function<java.util.stream.Stream<example.domain.PhoneNumber>, R> mapper) {
+    public <R> R stream(java.util.function.Function<java.util.stream.Stream<org.seasar.doma.internal.apt.processor.dao.PhoneNumber>, R> mapper) {
         __support.entering("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "stream", mapper);
         try {
             if (mapper == null) {
@@ -170,7 +170,7 @@ public class DomainResultDaoImpl implements org.seasar.doma.internal.apt.process
             __query.setFetchSize(-1);
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.prepare();
-            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, example.domain.PhoneNumber, R>(example.domain._PhoneNumber.getSingletonInternal(), mapper));
+            org.seasar.doma.jdbc.command.SelectCommand<R> __command = __support.getCommandImplementors().createSelectCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.DomainStreamHandler<java.lang.String, org.seasar.doma.internal.apt.processor.dao.PhoneNumber, R>(org.seasar.doma.internal.apt.processor.dao._PhoneNumber.getSingletonInternal(), mapper));
             R __result = __command.execute();
             __query.complete();
             __support.exiting("org.seasar.doma.internal.apt.processor.dao.DomainResultDaoImpl", "stream", __result);

@@ -27,6 +27,7 @@ class DomainProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
+    addProcessor(new DomainProcessor());
   }
 
   @TestTemplate
@@ -34,7 +35,6 @@ class DomainProcessorTest extends CompilerSupport {
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new DomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -119,7 +119,6 @@ class DomainProcessorTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new DomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

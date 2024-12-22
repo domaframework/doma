@@ -1,23 +1,38 @@
 package org.seasar.doma.internal.apt;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.message.Message;
 
 public abstract class CompilerSupport {
 
   @RegisterExtension final CompilerExtension compiler = new CompilerExtension();
+
+  @TempDir Path sourceOutput;
+
+  @TempDir Path classOutput;
+
+  @BeforeEach
+  final void setupTempDirs() {
+    compiler.setSourceOutput(sourceOutput);
+    compiler.setClassOutput(classOutput);
+  }
 
   protected void enableCompilationAssertion() {
     compiler.enableCompilationAssertion();
@@ -42,8 +57,8 @@ public abstract class CompilerSupport {
     compiler.addProcessor(processors);
   }
 
-  protected void addCompilationUnit(final Class<?> clazz) {
-    compiler.addCompilationUnit(clazz);
+  protected void addCompilationUnit(final Class<?>... classes) {
+    compiler.addCompilationUnit(classes);
   }
 
   protected void addResourceFileCompilationUnit(final String fqn) {
@@ -85,7 +100,11 @@ public abstract class CompilerSupport {
     compiler.assertMessage(message);
   }
 
-  protected void assertNoMessage() {
-    compiler.assertNoMessage();
+  protected void assertNoError() {
+    boolean match =
+        compiler.getDiagnostics().stream().anyMatch(d -> d.getKind() == Diagnostic.Kind.ERROR);
+    if (match) {
+      fail();
+    }
   }
 }

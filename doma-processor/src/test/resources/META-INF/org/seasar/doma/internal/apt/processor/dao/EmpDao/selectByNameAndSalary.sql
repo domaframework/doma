@@ -1,0 +1,1 @@
+select * from Emp where name = /*name*/'aaa' and salary = /*salary*/123
