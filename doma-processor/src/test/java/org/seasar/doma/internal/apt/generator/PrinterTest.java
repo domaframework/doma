@@ -2,7 +2,6 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Formatter;
@@ -14,7 +13,6 @@ import javax.lang.model.util.ElementFilter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
 
@@ -23,13 +21,8 @@ class PrinterTest extends CompilerSupport {
   @SuppressWarnings("unused")
   private Integer field;
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addCompilationUnit(getClass());
   }
 

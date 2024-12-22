@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
@@ -26,14 +24,10 @@ import org.seasar.doma.message.Message;
 
 class DomainProcessorTest extends CompilerSupport {
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addOption("-Adoma.test=true");
+    addProcessor(new DomainProcessor());
   }
 
   @TestTemplate
@@ -41,7 +35,6 @@ class DomainProcessorTest extends CompilerSupport {
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new DomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
@@ -126,7 +119,6 @@ class DomainProcessorTest extends CompilerSupport {
   @ExtendWith(ErrorInvocationContextProvider.class)
   void error(Class<?> clazz, Message message, String... options) throws Exception {
     addOption(options);
-    addProcessor(new DomainProcessor());
     addCompilationUnit(clazz);
     compile();
     assertFalse(getCompiledResult());

@@ -165,9 +165,11 @@ public abstract class AptinaTestCase {
     this.processors.addAll(asList(processors));
   }
 
-  public void addCompilationUnit(final Class<?> clazz) {
-    AssertionUtils.assertNotNull("clazz", clazz);
-    addCompilationUnit(clazz.getName());
+  public void addCompilationUnit(final Class<?>... classes) {
+    AssertionUtils.assertNotNull("clazz", classes);
+    for (final Class<?> clazz : classes) {
+      addCompilationUnit(clazz.getName());
+    }
   }
 
   public void addCompilationUnit(final String className) {

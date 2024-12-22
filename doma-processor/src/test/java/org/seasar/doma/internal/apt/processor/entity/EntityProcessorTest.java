@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -15,13 +14,13 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
 import org.seasar.doma.internal.apt.lombok.Value;
+import org.seasar.doma.internal.apt.processor.DomainProcessor;
 import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.internal.apt.processor.ExternalDomainProcessor;
@@ -29,17 +28,20 @@ import org.seasar.doma.message.Message;
 
 class EntityProcessorTest extends CompilerSupport {
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addOption(
         "-Adoma.test=true",
         "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
     addProcessor(new EntityProcessor());
+
+    // Process the dependent domains
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(Identifier.class);
+    addCompilationUnit(Name.class);
+    addCompilationUnit(Names.class);
+    addCompilationUnit(Ver.class);
+    addCompilationUnit(Weight.class);
 
     // Process the dependent external domains
     addProcessor(new ExternalDomainProcessor());
@@ -56,12 +58,10 @@ class EntityProcessorTest extends CompilerSupport {
   @TestTemplate
   @ExtendWith(SuccessInvocationContextProvider.class)
   void success(
-      Class<?>[] classArray, URL expectedResourceUrl, String generatedClassName, String[] options)
+      Class<?>[] classes, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    for (Class<?> clazz : classArray) {
-      addCompilationUnit(clazz);
-    }
+    addCompilationUnit(classes);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);
     assertTrue(getCompiledResult());

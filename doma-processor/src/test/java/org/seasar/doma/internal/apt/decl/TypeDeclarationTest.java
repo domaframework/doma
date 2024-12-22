@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.decl;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,6 @@ import javax.lang.model.type.TypeVariable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
 
@@ -46,13 +44,8 @@ class TypeDeclarationTest extends CompilerSupport {
     return null;
   }
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addCompilationUnit(getClass());
   }
 
@@ -312,7 +305,7 @@ class TypeDeclarationTest extends CompilerSupport {
             List<TypeParameterDeclaration> typeParams =
                 typeDeclaration.getAllTypeParameterDeclarations();
 
-            assertEquals(typeParams.size(), 1);
+            assertEquals(1, typeParams.size());
             TypeParameterDeclaration parameterDeclaration = typeParams.get(0);
             TypeMirror actualType = parameterDeclaration.getActualType();
             TypeMirror formalType = parameterDeclaration.getFormalType();

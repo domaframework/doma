@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.metamodel;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -14,11 +13,12 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
+import org.seasar.doma.internal.apt.processor.DomainProcessor;
+import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 
 class MetamodelOptionTest extends CompilerSupport {
@@ -26,17 +26,21 @@ class MetamodelOptionTest extends CompilerSupport {
   private static final String PREFIX = "Q";
   private static final String SUFFIX = "Metamodel";
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
     addOption("-Adoma.metamodel.prefix=" + PREFIX);
     addOption("-Adoma.metamodel.suffix=" + SUFFIX);
+    addProcessor(new EntityProcessor());
+
+    // Process the dependent domains
+    addProcessor(new DomainProcessor());
+    addCompilationUnit(Name.class);
+
+    // Process the dependent embeddables
+    addProcessor(new EmbeddableProcessor());
+    addCompilationUnit(EmpInfo.class);
   }
 
   @TestTemplate
@@ -44,7 +48,6 @@ class MetamodelOptionTest extends CompilerSupport {
   void success(Class<?> clazz, URL expectedResourceUrl, String generatedClassName, String[] options)
       throws Exception {
     addOption(options);
-    addProcessor(new EntityProcessor());
     addCompilationUnit(clazz);
     compile();
     assertEqualsGeneratedSourceWithResource(expectedResourceUrl, generatedClassName);

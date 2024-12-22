@@ -3,7 +3,6 @@ package org.seasar.doma.internal.apt.processor.metamodel;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.CompilerKind;
@@ -26,22 +24,17 @@ import org.seasar.doma.internal.apt.processor.EntityProcessor;
 
 public class ScopeTest extends CompilerSupport {
 
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
   @BeforeEach
   void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
     addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
+    addProcessor(new EntityProcessor());
   }
 
   @Run(onlyIf = {CompilerKind.JAVAC})
   @TestTemplate
   @ExtendWith(ScopeTest.SuccessInvocationContextProvider.class)
   void success(String fqn, String[] otherClasses, URL expected) throws Exception {
-    addProcessor(new EntityProcessor());
     for (String otherClass : otherClasses) {
       addResourceFileCompilationUnit(otherClass);
     }

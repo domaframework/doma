@@ -15,18 +15,22 @@ import java.util.stream.Collectors;
 import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.message.Message;
 
 public abstract class CompilerSupport {
 
   @RegisterExtension final CompilerExtension compiler = new CompilerExtension();
 
-  protected void setSourceOutput(final Path sourceOutput) {
-    compiler.setSourceOutput(sourceOutput);
-  }
+  @TempDir Path sourceOutput;
 
-  protected void setClassOutput(final Path classOutput) {
+  @TempDir Path classOutput;
+
+  @BeforeEach
+  final void setupTempDirs() {
+    compiler.setSourceOutput(sourceOutput);
     compiler.setClassOutput(classOutput);
   }
 
@@ -53,8 +57,8 @@ public abstract class CompilerSupport {
     compiler.addProcessor(processors);
   }
 
-  protected void addCompilationUnit(final Class<?> clazz) {
-    compiler.addCompilationUnit(clazz);
+  protected void addCompilationUnit(final Class<?>... classes) {
+    compiler.addCompilationUnit(classes);
   }
 
   protected void addResourceFileCompilationUnit(final String fqn) {

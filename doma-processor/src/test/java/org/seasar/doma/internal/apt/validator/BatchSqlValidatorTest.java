@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.TestProcessor;
@@ -19,15 +16,6 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
 class BatchSqlValidatorTest extends CompilerSupport {
-
-  @TempDir Path sourceOutput;
-  @TempDir Path classOutput;
-
-  @BeforeEach
-  void beforeEach() {
-    setSourceOutput(sourceOutput);
-    setClassOutput(classOutput);
-  }
 
   @Test
   void testEmbeddedVariable() throws Exception {
