@@ -38,6 +38,18 @@ public class QueryDsl {
   }
 
   /**
+   * Creates an instance.
+   *
+   * @param provider the instance of {@link ConfigProvider}
+   * @return a new QueryDsl instance
+   * @throws org.seasar.doma.DomaIllegalArgumentException if {@code provider} is not {@link
+   *     ConfigProvider}
+   */
+  public static QueryDsl of(Object provider) {
+    return new QueryDsl(Config.get(provider));
+  }
+
+  /**
    * Creates a WithQueryDsl.
    *
    * @param entityMetamodel the entity metamodel to use for the context of the common table
