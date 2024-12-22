@@ -79,11 +79,12 @@ public abstract class AptinaTestCase {
 
   protected AptinaTestCase() {
     String compiler = System.getProperty("compiler");
-    compilerKind = switch (compiler) {
-      case "javac" -> CompilerKind.JAVAC;
-      case "eclipse" -> CompilerKind.ECLIPSE;
-      default -> throw new IllegalArgumentException(compiler);
-    };
+    compilerKind =
+        switch (compiler) {
+          case "javac" -> CompilerKind.JAVAC;
+          case "eclipse" -> CompilerKind.ECLIPSE;
+          default -> throw new IllegalArgumentException(compiler);
+        };
   }
 
   public void setUp() {}
@@ -195,7 +196,7 @@ public abstract class AptinaTestCase {
     if (classOutput == null) {
       throw new IllegalStateException("classOutput is not set");
     }
-    
+
     addOption("-d", classOutput.toFile().getPath());
 
     javaCompiler = compilerKind.createJavaCompiler();
