@@ -5,13 +5,15 @@ import javax.tools.ToolProvider;
 import org.eclipse.jdt.internal.compiler.tool.EclipseCompiler;
 
 public enum CompilerKind {
+  // Java Compiler
   JAVAC {
     @Override
     public JavaCompiler createJavaCompiler() {
       return ToolProvider.getSystemJavaCompiler();
     }
   },
-  ECLIPSE {
+  // Eclipse Compiler for Java
+  ECJ {
     @Override
     public JavaCompiler createJavaCompiler() {
       return new EclipseCompiler();

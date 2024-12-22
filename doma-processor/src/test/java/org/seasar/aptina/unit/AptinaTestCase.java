@@ -82,7 +82,7 @@ public abstract class AptinaTestCase {
     compilerKind =
         switch (compiler) {
           case "javac" -> CompilerKind.JAVAC;
-          case "eclipse" -> CompilerKind.ECLIPSE;
+          case "ecj" -> CompilerKind.ECJ;
           default -> throw new IllegalArgumentException(compiler);
         };
   }
