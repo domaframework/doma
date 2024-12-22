@@ -32,26 +32,26 @@ public class NoConfigDaoExtendsNoConfigDaoImpl implements org.seasar.doma.intern
 
     /** */
     @Override
-    public java.util.List<example.entity.Emp> selectByNameAndSalary(java.lang.String arg0, java.math.BigDecimal arg1, org.seasar.doma.jdbc.SelectOptions arg2) {
-        return __parent.selectByNameAndSalary(arg0, arg1, arg2);
+    public java.util.List<example.entity.Emp> selectByNameAndSalary(java.lang.String name, java.math.BigDecimal salary, org.seasar.doma.jdbc.SelectOptions options) {
+        return __parent.selectByNameAndSalary(name, salary, options);
     }
 
     /** */
     @Override
-    public int insert(example.entity.Emp arg0) {
-        return __parent.insert(arg0);
+    public int insert(example.entity.Emp entity) {
+        return __parent.insert(entity);
     }
 
     /** */
     @Override
-    public int update(example.entity.Emp arg0) {
-        return __parent.update(arg0);
+    public int update(example.entity.Emp entity) {
+        return __parent.update(entity);
     }
 
     /** */
     @Override
-    public int delete(example.entity.Emp arg0) {
-        return __parent.delete(arg0);
+    public int delete(example.entity.Emp entity) {
+        return __parent.delete(entity);
     }
 
     @Override

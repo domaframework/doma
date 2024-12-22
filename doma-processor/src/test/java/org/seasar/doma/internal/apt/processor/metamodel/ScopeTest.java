@@ -17,8 +17,10 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.apt.CompilerKind;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
+import org.seasar.doma.internal.apt.Run;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 
@@ -35,6 +37,7 @@ public class ScopeTest extends CompilerSupport {
     addOption("-Adoma.metamodel.enabled=true");
   }
 
+  @Run(onlyIf = {CompilerKind.JAVAC})
   @TestTemplate
   @ExtendWith(ScopeTest.SuccessInvocationContextProvider.class)
   void success(String fqn, String[] otherClasses, URL expected) throws Exception {

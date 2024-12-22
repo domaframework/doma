@@ -1,5 +1,7 @@
 package org.seasar.doma.internal.apt;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,7 +96,11 @@ public abstract class CompilerSupport {
     compiler.assertMessage(message);
   }
 
-  protected void assertNoMessage() {
-    compiler.assertNoMessage();
+  protected void assertNoError() {
+    boolean match =
+        compiler.getDiagnostics().stream().anyMatch(d -> d.getKind() == Diagnostic.Kind.ERROR);
+    if (match) {
+      fail();
+    }
   }
 }

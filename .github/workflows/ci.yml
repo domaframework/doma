@@ -41,6 +41,13 @@ jobs:
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           assemble check
 
+      - name: Test annotation processors with Eclipse Compiler
+        run: >
+          ./gradlew
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
+          -Pcompiler=eclipse
+          :doma-processor:test
+
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v4
@@ -49,6 +56,7 @@ jobs:
           path: |
             ./**/build/reports
             /home/runner/work/doma/doma/.gradle
+
 
   test:
     name: Test (${{ matrix.driver }})

@@ -44,12 +44,14 @@ import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
-import javax.tools.ToolProvider;
+import org.seasar.doma.internal.apt.CompilerKind;
 
 /**
  * @author koichik
  */
 public abstract class AptinaTestCase {
+
+  final CompilerKind compilerKind;
 
   Locale locale;
 
@@ -75,12 +77,27 @@ public abstract class AptinaTestCase {
 
   boolean compilationAssertion = true;
 
-  protected AptinaTestCase() {}
+  protected AptinaTestCase() {
+    String compiler = System.getProperty("compiler");
+    compilerKind = determineCompilerKind(compiler);
+  }
+
+  private static CompilerKind determineCompilerKind(String compiler) {
+    return switch (compiler) {
+      case "javac" -> CompilerKind.JAVAC;
+      case "eclipse" -> CompilerKind.ECLIPSE;
+      default -> throw new IllegalArgumentException(compiler);
+    };
+  }
 
   public void setUp() {}
 
   public void tearDown() {
     reset();
+  }
+
+  protected CompilerKind getCompilerKind() {
+    return compilerKind;
   }
 
   protected abstract Path getSourceOutput();
@@ -176,9 +193,10 @@ public abstract class AptinaTestCase {
   public void compile() throws IOException {
     addOption("-d", getClassOutput().toFile().getPath());
 
-    var javaCompiler = ToolProvider.getSystemJavaCompiler();
+    javaCompiler = compilerKind.createJavaCompiler();
     diagnostics = new DiagnosticCollector<>();
-    final DiagnosticListener<JavaFileObject> listener = new LoggingDiagnosticListener(diagnostics);
+    final DiagnosticListener<JavaFileObject> listener =
+        new LoggingDiagnosticListener(diagnostics, locale);
 
     standardJavaFileManager = javaCompiler.getStandardFileManager(listener, locale, charset);
     standardJavaFileManager.setLocation(StandardLocation.SOURCE_PATH, sourcePaths);
@@ -423,13 +441,17 @@ public abstract class AptinaTestCase {
 
     final DiagnosticListener<JavaFileObject> listener;
 
-    LoggingDiagnosticListener(final DiagnosticListener<JavaFileObject> listener) {
+    final Locale locale;
+
+    LoggingDiagnosticListener(
+        final DiagnosticListener<JavaFileObject> listener, final Locale locale) {
       this.listener = listener;
+      this.locale = locale;
     }
 
     @Override
     public void report(final Diagnostic<? extends JavaFileObject> diagnostic) {
-      System.out.println(diagnostic);
+      System.err.println(diagnostic.getMessage(locale));
       listener.report(diagnostic);
     }
   }

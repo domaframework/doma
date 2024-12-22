@@ -1,7 +1,6 @@
 package org.seasar.doma.internal.apt.processor.entity;
 
 import java.math.BigDecimal;
-import java.util.List;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -25,8 +24,7 @@ public class ImmutableEmp {
 
   @Version final Integer version;
 
-  public ImmutableEmp(
-      Integer id, String name, BigDecimal salary, Integer version, List<String> names) {
+  public ImmutableEmp(Integer id, String name, BigDecimal salary, Integer version) {
     this.id = id;
     this.name = name;
     this.salary = salary;

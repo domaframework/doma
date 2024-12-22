@@ -1,7 +1,5 @@
 package org.seasar.doma.internal.apt.processor.error;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +36,8 @@ class AbstractProcessorTest extends CompilerSupport {
               throw new AptIllegalStateException("hoge");
             }));
     try {
+      // javac throws an exception, but ecj doesn't.
       compile();
-      fail();
     } catch (Exception ignored) {
     }
     assertMessage(Message.DOMA4039);
@@ -55,8 +53,8 @@ class AbstractProcessorTest extends CompilerSupport {
               throw new NullPointerException("hoge");
             }));
     try {
+      // javac throws an exception, but ecj doesn't.
       compile();
-      fail();
     } catch (Exception ignored) {
     }
     assertMessage(Message.DOMA4016);
@@ -72,8 +70,8 @@ class AbstractProcessorTest extends CompilerSupport {
               throw new AssertionError("hoge");
             }));
     try {
+      // javac throws an exception, but ecj doesn't.
       compile();
-      fail();
     } catch (Exception ignored) {
     }
     assertMessage(Message.DOMA4016);

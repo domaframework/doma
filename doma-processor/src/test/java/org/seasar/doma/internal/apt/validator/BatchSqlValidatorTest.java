@@ -76,7 +76,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
         });
     compile();
     assertTrue(getCompiledResult());
-    assertNoMessage();
+    assertNoError();
   }
 
   @Test
@@ -126,7 +126,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
         });
     compile();
     assertTrue(getCompiledResult());
-    assertNoMessage();
+    assertNoError();
   }
 
   @Test
@@ -153,7 +153,9 @@ class BatchSqlValidatorTest extends CompilerSupport {
         });
     compile();
     assertTrue(getCompiledResult());
-    assertEquals(2, getDiagnostics().size());
+    assertMessage(Message.DOMA4181);
+    assertMessage(Message.DOMA4182);
+    assertNoError();
   }
 
   @Test
@@ -180,7 +182,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
         });
     compile();
     assertTrue(getCompiledResult());
-    assertNoMessage();
+    assertNoError();
   }
 
   @Test
@@ -205,7 +207,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
         });
     compile();
     assertTrue(getCompiledResult());
-    assertNoMessage();
+    assertNoError();
   }
 
   @Test
