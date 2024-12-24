@@ -51,10 +51,6 @@ public final class Options {
 
   public static final String LOMBOK_VALUE = "doma.lombok.Value";
 
-  public static final String CDI_APPLICATION_SCOPED = "doma.cdi.ApplicationScoped";
-
-  public static final String CDI_DEPENDENT = "doma.cdi.Dependent";
-
   private final Map<String, String> options;
 
   Options(Map<String, String> options, Resources resources) {
@@ -181,11 +177,6 @@ public final class Options {
     return name != null ? name : Constants.DEFAULT_LOMBOK_VALUE;
   }
 
-  public String getCdiApplicationScoped() {
-    String name = getOption(CDI_APPLICATION_SCOPED);
-    return name != null ? name : Constants.DEFAULT_CDI_APPLICATION_SCOPED;
-  }
-
   private String getOption(String key) {
     return options.get(key);
   }
@@ -205,8 +196,5 @@ public final class Options {
     public static final String DEFAULT_LOMBOK_ALL_ARGS_CONSTRUCTOR = "lombok.AllArgsConstructor";
 
     public static final String DEFAULT_LOMBOK_VALUE = "lombok.Value";
-
-    public static final String DEFAULT_CDI_APPLICATION_SCOPED =
-        "javax.enterprise.context.ApplicationScoped";
   }
 }
