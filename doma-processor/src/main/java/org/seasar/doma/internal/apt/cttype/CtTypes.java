@@ -46,7 +46,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.SimpleTypeVisitor8;
+import javax.lang.model.util.SimpleTypeVisitor14;
 import org.seasar.doma.DataType;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
@@ -610,7 +610,7 @@ public class CtTypes {
     return null;
   }
 
-  private class WrapperClassResolver extends SimpleTypeVisitor8<Class<?>, Void> {
+  private class WrapperClassResolver extends SimpleTypeVisitor14<Class<?>, Void> {
 
     @Override
     public Class<?> visitArray(ArrayType t, Void p) {

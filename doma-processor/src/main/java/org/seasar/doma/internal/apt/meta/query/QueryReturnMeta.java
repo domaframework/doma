@@ -5,7 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.TypeKindVisitor8;
+import javax.lang.model.util.TypeKindVisitor14;
 import org.seasar.doma.internal.apt.cttype.*;
 
 public class QueryReturnMeta {
@@ -43,7 +43,7 @@ public class QueryReturnMeta {
     return ctType
         .getType()
         .accept(
-            new TypeKindVisitor8<Boolean, Void>(false) {
+            new TypeKindVisitor14<Boolean, Void>(false) {
 
               @Override
               public Boolean visitArray(ArrayType t, Void p) {

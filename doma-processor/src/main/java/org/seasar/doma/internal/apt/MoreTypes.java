@@ -20,10 +20,10 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.SimpleTypeVisitor14;
-import javax.lang.model.util.SimpleTypeVisitor8;
-import javax.lang.model.util.TypeKindVisitor8;
+import javax.lang.model.util.TypeKindVisitor14;
 import javax.lang.model.util.Types;
 
 public class MoreTypes implements Types {
@@ -164,38 +164,17 @@ public class MoreTypes implements Types {
 
   public DeclaredType toDeclaredType(TypeMirror typeMirror) {
     assertNotNull(typeMirror);
-    return typeMirror.accept(
-        new SimpleTypeVisitor8<DeclaredType, Void>() {
-
-          public DeclaredType visitDeclared(DeclaredType t, Void p) {
-            return t;
-          }
-        },
-        null);
+    return typeMirror.accept(Visitors.toDeclaredType, null);
   }
 
   public TypeVariable toTypeVariable(TypeMirror typeMirror) {
     assertNotNull(typeMirror);
-    return typeMirror.accept(
-        new SimpleTypeVisitor8<TypeVariable, Void>() {
-
-          public TypeVariable visitTypeVariable(TypeVariable t, Void p) {
-            return t;
-          }
-        },
-        null);
+    return typeMirror.accept(Visitors.toTypeVariable, null);
   }
 
   public ArrayType toArrayType(TypeMirror typeMirror) {
     assertNotNull(typeMirror);
-    return typeMirror.accept(
-        new SimpleTypeVisitor14<ArrayType, Void>() {
-
-          public ArrayType visitArray(ArrayType t, Void p) {
-            return t;
-          }
-        },
-        null);
+    return typeMirror.accept(Visitors.toArrayType, null);
   }
 
   public boolean isAssignableWithErasure(TypeMirror lhs, Class<?> rhs) {
@@ -298,14 +277,14 @@ public class MoreTypes implements Types {
   public TypeMirror boxIfPrimitive(TypeMirror typeMirror) {
     assertNotNull(typeMirror);
     return typeMirror.accept(
-        new TypeKindVisitor8<TypeMirror, Void>() {
+        new TypeKindVisitor14<TypeMirror, Void>() {
 
           public TypeMirror visitPrimitive(PrimitiveType t, Void p) {
             return typeUtils.boxedClass(t).asType();
           }
 
-          protected TypeMirror defaultAction(TypeMirror e, Void p) {
-            return e;
+          protected TypeMirror defaultAction(TypeMirror t, Void p) {
+            return t;
           }
         },
         null);
@@ -351,7 +330,7 @@ public class MoreTypes implements Types {
     return typeElement.asType();
   }
 
-  private class TypeNameBuilder extends TypeKindVisitor8<Void, StringBuilder> {
+  private class TypeNameBuilder extends TypeKindVisitor14<Void, StringBuilder> {
 
     public Void visitNoTypeAsVoid(NoType t, StringBuilder p) {
       p.append("void");
@@ -476,5 +455,32 @@ public class MoreTypes implements Types {
       }
       return null;
     }
+  }
+
+  private static final class Visitors {
+
+    static final TypeVisitor<DeclaredType, Void> toDeclaredType =
+        new SimpleTypeVisitor14<>() {
+          @Override
+          public DeclaredType visitDeclared(DeclaredType t, Void p) {
+            return t;
+          }
+        };
+
+    static final TypeVisitor<TypeVariable, Void> toTypeVariable =
+        new SimpleTypeVisitor14<>() {
+          @Override
+          public TypeVariable visitTypeVariable(TypeVariable t, Void p) {
+            return t;
+          }
+        };
+
+    static final TypeVisitor<ArrayType, Void> toArrayType =
+        new SimpleTypeVisitor14<>() {
+          @Override
+          public ArrayType visitArray(ArrayType t, Void p) {
+            return t;
+          }
+        };
   }
 }
