@@ -371,7 +371,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(typeElement);
     Optional<ConstructorDeclaration> constructorDeclaration =
         typeDeclaration.getConstructorDeclaration(parameterTypeDeclarations);
-    if (!constructorDeclaration.isPresent()) {
+    if (constructorDeclaration.isEmpty()) {
       ExpressionLocation location = node.getLocation();
       String signature = createConstructorSignature(className, parameterTypeDeclarations);
       throw new AptException(

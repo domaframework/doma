@@ -1,5 +1,6 @@
 package org.seasar.doma.internal.apt;
 
+import java.io.Serial;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
@@ -9,7 +10,7 @@ import org.seasar.doma.message.MessageResource;
 
 public class AptException extends DomaException {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   protected final Kind kind;
 

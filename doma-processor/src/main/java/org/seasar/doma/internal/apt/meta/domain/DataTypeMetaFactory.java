@@ -5,7 +5,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -96,7 +95,7 @@ public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta>
         ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
             .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
             .filter(c -> c.getParameters().size() == 1)
-            .collect(Collectors.toList());
+            .toList();
     if (constructors.isEmpty()) {
       throw new AptException(Message.DOMA4453, typeElement, new Object[] {});
     }

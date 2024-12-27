@@ -53,6 +53,7 @@ public class ScopeParameterMeta implements CharSequence {
     return typeAndName.charAt(index);
   }
 
+  @SuppressWarnings("NullableProblems")
   @Override
   public CharSequence subSequence(int start, int end) {
     return typeAndName.subSequence(start, end);

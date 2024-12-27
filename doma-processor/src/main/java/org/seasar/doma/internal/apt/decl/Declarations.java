@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
@@ -154,9 +153,13 @@ public class Declarations {
                           .filter(declaration -> arg.equals(declaration.getFormalType()))
                           .map(TypeParameterDeclaration::getActualType)
                           .findFirst())
-              .collect(Collectors.toList());
+              .toList();
       if (optTypeArgs.stream().allMatch(Optional::isPresent)) {
-        TypeMirror[] typeArgs = optTypeArgs.stream().map(Optional::get).toArray(TypeMirror[]::new);
+        TypeMirror[] typeArgs =
+            optTypeArgs.stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toArray(TypeMirror[]::new);
         TypeElement typeElement = ctx.getMoreElements().toTypeElement(declaredType.asElement());
         if (typeElement == null) {
           continue;

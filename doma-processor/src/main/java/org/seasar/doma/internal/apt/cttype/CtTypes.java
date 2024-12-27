@@ -31,7 +31,6 @@ import java.util.OptionalLong;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -259,7 +258,7 @@ public class CtTypes {
         ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
             .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
             .filter(c -> c.getParameters().size() == 1)
-            .collect(Collectors.toList());
+            .toList();
     if (constructors.size() != 1) {
       throw new AptIllegalStateException(
           String.format("%s : %d", typeElement.getQualifiedName(), constructors.size()));
@@ -704,26 +703,17 @@ public class CtTypes {
 
     @Override
     public Class<?> visitPrimitive(PrimitiveType t, Void p) {
-      switch (t.getKind()) {
-        case BOOLEAN:
-          return PrimitiveBooleanWrapper.class;
-        case BYTE:
-          return PrimitiveByteWrapper.class;
-        case SHORT:
-          return PrimitiveShortWrapper.class;
-        case INT:
-          return PrimitiveIntWrapper.class;
-        case LONG:
-          return PrimitiveLongWrapper.class;
-        case FLOAT:
-          return PrimitiveFloatWrapper.class;
-        case DOUBLE:
-          return PrimitiveDoubleWrapper.class;
-        case CHAR:
-          return null;
-        default:
-          return assertUnreachable();
-      }
+      return switch (t.getKind()) {
+        case BOOLEAN -> PrimitiveBooleanWrapper.class;
+        case BYTE -> PrimitiveByteWrapper.class;
+        case SHORT -> PrimitiveShortWrapper.class;
+        case INT -> PrimitiveIntWrapper.class;
+        case LONG -> PrimitiveLongWrapper.class;
+        case FLOAT -> PrimitiveFloatWrapper.class;
+        case DOUBLE -> PrimitiveDoubleWrapper.class;
+        case CHAR -> null;
+        default -> assertUnreachable();
+      };
     }
   }
 }

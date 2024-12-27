@@ -163,7 +163,7 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
                     throw new AptIllegalStateException("failed to convert to TypeElement.");
                   }
                 })
-            .collect(toList());
+            .toList();
     for (TypeElement typeElement : interfaces) {
       DaoAnnot daoAnnot = ctx.getAnnotations().newDaoAnnot(typeElement);
       if (daoAnnot == null) {
