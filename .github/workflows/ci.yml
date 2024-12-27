@@ -41,13 +41,6 @@ jobs:
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           assemble check
 
-      - name: Test annotation processors with Eclipse Compiler
-        run: >
-          ./gradlew
-          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
-          -Pcompiler=ecj
-          :doma-processor:test
-
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v4
@@ -57,9 +50,8 @@ jobs:
             ./**/build/reports
             /home/runner/work/doma/doma/.gradle
 
-
-  test:
-    name: Test (${{ matrix.driver }})
+  integration-test:
+    name: Integration Test (${{ matrix.driver }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -116,11 +108,49 @@ jobs:
             ./**/build/reports
             /home/runner/work/doma/doma/.gradle
 
+  ecj:
+    name: Build and Integration Test with Eclipse Compiler for Java (ECJ)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Set up JDKs
+        uses: actions/setup-java@v4
+        with:
+          distribution: ${{ env.JDK_DISTRIBUTION }}
+          java-version: |
+            ${{ env.JDK_VERSION_OLDEST }}
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4.2.2
+
+      - name: Test with ECJ
+        run: >
+          ./gradlew
+          -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
+          -Pcompiler=ecj
+          :doma-processor:build
+          :integration-test-java:build
+
+      - name: Upload reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-${{ matrix.driver }}
+          path: |
+            ./**/build/reports
+            /home/runner/work/doma/doma/.gradle
+
   publish:
     if: github.event_name == 'push'
     name: Publish
     runs-on: ubuntu-latest
-    needs: [ build, test ]
+    needs: [ build, integration-test, ecj ]
     timeout-minutes: 30
 
     steps:
