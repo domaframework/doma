@@ -31,7 +31,11 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 /**
  * Provides the ways to issue more complex SQL statements rather than {@link Entityql} does. But
  * note that this class doesn't support to associate entities.
+ *
+ * @deprecated Use {@link QueryDsl} instead.
  */
+@SuppressWarnings("removal")
+@Deprecated(since = "3.2.0", forRemoval = true)
 public class NativeSql {
 
   protected final Config config;

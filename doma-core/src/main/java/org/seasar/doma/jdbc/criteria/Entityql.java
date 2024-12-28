@@ -29,7 +29,11 @@ import org.seasar.doma.jdbc.criteria.statement.Statement;
 /**
  * Provides the ways to query and associate entities. Use {@link NativeSql} to issue more complex
  * SQL statements than this class does.
+ *
+ * @deprecated Use {@link QueryDsl} instead.
  */
+@SuppressWarnings("removal")
+@Deprecated(since = "3.2.0", forRemoval = true)
 public class Entityql {
 
   protected final Config config;

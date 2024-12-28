@@ -19,6 +19,10 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlUpdateStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KStatement
 
+@Deprecated(
+    message = "This class will be removed in the future. Use KQueryDsl instead.",
+    replaceWith = ReplaceWith("KQueryDsl", "org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl"),
+)
 class KEntityql(config: Config) {
 
     private val entityql = org.seasar.doma.jdbc.criteria.Entityql(config)
