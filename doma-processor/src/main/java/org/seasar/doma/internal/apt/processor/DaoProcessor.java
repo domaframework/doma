@@ -24,6 +24,7 @@ import org.seasar.doma.internal.util.ClassUtil;
 @SupportedAnnotationTypes({"org.seasar.doma.Dao"})
 @SupportedOptions({
   Options.TEST,
+  Options.TRACE,
   Options.DEBUG,
   Options.DAO_PACKAGE,
   Options.DAO_SUBPACKAGE,

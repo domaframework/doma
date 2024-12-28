@@ -13,6 +13,7 @@ import org.seasar.doma.internal.apt.meta.domain.InternalDomainMetaFactory;
   Options.RESOURCES_DIR,
   Options.LOMBOK_VALUE,
   Options.TEST,
+  Options.TRACE,
   Options.DEBUG,
   Options.CONFIG_PATH
 })

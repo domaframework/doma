@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -63,7 +64,18 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
           .debug(Message.DOMA4090, new Object[] {getClass().getName(), elementNameSupplier.get()});
     }
     try {
-      handler.accept(element);
+      if (ctx.getOptions().isTraceEnabled()) {
+        long startTime = System.nanoTime();
+        handler.accept(element);
+        long endTime = System.nanoTime();
+        long execTimeMillis = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+        ctx.getReporter()
+            .debug(
+                Message.DOMA4463,
+                new Object[] {execTimeMillis, getClass().getName(), elementNameSupplier.get()});
+      } else {
+        handler.accept(element);
+      }
     } catch (AptException e) {
       ctx.getReporter().report(e);
     } catch (AptIllegalOptionException e) {

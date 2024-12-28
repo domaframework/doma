@@ -21,6 +21,7 @@ import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMetaFactory;
   Options.VERSION_VALIDATION,
   Options.RESOURCES_DIR,
   Options.TEST,
+  Options.TRACE,
   Options.DEBUG,
   Options.CONFIG_PATH
 })

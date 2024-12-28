@@ -19,7 +19,13 @@ import org.seasar.doma.message.Message;
  * @since 1.25.0
  */
 @SupportedAnnotationTypes({"org.seasar.doma.DomainConverters"})
-@SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG, Options.CONFIG_PATH})
+@SupportedOptions({
+  Options.RESOURCES_DIR,
+  Options.TEST,
+  Options.TRACE,
+  Options.DEBUG,
+  Options.CONFIG_PATH
+})
 public class DomainConvertersProcessor extends AbstractProcessor {
 
   public DomainConvertersProcessor() {
