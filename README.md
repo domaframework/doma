@@ -215,6 +215,7 @@ Major versions
 | Java 20 |        | v      | v      |
 | Java 21 |        | v      | v      |
 | Java 22 |        | v      | v      |
+| Java 23 |        |        | v      |
 
 Backers
 ---------------------
