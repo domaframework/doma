@@ -930,6 +930,7 @@ public enum Message implements MessageResource {
       "If a method annotated with @MultiInsert targets immutable entities for insertion, the return type must be org.seasar.doma.jdbc.MultiResult."
           + "The type argument of org.seasar.doma.jdbc.MultiResult must be the immutable entity class."),
   DOMA4462("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4463("'{'\"execTimeMillis\": {0}, \"processor\": \"{1}\", \"element\": \"{2}\"'}'"),
 
   // other
   DOMA5001(

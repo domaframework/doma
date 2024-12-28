@@ -32,6 +32,7 @@ import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
   Options.LOMBOK_VALUE,
   Options.LOMBOK_ALL_ARGS_CONSTRUCTOR,
   Options.TEST,
+  Options.TRACE,
   Options.DEBUG,
   Options.CONFIG_PATH,
   Options.METAMODEL_ENABLED,

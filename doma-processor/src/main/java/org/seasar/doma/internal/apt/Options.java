@@ -27,6 +27,8 @@ public final class Options {
 
   public static final String DEBUG = "doma.debug";
 
+  public static final String TRACE = "doma.trace";
+
   public static final String DAO_PACKAGE = "doma.dao.package";
 
   public static final String DAO_SUBPACKAGE = "doma.dao.subpackage";
@@ -120,6 +122,11 @@ public final class Options {
       return new Date(0L);
     }
     return new Date();
+  }
+
+  public boolean isTraceEnabled() {
+    String trace = getOption(TRACE);
+    return Boolean.parseBoolean(trace);
   }
 
   public boolean isDebugEnabled() {

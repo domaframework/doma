@@ -14,7 +14,13 @@ import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.message.Message;
 
 @SupportedAnnotationTypes({"org.seasar.doma.Scope"})
-@SupportedOptions({Options.RESOURCES_DIR, Options.TEST, Options.DEBUG, Options.CONFIG_PATH})
+@SupportedOptions({
+  Options.RESOURCES_DIR,
+  Options.TEST,
+  Options.TRACE,
+  Options.DEBUG,
+  Options.CONFIG_PATH
+})
 public class ScopeProcessor extends AbstractProcessor {
 
   public ScopeProcessor() {
