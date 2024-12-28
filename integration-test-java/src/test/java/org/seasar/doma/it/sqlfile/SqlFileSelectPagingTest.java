@@ -16,14 +16,14 @@ import org.seasar.doma.jdbc.SelectOptions;
 public class SqlFileSelectPagingTest {
 
   @Test
-  public void testNoPaging(Config config) throws Exception {
+  public void testNoPaging(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll();
     assertEquals(14, employees.size());
   }
 
   @Test
-  public void testLimitOffset(Config config) throws Exception {
+  public void testLimitOffset(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5).offset(3));
     assertEquals(5, employees.size());
@@ -35,7 +35,7 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
-  public void testLimitOffset_offsetIsZero(Config config) throws Exception {
+  public void testLimitOffset_offsetIsZero(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5).offset(0));
     assertEquals(5, employees.size());
@@ -47,7 +47,7 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
-  public void testLimitOffset_limitIsZero(Config config) throws Exception {
+  public void testLimitOffset_limitIsZero(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().limit(0).offset(10));
     assertEquals(4, employees.size());
@@ -58,7 +58,7 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
-  public void testLimitOnly(Config config) throws Exception {
+  public void testLimitOnly(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().limit(5));
     assertEquals(5, employees.size());
@@ -70,7 +70,7 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
-  public void testLimitOnly_distinct(Config config) throws Exception {
+  public void testLimitOnly_distinct(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectDistinctAll(SelectOptions.get().limit(5));
     assertEquals(5, employees.size());
@@ -82,7 +82,7 @@ public class SqlFileSelectPagingTest {
   }
 
   @Test
-  public void testOffsetOnly(Config config) throws Exception {
+  public void testOffsetOnly(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectAll(SelectOptions.get().offset(10));
     assertEquals(4, employees.size());

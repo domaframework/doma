@@ -25,63 +25,63 @@ import org.seasar.doma.jdbc.ResultMappingException;
 public class AutoFunctionTest {
 
   @Test
-  public void testNoParam(Config config) throws Exception {
+  public void testNoParam(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
     Integer result = dao.func_none_param();
     assertEquals(Integer.valueOf(10), result);
   }
 
   @Test
-  public void testOneParam(Config config) throws Exception {
+  public void testOneParam(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    Integer result = dao.func_simpletype_param(Integer.valueOf(10));
+    Integer result = dao.func_simpletype_param(10);
     assertEquals(Integer.valueOf(20), result);
   }
 
   @Test
-  public void testOneParam_time(Config config) throws Exception {
+  public void testOneParam_time(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
     Time result = dao.func_simpletype_time_param(Time.valueOf("12:34:56"));
     assertEquals(Time.valueOf("12:34:56"), result);
   }
 
   @Test
-  public void testTwoParams(Config config) throws Exception {
+  public void testTwoParams(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    Integer result = dao.func_dto_param(Integer.valueOf(10), Integer.valueOf(20));
+    Integer result = dao.func_dto_param(10, 20);
     assertEquals(Integer.valueOf(30), result);
   }
 
   @Test
-  public void testTwoParams_time(Config config) throws Exception {
+  public void testTwoParams_time(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    Time result = dao.func_dto_time_param(Time.valueOf("12:34:56"), Integer.valueOf(20));
+    Time result = dao.func_dto_time_param(Time.valueOf("12:34:56"), 20);
     assertEquals(Time.valueOf("12:34:56"), result);
   }
 
   @Test
   @Run(onlyIf = {Dbms.POSTGRESQL})
-  public void testScalarResultSet(Config config) throws Exception {
+  public void testScalarResultSet(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<String> result = dao.func_simpletype_resultset(Integer.valueOf(1));
+    List<String> result = dao.func_simpletype_resultset(1);
     assertEquals(13, result.size());
     assertEquals("ALLEN", result.get(0));
   }
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSet(Config config) throws Exception {
+  public void testResultSet(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<Employee> result = dao.func_resultset(Integer.valueOf(1));
+    List<Employee> result = dao.func_resultset(1);
     assertEquals(13, result.size());
   }
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSet_check(Config config) throws Exception {
+  public void testResultSet_check(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
     try {
-      dao.func_resultset_check(Integer.valueOf(1));
+      dao.func_resultset_check(1);
       fail();
     } catch (ResultMappingException ignored) {
       System.err.println(ignored);
@@ -90,39 +90,39 @@ public class AutoFunctionTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSet_nocheck(Config config) throws Exception {
+  public void testResultSet_noCheck(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<Employee> result = dao.func_resultset_nocheck(Integer.valueOf(1));
+    List<Employee> result = dao.func_resultset_nocheck(1);
     assertEquals(13, result.size());
   }
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSet_map(Config config) throws Exception {
+  public void testResultSet_map(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<Map<String, Object>> result = dao.func_resultset_map(Integer.valueOf(1));
+    List<Map<String, Object>> result = dao.func_resultset_map(1);
     assertEquals(13, result.size());
   }
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSetAndUpdate(Config config) throws Exception {
+  public void testResultSetAndUpdate(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<Employee> result = dao.func_resultset_update(Integer.valueOf(1));
+    List<Employee> result = dao.func_resultset_update(1);
     assertEquals(13, result.size());
     DepartmentDao departmentDao = new DepartmentDaoImpl(config);
-    Department department = departmentDao.selectById(Integer.valueOf(1));
+    Department department = departmentDao.selectById(1);
     assertEquals("HOGE", department.getDepartmentName());
   }
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER})
-  public void testResultSetAndUpdate2(Config config) throws Exception {
+  public void testResultSetAndUpdate2(Config config) {
     FunctionDao dao = new FunctionDaoImpl(config);
-    List<Employee> result = dao.func_resultset_update2(Integer.valueOf(1));
+    List<Employee> result = dao.func_resultset_update2(1);
     assertEquals(13, result.size());
     DepartmentDao departmentDao = new DepartmentDaoImpl(config);
-    Department department = departmentDao.selectById(Integer.valueOf(1));
+    Department department = departmentDao.selectById(1);
     assertEquals("HOGE", department.getDepartmentName());
   }
 }

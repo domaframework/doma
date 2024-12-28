@@ -1,9 +1,8 @@
 package org.seasar.doma.it.other;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,14 +35,14 @@ public class ArrayTest {
     assertEquals(2, entities.size());
     SalEmp entity = entities.get(0);
     Integer[] array = (Integer[]) entity.getPayByQuarter().getArray();
-    assertTrue(Arrays.equals(new Integer[] {10000, 10000, 10000, 10000}, array));
+    assertArrayEquals(new Integer[] {10000, 10000, 10000, 10000}, array);
     entity = entities.get(1);
     array = (Integer[]) entity.getPayByQuarter().getArray();
-    assertTrue(Arrays.equals(new Integer[] {20000, 25000, 25000, 25000}, array));
+    assertArrayEquals(new Integer[] {20000, 25000, 25000, 25000}, array);
   }
 
   @Test
-  public void testSelect_2DimesionalArray(Config config) throws Exception {
+  public void testSelect_2DimensionalArray(Config config) throws Exception {
     SalEmpDao dao = new SalEmpDaoImpl(config);
     List<SalEmp> entities = dao.selectAll();
     assertEquals(2, entities.size());
@@ -78,11 +77,11 @@ public class ArrayTest {
     List<SalEmp> entities = dao.selectAll();
     assertEquals(3, entities.size());
     entity = entities.get(2);
-    assertTrue(Arrays.equals(array, (Integer[]) entity.getPayByQuarter().getArray()));
+    assertArrayEquals(array, (Integer[]) entity.getPayByQuarter().getArray());
   }
 
   @Test
-  public void testInsert_2DimesionalArray(Config config) throws Exception {
+  public void testInsert_2DimensionalArray(Config config) throws Exception {
     SalEmpDao dao = new SalEmpDaoImpl(config);
     String[][] array = new String[][] {{"aaa", "bbb"}, {"ccc", "ddd"}};
     SalEmp entity = new SalEmp();
@@ -120,7 +119,7 @@ public class ArrayTest {
   }
 
   @Test
-  public void testUpdate_2DimesionalArray(Config config) throws Exception {
+  public void testUpdate_2DimensionalArray(Config config) throws Exception {
     SalEmpDao dao = new SalEmpDaoImpl(config);
     List<SalEmp> entities = dao.selectAll();
     assertEquals(2, entities.size());

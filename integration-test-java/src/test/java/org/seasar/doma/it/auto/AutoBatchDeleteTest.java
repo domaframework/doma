@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ import org.seasar.doma.message.Message;
 public class AutoBatchDeleteTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -64,7 +65,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     PersonDao dao = new PersonDaoImpl(config);
     Person person = new Person(1, null, null, null, null, null, null, null, 1);
     Person person2 = new Person(2, null, null, null, null, null, null, null, 1);
@@ -85,7 +86,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testIgnoreVersion(Config config) throws Exception {
+  public void testIgnoreVersion(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -105,7 +106,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testCompositeKey(Config config) throws Exception {
+  public void testCompositeKey(Config config) {
     CompKeyEmployeeDao dao = new CompKeyEmployeeDaoImpl(config);
     CompKeyEmployee employee = new CompKeyEmployee();
     employee.setEmployeeId1(1);
@@ -128,7 +129,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
@@ -145,7 +146,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
@@ -158,7 +159,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -175,7 +176,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker employee = new Worker();
     employee.employeeId = Optional.of(1);
@@ -195,7 +196,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman employee = new Businessman();
     employee.employeeId = OptionalInt.of(1);
@@ -215,7 +216,7 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 1;
@@ -235,17 +236,17 @@ public class AutoBatchDeleteTest {
   }
 
   @Test
-  public void testTenantId(Config config) throws Exception {
+  public void testTenantId(Config config) {
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;
     salesman.departmentId = -1;
     try {
-      dao.delete(Arrays.asList(salesman));
+      dao.delete(List.of(salesman));
       fail();
     } catch (OptimisticLockException expected) {
     }
     salesman.departmentId = tenantId;
-    dao.delete(Arrays.asList(salesman));
+    dao.delete(List.of(salesman));
   }
 }

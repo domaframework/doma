@@ -31,7 +31,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.DB2,
         Dbms.SQLSERVER
       })
-  public void testUnsupported(Config config) throws Exception {
+  public void testUnsupported(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     try {
       dao.selectById(1, SelectOptions.get().forUpdate());
@@ -43,7 +43,7 @@ public class SqlFileSelectForUpdateTest {
 
   @Test
   @Run(unless = {Dbms.HSQLDB, Dbms.SQLITE})
-  public void testForUpdate(Config config) throws Exception {
+  public void testForUpdate(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(1, SelectOptions.get().forUpdate());
     assertNotNull(employee);
@@ -61,7 +61,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateWithColumns(Config config) throws Exception {
+  public void testForUpdateWithColumns(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee =
         dao.selectById(1, SelectOptions.get().forUpdate("employee_name", "address_id"));
@@ -80,7 +80,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateWithTables(Config config) throws Exception {
+  public void testForUpdateWithTables(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(1, SelectOptions.get().forUpdate("employee"));
     assertNotNull(employee);
@@ -88,7 +88,7 @@ public class SqlFileSelectForUpdateTest {
 
   @Test
   @Run(unless = {Dbms.HSQLDB, Dbms.H2, Dbms.POSTGRESQL, Dbms.MYSQL, Dbms.DB2, Dbms.SQLITE})
-  public void testForUpdateNowait(Config config) throws Exception {
+  public void testForUpdateNowait(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(1, SelectOptions.get().forUpdateNowait());
     assertNotNull(employee);
@@ -106,7 +106,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateNowaitWithColumns(Config config) throws Exception {
+  public void testForUpdateNowaitWithColumns(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee =
         dao.selectById(1, SelectOptions.get().forUpdateNowait("employee_name", "address_id"));
@@ -124,7 +124,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateNowaitWithTables(Config config) throws Exception {
+  public void testForUpdateNowaitWithTables(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(1, SelectOptions.get().forUpdateNowait("EMPLOYEE"));
 
@@ -143,7 +143,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateWait(Config config) throws Exception {
+  public void testForUpdateWait(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(1, SelectOptions.get().forUpdateWait(10));
     assertNotNull(employee);
@@ -161,7 +161,7 @@ public class SqlFileSelectForUpdateTest {
         Dbms.SQLSERVER,
         Dbms.SQLITE
       })
-  public void testForUpdateWaitWithColumns(Config config) throws Exception {
+  public void testForUpdateWaitWithColumns(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee =
         dao.selectById(1, SelectOptions.get().forUpdateWait(10, "employee_name", "address_id"));

@@ -257,7 +257,7 @@ public class QueryDslSqlSelectTest {
   }
 
   @Test
-  void from_subquery_doesnot_match_alias() {
+  void from_subquery_does_not_match_alias() {
     Department_ d = new Department_();
     Employee_ e = new Employee_();
     NameAndAmount_ t = new NameAndAmount_();
@@ -269,7 +269,7 @@ public class QueryDslSqlSelectTest {
             .select(Expressions.alias(d.departmentName, t.name.getName()));
 
     Listable<NameAndAmount> query = dsl.from(t, subquery).orderBy(c -> c.asc(t.name));
-    DomaException ex = assertThrows(DomaException.class, () -> query.fetch());
+    DomaException ex = assertThrows(DomaException.class, query::fetch);
     assertEquals(Message.DOMA6011, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
@@ -336,7 +336,7 @@ public class QueryDslSqlSelectTest {
 
     SetOperand<
             Tuple9<Integer, Integer, String, Integer, LocalDate, Salary, Integer, Integer, Integer>>
-        subsubquery =
+        subSubquery =
             dsl.from(e)
                 .select(
                     e.employeeId,
@@ -350,7 +350,7 @@ public class QueryDslSqlSelectTest {
                     e.version);
 
     SetOperand<Tuple2<String, Salary>> subquery =
-        dsl.from(e, subsubquery)
+        dsl.from(e, subSubquery)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .select(d.departmentName, sum(e.salary));

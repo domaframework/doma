@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.DomaException;
@@ -250,7 +249,7 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
-  void from_subquery_doesnot_match_alias() {
+  void from_subquery_does_not_match_alias() {
     Department_ d = new Department_();
     Employee_ e = new Employee_();
     NameAndAmount_ t = new NameAndAmount_();
@@ -261,7 +260,7 @@ public class QueryDslEntitySelectTest {
             .groupBy(d.departmentName)
             .select(Expressions.alias(d.departmentName, t.name.getName()));
     Listable<NameAndAmount> query = dsl.from(t, subquery).orderBy(c -> c.asc(t.name));
-    DomaException ex = assertThrows(DomaException.class, () -> query.fetch());
+    DomaException ex = assertThrows(DomaException.class, query::fetch);
     assertEquals(Message.DOMA6011, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
@@ -328,7 +327,7 @@ public class QueryDslEntitySelectTest {
 
     SetOperand<
             Tuple9<Integer, Integer, String, Integer, LocalDate, Salary, Integer, Integer, Integer>>
-        subsubquery =
+        subSubquery =
             dsl.from(e)
                 .select(
                     e.employeeId,
@@ -342,7 +341,7 @@ public class QueryDslEntitySelectTest {
                     e.version);
 
     SetOperand<Tuple2<String, Salary>> subquery =
-        dsl.from(e, subsubquery)
+        dsl.from(e, subSubquery)
             .innerJoin(d, c -> c.eq(e.departmentId, d.departmentId))
             .groupBy(d.departmentName)
             .select(d.departmentName, Expressions.sum(e.salary));
@@ -585,7 +584,7 @@ public class QueryDslEntitySelectTest {
     assertEquals(6, list.size());
     assertTrue(
         list.stream().allMatch(it -> it.getDepartment().getDepartmentName().equals("SALES")));
-    assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
+    assertEquals(6, list.get(0).getDepartment().getEmployeeList().size());
   }
 
   @Test
@@ -649,7 +648,7 @@ public class QueryDslEntitySelectTest {
     assertEquals(6, list.size());
     assertTrue(
         list.stream().allMatch(it -> it.getDepartment().getDepartmentName().equals("SALES")));
-    assertEquals(list.get(0).getDepartment().getEmployeeList().size(), 6);
+    assertEquals(6, list.get(0).getDepartment().getEmployeeList().size());
     assertTrue(list.stream().allMatch(it -> it.getAddress() != null));
   }
 
@@ -683,14 +682,12 @@ public class QueryDslEntitySelectTest {
     Team team = teams.iterator().next();
     assertEquals("Tokyo", team.getName());
     assertEquals(3, team.getPlayers().size());
-    List<Integer> playerIds =
-        team.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
+    List<Integer> playerIds = team.getPlayers().stream().map(Player::getId).toList();
     assertTrue(playerIds.contains(1));
     assertTrue(playerIds.contains(2));
     assertTrue(playerIds.contains(3));
     assertEquals(2, team.getCoaches().size());
-    List<Integer> coachIds =
-        team.getCoaches().stream().map(Coach::getId).collect(Collectors.toList());
+    List<Integer> coachIds = team.getCoaches().stream().map(Coach::getId).toList();
     assertTrue(coachIds.contains(1));
     assertTrue(coachIds.contains(2));
   }

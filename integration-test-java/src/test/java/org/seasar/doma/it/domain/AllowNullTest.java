@@ -17,7 +17,7 @@ import org.seasar.doma.jdbc.Config;
 public class AllowNullTest {
 
   @Test
-  void selectDomain(Config config) throws Exception {
+  void selectDomain(Config config) {
     FulltimeEmployeeDao dao = new FulltimeEmployeeDaoImpl(config);
     FulltimeEmployee e = new FulltimeEmployee();
     e.setEmployeeId(99);
@@ -30,7 +30,7 @@ public class AllowNullTest {
   }
 
   @Test
-  void selectOptinalDomain(Config config) throws Exception {
+  void selectOptionalDomain(Config config) {
     FulltimeEmployeeDao dao = new FulltimeEmployeeDaoImpl(config);
     FulltimeEmployee e = new FulltimeEmployee();
     e.setEmployeeId(99);

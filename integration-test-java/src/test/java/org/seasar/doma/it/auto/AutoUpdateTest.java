@@ -54,7 +54,7 @@ import org.seasar.doma.message.Message;
 public class AutoUpdateTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = dao.selectById(1);
     department.setDepartmentNo(1);
@@ -72,7 +72,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = dao.selectById(1);
     dept = new Dept(dept.getDepartmentId(), 1, "hoge", dept.getLocation(), dept.getVersion());
@@ -91,7 +91,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testIgnoreVersion(Config config) throws Exception {
+  public void testIgnoreVersion(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = dao.selectById(1);
     department.setDepartmentNo(1);
@@ -110,7 +110,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testExcludeNull(Config config) throws Exception {
+  public void testExcludeNull(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = dao.selectById(1);
     department.setDepartmentNo(1);
@@ -127,7 +127,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testCompositeKey(Config config) throws Exception {
+  public void testCompositeKey(Config config) {
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = dao.selectById(1, 1);
     department.setDepartmentNo(1);
@@ -147,7 +147,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -162,7 +162,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -174,7 +174,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -188,7 +188,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testSqlExecutionSkip(Config config) throws Exception {
+  public void testSqlExecutionSkip(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = dao.selectById(1);
     int result = dao.update(department);
@@ -196,7 +196,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = dao.selectById(Optional.of(1));
     worker.employeeName = Optional.of("hoge");
@@ -216,7 +216,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = dao.selectById(OptionalInt.of(1));
     worker.employeeName = Optional.of("hoge");
@@ -236,7 +236,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testUpdate(Config config) throws Exception {
+  public void testUpdate(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = dao.selectById(1);
     staff.employeeName = "hoge";
@@ -258,7 +258,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testUpdateUsingOriginalStates(Config config) throws Exception {
+  public void testUpdateUsingOriginalStates(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(8);
     employee.setSalary(new Salary(new BigDecimal("3000")));
@@ -267,7 +267,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testNestedEntity(Config config) throws Exception {
+  public void testNestedEntity(Config config) {
     BranchDao dao = new BranchDaoImpl(config);
     {
       Branch branch = dao.selectById(1);
@@ -291,7 +291,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testTenantId(Config config) throws Exception {
+  public void testTenantId(Config config) {
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;
@@ -306,7 +306,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testUpdate_IncludeEmbeddedProperty(Config config) throws Exception {
+  public void testUpdate_IncludeEmbeddedProperty(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = dao.selectById(1);
     staff.employeeName = "hoge";
@@ -328,7 +328,7 @@ public class AutoUpdateTest {
   }
 
   @Test
-  public void testUpdate_ExcludeEmbeddedProperty(Config config) throws Exception {
+  public void testUpdate_ExcludeEmbeddedProperty(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = dao.selectById(1);
     staff.employeeName = "hoge";

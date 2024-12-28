@@ -14,7 +14,6 @@ import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.PhantomEmployeeDao;
 import org.seasar.doma.it.dao.PhantomEmployeeDaoImpl;
 import org.seasar.doma.it.domain.Identity;
-import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.PhantomEmployee;
 import org.seasar.doma.jdbc.Config;
@@ -86,7 +85,7 @@ class PrimitiveTypeTest {
       e.setEmployeeId(99);
       e.setEmployeeNo(0);
       e.setEmployeeName("test");
-      e.setDepartmentId(new Identity<Department>(1));
+      e.setDepartmentId(new Identity<>(1));
       e.setAddressId(1);
       e.setVersion(-1);
       dao.insert(e);

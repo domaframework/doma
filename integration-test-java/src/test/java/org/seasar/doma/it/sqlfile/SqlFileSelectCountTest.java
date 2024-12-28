@@ -17,7 +17,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 public class SqlFileSelectCountTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     SelectOptions options = SelectOptions.get().count();
     List<Employee> employees = dao.selectAll(options);
@@ -26,7 +26,7 @@ public class SqlFileSelectCountTest {
   }
 
   @Test
-  public void testCountUnspecified(Config config) throws Exception {
+  public void testCountUnspecified(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     SelectOptions options = SelectOptions.get();
     List<Employee> employees = dao.selectAll(options);
@@ -35,7 +35,7 @@ public class SqlFileSelectCountTest {
   }
 
   @Test
-  public void testWhere(Config config) throws Exception {
+  public void testWhere(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     SelectOptions options = SelectOptions.get().count();
     Employee employee = dao.selectById(1, options);
@@ -44,7 +44,7 @@ public class SqlFileSelectCountTest {
   }
 
   @Test
-  public void testLimitOffset(Config config) throws Exception {
+  public void testLimitOffset(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     SelectOptions options = SelectOptions.get().limit(5).offset(3).count();
     List<Employee> employees = dao.selectAll(options);
