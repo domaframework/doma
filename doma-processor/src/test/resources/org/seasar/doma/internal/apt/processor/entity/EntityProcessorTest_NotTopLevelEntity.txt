@@ -168,19 +168,16 @@ public final class _NotTopLevelEntity__Hoge extends org.seasar.doma.jdbc.entity.
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.NotTopLevelEntity.Hoge, ?, ?>)__entityPropertyTypeMap.get("null");

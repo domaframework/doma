@@ -169,19 +169,16 @@ public final class _BytesPropertyEntity extends org.seasar.doma.jdbc.entity.Abst
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.BytesPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");

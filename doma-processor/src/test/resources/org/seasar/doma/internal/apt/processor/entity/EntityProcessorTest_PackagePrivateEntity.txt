@@ -181,19 +181,16 @@ public final class _PackagePrivateEntity extends org.seasar.doma.jdbc.entity.Abs
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?>)__entityPropertyTypeMap.get("id");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?>)__entityPropertyTypeMap.get("version");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.PackagePrivateEntity, ?, ?>)__entityPropertyTypeMap.get("null");

@@ -172,19 +172,16 @@ public final class _OptionalLongEntity extends org.seasar.doma.jdbc.entity.Abstr
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?>)__entityPropertyTypeMap.get("version");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.OptionalLongEntity, ?, ?>)__entityPropertyTypeMap.get("null");

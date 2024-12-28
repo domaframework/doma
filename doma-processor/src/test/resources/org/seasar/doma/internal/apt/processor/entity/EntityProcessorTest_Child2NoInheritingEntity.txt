@@ -170,19 +170,16 @@ public final class _Child2NoInheritingEntity extends org.seasar.doma.jdbc.entity
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Child2NoInheritingEntity, ?, ?>)__entityPropertyTypeMap.get("null");

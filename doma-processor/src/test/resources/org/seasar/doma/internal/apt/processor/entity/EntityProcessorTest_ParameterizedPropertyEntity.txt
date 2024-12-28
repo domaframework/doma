@@ -169,19 +169,16 @@ public final class _ParameterizedPropertyEntity extends org.seasar.doma.jdbc.ent
         return __idPropertyTypes;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?> getGeneratedIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?> getVersionPropertyType() {
         return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?> getTenantIdPropertyType() {
         return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.ParameterizedPropertyEntity, ?, ?>)__entityPropertyTypeMap.get("null");
