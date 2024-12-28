@@ -64,6 +64,6 @@ public class BigDecimalWrapperTest {
   public void testHasEqualValue() {
     BigDecimalWrapper wrapper = new BigDecimalWrapper(new BigDecimal("10"));
     assertTrue(wrapper.hasEqualValue(new BigDecimal("10.00")));
-    assertNotEquals(wrapper.get(), new BigDecimal("10.00"));
+    assertNotEquals(new BigDecimal("10.00"), wrapper.get());
   }
 }

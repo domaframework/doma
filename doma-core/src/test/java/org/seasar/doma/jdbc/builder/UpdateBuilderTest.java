@@ -67,7 +67,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testParams() throws Exception {
+  public void testParams() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
@@ -99,7 +99,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testParams_empty() throws Exception {
+  public void testParams_empty() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
@@ -125,7 +125,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testLiterals() throws Exception {
+  public void testLiterals() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");
@@ -151,7 +151,7 @@ public class UpdateBuilderTest {
   }
 
   @Test
-  public void testLiterals_empty() throws Exception {
+  public void testLiterals_empty() {
     UpdateBuilder builder = UpdateBuilder.newInstance(new MockConfig());
     builder.sql("update Emp");
     builder.sql("set");

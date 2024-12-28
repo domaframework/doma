@@ -1,5 +1,6 @@
 package example.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
@@ -10,7 +11,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 @Table(catalog = "CATA", quote = true)
 public class Dept implements Serializable {
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 
   @Id Integer id;
 

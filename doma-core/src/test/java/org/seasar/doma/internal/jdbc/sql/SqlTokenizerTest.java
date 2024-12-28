@@ -50,7 +50,7 @@ public class SqlTokenizerTest {
 
   @BeforeEach
   protected void setUp() {
-    lineSeparator = System.getProperty("line.separator");
+    lineSeparator = System.lineSeparator();
     System.setProperty("line.separator", "\r\n");
   }
 

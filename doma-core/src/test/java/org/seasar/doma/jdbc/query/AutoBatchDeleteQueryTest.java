@@ -50,7 +50,7 @@ public class AutoBatchDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    assertEquals(2, ((BatchDeleteQuery) query).getSqls().size());
+    assertEquals(2, query.getSqls().size());
   }
 
   @Test

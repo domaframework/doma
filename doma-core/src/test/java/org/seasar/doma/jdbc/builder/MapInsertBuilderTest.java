@@ -18,7 +18,7 @@ public class MapInsertBuilderTest {
   public void test() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", "SMITH");
             put("salary", 100);
@@ -32,7 +32,7 @@ public class MapInsertBuilderTest {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
 
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", "SMITH");
             put("salary", 100);
@@ -53,7 +53,7 @@ public class MapInsertBuilderTest {
   public void testNullValue() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("name", null);
             put("salary", 100);
@@ -74,7 +74,7 @@ public class MapInsertBuilderTest {
   public void testLastNullValue() {
     MapInsertBuilder builder = MapInsertBuilder.newInstance(new MockConfig(), "Emp");
     builder.execute(
-        new LinkedHashMap<String, Object>() {
+        new LinkedHashMap<>() {
           {
             put("salary", 100);
             put("name", null);

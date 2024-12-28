@@ -56,7 +56,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testParams() throws Exception {
+  public void testParams() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
@@ -84,7 +84,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testParams_empty() throws Exception {
+  public void testParams_empty() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
@@ -102,7 +102,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testLiterals() throws Exception {
+  public void testLiterals() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
@@ -124,7 +124,7 @@ public class DeleteBuilderTest {
   }
 
   @Test
-  public void testLiterals_empty() throws Exception {
+  public void testLiterals_empty() {
     DeleteBuilder builder = DeleteBuilder.newInstance(new MockConfig());
     builder.sql("delete from Emp");
     builder.sql("where");
