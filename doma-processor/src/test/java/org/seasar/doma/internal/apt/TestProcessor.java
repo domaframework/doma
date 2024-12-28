@@ -19,6 +19,8 @@ public abstract class TestProcessor extends AbstractProcessor {
 
   protected Context ctx;
 
+  private boolean handled;
+
   protected TestProcessor() {}
 
   @Override
@@ -46,10 +48,11 @@ public abstract class TestProcessor extends AbstractProcessor {
   @Override
   public boolean process(
       final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
+    if (roundEnv.processingOver() || handled) {
       return true;
     }
     run();
+    handled = true;
     return false;
   }
 

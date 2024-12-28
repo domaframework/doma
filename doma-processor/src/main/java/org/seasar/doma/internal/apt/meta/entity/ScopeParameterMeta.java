@@ -5,7 +5,7 @@ import javax.lang.model.element.Name;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleTypeVisitor8;
+import javax.lang.model.util.SimpleTypeVisitor14;
 
 public class ScopeParameterMeta implements CharSequence {
 
@@ -26,7 +26,7 @@ public class ScopeParameterMeta implements CharSequence {
 
   private TypeMirror getComponentType(TypeMirror type) {
     return type.accept(
-        new SimpleTypeVisitor8<TypeMirror, Void>() {
+        new SimpleTypeVisitor14<TypeMirror, Void>() {
           @Override
           public TypeMirror visitArray(ArrayType t, Void unused) {
             return t.getComponentType();
@@ -53,6 +53,7 @@ public class ScopeParameterMeta implements CharSequence {
     return typeAndName.charAt(index);
   }
 
+  @SuppressWarnings("NullableProblems")
   @Override
   public CharSequence subSequence(int start, int end) {
     return typeAndName.subSequence(start, end);

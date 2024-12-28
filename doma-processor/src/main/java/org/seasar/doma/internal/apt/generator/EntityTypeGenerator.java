@@ -517,7 +517,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
       EntityPropertyMeta pm = entityMeta.getGeneratedIdPropertyMeta();
       idName = pm.getName();
     }
-    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getGeneratedIdPropertyType() {%n",
@@ -535,7 +534,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
       EntityPropertyMeta pm = entityMeta.getVersionPropertyMeta();
       versionName = pm.getName();
     }
-    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getVersionPropertyType() {%n",
@@ -553,7 +551,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
       EntityPropertyMeta pm = entityMeta.getTenantIdPropertyMeta();
       tenantIdName = pm.getName();
     }
-    iprint("@SuppressWarnings(\"unchecked\")%n");
     iprint("@Override%n");
     iprint(
         "public %1$s<%2$s, ?, ?> getTenantIdPropertyType() {%n",

@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
@@ -28,11 +28,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor8;
+import javax.lang.model.util.SimpleElementVisitor14;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.util.Pair;
@@ -46,10 +45,10 @@ public class MoreElements implements Elements {
 
   private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
 
-  public MoreElements(Context ctx, ProcessingEnvironment env) {
-    assertNotNull(ctx, env);
+  public MoreElements(Context ctx, Elements elementUtils) {
+    assertNotNull(ctx, elementUtils);
     this.ctx = ctx;
-    this.elementUtils = env.getElementUtils();
+    this.elementUtils = elementUtils;
   }
 
   // delegate to elementUtils
@@ -165,40 +164,12 @@ public class MoreElements implements Elements {
 
   public TypeElement toTypeElement(Element element) {
     assertNotNull(element);
-    return element.accept(
-        new SimpleElementVisitor8<TypeElement, Void>() {
-
-          // delegate to elementUtils
-          public TypeElement visitType(TypeElement e, Void p) {
-            return e;
-          }
-        },
-        null);
+    return element.accept(Visitors.toTypeElement, null);
   }
 
   public TypeParameterElement toTypeParameterElement(Element element) {
     assertNotNull(element);
-    return element.accept(
-        new SimpleElementVisitor8<TypeParameterElement, Void>() {
-
-          @Override
-          public TypeParameterElement visitTypeParameter(TypeParameterElement e, Void aVoid) {
-            return e;
-          }
-        },
-        null);
-  }
-
-  public ExecutableType toExecutableType(Element element) {
-    assertNotNull(element);
-    return element.accept(
-        new SimpleElementVisitor8<ExecutableType, Void>() {
-
-          public ExecutableType visitExecutableType(ExecutableType e, Void p) {
-            return e;
-          }
-        },
-        null);
+    return element.accept(Visitors.toTypeParameterElement, null);
   }
 
   public TypeElement getTypeElementFromBinaryName(String binaryName) {
@@ -365,5 +336,23 @@ public class MoreElements implements Elements {
                               .map(pair -> new Pair<>(pair.fst.asType(), pair.snd.asType()))
                               .allMatch(p -> ctx.getMoreTypes().isSameType(p.fst, p.snd));
                         }));
+  }
+
+  private static final class Visitors {
+    static final ElementVisitor<TypeElement, Void> toTypeElement =
+        new SimpleElementVisitor14<>() {
+          @Override
+          public TypeElement visitType(TypeElement e, Void p) {
+            return e;
+          }
+        };
+
+    static final ElementVisitor<TypeParameterElement, Void> toTypeParameterElement =
+        new SimpleElementVisitor14<>() {
+          @Override
+          public TypeParameterElement visitTypeParameter(TypeParameterElement e, Void aVoid) {
+            return e;
+          }
+        };
   }
 }

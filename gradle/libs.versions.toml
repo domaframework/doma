@@ -36,3 +36,4 @@ publish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 release = { id = "net.researchgate.release", version = "3.1.0" }
 doma-compile = { id = "org.domaframework.doma.compile", version = "3.0.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+themrmilchmann-ecj = { id = "io.github.themrmilchmann.ecj", version = "0.2.0" }

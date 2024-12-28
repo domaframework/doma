@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -390,7 +389,7 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
       List<VariableElement> fields =
           ElementFilter.fieldsIn(classElement.getEnclosedElements()).stream()
               .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
-              .collect(Collectors.toList());
+              .toList();
       if (fields.size() == 0) {
         throw new AptException(Message.DOMA4430, classElement, new Object[] {});
       }
