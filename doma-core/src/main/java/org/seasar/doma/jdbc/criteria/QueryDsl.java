@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.ConfigProvider;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
