@@ -32,7 +32,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _Emp extends AbstractEntityType<Emp> {
 
-  private static _Emp singleton = new _Emp();
+  private static final _Emp singleton = new _Emp();
 
   private static final org.seasar.doma.jdbc.entity.OriginalStatesAccessor<Emp>
       __originalStatesAccessor =

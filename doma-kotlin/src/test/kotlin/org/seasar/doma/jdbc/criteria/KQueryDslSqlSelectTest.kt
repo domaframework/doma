@@ -998,7 +998,7 @@ internal class KQueryDslSqlSelectTest {
     }
 
     @Test
-    fun join_on_notin2() {
+    fun join_on_not_in2() {
         val e = Emp_()
         val d = Dept_()
         val stmt = dsl
@@ -1034,7 +1034,7 @@ internal class KQueryDslSqlSelectTest {
     }
 
     @Test
-    fun join_on_notin3() {
+    fun join_on_not_in3() {
         val e = Emp_()
         val d = Dept_()
         val stmt = dsl
@@ -1186,7 +1186,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_db2() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return Db2Dialect()
@@ -1194,7 +1194,7 @@ internal class KQueryDslSqlSelectTest {
             },
         )
         val e = Emp_()
-        val stmt = nativeSql.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
+        val stmt = queryDsl.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
         val sql = stmt.asSql()
         assertEquals(
             "select t0_.ID from EMP t0_ where t0_.ID = 1 for update with rs",
@@ -1204,7 +1204,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_mssql() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return MssqlDialect()
@@ -1212,7 +1212,7 @@ internal class KQueryDslSqlSelectTest {
             },
         )
         val e = Emp_()
-        val stmt = nativeSql.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
+        val stmt = queryDsl.from(e).where { eq(e.id, 1) }.forUpdate().select(e.id)
         val sql = stmt.asSql()
         assertEquals(
             "select t0_.ID from EMP t0_ with (updlock, rowlock) where t0_.ID = 1",
@@ -1222,7 +1222,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_mssql_nowait() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return MssqlDialect()
@@ -1230,7 +1230,7 @@ internal class KQueryDslSqlSelectTest {
             },
         )
         val e = Emp_()
-        val stmt = nativeSql
+        val stmt = queryDsl
             .from(e)
             .where { eq(e.id, 1) }
             .forUpdate(ForUpdateOption.noWait())
@@ -1244,7 +1244,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_oracle_nowait() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -1252,14 +1252,14 @@ internal class KQueryDslSqlSelectTest {
             },
         )
         val e = Emp_()
-        val stmt = nativeSql.from(e).forUpdate(ForUpdateOption.noWait()).select(e.id)
+        val stmt = queryDsl.from(e).forUpdate(ForUpdateOption.noWait()).select(e.id)
         val sql = stmt.asSql()
         assertEquals("select t0_.ID from EMP t0_ for update nowait", sql.formattedSql)
     }
 
     @Test
     fun forUpdate_oracle_nowait_withColumn() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -1268,7 +1268,7 @@ internal class KQueryDslSqlSelectTest {
         )
         val e = Emp_()
         val d = Dept_()
-        val stmt = nativeSql
+        val stmt = queryDsl
             .from(e)
             .innerJoin(d) { eq(e.id, d.id) }
             .forUpdate(ForUpdateOption.noWait(e.id, d.id))
@@ -1282,7 +1282,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_oracle_wait_withColumn() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return OracleDialect()
@@ -1291,7 +1291,7 @@ internal class KQueryDslSqlSelectTest {
         )
         val e = Emp_()
         val d = Dept_()
-        val stmt = nativeSql
+        val stmt = queryDsl
             .from(e)
             .innerJoin(d) { eq(e.id, d.id) }
             .forUpdate(ForUpdateOption.wait(5, e.id, d.id))
@@ -1305,7 +1305,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun forUpdate_postgres_nowait_withTable() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return PostgresDialect()
@@ -1314,7 +1314,7 @@ internal class KQueryDslSqlSelectTest {
         )
         val e = Emp_()
         val d = Dept_()
-        val stmt = nativeSql
+        val stmt = queryDsl
             .from(e)
             .innerJoin(d) { eq(e.id, d.id) }
             .forUpdate(ForUpdateOption.noWait(e.id, d.id))
@@ -1535,9 +1535,9 @@ internal class KQueryDslSqlSelectTest {
                 }
             }
         }
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(config)
         val e = Emp_()
-        val stmt = nativeSql.from(e) { comment = "hello" }
+        val stmt = queryDsl.from(e) { comment = "hello" }
         val sql = stmt.asSql()
         assertEquals(
             "// hello\nselect t0_.ID, t0_.NAME, t0_.SALARY, t0_.VERSION from EMP t0_",
@@ -1606,7 +1606,7 @@ internal class KQueryDslSqlSelectTest {
 
     @Test
     fun expression_concat_mssql2008() {
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(
+        val queryDsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(
             object : MockConfig() {
                 override fun getDialect(): Dialect {
                     return Mssql2008Dialect()
@@ -1614,7 +1614,7 @@ internal class KQueryDslSqlSelectTest {
             },
         )
         val e = Emp_()
-        val stmt = nativeSql.from(e).select(concat(e.name, "a"))
+        val stmt = queryDsl.from(e).select(concat(e.name, "a"))
         val sql = stmt.asSql()
         assertEquals("select (t0_.NAME + 'a') from EMP t0_", sql.formattedSql)
     }

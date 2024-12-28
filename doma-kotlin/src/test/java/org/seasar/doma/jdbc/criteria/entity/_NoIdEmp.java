@@ -30,7 +30,7 @@ import org.seasar.doma.wrapper.StringWrapper;
 @Generated("")
 public class _NoIdEmp extends AbstractEntityType<NoIdEmp> {
 
-  private static _NoIdEmp singleton = new _NoIdEmp();
+  private static final _NoIdEmp singleton = new _NoIdEmp();
 
   private final NamingType __namingType = NamingType.SNAKE_UPPER_CASE;
 
