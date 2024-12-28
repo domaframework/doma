@@ -54,7 +54,7 @@ public class AutoBatchUpdateQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    assertEquals(2, ((BatchUpdateQuery) query).getSqls().size());
+    assertEquals(2, query.getSqls().size());
   }
 
   @Test

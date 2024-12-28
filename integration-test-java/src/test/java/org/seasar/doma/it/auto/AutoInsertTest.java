@@ -72,18 +72,18 @@ import org.seasar.doma.message.Message;
 public class AutoInsertTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(99));
+    department.setDepartmentId(new Identity<>(99));
     department.setDepartmentNo(99);
     department.setDepartmentName("hoge");
-    department.setLocation(new Location<Department>("foo"));
+    department.setLocation(new Location<>("foo"));
     int result = dao.insert(department);
     assertEquals(1, result);
     assertEquals(Integer.valueOf(1), department.getVersion());
 
-    department = dao.selectById(Integer.valueOf(99));
+    department = dao.selectById(99);
     assertEquals(Integer.valueOf(99), department.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(99), department.getDepartmentNo());
     assertEquals("hoge", department.getDepartmentName());
@@ -92,16 +92,16 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", new Location<Dept>("foo"), null);
+    Dept dept = new Dept(new Identity<>(99), 99, "hoge", new Location<>("foo"), null);
     Result<Dept> result = dao.insert(dept);
     assertEquals(1, result.getCount());
     dept = result.getEntity();
     assertEquals(Integer.valueOf(1), dept.getVersion());
     assertEquals("hoge_preI(E)_postI(E)", dept.getDepartmentName());
 
-    dept = dao.selectById(Integer.valueOf(99));
+    dept = dao.selectById(99);
     assertEquals(Integer.valueOf(99), dept.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(99), dept.getDepartmentNo());
     assertEquals("hoge_preI(E)", dept.getDepartmentName());
@@ -110,10 +110,10 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void test_UniqueConstraintException_primaryKey(Config config) throws Exception {
+  public void test_UniqueConstraintException_primaryKey(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(99));
+    department.setDepartmentId(new Identity<>(99));
     department.setDepartmentNo(99);
     department.setDepartmentName("hoge");
     int result = dao.insert(department);
@@ -127,7 +127,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void test_UniqueConstraintException_uniqueKey(Config config) throws Exception {
+  public void test_UniqueConstraintException_uniqueKey(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentId(new Identity<>(99));
@@ -145,17 +145,17 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testExcludeNull(Config config) throws Exception {
+  public void testExcludeNull(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(99));
+    department.setDepartmentId(new Identity<>(99));
     department.setDepartmentNo(99);
     department.setDepartmentName("hoge");
     int result = dao.insert_excludeNull(department);
     assertEquals(1, result);
     assertEquals(Integer.valueOf(1), department.getVersion());
 
-    department = dao.selectById(Integer.valueOf(99));
+    department = dao.selectById(99);
     assertEquals(Integer.valueOf(99), department.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(99), department.getDepartmentNo());
     assertEquals("hoge", department.getDepartmentName());
@@ -164,7 +164,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testCompositeKey(Config config) throws Exception {
+  public void testCompositeKey(Config config) {
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = new CompKeyDepartment();
     department.setDepartmentId1(99);
@@ -185,7 +185,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testIdNotAssigned(Config config) throws Exception {
+  public void testIdNotAssigned(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentNo(99);
@@ -199,7 +199,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testId_Identity(Config config) throws Exception {
+  public void testId_Identity(Config config) {
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       IdentityStrategy entity = new IdentityStrategy();
@@ -209,7 +209,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testId_PrimitiveIdentity(Config config) throws Exception {
+  public void testId_PrimitiveIdentity(Config config) {
     PrimitiveIdentityStrategyDao dao = new PrimitiveIdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       PrimitiveIdentityStrategy entity = new PrimitiveIdentityStrategy();
@@ -220,7 +220,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER, Dbms.SQLITE})
-  public void testId_sequence(Config config) throws Exception {
+  public void testId_sequence(Config config) {
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       SequenceStrategy entity = new SequenceStrategy();
@@ -233,7 +233,7 @@ public class AutoInsertTest {
   // so ignore this test case
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void testId_table(Config config) throws Exception {
+  public void testId_table(Config config) {
     TableStrategyDao dao = new TableStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       TableStrategy entity = new TableStrategy();
@@ -243,7 +243,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -253,7 +253,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeId = Optional.of(9999);
@@ -274,7 +274,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeId = OptionalInt.of(9999);
@@ -295,7 +295,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 9999;
@@ -313,7 +313,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testEmbeddable_null(Config config) throws Exception {
+  public void testEmbeddable_null(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 9999;
@@ -330,7 +330,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  public void testNestedEntity(Config config) throws Exception {
+  public void testNestedEntity(Config config) {
     BranchDao dao = new BranchDaoImpl(config);
     {
       Branch branch = new Branch();
@@ -356,9 +356,9 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Dept dept = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Result<Dept> result = dao.insertOnDuplicateKeyUpdate(dept);
     // insert result entities
     Dept resultDept = result.component1();
@@ -380,9 +380,9 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Dept dept = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
     Result<Dept> result = dao.insertOnDuplicateKeyUpdate(dept);
     // insert result entities
     Dept resultDept = result.component1();
@@ -410,7 +410,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept =
         new CompKeyDept(
@@ -444,9 +444,9 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
+    Dept dept = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Result<Dept> result = dao.insertOnDuplicateKeyIgnore(dept);
     // insert result entities
     Dept resultDept = result.component1();
@@ -468,9 +468,9 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
+    Dept dept = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
     Result<Dept> result = dao.insertOnDuplicateKeyIgnore(dept);
     // insert result entities
     Dept resultDept = result.component1();
@@ -492,7 +492,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept =
         new CompKeyDept(
@@ -520,8 +520,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_duplicated_on_specified_keys(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_duplicated_on_specified_keys(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
     dao.insertOnDuplicateKeyUpdateWithDepartmentNo(dept);
@@ -537,8 +536,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -564,8 +562,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
-  public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -588,8 +585,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -617,8 +613,7 @@ public class AutoInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");

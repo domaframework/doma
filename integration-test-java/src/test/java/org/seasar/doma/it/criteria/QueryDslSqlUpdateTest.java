@@ -47,10 +47,7 @@ public class QueryDslSqlUpdateTest {
                   settings.setAllowEmptyWhere(true);
                   settings.setBatchSize(20);
                 })
-            .set(
-                c -> {
-                  c.value(e.employeeName, "aaa");
-                })
+            .set(c -> c.value(e.employeeName, "aaa"))
             .execute();
 
     assertEquals(14, count);

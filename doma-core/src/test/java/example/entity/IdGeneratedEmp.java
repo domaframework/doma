@@ -1,5 +1,6 @@
 package example.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.seasar.doma.Entity;
@@ -15,7 +16,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 @Table(catalog = "CATA", quote = true)
 public class IdGeneratedEmp implements Serializable {
 
-  private static final long serialVersionUID = -6511179565163144602L;
+  @Serial private static final long serialVersionUID = -6511179565163144602L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

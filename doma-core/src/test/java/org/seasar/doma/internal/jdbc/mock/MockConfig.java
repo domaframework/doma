@@ -80,26 +80,6 @@ public class MockConfig implements Config {
   }
 
   @Override
-  public SqlLogType getExceptionSqlLogType() {
-    return SqlLogType.FORMATTED;
-  }
-
-  @Override
-  public int getFetchSize() {
-    return 0;
-  }
-
-  @Override
-  public int getMaxRows() {
-    return 0;
-  }
-
-  @Override
-  public int getQueryTimeout() {
-    return 0;
-  }
-
-  @Override
   public int getBatchSize() {
     return 10;
   }

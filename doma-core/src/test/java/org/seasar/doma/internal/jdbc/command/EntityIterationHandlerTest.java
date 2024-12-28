@@ -52,7 +52,7 @@ public class EntityIterationHandlerTest {
     EntityIterationHandler<Emp, Integer> handler =
         new EntityIterationHandler<>(
             _Emp.getSingletonInternal(),
-            new IterationCallback<Emp, Integer>() {
+            new IterationCallback<>() {
 
               private int count;
 
@@ -87,7 +87,7 @@ public class EntityIterationHandlerTest {
     EntityIterationHandler<Emp, Integer> handler =
         new EntityIterationHandler<>(
             _Emp.getSingletonInternal(),
-            new IterationCallback<Emp, Integer>() {
+            new IterationCallback<>() {
 
               private int count;
 

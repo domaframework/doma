@@ -48,7 +48,7 @@ public class AutoUpdateQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    assertNotNull(((UpdateQuery) query).getSql());
+    assertNotNull(query.getSql());
   }
 
   @Test

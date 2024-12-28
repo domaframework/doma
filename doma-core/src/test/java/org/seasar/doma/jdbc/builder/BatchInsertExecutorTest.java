@@ -223,17 +223,17 @@ public class BatchInsertExecutorTest {
   @Test
   public void testExecutorByMap() {
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 500);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", null);

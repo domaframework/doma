@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.builder.SelectBuilder;
 public class SelectBuilderTest {
 
   @Test
-  public void testGetScalarSingleResult(Config config) throws Exception {
+  public void testGetScalarSingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
@@ -34,7 +34,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetScalarSingleResult_null(Config config) throws Exception {
+  public void testGetScalarSingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
@@ -44,7 +44,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalScalarSingleResult(Config config) throws Exception {
+  public void testGetOptionalScalarSingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
@@ -54,7 +54,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalScalarSingleResult_null(Config config) throws Exception {
+  public void testGetOptionalScalarSingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
@@ -64,7 +64,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetScalarResultList(Config config) throws Exception {
+  public void testGetScalarResultList(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     List<String> list = builder.getScalarResultList(String.class);
@@ -73,16 +73,16 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetScalarResultList_null(Config config) throws Exception {
+  public void testGetScalarResultList_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select null from EMPLOYEE");
     List<String> list = builder.getScalarResultList(String.class);
     assertEquals(14, list.size());
-    assertEquals(null, list.get(0));
+    assertNull(list.get(0));
   }
 
   @Test
-  public void testGetOptionalScalarResultList(Config config) throws Exception {
+  public void testGetOptionalScalarResultList(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     List<Optional<String>> list = builder.getOptionalScalarResultList(String.class);
@@ -91,7 +91,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalScalarResultList_null(Config config) throws Exception {
+  public void testGetOptionalScalarResultList_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select null from EMPLOYEE");
     List<Optional<String>> list = builder.getOptionalScalarResultList(String.class);
@@ -100,49 +100,47 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testStreamScalar(Config config) throws Exception {
+  public void testStreamScalar(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
     builder.sql("EMPLOYEE_ID = ").param(int.class, 1);
-    Optional<String> name = builder.streamScalar(String.class, stream -> stream.findFirst());
+    Optional<String> name = builder.streamScalar(String.class, Stream::findFirst);
     assertEquals("SMITH", name.get());
   }
 
   @Test
-  public void testStreamScalar_null(Config config) throws Exception {
+  public void testStreamScalar_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select null from EMPLOYEE");
     builder.sql("where");
     builder.sql("EMPLOYEE_ID = ").param(int.class, 99);
-    Optional<String> name = builder.streamScalar(String.class, stream -> stream.findFirst());
+    Optional<String> name = builder.streamScalar(String.class, Stream::findFirst);
     assertFalse(name.isPresent());
   }
 
   @Test
-  public void testStreamOptionalScalar(Config config) throws Exception {
+  public void testStreamOptionalScalar(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_NAME from EMPLOYEE");
     builder.sql("where");
     builder.sql("EMPLOYEE_ID = ").param(int.class, 1);
-    Optional<Optional<String>> name =
-        builder.streamOptionalScalar(String.class, stream -> stream.findFirst());
+    Optional<Optional<String>> name = builder.streamOptionalScalar(String.class, Stream::findFirst);
     assertEquals("SMITH", name.get().get());
   }
 
   @Test
-  public void testStreamOptionalScalar_null(Config config) throws Exception {
+  public void testStreamOptionalScalar_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select null from EMPLOYEE");
     builder.sql("where");
     builder.sql("EMPLOYEE_ID = ").param(int.class, 1);
-    Optional<Optional<String>> name =
-        builder.streamOptionalScalar(String.class, stream -> stream.findFirst());
+    Optional<Optional<String>> name = builder.streamOptionalScalar(String.class, Stream::findFirst);
     assertFalse(name.get().isPresent());
   }
 
   @Test
-  public void testGetMapSingleResult(Config config) throws Exception {
+  public void testGetMapSingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -155,7 +153,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetMapSingleResult_null(Config config) throws Exception {
+  public void testGetMapSingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -165,7 +163,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalMapSingleResult(Config config) throws Exception {
+  public void testGetOptionalMapSingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -177,7 +175,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalMapSingleResult_null(Config config) throws Exception {
+  public void testGetOptionalMapSingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -189,7 +187,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetMapResultList(Config config) throws Exception {
+  public void testGetMapResultList(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     List<Map<String, Object>> employees = builder.getMapResultList(MapKeyNamingType.CAMEL_CASE);
@@ -198,16 +196,16 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testStreamMap(Config config) throws Exception {
+  public void testStreamMap(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     Optional<Map<String, Object>> result =
-        builder.streamMap(MapKeyNamingType.CAMEL_CASE, stream -> stream.findFirst());
+        builder.streamMap(MapKeyNamingType.CAMEL_CASE, Stream::findFirst);
     assertEquals("SMITH", result.get().get("employeeName"));
   }
 
   @Test
-  public void testGetEntitySingleResult(Config config) throws Exception {
+  public void testGetEntitySingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -218,7 +216,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetEntitySingleResult_null(Config config) throws Exception {
+  public void testGetEntitySingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -228,7 +226,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalEntitySingleResult(Config config) throws Exception {
+  public void testGetOptionalEntitySingleResult(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -239,7 +237,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetOptionalEntitySingleResult_null(Config config) throws Exception {
+  public void testGetOptionalEntitySingleResult_null(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     builder.sql("where");
@@ -250,7 +248,7 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testGetEntityResultList(Config config) throws Exception {
+  public void testGetEntityResultList(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     List<Employee> employees = builder.getEntityResultList(Employee.class);
@@ -259,17 +257,16 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testStreamEntity(Config config) throws Exception {
+  public void testStreamEntity(Config config) {
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
-    Optional<Employee> employee =
-        builder.streamEntity(Employee.class, stream -> stream.findFirst());
+    Optional<Employee> employee = builder.streamEntity(Employee.class, Stream::findFirst);
     assertEquals("SMITH", employee.get().getEmployeeName());
   }
 
   @Test
-  public void testStreamEntity_resultStream(Config config) throws Exception {
-    Optional<Employee> employee = Optional.empty();
+  public void testStreamEntity_resultStream(Config config) {
+    Optional<Employee> employee;
     SelectBuilder builder = SelectBuilder.newInstance(config);
     builder.sql("select EMPLOYEE_ID, EMPLOYEE_NAME, HIREDATE from EMPLOYEE");
     try (Stream<Employee> stream = builder.streamEntity(Employee.class)) {
@@ -280,14 +277,14 @@ public class SelectBuilderTest {
   }
 
   @Test
-  public void testSelectBuilderInDao(Config config) throws Exception {
+  public void testSelectBuilderInDao(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectWithBuilder();
     assertEquals(14, employees.size());
   }
 
   @Test
-  public void testStreamBuilderInDao(Config config) throws Exception {
+  public void testStreamBuilderInDao(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     try (Stream<Employee> employees = dao.streamWithBuilder()) {
       assertEquals(14, employees.count());

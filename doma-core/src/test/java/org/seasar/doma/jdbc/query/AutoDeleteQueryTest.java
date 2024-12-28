@@ -42,7 +42,7 @@ public class AutoDeleteQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    assertNotNull(((DeleteQuery) query).getSql());
+    assertNotNull(query.getSql());
   }
 
   @Test

@@ -3,7 +3,6 @@ package org.seasar.doma.it.other;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,17 +18,17 @@ import org.seasar.doma.jdbc.Config;
 public class ExternalDomainTest {
 
   @Test
-  public void testSelectBySingleExternalDomain(Config config) throws Exception {
+  public void testSelectBySingleExternalDomain(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employee = dao.selectByHiredate(new HiredateImpl(Date.valueOf("1980-12-17")));
     assertEquals(1, employee.size());
   }
 
   @Test
-  public void testSelectByExternalDomainList(Config config) throws Exception {
+  public void testSelectByExternalDomainList(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Hiredate date = new HiredateImpl(Date.valueOf("1980-12-17"));
-    List<Employee> employee = dao.selectByHiredates(Arrays.asList(date));
+    List<Employee> employee = dao.selectByHiredates(List.of(date));
     assertEquals(1, employee.size());
   }
 }

@@ -37,7 +37,7 @@ import org.seasar.doma.jdbc.ResultMappingException;
 public class SqlFileSelectTest {
 
   @Test
-  public void testEmbeddedVariable(Config config) throws Exception {
+  public void testEmbeddedVariable(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> list = dao.selectWithOptionalOrderBy("S", "order by EMPLOYEE_ID");
     assertEquals(2, list.size());
@@ -51,35 +51,35 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testNull(Config config) throws Exception {
+  public void testNull(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = dao.selectById(9);
     assertNull(employee.getManagerId());
   }
 
   @Test
-  public void testPrefixSearch(Config config) throws Exception {
+  public void testPrefixSearch(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectByNamePrefix("S");
     assertEquals(2, employees.size());
   }
 
   @Test
-  public void testInsideSearch(Config config) throws Exception {
+  public void testInsideSearch(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectByNameInfix("S");
     assertEquals(5, employees.size());
   }
 
   @Test
-  public void testSuffixSearch(Config config) throws Exception {
+  public void testSuffixSearch(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectByNameSuffix("S");
     assertEquals(3, employees.size());
   }
 
   @Test
-  public void testMap(Config config) throws Exception {
+  public void testMap(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Map<String, Object> employee = dao.selectByIdAsMap(1);
     assertNotNull(employee);
@@ -89,21 +89,21 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testMapList(Config config) throws Exception {
+  public void testMapList(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Map<String, Object>> employees = dao.selectAllAsMapList();
     assertEquals(14, employees.size());
   }
 
   @Test
-  public void testEnsureResultMappping_false(Config config) throws Exception {
+  public void testEnsureResultMapping_false(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employees = dao.selectOnlyNameWithoutMappingCheck();
     assertEquals(14, employees.size());
   }
 
   @Test
-  public void testEnsureResultMappping_true(Config config) throws Exception {
+  public void testEnsureResultMapping_true(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     try {
       dao.selectOnlyNameWithMappingCheck();
@@ -114,7 +114,7 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = dao.selectById(Optional.of(9));
     assertEquals(Integer.valueOf(9), worker.employeeId.get());
@@ -129,7 +129,7 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testOptional_expression(Config config) throws Exception {
+  public void testOptional_expression(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeNo = Optional.of(7801);
@@ -146,7 +146,7 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = dao.selectById(OptionalInt.of(9));
     assertEquals(9, worker.employeeId.getAsInt());
@@ -161,7 +161,7 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testOptionalInt_expression(Config config) throws Exception {
+  public void testOptionalInt_expression(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeNo = OptionalInt.of(7801);
@@ -178,7 +178,7 @@ public class SqlFileSelectTest {
   }
 
   @Test
-  public void testNestedEntity(Config config) throws Exception {
+  public void testNestedEntity(Config config) {
     BranchDao dao = new BranchDaoImpl(config);
     Branch branch = dao.selectById(1);
     assertNotNull(branch);

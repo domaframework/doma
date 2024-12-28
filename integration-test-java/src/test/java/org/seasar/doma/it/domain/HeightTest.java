@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.domain.DomainTypeFactory;
 public class HeightTest {
 
   @Test
-  public void testDefaultValue(Config config) throws Exception {
+  public void testDefaultValue(Config config) {
     DomainType<Integer, Height> domainType = DomainTypeFactory.getDomainType(Height.class);
     Scalar<Integer, Height> scalar = domainType.createScalar();
     Height domain = scalar.get();
@@ -40,7 +40,7 @@ public class HeightTest {
   }
 
   @Test
-  public void testDefaultValue_Optional(Config config) throws Exception {
+  public void testDefaultValue_Optional(Config config) {
     DomainType<Integer, Height> domainType = DomainTypeFactory.getDomainType(Height.class);
     Scalar<Integer, Optional<Height>> scalar = domainType.createOptionalScalar();
     Optional<Height> optional = scalar.get();

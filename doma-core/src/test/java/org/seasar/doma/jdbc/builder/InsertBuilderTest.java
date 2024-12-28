@@ -54,7 +54,7 @@ public class InsertBuilderTest {
   }
 
   @Test
-  public void testParams() throws Exception {
+  public void testParams() {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into TmpEmp");
     builder.sql("(name, salary)");
@@ -86,7 +86,7 @@ public class InsertBuilderTest {
   }
 
   @Test
-  public void testParams_empty() throws Exception {
+  public void testParams_empty() {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into TmpEmp");
     builder.sql("(name, salary)");
@@ -112,7 +112,7 @@ public class InsertBuilderTest {
   }
 
   @Test
-  public void testLiterals() throws Exception {
+  public void testLiterals() {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into TmpEmp");
     builder.sql("(name, salary)");
@@ -138,7 +138,7 @@ public class InsertBuilderTest {
   }
 
   @Test
-  public void testLiterals_empty() throws Exception {
+  public void testLiterals_empty() {
     InsertBuilder builder = InsertBuilder.newInstance(new MockConfig());
     builder.sql("insert into TmpEmp");
     builder.sql("(name, salary)");

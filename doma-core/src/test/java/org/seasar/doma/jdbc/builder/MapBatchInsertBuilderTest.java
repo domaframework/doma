@@ -28,17 +28,17 @@ public class MapBatchInsertBuilderTest {
     builder.callerClassName(getClass().getName());
     builder.callerMethodName("test");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 1000);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", 2000);
@@ -54,17 +54,17 @@ public class MapBatchInsertBuilderTest {
   public void testGetSqls() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 1001);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", 2001);
@@ -95,17 +95,17 @@ public class MapBatchInsertBuilderTest {
   public void testNullValue() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", null);
                     put("salary", 1000);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", null);
@@ -136,24 +136,24 @@ public class MapBatchInsertBuilderTest {
   public void testChangeType() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", null);
                     put("salary", 1000);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", null);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "WORD");
                     put("salary", "3000");
@@ -175,16 +175,16 @@ public class MapBatchInsertBuilderTest {
   public void testNotEqualMapSize() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", 2000);
@@ -206,17 +206,17 @@ public class MapBatchInsertBuilderTest {
   public void testHashMap() {
     MapBatchInsertBuilder builder = MapBatchInsertBuilder.newInstance(new MockConfig(), "Emp");
     List<Map<String, Object>> employees =
-        new ArrayList<Map<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new HashMap<String, Object>() {
+                new HashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 1002);
                   }
                 });
             add(
-                new HashMap<String, Object>() {
+                new HashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("salary", 2002);
@@ -262,17 +262,17 @@ public class MapBatchInsertBuilderTest {
     builder.callerClassName(getClass().getName());
     builder.callerMethodName("test");
     List<LinkedHashMap<String, Object>> employees =
-        new ArrayList<LinkedHashMap<String, Object>>() {
+        new ArrayList<>() {
           {
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "SMITH");
                     put("salary", 1000);
                   }
                 });
             add(
-                new LinkedHashMap<String, Object>() {
+                new LinkedHashMap<>() {
                   {
                     put("name", "ALLEN");
                     put("age", 20);

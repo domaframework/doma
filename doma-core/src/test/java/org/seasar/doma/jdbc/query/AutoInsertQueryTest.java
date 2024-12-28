@@ -48,7 +48,7 @@ public class AutoInsertQueryTest {
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
-    assertNotNull(((InsertQuery) query).getSql());
+    assertNotNull(query.getSql());
   }
 
   @Test

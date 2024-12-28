@@ -27,25 +27,25 @@ import org.seasar.doma.jdbc.ResultMappingException;
 public class AutoProcedureTest {
 
   @Test
-  public void testNoParam(Config config) throws Exception {
+  public void testNoParam(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     dao.proc_none_param();
   }
 
   @Test
-  public void testOneParam(Config config) throws Exception {
+  public void testOneParam(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     dao.proc_simpletype_param(10);
   }
 
   @Test
-  public void testOneParam_time(Config config) throws Exception {
+  public void testOneParam_time(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     dao.proc_simpletype_time_param(Time.valueOf("12:34:56"));
   }
 
   @Test
-  public void testIn_InOut_Out(Config config) throws Exception {
+  public void testIn_InOut_Out(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     Integer param1 = 10;
     Reference<Integer> param2 = new Reference<>(20);
@@ -57,7 +57,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testIn_InOut_Out_time(Config config) throws Exception {
+  public void testIn_InOut_Out_time(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     Time param1 = Time.valueOf("12:34:56");
     Reference<Time> param2 = new Reference<>(Time.valueOf("01:23:45"));
@@ -69,7 +69,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSet(Config config) throws Exception {
+  public void testResultSet(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     dao.proc_resultset(employees, 1);
@@ -77,7 +77,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSet_check(Config config) throws Exception {
+  public void testResultSet_check(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     try {
@@ -89,7 +89,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSet_nocheck(Config config) throws Exception {
+  public void testResultSet_noCheck(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     dao.proc_resultset_nocheck(employees, 1);
@@ -97,7 +97,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSet_map(Config config) throws Exception {
+  public void testResultSet_map(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Map<String, Object>> employees = new ArrayList<>();
     dao.proc_resultset_map(employees, 1);
@@ -105,7 +105,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSet_Out(Config config) throws Exception {
+  public void testResultSet_Out(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     Reference<Integer> count = new Reference<>();
@@ -115,7 +115,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSetAndUpdate(Config config) throws Exception {
+  public void testResultSetAndUpdate(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     dao.proc_resultset_update(employees, 1);
@@ -126,7 +126,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSetAndUpdate2(Config config) throws Exception {
+  public void testResultSetAndUpdate2(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     dao.proc_resultset_update2(employees, 1);
@@ -137,7 +137,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSets(Config config) throws Exception {
+  public void testResultSets(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     List<Department> departments = new ArrayList<>();
@@ -147,7 +147,7 @@ public class AutoProcedureTest {
   }
 
   @Test
-  public void testResultSetAndUpdate_Out(Config config) throws Exception {
+  public void testResultSetAndUpdate_Out(Config config) {
     ProcedureDao dao = new ProcedureDaoImpl(config);
     List<Employee> employees = new ArrayList<>();
     List<Department> departments = new ArrayList<>();

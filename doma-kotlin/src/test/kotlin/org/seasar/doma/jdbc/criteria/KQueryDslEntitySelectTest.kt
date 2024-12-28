@@ -398,9 +398,9 @@ internal class KQueryDslEntitySelectTest {
 }
 
 private fun KEntityQueryable<Emp>.associateEmpAndDept(e: Emp_, d: Dept_): KEntityQueryable<Emp> {
-    return this.associate(e, d, { _, _ -> })
+    return this.associate(e, d) { _, _ -> }
 }
 
 private fun KEntityQueryable<Emp>.associateEmpAndEmp(e: Emp_, e2: Emp_): KEntityQueryable<Emp> {
-    return this.associate(e, e2, { _, _ -> })
+    return this.associate(e, e2) { _, _ -> }
 }

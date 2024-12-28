@@ -14,7 +14,7 @@ import org.seasar.doma.jdbc.Config;
 public class StaffInfoTest {
 
   @Test
-  public void testPrimitiveType(Config config) throws Exception {
+  public void testPrimitiveType(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = dao.selectById(9);
     assertEquals(0, staff.staffInfo.managerId);

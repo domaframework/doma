@@ -65,14 +65,14 @@ import org.seasar.doma.message.Message;
 public class AutoBatchInsertTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(99));
+    department.setDepartmentId(new Identity<>(99));
     department.setDepartmentNo(99);
     department.setDepartmentName("hoge");
     Department department2 = new Department();
-    department2.setDepartmentId(new Identity<Department>(98));
+    department2.setDepartmentId(new Identity<>(98));
     department2.setDepartmentNo(98);
     department2.setDepartmentName("foo");
     int[] result = dao.insert(Arrays.asList(department, department2));
@@ -88,7 +88,7 @@ public class AutoBatchInsertTest {
     assertEquals("hoge", department.getDepartmentName());
     assertNull(department.getLocation().getValue());
     assertEquals(Integer.valueOf(1), department.getVersion());
-    department = dao.selectById(Integer.valueOf(98));
+    department = dao.selectById(98);
     assertEquals(Integer.valueOf(98), department.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(98), department.getDepartmentNo());
     assertEquals("foo", department.getDepartmentName());
@@ -97,10 +97,10 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);
-    Dept dept2 = new Dept(new Identity<Dept>(98), 98, "foo", null, null);
+    Dept dept = new Dept(new Identity<>(99), 99, "hoge", null, null);
+    Dept dept2 = new Dept(new Identity<>(98), 98, "foo", null, null);
     BatchResult<Dept> result = dao.insert(Arrays.asList(dept, dept2));
     int[] counts = result.getCounts();
     assertEquals(2, counts.length);
@@ -120,7 +120,7 @@ public class AutoBatchInsertTest {
     assertEquals("hoge_preI(E)", dept.getDepartmentName());
     assertNull(dept.getLocation().getValue());
     assertEquals(Integer.valueOf(1), dept.getVersion());
-    dept = dao.selectById(Integer.valueOf(98));
+    dept = dao.selectById(98);
     assertEquals(Integer.valueOf(98), dept.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(98), dept.getDepartmentNo());
     assertEquals("foo_preI(E)", dept.getDepartmentName());
@@ -129,7 +129,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testCompositeKey(Config config) throws Exception {
+  public void testCompositeKey(Config config) {
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = new CompKeyDepartment();
     department.setDepartmentId1(99);
@@ -148,7 +148,7 @@ public class AutoBatchInsertTest {
     assertEquals(Integer.valueOf(1), department.getVersion());
     assertEquals(Integer.valueOf(1), department2.getVersion());
 
-    department = dao.selectById(Integer.valueOf(99), Integer.valueOf(99));
+    department = dao.selectById(99, 99);
     assertEquals(Integer.valueOf(99), department.getDepartmentId1());
     assertEquals(Integer.valueOf(99), department.getDepartmentId2());
     assertEquals(Integer.valueOf(99), department.getDepartmentNo());
@@ -165,7 +165,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testIdNotAssigned(Config config) throws Exception {
+  public void testIdNotAssigned(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentNo(99);
@@ -183,7 +183,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.ORACLE})
-  public void testId_Identity(Config config) throws Exception {
+  public void testId_Identity(Config config) {
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       IdentityStrategy entity = new IdentityStrategy();
@@ -199,7 +199,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testId_Identity_ignoreGeneratedKeys(Config config) throws Exception {
+  public void testId_Identity_ignoreGeneratedKeys(Config config) {
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       IdentityStrategy entity = new IdentityStrategy();
@@ -213,7 +213,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER, Dbms.SQLITE})
-  public void testId_sequence(Config config) throws Exception {
+  public void testId_sequence(Config config) {
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       SequenceStrategy entity = new SequenceStrategy();
@@ -232,7 +232,7 @@ public class AutoBatchInsertTest {
   // so ignore this test case
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void testId_table(Config config) throws Exception {
+  public void testId_table(Config config) {
     TableStrategyDao dao = new TableStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       TableStrategy entity = new TableStrategy();
@@ -248,7 +248,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -263,7 +263,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeId = Optional.of(9998);
@@ -289,7 +289,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeId = OptionalInt.of(9998);
@@ -315,7 +315,7 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 9998;
@@ -341,7 +341,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -387,7 +387,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE(Config config) throws Exception {
+  public void insert_DuplicateKeyType_IGNORE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -427,7 +427,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
         new CompKeyDept(
@@ -480,7 +480,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
         new CompKeyDept(
@@ -527,7 +527,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -552,8 +552,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -578,8 +577,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
-  public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -601,8 +599,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -629,8 +626,7 @@ public class AutoBatchInsertTest {
 
   @Test
   @Run(unless = {Dbms.SQLITE})
-  public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config)
-      throws Exception {
+  public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");

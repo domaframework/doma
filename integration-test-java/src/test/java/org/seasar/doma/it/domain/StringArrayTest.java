@@ -30,7 +30,7 @@ public class StringArrayTest {
 
   @Test
   @Run(onlyIf = {Dbms.H2})
-  public void insert(Config config) throws Exception {
+  public void insert(Config config) {
     RoomDao dao = new RoomDaoImpl(config);
     Room room = new Room();
     room.id = 1;
@@ -47,7 +47,7 @@ public class StringArrayTest {
 
   @Test
   @Run(onlyIf = {Dbms.H2})
-  public void selectByColors(Config config) throws Exception {
+  public void selectByColors(Config config) {
     RoomDao dao = new RoomDaoImpl(config);
     Room room = new Room();
     room.id = 1;

@@ -22,15 +22,15 @@ import org.seasar.doma.jdbc.Config;
 public class SqlFileBatchUpdateTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(1);
     Department department2 = new Department();
-    department2.setDepartmentId(new Identity<Department>(2));
+    department2.setDepartmentId(new Identity<>(2));
     department2.setDepartmentNo(2);
     department2.setDepartmentName("foo");
     department2.setVersion(1);
@@ -50,10 +50,10 @@ public class SqlFileBatchUpdateTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
-    Dept dept2 = new Dept(new Identity<Dept>(2), 2, "foo", null, 1);
+    Dept dept = new Dept(new Identity<>(1), 1, "hoge", null, 1);
+    Dept dept2 = new Dept(new Identity<>(2), 2, "foo", null, 1);
     BatchResult<Dept> result = dao.updateBySqlFile(Arrays.asList(dept, dept2));
     int[] counts = result.getCounts();
     assertEquals(2, counts.length);
@@ -75,7 +75,7 @@ public class SqlFileBatchUpdateTest {
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -92,7 +92,7 @@ public class SqlFileBatchUpdateTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");

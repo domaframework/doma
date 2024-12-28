@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
@@ -49,15 +50,15 @@ import org.seasar.doma.message.Message;
 public class AutoBatchUpdateTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(1);
     Department department2 = new Department();
-    department2.setDepartmentId(new Identity<Department>(2));
+    department2.setDepartmentId(new Identity<>(2));
     department2.setDepartmentNo(2);
     department2.setDepartmentName("foo");
     department2.setVersion(1);
@@ -83,10 +84,10 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
-    Dept dept2 = new Dept(new Identity<Dept>(2), 2, "foo", null, 1);
+    Dept dept = new Dept(new Identity<>(1), 1, "hoge", null, 1);
+    Dept dept2 = new Dept(new Identity<>(2), 2, "foo", null, 1);
     BatchResult<Dept> result = dao.update(Arrays.asList(dept, dept2));
     int[] counts = result.getCounts();
     assertEquals(2, counts.length);
@@ -114,15 +115,15 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testIncludeVersion(Config config) throws Exception {
+  public void testIncludeVersion(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(100);
     Department department2 = new Department();
-    department2.setDepartmentId(new Identity<Department>(2));
+    department2.setDepartmentId(new Identity<>(2));
     department2.setDepartmentNo(2);
     department2.setDepartmentName("foo");
     department2.setVersion(200);
@@ -133,13 +134,13 @@ public class AutoBatchUpdateTest {
     assertEquals(Integer.valueOf(100), department.getVersion());
     assertEquals(Integer.valueOf(200), department2.getVersion());
 
-    department = dao.selectById(Integer.valueOf(1));
+    department = dao.selectById(1);
     assertEquals(Integer.valueOf(1), department.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(1), department.getDepartmentNo());
     assertEquals("hoge", department.getDepartmentName());
     assertNull(department.getLocation().getValue());
     assertEquals(Integer.valueOf(100), department.getVersion());
-    department = dao.selectById(Integer.valueOf(2));
+    department = dao.selectById(2);
     assertEquals(Integer.valueOf(2), department.getDepartmentId().getValue());
     assertEquals(Integer.valueOf(2), department.getDepartmentNo());
     assertEquals("foo", department.getDepartmentName());
@@ -147,7 +148,8 @@ public class AutoBatchUpdateTest {
     assertEquals(Integer.valueOf(200), department.getVersion());
   }
 
-  public void testCompositeKey(Config config) throws Exception {
+  @Test
+  public void testCompositeKey(Config config) {
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = new CompKeyDepartment();
     department.setDepartmentId1(1);
@@ -184,7 +186,7 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -201,7 +203,7 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -214,7 +216,7 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -231,14 +233,14 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testSqlExecutionSkip(Config config) throws Exception {
+  public void testSqlExecutionSkip(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
-    int[] result = dao.update(new ArrayList<Department>());
+    int[] result = dao.update(new ArrayList<>());
     assertEquals(0, result.length);
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeId = Optional.of(1);
@@ -266,7 +268,7 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeId = OptionalInt.of(1);
@@ -294,7 +296,7 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 1;
@@ -325,17 +327,17 @@ public class AutoBatchUpdateTest {
   }
 
   @Test
-  public void testTenantId(Config config) throws Exception {
+  public void testTenantId(Config config) {
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;
     salesman.departmentId = -1;
     try {
-      dao.update(Arrays.asList(salesman));
+      dao.update(List.of(salesman));
       fail();
     } catch (OptimisticLockException expected) {
     }
     salesman.departmentId = tenantId;
-    dao.update(Arrays.asList(salesman));
+    dao.update(List.of(salesman));
   }
 }

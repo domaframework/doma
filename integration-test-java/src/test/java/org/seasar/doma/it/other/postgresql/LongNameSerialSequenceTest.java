@@ -16,7 +16,7 @@ import org.seasar.doma.jdbc.Config;
 public class LongNameSerialSequenceTest {
 
   @Test
-  public void testInsert(Config config) throws Exception {
+  public void testInsert(Config config) {
     VeryLongCharactersNamedTableDao dao = new VeryLongCharactersNamedTableDaoImpl(config);
     VeryLongCharactersNamedTable entity = new VeryLongCharactersNamedTable();
     entity.setValue("foo");
@@ -24,7 +24,7 @@ public class LongNameSerialSequenceTest {
   }
 
   @Test
-  public void testBatchInsert(Config config) throws Exception {
+  public void testBatchInsert(Config config) {
     VeryLongCharactersNamedTableDao dao = new VeryLongCharactersNamedTableDaoImpl(config);
     VeryLongCharactersNamedTable entity1 = new VeryLongCharactersNamedTable();
     entity1.setValue("foo");

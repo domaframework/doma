@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test
 import org.seasar.doma.jdbc.criteria.entity.Dept_
 import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
-import org.seasar.doma.jdbc.criteria.statement.Statement
 import org.seasar.doma.jdbc.dialect.MysqlDialect
+import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 
 internal class KQueryDslSqlDeleteTest {
 
-    private val dsl = org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl(MockConfig())
+    private val dsl = KQueryDsl(MockConfig())
 
     @Test
     fun deleteFrom() {
@@ -24,9 +24,9 @@ internal class KQueryDslSqlDeleteTest {
     fun aliasInDeleteClause() {
         val config = MockConfig()
         config.dialect = MysqlDialect()
-        val nativeSql = NativeSql(config)
+        val mysqlDsl = KQueryDsl(config)
         val e = Emp_()
-        val stmt: Statement<Int> = nativeSql.delete(e)
+        val stmt = mysqlDsl.delete(e).all()
         val sql = stmt.asSql()
         Assertions.assertEquals("delete t0_ from EMP t0_", sql.formattedSql)
     }

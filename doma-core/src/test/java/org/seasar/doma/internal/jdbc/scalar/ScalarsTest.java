@@ -2,9 +2,9 @@ package org.seasar.doma.internal.jdbc.scalar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import example.domain.InternationalPhoneNumber;
 import example.domain.PhoneNumber;
@@ -121,8 +121,8 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
-    assertTrue(scalar.getAsNonOptional() instanceof Integer);
+    assertInstanceOf(Optional.class, scalar.get());
+    assertInstanceOf(Integer.class, scalar.getAsNonOptional());
     Optional<Integer> optional = (Optional<Integer>) scalar.get();
     assertEquals(10, optional.get());
 
@@ -138,7 +138,7 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
+    assertInstanceOf(Optional.class, scalar.get());
     assertNull(scalar.getAsNonOptional());
     Optional<Integer> optional = (Optional<Integer>) scalar.get();
     assertFalse(optional.isPresent());
@@ -181,7 +181,7 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
+    assertInstanceOf(Optional.class, scalar.get());
     Optional<MyEnum> optional = (Optional<MyEnum>) scalar.get();
     assertEquals(MyEnum.AAA, optional.get());
 
@@ -197,7 +197,7 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
+    assertInstanceOf(Optional.class, scalar.get());
     Optional<MyEnum> optional = (Optional<MyEnum>) scalar.get();
     assertFalse(optional.isPresent());
 
@@ -230,7 +230,7 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof InternationalPhoneNumber);
+    assertInstanceOf(InternationalPhoneNumber.class, scalar.get());
 
     Wrapper<?> wrapper = scalar.getWrapper();
     assertEquals(StringWrapper.class, wrapper.getClass());
@@ -243,8 +243,8 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof PhoneNumber);
-    assertTrue(scalar.getAsNonOptional() instanceof PhoneNumber);
+    assertInstanceOf(PhoneNumber.class, scalar.get());
+    assertInstanceOf(PhoneNumber.class, scalar.getAsNonOptional());
     PhoneNumber phoneNumber = (PhoneNumber) scalar.get();
     assertNull(phoneNumber.getValue());
 
@@ -262,8 +262,8 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
-    assertTrue(scalar.getAsNonOptional() instanceof PhoneNumber);
+    assertInstanceOf(Optional.class, scalar.get());
+    assertInstanceOf(PhoneNumber.class, scalar.getAsNonOptional());
     Optional<PhoneNumber> optional = (Optional<PhoneNumber>) scalar.get();
     assertEquals(phoneNumber, optional.get());
 
@@ -279,7 +279,7 @@ public class ScalarsTest {
     assertNotNull(supplier);
 
     Scalar<?, ?> scalar = supplier.get();
-    assertTrue(scalar.get() instanceof Optional);
+    assertInstanceOf(Optional.class, scalar.get());
     assertNull(scalar.getAsNonOptional());
     Optional<PhoneNumber> optional = (Optional<PhoneNumber>) scalar.get();
     assertFalse(optional.isPresent());

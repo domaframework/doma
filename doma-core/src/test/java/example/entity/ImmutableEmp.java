@@ -1,5 +1,6 @@
 package example.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import org.seasar.doma.Entity;
@@ -10,7 +11,7 @@ import org.seasar.doma.jdbc.entity.NamingType;
 @Entity(naming = NamingType.SNAKE_UPPER_CASE, immutable = true)
 public class ImmutableEmp implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   @Id final Integer id;
 

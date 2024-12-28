@@ -43,7 +43,7 @@ import org.seasar.doma.message.Message;
 public class AutoDeleteTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -51,12 +51,12 @@ public class AutoDeleteTest {
     int result = dao.delete(employee);
     assertEquals(1, result);
 
-    employee = dao.selectById(Integer.valueOf(1));
+    employee = dao.selectById(1);
     assertNull(employee);
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     PersonDao dao = new PersonDaoImpl(config);
     Person person = new Person(1, null, null, null, null, null, null, null, 1);
     Result<Person> result = dao.delete(person);
@@ -64,12 +64,12 @@ public class AutoDeleteTest {
     person = result.getEntity();
     assertEquals("null_preD_postD", person.getEmployeeName());
 
-    person = dao.selectById(Integer.valueOf(1));
+    person = dao.selectById(1);
     assertNull(person);
   }
 
   @Test
-  public void testIgnoreVersion(Config config) throws Exception {
+  public void testIgnoreVersion(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -77,12 +77,12 @@ public class AutoDeleteTest {
     int result = dao.delete_ignoreVersion(employee);
     assertEquals(1, result);
 
-    employee = dao.selectById(Integer.valueOf(1));
+    employee = dao.selectById(1);
     assertNull(employee);
   }
 
   @Test
-  public void testCompositeKey(Config config) throws Exception {
+  public void testCompositeKey(Config config) {
     CompKeyEmployeeDao dao = new CompKeyEmployeeDaoImpl(config);
     CompKeyEmployee employee = new CompKeyEmployee();
     employee.setEmployeeId1(1);
@@ -91,16 +91,16 @@ public class AutoDeleteTest {
     int result = dao.delete(employee);
     assertEquals(1, result);
 
-    employee = dao.selectById(Integer.valueOf(1), Integer.valueOf(1));
+    employee = dao.selectById(1, 1);
     assertNull(employee);
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
-    Employee employee1 = dao.selectById(Integer.valueOf(1));
+    Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
-    Employee employee2 = dao.selectById(Integer.valueOf(1));
+    Employee employee2 = dao.selectById(1);
     employee2.setEmployeeName("foo");
     dao.delete(employee1);
     try {
@@ -111,7 +111,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
@@ -122,7 +122,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testNoId(Config config) throws Exception {
+  public void testNoId(Config config) {
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -136,7 +136,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testOptional(Config config) throws Exception {
+  public void testOptional(Config config) {
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker employee = new Worker();
     employee.employeeId = Optional.of(1);
@@ -149,7 +149,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testOptionalInt(Config config) throws Exception {
+  public void testOptionalInt(Config config) {
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman employee = new Businessman();
     employee.employeeId = OptionalInt.of(1);
@@ -162,7 +162,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 1;
@@ -175,7 +175,7 @@ public class AutoDeleteTest {
   }
 
   @Test
-  public void testTenantId(Config config) throws Exception {
+  public void testTenantId(Config config) {
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;

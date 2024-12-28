@@ -44,17 +44,16 @@ class UpsertAssemblerContextBuilderTest {
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
-            () -> {
-              UpsertAssemblerContextBuilder.build(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.EXCEPTION,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  insertValues,
-                  setValues);
-            });
+            () ->
+                UpsertAssemblerContextBuilder.build(
+                    buf,
+                    metaDept.asType(),
+                    DuplicateKeyType.EXCEPTION,
+                    Naming.NONE,
+                    config.getDialect(),
+                    keys,
+                    insertValues,
+                    setValues));
     System.out.println(ex.getMessage());
   }
 
@@ -97,17 +96,16 @@ class UpsertAssemblerContextBuilderTest {
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
-            () -> {
-              UpsertAssemblerContextBuilder.build(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.UPDATE,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  emptyInsertValues,
-                  setValues);
-            });
+            () ->
+                UpsertAssemblerContextBuilder.build(
+                    buf,
+                    metaDept.asType(),
+                    DuplicateKeyType.UPDATE,
+                    Naming.NONE,
+                    config.getDialect(),
+                    keys,
+                    emptyInsertValues,
+                    setValues));
     System.out.println(ex.getMessage());
   }
 
@@ -166,17 +164,16 @@ class UpsertAssemblerContextBuilderTest {
     DomaIllegalArgumentException ex =
         assertThrows(
             DomaIllegalArgumentException.class,
-            () -> {
-              UpsertAssemblerContextBuilder.build(
-                  buf,
-                  metaDept.asType(),
-                  DuplicateKeyType.IGNORE,
-                  Naming.NONE,
-                  config.getDialect(),
-                  keys,
-                  emptyInsertValues,
-                  setValues);
-            });
+            () ->
+                UpsertAssemblerContextBuilder.build(
+                    buf,
+                    metaDept.asType(),
+                    DuplicateKeyType.IGNORE,
+                    Naming.NONE,
+                    config.getDialect(),
+                    keys,
+                    emptyInsertValues,
+                    setValues));
     System.out.println(ex.getMessage());
   }
 

@@ -43,7 +43,7 @@ public class WeightTest {
   }
 
   @Test
-  public void testDefaultValue_Optional(Config config) throws Exception {
+  public void testDefaultValue_Optional(Config config) {
     DomainType<Integer, Weight> domainType = DomainTypeFactory.getDomainType(Weight.class);
     Scalar<Integer, Optional<Weight>> scalar = domainType.createOptionalScalar();
     Optional<Weight> optional = scalar.get();

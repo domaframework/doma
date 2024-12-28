@@ -26,10 +26,10 @@ import org.seasar.doma.jdbc.Result;
 public class SqlFileUpdateTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(1);
@@ -43,10 +43,10 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void testPopulates(Config config) throws Exception {
+  public void testPopulates(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(1);
@@ -60,9 +60,9 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(1), 1, "hoge", null, 1);
+    Dept dept = new Dept(new Identity<>(1), 1, "hoge", null, 1);
     Result<Dept> result = dao.updateBySqlFile(dept);
     assertEquals(1, result.getCount());
     dept = result.getEntity();
@@ -75,7 +75,7 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void testOptimisticLockException(Config config) throws Exception {
+  public void testOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -90,7 +90,7 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void testSuppressOptimisticLockException(Config config) throws Exception {
+  public void testSuppressOptimisticLockException(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -102,14 +102,14 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void test_nonEntity(Config config) throws Exception {
+  public void test_nonEntity(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(1));
+    department.setDepartmentId(new Identity<>(1));
     department.setDepartmentNo(1);
     department.setDepartmentName("hoge");
     department.setVersion(1);
-    int result = dao.updateBySqlFile_nonEntity(new Identity<Department>(1), 1, "hoge", null, 1);
+    int result = dao.updateBySqlFile_nonEntity(new Identity<>(1), 1, "hoge", null, 1);
     assertEquals(1, result);
 
     department = dao.selectById(1);
@@ -119,7 +119,7 @@ public class SqlFileUpdateTest {
   }
 
   @Test
-  public void testEmbeddable(Config config) throws Exception {
+  public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = dao.selectById(1);
     staff.employeeName = "hoge";

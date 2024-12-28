@@ -20,14 +20,14 @@ import org.seasar.doma.jdbc.Config;
 public class SqlFileBatchInsertTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
-    department.setDepartmentId(new Identity<Department>(99));
+    department.setDepartmentId(new Identity<>(99));
     department.setDepartmentNo(99);
     department.setDepartmentName("hoge");
     Department department2 = new Department();
-    department2.setDepartmentId(new Identity<Department>(98));
+    department2.setDepartmentId(new Identity<>(98));
     department2.setDepartmentNo(98);
     department2.setDepartmentName("foo");
     int[] result = dao.insertBySqlFile(Arrays.asList(department, department2));
@@ -44,10 +44,10 @@ public class SqlFileBatchInsertTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
-    Dept dept = new Dept(new Identity<Dept>(99), 99, "hoge", null, null);
-    Dept dept2 = new Dept(new Identity<Dept>(98), 98, "foo", null, null);
+    Dept dept = new Dept(new Identity<>(99), 99, "hoge", null, null);
+    Dept dept2 = new Dept(new Identity<>(98), 98, "foo", null, null);
     BatchResult<Dept> result = dao.insertBySqlFile(Arrays.asList(dept, dept2));
     int[] counts = result.getCounts();
     assertEquals(2, counts.length);

@@ -20,7 +20,7 @@ import org.seasar.doma.jdbc.Config;
 public class SqlFileBatchDeleteTest {
 
   @Test
-  public void test(Config config) throws Exception {
+  public void test(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -40,7 +40,7 @@ public class SqlFileBatchDeleteTest {
   }
 
   @Test
-  public void testImmutable(Config config) throws Exception {
+  public void testImmutable(Config config) {
     PersonDao dao = new PersonDaoImpl(config);
     Person person = new Person(1, null, null, null, null, null, null, null, 1);
     Person person2 = new Person(2, null, null, null, null, null, null, null, 1);
@@ -57,6 +57,6 @@ public class SqlFileBatchDeleteTest {
     person = dao.selectById(1);
     assertNull(person);
     person2 = dao.selectById(2);
-    assertNull(person);
+    assertNull(person2);
   }
 }

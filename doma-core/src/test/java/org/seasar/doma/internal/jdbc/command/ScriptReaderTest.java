@@ -91,7 +91,11 @@ public class ScriptReaderTest {
 
           @Override
           protected BufferedReader createBufferedReader() {
-            String script = "create trigger hoge begin aaa; end\n" + "go\n";
+            String script =
+                """
+                create trigger hoge begin aaa; end
+                go
+                """;
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
           }
@@ -106,7 +110,11 @@ public class ScriptReaderTest {
         new ScriptReader(query) {
           @Override
           protected BufferedReader createBufferedReader() {
-            String script = "start aaa; end\n" + "go\n";
+            String script =
+                """
+                start aaa; end
+                go
+                """;
             StringReader reader = new StringReader(script);
             return new BufferedReader(reader);
           }

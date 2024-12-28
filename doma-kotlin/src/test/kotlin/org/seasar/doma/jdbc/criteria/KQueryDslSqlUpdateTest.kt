@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.seasar.doma.jdbc.criteria.entity.Emp_
 import org.seasar.doma.jdbc.criteria.mock.MockConfig
 import org.seasar.doma.jdbc.dialect.MssqlDialect
+import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 import java.math.BigDecimal
 
 internal class KQueryDslSqlUpdateTest {
@@ -45,9 +46,9 @@ internal class KQueryDslSqlUpdateTest {
     fun aliasInUpdateClause() {
         val config = MockConfig()
         config.dialect = MssqlDialect()
-        val nativeSql = org.seasar.doma.kotlin.jdbc.criteria.KNativeSql(config)
+        val queryDsl = KQueryDsl(config)
         val e = Emp_()
-        val stmt = nativeSql
+        val stmt = queryDsl
             .update(e)
             .set {
                 value(e.name, "bbb")

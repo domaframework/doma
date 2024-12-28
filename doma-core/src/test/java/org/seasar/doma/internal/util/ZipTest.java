@@ -1,6 +1,5 @@
 package org.seasar.doma.internal.util;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
@@ -13,7 +12,7 @@ class ZipTest {
   void stream() {
     List<String> a = Arrays.asList("a", "b", "c");
     List<Integer> b = Arrays.asList(1, 2, 3, 4, 5);
-    List<Pair<String, Integer>> result = Zip.stream(a, b).collect(toList());
+    List<Pair<String, Integer>> result = Zip.stream(a, b).toList();
     assertEquals(3, result.size());
     assertEquals("a", result.get(0).fst);
     assertEquals(Integer.valueOf(1), result.get(0).snd);
