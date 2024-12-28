@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.criteria.Entityql;
+import org.seasar.doma.jdbc.criteria.QueryDsl;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class RecordTest {
@@ -32,29 +32,29 @@ public class RecordTest {
 
   @Test
   void criteria_select(Config config) {
-    var entityql = new Entityql(config);
+    var dsl = new QueryDsl(config);
     var w = new Worker_();
-    var list = entityql.from(w).fetch();
+    var list = dsl.from(w).fetch();
     assertEquals(14, list.size());
   }
 
   @Test
   void criteria_insert(Config config) {
-    var entityql = new Entityql(config);
+    var dsl = new QueryDsl(config);
     var w = new Worker_();
     var worker =
         new Worker(
             16, 9999, "aaa", new WorkerInfo(13, LocalDate.now()), Salary.of("1000"), 1, 1, null);
-    entityql.insert(w, worker).execute();
-    var newWorker = entityql.from(w).where(c -> c.eq(w.employeeId, 16)).fetchOne();
+    dsl.insert(w).single(worker).execute();
+    var newWorker = dsl.from(w).where(c -> c.eq(w.employeeId, 16)).fetchOne();
     assertNotNull(newWorker);
   }
 
   @Test
   void criteria_update(Config config) {
-    var entityql = new Entityql(config);
+    var dsl = new QueryDsl(config);
     var w = new Worker_();
-    var worker = entityql.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
+    var worker = dsl.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
     var worker2 =
         new Worker(
             worker.employeeId(),
@@ -65,8 +65,8 @@ public class RecordTest {
             worker.departmentId(),
             worker.addressId(),
             worker.version());
-    entityql.update(w, worker2).execute();
-    var worker3 = entityql.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
+    dsl.update(w).single(worker2).execute();
+    var worker3 = dsl.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
     assertNotNull(worker3);
     var info = worker3.workerInfo();
     assertNotNull(info);
@@ -77,11 +77,11 @@ public class RecordTest {
 
   @Test
   void criteria_delete(Config config) {
-    var entityql = new Entityql(config);
+    var dsl = new QueryDsl(config);
     var w = new Worker_();
-    var worker = entityql.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
-    entityql.delete(w, worker).execute();
-    var worker2 = entityql.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
+    var worker = dsl.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
+    dsl.delete(w).single(worker).execute();
+    var worker2 = dsl.from(w).where(c -> c.eq(w.employeeId, 1)).fetchOne();
     assertNull(worker2);
   }
 }

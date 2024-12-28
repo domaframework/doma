@@ -12,6 +12,10 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlSelectStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KNativeSqlUpdateStarting
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 
+@Deprecated(
+    message = "This class will be removed in the future. Use KQueryDsl instead.",
+    replaceWith = ReplaceWith("KQueryDsl", "org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl"),
+)
 class KNativeSql(config: Config?) {
 
     private val nativeSql = org.seasar.doma.jdbc.criteria.NativeSql(config)

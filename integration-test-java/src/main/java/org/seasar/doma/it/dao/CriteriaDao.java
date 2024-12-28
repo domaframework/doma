@@ -7,7 +7,7 @@ import org.seasar.doma.it.entity.Department_;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.Employee_;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.criteria.Entityql;
+import org.seasar.doma.jdbc.criteria.QueryDsl;
 
 @Dao
 public interface CriteriaDao {
@@ -15,9 +15,8 @@ public interface CriteriaDao {
   default List<Employee> selectAll() {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
-    Entityql entityql = new Entityql(Config.get(this));
-    return entityql
-        .from(e)
+    QueryDsl dsl = new QueryDsl(Config.get(this));
+    return dsl.from(e)
         .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
         .associate(
             e,
@@ -32,9 +31,8 @@ public interface CriteriaDao {
   default Optional<Employee> selectById(Integer id) {
     Employee_ e = new Employee_();
     Department_ d = new Department_();
-    Entityql entityql = new Entityql(Config.get(this));
-    return entityql
-        .from(e)
+    QueryDsl dsl = new QueryDsl(Config.get(this));
+    return dsl.from(e)
         .innerJoin(d, on -> on.eq(e.departmentId, d.departmentId))
         .associate(
             e,
