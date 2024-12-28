@@ -109,7 +109,7 @@ jobs:
             /home/runner/work/doma/doma/.gradle
 
   ecj:
-    name: Build and Integration Test with Eclipse Compiler for Java (ECJ)
+    name: Test with ECJ
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -134,14 +134,14 @@ jobs:
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           -Pcompiler=ecj
-          :doma-processor:build
-          :integration-test-java:build
+          :doma-processor:test
+          :integration-test-java:test
 
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-${{ matrix.driver }}
+          name: ecj
           path: |
             ./**/build/reports
             /home/runner/work/doma/doma/.gradle
