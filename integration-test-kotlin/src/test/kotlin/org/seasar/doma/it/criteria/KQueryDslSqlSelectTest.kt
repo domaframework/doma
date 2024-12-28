@@ -184,7 +184,6 @@ class KQueryDslSqlSelectTest(config: Config) {
     fun select_row() {
         val e = Employee_()
 
-        @Suppress("RemoveRedundantSpreadOperator")
         val list = dsl
             .from(e)
             .orderBy { asc(e.employeeId) }
@@ -206,7 +205,6 @@ class KQueryDslSqlSelectTest(config: Config) {
     fun selectAsRow() {
         val e = Employee_()
 
-        @Suppress("RemoveRedundantSpreadOperator")
         val list = dsl
             .from(e)
             .orderBy { asc(e.employeeId) }
@@ -490,8 +488,8 @@ class KQueryDslSqlSelectTest(config: Config) {
             )
             .fetch()
         assertEquals(14, list.size)
-        assertEquals(1, list.filter { it == "smith" }.count())
-        assertEquals(1, list.filter { it == "king" }.count())
+        assertEquals(1, list.count { it == "smith" })
+        assertEquals(1, list.count { it == "king" })
     }
 
     @Test
