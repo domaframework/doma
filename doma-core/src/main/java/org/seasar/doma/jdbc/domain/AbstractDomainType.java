@@ -4,15 +4,24 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.util.AssertionUtil;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BASIC, DOMAIN> {
 
   protected final Supplier<Wrapper<BASIC>> wrapperSupplier;
 
+  protected final Supplier<JdbcType<?>> jdbcTypeSupplier;
+
   protected AbstractDomainType(Supplier<Wrapper<BASIC>> wrapperSupplier) {
-    AssertionUtil.assertNotNull(wrapperSupplier);
+    this(wrapperSupplier, () -> null);
+  }
+
+  protected AbstractDomainType(
+      Supplier<Wrapper<BASIC>> wrapperSupplier, Supplier<JdbcType<?>> jdbcTypeSupplier) {
+    AssertionUtil.assertNotNull(wrapperSupplier, jdbcTypeSupplier);
     this.wrapperSupplier = wrapperSupplier;
+    this.jdbcTypeSupplier = jdbcTypeSupplier;
   }
 
   protected abstract DOMAIN newDomain(BASIC value);
@@ -21,40 +30,48 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
 
   @Override
   public DomainScalar createScalar() {
-    return new DomainScalar(wrapperSupplier.get());
+    return new DomainScalar(wrapperSupplier.get(), jdbcTypeSupplier.get());
   }
 
   @Override
   public DomainScalar createScalar(DOMAIN value) {
     Wrapper<BASIC> wrapper = wrapperSupplier.get();
     wrapper.set(getBasicValue(value));
-    return new DomainScalar(wrapper);
+    return new DomainScalar(wrapper, jdbcTypeSupplier.get());
   }
 
   @Override
   public OptionalDomainScalar createOptionalScalar() {
-    return new OptionalDomainScalar(wrapperSupplier.get());
+    return new OptionalDomainScalar(wrapperSupplier.get(), jdbcTypeSupplier.get());
   }
 
   @Override
   public OptionalDomainScalar createOptionalScalar(DOMAIN value) {
     Wrapper<BASIC> wrapper = wrapperSupplier.get();
     wrapper.set(getBasicValue(value));
-    return new OptionalDomainScalar(wrapper);
+    return new OptionalDomainScalar(wrapper, jdbcTypeSupplier.get());
   }
 
   protected class DomainScalar implements Scalar<BASIC, DOMAIN> {
 
     protected final Wrapper<BASIC> wrapper;
+    protected final JdbcType<?> jdbcType;
 
-    protected DomainScalar(Wrapper<BASIC> wrapper) {
+    protected DomainScalar(Wrapper<BASIC> wrapper, JdbcType<?> jdbcType) {
       this.wrapper = wrapper;
+      this.jdbcType = jdbcType;
     }
 
     @Override
     public Optional<Class<?>> getDomainClass() {
       Class<?> c = AbstractDomainType.this.getDomainClass();
       return Optional.of(c);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Optional<JdbcType<Object>> getJdbcType() {
+      return Optional.ofNullable((JdbcType<Object>) jdbcType);
     }
 
     @Override
@@ -97,15 +114,23 @@ public abstract class AbstractDomainType<BASIC, DOMAIN> implements DomainType<BA
   protected class OptionalDomainScalar implements Scalar<BASIC, Optional<DOMAIN>> {
 
     protected final Wrapper<BASIC> wrapper;
+    protected final JdbcType<?> jdbcType;
 
-    protected OptionalDomainScalar(Wrapper<BASIC> wrapper) {
+    protected OptionalDomainScalar(Wrapper<BASIC> wrapper, JdbcType<?> jdbcType) {
       this.wrapper = wrapper;
+      this.jdbcType = jdbcType;
     }
 
     @Override
     public Optional<Class<?>> getDomainClass() {
       Class<?> clazz = AbstractDomainType.this.getDomainClass();
       return Optional.of(clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Optional<JdbcType<Object>> getJdbcType() {
+      return Optional.ofNullable((JdbcType<Object>) jdbcType);
     }
 
     @SuppressWarnings("unchecked")

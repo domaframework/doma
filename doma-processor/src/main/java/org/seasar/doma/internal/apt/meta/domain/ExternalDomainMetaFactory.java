@@ -24,6 +24,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.jdbc.domain.JdbcTypeProvider;
 import org.seasar.doma.message.Message;
 
 public class ExternalDomainMetaFactory implements TypeElementMetaFactory<ExternalDomainMeta> {
@@ -43,7 +44,10 @@ public class ExternalDomainMetaFactory implements TypeElementMetaFactory<Externa
       throw new AptIllegalStateException(
           "converter doesn't have type args: " + converterElement.getQualifiedName());
     }
-    ExternalDomainMeta meta = new ExternalDomainMeta(converterElement);
+    boolean isJdbcTypeProvider =
+        ctx.getMoreTypes()
+            .isAssignableWithErasure(converterElement.asType(), JdbcTypeProvider.class);
+    ExternalDomainMeta meta = new ExternalDomainMeta(converterElement, isJdbcTypeProvider);
     doDomainType(converterElement, argTypes[0], meta);
     doValueType(converterElement, argTypes[1], meta);
     return meta;

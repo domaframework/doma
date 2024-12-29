@@ -12,10 +12,10 @@ public final class _ParameterizedValueObject<T, U> extends org.seasar.doma.jdbc.
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final org.seasar.doma.internal.apt.processor.domain.ParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.ParameterizedValueObjectConverter();
+
     @SuppressWarnings("rawtypes")
     private static final _ParameterizedValueObject singleton = new _ParameterizedValueObject();
-
-    private static final org.seasar.doma.internal.apt.processor.domain.ParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.ParameterizedValueObjectConverter();
 
     private _ParameterizedValueObject() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());

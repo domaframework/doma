@@ -16,6 +16,7 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
 import org.seasar.doma.wrapper.BigIntegerWrapper;
 import org.seasar.doma.wrapper.BooleanWrapper;
@@ -142,6 +143,11 @@ abstract class BasicProperty<BASIC> implements Property<Object, BASIC> {
   @Override
   public Optional<Class<?>> getDomainClass() {
     return scalar.getDomainClass();
+  }
+
+  @Override
+  public Optional<JdbcType<Object>> getJdbcType() {
+    return scalar.getJdbcType();
   }
 }
 

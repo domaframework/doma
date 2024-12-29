@@ -9,9 +9,9 @@ public final class _ValueObject extends org.seasar.doma.jdbc.domain.AbstractDoma
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _ValueObject singleton = new _ValueObject();
-
     private static final org.seasar.doma.internal.apt.processor.domain.ValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.ValueObjectConverter();
+
+    private static final _ValueObject singleton = new _ValueObject();
 
     private _ValueObject() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());

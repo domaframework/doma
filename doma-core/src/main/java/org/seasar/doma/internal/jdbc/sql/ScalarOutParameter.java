@@ -7,6 +7,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.OutParameter;
 import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class ScalarOutParameter<BASIC, CONTAINER> implements OutParameter<BASIC> {
@@ -39,6 +40,11 @@ public class ScalarOutParameter<BASIC, CONTAINER> implements OutParameter<BASIC>
   @Override
   public Optional<Class<?>> getDomainClass() {
     return scalar.getDomainClass();
+  }
+
+  @Override
+  public Optional<JdbcType<Object>> getJdbcType() {
+    return scalar.getJdbcType();
   }
 
   @Override

@@ -9,9 +9,9 @@ public final class _UUID extends org.seasar.doma.jdbc.domain.AbstractDomainType<
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _UUID singleton = new _UUID();
-
     private static final org.seasar.doma.internal.apt.processor.domain.UUIDConverter converter = new org.seasar.doma.internal.apt.processor.domain.UUIDConverter();
+
+    private static final _UUID singleton = new _UUID();
 
     private _UUID() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofBytes());

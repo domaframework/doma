@@ -60,7 +60,8 @@ class ExternalDomainProcessorTest extends CompilerSupport {
           invocationContext(
               ParameterizedValueObjectConverter.class, ParameterizedValueObject.class),
           invocationContext(UUIDConverter.class, UUID.class),
-          invocationContext(ValueObjectConverter.class, ValueObject.class));
+          invocationContext(ValueObjectConverter.class, ValueObject.class),
+          invocationContext(BoxJdbcTypeProvider.class, Box.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
