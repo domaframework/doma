@@ -37,5 +37,7 @@ public enum SqlKind {
   SCRIPT,
 
   /** sql processor */
-  SQL_PROCESSOR
+  SQL_PROCESSOR,
+
+  OTHER,
 }

@@ -13,6 +13,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModuleQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implements Command<RESULT> {
 
@@ -33,6 +34,7 @@ public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implement
 
   @Override
   public RESULT execute() {
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {
       CallableStatement callableStatement = JdbcUtil.prepareCall(connection, sql);
@@ -40,7 +42,7 @@ public abstract class ModuleCommand<QUERY extends ModuleQuery, RESULT> implement
         log();
         setupOptions(callableStatement);
         bindParameters(callableStatement);
-        return executeInternal(callableStatement);
+        return statisticManager.executeSql(sql, () -> executeInternal(callableStatement));
       } catch (SQLException e) {
         Dialect dialect = query.getConfig().getDialect();
         throw new SqlExecutionException(

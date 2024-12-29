@@ -18,6 +18,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class SelectCommand<RESULT> implements Command<RESULT> {
 
@@ -42,6 +43,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   @Override
   public RESULT execute() {
     Supplier<RESULT> supplier = null;
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
@@ -49,7 +51,18 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         log();
         setupOptions(preparedStatement);
         bindParameters(preparedStatement);
-        supplier = executeQuery(preparedStatement);
+        if (statisticManager.isEnabled()) {
+          long startTimeNanos = System.nanoTime();
+          supplier = executeQuery(preparedStatement);
+          close(
+              supplier,
+              () -> {
+                long endTimeNanos = System.nanoTime();
+                statisticManager.recordSqlExecution(sql, startTimeNanos, endTimeNanos);
+              });
+        } else {
+          supplier = executeQuery(preparedStatement);
+        }
       } catch (SQLException e) {
         Dialect dialect = query.getConfig().getDialect();
         throw new SqlExecutionException(
@@ -108,6 +121,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         });
   }
 
+  // TODO: rename
   protected void close(Supplier<RESULT> supplier, Runnable closeHandler) {
     if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
       RESULT result = supplier.get();

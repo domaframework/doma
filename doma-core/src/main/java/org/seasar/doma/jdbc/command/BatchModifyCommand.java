@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchModifyQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> implements Command<int[]> {
 
@@ -84,6 +85,7 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
 
   protected int[] executeBatch(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
     int batchSize = query.getBatchSize() > 0 ? query.getBatchSize() : 1;
     int sqlSize = sqls.size();
     int[] updatedRows = new int[sqlSize];
@@ -94,9 +96,16 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
       bindParameters(preparedStatement, sql);
       preparedStatement.addBatch();
       if (i == sqlSize - 1 || (batchSize > 0 && (i + 1) % batchSize == 0)) {
-        int[] rows = executeBatch(preparedStatement, sql);
+        int position = pos;
+        int[] rows =
+            statisticManager.executeSql(
+                sql,
+                () -> {
+                  int[] r = executeBatch(preparedStatement, sql);
+                  postExecuteBatch(preparedStatement, position, r.length);
+                  return r;
+                });
         validateRows(preparedStatement, sql, rows);
-        postExecuteBatch(preparedStatement, pos, rows.length);
         System.arraycopy(rows, 0, updatedRows, pos, rows.length);
         pos = i + 1;
       }

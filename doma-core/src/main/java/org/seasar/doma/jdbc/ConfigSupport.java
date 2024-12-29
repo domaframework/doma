@@ -1,5 +1,8 @@
 package org.seasar.doma.jdbc;
 
+import org.seasar.doma.jdbc.statistic.DefaultStatisticManager;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
+
 /** Default values for {@link Config} objects. */
 public final class ConfigSupport {
 
@@ -32,4 +35,6 @@ public final class ConfigSupport {
       new EntityListenerProvider() {};
 
   public static final SqlBuilderSettings defaultSqlBuilderSettings = new SqlBuilderSettings() {};
+
+  public static final StatisticManager defaultStatisticManager = new DefaultStatisticManager() {};
 }
