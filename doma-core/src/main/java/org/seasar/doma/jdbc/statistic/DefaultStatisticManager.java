@@ -1,18 +1,17 @@
 package org.seasar.doma.jdbc.statistic;
 
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.SqlKind;
 
+/** The default implementation of {@link StatisticManager}. */
 public class DefaultStatisticManager implements StatisticManager {
 
   private volatile boolean enabled;
 
-  private final ConcurrentMap<String, AtomicReference<Statistic>> statisticMap =
-      new ConcurrentHashMap<>();
+  private final ConcurrentMap<String, Statistic> statisticMap = new ConcurrentHashMap<>();
 
   public DefaultStatisticManager() {
     this(false);
@@ -34,7 +33,7 @@ public class DefaultStatisticManager implements StatisticManager {
 
   @Override
   public Iterable<Statistic> getStatistics() {
-    return statisticMap.values().stream().map(AtomicReference::get).toList();
+    return statisticMap.values();
   }
 
   @Override
@@ -42,27 +41,16 @@ public class DefaultStatisticManager implements StatisticManager {
     if (!enabled) {
       return;
     }
+    Objects.requireNonNull(sql);
+    if (endTimeNanos < startTimeNanos) {
+      throw new IllegalArgumentException("endTimeNanos < startTimeNanos");
+    }
     String rawSql = sql.getRawSql();
     long execTimeMillis = TimeUnit.NANOSECONDS.toMillis(endTimeNanos - startTimeNanos);
-    AtomicReference<Statistic> ref =
-        statisticMap.computeIfAbsent(
-            rawSql,
-            key ->
-                new AtomicReference<>(
-                    new Statistic(key, SqlKind.OTHER, 0, 0, Long.MAX_VALUE, 0, 0.0)));
-    while (true) {
-      Statistic expectedValue = ref.get();
-      long count = expectedValue.execCount() + 1;
-      long maxTime = Math.max(expectedValue.execMaxTime(), execTimeMillis);
-      long minTime = Math.min(expectedValue.execMinTime(), execTimeMillis);
-      long totalTime = expectedValue.execTotalTime() + execTimeMillis;
-      double avgTime = totalTime / (double) count;
-      Statistic newValue =
-          new Statistic(rawSql, sql.getKind(), count, maxTime, minTime, totalTime, avgTime);
-      if (ref.compareAndSet(expectedValue, newValue)) {
-        break;
-      }
-    }
+    statisticMap.compute(
+        rawSql,
+        (key, value) ->
+            value == null ? Statistic.of(key, execTimeMillis) : value.calculate(execTimeMillis));
   }
 
   @Override

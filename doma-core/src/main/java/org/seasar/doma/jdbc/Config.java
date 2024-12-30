@@ -236,6 +236,11 @@ public interface Config {
     return ConfigSupport.defaultSqlBuilderSettings;
   }
 
+  /**
+   * Returns the statistic manager instance.
+   *
+   * @return the {@link StatisticManager} instance
+   */
   default StatisticManager getStatisticManager() {
     return ConfigSupport.defaultStatisticManager;
   }

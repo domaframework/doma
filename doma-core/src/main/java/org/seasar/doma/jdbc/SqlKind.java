@@ -38,6 +38,4 @@ public enum SqlKind {
 
   /** sql processor */
   SQL_PROCESSOR,
-
-  OTHER,
 }
