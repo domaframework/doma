@@ -97,6 +97,9 @@ public class DaoImplSupport implements ConfigProvider {
     if (config.getCommenter() == null) {
       throw new ConfigException(config.getClass().getName(), "getCommenter");
     }
+    if (config.getStatisticManager() == null) {
+      throw new ConfigException(config.getClass().getName(), "getStatisticManager");
+    }
   }
 
   @Override

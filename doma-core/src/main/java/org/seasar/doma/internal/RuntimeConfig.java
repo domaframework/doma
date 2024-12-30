@@ -20,6 +20,7 @@ import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 
 public class RuntimeConfig implements Config {
@@ -155,5 +156,10 @@ public class RuntimeConfig implements Config {
       throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
     }
     return settings;
+  }
+
+  @Override
+  public StatisticManager getStatisticManager() {
+    return config.getStatisticManager();
   }
 }
