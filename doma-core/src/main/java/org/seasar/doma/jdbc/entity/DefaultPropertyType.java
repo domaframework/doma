@@ -13,6 +13,7 @@ import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 import org.seasar.doma.wrapper.WrapperVisitor;
 
@@ -231,6 +232,11 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     @Override
     public Optional<Class<?>> getDomainClass() {
       return scalar.getDomainClass();
+    }
+
+    @Override
+    public Optional<JdbcType<Object>> getJdbcType() {
+      return scalar.getJdbcType();
     }
 
     @Override

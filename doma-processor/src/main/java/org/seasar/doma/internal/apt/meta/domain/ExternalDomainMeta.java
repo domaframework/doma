@@ -13,6 +13,8 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
   private final TypeElement converterElement;
 
+  private final boolean isJdbcTypeProvider;
+
   private BasicCtType basicCtType;
 
   private TypeMirror valueType;
@@ -23,13 +25,18 @@ public class ExternalDomainMeta implements TypeElementMeta {
 
   private TypeParametersDef typeParametersDef;
 
-  public ExternalDomainMeta(TypeElement converterElement) {
+  public ExternalDomainMeta(TypeElement converterElement, boolean isJdbcTypeProvider) {
     assertNotNull(converterElement);
     this.converterElement = converterElement;
+    this.isJdbcTypeProvider = isJdbcTypeProvider;
   }
 
   public TypeElement getConverterElement() {
     return converterElement;
+  }
+
+  public boolean isJdbcTypeProvider() {
+    return isJdbcTypeProvider;
   }
 
   public BasicCtType getBasicCtType() {

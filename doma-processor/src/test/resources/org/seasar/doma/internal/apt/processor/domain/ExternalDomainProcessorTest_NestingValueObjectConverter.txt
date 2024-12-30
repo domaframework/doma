@@ -9,9 +9,9 @@ public final class _NestingValueObjectConverter__NestingValueObject extends org.
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _NestingValueObjectConverter__NestingValueObject singleton = new _NestingValueObjectConverter__NestingValueObject();
-
     private static final org.seasar.doma.internal.apt.processor.domain.NestingValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.NestingValueObjectConverter();
+
+    private static final _NestingValueObjectConverter__NestingValueObject singleton = new _NestingValueObjectConverter__NestingValueObject();
 
     private _NestingValueObjectConverter__NestingValueObject() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());

@@ -8,6 +8,7 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
+import org.seasar.doma.jdbc.type.JdbcType;
 
 public class ExternalDomainTypeGenerator extends AbstractGenerator {
 
@@ -77,19 +78,25 @@ public class ExternalDomainTypeGenerator extends AbstractGenerator {
   }
 
   private void printFields() {
+    iprint("private static final %1$s converter = new %1$s();%n", domainMeta.getConverterElement());
+    print("%n");
     if (domainMeta.isParameterized()) {
       iprint("@SuppressWarnings(\"rawtypes\")%n");
     }
     iprint("private static final %1$s singleton = new %1$s();%n", simpleName);
-    print("%n");
-    iprint("private static final %1$s converter = new %1$s();%n", domainMeta.getConverterElement());
     print("%n");
   }
 
   private void printConstructors() {
     BasicCtType basicCtType = domainMeta.getBasicCtType();
     iprint("private %1$s() {%n", simpleName);
-    iprint("    super(%1$s);%n", basicCtType.getWrapperSupplierCode());
+    if (domainMeta.isJdbcTypeProvider()) {
+      iprint(
+          "    super(%1$s, () -> converter.getJdbcType());%n",
+          basicCtType.getWrapperSupplierCode(), JdbcType.class);
+    } else {
+      iprint("    super(%1$s);%n", basicCtType.getWrapperSupplierCode());
+    }
     iprint("}%n");
     print("%n");
   }

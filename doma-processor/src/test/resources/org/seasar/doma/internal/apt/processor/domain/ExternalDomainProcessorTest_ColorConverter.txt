@@ -9,9 +9,9 @@ public final class _Color extends org.seasar.doma.jdbc.domain.AbstractDomainType
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _Color singleton = new _Color();
-
     private static final org.seasar.doma.internal.apt.processor.domain.ColorConverter converter = new org.seasar.doma.internal.apt.processor.domain.ColorConverter();
+
+    private static final _Color singleton = new _Color();
 
     private _Color() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());

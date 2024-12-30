@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.jdbc.SingleResultParameter;
 import org.seasar.doma.jdbc.SqlParameterVisitor;
+import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 public class ScalarSingleResultParameter<BASIC, CONTAINER>
@@ -36,6 +37,11 @@ public class ScalarSingleResultParameter<BASIC, CONTAINER>
   @Override
   public Optional<Class<?>> getDomainClass() {
     return scalar.getDomainClass();
+  }
+
+  @Override
+  public Optional<JdbcType<Object>> getJdbcType() {
+    return scalar.getJdbcType();
   }
 
   @Override
