@@ -21,6 +21,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.GROUP_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IN_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LITERAL_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
@@ -378,6 +379,11 @@ public class SqlTokenizer {
   protected void peekTwoChars(char c, char c2) {
     if ((c == 'o' || c == 'O') && (c2 == 'r' || c2 == 'R')) {
       type = OR_WORD;
+      if (isWordTerminated()) {
+        return;
+      }
+    } else if ((c == 'i' || c == 'I') && (c2 == 'n' || c2 == 'N')) {
+      type = IN_WORD;
       if (isWordTerminated()) {
         return;
       }

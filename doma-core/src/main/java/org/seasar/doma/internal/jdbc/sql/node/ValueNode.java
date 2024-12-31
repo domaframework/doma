@@ -13,6 +13,8 @@ public abstract class ValueNode extends AbstractSqlNode {
 
   protected final String text;
 
+  protected InNode inNode;
+
   protected WordNode wordNode;
 
   protected ParensNode parensNode;
@@ -39,6 +41,14 @@ public abstract class ValueNode extends AbstractSqlNode {
   @Override
   public void appendNode(SqlNode child) {
     throw new JdbcUnsupportedOperationException(getClass().getName(), "addNode");
+  }
+
+  public InNode getInNode() {
+    return inNode;
+  }
+
+  public void setInNode(InNode inNode) {
+    this.inNode = inNode;
   }
 
   public WordNode getWordNode() {

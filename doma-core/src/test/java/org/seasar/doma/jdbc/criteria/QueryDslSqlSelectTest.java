@@ -34,6 +34,7 @@ import org.seasar.doma.jdbc.CommentContext;
 import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.criteria.context.WithContext;
 import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp;
@@ -64,6 +65,21 @@ class QueryDslSqlSelectTest {
   private final MockConfig config = new MockConfig();
 
   private final QueryDsl dsl = new QueryDsl(config);
+
+  private final Config inListPaddingConfig =
+      new MockConfig() {
+
+        @Override
+        public SqlBuilderSettings getSqlBuilderSettings() {
+          return new SqlBuilderSettings() {
+
+            @Override
+            public boolean requiresInListPadding() {
+              return true;
+            }
+          };
+        }
+      };
 
   @Test
   void with_1() {
@@ -378,6 +394,44 @@ class QueryDslSqlSelectTest {
 
     Sql<?> sql = stmt.asSql();
     assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (1, 2)", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_in_padding() {
+    QueryDsl newDsl = new QueryDsl(inListPaddingConfig);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        newDsl
+            .from(e)
+            .where(
+                c -> {
+                  c.in(e.id, Arrays.asList(1, 2, 3, 4, 5));
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.ID in (1, 2, 3, 4, 5, 5, 5, 5)",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_in_padding_empty() {
+    QueryDsl newDsl = new QueryDsl(inListPaddingConfig);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        newDsl
+            .from(e)
+            .where(
+                c -> {
+                  c.in(e.id, List.of());
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (null)", sql.getFormattedSql());
   }
 
   @Test

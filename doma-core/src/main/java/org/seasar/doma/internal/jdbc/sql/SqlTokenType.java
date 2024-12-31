@@ -143,6 +143,8 @@ public enum SqlTokenType {
 
   DISTINCT_WORD,
 
+  IN_WORD,
+
   OTHER,
 
   WHITESPACE,

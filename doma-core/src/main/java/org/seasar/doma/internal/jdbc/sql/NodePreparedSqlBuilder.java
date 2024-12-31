@@ -64,6 +64,7 @@ import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.util.IntegerUtil;
 import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
@@ -364,7 +365,7 @@ public class NodePreparedSqlBuilder
       Class<?> valueClass,
       Consumer<Scalar<?, ?>> consumer) {
     int index = 0;
-    for (Object v : values) {
+    for (Object v : applyInListPadding(node, values)) {
       if (v == null) {
         SqlLocation location = node.getLocation();
         throw new JdbcException(
@@ -389,6 +390,29 @@ public class NodePreparedSqlBuilder
       p.cutBackSqlBuf(2);
       p.cutBackFormattedSqlBuf(2);
     }
+  }
+
+  private <E> Iterable<E> applyInListPadding(ValueNode node, Iterable<E> values) {
+    if (node.getInNode() == null || !config.getSqlBuilderSettings().requiresInListPadding()) {
+      return values;
+    }
+    List<E> result;
+    if (values instanceof List<E> list) {
+      result = new ArrayList<>(list);
+    } else {
+      result = new ArrayList<>();
+      values.forEach(result::add);
+    }
+    if (result.isEmpty()) {
+      return result;
+    }
+    int size = result.size();
+    int maxSize = IntegerUtil.nextPowerOfTwo(size);
+    E lastValue = result.get(size - 1);
+    while (result.size() < maxSize) {
+      result.add(lastValue);
+    }
+    return result;
   }
 
   @Override

@@ -50,6 +50,10 @@ public interface SqlNodeVisitor<R, P> {
 
   R visitIfNode(IfNode node, P p);
 
+  default R visitInNode(InNode node, P p) {
+    return visitWordNode(node.getWordNode(), p);
+  }
+
   R visitLiteralVariableNode(LiteralVariableNode node, P p);
 
   R visitLogicalOperatorNode(LogicalOperatorNode node, P p);

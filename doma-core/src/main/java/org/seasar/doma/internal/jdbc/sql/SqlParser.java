@@ -5,6 +5,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.seasar.doma.internal.jdbc.sql.node.AnonymousNode;
@@ -28,6 +30,7 @@ import org.seasar.doma.internal.jdbc.sql.node.GroupByClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.HavingClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfBlockNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
+import org.seasar.doma.internal.jdbc.sql.node.InNode;
 import org.seasar.doma.internal.jdbc.sql.node.LiteralVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.LogicalOperatorNode;
 import org.seasar.doma.internal.jdbc.sql.node.OptionClauseNode;
@@ -136,6 +139,11 @@ public class SqlParser {
         case DISTINCT_WORD:
           {
             parseDistinctWord();
+            break;
+          }
+        case IN_WORD:
+          {
+            parseInWord();
             break;
           }
         case UPDATE_WORD:
@@ -417,6 +425,11 @@ public class SqlParser {
     appendNode(node);
   }
 
+  protected void parseInWord() {
+    InNode node = new InNode(token);
+    appendNode(node);
+  }
+
   protected void parseBlockComment() {
     CommentNode node = new CommentNode(token, CommentType.BLOCK);
     appendNode(node);
@@ -457,6 +470,8 @@ public class SqlParser {
           Message.DOMA2120, sql, tokenizer.getLineNumber(), tokenizer.getPosition(), token);
     }
     BindVariableNode node = new BindVariableNode(getLocation(), variableName, token);
+    InNode inNode = findInNode();
+    node.setInNode(inNode);
     appendNode(node);
     push(node);
   }
@@ -468,6 +483,8 @@ public class SqlParser {
           Message.DOMA2228, sql, tokenizer.getLineNumber(), tokenizer.getPosition(), token);
     }
     LiteralVariableNode node = new LiteralVariableNode(getLocation(), variableName, token);
+    InNode inNode = findInNode();
+    node.setInNode(inNode);
     appendNode(node);
     push(node);
   }
@@ -596,6 +613,7 @@ public class SqlParser {
     rootNode.appendNode(OtherNode.of(token));
   }
 
+  @Deprecated(forRemoval = true)
   protected boolean containsOnlyWhitespaces(SqlNode node) {
     for (SqlNode child : node.getChildren()) {
       if (!(child instanceof WhitespaceNode)) {
@@ -708,8 +726,32 @@ public class SqlParser {
     return peek() instanceof ExpandNode;
   }
 
+  @Deprecated(forRemoval = true)
   protected boolean isAfterOrderByClauseNode() {
     return peek() instanceof OrderByClauseNode;
+  }
+
+  protected InNode findInNode() {
+    AppendableSqlNode node = peek();
+    List<SqlNode> children = node.getChildren();
+    ListIterator<SqlNode> iterator = children.listIterator(children.size());
+    while (iterator.hasPrevious()) {
+      SqlNode child = iterator.previous();
+      if (child instanceof WhitespaceNode) {
+        continue;
+      }
+      if (child instanceof EolNode) {
+        continue;
+      }
+      if (child instanceof CommentNode) {
+        continue;
+      }
+      if (child instanceof InNode inNode) {
+        return inNode;
+      }
+      return null;
+    }
+    return null;
   }
 
   protected void appendNode(SqlNode node) {

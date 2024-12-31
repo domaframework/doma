@@ -19,6 +19,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.util.ResourceUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
@@ -27,6 +28,21 @@ import org.seasar.doma.message.Message;
 public class SqlParserTest {
 
   private final MockConfig config = new MockConfig();
+
+  private final MockConfig inListPaddingConfig =
+      new MockConfig() {
+
+        @Override
+        public SqlBuilderSettings getSqlBuilderSettings() {
+          return new SqlBuilderSettings() {
+
+            @Override
+            public boolean requiresInListPadding() {
+              return true;
+            }
+          };
+        }
+      };
 
   @Test
   public void testBindVariable() {
@@ -114,6 +130,76 @@ public class SqlParserTest {
     assertEquals("select * from aaa where ename in (null)", sql.getRawSql());
     assertEquals("select * from aaa where ename in (null)", sql.getFormattedSql());
     assertEquals(0, sql.getParameters().size());
+  }
+
+  @Test
+  public void testBindVariable_in_padding() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo", "bar", "baz", "qux")));
+    String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                inListPaddingConfig, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where ename in (?, ?, ?, ?, ?, ?, ?, ?)", sql.getRawSql());
+    assertEquals(
+        "select * from aaa where ename in ('hoge', 'foo', 'bar', 'baz', 'qux', 'qux', 'qux', 'qux')",
+        sql.getFormattedSql());
+    assertEquals(8, sql.getParameters().size());
+    assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+    assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
+    assertEquals("bar", sql.getParameters().get(2).getWrapper().get());
+    assertEquals("baz", sql.getParameters().get(3).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(4).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(5).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(6).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(7).getWrapper().get());
+  }
+
+  @Test
+  public void testBindVariable_in_padding_empty() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(List.class, List.of()));
+    String testSql = "select * from aaa where ename in /*name*/('aaa', 'bbb')";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                inListPaddingConfig, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where ename in (null)", sql.getRawSql());
+    assertEquals("select * from aaa where ename in (null)", sql.getFormattedSql());
+    assertEquals(0, sql.getParameters().size());
+  }
+
+  @Test
+  public void testBindVariable_in_padding_comment() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(List.class, Arrays.asList("hoge", "foo", "bar", "baz", "qux")));
+    String testSql = "select * from aaa where ename in /** comment */ /*name*/('aaa', 'bbb')";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                inListPaddingConfig, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals(
+        "select * from aaa where ename in /** comment */ (?, ?, ?, ?, ?, ?, ?, ?)",
+        sql.getRawSql());
+    assertEquals(
+        "select * from aaa where ename in /** comment */ ('hoge', 'foo', 'bar', 'baz', 'qux', 'qux', 'qux', 'qux')",
+        sql.getFormattedSql());
+    assertEquals(8, sql.getParameters().size());
+    assertEquals("hoge", sql.getParameters().get(0).getWrapper().get());
+    assertEquals("foo", sql.getParameters().get(1).getWrapper().get());
+    assertEquals("bar", sql.getParameters().get(2).getWrapper().get());
+    assertEquals("baz", sql.getParameters().get(3).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(4).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(5).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(6).getWrapper().get());
+    assertEquals("qux", sql.getParameters().get(7).getWrapper().get());
   }
 
   @Test
