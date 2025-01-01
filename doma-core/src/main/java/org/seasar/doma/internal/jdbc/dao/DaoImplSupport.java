@@ -27,6 +27,7 @@ public class DaoImplSupport implements ConfigProvider {
     this.__config = new RuntimeConfig(config, config.getDataSource());
   }
 
+  @Deprecated(forRemoval = true)
   public DaoImplSupport(Config config, Connection connection) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -44,6 +45,7 @@ public class DaoImplSupport implements ConfigProvider {
     this.__config = new RuntimeConfig(config, dataSource);
   }
 
+  @Deprecated(forRemoval = true)
   public DaoImplSupport(Config config, DataSource dataSource) {
     if (config == null) {
       throw new DomaNullPointerException("config");
