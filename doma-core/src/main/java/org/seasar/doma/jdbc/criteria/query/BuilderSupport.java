@@ -12,6 +12,7 @@ import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.ConvertToLogFormatFunction;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.internal.util.IntegerUtil;
+import org.seasar.doma.internal.util.PaddingIterator;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
@@ -603,19 +604,17 @@ public class BuilderSupport {
       buf.appendSql(")");
     }
 
-    private <E> List<E> applyInListPadding(List<E> list) {
+    private <E> Iterable<E> applyInListPadding(List<E> list) {
       if (list.isEmpty() || !config.getSqlBuilderSettings().requiresInListPadding()) {
         return list;
       }
       int size = list.size();
       int maxSize = IntegerUtil.nextPowerOfTwo(size);
-      E lastValue = list.get(size - 1);
-      ArrayList<E> result = new ArrayList<>(maxSize);
-      result.addAll(list);
-      while (result.size() < maxSize) {
-        result.add(lastValue);
+      int paddingSize = maxSize - size;
+      if (paddingSize <= 0) {
+        return list;
       }
-      return result;
+      return () -> new PaddingIterator<>(list.iterator(), paddingSize);
     }
 
     public void exists(SelectContext context, boolean not) {

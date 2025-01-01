@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -65,6 +66,7 @@ import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
 import org.seasar.doma.internal.util.IntegerUtil;
+import org.seasar.doma.internal.util.PaddingIterator;
 import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
@@ -396,23 +398,23 @@ public class NodePreparedSqlBuilder
     if (node.getInNode() == null || !config.getSqlBuilderSettings().requiresInListPadding()) {
       return values;
     }
-    List<E> result;
-    if (values instanceof List<E> list) {
-      result = new ArrayList<>(list);
+    Collection<E> valueCollection;
+    if (values instanceof Collection<E> collection) {
+      valueCollection = collection;
     } else {
-      result = new ArrayList<>();
-      values.forEach(result::add);
+      valueCollection = new ArrayList<>();
+      values.forEach(valueCollection::add);
     }
-    if (result.isEmpty()) {
-      return result;
+    if (valueCollection.isEmpty()) {
+      return valueCollection;
     }
-    int size = result.size();
+    int size = valueCollection.size();
     int maxSize = IntegerUtil.nextPowerOfTwo(size);
-    E lastValue = result.get(size - 1);
-    while (result.size() < maxSize) {
-      result.add(lastValue);
+    int paddingSize = maxSize - size;
+    if (paddingSize <= 0) {
+      return valueCollection;
     }
-    return result;
+    return () -> new PaddingIterator<>(valueCollection.iterator(), paddingSize);
   }
 
   @Override
