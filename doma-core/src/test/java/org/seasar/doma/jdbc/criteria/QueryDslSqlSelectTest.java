@@ -26,6 +26,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.DomaException;
@@ -381,6 +382,22 @@ class QueryDslSqlSelectTest {
   }
 
   @Test
+  void where_in_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.in(e.id, new TreeSet<Integer>(Arrays.asList(1, 2)));
+                  c.in(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (1, 2)", sql.getFormattedSql());
+  }
+
+  @Test
   void where_notIn() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
@@ -388,6 +405,22 @@ class QueryDslSqlSelectTest {
             .where(
                 c -> {
                   c.notIn(e.id, Arrays.asList(1, 2));
+                  c.notIn(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.ID not in (1, 2)", sql.getFormattedSql());
+  }
+
+  @Test
+  void where_notIn_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.notIn(e.id, new TreeSet<Integer>(Arrays.asList(1, 2)));
                   c.notIn(e.id, (List<Integer>) null);
                 })
             .select(e.id);

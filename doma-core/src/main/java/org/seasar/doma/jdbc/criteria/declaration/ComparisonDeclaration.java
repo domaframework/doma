@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.StreamSupport;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
@@ -363,6 +364,27 @@ public abstract class ComparisonDeclaration {
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
    */
+  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, Iterable<PROPERTY> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      add(
+          new Criterion.In(
+              new Operand.Prop(left),
+              StreamSupport.stream(right.spliterator(), false)
+                  .map(p -> new Operand.Param(left, p))
+                  .collect(toList())));
+    }
+  }
+
+  /**
+   * Adds a {@code IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code left} is null
+   */
   public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, List<PROPERTY> right) {
     Objects.requireNonNull(left);
     if (right != null) {
@@ -370,6 +392,27 @@ public abstract class ComparisonDeclaration {
           new Criterion.In(
               new Operand.Prop(left),
               right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
+    }
+  }
+
+  /**
+   * Adds a {@code NOT IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, Iterable<PROPERTY> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      add(
+          new Criterion.NotIn(
+              new Operand.Prop(left),
+              StreamSupport.stream(right.spliterator(), false)
+                  .map(p -> new Operand.Param(left, p))
+                  .collect(toList())));
     }
   }
 
