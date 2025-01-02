@@ -27,6 +27,7 @@ public class DaoImplSupport implements ConfigProvider {
     this.__config = new RuntimeConfig(config, config.getDataSource());
   }
 
+  @Deprecated(forRemoval = true)
   public DaoImplSupport(Config config, Connection connection) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -44,6 +45,7 @@ public class DaoImplSupport implements ConfigProvider {
     this.__config = new RuntimeConfig(config, dataSource);
   }
 
+  @Deprecated(forRemoval = true)
   public DaoImplSupport(Config config, DataSource dataSource) {
     if (config == null) {
       throw new DomaNullPointerException("config");
@@ -96,6 +98,12 @@ public class DaoImplSupport implements ConfigProvider {
     }
     if (config.getCommenter() == null) {
       throw new ConfigException(config.getClass().getName(), "getCommenter");
+    }
+    if (config.getEntityListenerProvider() == null) {
+      throw new ConfigException(config.getClass().getName(), "getEntityListenerProvider");
+    }
+    if (config.getSqlBuilderSettings() == null) {
+      throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
     }
     if (config.getStatisticManager() == null) {
       throw new ConfigException(config.getClass().getName(), "getStatisticManager");

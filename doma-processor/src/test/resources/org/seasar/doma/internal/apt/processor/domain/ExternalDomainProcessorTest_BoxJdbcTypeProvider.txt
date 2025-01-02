@@ -1,0 +1,50 @@
+package __.org.seasar.doma.internal.apt.processor.domain;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.DomainTypeImplementation
+public final class _Box extends org.seasar.doma.jdbc.domain.AbstractDomainType<java.lang.Object, org.seasar.doma.internal.apt.processor.domain.Box> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final org.seasar.doma.internal.apt.processor.domain.BoxJdbcTypeProvider converter = new org.seasar.doma.internal.apt.processor.domain.BoxJdbcTypeProvider();
+
+    private static final _Box singleton = new _Box();
+
+    private _Box() {
+        super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofObject(), () -> converter.getJdbcType());
+    }
+
+    @Override
+    protected org.seasar.doma.internal.apt.processor.domain.Box newDomain(java.lang.Object value) {
+        return converter.fromValueToDomain(value);
+    }
+
+    @Override
+    protected java.lang.Object getBasicValue(org.seasar.doma.internal.apt.processor.domain.Box domain) {
+        if (domain == null) {
+            return null;
+        }
+        return converter.fromDomainToValue(domain);
+    }
+
+    @Override
+    public Class<?> getBasicClass() {
+        return java.lang.Object.class;
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.domain.Box> getDomainClass() {
+        return org.seasar.doma.internal.apt.processor.domain.Box.class;
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _Box getSingletonInternal() {
+        return singleton;
+    }
+
+}

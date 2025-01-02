@@ -11,10 +11,10 @@ public final class _UpperBoundParameterizedValueObject<T extends java.lang.Integ
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
+    private static final org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter();
+
     @SuppressWarnings("rawtypes")
     private static final _UpperBoundParameterizedValueObject singleton = new _UpperBoundParameterizedValueObject();
-
-    private static final org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter converter = new org.seasar.doma.internal.apt.processor.domain.UpperBoundParameterizedValueObjectConverter();
 
     private _UpperBoundParameterizedValueObject() {
         super(org.seasar.doma.internal.wrapper.WrapperSuppliers.ofString());

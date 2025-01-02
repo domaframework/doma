@@ -563,7 +563,8 @@ public class StandardDialect implements Dialect {
     @Override
     public Void visitObjectWrapper(ObjectWrapper wrapper, JdbcMappingFunction p, JdbcMappingHint q)
         throws SQLException {
-      return p.apply(wrapper, JdbcTypes.OBJECT);
+      JdbcType<Object> jdbcType = q.getJdbcType().orElse(JdbcTypes.OBJECT);
+      return p.apply(wrapper, jdbcType);
     }
   }
 
