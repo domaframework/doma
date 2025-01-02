@@ -19,6 +19,7 @@ import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlUpdateStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KStatement
 
+@Suppress("DEPRECATION")
 @Deprecated(
     message = "This class will be removed in the future. Use KQueryDsl instead.",
     replaceWith = ReplaceWith("KQueryDsl", "org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl"),
