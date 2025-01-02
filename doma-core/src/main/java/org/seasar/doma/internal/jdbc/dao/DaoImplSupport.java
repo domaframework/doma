@@ -99,6 +99,12 @@ public class DaoImplSupport implements ConfigProvider {
     if (config.getCommenter() == null) {
       throw new ConfigException(config.getClass().getName(), "getCommenter");
     }
+    if (config.getEntityListenerProvider() == null) {
+      throw new ConfigException(config.getClass().getName(), "getEntityListenerProvider");
+    }
+    if (config.getSqlBuilderSettings() == null) {
+      throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
+    }
   }
 
   @Override
