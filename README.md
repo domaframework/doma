@@ -15,6 +15,22 @@ Doma has various strengths:
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
 
+### Backers
+If you use Doma in your project or enterprise and
+would like to support ongoing development,
+please consider becoming a backer.
+[[Become a backer](https://opencollective.com/doma#category-CONTRIBUTE)]
+
+Our top backers are shown below!
+
+<a href="https://opencollective.com/doma/backer/0/website" target="_blank"><img src="https://opencollective.com/doma/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/1/website" target="_blank"><img src="https://opencollective.com/doma/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/2/website" target="_blank"><img src="https://opencollective.com/doma/backer/2/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/3/website" target="_blank"><img src="https://opencollective.com/doma/backer/3/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/4/website" target="_blank"><img src="https://opencollective.com/doma/backer/4/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/5/website" target="_blank"><img src="https://opencollective.com/doma/backer/5/avatar.svg"></a>
+<a href="https://opencollective.com/doma/backer/6/website" target="_blank"><img src="https://opencollective.com/doma/backer/6/avatar.svg"></a>
+
 ### Supported by
 [![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
 
@@ -221,23 +237,5 @@ Major versions
 | Java 21 |        | v      | v      |
 | Java 22 |        | v      | v      |
 | Java 23 |        |        | v      |
-
-Backers
----------------------
-
-If you use Doma in your project or enterprise and
-would like to support ongoing development,
-please consider becoming a backer.
-[[Become a backer](https://opencollective.com/doma#category-CONTRIBUTE)]
-
-Our top backers are shown below!
-
-<a href="https://opencollective.com/doma/backer/0/website" target="_blank"><img src="https://opencollective.com/doma/backer/0/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/1/website" target="_blank"><img src="https://opencollective.com/doma/backer/1/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/2/website" target="_blank"><img src="https://opencollective.com/doma/backer/2/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/3/website" target="_blank"><img src="https://opencollective.com/doma/backer/3/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/4/website" target="_blank"><img src="https://opencollective.com/doma/backer/4/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/5/website" target="_blank"><img src="https://opencollective.com/doma/backer/5/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/6/website" target="_blank"><img src="https://opencollective.com/doma/backer/6/avatar.svg"></a>
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
