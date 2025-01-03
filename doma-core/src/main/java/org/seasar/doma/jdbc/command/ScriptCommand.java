@@ -17,6 +17,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlParameter;
 import org.seasar.doma.jdbc.query.ScriptQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class ScriptCommand implements Command<Void> {
 
@@ -37,6 +38,7 @@ public class ScriptCommand implements Command<Void> {
   @Override
   public Void execute() {
     Config config = query.getConfig();
+    StatisticManager statisticManager = config.getStatisticManager();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
     try {
       ScriptReader reader = new ScriptReader(query);
@@ -49,7 +51,8 @@ public class ScriptCommand implements Command<Void> {
           try {
             log(sql);
             setupOptions(statement);
-            statement.execute(script);
+            final String s = script;
+            statisticManager.executeSql(sql, () -> statement.execute(s));
           } catch (Exception e) {
             if (query.getHaltOnError()) {
               throw new ScriptException(e, sql, reader.getLineNumber());

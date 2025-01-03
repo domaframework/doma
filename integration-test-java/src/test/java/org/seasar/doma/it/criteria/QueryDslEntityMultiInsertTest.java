@@ -22,7 +22,6 @@ import org.seasar.doma.jdbc.criteria.QueryDsl;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 @ExtendWith(IntegrationTestEnvironment.class)
-@Run(unless = Dbms.SQLITE)
 public class QueryDslEntityMultiInsertTest {
   private final QueryDsl dsl;
   private final Dialect dialect;
@@ -170,7 +169,7 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
   public void onDuplicateKeyUpdate_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -202,7 +201,7 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
   public void onDuplicateKeyUpdate_duplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 
@@ -231,7 +230,7 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
   public void onDuplicateKeyIgnore_nonDuplicated_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 

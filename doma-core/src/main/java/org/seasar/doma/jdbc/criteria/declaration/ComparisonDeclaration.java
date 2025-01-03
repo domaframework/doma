@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.StreamSupport;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.SubSelectContext;
@@ -363,6 +364,27 @@ public abstract class ComparisonDeclaration {
    * @param <PROPERTY> the property type
    * @throws NullPointerException if {@code left} is null
    */
+  public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, Iterable<PROPERTY> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      add(
+          new Criterion.In(
+              new Operand.Prop(left),
+              StreamSupport.stream(right.spliterator(), false)
+                  .map(p -> new Operand.Param(left, p))
+                  .collect(toList())));
+    }
+  }
+
+  /**
+   * Adds a {@code IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code left} is null
+   */
   public <PROPERTY> void in(PropertyMetamodel<PROPERTY> left, List<PROPERTY> right) {
     Objects.requireNonNull(left);
     if (right != null) {
@@ -370,6 +392,27 @@ public abstract class ComparisonDeclaration {
           new Criterion.In(
               new Operand.Prop(left),
               right.stream().map(p -> new Operand.Param(left, p)).collect(toList())));
+    }
+  }
+
+  /**
+   * Adds a {@code NOT IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY> the property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY> void notIn(PropertyMetamodel<PROPERTY> left, Iterable<PROPERTY> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      add(
+          new Criterion.NotIn(
+              new Operand.Prop(left),
+              StreamSupport.stream(right.spliterator(), false)
+                  .map(p -> new Operand.Param(left, p))
+                  .collect(toList())));
     }
   }
 
@@ -434,6 +477,36 @@ public abstract class ComparisonDeclaration {
    */
   public <PROPERTY1, PROPERTY2> void in(
       Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
+      Iterable<Tuple2<PROPERTY1, PROPERTY2>> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+      Operand.Prop prop2 = new Operand.Prop(left.getItem2());
+      List<Tuple2<Operand.Param, Operand.Param>> params =
+          StreamSupport.stream(right.spliterator(), false)
+              .map(
+                  pair -> {
+                    Operand.Param param1 = new Operand.Param(left.getItem1(), pair.getItem1());
+                    Operand.Param param2 = new Operand.Param(left.getItem2(), pair.getItem2());
+                    return new Tuple2<>(param1, param2);
+                  })
+              .collect(toList());
+      add(new Criterion.InTuple2(new Tuple2<>(prop1, prop2), params));
+    }
+  }
+
+  /**
+   * Adds a {@code IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY1> the first property type
+   * @param <PROPERTY2> the second property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY1, PROPERTY2> void in(
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
       List<Tuple2<PROPERTY1, PROPERTY2>> right) {
     Objects.requireNonNull(left);
     if (right != null) {
@@ -449,6 +522,36 @@ public abstract class ComparisonDeclaration {
                   })
               .collect(toList());
       add(new Criterion.InTuple2(new Tuple2<>(prop1, prop2), params));
+    }
+  }
+
+  /**
+   * Adds a {@code NOT IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY1> the first property type
+   * @param <PROPERTY2> the second property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY1, PROPERTY2> void notIn(
+      Tuple2<PropertyMetamodel<PROPERTY1>, PropertyMetamodel<PROPERTY2>> left,
+      Iterable<Tuple2<PROPERTY1, PROPERTY2>> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+      Operand.Prop prop2 = new Operand.Prop(left.getItem2());
+      List<Tuple2<Operand.Param, Operand.Param>> params =
+          StreamSupport.stream(right.spliterator(), false)
+              .map(
+                  pair -> {
+                    Operand.Param param1 = new Operand.Param(left.getItem1(), pair.getItem1());
+                    Operand.Param param2 = new Operand.Param(left.getItem2(), pair.getItem2());
+                    return new Tuple2<>(param1, param2);
+                  })
+              .collect(toList());
+      add(new Criterion.NotInTuple2(new Tuple2<>(prop1, prop2), params));
     }
   }
 
@@ -537,6 +640,43 @@ public abstract class ComparisonDeclaration {
               PropertyMetamodel<PROPERTY2>,
               PropertyMetamodel<PROPERTY3>>
           left,
+      Iterable<Tuple3<PROPERTY1, PROPERTY2, PROPERTY3>> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+      Operand.Prop prop2 = new Operand.Prop(left.getItem2());
+      Operand.Prop prop3 = new Operand.Prop(left.getItem3());
+      List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> params =
+          StreamSupport.stream(right.spliterator(), false)
+              .map(
+                  triple -> {
+                    Operand.Param param1 = new Operand.Param(left.getItem1(), triple.getItem1());
+                    Operand.Param param2 = new Operand.Param(left.getItem2(), triple.getItem2());
+                    Operand.Param param3 = new Operand.Param(left.getItem3(), triple.getItem3());
+                    return new Tuple3<>(param1, param2, param3);
+                  })
+              .collect(toList());
+      add(new Criterion.InTuple3(new Tuple3<>(prop1, prop2, prop3), params));
+    }
+  }
+
+  /**
+   * Adds a {@code IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY1> the first property type
+   * @param <PROPERTY2> the second property type
+   * @param <PROPERTY3> the third property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY1, PROPERTY2, PROPERTY3> void in(
+      Tuple3<
+              PropertyMetamodel<PROPERTY1>,
+              PropertyMetamodel<PROPERTY2>,
+              PropertyMetamodel<PROPERTY3>>
+          left,
       List<Tuple3<PROPERTY1, PROPERTY2, PROPERTY3>> right) {
     Objects.requireNonNull(left);
     if (right != null) {
@@ -554,6 +694,43 @@ public abstract class ComparisonDeclaration {
                   })
               .collect(toList());
       add(new Criterion.InTuple3(new Tuple3<>(prop1, prop2, prop3), params));
+    }
+  }
+
+  /**
+   * Adds a {@code NOT IN} operator.
+   *
+   * @param left the left hand operand
+   * @param right the right hand operand. If this value is null, the query condition doesn't include
+   *     the operator.
+   * @param <PROPERTY1> the first property type
+   * @param <PROPERTY2> the second property type
+   * @param <PROPERTY3> the third property type
+   * @throws NullPointerException if {@code left} is null
+   */
+  public <PROPERTY1, PROPERTY2, PROPERTY3> void notIn(
+      Tuple3<
+              PropertyMetamodel<PROPERTY1>,
+              PropertyMetamodel<PROPERTY2>,
+              PropertyMetamodel<PROPERTY3>>
+          left,
+      Iterable<Tuple3<PROPERTY1, PROPERTY2, PROPERTY3>> right) {
+    Objects.requireNonNull(left);
+    if (right != null) {
+      Operand.Prop prop1 = new Operand.Prop(left.getItem1());
+      Operand.Prop prop2 = new Operand.Prop(left.getItem2());
+      Operand.Prop prop3 = new Operand.Prop(left.getItem3());
+      List<Tuple3<Operand.Param, Operand.Param, Operand.Param>> params =
+          StreamSupport.stream(right.spliterator(), false)
+              .map(
+                  triple -> {
+                    Operand.Param param1 = new Operand.Param(left.getItem1(), triple.getItem1());
+                    Operand.Param param2 = new Operand.Param(left.getItem2(), triple.getItem2());
+                    Operand.Param param3 = new Operand.Param(left.getItem3(), triple.getItem3());
+                    return new Tuple3<>(param1, param2, param3);
+                  })
+              .collect(toList());
+      add(new Criterion.NotInTuple3(new Tuple3<>(prop1, prop2, prop3), params));
     }
   }
 

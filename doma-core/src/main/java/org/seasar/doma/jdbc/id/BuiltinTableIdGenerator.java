@@ -15,6 +15,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.LongWrapper;
 import org.seasar.doma.wrapper.StringWrapper;
@@ -165,6 +166,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
 
   protected void updateId(IdGenerationConfig config, PreparedSql sql) {
     JdbcLogger logger = config.getJdbcLogger();
+    StatisticManager statisticManager = config.statisticManager();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
@@ -173,7 +175,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         setupOptions(config, preparedStatement);
         preparedStatement.setLong(1, allocationSize);
         preparedStatement.setString(2, pkColumnValue);
-        int rows = preparedStatement.executeUpdate();
+        int rows = statisticManager.executeSql(sql, preparedStatement::executeUpdate);
         if (rows != 1) {
           throw new JdbcException(Message.DOMA2017, config.getEntityType().getName());
         }
@@ -189,6 +191,7 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
 
   protected long selectId(IdGenerationConfig config, PreparedSql sql) {
     JdbcLogger logger = config.getJdbcLogger();
+    StatisticManager statisticManager = config.statisticManager();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
@@ -196,14 +199,18 @@ public class BuiltinTableIdGenerator extends AbstractPreGenerateIdGenerator
         logger.logSql(getClass().getName(), "selectId", sql);
         setupOptions(config, preparedStatement);
         preparedStatement.setString(1, pkColumnValue);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-          Object result = resultSet.getObject(1);
-          if (result instanceof Number) {
-            return ((Number) result).longValue();
-          }
-        }
-        throw new JdbcException(Message.DOMA2017, config.getEntityType().getName());
+        return statisticManager.executeSql(
+            sql,
+            () -> {
+              ResultSet resultSet = preparedStatement.executeQuery();
+              if (resultSet.next()) {
+                Object result = resultSet.getObject(1);
+                if (result instanceof Number) {
+                  return ((Number) result).longValue();
+                }
+              }
+              throw new JdbcException(Message.DOMA2017, config.getEntityType().getName());
+            });
       } catch (SQLException e) {
         throw new JdbcException(Message.DOMA2018, e, config.getEntityType().getName(), e);
       } finally {

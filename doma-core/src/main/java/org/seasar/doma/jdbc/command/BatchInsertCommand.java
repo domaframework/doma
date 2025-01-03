@@ -7,6 +7,7 @@ import org.seasar.doma.jdbc.BatchUniqueConstraintException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
 
@@ -20,14 +21,22 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
     if (query.isBatchSupported()) {
       return executeBatch(preparedStatement, sqls);
     }
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
     int sqlSize = sqls.size();
     int[] updatedRows = new int[sqlSize];
     int i = 0;
     for (PreparedSql sql : sqls) {
       log(sql);
       bindParameters(preparedStatement, sql);
-      updatedRows[i] = executeUpdate(preparedStatement, sql);
-      query.generateId(preparedStatement, i);
+      int index = i;
+      updatedRows[i] =
+          statisticManager.executeSql(
+              sql,
+              () -> {
+                int rows = executeUpdate(preparedStatement, sql);
+                query.generateId(preparedStatement, index);
+                return rows;
+              });
       i++;
     }
     return updatedRows;

@@ -8,6 +8,7 @@ import org.seasar.doma.internal.jdbc.util.JdbcUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.message.Message;
 
 /** A skeletal implementation of the {@link IdGenerator} interface. */
@@ -23,14 +24,19 @@ public abstract class AbstractIdGenerator implements IdGenerator {
    */
   protected long getGeneratedValue(IdGenerationConfig config, Sql<?> sql) {
     JdbcLogger logger = config.getJdbcLogger();
+    StatisticManager statisticManager = config.statisticManager();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "getGeneratedId", sql);
         setupOptions(config, preparedStatement);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return getGeneratedValue(config, resultSet);
+        return statisticManager.executeSql(
+            sql,
+            () -> {
+              ResultSet resultSet = preparedStatement.executeQuery();
+              return getGeneratedValue(config, resultSet);
+            });
       } catch (SQLException e) {
         throw new JdbcException(Message.DOMA2018, e, config.getEntityType().getName(), e);
       } finally {

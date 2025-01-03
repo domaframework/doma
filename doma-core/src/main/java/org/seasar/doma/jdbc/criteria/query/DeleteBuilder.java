@@ -7,9 +7,11 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class DeleteBuilder {
   private final Config config;
@@ -28,7 +30,7 @@ public class DeleteBuilder {
         context,
         commenter,
         new PreparedSqlBuilder(config, SqlKind.DELETE, sqlLogType),
-        new AliasManager(context));
+        createAliasManager(config, context));
   }
 
   public DeleteBuilder(
@@ -46,6 +48,17 @@ public class DeleteBuilder {
     support = new BuilderSupport(config, commenter, buf, aliasManager);
   }
 
+  private static AliasManager createAliasManager(Config config, Context context) {
+    Objects.requireNonNull(config);
+    Objects.requireNonNull(context);
+    Dialect dialect = config.getDialect();
+    if (dialect.supportsAliasInDeleteClause() || dialect.supportsAliasInDeleteStatement()) {
+      return AliasManager.create(config, context);
+    } else {
+      return AliasManager.createEmpty(config, context);
+    }
+  }
+
   public PreparedSql build() {
     buf.appendSql("delete");
     if (config.getDialect().supportsAliasInDeleteClause()) {
@@ -53,7 +66,11 @@ public class DeleteBuilder {
       alias(context.entityMetamodel);
     }
     buf.appendSql(" from ");
-    table(context.entityMetamodel);
+    tableOnly(context.entityMetamodel);
+    if (config.getDialect().supportsAliasInDeleteStatement()) {
+      buf.appendSql(" ");
+      alias(context.entityMetamodel);
+    }
     if (!context.where.isEmpty()) {
       buf.appendSql(" where ");
       int index = 0;
@@ -70,8 +87,8 @@ public class DeleteBuilder {
     support.alias(entityMetamodel);
   }
 
-  private void table(EntityMetamodel<?> entityMetamodel) {
-    support.table(entityMetamodel);
+  private void tableOnly(EntityMetamodel<?> entityMetamodel) {
+    support.tableOnly(entityMetamodel);
   }
 
   private void visitCriterion(int index, Criterion criterion) {

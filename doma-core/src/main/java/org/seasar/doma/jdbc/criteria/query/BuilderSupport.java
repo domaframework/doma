@@ -73,10 +73,7 @@ public class BuilderSupport {
       var entityMetamodel = withContext.entityMetamodel();
       var setOperationContext = withContext.setOperationContext();
       // cte name
-      buf.appendSql(
-          entityMetamodel
-              .asType()
-              .getQualifiedTableName(config.getNaming()::apply, config.getDialect()::applyQuote));
+      buf.appendSql(getQualifiedTableName(entityMetamodel));
       // cte column list
       buf.appendSql("(");
       for (PropertyMetamodel<?> propertyMetamodel : entityMetamodel.allPropertyMetamodels()) {
@@ -168,13 +165,16 @@ public class BuilderSupport {
   }
 
   public void table(EntityMetamodel<?> entityMetamodel) {
-    EntityType<?> entityType = entityMetamodel.asType();
-    buf.appendSql(
-        entityType.getQualifiedTableName(
-            config.getNaming()::apply, config.getDialect()::applyQuote));
+    String table = getQualifiedTableName(entityMetamodel);
+    buf.appendSql(table);
     buf.appendSql(" ");
     String alias = getAlias(entityMetamodel);
     buf.appendSql(alias);
+  }
+
+  public void tableOnly(EntityMetamodel<?> entityMetamodel) {
+    String table = getQualifiedTableName(entityMetamodel);
+    buf.appendSql(table);
   }
 
   public void alias(EntityMetamodel<?> entityMetamodel) {
@@ -239,6 +239,12 @@ public class BuilderSupport {
 
   public void visitCriterion(int index, Criterion criterion) {
     criterion.accept(new CriterionVisitor(index));
+  }
+
+  private String getQualifiedTableName(EntityMetamodel<?> entityMetamodel) {
+    return entityMetamodel
+        .asType()
+        .getQualifiedTableName(config.getNaming()::apply, config.getDialect()::applyQuote);
   }
 
   private class OperandVisitor implements Operand.Visitor<Void> {
@@ -498,7 +504,7 @@ public class BuilderSupport {
         buf.appendSql(" not");
       }
       buf.appendSql(" in (");
-      AliasManager child = new AliasManager(right, aliasManager);
+      AliasManager child = AliasManager.createChild(config, right, aliasManager);
       SelectBuilder builder = new SelectBuilder(config, right, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");
@@ -545,7 +551,7 @@ public class BuilderSupport {
         buf.appendSql(" not");
       }
       buf.appendSql(" in (");
-      AliasManager child = new AliasManager(right, aliasManager);
+      AliasManager child = AliasManager.createChild(config, right, aliasManager);
       SelectBuilder builder = new SelectBuilder(config, right, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");
@@ -598,7 +604,7 @@ public class BuilderSupport {
         buf.appendSql(" not");
       }
       buf.appendSql(" in (");
-      AliasManager child = new AliasManager(right, aliasManager);
+      AliasManager child = AliasManager.createChild(config, right, aliasManager);
       SelectBuilder builder = new SelectBuilder(config, right, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");
@@ -622,7 +628,7 @@ public class BuilderSupport {
         buf.appendSql("not ");
       }
       buf.appendSql("exists (");
-      AliasManager child = new AliasManager(context, aliasManager);
+      AliasManager child = AliasManager.createChild(config, context, aliasManager);
       SelectBuilder builder = new SelectBuilder(config, context, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");
@@ -712,6 +718,9 @@ public class BuilderSupport {
       String alias = aliasManager.getAlias(propertyMetamodel);
       if (alias == null) {
         throw new DomaException(Message.DOMA6004, propertyMetamodel.getName());
+      }
+      if (alias.isEmpty()) {
+        return Optional.empty();
       }
       return Optional.of(alias);
     }
@@ -859,7 +868,7 @@ public class BuilderSupport {
     @Override
     public void visit(SelectExpression<?> expression) {
       buf.appendSql("(");
-      AliasManager child = new AliasManager(expression.context, aliasManager);
+      AliasManager child = AliasManager.createChild(config, expression.context, aliasManager);
       SelectBuilder builder = new SelectBuilder(config, expression.context, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");

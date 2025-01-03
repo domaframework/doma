@@ -13,6 +13,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.context.OrderByItem;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class SetOperationBuilder {
 
@@ -56,8 +57,8 @@ public class SetOperationBuilder {
             SelectContext context = select.context;
             AliasManager am =
                 parentAliasManager
-                    .map(it -> new AliasManager(context, it))
-                    .orElseGet(() -> new AliasManager(context));
+                    .map(it -> AliasManager.createChild(config, context, it))
+                    .orElseGet(() -> AliasManager.create(config, context));
             SelectBuilder builder = new SelectBuilder(config, context, commenter, buf, am);
             builder.interpret();
             return null;
@@ -80,9 +81,10 @@ public class SetOperationBuilder {
               SetOperationContext<?> left,
               SetOperationContext<?> right,
               List<Pair<OrderByItem.Index, String>> orderBy) {
+            Dialect dialect = config.getDialect();
             String open;
             String close;
-            if (orderBy.isEmpty()) {
+            if (orderBy.isEmpty() || !dialect.supportsParenthesesForSetOperands()) {
               open = "";
               close = "";
             } else {

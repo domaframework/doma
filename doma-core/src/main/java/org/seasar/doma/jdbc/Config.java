@@ -8,6 +8,7 @@ import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityListener;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 import org.seasar.doma.message.Message;
 
@@ -233,6 +234,15 @@ public interface Config {
    */
   default SqlBuilderSettings getSqlBuilderSettings() {
     return ConfigSupport.defaultSqlBuilderSettings;
+  }
+
+  /**
+   * Returns the statistic manager instance.
+   *
+   * @return the {@link StatisticManager} instance
+   */
+  default StatisticManager getStatisticManager() {
+    return ConfigSupport.defaultStatisticManager;
   }
 
   /**

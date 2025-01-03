@@ -9,6 +9,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.RequiresNewController;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 /** A configuration for the identity generation. */
 public class IdGenerationConfig {
@@ -70,6 +71,10 @@ public class IdGenerationConfig {
 
   public EntityType<?> getEntityType() {
     return entityType;
+  }
+
+  public StatisticManager statisticManager() {
+    return config.getStatisticManager();
   }
 
   @SuppressWarnings("deprecation")

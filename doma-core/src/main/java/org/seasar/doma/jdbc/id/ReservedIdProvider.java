@@ -14,6 +14,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.message.Message;
 
 /** An identity provider that reserves identity values in advance. */
@@ -61,25 +62,31 @@ public class ReservedIdProvider implements IdProvider {
   }
 
   protected long[] getIdentities() {
-    long[] identities = new long[reservationSize];
     Sql<?> sql = createSql();
     JdbcLogger logger = config.getJdbcLogger();
+    StatisticManager statisticManager = config.getStatisticManager();
     Connection connection = JdbcUtil.getConnection(config.getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
       try {
         logger.logSql(getClass().getName(), "getIdentities", sql);
         setupOptions(preparedStatement);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        try {
-          for (int i = 0; i < reservationSize && resultSet.next(); i++) {
-            identities[i] = resultSet.getLong(1);
-          }
-        } catch (final SQLException e) {
-          throw new JdbcException(Message.DOMA2083, e, entityType.getName(), e);
-        } finally {
-          JdbcUtil.close(resultSet, logger);
-        }
+        return statisticManager.executeSql(
+            sql,
+            () -> {
+              long[] identities = new long[reservationSize];
+              ResultSet resultSet = preparedStatement.executeQuery();
+              try {
+                for (int i = 0; i < reservationSize && resultSet.next(); i++) {
+                  identities[i] = resultSet.getLong(1);
+                }
+              } catch (final SQLException e) {
+                throw new JdbcException(Message.DOMA2083, e, entityType.getName(), e);
+              } finally {
+                JdbcUtil.close(resultSet, logger);
+              }
+              return identities;
+            });
       } catch (SQLException e) {
         throw new JdbcException(Message.DOMA2083, e, entityType.getName(), e);
       } finally {
@@ -88,7 +95,6 @@ public class ReservedIdProvider implements IdProvider {
     } finally {
       JdbcUtil.close(connection, logger);
     }
-    return identities;
   }
 
   protected Sql<?> createSql() {

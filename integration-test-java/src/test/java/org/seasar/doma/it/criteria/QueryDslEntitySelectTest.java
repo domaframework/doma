@@ -42,7 +42,6 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
-@Run(unless = Dbms.SQLITE)
 public class QueryDslEntitySelectTest {
 
   private final Config config;
@@ -465,7 +464,7 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
   void where_in3() {
     Employee_ e = new Employee_();
 
@@ -564,7 +563,7 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
   void where_in3_subQuery() {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();

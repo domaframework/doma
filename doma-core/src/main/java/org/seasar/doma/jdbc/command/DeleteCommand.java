@@ -3,6 +3,7 @@ package org.seasar.doma.jdbc.command;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.DeleteQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class DeleteCommand extends ModifyCommand<DeleteQuery> {
 
@@ -12,6 +13,7 @@ public class DeleteCommand extends ModifyCommand<DeleteQuery> {
 
   @Override
   protected int executeInternal(PreparedStatement preparedStatement) throws SQLException {
-    return executeUpdate(preparedStatement);
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
+    return statisticManager.executeSql(query.getSql(), () -> executeUpdate(preparedStatement));
   }
 }

@@ -7,7 +7,6 @@ import org.seasar.doma.jdbc.ClassHelper;
 import org.seasar.doma.jdbc.CommandImplementors;
 import org.seasar.doma.jdbc.Commenter;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.ConfigException;
 import org.seasar.doma.jdbc.EntityListenerProvider;
 import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.MapKeyNaming;
@@ -20,6 +19,7 @@ import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 
 public class RuntimeConfig implements Config {
@@ -141,19 +141,16 @@ public class RuntimeConfig implements Config {
 
   @Override
   public EntityListenerProvider getEntityListenerProvider() {
-    EntityListenerProvider provider = config.getEntityListenerProvider();
-    if (provider == null) {
-      throw new ConfigException(config.getClass().getName(), "getEntityListenerProvider");
-    }
-    return provider;
+    return config.getEntityListenerProvider();
   }
 
   @Override
   public SqlBuilderSettings getSqlBuilderSettings() {
-    SqlBuilderSettings settings = config.getSqlBuilderSettings();
-    if (settings == null) {
-      throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
-    }
-    return settings;
+    return config.getSqlBuilderSettings();
+  }
+
+  @Override
+  public StatisticManager getStatisticManager() {
+    return config.getStatisticManager();
   }
 }

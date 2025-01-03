@@ -25,6 +25,7 @@ import static org.seasar.doma.jdbc.criteria.expression.Expressions.when;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -397,6 +398,22 @@ class QueryDslSqlSelectTest {
   }
 
   @Test
+  void where_in_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.in(e.id, new LinkedHashSet<Integer>(Arrays.asList(1, 2)));
+                  c.in(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.ID in (1, 2)", sql.getFormattedSql());
+  }
+
+  @Test
   void where_in_padding() {
     QueryDsl newDsl = new QueryDsl(inListPaddingConfig);
 
@@ -451,6 +468,22 @@ class QueryDslSqlSelectTest {
   }
 
   @Test
+  void where_notIn_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.notIn(e.id, new LinkedHashSet<Integer>(Arrays.asList(1, 2)));
+                  c.notIn(e.id, (List<Integer>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.ID not in (1, 2)", sql.getFormattedSql());
+  }
+
+  @Test
   void where_in_tuple2() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
@@ -471,6 +504,27 @@ class QueryDslSqlSelectTest {
   }
 
   @Test
+  void where_in_tuple2_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.in(
+                      new Tuple2<>(e.id, e.name),
+                      new LinkedHashSet<>(
+                          Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b"))));
+                  c.in(new Tuple2<>(e.id, e.name), (List<Tuple2<Integer, String>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) in ((1, 'a'), (2, 'b'))",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void where_notIn_tuple2() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
@@ -480,6 +534,27 @@ class QueryDslSqlSelectTest {
                   c.notIn(
                       new Tuple2<>(e.id, e.name),
                       Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b")));
+                  c.notIn(new Tuple2<>(e.id, e.name), (List<Tuple2<Integer, String>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME) not in ((1, 'a'), (2, 'b'))",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_notIn_tuple2_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.notIn(
+                      new Tuple2<>(e.id, e.name),
+                      new LinkedHashSet<>(
+                          Arrays.asList(new Tuple2<>(1, "a"), new Tuple2<>(2, "b"))));
                   c.notIn(new Tuple2<>(e.id, e.name), (List<Tuple2<Integer, String>>) null);
                 })
             .select(e.id);
@@ -515,6 +590,31 @@ class QueryDslSqlSelectTest {
   }
 
   @Test
+  void where_in_tuple3_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.in(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      new LinkedHashSet<>(
+                          Arrays.asList(
+                              new Tuple3<>(1, "a", BigDecimal.ONE),
+                              new Tuple3<>(2, "b", BigDecimal.TEN))));
+                  c.in(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      (List<Tuple3<Integer, String, BigDecimal>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.SALARY) in ((1, 'a', 1), (2, 'b', 10))",
+        sql.getFormattedSql());
+  }
+
+  @Test
   void where_notIn_tuple3() {
     Emp_ e = new Emp_();
     Buildable<?> stmt =
@@ -526,6 +626,31 @@ class QueryDslSqlSelectTest {
                       Arrays.asList(
                           new Tuple3<>(1, "a", BigDecimal.ONE),
                           new Tuple3<>(2, "b", BigDecimal.TEN)));
+                  c.notIn(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      (List<Tuple3<Integer, String, BigDecimal>>) null);
+                })
+            .select(e.id);
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where (t0_.ID, t0_.NAME, t0_.SALARY) not in ((1, 'a', 1), (2, 'b', 10))",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void where_notIn_tuple3_iterable() {
+    Emp_ e = new Emp_();
+    Buildable<?> stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.notIn(
+                      new Tuple3<>(e.id, e.name, e.salary),
+                      new LinkedHashSet<>(
+                          Arrays.asList(
+                              new Tuple3<>(1, "a", BigDecimal.ONE),
+                              new Tuple3<>(2, "b", BigDecimal.TEN))));
                   c.notIn(
                       new Tuple3<>(e.id, e.name, e.salary),
                       (List<Tuple3<Integer, String, BigDecimal>>) null);

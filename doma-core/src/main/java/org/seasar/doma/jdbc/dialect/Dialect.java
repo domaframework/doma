@@ -146,6 +146,19 @@ public interface Dialect {
   }
 
   /**
+   * Determines whether the use of table aliases is supported in the context of a DELETE statement.
+   *
+   * <pre>
+   * DELETE FROM employee t
+   * </pre>
+   *
+   * @return true if table aliasing is supported in DELETE statements, false otherwise
+   */
+  default boolean supportsAliasInDeleteStatement() {
+    return true;
+  }
+
+  /**
    * Whether this object supports alias reference in UPDATE clause as follows:
    *
    * <pre>
@@ -156,6 +169,19 @@ public interface Dialect {
    */
   default boolean supportsAliasInUpdateClause() {
     return false;
+  }
+
+  /**
+   * Determines whether the use of table aliases is supported in the context of an UPDATE statement.
+   *
+   * <pre>
+   * UPDATE employee t SET t.age = 30
+   * </pre>
+   *
+   * @return true if table aliasing is supported in UPDATE statements, false otherwise
+   */
+  default boolean supportsAliasInUpdateStatement() {
+    return true;
   }
 
   /**
@@ -177,6 +203,10 @@ public interface Dialect {
 
   default boolean supportsUpsertEmulationWithMergeStatement() {
     return false;
+  }
+
+  default boolean supportsParenthesesForSetOperands() {
+    return true;
   }
 
   /**

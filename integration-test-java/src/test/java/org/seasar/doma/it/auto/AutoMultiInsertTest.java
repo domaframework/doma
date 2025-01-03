@@ -339,7 +339,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL, Dbms.SQLSERVER, Dbms.ORACLE})
   public void testEmbeddable(Config config) {
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
@@ -406,7 +405,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -448,7 +446,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -486,7 +483,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -537,7 +533,6 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -583,7 +578,7 @@ public class AutoMultiInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
   public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
