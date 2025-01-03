@@ -19,6 +19,7 @@ import org.seasar.doma.jdbc.SqlFileRepository;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 import org.seasar.doma.jdbc.tx.TransactionManager;
 
 public class RuntimeConfig implements Config {
@@ -146,5 +147,10 @@ public class RuntimeConfig implements Config {
   @Override
   public SqlBuilderSettings getSqlBuilderSettings() {
     return config.getSqlBuilderSettings();
+  }
+
+  @Override
+  public StatisticManager getStatisticManager() {
+    return config.getStatisticManager();
   }
 }

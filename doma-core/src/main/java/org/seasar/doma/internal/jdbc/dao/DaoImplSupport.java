@@ -105,6 +105,9 @@ public class DaoImplSupport implements ConfigProvider {
     if (config.getSqlBuilderSettings() == null) {
       throw new ConfigException(config.getClass().getName(), "getSqlBuilderSettings");
     }
+    if (config.getStatisticManager() == null) {
+      throw new ConfigException(config.getClass().getName(), "getStatisticManager");
+    }
   }
 
   @Override

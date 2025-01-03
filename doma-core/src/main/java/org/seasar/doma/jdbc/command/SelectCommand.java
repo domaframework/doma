@@ -18,6 +18,7 @@ import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.SqlExecutionException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class SelectCommand<RESULT> implements Command<RESULT> {
 
@@ -42,6 +43,7 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
   @Override
   public RESULT execute() {
     Supplier<RESULT> supplier = null;
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {
       PreparedStatement preparedStatement = JdbcUtil.prepareStatement(connection, sql);
@@ -49,16 +51,33 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         log();
         setupOptions(preparedStatement);
         bindParameters(preparedStatement);
-        supplier = executeQuery(preparedStatement);
+        if (statisticManager.isEnabled()) {
+          long startTimeNanos = System.nanoTime();
+          supplier =
+              defer(
+                  executeQuery(preparedStatement),
+                  () -> {
+                    // If a ResultSet is wrapped in a Stream, the execution time is considered to
+                    // last until the Stream is closed.
+                    long endTimeNanos = System.nanoTime();
+                    statisticManager.recordSqlExecution(sql, startTimeNanos, endTimeNanos);
+                  });
+        } else {
+          supplier = executeQuery(preparedStatement);
+        }
       } catch (SQLException e) {
         Dialect dialect = query.getConfig().getDialect();
         throw new SqlExecutionException(
             query.getConfig().getExceptionSqlLogType(), sql, e, dialect.getRootCause(e));
       } finally {
-        close(supplier, () -> JdbcUtil.close(preparedStatement, query.getConfig().getJdbcLogger()));
+        supplier =
+            defer(
+                supplier,
+                () -> JdbcUtil.close(preparedStatement, query.getConfig().getJdbcLogger()));
       }
     } finally {
-      close(supplier, () -> JdbcUtil.close(connection, query.getConfig().getJdbcLogger()));
+      supplier =
+          defer(supplier, () -> JdbcUtil.close(connection, query.getConfig().getJdbcLogger()));
     }
     return supplier.get();
   }
@@ -90,10 +109,11 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
     ResultSet resultSet = preparedStatement.executeQuery();
     try {
       supplier = handleResultSet(resultSet);
-      return supplier;
     } finally {
-      close(supplier, () -> JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger()));
+      supplier =
+          defer(supplier, () -> JdbcUtil.close(resultSet, query.getConfig().getJdbcLogger()));
     }
+    return supplier;
   }
 
   protected Supplier<RESULT> handleResultSet(ResultSet resultSet) throws SQLException {
@@ -108,6 +128,10 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
         });
   }
 
+  /**
+   * @deprecated Use {@link #defer(Supplier, Runnable)} instead.
+   */
+  @Deprecated(forRemoval = true)
   protected void close(Supplier<RESULT> supplier, Runnable closeHandler) {
     if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
       RESULT result = supplier.get();
@@ -121,5 +145,21 @@ public class SelectCommand<RESULT> implements Command<RESULT> {
     } else {
       closeHandler.run();
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  protected Supplier<RESULT> defer(Supplier<RESULT> supplier, Runnable runnable) {
+    if (supplier != null && query.isResultStream() && query.getFetchType() == FetchType.LAZY) {
+      RESULT value = supplier.get();
+      if (value instanceof Stream<?> stream) {
+        Stream<?> newStream = stream.onClose(runnable);
+        return () -> (RESULT) newStream;
+      } else {
+        runnable.run();
+      }
+    } else {
+      runnable.run();
+    }
+    return supplier;
   }
 }

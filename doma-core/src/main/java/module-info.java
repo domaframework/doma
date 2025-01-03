@@ -20,9 +20,11 @@ module org.seasar.doma.core {
   exports org.seasar.doma.jdbc.entity;
   exports org.seasar.doma.jdbc.id;
   exports org.seasar.doma.jdbc.query;
+  exports org.seasar.doma.jdbc.statistic;
   exports org.seasar.doma.jdbc.tx;
   exports org.seasar.doma.jdbc.type;
   exports org.seasar.doma.message;
+  exports org.seasar.doma.util;
   exports org.seasar.doma.wrapper;
 
   // Exports: These are mainly accessed from generated code
