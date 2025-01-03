@@ -485,7 +485,7 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
   void where_in2_padding() {
     Config newConfig =
         new DelegatingConfig(config) {
@@ -524,7 +524,7 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
-  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.H2, Dbms.ORACLE})
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
   void where_in3_padding() {
     Config newConfig =
         new DelegatingConfig(config) {
