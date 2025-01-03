@@ -11,6 +11,8 @@ import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.jdbc.sql.BasicInParameter;
 import org.seasar.doma.internal.jdbc.sql.ConvertToLogFormatFunction;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.internal.util.IntegerUtil;
+import org.seasar.doma.internal.util.PaddingIterator;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
@@ -487,7 +489,7 @@ public class BuilderSupport {
       if (right.isEmpty()) {
         buf.appendSql("null");
       } else {
-        for (Operand.Param p : right) {
+        for (Operand.Param p : applyInListPadding(right)) {
           param(p);
           buf.appendSql(", ");
         }
@@ -524,14 +526,15 @@ public class BuilderSupport {
       if (right.isEmpty()) {
         buf.appendSql("null, null");
       } else {
-        right.forEach(
-            pair -> {
-              buf.appendSql("(");
-              param(pair.getItem1());
-              buf.appendSql(", ");
-              param(pair.getItem2());
-              buf.appendSql("), ");
-            });
+        applyInListPadding(right)
+            .forEach(
+                pair -> {
+                  buf.appendSql("(");
+                  param(pair.getItem1());
+                  buf.appendSql(", ");
+                  param(pair.getItem2());
+                  buf.appendSql("), ");
+                });
         buf.cutBackSql(2);
       }
       buf.appendSql(")");
@@ -572,16 +575,17 @@ public class BuilderSupport {
       if (right.isEmpty()) {
         buf.appendSql("null, null, null");
       } else {
-        right.forEach(
-            triple -> {
-              buf.appendSql("(");
-              param(triple.getItem1());
-              buf.appendSql(", ");
-              param(triple.getItem2());
-              buf.appendSql(", ");
-              param(triple.getItem3());
-              buf.appendSql("), ");
-            });
+        applyInListPadding(right)
+            .forEach(
+                triple -> {
+                  buf.appendSql("(");
+                  param(triple.getItem1());
+                  buf.appendSql(", ");
+                  param(triple.getItem2());
+                  buf.appendSql(", ");
+                  param(triple.getItem3());
+                  buf.appendSql("), ");
+                });
         buf.cutBackSql(2);
       }
       buf.appendSql(")");
@@ -604,6 +608,19 @@ public class BuilderSupport {
       SelectBuilder builder = new SelectBuilder(config, right, commenter, buf, child);
       builder.interpret();
       buf.appendSql(")");
+    }
+
+    private <E> Iterable<E> applyInListPadding(List<E> list) {
+      if (list.isEmpty() || !config.getSqlBuilderSettings().requiresInListPadding()) {
+        return list;
+      }
+      int size = list.size();
+      int maxSize = IntegerUtil.nextPowerOfTwo(size);
+      int paddingSize = maxSize - size;
+      if (paddingSize <= 0) {
+        return list;
+      }
+      return () -> new PaddingIterator<>(list.iterator(), paddingSize);
     }
 
     public void exists(SelectContext context, boolean not) {

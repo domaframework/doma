@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.GROUP_BY_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.HAVING_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IF_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.INTERSECT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.IN_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LINE_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.LITERAL_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.MINUS_WORD;
@@ -317,6 +318,15 @@ public class SqlTokenizerTest {
     SqlTokenizer tokenizer = new SqlTokenizer("set");
     assertEquals(SET_WORD, tokenizer.next());
     assertEquals("set", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testIn() {
+    SqlTokenizer tokenizer = new SqlTokenizer("in");
+    assertEquals(IN_WORD, tokenizer.next());
+    assertEquals("in", tokenizer.getToken());
     assertEquals(EOF, tokenizer.next());
     assertNull(tokenizer.getToken());
   }

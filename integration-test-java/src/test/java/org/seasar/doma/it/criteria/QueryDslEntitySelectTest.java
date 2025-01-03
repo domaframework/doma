@@ -21,11 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.it.Dbms;
+import org.seasar.doma.it.DelegatingConfig;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.criteria.QueryDsl;
 import org.seasar.doma.jdbc.criteria.context.WithContext;
@@ -42,9 +44,11 @@ import org.seasar.doma.message.Message;
 @ExtendWith(IntegrationTestEnvironment.class)
 public class QueryDslEntitySelectTest {
 
+  private final Config config;
   private final QueryDsl dsl;
 
   public QueryDslEntitySelectTest(Config config) {
+    this.config = Objects.requireNonNull(config);
     this.dsl = new QueryDsl(config);
   }
 
@@ -415,6 +419,37 @@ public class QueryDslEntitySelectTest {
   }
 
   @Test
+  void where_in_padding() {
+    Config newConfig =
+        new DelegatingConfig(config) {
+
+          @Override
+          public SqlBuilderSettings getSqlBuilderSettings() {
+            return new SqlBuilderSettings() {
+
+              @Override
+              public boolean requiresInListPadding() {
+                return true;
+              }
+            };
+          }
+        };
+    QueryDsl newDsl = new QueryDsl(newConfig);
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        newDsl
+            .from(e)
+            .where(c -> c.in(e.employeeId, Arrays.asList(2, 3, 4)))
+            .orderBy(c -> c.asc(e.employeeId))
+            .peek(sql -> assertEquals(4, sql.getParameters().size()))
+            .fetch();
+
+    assertEquals(3, list.size());
+  }
+
+  @Test
   void where_in_subQuery() {
     Employee_ e = new Employee_();
     Employee_ e2 = new Employee_();
@@ -444,6 +479,84 @@ public class QueryDslEntitySelectTest {
                             new Tuple3<>(3, 7521, "WARD"),
                             new Tuple3<>(4, 7566, "JONES"))))
             .orderBy(c -> c.asc(e.employeeId))
+            .fetch();
+
+    assertEquals(3, list.size());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
+  void where_in2_padding() {
+    Config newConfig =
+        new DelegatingConfig(config) {
+
+          @Override
+          public SqlBuilderSettings getSqlBuilderSettings() {
+            return new SqlBuilderSettings() {
+
+              @Override
+              public boolean requiresInListPadding() {
+                return true;
+              }
+            };
+          }
+        };
+    QueryDsl newDsl = new QueryDsl(newConfig);
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        newDsl
+            .from(e)
+            .where(
+                c ->
+                    c.in(
+                        new Tuple2<>(e.employeeId, e.employeeName),
+                        Arrays.asList(
+                            new Tuple2<>(2, "ALLEN"),
+                            new Tuple2<>(3, "WARD"),
+                            new Tuple2<>(4, "JONES"))))
+            .orderBy(c -> c.asc(e.employeeId))
+            .peek(sql -> assertEquals(8, sql.getParameters().size()))
+            .fetch();
+
+    assertEquals(3, list.size());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.H2, Dbms.MYSQL, Dbms.POSTGRESQL, Dbms.SQLITE, Dbms.ORACLE})
+  void where_in3_padding() {
+    Config newConfig =
+        new DelegatingConfig(config) {
+
+          @Override
+          public SqlBuilderSettings getSqlBuilderSettings() {
+            return new SqlBuilderSettings() {
+
+              @Override
+              public boolean requiresInListPadding() {
+                return true;
+              }
+            };
+          }
+        };
+    QueryDsl newDsl = new QueryDsl(newConfig);
+
+    Employee_ e = new Employee_();
+
+    List<Employee> list =
+        newDsl
+            .from(e)
+            .where(
+                c ->
+                    c.in(
+                        new Tuple3<>(e.employeeId, e.employeeNo, e.employeeName),
+                        Arrays.asList(
+                            new Tuple3<>(2, 7499, "ALLEN"),
+                            new Tuple3<>(3, 7521, "WARD"),
+                            new Tuple3<>(4, 7566, "JONES"))))
+            .orderBy(c -> c.asc(e.employeeId))
+            .peek(sql -> assertEquals(12, sql.getParameters().size()))
             .fetch();
 
     assertEquals(3, list.size());

@@ -33,4 +33,13 @@ public interface SqlBuilderSettings {
   default boolean shouldRemoveBlankLines() {
     return false;
   }
+
+  /**
+   * Indicates whether padding is required for the "IN" list clauses in SQL generation.
+   *
+   * @return {@code true} if padding is required; {@code false} otherwise
+   */
+  default boolean requiresInListPadding() {
+    return false;
+  }
 }

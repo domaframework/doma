@@ -5,6 +5,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -64,6 +65,8 @@ import org.seasar.doma.internal.jdbc.sql.node.ValueNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhereClauseNode;
 import org.seasar.doma.internal.jdbc.sql.node.WhitespaceNode;
 import org.seasar.doma.internal.jdbc.sql.node.WordNode;
+import org.seasar.doma.internal.util.IntegerUtil;
+import org.seasar.doma.internal.util.PaddingIterator;
 import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
@@ -364,7 +367,7 @@ public class NodePreparedSqlBuilder
       Class<?> valueClass,
       Consumer<Scalar<?, ?>> consumer) {
     int index = 0;
-    for (Object v : values) {
+    for (Object v : applyInListPadding(node, values)) {
       if (v == null) {
         SqlLocation location = node.getLocation();
         throw new JdbcException(
@@ -389,6 +392,29 @@ public class NodePreparedSqlBuilder
       p.cutBackSqlBuf(2);
       p.cutBackFormattedSqlBuf(2);
     }
+  }
+
+  private <E> Iterable<E> applyInListPadding(ValueNode node, Iterable<E> values) {
+    if (node.getInNode() == null || !config.getSqlBuilderSettings().requiresInListPadding()) {
+      return values;
+    }
+    Collection<E> valueCollection;
+    if (values instanceof Collection<E> collection) {
+      valueCollection = collection;
+    } else {
+      valueCollection = new ArrayList<>();
+      values.forEach(valueCollection::add);
+    }
+    if (valueCollection.isEmpty()) {
+      return valueCollection;
+    }
+    int size = valueCollection.size();
+    int maxSize = IntegerUtil.nextPowerOfTwo(size);
+    int paddingSize = maxSize - size;
+    if (paddingSize <= 0) {
+      return valueCollection;
+    }
+    return () -> new PaddingIterator<>(valueCollection.iterator(), paddingSize);
   }
 
   @Override
