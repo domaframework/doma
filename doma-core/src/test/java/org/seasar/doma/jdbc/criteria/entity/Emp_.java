@@ -12,7 +12,7 @@ public class Emp_ implements EntityMetamodel<Emp> {
   private final String qualifiedTableName;
 
   public Emp_() {
-    this.qualifiedTableName = "";
+    this.qualifiedTableName = "EMP";
   }
 
   public Emp_(String qualifiedTableName) {

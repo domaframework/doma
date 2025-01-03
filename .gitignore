@@ -10,3 +10,4 @@
 .kotlin
 out
 .factorypath
+/integration-test-java/test.db

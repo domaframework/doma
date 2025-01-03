@@ -89,7 +89,7 @@ public class InsertBuilder {
             });
     buf.cutBackSql(2);
     buf.appendSql(") ");
-    AliasManager aliasManager = new AliasManager(context.selectContext);
+    AliasManager aliasManager = AliasManager.create(config, context.selectContext);
     SelectBuilder builder =
         new SelectBuilder(config, context.selectContext, Function.identity(), buf, aliasManager);
     builder.interpret();

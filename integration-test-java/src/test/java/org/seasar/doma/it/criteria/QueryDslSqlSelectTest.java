@@ -60,7 +60,6 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple9;
 import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
-@Run(unless = Dbms.SQLITE)
 public class QueryDslSqlSelectTest {
 
   private final QueryDsl dsl;
@@ -687,6 +686,7 @@ public class QueryDslSqlSelectTest {
   }
 
   @Test
+  @Run(unless = Dbms.SQLITE)
   void forUpdate() {
     Employee_ e = new Employee_();
 

@@ -59,7 +59,7 @@ public class _Dept extends AbstractEntityType<Dept> {
 
   private final String __schemaName = null;
 
-  private final String __tableName = "";
+  private final String __tableName = "DEPT";
 
   private final List<EntityPropertyType<Dept, ?>> __idPropertyTypes;
 

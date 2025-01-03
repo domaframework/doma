@@ -355,7 +355,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_nonDuplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -379,7 +378,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_duplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -409,7 +407,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept =
@@ -443,7 +440,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_nonDuplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -467,7 +463,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_duplicated(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -491,7 +486,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept =
@@ -519,7 +513,7 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8})
   public void insert_DuplicateKeyType_UPDATE_duplicated_on_specified_keys(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -535,7 +529,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
@@ -584,7 +577,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
@@ -612,7 +604,6 @@ public class AutoInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
