@@ -41,7 +41,7 @@ public class SelectBuilder {
         context,
         commenter,
         new PreparedSqlBuilder(config, SqlKind.SELECT, sqlLogType),
-        new AliasManager(context));
+        AliasManager.create(config, context));
   }
 
   public SelectBuilder(

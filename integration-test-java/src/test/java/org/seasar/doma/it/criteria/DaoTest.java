@@ -6,16 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
-import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.CriteriaDao;
 import org.seasar.doma.it.dao.CriteriaDaoImpl;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.Config;
 
 @ExtendWith(IntegrationTestEnvironment.class)
-@Run(unless = Dbms.SQLITE)
 public class DaoTest {
 
   @Test

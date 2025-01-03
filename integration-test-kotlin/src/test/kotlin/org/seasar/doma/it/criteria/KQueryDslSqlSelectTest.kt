@@ -24,7 +24,6 @@ import java.time.LocalDate
 import kotlin.streams.asSequence
 
 @ExtendWith(IntegrationTestEnvironment::class)
-@Run(unless = [Dbms.SQLITE])
 class KQueryDslSqlSelectTest(config: Config) {
 
     private val dsl = KQueryDsl(config)
@@ -303,6 +302,7 @@ class KQueryDslSqlSelectTest(config: Config) {
     }
 
     @Test
+    @Run(unless = [Dbms.SQLITE])
     fun forUpdate() {
         val e = Employee_()
         val list = dsl.from(e).where { eq(e.employeeId, 1) }.forUpdate().fetch()

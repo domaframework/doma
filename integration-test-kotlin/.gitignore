@@ -10,3 +10,4 @@
 .idea
 out
 .sdkmanrc
+test.db

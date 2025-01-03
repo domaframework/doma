@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.Collections;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.expr.ExpressionFunctions;
+import org.seasar.doma.internal.jdbc.dialect.MysqlPagingTransformer;
 import org.seasar.doma.internal.jdbc.dialect.SqlitePagingTransformer;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectForUpdateType;
@@ -12,6 +14,9 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.criteria.query.CriteriaBuilder;
+import org.seasar.doma.jdbc.query.UpsertAssembler;
+import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
 /** A dialect for SQLite. */
 public class SqliteDialect extends StandardDialect {
@@ -94,6 +99,26 @@ public class SqliteDialect extends StandardDialect {
   }
 
   @Override
+  public boolean supportsAliasInDeleteStatement() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsAliasInUpdateStatement() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsAutoIncrementWhenInsertingMultipleRows() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsParenthesesForSetOperands() {
+    return false;
+  }
+
+  @Override
   public boolean isUniqueConstraintViolated(SQLException sqlException) {
     if (sqlException == null) {
       throw new DomaNullPointerException("sqlException");
@@ -103,6 +128,16 @@ public class SqliteDialect extends StandardDialect {
     return message != null
         && (message.startsWith("[SQLITE_CONSTRAINT_PRIMARYKEY]")
             || message.startsWith("[SQLITE_CONSTRAINT_UNIQUE]"));
+  }
+
+  @Override
+  public CriteriaBuilder getCriteriaBuilder() {
+    return new SqliteCriteriaBuilder();
+  }
+
+  @Override
+  public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
+    return new SqliteUpsertAssembler(context);
   }
 
   public static class SqliteJdbcMappingVisitor extends StandardJdbcMappingVisitor {}
@@ -121,6 +156,21 @@ public class SqliteDialect extends StandardDialect {
 
     protected SqliteExpressionFunctions(char escapeChar, char[] wildcards) {
       super(escapeChar, wildcards);
+    }
+  }
+
+  public static class SqliteCriteriaBuilder extends StandardCriteriaBuilder {
+
+    @Override
+    public void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit) {
+      buf.appendSql(" limit ");
+      if (limit > 0) {
+        buf.appendSql(Integer.toString(limit));
+      } else {
+        buf.appendSql(MysqlPagingTransformer.MAXIMUM_LIMIT);
+      }
+      buf.appendSql(" offset ");
+      buf.appendSql(Integer.toString(offset));
     }
   }
 }

@@ -9,10 +9,12 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.criteria.context.Context;
 import org.seasar.doma.jdbc.criteria.context.Criterion;
 import org.seasar.doma.jdbc.criteria.context.Operand;
 import org.seasar.doma.jdbc.criteria.context.UpdateContext;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.dialect.Dialect;
 
 public class UpdateBuilder {
   private final Config config;
@@ -31,7 +33,18 @@ public class UpdateBuilder {
         context,
         commenter,
         new PreparedSqlBuilder(config, SqlKind.UPDATE, sqlLogType),
-        new AliasManager(context));
+        createAliasManager(config, context));
+  }
+
+  private static AliasManager createAliasManager(Config config, Context context) {
+    Objects.requireNonNull(config);
+    Objects.requireNonNull(context);
+    Dialect dialect = config.getDialect();
+    if (dialect.supportsAliasInUpdateClause() || dialect.supportsAliasInUpdateStatement()) {
+      return AliasManager.create(config, context);
+    } else {
+      return AliasManager.createEmpty(config, context);
+    }
   }
 
   public UpdateBuilder(
@@ -53,7 +66,11 @@ public class UpdateBuilder {
     if (config.getDialect().supportsAliasInUpdateClause()) {
       alias(context.entityMetamodel);
     } else {
-      table(context.entityMetamodel);
+      tableOnly(context.entityMetamodel);
+      if (config.getDialect().supportsAliasInUpdateStatement()) {
+        buf.appendSql(" ");
+        alias(context.entityMetamodel);
+      }
     }
     if (!context.set.isEmpty()) {
       buf.appendSql(" set ");
@@ -69,7 +86,9 @@ public class UpdateBuilder {
     }
     if (config.getDialect().supportsAliasInUpdateClause()) {
       buf.appendSql(" from ");
-      table(context.entityMetamodel);
+      tableOnly(context.entityMetamodel);
+      buf.appendSql(" ");
+      alias(context.entityMetamodel);
     }
     if (!context.where.isEmpty()) {
       buf.appendSql(" where ");
@@ -83,8 +102,8 @@ public class UpdateBuilder {
     return buf.build(commenter);
   }
 
-  private void table(EntityMetamodel<?> entityMetamodel) {
-    support.table(entityMetamodel);
+  private void tableOnly(EntityMetamodel<?> entityMetamodel) {
+    support.tableOnly(entityMetamodel);
   }
 
   private void alias(EntityMetamodel<?> entityMetamodel) {

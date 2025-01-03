@@ -25,7 +25,7 @@ public class CustomExpressions {
         "concatWithUserDefined",
         propertyMetamodels,
         c -> {
-          if (c.dialect.getName().equals("mysql")) {
+          if (c.dialect.getName().equals("mysql") || c.dialect.getName().equals("sqlite")) {
             c.appendSql("concat(");
             for (PropertyMetamodel<?> propertyMetamodel : propertyMetamodels) {
               c.appendExpression(propertyMetamodel);
@@ -64,7 +64,8 @@ public class CustomExpressions {
             c.appendSql("CAST(");
             c.appendExpression(propertyMetamodel);
             c.appendSql(" AS CHAR)");
-          } else if (c.dialect.getName().equals("postgres")) {
+          } else if (c.dialect.getName().equals("postgres")
+              || c.dialect.getName().equals("sqlite")) {
             c.appendSql("CAST(");
             c.appendExpression(propertyMetamodel);
             c.appendSql(" AS TEXT)");

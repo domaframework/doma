@@ -340,7 +340,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -386,7 +385,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -426,7 +424,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -479,7 +476,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
@@ -526,7 +522,11 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLITE})
+  @Run(
+      unless = {
+        Dbms.MYSQL,
+        Dbms.MYSQL8,
+      })
   public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
@@ -551,7 +551,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
@@ -598,7 +597,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
@@ -625,7 +623,6 @@ public class AutoBatchInsertTest {
   }
 
   @Test
-  @Run(unless = {Dbms.SQLITE})
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config) {
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();

@@ -20,7 +20,6 @@ import org.seasar.doma.jdbc.criteria.QueryDsl;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 @ExtendWith(IntegrationTestEnvironment.class)
-@Run(unless = Dbms.SQLITE)
 public class QueryDslEntityBatchInsertTest {
   private final QueryDsl dsl;
   private final Dialect dialect;
