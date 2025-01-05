@@ -66,7 +66,8 @@ public class PreparedSqlBuilder implements SqlContext {
     rawSql.append("?");
     Wrapper<BASIC> wrapper = parameter.getWrapper();
     formattedSql.append(
-        wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null));
+        wrapper.accept(
+            config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, parameter));
     parameters.add(parameter);
   }
 

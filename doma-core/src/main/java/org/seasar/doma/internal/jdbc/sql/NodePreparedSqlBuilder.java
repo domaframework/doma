@@ -988,7 +988,7 @@ public class NodePreparedSqlBuilder
       String literal =
           scalar
               .getWrapper()
-              .accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
+              .accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, scalar);
       rawSqlBuf.append(literal);
       formattedSqlBuf.append(literal);
     }
@@ -1009,7 +1009,8 @@ public class NodePreparedSqlBuilder
       String formatted =
           parameter
               .getWrapper()
-              .accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null);
+              .accept(
+                  config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, parameter);
       formattedSqlBuf.append(formatted);
     }
 
