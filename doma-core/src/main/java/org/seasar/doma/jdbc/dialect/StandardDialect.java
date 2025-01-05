@@ -583,6 +583,8 @@ public class StandardDialect implements Dialect {
     }
   }
 
+  // This class overrides deprecated methods to maintain compatibility.
+  @SuppressWarnings("deprecation")
   public static class StandardSqlLogFormattingVisitor implements SqlLogFormattingVisitor {
 
     @Override

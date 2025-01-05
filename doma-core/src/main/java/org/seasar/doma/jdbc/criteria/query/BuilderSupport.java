@@ -51,6 +51,7 @@ import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.StringWrapper;
 import org.seasar.doma.wrapper.Wrapper;
@@ -809,12 +810,13 @@ public class BuilderSupport {
 
     @Override
     public void visit(LiteralExpression<?> expression) {
-      Wrapper<?> wrapper = expression.asType().createProperty().getWrapper();
+      Property<?, ?> property = expression.asType().createProperty();
+      Wrapper<?> wrapper = property.getWrapper();
       String text =
           wrapper.accept(
               config.getDialect().getSqlLogFormattingVisitor(),
               new ConvertToLogFormatFunction(),
-              null);
+              property);
       buf.appendSql(text);
     }
 

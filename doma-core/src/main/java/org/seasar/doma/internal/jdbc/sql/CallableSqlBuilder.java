@@ -116,7 +116,8 @@ public class CallableSqlBuilder
     Wrapper<BASIC> wrapper = parameter.getWrapper();
     p.appendRawSql("?, ");
     p.appendFormattedSql(
-        wrapper.accept(config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, null));
+        wrapper.accept(
+            config.getDialect().getSqlLogFormattingVisitor(), formattingFunction, parameter));
     p.appendFormattedSql(", ");
     p.addParameter(parameter);
     return null;
