@@ -294,7 +294,7 @@ public interface SqlLogFormattingVisitor
       SqlLogFormattingFunction sqlLogFormattingFunction,
       JdbcMappingHint jdbcMappingHint)
       throws RuntimeException {
-    return visitArrayWrapper(wrapper, sqlLogFormattingFunction, (Void) (Void) null);
+    return visitArrayWrapper(wrapper, sqlLogFormattingFunction, (Void) null);
   }
 
   @Override
