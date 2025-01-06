@@ -48,7 +48,7 @@ public class SqlSelectTest {
             return new SqlBuilderSettings() {
 
               @Override
-              public boolean requiresInListPadding() {
+              public boolean shouldRequireInListPadding() {
                 return true;
               }
             };

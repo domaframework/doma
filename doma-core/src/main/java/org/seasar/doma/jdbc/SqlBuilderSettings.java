@@ -50,11 +50,11 @@ public interface SqlBuilderSettings {
   }
 
   /**
-   * Indicates whether padding is required for the "IN" list clauses in SQL generation.
+   * Determines whether padding is required for elements in an "IN" list in SQL queries.
    *
-   * @return {@code true} if padding is required; {@code false} otherwise
+   * @return true if padding is required for elements in an "IN" list, false otherwise
    */
-  default boolean requiresInListPadding() {
+  default boolean shouldRequireInListPadding() {
     return false;
   }
 }

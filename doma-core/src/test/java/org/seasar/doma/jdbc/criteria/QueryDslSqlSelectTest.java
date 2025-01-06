@@ -90,7 +90,7 @@ class QueryDslSqlSelectTest {
           return new SqlBuilderSettings() {
 
             @Override
-            public boolean requiresInListPadding() {
+            public boolean shouldRequireInListPadding() {
               return true;
             }
           };

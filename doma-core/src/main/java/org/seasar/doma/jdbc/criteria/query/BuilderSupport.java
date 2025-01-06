@@ -627,7 +627,7 @@ public class BuilderSupport {
     }
 
     private <E> Iterable<E> applyInListPadding(List<E> list) {
-      if (list.isEmpty() || !config.getSqlBuilderSettings().requiresInListPadding()) {
+      if (list.isEmpty() || !config.getSqlBuilderSettings().shouldRequireInListPadding()) {
         return list;
       }
       int size = list.size();
