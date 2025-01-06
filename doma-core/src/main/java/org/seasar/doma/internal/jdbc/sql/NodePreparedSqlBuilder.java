@@ -410,7 +410,7 @@ public class NodePreparedSqlBuilder
   }
 
   private <E> Iterable<E> applyInListPadding(ValueNode node, Iterable<E> values) {
-    if (node.getInNode() == null || !config.getSqlBuilderSettings().requiresInListPadding()) {
+    if (node.getInNode() == null || !config.getSqlBuilderSettings().shouldRequireInListPadding()) {
       return values;
     }
     Collection<E> valueCollection;

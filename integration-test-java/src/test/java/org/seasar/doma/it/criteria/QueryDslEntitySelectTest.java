@@ -443,7 +443,7 @@ public class QueryDslEntitySelectTest {
             return new SqlBuilderSettings() {
 
               @Override
-              public boolean requiresInListPadding() {
+              public boolean shouldRequireInListPadding() {
                 return true;
               }
             };
@@ -510,7 +510,7 @@ public class QueryDslEntitySelectTest {
             return new SqlBuilderSettings() {
 
               @Override
-              public boolean requiresInListPadding() {
+              public boolean shouldRequireInListPadding() {
                 return true;
               }
             };
@@ -549,7 +549,7 @@ public class QueryDslEntitySelectTest {
             return new SqlBuilderSettings() {
 
               @Override
-              public boolean requiresInListPadding() {
+              public boolean shouldRequireInListPadding() {
                 return true;
               }
             };
