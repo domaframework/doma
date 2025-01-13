@@ -27,11 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seasar.doma.jdbc.JdbcMappingVisitor;
-import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.ResultMappingException;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.UnknownColumnHandler;
+import org.seasar.doma.jdbc.*;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -91,10 +87,19 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     HashMap<String, EntityPropertyType<ENTITY, ?>> columnNameMap = createColumnNameMap(entityType);
     Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet =
         resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : new HashSet<>();
+    Set<String> seenColumnNames = new HashSet<>();
     int count = resultSetMeta.getColumnCount();
     for (int i = 1; i < count + 1; i++) {
       String columnName = resultSetMeta.getColumnLabel(i);
       String lowerCaseColumnName = columnName.toLowerCase();
+      if (!seenColumnNames.add(lowerCaseColumnName)) {
+        throw new DuplicateColumnException(
+            query.getConfig().getExceptionSqlLogType(),
+            columnName,
+            query.getSql().getRawSql(),
+            query.getSql().getFormattedSql(),
+            query.getSql().getSqlFilePath());
+      }
       EntityPropertyType<ENTITY, ?> propertyType = columnNameMap.get(lowerCaseColumnName);
       if (propertyType == null) {
         if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {

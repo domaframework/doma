@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.jdbc.command;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 
@@ -30,13 +31,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.internal.jdbc.mock.MockResultSet;
 import org.seasar.doma.internal.jdbc.mock.MockResultSetMetaData;
 import org.seasar.doma.internal.jdbc.mock.RowData;
-import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.PreparedSql;
-import org.seasar.doma.jdbc.SelectOptions;
-import org.seasar.doma.jdbc.SqlKind;
-import org.seasar.doma.jdbc.SqlLogType;
-import org.seasar.doma.jdbc.UnknownColumnException;
-import org.seasar.doma.jdbc.UnknownColumnHandler;
+import org.seasar.doma.jdbc.*;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -109,6 +104,25 @@ public class EntityProviderTest {
     assertEquals("aaa", emp.getName());
     assertEquals(new BigDecimal(10), emp.getSalary());
     assertEquals(100, emp.getVersion());
+  }
+
+  @Test
+  public void testCreateIndexMap_DuplicateColumnName() throws Exception {
+    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    metaData.columns.add(new ColumnMetaData("id"));
+    metaData.columns.add(new ColumnMetaData("name"));
+    metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
+    metaData.columns.add(new ColumnMetaData("version"));
+
+    _Emp entityType = _Emp.getSingletonInternal();
+    EntityProvider<Emp> provider =
+        new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
+
+    assertThrows(
+        DuplicateColumnException.class,
+        () -> {
+          provider.createIndexMap(metaData, entityType);
+        });
   }
 
   protected static class MySelectQuery implements SelectQuery {
