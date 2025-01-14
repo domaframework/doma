@@ -18,13 +18,23 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.jdbc.query.Query;
 
 /** A handler for the column that is duplicated in a result set. */
-public interface DuplicateColumnHandler {
+public class ThrowingDuplicateColumnHandler implements DuplicateColumnHandler {
 
   /**
    * Handles the duplicate column.
    *
    * @param query the query
-   * @param duplicateColumnName the name of the unknown column
+   * @param duplicateColumnName the name of the duplicate column
+   * @throws DuplicateColumnException if this handler does not allow the duplicate column
    */
-  default void handle(Query query, String duplicateColumnName) {}
+  @Override
+  public void handle(Query query, String duplicateColumnName) {
+    Sql<?> sql = query.getSql();
+    throw new DuplicateColumnException(
+        query.getConfig().getExceptionSqlLogType(),
+        duplicateColumnName,
+        sql.getRawSql(),
+        sql.getFormattedSql(),
+        sql.getSqlFilePath());
+  }
 }

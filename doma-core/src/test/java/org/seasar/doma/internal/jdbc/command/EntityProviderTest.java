@@ -39,6 +39,7 @@ import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.ThrowingDuplicateColumnHandler;
 import org.seasar.doma.jdbc.UnknownColumnException;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -116,23 +117,7 @@ public class EntityProviderTest {
   }
 
   @Test
-  public void testCreateIndexMap_DuplicateColumnNameException() {
-    MockResultSetMetaData metaData = new MockResultSetMetaData();
-    metaData.columns.add(new ColumnMetaData("id"));
-    metaData.columns.add(new ColumnMetaData("name"));
-    metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
-    metaData.columns.add(new ColumnMetaData("version"));
-
-    _Emp entityType = _Emp.getSingletonInternal();
-    EntityProvider<Emp> provider =
-        new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
-
-    assertThrows(
-        DuplicateColumnException.class, () -> provider.createIndexMap(metaData, entityType));
-  }
-
-  @Test
-  public void testCreateIndexMap_EmptyDuplicateColumnHandler() throws SQLException {
+  public void testCreateIndexMap_DuplicateColumnNameException() throws SQLException {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
@@ -144,8 +129,7 @@ public class EntityProviderTest {
 
     _Emp entityType = _Emp.getSingletonInternal();
     EntityProvider<Emp> provider =
-        new EntityProvider<>(
-            entityType, new MySelectQuery(new EmptyDuplicateColumnHandlerConfig()), false);
+        new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
 
     provider.createIndexMap(metaData, entityType);
     Emp emp = provider.get(resultSet);
@@ -153,6 +137,23 @@ public class EntityProviderTest {
     assertEquals(1, emp.getId());
     assertEquals("bbb", emp.getName());
     assertEquals(100, emp.getVersion());
+  }
+
+  @Test
+  public void testCreateIndexMap_DuplicateColumnHandler() throws SQLException {
+    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    metaData.columns.add(new ColumnMetaData("id"));
+    metaData.columns.add(new ColumnMetaData("name"));
+    metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
+    metaData.columns.add(new ColumnMetaData("version"));
+
+    _Emp entityType = _Emp.getSingletonInternal();
+    EntityProvider<Emp> provider =
+        new EntityProvider<>(
+            entityType, new MySelectQuery(new SetDuplicateColumnHandlerConfig()), false);
+
+    assertThrows(
+        DuplicateColumnException.class, () -> provider.createIndexMap(metaData, entityType));
   }
 
   protected static class MySelectQuery implements SelectQuery {
@@ -258,15 +259,10 @@ public class EntityProviderTest {
     }
   }
 
-  protected static class EmptyDuplicateColumnHandler implements DuplicateColumnHandler {
-    @Override
-    public void handle(Query query, String unknownColumnName) {}
-  }
-
-  protected static class EmptyDuplicateColumnHandlerConfig extends MockConfig {
+  protected static class SetDuplicateColumnHandlerConfig extends MockConfig {
     @Override
     public DuplicateColumnHandler getDuplicateColumnHandler() {
-      return new EmptyDuplicateColumnHandler();
+      return new ThrowingDuplicateColumnHandler();
     }
   }
 }
