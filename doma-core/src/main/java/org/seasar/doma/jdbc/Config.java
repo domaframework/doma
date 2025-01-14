@@ -142,6 +142,15 @@ public interface Config {
   }
 
   /**
+   * Returns the duplicate column handler.
+   *
+   * @return the duplicate column handler
+   */
+  default DuplicateColumnHandler getDuplicateColumnHandler() {
+    return ConfigSupport.defaultDuplicateColumnHandler;
+  }
+
+  /**
    * Returns the naming convention controller.
    *
    * @return the naming convention controller

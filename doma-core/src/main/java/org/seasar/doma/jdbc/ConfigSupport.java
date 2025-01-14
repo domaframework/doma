@@ -40,6 +40,9 @@ public final class ConfigSupport {
   public static final UnknownColumnHandler defaultUnknownColumnHandler =
       new UnknownColumnHandler() {};
 
+  public static final DuplicateColumnHandler defaultDuplicateColumnHandler =
+      new DuplicateColumnHandler() {};
+
   public static final Naming defaultNaming = Naming.DEFAULT;
 
   public static final MapKeyNaming defaultMapKeyNaming = new MapKeyNaming() {};

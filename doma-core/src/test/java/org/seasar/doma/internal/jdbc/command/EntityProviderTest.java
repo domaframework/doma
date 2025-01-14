@@ -23,6 +23,7 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.FetchType;
@@ -107,7 +108,7 @@ public class EntityProviderTest {
   }
 
   @Test
-  public void testCreateIndexMap_DuplicateColumnName() throws Exception {
+  public void testCreateIndexMap_DuplicateColumnNameException() {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
@@ -119,10 +120,31 @@ public class EntityProviderTest {
         new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
 
     assertThrows(
-        DuplicateColumnException.class,
-        () -> {
-          provider.createIndexMap(metaData, entityType);
-        });
+        DuplicateColumnException.class, () -> provider.createIndexMap(metaData, entityType));
+  }
+
+  @Test
+  public void testCreateIndexMap_EmptyDuplicateColumnHandler() throws SQLException {
+    MockResultSetMetaData metaData = new MockResultSetMetaData();
+    metaData.columns.add(new ColumnMetaData("id"));
+    metaData.columns.add(new ColumnMetaData("name"));
+    metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
+    metaData.columns.add(new ColumnMetaData("version"));
+    MockResultSet resultSet = new MockResultSet(metaData);
+    resultSet.rows.add(new RowData(1, "aaa", "bbb", 100));
+    resultSet.next();
+
+    _Emp entityType = _Emp.getSingletonInternal();
+    EntityProvider<Emp> provider =
+        new EntityProvider<>(
+            entityType, new MySelectQuery(new EmptyDuplicateColumnHandlerConfig()), false);
+
+    provider.createIndexMap(metaData, entityType);
+    Emp emp = provider.get(resultSet);
+
+    assertEquals(1, emp.getId());
+    assertEquals("bbb", emp.getName());
+    assertEquals(100, emp.getVersion());
   }
 
   protected static class MySelectQuery implements SelectQuery {
@@ -225,6 +247,18 @@ public class EntityProviderTest {
     @Override
     public UnknownColumnHandler getUnknownColumnHandler() {
       return new EmptyUnknownColumnHandler();
+    }
+  }
+
+  protected static class EmptyDuplicateColumnHandler implements DuplicateColumnHandler {
+    @Override
+    public void handle(Query query, String unknownColumnName) {}
+  }
+
+  protected static class EmptyDuplicateColumnHandlerConfig extends MockConfig {
+    @Override
+    public DuplicateColumnHandler getDuplicateColumnHandler() {
+      return new EmptyDuplicateColumnHandler();
     }
   }
 }

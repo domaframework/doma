@@ -27,7 +27,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.seasar.doma.jdbc.*;
+import org.seasar.doma.jdbc.DuplicateColumnHandler;
+import org.seasar.doma.jdbc.JdbcMappingVisitor;
+import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.jdbc.ResultMappingException;
+import org.seasar.doma.jdbc.Sql;
+import org.seasar.doma.jdbc.UnknownColumnHandler;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -45,6 +50,8 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected final UnknownColumnHandler unknownColumnHandler;
 
+  protected final DuplicateColumnHandler duplicateColumnHandler;
+
   protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
   public EntityProvider(EntityType<ENTITY> entityType, Query query, boolean resultMappingEnsured) {
@@ -54,6 +61,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     this.resultMappingEnsured = resultMappingEnsured;
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
+    this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
   }
 
   @Override
@@ -93,12 +101,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
       String columnName = resultSetMeta.getColumnLabel(i);
       String lowerCaseColumnName = columnName.toLowerCase();
       if (!seenColumnNames.add(lowerCaseColumnName)) {
-        throw new DuplicateColumnException(
-            query.getConfig().getExceptionSqlLogType(),
-            columnName,
-            query.getSql().getRawSql(),
-            query.getSql().getFormattedSql(),
-            query.getSql().getSqlFilePath());
+        duplicateColumnHandler.handle(query, columnName);
       }
       EntityPropertyType<ENTITY, ?> propertyType = columnNameMap.get(lowerCaseColumnName);
       if (propertyType == null) {
