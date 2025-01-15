@@ -101,7 +101,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
       String columnName = resultSetMeta.getColumnLabel(i);
       String lowerCaseColumnName = columnName.toLowerCase();
       if (!seenColumnNames.add(lowerCaseColumnName)) {
-        duplicateColumnHandler.handle(query, columnName);
+        duplicateColumnHandler.handle(query, lowerCaseColumnName);
       }
       EntityPropertyType<ENTITY, ?> propertyType = columnNameMap.get(lowerCaseColumnName);
       if (propertyType == null) {
