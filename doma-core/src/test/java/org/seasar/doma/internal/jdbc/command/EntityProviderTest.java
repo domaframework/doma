@@ -117,7 +117,7 @@ public class EntityProviderTest {
   }
 
   @Test
-  public void testCreateIndexMap_DuplicateColumnNameException() throws SQLException {
+  public void testCreateIndexMap_WithDuplicateColumnName() throws SQLException {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
