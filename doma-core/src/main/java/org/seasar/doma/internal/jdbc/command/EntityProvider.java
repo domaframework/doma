@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.seasar.doma.jdbc.DuplicateColumnHandler;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.ResultMappingException;
@@ -49,6 +50,8 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected final UnknownColumnHandler unknownColumnHandler;
 
+  protected final DuplicateColumnHandler duplicateColumnHandler;
+
   protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
   public EntityProvider(EntityType<ENTITY> entityType, Query query, boolean resultMappingEnsured) {
@@ -58,6 +61,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     this.resultMappingEnsured = resultMappingEnsured;
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
+    this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
   }
 
   @Override
@@ -91,10 +95,14 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     HashMap<String, EntityPropertyType<ENTITY, ?>> columnNameMap = createColumnNameMap(entityType);
     Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet =
         resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : new HashSet<>();
+    Set<String> seenColumnNames = new HashSet<>();
     int count = resultSetMeta.getColumnCount();
     for (int i = 1; i < count + 1; i++) {
       String columnName = resultSetMeta.getColumnLabel(i);
       String lowerCaseColumnName = columnName.toLowerCase();
+      if (!seenColumnNames.add(lowerCaseColumnName)) {
+        duplicateColumnHandler.handle(query, lowerCaseColumnName);
+      }
       EntityPropertyType<ENTITY, ?> propertyType = columnNameMap.get(lowerCaseColumnName);
       if (propertyType == null) {
         if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {

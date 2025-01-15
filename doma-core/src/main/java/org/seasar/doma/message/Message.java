@@ -274,6 +274,9 @@ public enum Message implements MessageResource {
   DOMA2235("The dialect \"{0}\" does not support auto-increment when inserting multiple rows."),
 
   DOMA2236("The dialect \"{0}\" does not support multi-row insert statement."),
+  DOMA2237(
+      "Duplicate column name \"{0}\" found in ResultSetMetaData. Column names must be unique."
+          + "\nPATH=[{1}].\nSQL=[{2}]"),
 
   // expression
   DOMA3001(
