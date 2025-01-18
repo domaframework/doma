@@ -49,14 +49,15 @@ Supported databases
 
 We are testing against the following databases:
 
-| Database           |      version |   status   |
-|--------------------|-------------:|:----------:|
-| H2 Database        |        2.3.x |   stable   |
-| MySQL v5           |          5.7 |   stable   |
-| MySQL v8           |       8.0.36 |   stable   |
-| Oracle Database XE |          21c |   stable   |
-| PostgreSQL         |        12.20 |   stable   |
-| SQL Server         |         2019 |   stable   |
+| Database           | version |   status   |
+|--------------------|--------:|:----------:|
+| H2 Database        |   2.3.x |   stable   |
+| MySQL v5           |     5.7 |   stable   |
+| MySQL v8           |  8.0.36 |   stable   |
+| Oracle Database XE |     21c |   stable   |
+| PostgreSQL         |   12.20 |   stable   |
+| SQLite             |  3.48.0 |   stable   |
+| SQL Server         |    2019 |   stable   |
 
 Examples
 ---------------------
