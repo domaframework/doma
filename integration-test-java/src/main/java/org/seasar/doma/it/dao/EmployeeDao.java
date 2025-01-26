@@ -16,22 +16,15 @@
 package org.seasar.doma.it.dao;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.Dao;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Insert;
-import org.seasar.doma.MapKeyNamingType;
-import org.seasar.doma.Select;
-import org.seasar.doma.SelectType;
-import org.seasar.doma.Sql;
-import org.seasar.doma.Suppress;
-import org.seasar.doma.Update;
+import org.seasar.doma.*;
 import org.seasar.doma.it.domain.Hiredate;
+import org.seasar.doma.it.entity.Address;
+import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -49,6 +42,15 @@ public interface EmployeeDao {
 
   @Select
   Employee selectById(Integer employeeId);
+
+  @Select(aggregateHelper = EmployeeHelper.class)
+  Employee selectByIdAsAggregate(Integer employeeId);
+
+  @Select(aggregateHelper = EmployeeHelper.class)
+  Optional<Employee> selectOptionalByIdAsAggregate(Integer employeeId);
+
+  @Select(aggregateHelper = EmployeeHelper.class)
+  List<Employee> selectAllAsAggregate();
 
   @Select
   Employee selectById(Integer employeeId, SelectOptions options);
@@ -172,4 +174,20 @@ public interface EmployeeDao {
 
   @Update
   int update(Employee entity);
+}
+
+interface EmployeeHelper {
+  @AssociationLinker(propertyPath = "department", columnPrefix = "d_")
+  BiFunction<Employee, Department, Employee> department =
+      (e, d) -> {
+        e.setDepartment(d);
+        return e;
+      };
+
+  @AssociationLinker(propertyPath = "address", columnPrefix = "a_")
+  BiFunction<Employee, Address, Employee> address =
+      (e, a) -> {
+        e.setAddress(a);
+        return e;
+      };
 }

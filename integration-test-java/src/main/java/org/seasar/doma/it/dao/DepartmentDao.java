@@ -16,16 +16,11 @@
 package org.seasar.doma.it.dao;
 
 import java.util.List;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.Dao;
-import org.seasar.doma.Insert;
-import org.seasar.doma.MultiInsert;
-import org.seasar.doma.Select;
-import org.seasar.doma.Update;
+import java.util.function.*;
+import org.seasar.doma.*;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
-import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.*;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 @Dao
@@ -107,4 +102,27 @@ public interface DepartmentDao {
 
   @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
   int[] insertOnDuplicateKeyIgnore(List<Department> entities);
+
+  @Select(aggregateHelper = DepartmentHelper.class)
+  Department selectByIdAsAggregate(Integer departmentId);
+
+  @Select(aggregateHelper = DepartmentHelper.class)
+  List<Department> selectAllAsAggregate();
+}
+
+interface DepartmentHelper {
+  @AssociationLinker(propertyPath = "employeeList", columnPrefix = "e_")
+  BiFunction<Department, Employee, Department> employeeList =
+      (d, e) -> {
+        d.getEmployeeList().add(e);
+        e.setDepartment(d);
+        return d;
+      };
+
+  @AssociationLinker(propertyPath = "employeeList.address", columnPrefix = "a_")
+  BiFunction<Employee, Address, Employee> employeeListAddress =
+      (e, a) -> {
+        e.setAddress(a);
+        return e;
+      };
 }

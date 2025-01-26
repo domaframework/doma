@@ -15,9 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import java.util.*;
+import javax.lang.model.element.*;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.Suppress;
@@ -25,21 +24,8 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
-import org.seasar.doma.internal.apt.cttype.BasicCtType;
-import org.seasar.doma.internal.apt.cttype.CollectorCtType;
-import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.DomainCtType;
-import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.FunctionCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.MapCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalDoubleCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
-import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.cttype.StreamCtType;
+import org.seasar.doma.internal.apt.cttype.*;
+import org.seasar.doma.internal.apt.meta.entity.*;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -61,6 +47,7 @@ public class SqlFileSelectQueryMetaFactory
     doReturnType(queryMeta);
     doThrowTypes(queryMeta);
     doSqlTemplate(queryMeta, queryMeta.isExpandable(), false);
+    doAggregateHelper(queryMeta);
     return queryMeta;
   }
 
@@ -135,6 +122,12 @@ public class SqlFileSelectQueryMetaFactory
     } else {
       returnMeta.getCtType().accept(new ReturnCtTypeVisitor(queryMeta), null);
     }
+  }
+
+  private void doAggregateHelper(SqlFileSelectQueryMeta queryMeta) {
+    AggregateHelperMetaFactory factory = new AggregateHelperMetaFactory(ctx, queryMeta);
+    AggregateHelperMeta meta = factory.createAggregateHelperMeta();
+    queryMeta.setAggregateHelperMeta(meta);
   }
 
   static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {

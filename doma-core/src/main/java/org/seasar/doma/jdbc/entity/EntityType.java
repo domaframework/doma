@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -134,6 +135,15 @@ public interface EntityType<ENTITY> {
    * @return the property descriptions
    */
   List<EntityPropertyType<ENTITY, ?>> getEntityPropertyTypes();
+
+  /**
+   * Returns a list of association property types defined for the entity.
+   *
+   * @return a list of association property types, or an empty list if no associations are defined
+   */
+  default List<AssociationPropertyType> getAssociationPropertyTypes() {
+    return Collections.emptyList();
+  }
 
   /**
    * Instantiate a new entity.

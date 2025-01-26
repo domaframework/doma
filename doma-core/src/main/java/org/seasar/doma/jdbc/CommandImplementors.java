@@ -16,8 +16,13 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.function.BiFunction;
+import org.seasar.doma.jdbc.aggregate.AggregateCommand;
+import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
+import org.seasar.doma.jdbc.aggregate.StreamReducer;
 import org.seasar.doma.jdbc.command.*;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.*;
 
 /** A factory for the {@link Command} implementation classes. */
@@ -35,6 +40,15 @@ public interface CommandImplementors {
   default <RESULT> SelectCommand<RESULT> createSelectCommand(
       Method method, SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
     return new SelectCommand<>(query, resultSetHandler);
+  }
+
+  default <RESULT, ENTITY> AggregateCommand<RESULT, ENTITY> createAggregateCommand(
+      Method method,
+      SelectQuery query,
+      EntityType<ENTITY> entityType,
+      StreamReducer<RESULT, ENTITY> resultReducer,
+      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
+    return new AggregateCommand<>(query, entityType, resultReducer, associationLinkerTypes);
   }
 
   /**

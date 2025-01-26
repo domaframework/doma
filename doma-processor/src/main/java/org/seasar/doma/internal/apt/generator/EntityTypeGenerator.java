@@ -27,6 +27,7 @@ import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
+import org.seasar.doma.internal.apt.meta.entity.AssociationPropertyMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.entity.OriginalStatesMeta;
@@ -36,21 +37,7 @@ import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
 import org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers;
-import org.seasar.doma.jdbc.entity.AbstractEntityType;
-import org.seasar.doma.jdbc.entity.EmbeddedPropertyType;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
-import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
-import org.seasar.doma.jdbc.entity.NamingType;
-import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
-import org.seasar.doma.jdbc.entity.PostDeleteContext;
-import org.seasar.doma.jdbc.entity.PostInsertContext;
-import org.seasar.doma.jdbc.entity.PostUpdateContext;
-import org.seasar.doma.jdbc.entity.PreDeleteContext;
-import org.seasar.doma.jdbc.entity.PreInsertContext;
-import org.seasar.doma.jdbc.entity.PreUpdateContext;
-import org.seasar.doma.jdbc.entity.Property;
-import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
-import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.entity.*;
 
 public class EntityTypeGenerator extends AbstractGenerator {
 
@@ -114,6 +101,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printEntityPropertyTypesField();
     printEntityPropertyTypeMapField();
     printEmbeddedPropertyTypeMapField();
+    printAssociationPropertyTypesField();
   }
 
   private void printSingletonField() {
@@ -203,13 +191,6 @@ public class EntityTypeGenerator extends AbstractGenerator {
     print("%n");
   }
 
-  private void printEntityPropertyTypesField() {
-    iprint(
-        "private final java.util.List<%1$s<%2$s, ?>> __entityPropertyTypes;%n",
-        EntityPropertyType.class, entityMeta.getType());
-    print("%n");
-  }
-
   private void printEntityPropertyTypeMapField() {
     iprint(
         "private final java.util.Map<String, %1$s<%2$s, ?>> __entityPropertyTypeMap;%n",
@@ -224,6 +205,23 @@ public class EntityTypeGenerator extends AbstractGenerator {
     iprint(
         "private final java.util.Map<String, %1$s<%2$s, ?>> __embeddedPropertyTypeMap;%n",
         EmbeddedPropertyType.class, entityMeta.getType());
+    print("%n");
+  }
+
+  private void printEntityPropertyTypesField() {
+    iprint(
+        "private final java.util.List<%1$s<%2$s, ?>> __entityPropertyTypes;%n",
+        EntityPropertyType.class, entityMeta.getType());
+    print("%n");
+  }
+
+  private void printAssociationPropertyTypesField() {
+    if (entityMeta.getAssociationPropertyMetas().isEmpty()) {
+      return;
+    }
+    iprint(
+        "private final java.util.List<%1$s> __associationPropertyTypes;%n",
+        AssociationPropertyType.class);
     print("%n");
   }
 
@@ -276,6 +274,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
     iprint("    __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);%n");
     iprint(
         "    __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);%n");
+    if (!entityMeta.getAssociationPropertyMetas().isEmpty()) {
+      iprint(
+          "    java.util.List<%1$s> __associationList = new java.util.ArrayList<>(%2$s);%n",
+          /* 1 */ AssociationPropertyType.class,
+          /* 2 */ entityMeta.getAssociationPropertyMetas().size());
+      iprint("    initializeAssociationList(__associationList);%n");
+      iprint(
+          "    __associationPropertyTypes = java.util.Collections.unmodifiableList(__associationList);%n");
+    }
     iprint("}%n");
     print("%n");
   }
@@ -284,6 +291,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printInitializeMapsMethod();
     printInitializeIdListMethod();
     printInitializeListMethod();
+    printInitializeAssociationListMethod();
     printGetNamingTypeMethod();
     printIsImmutableMethod();
     printGetNameMethod();
@@ -297,6 +305,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
     printPostInsertMethod();
     printPostUpdateMethod();
     printPostDeleteMethod();
+    printGetAssociationPropertyTypesMethod();
     printGetEntityPropertyTypesMethod();
     printGetEntityPropertyTypeMethod();
     printGetIdPropertyTypesMethod();
@@ -358,6 +367,24 @@ public class EntityTypeGenerator extends AbstractGenerator {
         EntityPropertyType.class, entityMeta.getType());
     indent();
     iprint("__list.addAll(__map.values());%n");
+    unindent();
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printInitializeAssociationListMethod() {
+    if (entityMeta.getAssociationPropertyMetas().isEmpty()) {
+      return;
+    }
+    iprint(
+        "private void initializeAssociationList(java.util.List<%1$s> __associationList) {%n",
+        AssociationPropertyType.class, entityMeta.getType());
+    indent();
+    for (AssociationPropertyMeta m : entityMeta.getAssociationPropertyMetas()) {
+      iprint(
+          "__associationList.add(new %1$s(\"%2$s\"));%n",
+          DefaultAssociationPropertyType.class, m.getName());
+    }
     unindent();
     iprint("}%n");
     print("%n");
@@ -492,6 +519,19 @@ public class EntityTypeGenerator extends AbstractGenerator {
         entityMeta.getType(), PostDeleteContext.class);
     printDeclareListener();
     iprint("    __listener.postDelete(entity, context);%n");
+    iprint("}%n");
+    print("%n");
+  }
+
+  private void printGetAssociationPropertyTypesMethod() {
+    if (entityMeta.getAssociationPropertyMetas().isEmpty()) {
+      return;
+    }
+    iprint("@Override%n");
+    iprint(
+        "public java.util.List<%1$s> getAssociationPropertyTypes() {%n",
+        AssociationPropertyType.class);
+    iprint("    return __associationPropertyTypes;%n");
     iprint("}%n");
     print("%n");
   }

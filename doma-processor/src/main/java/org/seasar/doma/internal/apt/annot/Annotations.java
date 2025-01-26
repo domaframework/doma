@@ -29,35 +29,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import org.seasar.doma.AnnotateWith;
-import org.seasar.doma.ArrayFactory;
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.BlobFactory;
-import org.seasar.doma.ClobFactory;
-import org.seasar.doma.Column;
-import org.seasar.doma.Dao;
-import org.seasar.doma.DataType;
-import org.seasar.doma.Delete;
-import org.seasar.doma.Domain;
-import org.seasar.doma.DomainConverters;
-import org.seasar.doma.Embeddable;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Insert;
-import org.seasar.doma.MultiInsert;
-import org.seasar.doma.NClobFactory;
-import org.seasar.doma.Procedure;
-import org.seasar.doma.ResultSet;
-import org.seasar.doma.SQLXMLFactory;
-import org.seasar.doma.Script;
-import org.seasar.doma.Select;
-import org.seasar.doma.SequenceGenerator;
-import org.seasar.doma.Sql;
-import org.seasar.doma.SqlProcessor;
-import org.seasar.doma.Table;
-import org.seasar.doma.TableGenerator;
-import org.seasar.doma.Update;
+import org.seasar.doma.*;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
@@ -116,6 +88,11 @@ public class Annotations {
   private AnnotationAnnot newAnnotationAnnot(AnnotationMirror annotationMirror) {
     assertNotNull(annotationMirror);
     return newInstance(annotationMirror, AnnotationAnnot::new);
+  }
+
+  public AssociationLinkerAnnot newAssociationLinkerAnnot(VariableElement field) {
+    assertNotNull(field);
+    return newInstance(field, AssociationLinker.class, AssociationLinkerAnnot::new);
   }
 
   public ArrayFactoryAnnot newArrayFactoryAnnot(ExecutableElement method) {

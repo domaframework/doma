@@ -165,7 +165,7 @@ public class CtTypes {
     return new Pair<>(wrapperTypeElement, wrapperTypeElement.asType());
   }
 
-  private BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
+  public BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
     DeclaredType declaredType = getSuperDeclaredType(type, BiFunction.class);
     if (declaredType == null) {
       return null;

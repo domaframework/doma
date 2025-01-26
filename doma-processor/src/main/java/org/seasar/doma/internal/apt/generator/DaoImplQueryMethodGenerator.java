@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -31,10 +32,12 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
+import org.seasar.doma.internal.apt.meta.entity.*;
 import org.seasar.doma.internal.apt.meta.parameter.*;
 import org.seasar.doma.internal.apt.meta.query.*;
 import org.seasar.doma.internal.jdbc.command.*;
 import org.seasar.doma.internal.jdbc.sql.*;
+import org.seasar.doma.jdbc.aggregate.*;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class DaoImplQueryMethodGenerator extends AbstractGenerator
@@ -1863,15 +1866,42 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-      iprint(
-          "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
-          /* 1 */ commandClass,
-          /* 2 */ resultBoxedType,
-          /* 3 */ getEntitySingleResultHandler(optional),
-          /* 4 */ ctType.getTypeCode(),
-          /* 5 */ ctType.getType(),
-          /* 6 */ commandName,
-          /* 7 */ methodName);
+      AggregateHelperMeta aggregateHelperMeta = m.getAggregateHelperMeta();
+      if (aggregateHelperMeta == null) {
+        iprint(
+            "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
+            /* 1 */ commandClass,
+            /* 2 */ resultBoxedType,
+            /* 3 */ getEntitySingleResultHandler(optional),
+            /* 4 */ ctType.getTypeCode(),
+            /* 5 */ ctType.getType(),
+            /* 6 */ commandName,
+            /* 7 */ methodName);
+      } else {
+        if (optional) {
+          iprint(
+              "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+              /* 1 */ AggregateCommand.class,
+              /* 2 */ resultBoxedType,
+              /* 3 */ ToOptionalReducer.class,
+              /* 4 */ ctType.getTypeCode(),
+              /* 5 */ ctType.getType(),
+              /* 6 */ AggregateCommand.class.getSimpleName(),
+              /* 7 */ methodName);
+          printAssociationLinkerTypes(aggregateHelperMeta);
+        } else {
+          iprint(
+              "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+              /* 1 */ AggregateCommand.class,
+              /* 2 */ resultBoxedType,
+              /* 3 */ ToSingleReducer.class,
+              /* 4 */ ctType.getTypeCode(),
+              /* 5 */ ctType.getType(),
+              /* 6 */ AggregateCommand.class.getSimpleName(),
+              /* 7 */ methodName);
+          printAssociationLinkerTypes(aggregateHelperMeta);
+        }
+      }
       return null;
     }
 
@@ -1969,15 +1999,29 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
                 @Override
                 public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-                  iprint(
-                      "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
-                      /* 1 */ commandClass,
-                      /* 2 */ resultBoxedType,
-                      /* 3 */ EntityResultListHandler.class,
-                      /* 4 */ ctType.getType(),
-                      /* 5 */ ctType.getTypeCode(),
-                      /* 6 */ commandName,
-                      /* 7 */ methodName);
+                  AggregateHelperMeta aggregateHelperMeta = m.getAggregateHelperMeta();
+                  if (aggregateHelperMeta == null) {
+                    iprint(
+                        "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
+                        /* 1 */ commandClass,
+                        /* 2 */ resultBoxedType,
+                        /* 3 */ EntityResultListHandler.class,
+                        /* 4 */ ctType.getType(),
+                        /* 5 */ ctType.getTypeCode(),
+                        /* 6 */ commandName,
+                        /* 7 */ methodName);
+                  } else {
+                    iprint(
+                        "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+                        /* 1 */ AggregateCommand.class,
+                        /* 2 */ resultBoxedType,
+                        /* 3 */ ToListReducer.class,
+                        /* 4 */ ctType.getTypeCode(),
+                        /* 5 */ ctType.getType(),
+                        /* 6 */ AggregateCommand.class.getSimpleName(),
+                        /* 7 */ methodName);
+                    printAssociationLinkerTypes(aggregateHelperMeta);
+                  }
                   return null;
                 }
 
@@ -2090,6 +2134,35 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
         return OptionalEntitySingleResultHandler.class;
       }
       return EntitySingleResultHandler.class;
+    }
+
+    private void printAssociationLinkerTypes(AggregateHelperMeta aggregateHelperMeta) {
+      Objects.requireNonNull(aggregateHelperMeta);
+      indent();
+      iprint("java.util.List.of(%n");
+      indent();
+      Iterator<AssociationLinkerMeta> iter =
+          aggregateHelperMeta.associationLinkerMetas().iterator();
+      while (iter.hasNext()) {
+        AssociationLinkerMeta linkerMeta = iter.next();
+        iprint(
+            "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
+            AssociationLinkerType.class,
+            linkerMeta.propertyPath(),
+            linkerMeta.columnPrefix(),
+            linkerMeta.source().getTypeCode(),
+            linkerMeta.target().getTypeCode(),
+            linkerMeta.classElement(),
+            linkerMeta.filedElement());
+        if (iter.hasNext()) {
+          print(",");
+        }
+        print("%n");
+      }
+      unindent();
+      iprint(")%n");
+      unindent();
+      iprint(");%n");
     }
   }
 }

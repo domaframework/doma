@@ -949,6 +949,33 @@ public enum Message implements MessageResource {
           + "The type argument of org.seasar.doma.jdbc.MultiResult must be the immutable entity class."),
   DOMA4462("The property \"{0}\" is not found in the entity class \"{1}\"."),
   DOMA4463("'{'\"execTimeMillis\": {0}, \"processor\": \"{1}\", \"element\": \"{2}\"'}'"),
+  DOMA4464("Fields annotated with AssociationLinker must be static."),
+  DOMA4465("Fields annotated with AssociationLinker must be java.util.function.BiFunction."),
+  DOMA4466("The {0} type parameter of BiFunction must be an entity class."),
+  DOMA4467("The first and third type parameters of java.util.function.BiFunction must be the same"),
+  DOMA4468("The columnPrefix must not be blank."),
+  DOMA4469(
+      "No field annotated with @AssociationLinker was found in the class specified in the aggregateHelper element of @Select."),
+  DOMA4470("Fields annotated with AssociationLinker must be public."),
+  DOMA4471("Fields annotated with AssociationLinker must be final."),
+  DOMA4472("The propertyPath must not be blank."),
+  DOMA4473(
+      "When the `aggregateHelper` element of `@Select` is set, the return type must be one of the following: "
+          + "the entity class, "
+          + "a `List` containing elements of the entity class, "
+          + "an `Optional` containing an element of the entity class, "
+          + "or a `List` of `Optional` containing elements of the entity class."),
+  DOMA4474("The field \"{0}\" could not be found in the class \"{1}\"."),
+  DOMA4475(
+      "The first type parameter of java.util.function.BiFunction differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
+  DOMA4476(
+      "The second type parameter of java.util.function.BiFunction differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
+  DOMA4477(
+      "The type of field \"{0}\" in class \"{1}\" must be one of the following: "
+          + "the entity class, "
+          + "a `List` containing elements of the entity class, "
+          + "an `Optional` containing an element of the entity class, "
+          + "or a `List` of `Optional` containing elements of the entity class. actual type=\"{2}\""),
 
   // other
   DOMA5001(

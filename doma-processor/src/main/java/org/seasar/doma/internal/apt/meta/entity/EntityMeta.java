@@ -30,6 +30,8 @@ import org.seasar.doma.jdbc.entity.NullEntityListener;
 
 public class EntityMeta implements TypeElementMeta {
 
+  private final List<AssociationPropertyMeta> associationPropertyMetas = new ArrayList<>();
+
   private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
 
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
@@ -103,6 +105,14 @@ public class EntityMeta implements TypeElementMeta {
 
   public void setTableAnnot(TableAnnot tableAnnot) {
     this.tableAnnot = tableAnnot;
+  }
+
+  public void addAssociationPropertyMeta(AssociationPropertyMeta associationPropertyMeta) {
+    associationPropertyMetas.add(associationPropertyMeta);
+  }
+
+  public List<AssociationPropertyMeta> getAssociationPropertyMetas() {
+    return associationPropertyMetas;
   }
 
   public void addPropertyMeta(EntityPropertyMeta propertyMeta) {

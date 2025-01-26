@@ -20,6 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
+import java.util.function.BiFunction;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NoResultException;
@@ -163,4 +164,14 @@ public @interface Select {
    * @return the output format of SQL logs.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * Specifies a helper class used for aggregation operations.
+   *
+   * <p>The class specified here must contain at least one field of type {@link BiFunction}
+   * annotated with {@link AssociationLinker}.
+   *
+   * @return the class representing the aggregation helper, or {@code Void.class} if not specified
+   */
+  Class<?> aggregateHelper() default Void.class;
 }

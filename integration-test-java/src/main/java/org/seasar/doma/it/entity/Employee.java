@@ -15,12 +15,7 @@
  */
 package org.seasar.doma.it.entity;
 
-import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
-import org.seasar.doma.Metamodel;
-import org.seasar.doma.OriginalStates;
-import org.seasar.doma.Transient;
-import org.seasar.doma.Version;
+import org.seasar.doma.*;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Salary;
 
@@ -47,7 +42,9 @@ public class Employee {
 
   @OriginalStates private Employee originalStates;
 
-  @Transient Department department;
+  @Association Department department;
+
+  @Association Address address;
 
   public Integer getEmployeeId() {
     return employeeId;
@@ -127,5 +124,13 @@ public class Employee {
 
   public void setDepartment(Department department) {
     this.department = department;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 }

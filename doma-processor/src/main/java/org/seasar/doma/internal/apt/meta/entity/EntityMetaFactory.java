@@ -41,11 +41,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
-import org.seasar.doma.Entity;
-import org.seasar.doma.EntityField;
-import org.seasar.doma.OriginalStates;
-import org.seasar.doma.ParameterName;
-import org.seasar.doma.Transient;
+import org.seasar.doma.*;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -531,6 +527,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             continue;
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
             doOriginalStatesField(classElement, fieldElement, entityMeta);
+          } else if (fieldElement.getAnnotation(Association.class) != null) {
+            doAssociationPropertyMeta(classElement, fieldElement, entityMeta);
           } else {
             doEntityPropertyMeta(classElement, fieldElement, entityMeta);
           }
@@ -590,6 +588,15 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       OriginalStatesMeta originalStatesMeta =
           new OriginalStatesMeta(classElement, fieldElement, enclosingElement);
       entityMeta.setOriginalStatesMeta(originalStatesMeta);
+    }
+
+    void doAssociationPropertyMeta(
+        TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
+      // validateFieldAnnotation(fieldElement, entityMeta);
+      AssociationPropertyMeta associationPropertyMeta =
+          new AssociationPropertyMeta(fieldElement.getSimpleName().toString());
+      entityMeta.addAssociationPropertyMeta(associationPropertyMeta);
+      // validateField(classElement, fieldElement, entityMeta);
     }
 
     void doEntityPropertyMeta(

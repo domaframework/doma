@@ -17,12 +17,7 @@ package org.seasar.doma.it.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
-import org.seasar.doma.Metamodel;
-import org.seasar.doma.OriginalStates;
-import org.seasar.doma.Transient;
-import org.seasar.doma.Version;
+import org.seasar.doma.*;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
 
@@ -41,7 +36,7 @@ public class Department {
 
   @OriginalStates Department originalStates;
 
-  @Transient List<Employee> employeeList = new ArrayList<>();
+  @Association List<Employee> employeeList = new ArrayList<>();
 
   public Identity<Department> getDepartmentId() {
     return departmentId;
