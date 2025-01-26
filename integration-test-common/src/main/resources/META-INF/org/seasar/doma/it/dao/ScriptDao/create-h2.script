@@ -113,3 +113,97 @@ INSERT INTO NO_ID VALUES (1, 1);
 
 INSERT INTO ID_GENERATOR VALUES('TABLE_STRATEGY_ID', 1);
 INSERT INTO MY_ID_GENERATOR VALUES('TableStrategy2', 1);
+
+-- test
+
+CREATE TABLE m_item (
+    code CHAR(10),
+    name NVARCHAR(256),
+    price INTEGER,
+    CONSTRAINT m_item_pk PRIMARY KEY(code)
+);
+
+CREATE TABLE m_category (
+    code CHAR(10),
+    name NVARCHAR(256),
+    CONSTRAINT m_category_pk PRIMARY KEY(code)
+);
+
+CREATE TABLE m_item_category (
+    item_code CHAR(10),
+    category_code CHAR(10),
+    CONSTRAINT m_item_category_pk PRIMARY KEY(item_code, category_code),
+    CONSTRAINT m_item_category_fk1 FOREIGN KEY(item_code) REFERENCES m_item(code),
+    CONSTRAINT m_item_category_fk2 FOREIGN KEY(category_code) REFERENCES m_category(code)
+);
+
+CREATE TABLE m_coupon (
+    code CHAR(10),
+    name NVARCHAR(256),
+    price INTEGER,
+    CONSTRAINT m_coupon_pk PRIMARY KEY(code)
+);
+
+CREATE TABLE c_order_status (
+    code VARCHAR(10),
+    name NVARCHAR(256),
+    CONSTRAINT c_order_status_pk PRIMARY KEY(code)
+);
+
+CREATE TABLE t_order (
+    id INTEGER,
+    status_code VARCHAR(10),
+    CONSTRAINT t_order_pk PRIMARY KEY(id),
+    CONSTRAINT t_order_fk FOREIGN KEY(status_code) REFERENCES c_order_status(code)
+);
+
+CREATE TABLE t_order_item (
+    order_id INTEGER,
+    item_code CHAR(10),
+    quantity INTEGER,
+    CONSTRAINT t_order_item_pk PRIMARY KEY(order_id, item_code),
+    CONSTRAINT t_order_item_fk1 FOREIGN KEY(order_id) REFERENCES t_order(id),
+    CONSTRAINT t_order_item_fk2 FOREIGN KEY(item_code) REFERENCES m_item(code)
+);
+
+CREATE TABLE t_order_coupon (
+    order_id INTEGER,
+    coupon_code CHAR(10),
+    CONSTRAINT t_order_coupon_pk PRIMARY KEY(order_id, coupon_code),
+    CONSTRAINT t_order_coupon_fk1 FOREIGN KEY(order_id) REFERENCES t_order(id),
+    CONSTRAINT t_order_coupon_fk2 FOREIGN KEY(coupon_code) REFERENCES m_coupon(code)
+);
+
+-- Setup master tables
+INSERT INTO m_item VALUES ('ITM0000001','Orange juice',100);
+INSERT INTO m_item VALUES ('ITM0000002','NotePC',100000);
+
+INSERT INTO m_category VALUES ('CTG0000001','Drink');
+INSERT INTO m_category VALUES ('CTG0000002','PC');
+INSERT INTO m_category VALUES ('CTG0000003','Hot selling');
+
+INSERT INTO m_item_category VALUES ('ITM0000001','CTG0000001');
+INSERT INTO m_item_category VALUES ('ITM0000002','CTG0000002');
+INSERT INTO m_item_category VALUES ('ITM0000002','CTG0000003');
+
+INSERT INTO m_coupon VALUES ('CPN0000001','Join coupon',3000);
+INSERT INTO m_coupon VALUES ('CPN0000002','PC coupon',30000);
+
+-- Setup code tables
+INSERT  INTO  c_order_status VALUES ('accepted','Order accepted');
+INSERT  INTO  c_order_status VALUES ('checking','Stock checking');
+INSERT  INTO  c_order_status VALUES ('shipped','Item Shipped');
+
+-- Setup transaction tables
+INSERT INTO t_order VALUES (1,'accepted');
+INSERT INTO t_order VALUES (2,'checking');
+
+INSERT INTO t_order_item VALUES (1,'ITM0000001',1);
+INSERT INTO t_order_item VALUES (1,'ITM0000002',2);
+INSERT INTO t_order_item VALUES (2,'ITM0000001',3);
+INSERT INTO t_order_item VALUES (2,'ITM0000002',4);
+
+INSERT INTO t_order_coupon VALUES (1,'CPN0000001');
+INSERT INTO t_order_coupon VALUES (1,'CPN0000002');
+
+COMMIT;
