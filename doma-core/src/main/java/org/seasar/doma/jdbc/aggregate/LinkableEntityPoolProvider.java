@@ -56,6 +56,8 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
 
   private final boolean resultMappingEnsured;
 
+  private final Map<LinkableEntityKey, Object> cache;
+
   private final UnknownColumnHandler unknownColumnHandler;
 
   private final DuplicateColumnHandler duplicateColumnHandler;
@@ -70,11 +72,13 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
       EntityType<?> entityType,
       List<AssociationLinkerType<?, ?>> associationLinkerTypes,
       Query query,
-      boolean resultMappingEnsured) {
-    assertNotNull(entityType, associationLinkerTypes, query);
+      boolean resultMappingEnsured,
+      Map<LinkableEntityKey, Object> cache) {
+    assertNotNull(entityType, associationLinkerTypes, query, cache);
     this.entityType = entityType;
     this.query = query;
     this.resultMappingEnsured = resultMappingEnsured;
+    this.cache = cache;
     this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
     this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
     // TODO
@@ -223,10 +227,21 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
             props.stream().filter(Prop::isId).map(it -> it.wrapper().get()).collect(toList());
         entityKey = new LinkableEntityKey(identifier, items);
       }
-      Map<String, Property<Object, ?>> states =
-          props.stream().collect(Collectors.toMap(Prop::name, Prop::property));
-      LinkableEntityData data = new LinkableEntityData(states);
-      entityPool.put(entityKey, data);
+      Object entity =
+          cache.computeIfAbsent(
+              entityKey,
+              k -> {
+                @SuppressWarnings("unchecked")
+                EntityType<Object> entityType = (EntityType<Object>) k.entityType();
+                Map<String, Property<Object, ?>> states =
+                    props.stream().collect(Collectors.toMap(Prop::name, Prop::property));
+                Object newEntity = entityType.newEntity(states);
+                if (!entityType.isImmutable()) {
+                  entityType.saveCurrentStates(newEntity);
+                }
+                return newEntity;
+              });
+      entityPool.add(new LinkableEntity(entityKey, entity));
     }
 
     return entityPool;

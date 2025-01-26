@@ -15,18 +15,22 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
-public class LinkableEntityPool {
-  private final Map<LinkableEntityKey, LinkableEntityData> keyDataMap = new LinkedHashMap<>();
+public class LinkableEntityPool implements Iterable<LinkableEntity> {
+  private final List<LinkableEntity> entities = new ArrayList<>();
 
-  public void put(LinkableEntityKey key, LinkableEntityData data) {
-    keyDataMap.put(key, data);
+  public void add(LinkableEntity entity) {
+    Objects.requireNonNull(entity);
+    entities.add(entity);
   }
 
-  public Set<Map.Entry<LinkableEntityKey, LinkableEntityData>> entrySet() {
-    return keyDataMap.entrySet();
+  @SuppressWarnings("NullableProblems")
+  @Override
+  public Iterator<LinkableEntity> iterator() {
+    return entities.iterator();
   }
 }

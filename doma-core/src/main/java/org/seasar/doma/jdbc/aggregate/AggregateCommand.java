@@ -57,7 +57,6 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public RESULT execute() {
     Map<LinkableEntityKey, Object> cache = new LinkedHashMap<>();
     Combinations<LinkableEntityKey> combinations = new Combinations<>();
@@ -65,28 +64,16 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
         new SelectCommand<>(
             query,
             new LinkableEntityPoolIterationHandler(
-                entityType, associationLinkerTypes, query.isResultMappingEnsured()));
+                entityType, associationLinkerTypes, query.isResultMappingEnsured(), cache));
     List<LinkableEntityPool> entityPools = command.execute();
     for (LinkableEntityPool entityPool : entityPools) {
-      Map<String, KeyAndEntity> associationCandidate = new LinkedHashMap<>();
-      for (Map.Entry<LinkableEntityKey, LinkableEntityData> e : entityPool.entrySet()) {
-        LinkableEntityKey key = e.getKey();
-        LinkableEntityData data = e.getValue();
-        Object entity =
-            cache.computeIfAbsent(
-                key,
-                k -> {
-                  EntityType<Object> entityType = (EntityType<Object>) k.entityType();
-                  Object newEntity = entityType.newEntity(data.getStates());
-                  if (!entityType.isImmutable()) {
-                    entityType.saveCurrentStates(newEntity);
-                  }
-                  return newEntity;
-                });
-        associationCandidate.put(key.propertyPath(), new KeyAndEntity(key, entity));
+      Map<String, LinkableEntity> associationCandidate = new LinkedHashMap<>();
+      for (LinkableEntity entry : entityPool) {
+        associationCandidate.put(entry.key().propertyPath(), entry);
       }
       associate(cache, combinations, associationCandidate);
     }
+    @SuppressWarnings("unchecked")
     Stream<ENTITY> stream =
         (Stream<ENTITY>)
             cache.entrySet().stream()
@@ -98,10 +85,10 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   private void associate(
       Map<LinkableEntityKey, Object> cache,
       Combinations<LinkableEntityKey> combinations,
-      Map<String, KeyAndEntity> associationCandidate) {
+      Map<String, LinkableEntity> associationCandidate) {
     for (AssociationLinkerType<?, ?> associationLinkerType : associationLinkerTypes) {
-      KeyAndEntity source = associationCandidate.get(associationLinkerType.getSourceName());
-      KeyAndEntity target = associationCandidate.get(associationLinkerType.getTargetName());
+      LinkableEntity source = associationCandidate.get(associationLinkerType.getSourceName());
+      LinkableEntity target = associationCandidate.get(associationLinkerType.getTargetName());
       if (source == null || target == null) {
         continue;
       }
@@ -116,7 +103,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       if (newEntity != null) {
         cache.replace(source.key(), newEntity);
         associationCandidate.replace(
-            associationLinkerType.getSourceName(), new KeyAndEntity(source.key(), newEntity));
+            associationLinkerType.getSourceName(), new LinkableEntity(source.key(), newEntity));
       }
       combinations.add(keyPair);
     }
@@ -126,6 +113,4 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   public Query getQuery() {
     return query;
   }
-
-  private record KeyAndEntity(LinkableEntityKey key, Object entity) {}
 }

@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.aggregate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
@@ -29,20 +30,23 @@ public class LinkableEntityPoolIterationHandler
   private final EntityType<?> entityType;
   private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
   private final boolean resultMappingEnsured;
+  private final Map<LinkableEntityKey, Object> cache;
 
   public LinkableEntityPoolIterationHandler(
       EntityType<?> entityType,
       List<AssociationLinkerType<?, ?>> associationLinkerTypes,
-      boolean resultMappingEnsured) {
+      boolean resultMappingEnsured,
+      Map<LinkableEntityKey, Object> cache) {
     super(new ResultListCallback<>());
     this.entityType = Objects.requireNonNull(entityType);
     this.associationLinkerTypes = Objects.requireNonNull(associationLinkerTypes);
     this.resultMappingEnsured = resultMappingEnsured;
+    this.cache = Objects.requireNonNull(cache);
   }
 
   @Override
   protected ObjectProvider<LinkableEntityPool> createObjectProvider(SelectQuery query) {
     return new LinkableEntityPoolProvider(
-        entityType, associationLinkerTypes, query, resultMappingEnsured);
+        entityType, associationLinkerTypes, query, resultMappingEnsured, cache);
   }
 }

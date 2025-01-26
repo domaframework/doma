@@ -15,20 +15,11 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
-import org.seasar.doma.jdbc.entity.Property;
 
-public class LinkableEntityData {
-  private final Map<String, Property<Object, ?>> states;
-
-  public LinkableEntityData(Map<String, Property<Object, ?>> states) {
-    Objects.requireNonNull(states);
-    this.states = Collections.unmodifiableMap(states);
-  }
-
-  public Map<String, Property<Object, ?>> getStates() {
-    return states;
+public record LinkableEntity(LinkableEntityKey key, Object entity) {
+  public LinkableEntity {
+    Objects.requireNonNull(key);
+    Objects.requireNonNull(entity);
   }
 }
