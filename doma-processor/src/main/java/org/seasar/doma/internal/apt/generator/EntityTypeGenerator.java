@@ -37,7 +37,23 @@ import org.seasar.doma.internal.apt.meta.id.IdentityIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.SequenceIdGeneratorMeta;
 import org.seasar.doma.internal.apt.meta.id.TableIdGeneratorMeta;
 import org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers;
-import org.seasar.doma.jdbc.entity.*;
+import org.seasar.doma.jdbc.entity.AbstractEntityType;
+import org.seasar.doma.jdbc.entity.AssociationPropertyType;
+import org.seasar.doma.jdbc.entity.DefaultAssociationPropertyType;
+import org.seasar.doma.jdbc.entity.EmbeddedPropertyType;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
+import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
+import org.seasar.doma.jdbc.entity.NamingType;
+import org.seasar.doma.jdbc.entity.OriginalStatesAccessor;
+import org.seasar.doma.jdbc.entity.PostDeleteContext;
+import org.seasar.doma.jdbc.entity.PostInsertContext;
+import org.seasar.doma.jdbc.entity.PostUpdateContext;
+import org.seasar.doma.jdbc.entity.PreDeleteContext;
+import org.seasar.doma.jdbc.entity.PreInsertContext;
+import org.seasar.doma.jdbc.entity.PreUpdateContext;
+import org.seasar.doma.jdbc.entity.Property;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
+import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class EntityTypeGenerator extends AbstractGenerator {
 

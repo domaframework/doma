@@ -15,7 +15,12 @@
  */
 package org.seasar.doma.it.entity;
 
-import org.seasar.doma.*;
+import org.seasar.doma.Association;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Metamodel;
+import org.seasar.doma.OriginalStates;
+import org.seasar.doma.Version;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Salary;
 

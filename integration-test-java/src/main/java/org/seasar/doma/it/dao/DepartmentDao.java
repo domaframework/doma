@@ -16,11 +16,20 @@
 package org.seasar.doma.it.dao;
 
 import java.util.List;
-import java.util.function.*;
-import org.seasar.doma.*;
+import java.util.function.BiFunction;
+import org.seasar.doma.AssociationLinker;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
-import org.seasar.doma.it.entity.*;
+import org.seasar.doma.it.entity.Address;
+import org.seasar.doma.it.entity.Department;
+import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 @Dao

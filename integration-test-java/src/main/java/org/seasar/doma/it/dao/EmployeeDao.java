@@ -16,12 +16,24 @@
 package org.seasar.doma.it.dao;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
-import org.seasar.doma.*;
+import org.seasar.doma.AssociationLinker;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Insert;
+import org.seasar.doma.MapKeyNamingType;
+import org.seasar.doma.Select;
+import org.seasar.doma.SelectType;
+import org.seasar.doma.Sql;
+import org.seasar.doma.Suppress;
+import org.seasar.doma.Update;
 import org.seasar.doma.it.domain.Hiredate;
 import org.seasar.doma.it.entity.Address;
 import org.seasar.doma.it.entity.Department;
