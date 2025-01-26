@@ -9,8 +9,8 @@ select
     a.street as a_street,
     a.version as a_version
 from
-    EMPLOYEE as e
-left outer join DEPARTMENT as d
+    EMPLOYEE e
+left outer join DEPARTMENT d
                 on e.department_id = d.department_id
-left outer join ADDRESS as a
+left outer join ADDRESS a
                 on e.address_id = a.address_id
