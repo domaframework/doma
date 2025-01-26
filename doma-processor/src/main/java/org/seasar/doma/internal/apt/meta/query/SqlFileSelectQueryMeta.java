@@ -48,7 +48,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   private boolean resultStream;
 
-  private AggregateHelperMeta aggregateHelperMeta;
+  private AggregateStrategyMeta aggregateStrategyMeta;
 
   public SqlFileSelectQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -166,12 +166,12 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     this.resultStream = resultStream;
   }
 
-  public AggregateHelperMeta getAggregateHelperMeta() {
-    return aggregateHelperMeta;
+  public AggregateStrategyMeta getAggregateStrategyMeta() {
+    return aggregateStrategyMeta;
   }
 
-  public void setAggregateHelperMeta(AggregateHelperMeta aggregateHelperMeta) {
-    this.aggregateHelperMeta = aggregateHelperMeta;
+  public void setAggregateStrategyMeta(AggregateStrategyMeta aggregateStrategyMeta) {
+    this.aggregateStrategyMeta = aggregateStrategyMeta;
   }
 
   @Override

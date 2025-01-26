@@ -41,36 +41,36 @@ import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
 import org.seasar.doma.message.Message;
 
-public class AggregateHelperMetaFactory {
+public class AggregateStrategyMetaFactory {
 
   private final Context ctx;
   private final SqlFileSelectQueryMeta queryMeta;
 
-  public AggregateHelperMetaFactory(Context ctx, SqlFileSelectQueryMeta queryMeta) {
+  public AggregateStrategyMetaFactory(Context ctx, SqlFileSelectQueryMeta queryMeta) {
     this.ctx = Objects.requireNonNull(ctx);
     this.queryMeta = Objects.requireNonNull(queryMeta);
   }
 
-  public AggregateHelperMeta createAggregateHelperMeta() {
-    TypeMirror aggregateHelperType = queryMeta.getSelectAnnot().getAggregateHelperValue();
-    if (ctx.getMoreTypes().isSameTypeWithErasure(aggregateHelperType, Void.class)) {
+  public AggregateStrategyMeta createAggregateStrategyMeta() {
+    TypeMirror aggregateStrategyType = queryMeta.getSelectAnnot().getAggregateStrategyValue();
+    if (ctx.getMoreTypes().isSameTypeWithErasure(aggregateStrategyType, Void.class)) {
       return null;
     }
     List<AssociationLinkerMeta> associationLinkerMetas =
-        findAssociationLinkerMetas(aggregateHelperType);
-    return new AggregateHelperMeta(associationLinkerMetas);
+        findAssociationLinkerMetas(aggregateStrategyType);
+    return new AggregateStrategyMeta(associationLinkerMetas);
   }
 
-  private List<AssociationLinkerMeta> findAssociationLinkerMetas(TypeMirror aggregateHelperType) {
-    TypeElement aggregateHelperElement = ctx.getMoreTypes().toTypeElement(aggregateHelperType);
-    if (aggregateHelperElement == null) {
-      throw new AptIllegalStateException("aggregateHelperElement must not be null");
+  private List<AssociationLinkerMeta> findAssociationLinkerMetas(TypeMirror aggregateStrategyType) {
+    TypeElement aggregateStrategyElement = ctx.getMoreTypes().toTypeElement(aggregateStrategyType);
+    if (aggregateStrategyElement == null) {
+      throw new AptIllegalStateException("aggregateStrategyElement must not be null");
     }
     EntityCtType root = resolveRootEntityCtType();
     List<AssociationLinkerMeta> associationLinkerMetas = new ArrayList<>();
 
     for (VariableElement fieldElement :
-        ElementFilter.fieldsIn(aggregateHelperElement.getEnclosedElements())) {
+        ElementFilter.fieldsIn(aggregateStrategyElement.getEnclosedElements())) {
       AssociationLinkerAnnot associationLinkerAnnot = getAssociationLinkerAnnot(fieldElement);
       if (associationLinkerAnnot == null) {
         continue;
@@ -80,7 +80,7 @@ public class AggregateHelperMetaFactory {
       validateAssociation(root, associationLinkerAnnot, biFunctionMeta, fieldElement);
       AssociationLinkerMeta associationLinkerMeta =
           createAssociationLinkerMeta(
-              fieldElement, associationLinkerAnnot, biFunctionMeta, aggregateHelperElement);
+              fieldElement, associationLinkerAnnot, biFunctionMeta, aggregateStrategyElement);
       associationLinkerMetas.add(associationLinkerMeta);
     }
 
@@ -271,13 +271,13 @@ public class AggregateHelperMetaFactory {
       VariableElement fieldElement,
       AssociationLinkerAnnot associationLinkerAnnot,
       BiFunctionMeta biFunctionMeta,
-      TypeElement aggregateHelperElement) {
+      TypeElement aggregateStrategyElement) {
     return new AssociationLinkerMeta(
         associationLinkerAnnot.getPropertyPathValue(),
         associationLinkerAnnot.getColumnPrefixValue(),
         biFunctionMeta.source,
         biFunctionMeta.target,
-        aggregateHelperElement,
+        aggregateStrategyElement,
         fieldElement);
   }
 
@@ -290,7 +290,7 @@ public class AggregateHelperMetaFactory {
           Message.DOMA4469,
           method,
           selectAnnot.getAnnotationMirror(),
-          selectAnnot.getAggregateHelper(),
+          selectAnnot.getAggregateStrategy(),
           new Object[] {});
     }
   }

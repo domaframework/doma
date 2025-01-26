@@ -40,8 +40,8 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.meta.entity.AggregateHelperMeta;
-import org.seasar.doma.internal.apt.meta.entity.AggregateHelperMetaFactory;
+import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMeta;
+import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMetaFactory;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -63,7 +63,7 @@ public class SqlFileSelectQueryMetaFactory
     doReturnType(queryMeta);
     doThrowTypes(queryMeta);
     doSqlTemplate(queryMeta, queryMeta.isExpandable(), false);
-    doAggregateHelper(queryMeta);
+    doAggregateStrategy(queryMeta);
     return queryMeta;
   }
 
@@ -140,10 +140,10 @@ public class SqlFileSelectQueryMetaFactory
     }
   }
 
-  private void doAggregateHelper(SqlFileSelectQueryMeta queryMeta) {
-    AggregateHelperMetaFactory factory = new AggregateHelperMetaFactory(ctx, queryMeta);
-    AggregateHelperMeta meta = factory.createAggregateHelperMeta();
-    queryMeta.setAggregateHelperMeta(meta);
+  private void doAggregateStrategy(SqlFileSelectQueryMeta queryMeta) {
+    AggregateStrategyMetaFactory factory = new AggregateStrategyMetaFactory(ctx, queryMeta);
+    AggregateStrategyMeta meta = factory.createAggregateStrategyMeta();
+    queryMeta.setAggregateStrategyMeta(meta);
   }
 
   static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {

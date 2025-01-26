@@ -166,12 +166,12 @@ public @interface Select {
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 
   /**
-   * Specifies a helper class used for aggregation operations.
+   * Specifies a strategy class used for aggregation operations.
    *
    * <p>The class specified here must contain at least one field of type {@link BiFunction}
    * annotated with {@link AssociationLinker}.
    *
-   * @return the class representing the aggregation helper, or {@code Void.class} if not specified
+   * @return the class representing the aggregation strategy, or {@code Void.class} if not specified
    */
-  Class<?> aggregateHelper() default Void.class;
+  Class<?> aggregateStrategy() default Void.class;
 }

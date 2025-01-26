@@ -112,14 +112,14 @@ public interface DepartmentDao {
   @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
   int[] insertOnDuplicateKeyIgnore(List<Department> entities);
 
-  @Select(aggregateHelper = DepartmentHelper.class)
+  @Select(aggregateStrategy = DepartmentStrategy.class)
   Department selectByIdAsAggregate(Integer departmentId);
 
-  @Select(aggregateHelper = DepartmentHelper.class)
+  @Select(aggregateStrategy = DepartmentStrategy.class)
   List<Department> selectAllAsAggregate();
 }
 
-interface DepartmentHelper {
+interface DepartmentStrategy {
   @AssociationLinker(propertyPath = "employeeList", columnPrefix = "e_")
   BiFunction<Department, Employee, Department> employeeList =
       (d, e) -> {

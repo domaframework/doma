@@ -55,13 +55,13 @@ public interface EmployeeDao {
   @Select
   Employee selectById(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   Employee selectByIdAsAggregate(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   Optional<Employee> selectOptionalByIdAsAggregate(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   List<Employee> selectAllAsAggregate();
 
   @Select
@@ -188,7 +188,7 @@ public interface EmployeeDao {
   int update(Employee entity);
 }
 
-interface EmployeeHelper {
+interface EmployeeStrategy {
   @AssociationLinker(propertyPath = "department", columnPrefix = "d_")
   BiFunction<Employee, Department, Employee> department =
       (e, d) -> {

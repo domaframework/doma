@@ -45,7 +45,7 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
-import org.seasar.doma.internal.apt.meta.entity.AggregateHelperMeta;
+import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMeta;
 import org.seasar.doma.internal.apt.meta.entity.AssociationLinkerMeta;
 import org.seasar.doma.internal.apt.meta.parameter.BasicInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.BasicInParameterMeta;
@@ -2039,8 +2039,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-      AggregateHelperMeta aggregateHelperMeta = m.getAggregateHelperMeta();
-      if (aggregateHelperMeta == null) {
+      AggregateStrategyMeta aggregateStrategyMeta = m.getAggregateStrategyMeta();
+      if (aggregateStrategyMeta == null) {
         iprint(
             "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
             /* 1 */ commandClass,
@@ -2061,7 +2061,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
               /* 7 */ methodName);
-          printAssociationLinkerTypes(aggregateHelperMeta);
+          printAssociationLinkerTypes(aggregateStrategyMeta);
         } else {
           iprint(
               "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
@@ -2072,7 +2072,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
               /* 7 */ methodName);
-          printAssociationLinkerTypes(aggregateHelperMeta);
+          printAssociationLinkerTypes(aggregateStrategyMeta);
         }
       }
       return null;
@@ -2172,8 +2172,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
                 @Override
                 public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-                  AggregateHelperMeta aggregateHelperMeta = m.getAggregateHelperMeta();
-                  if (aggregateHelperMeta == null) {
+                  AggregateStrategyMeta aggregateStrategyMeta = m.getAggregateStrategyMeta();
+                  if (aggregateStrategyMeta == null) {
                     iprint(
                         "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
                         /* 1 */ commandClass,
@@ -2193,7 +2193,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
                         /* 5 */ ctType.getType(),
                         /* 6 */ AggregateCommand.class.getSimpleName(),
                         /* 7 */ methodName);
-                    printAssociationLinkerTypes(aggregateHelperMeta);
+                    printAssociationLinkerTypes(aggregateStrategyMeta);
                   }
                   return null;
                 }
@@ -2309,13 +2309,13 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       return EntitySingleResultHandler.class;
     }
 
-    private void printAssociationLinkerTypes(AggregateHelperMeta aggregateHelperMeta) {
-      Objects.requireNonNull(aggregateHelperMeta);
+    private void printAssociationLinkerTypes(AggregateStrategyMeta aggregateStrategyMeta) {
+      Objects.requireNonNull(aggregateStrategyMeta);
       indent();
       iprint("java.util.List.of(%n");
       indent();
       Iterator<AssociationLinkerMeta> iter =
-          aggregateHelperMeta.associationLinkerMetas().iterator();
+          aggregateStrategyMeta.associationLinkerMetas().iterator();
       while (iter.hasNext()) {
         AssociationLinkerMeta linkerMeta = iter.next();
         iprint(

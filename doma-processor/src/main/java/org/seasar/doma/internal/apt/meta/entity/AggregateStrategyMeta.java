@@ -17,4 +17,4 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import java.util.List;
 
-public record AggregateHelperMeta(List<AssociationLinkerMeta> associationLinkerMetas) {}
+public record AggregateStrategyMeta(List<AssociationLinkerMeta> associationLinkerMetas) {}
