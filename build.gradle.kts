@@ -100,7 +100,7 @@ allprojects {
         format("misc") {
             target("**/*.gitignore", "docs/**/*.rst", "**/*.md")
             targetExclude("**/bin/**", "**/build/**")
-            indentWithSpaces()
+            leadingTabsToSpaces()
             trimTrailingWhitespace()
             endWithNewline()
         }
