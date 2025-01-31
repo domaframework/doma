@@ -308,6 +308,11 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     if (m.isResultStream()) {
       iprint("__query.setResultStream(true);%n");
     }
+    if (m.getAggregateStrategyMeta() != null) {
+      iprint("java.util.List<%1$s<?, ?>> __associationLinkerTypes = ", AssociationLinkerType.class);
+      printAssociationLinkerTypes(m.getAggregateStrategyMeta());
+      iprint("__query.setAssociationLinkerTypes(__associationLinkerTypes);%n");
+    }
     iprint("__query.prepare();%n");
 
     QueryReturnMeta returnMeta = m.getReturnMeta();
@@ -345,6 +350,32 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
     printThrowingStatements(m);
     return null;
+  }
+
+  private void printAssociationLinkerTypes(AggregateStrategyMeta aggregateStrategyMeta) {
+    Objects.requireNonNull(aggregateStrategyMeta);
+    print("java.util.List.of(%n");
+    indent();
+    Iterator<AssociationLinkerMeta> iter =
+        aggregateStrategyMeta.associationLinkerMetas().iterator();
+    while (iter.hasNext()) {
+      AssociationLinkerMeta linkerMeta = iter.next();
+      iprint(
+          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
+          AssociationLinkerType.class,
+          linkerMeta.propertyPath(),
+          linkerMeta.columnPrefix(),
+          linkerMeta.source().getTypeCode(),
+          linkerMeta.target().getTypeCode(),
+          linkerMeta.classElement(),
+          linkerMeta.filedElement());
+      if (iter.hasNext()) {
+        print(",");
+      }
+      print("%n");
+    }
+    unindent();
+    iprint(");%n");
   }
 
   @Override
@@ -2053,7 +2084,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       } else {
         if (optional) {
           iprint(
-              "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+              "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
               /* 1 */ AggregateCommand.class,
               /* 2 */ resultBoxedType,
               /* 3 */ ToOptionalReducer.class,
@@ -2061,10 +2092,9 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
               /* 7 */ methodName);
-          printAssociationLinkerTypes(aggregateStrategyMeta);
         } else {
           iprint(
-              "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+              "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
               /* 1 */ AggregateCommand.class,
               /* 2 */ resultBoxedType,
               /* 3 */ ToSingleReducer.class,
@@ -2072,7 +2102,6 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
               /* 7 */ methodName);
-          printAssociationLinkerTypes(aggregateStrategyMeta);
         }
       }
       return null;
@@ -2185,7 +2214,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
                         /* 7 */ methodName);
                   } else {
                     iprint(
-                        "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(),%n",
+                        "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
                         /* 1 */ AggregateCommand.class,
                         /* 2 */ resultBoxedType,
                         /* 3 */ ToListReducer.class,
@@ -2193,7 +2222,6 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
                         /* 5 */ ctType.getType(),
                         /* 6 */ AggregateCommand.class.getSimpleName(),
                         /* 7 */ methodName);
-                    printAssociationLinkerTypes(aggregateStrategyMeta);
                   }
                   return null;
                 }
@@ -2307,35 +2335,6 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
         return OptionalEntitySingleResultHandler.class;
       }
       return EntitySingleResultHandler.class;
-    }
-
-    private void printAssociationLinkerTypes(AggregateStrategyMeta aggregateStrategyMeta) {
-      Objects.requireNonNull(aggregateStrategyMeta);
-      indent();
-      iprint("java.util.List.of(%n");
-      indent();
-      Iterator<AssociationLinkerMeta> iter =
-          aggregateStrategyMeta.associationLinkerMetas().iterator();
-      while (iter.hasNext()) {
-        AssociationLinkerMeta linkerMeta = iter.next();
-        iprint(
-            "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
-            AssociationLinkerType.class,
-            linkerMeta.propertyPath(),
-            linkerMeta.columnPrefix(),
-            linkerMeta.source().getTypeCode(),
-            linkerMeta.target().getTypeCode(),
-            linkerMeta.classElement(),
-            linkerMeta.filedElement());
-        if (iter.hasNext()) {
-          print(",");
-        }
-        print("%n");
-      }
-      unindent();
-      iprint(")%n");
-      unindent();
-      iprint(");%n");
     }
   }
 }

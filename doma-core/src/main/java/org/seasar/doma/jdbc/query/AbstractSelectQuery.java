@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +28,11 @@ import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.command.BasicSingleResultHandler;
+import org.seasar.doma.internal.jdbc.sql.SqlContext;
 import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
+import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
+import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.PreparedSql;
@@ -36,6 +40,7 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -66,6 +71,8 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   protected boolean resultStream;
 
+  protected List<AssociationLinkerType<?, ?>> associationLinkerTypes = new ArrayList<>();
+
   protected AbstractSelectQuery() {}
 
   @Override
@@ -90,12 +97,16 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   protected abstract void prepareSql();
 
+  @Deprecated(forRemoval = true)
   protected void buildSql(
       BiFunction<ExpressionEvaluator, Function<ExpandNode, List<String>>, PreparedSql> sqlBuilder) {
-    ExpressionEvaluator evaluator =
-        new ExpressionEvaluator(
-            parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
+    ExpressionEvaluator evaluator = createExpressionEvaluator();
     sql = sqlBuilder.apply(evaluator, this::expandColumns);
+  }
+
+  protected ExpressionEvaluator createExpressionEvaluator() {
+    return new ExpressionEvaluator(
+        parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
   }
 
   protected List<String> expandColumns(ExpandNode node) {
@@ -109,6 +120,30 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     return entityType.getEntityPropertyTypes().stream()
         .map(p -> p.getColumnName(naming::apply, dialect::applyQuote))
         .collect(Collectors.toList());
+  }
+
+  protected List<String> expandAssociationColumns(ExpandNode node) {
+    Naming naming = config.getNaming();
+    Dialect dialect = config.getDialect();
+    return associationLinkerTypes.stream()
+        .flatMap(
+            linker -> {
+              // TODO
+              String prefix = linker.getColumnPrefix().replace("_", "");
+              return linker.getTarget().getEntityPropertyTypes().stream()
+                  .map(p -> new Pair<>(prefix, p));
+            })
+        .map(
+            p -> {
+              String tableAlias = p.fst;
+              String columnName = p.snd.getColumnName(naming::apply, dialect::applyQuote);
+              return String.format("%1$s.%2$s as %1$s_%2$s", tableAlias, columnName);
+            })
+        .collect(Collectors.toList());
+  }
+
+  protected void populateValues(PopulateNode node, SqlContext context) {
+    throw new UnsupportedOperationException();
   }
 
   protected void executeCount(SqlNode sqlNode) {
@@ -214,6 +249,11 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   public void setResultStream(boolean resultStream) {
     this.resultStream = resultStream;
+  }
+
+  public void setAssociationLinkerTypes(List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
+    this.associationLinkerTypes.clear();
+    this.associationLinkerTypes.addAll(associationLinkerTypes);
   }
 
   public void setEntityType(EntityType<?> entityType) {
