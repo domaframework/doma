@@ -38,9 +38,9 @@ public @interface AssociationLinker {
   String propertyPath();
 
   /**
-   * Defines the prefix for the column in the database table that is linked to the field.
+   * Defines the alias for the database table that is linked to the field.
    *
-   * @return the column prefix as a string
+   * @return the table alias as a string
    */
-  String columnPrefix();
+  String tableAlias();
 }

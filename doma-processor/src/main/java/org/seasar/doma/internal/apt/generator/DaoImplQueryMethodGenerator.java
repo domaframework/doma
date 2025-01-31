@@ -364,7 +364,7 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
           "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
           AssociationLinkerType.class,
           linkerMeta.propertyPath(),
-          linkerMeta.columnPrefix(),
+          linkerMeta.tableAlias(),
           linkerMeta.source().getTypeCode(),
           linkerMeta.target().getTypeCode(),
           linkerMeta.classElement(),

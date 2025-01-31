@@ -189,14 +189,14 @@ public interface EmployeeDao {
 }
 
 interface EmployeeStrategy {
-  @AssociationLinker(propertyPath = "department", columnPrefix = "d_")
+  @AssociationLinker(propertyPath = "department", tableAlias = "d")
   BiFunction<Employee, Department, Employee> department =
       (e, d) -> {
         e.setDepartment(d);
         return e;
       };
 
-  @AssociationLinker(propertyPath = "address", columnPrefix = "a_")
+  @AssociationLinker(propertyPath = "address", tableAlias = "a")
   BiFunction<Employee, Address, Employee> address =
       (e, a) -> {
         e.setAddress(a);

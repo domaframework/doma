@@ -127,11 +127,10 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     Dialect dialect = config.getDialect();
     return associationLinkerTypes.stream()
         .flatMap(
-            linker -> {
-              // TODO
-              String prefix = linker.getColumnPrefix().replace("_", "");
-              return linker.getTarget().getEntityPropertyTypes().stream()
-                  .map(p -> new Pair<>(prefix, p));
+            linkerType -> {
+              String tableAlias = linkerType.getTableAlias();
+              return linkerType.getTarget().getEntityPropertyTypes().stream()
+                  .map(p -> new Pair<>(tableAlias, p));
             })
         .map(
             p -> {

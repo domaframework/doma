@@ -26,23 +26,23 @@ import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 public class AssociationLinkerAnnot extends AbstractAnnot {
 
   private static final String PROPERTY_PATH = "propertyPath";
-  private static final String COLUMN_PREFIX = "columnPrefix";
+  private static final String TABLE_ALIAS = "tableAlias";
 
   private final AnnotationValue propertyPath;
-  private final AnnotationValue columnPrefix;
+  private final AnnotationValue tableAlias;
 
   AssociationLinkerAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
     this.propertyPath = assertNonNullValue(values, PROPERTY_PATH);
-    this.columnPrefix = assertNonNullValue(values, COLUMN_PREFIX);
+    this.tableAlias = assertNonNullValue(values, TABLE_ALIAS);
   }
 
   public AnnotationValue getPropertyPath() {
     return propertyPath;
   }
 
-  public AnnotationValue getColumnPrefix() {
-    return columnPrefix;
+  public AnnotationValue getTableAlias() {
+    return tableAlias;
   }
 
   public String getPropertyPathValue() {
@@ -53,10 +53,10 @@ public class AssociationLinkerAnnot extends AbstractAnnot {
     return result;
   }
 
-  public String getColumnPrefixValue() {
-    String result = AnnotationValueUtil.toString(columnPrefix);
+  public String getTableAliasValue() {
+    String result = AnnotationValueUtil.toString(tableAlias);
     if (result == null) {
-      throw new AptIllegalStateException(COLUMN_PREFIX);
+      throw new AptIllegalStateException(TABLE_ALIAS);
     }
     return result;
   }

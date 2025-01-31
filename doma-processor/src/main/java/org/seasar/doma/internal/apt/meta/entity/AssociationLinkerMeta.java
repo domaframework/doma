@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
 public record AssociationLinkerMeta(
     String propertyPath,
-    String columnPrefix,
+    String tableAlias,
     EntityCtType source,
     EntityCtType target,
     TypeElement classElement,

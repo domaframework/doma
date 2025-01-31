@@ -120,7 +120,7 @@ public interface DepartmentDao {
 }
 
 interface DepartmentStrategy {
-  @AssociationLinker(propertyPath = "employeeList", columnPrefix = "e_")
+  @AssociationLinker(propertyPath = "employeeList", tableAlias = "e")
   BiFunction<Department, Employee, Department> employeeList =
       (d, e) -> {
         d.getEmployeeList().add(e);
@@ -128,7 +128,7 @@ interface DepartmentStrategy {
         return d;
       };
 
-  @AssociationLinker(propertyPath = "employeeList.address", columnPrefix = "a_")
+  @AssociationLinker(propertyPath = "employeeList.address", tableAlias = "a")
   BiFunction<Employee, Address, Employee> employeeListAddress =
       (e, a) -> {
         e.setAddress(a);

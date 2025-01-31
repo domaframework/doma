@@ -953,7 +953,7 @@ public enum Message implements MessageResource {
   DOMA4465("Fields annotated with AssociationLinker must be java.util.function.BiFunction."),
   DOMA4466("The {0} type parameter of BiFunction must be an entity class."),
   DOMA4467("The first and third type parameters of java.util.function.BiFunction must be the same"),
-  DOMA4468("The columnPrefix must not be blank."),
+  DOMA4468("The tableAlias must not be blank."),
   DOMA4469(
       "No field annotated with @AssociationLinker was found in the class specified in the aggregateStrategy element of @Select."),
   DOMA4470("Fields annotated with AssociationLinker must be public."),

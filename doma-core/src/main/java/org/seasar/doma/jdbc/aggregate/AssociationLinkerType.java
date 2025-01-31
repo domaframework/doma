@@ -24,7 +24,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 public class AssociationLinkerType<S, T> {
 
   private final String propertyPath;
-  private final String columnPrefix;
+  private final String tableAlias;
   private final EntityType<S> source;
   private final String sourceName;
   private final EntityType<T> target;
@@ -34,7 +34,7 @@ public class AssociationLinkerType<S, T> {
 
   private AssociationLinkerType(
       String propertyPath,
-      String columnPrefix,
+      String tableAlias,
       EntityType<S> source,
       String sourceName,
       EntityType<T> target,
@@ -42,7 +42,7 @@ public class AssociationLinkerType<S, T> {
       int depth,
       BiFunction<S, T, S> linker) {
     this.propertyPath = Objects.requireNonNull(propertyPath);
-    this.columnPrefix = Objects.requireNonNull(columnPrefix);
+    this.tableAlias = Objects.requireNonNull(tableAlias);
     this.source = Objects.requireNonNull(source);
     this.sourceName = Objects.requireNonNull(sourceName);
     this.target = Objects.requireNonNull(target);
@@ -55,8 +55,8 @@ public class AssociationLinkerType<S, T> {
     return propertyPath;
   }
 
-  public String getColumnPrefix() {
-    return columnPrefix;
+  public String getTableAlias() {
+    return tableAlias;
   }
 
   public EntityType<S> getSource() {
@@ -85,7 +85,7 @@ public class AssociationLinkerType<S, T> {
 
   public static <S, T> AssociationLinkerType<S, T> of(
       String propertyPath,
-      String columnPrefix,
+      String tableAlias,
       EntityType<S> source,
       EntityType<T> target,
       BiFunction<S, T, S> function) {
@@ -104,6 +104,6 @@ public class AssociationLinkerType<S, T> {
     int depth = segments.length;
 
     return new AssociationLinkerType<>(
-        propertyPath, columnPrefix, source, sourceName, target, propertyPath, depth, function);
+        propertyPath, tableAlias, source, sourceName, target, propertyPath, depth, function);
   }
 }

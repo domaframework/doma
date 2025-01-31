@@ -153,12 +153,12 @@ public class AggregateStrategyMetaFactory {
           associationLinkerAnnot.getPropertyPath(),
           new Object[] {});
     }
-    if (associationLinkerAnnot.getColumnPrefixValue().isBlank()) {
+    if (associationLinkerAnnot.getTableAliasValue().isBlank()) {
       throw new AptException(
           Message.DOMA4468,
           fieldElement,
           associationLinkerAnnot.getAnnotationMirror(),
-          associationLinkerAnnot.getColumnPrefix(),
+          associationLinkerAnnot.getTableAlias(),
           new Object[] {});
     }
     return associationLinkerAnnot;
@@ -274,7 +274,7 @@ public class AggregateStrategyMetaFactory {
       TypeElement aggregateStrategyElement) {
     return new AssociationLinkerMeta(
         associationLinkerAnnot.getPropertyPathValue(),
-        associationLinkerAnnot.getColumnPrefixValue(),
+        associationLinkerAnnot.getTableAliasValue(),
         biFunctionMeta.source,
         biFunctionMeta.target,
         aggregateStrategyElement,

@@ -147,18 +147,17 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
   private HashMap<String, PropType> createColumnNameMap() {
     List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
     HashMap<String, PropType> result = new HashMap<>(propertyTypes.size());
-    collectColumnNames(result, entityType, "", "");
+    collectColumnNames(result, entityType, "", null);
     return result;
   }
 
   private void collectColumnNames(
-      Map<String, PropType> map, EntityType<?> source, String propertyPath, String columnPrefix) {
+      Map<String, PropType> map, EntityType<?> source, String propertyPath, String tableAlias) {
     Naming naming = query.getConfig().getNaming();
+    String prefix = tableAlias == null ? "" : tableAlias + "_";
     for (EntityPropertyType<?, ?> propertyType : source.getEntityPropertyTypes()) {
       String columnName = propertyType.getColumnName(naming::apply);
-      map.put(
-          columnPrefix + columnName.toLowerCase(),
-          new PropType(source, propertyType, propertyPath));
+      map.put(prefix + columnName.toLowerCase(), new PropType(source, propertyType, propertyPath));
     }
     String propertyPrefix = propertyPath.isEmpty() ? "" : propertyPath + ".";
     for (AssociationPropertyType associationPropertyType : source.getAssociationPropertyTypes()) {
@@ -169,7 +168,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
             map,
             associationLinkerType.getTarget(),
             associationLinkerType.getTargetName(),
-            associationLinkerType.getColumnPrefix().toLowerCase());
+            associationLinkerType.getTableAlias());
       }
     }
   }
