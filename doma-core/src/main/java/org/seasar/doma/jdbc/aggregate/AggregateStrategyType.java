@@ -18,6 +18,10 @@ package org.seasar.doma.jdbc.aggregate;
 import java.util.List;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * Represents a strategy type for defining an aggregate structure that involves a root entity and
+ * its associated entities.
+ */
 public interface AggregateStrategyType {
   EntityType<?> getRoot();
 

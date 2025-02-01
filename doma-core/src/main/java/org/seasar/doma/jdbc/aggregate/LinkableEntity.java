@@ -17,6 +17,22 @@ package org.seasar.doma.jdbc.aggregate;
 
 import java.util.Objects;
 
+/**
+ * Represents an entity that can be linked to others via associations.
+ *
+ * <p>This class is used as part of an object graph reduction process, where entities and their
+ * associations are aggregated into a coherent structure.
+ *
+ * <p>The entity is uniquely identified by a {@link LinkableEntityKey}, which encapsulates an {@link
+ * AssociationIdentifier} and a collection of items. The {@link LinkableEntityKey} helps in
+ * associating and organizing entities.
+ *
+ * <p>This record guarantees non-nullability of its components, ensuring both the key and the entity
+ * are valid references.
+ *
+ * @param key the unique key representing the entity's association context
+ * @param entity the actual entity being linked
+ */
 public record LinkableEntity(LinkableEntityKey key, Object entity) {
   public LinkableEntity {
     Objects.requireNonNull(key);

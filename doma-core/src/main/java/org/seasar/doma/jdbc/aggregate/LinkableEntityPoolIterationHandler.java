@@ -24,6 +24,10 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * Handles the iteration of {@link LinkableEntityPool} results from a query execution and manages
+ * the creation and configuration of object providers used to process the results.
+ */
 public class LinkableEntityPoolIterationHandler
     extends AbstractIterationHandler<LinkableEntityPool, List<LinkableEntityPool>> {
 

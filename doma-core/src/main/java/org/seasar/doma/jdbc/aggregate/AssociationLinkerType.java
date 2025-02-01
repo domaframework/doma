@@ -21,6 +21,12 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * Represents an association linker that connects two entity types based on a property path.
+ *
+ * @param <S> the source entity type
+ * @param <T> the target entity type
+ */
 public class AssociationLinkerType<S, T> {
 
   private final String propertyPath;

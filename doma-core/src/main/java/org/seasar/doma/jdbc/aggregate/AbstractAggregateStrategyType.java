@@ -37,6 +37,13 @@ public abstract class AbstractAggregateStrategyType implements AggregateStrategy
     this.associationLinkerTypes = sortAssociationLinkerTypes(associationLinkerTypes);
   }
 
+  /**
+   * Sorts a list of {@code AssociationLinkerType} objects in descending order based on their depth.
+   *
+   * @param associationLinkerTypes the list of {@code AssociationLinkerType} objects to be sorted
+   * @return a sorted list of {@code AssociationLinkerType} objects in descending order of their
+   *     depth
+   */
   private static List<AssociationLinkerType<?, ?>> sortAssociationLinkerTypes(
       List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
     Comparator<AssociationLinkerType<?, ?>> reversedComparator =

@@ -20,15 +20,43 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Indicates a strategy for aggregating database records. */
+/**
+ * Indicates a strategy for aggregating database records.
+ *
+ * <p>The element annotated with {@linkplain AggregateStrategy} must be an interface.
+ *
+ * <pre>
+ * &#064;AggregateStrategy(root = Department.class, tableAlias = "d")
+ * interface DepartmentStrategy {
+ *
+ *     &#064;AssociationLinker(propertyPath = "employeeList", tableAlias = "e")
+ *     BiFunction&lt;Department, Employee, Department&gt; employeeList = (d, e) -> {
+ *         d.getEmployeeList().add(e);
+ *         e.setDepartment(d);
+ *         return d;
+ *     };
+ *
+ *     &#064;AssociationLinker(propertyPath = "employeeList.address", tableAlias = "a")
+ *     BiFunction&lt;Employee, Address, Employee&gt; employeeListAddress = (e, a) -> {
+ *         e.setAddress(a);
+ *         return e;
+ *     };
+ * }
+ * </pre>
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AggregateStrategy {
 
+  /**
+   * Specifies the root entity class associated with the aggregation strategy.
+   *
+   * @return the root class
+   */
   Class<?> root();
 
   /**
-   * Specifies the table alias.
+   * Specifies the root table alias.
    *
    * @return the alias name for a root table
    */

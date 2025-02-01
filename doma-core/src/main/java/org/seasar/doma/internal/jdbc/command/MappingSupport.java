@@ -40,6 +40,11 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.wrapper.Wrapper;
 
+/**
+ * Provides support for handling and mapping database result sets to entity properties. It ensures
+ * proper alignment between query results and entity fields, including handling unknown columns,
+ * duplicate columns, and unmapped entity properties.
+ */
 public class MappingSupport {
 
   private final EntityType<?> entityType;
@@ -61,6 +66,20 @@ public class MappingSupport {
     this.duplicateColumnHandler = Objects.requireNonNull(duplicateColumnHandler);
   }
 
+  /**
+   * Creates a mapping of result set column indices to their corresponding property types. This
+   * method processes the column metadata and maps each column index to a {@code PropType}, based on
+   * the provided column name to property type mapping.
+   *
+   * <p>Handles duplicate column names and unknown columns via the respective handlers. Throws an
+   * exception if result mapping is enforced and there are unmapped properties.
+   *
+   * @param resultSetMeta the metadata of the result set
+   * @param columnNameMap a map of lower-case column names to their corresponding property types
+   * @return a map where keys are result set column indices and values are the corresponding
+   *     property types
+   * @throws SQLException if a database access error occurs
+   */
   public Map<Integer, MappingSupport.PropType> createIndexMap(
       ResultSetMetaData resultSetMeta, Map<String, PropType> columnNameMap) throws SQLException {
     HashMap<Integer, PropType> indexMap = new HashMap<>();
@@ -91,6 +110,14 @@ public class MappingSupport {
     return indexMap;
   }
 
+  /**
+   * Throws a {@link ResultMappingException} when there are unmapped properties during result
+   * mapping. This method gathers information about the unmapped properties, expected column names,
+   * and relevant SQL details to construct and throw the exception.
+   *
+   * @param unmappedPropertySet the set of property types that could not be mapped to result set
+   *     columns
+   */
   private void throwResultMappingException(Set<PropType> unmappedPropertySet) {
     Naming naming = query.getConfig().getNaming();
     int size = unmappedPropertySet.size();
@@ -119,6 +146,17 @@ public class MappingSupport {
         sql.getSqlFilePath());
   }
 
+  /**
+   * Represents a combination of an entity type, a property type, and the property path for mapping
+   * between result set columns and properties in an entity.
+   *
+   * <p>This record encapsulates the basic metadata required for mapping a specific property of an
+   * entity, including the property's name and its corresponding column in the database.
+   *
+   * @param entityType The metadata of the entity type that this property belongs to.
+   * @param propertyType The metadata of the property type including its name and column details.
+   * @param propertyPath The path representing the property within the entity structure.
+   */
   public record PropType(
       EntityType<?> entityType, EntityPropertyType<?, ?> propertyType, String propertyPath) {
     public String name() {
@@ -130,6 +168,16 @@ public class MappingSupport {
     }
   }
 
+  /**
+   * Represents a property mapping for an entity during result set processing. This record
+   * encapsulates metadata and value related to a specific property, providing utility methods for
+   * accessing property-specific details.
+   *
+   * @param propType The type of the property containing metadata such as entity type, property
+   *     path, and property type.
+   * @param property The underlying property object providing accessors and modifiers.
+   * @param rawValue The raw value associated with this property, as retrieved from the data source.
+   */
   public record Prop(PropType propType, Property<Object, ?> property, Object rawValue) {
 
     public EntityType<?> entityType() {

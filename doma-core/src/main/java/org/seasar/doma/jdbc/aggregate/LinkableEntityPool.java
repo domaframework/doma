@@ -20,6 +20,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a pool of {@link LinkableEntity} objects, providing functionality for adding entities
+ * and iterating over the collection.
+ *
+ * <p>This class is designed to manage a collection of {@code LinkableEntity} instances and
+ * guarantees that only non-null entities can be added, ensuring the integrity of the pool. It
+ * implements {@link Iterable}, allowing the underlying collection to be used in enhanced for-loops
+ * or with other iterable utilities.
+ */
 public class LinkableEntityPool implements Iterable<LinkableEntity> {
   private final List<LinkableEntity> entities = new ArrayList<>();
 

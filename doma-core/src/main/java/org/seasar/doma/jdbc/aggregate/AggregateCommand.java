@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,14 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * The AggregateCommand class represents a command designed to execute an aggregate operation on a
+ * stream of entities and return a result. This class implements the {@code Command} interface,
+ * allowing for execution via a {@code execute} method and providing access to the underlying query.
+ *
+ * @param <RESULT> the result type of the aggregation
+ * @param <ENTITY> the root entity type used within the aggregation
+ */
 public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   private final SelectQuery query;
   private final EntityType<ENTITY> entityType;
@@ -45,14 +52,6 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
     this.entityType = Objects.requireNonNull(entityType);
     this.streamReducer = Objects.requireNonNull(streamReducer);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
-  }
-
-  private static List<AssociationLinkerType<?, ?>> sortAssociationLinkerTypes(
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    Comparator<AssociationLinkerType<?, ?>> reversedComparator =
-        Comparator.<AssociationLinkerType<?, ?>>comparingInt(AssociationLinkerType::getDepth)
-            .reversed();
-    return associationLinkerTypes.stream().sorted(reversedComparator).toList();
   }
 
   @Override
@@ -81,6 +80,21 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
     return streamReducer.reduce(stream);
   }
 
+  /**
+   * Establishes associations between source and target entities based on the provided combination
+   * of linkage rules and updates the cache with newly associated entities. This method iterates
+   * through association linker types and applies specific linking logic to pair source and target
+   * entities according to their respective keys. The method avoids redundant associations by
+   * checking existing combinations before linking.
+   *
+   * @param cache a map that stores entities indexed by their unique {@link LinkableEntityKey}. It
+   *     is updated during the association process with newly created entities.
+   * @param combinations a set of previously established entity key pairs. This is used to ensure no
+   *     duplicate associations are created. New pairs are added to this set during the process.
+   * @param associationCandidate a map containing potential source and target entities, where keys
+   *     are string identifiers corresponding to their roles (e.g., source or target) and values are
+   *     {@code LinkableEntity} objects.
+   */
   private void associate(
       Map<LinkableEntityKey, Object> cache,
       Combinations<LinkableEntityKey> combinations,
