@@ -150,7 +150,9 @@ class AggregateStrategyProcessorTest extends CompilerSupport {
           invocationContext(InvalidAssociationSource.class, Message.DOMA4475),
           invocationContext(InvalidAssociationTarget.class, Message.DOMA4476),
           invocationContext(InvalidPropertyPath.class, Message.DOMA4474),
-          invocationContext(Subtype.class, Message.DOMA4487));
+          invocationContext(Subtype.class, Message.DOMA4487),
+          invocationContext(DuplicatePropertyPath.class, Message.DOMA4489),
+          invocationContext(UnreachableAssociation.class, Message.DOMA4488));
     }
 
     private TestTemplateInvocationContext invocationContext(

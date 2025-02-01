@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.aggregate;
+package org.seasar.doma.internal.apt.meta.entity;
 
-import java.util.function.BiFunction;
-import org.seasar.doma.AggregateStrategy;
-import org.seasar.doma.AssociationLinker;
+import java.util.Objects;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
-@AggregateStrategy(root = Dept.class, tableAlias = "d")
-interface InvalidAssociationTarget {
-  @AssociationLinker(propertyPath = "employees", tableAlias = "e")
-  BiFunction<Dept, Emp, Dept> employees = (d, e) -> null;
-
-  @AssociationLinker(propertyPath = "employees.address", tableAlias = "a")
-  BiFunction<Emp, Dept, Emp> address = (e, d) -> null;
+public record BiFunctionMeta(EntityCtType source, EntityCtType target, EntityCtType result) {
+  public BiFunctionMeta {
+    Objects.requireNonNull(source);
+    Objects.requireNonNull(target);
+    Objects.requireNonNull(result);
+  }
 }

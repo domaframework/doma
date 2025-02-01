@@ -996,6 +996,7 @@ public enum Message implements MessageResource {
   DOMA4487("An element annotated with @AggregateStrategy must not extend other interfaces."),
   DOMA4488(
       "To specify propertyPath=\"{0}\", a separate definition of @AssociationLinker(propertyPath=\"{1}\") is required."),
+  DOMA4489("The property path \"{0}\" is duplicated in another @AssociationLinker."),
 
   // other
   DOMA5001(

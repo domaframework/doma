@@ -19,11 +19,12 @@ import java.util.function.BiFunction;
 import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AssociationLinker;
 
-@AggregateStrategy(root = Dept.class, tableAlias = "d")
-interface InvalidAssociationTarget {
-  @AssociationLinker(propertyPath = "employees", tableAlias = "e")
-  BiFunction<Dept, Emp, Dept> employees = (d, e) -> null;
+@AggregateStrategy(root = Emp.class, tableAlias = "e")
+interface DuplicatePropertyPath {
 
-  @AssociationLinker(propertyPath = "employees.address", tableAlias = "a")
-  BiFunction<Emp, Dept, Emp> address = (e, d) -> null;
+  @AssociationLinker(propertyPath = "dept", tableAlias = "d")
+  BiFunction<Emp, Dept, Emp> dept = (e, d) -> e;
+
+  @AssociationLinker(propertyPath = "dept", tableAlias = "x")
+  BiFunction<Emp, Dept, Emp> dept2 = (e, d) -> e;
 }

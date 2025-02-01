@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -81,11 +82,26 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
         findAssociationLinkerMetas(typeElement, root);
     validateAllPropertyPaths(associationLinkerMetas);
     validateAllTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
+    validateAssociationNavigation(root, associationLinkerMetas);
     return new AggregateStrategyMeta(
         root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
   }
 
   private void validateAllPropertyPaths(List<AssociationLinkerMeta> associationLinkerMetas) {
+    // validate uniqueness
+    Set<String> seen = new HashSet<>(associationLinkerMetas.size());
+    for (AssociationLinkerMeta linkerMeta : associationLinkerMetas) {
+      if (!seen.add(linkerMeta.propertyPath())) {
+        throw new AptException(
+            Message.DOMA4489,
+            linkerMeta.filedElement(),
+            linkerMeta.associationLinkerAnnot().getAnnotationMirror(),
+            linkerMeta.associationLinkerAnnot().getPropertyPath(),
+            new Object[] {linkerMeta.propertyPath()});
+      }
+    }
+
+    // validate navigation
     Map<String, AssociationLinkerMeta> map =
         associationLinkerMetas.stream()
             .collect(Collectors.toMap(AssociationLinkerMeta::propertyPath, Function.identity()));
@@ -110,7 +126,38 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     for (AssociationLinkerMeta linkerMeta : associationLinkerMetas) {
       if (!seen.add(linkerMeta.tableAlias())) {
         throw new AptException(
-            Message.DOMA4481, linkerMeta.filedElement(), new Object[] {linkerMeta.tableAlias()});
+            Message.DOMA4481,
+            linkerMeta.filedElement(),
+            linkerMeta.associationLinkerAnnot().getAnnotationMirror(),
+            linkerMeta.associationLinkerAnnot().getTableAlias(),
+            new Object[] {linkerMeta.tableAlias()});
+      }
+    }
+  }
+
+  private void validateAssociationNavigation(
+      EntityCtType root, List<AssociationLinkerMeta> associationLinkerMetas) {
+    for (AssociationLinkerMeta linkerMeta : associationLinkerMetas) {
+      TypeMirror source = root.getType();
+      TypeMirror target = root.getType();
+      for (String segment : linkerMeta.propertyPathSegments()) {
+        source = target;
+        target =
+            resolveEntity(
+                source, segment, linkerMeta.filedElement(), linkerMeta.associationLinkerAnnot());
+      }
+      BiFunctionMeta biFunctionMeta = linkerMeta.biFunctionMeta();
+      if (!ctx.getMoreTypes().isSameType(biFunctionMeta.source().getType(), source)) {
+        throw new AptException(
+            Message.DOMA4475,
+            linkerMeta.filedElement(),
+            new Object[] {biFunctionMeta.source().getType(), source});
+      }
+      if (!ctx.getMoreTypes().isSameType(biFunctionMeta.target().getType(), target)) {
+        throw new AptException(
+            Message.DOMA4476,
+            linkerMeta.filedElement(),
+            new Object[] {biFunctionMeta.target().getType(), target});
       }
     }
   }
@@ -127,7 +174,6 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
       }
       validateModifiers(fieldElement);
       BiFunctionMeta biFunctionMeta = createBiFunctionMeta(fieldElement);
-      validateAssociation(root, associationLinkerAnnot, biFunctionMeta, fieldElement);
       AssociationLinkerMeta associationLinkerMeta =
           createAssociationLinkerMeta(
               fieldElement, associationLinkerAnnot, biFunctionMeta, aggregateStrategyElement);
@@ -218,31 +264,6 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     return new BiFunctionMeta(source, target, result);
   }
 
-  private void validateAssociation(
-      EntityCtType root,
-      AssociationLinkerAnnot associationLinkerAnnot,
-      BiFunctionMeta biFunctionMeta,
-      VariableElement linkerElement) {
-    TypeMirror source = root.getType();
-    TypeMirror target = root.getType();
-    String[] segments = associationLinkerAnnot.getPropertyPathValue().split("\\.");
-    if (segments.length == 0) {
-      throw new AptIllegalStateException("fragments must not be empty.");
-    }
-    for (String segment : segments) {
-      source = target;
-      target = resolveEntity(source, segment, linkerElement, associationLinkerAnnot);
-    }
-    if (!ctx.getMoreTypes().isSameType(biFunctionMeta.source.getType(), source)) {
-      throw new AptException(
-          Message.DOMA4475, linkerElement, new Object[] {biFunctionMeta.source.getType(), source});
-    }
-    if (!ctx.getMoreTypes().isSameType(biFunctionMeta.target.getType(), target)) {
-      throw new AptException(
-          Message.DOMA4476, linkerElement, new Object[] {biFunctionMeta.target.getType(), target});
-    }
-  }
-
   private TypeMirror resolveEntity(
       TypeMirror typeMirror,
       String name,
@@ -303,8 +324,8 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
       BiFunctionMeta biFunctionMeta,
       TypeElement aggregateStrategyElement) {
     String propertyPath = associationLinkerAnnot.getPropertyPathValue();
-    String[] segments = propertyPath.split("\\.");
-    int propertyPathDepth = segments.length;
+    List<String> propertyPathSegments = Arrays.stream(propertyPath.split("\\.")).toList();
+    int propertyPathDepth = propertyPathSegments.size();
     String ancestorPath;
     if (propertyPathDepth == 0) {
       throw new AptIllegalStateException("propertyPath=" + propertyPath);
@@ -317,13 +338,11 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
         associationLinkerAnnot,
         ancestorPath,
         associationLinkerAnnot.getPropertyPathValue(),
+        propertyPathSegments,
         propertyPathDepth,
         associationLinkerAnnot.getTableAliasValue(),
-        biFunctionMeta.source,
-        biFunctionMeta.target,
+        biFunctionMeta,
         aggregateStrategyElement,
         fieldElement);
   }
-
-  private record BiFunctionMeta(EntityCtType source, EntityCtType target, EntityCtType result) {}
 }

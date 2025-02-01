@@ -21,6 +21,10 @@ import org.seasar.doma.AssociationLinker;
 
 @AggregateStrategy(root = Dept.class, tableAlias = "d")
 interface InvalidPropertyPath {
+
+  @AssociationLinker(propertyPath = "employees", tableAlias = "e")
+  BiFunction<Dept, Emp, Dept> employees = (d, e) -> null;
+
   @AssociationLinker(propertyPath = "employees.unknown", tableAlias = "a")
   BiFunction<Emp, Address, Emp> address = (e, a) -> null;
 }

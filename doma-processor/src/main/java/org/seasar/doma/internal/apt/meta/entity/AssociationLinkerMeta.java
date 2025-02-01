@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.entity;
 
+import java.util.List;
 import java.util.Objects;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -25,20 +26,28 @@ public record AssociationLinkerMeta(
     AssociationLinkerAnnot associationLinkerAnnot,
     String ancestorPath,
     String propertyPath,
+    List<String> propertyPathSegments,
     int propertyPathDepth,
     String tableAlias,
-    EntityCtType source,
-    EntityCtType target,
+    BiFunctionMeta biFunctionMeta,
     TypeElement classElement,
     VariableElement filedElement) {
 
   public AssociationLinkerMeta {
     Objects.requireNonNull(associationLinkerAnnot);
     Objects.requireNonNull(propertyPath);
+    Objects.requireNonNull(propertyPathSegments);
     Objects.requireNonNull(tableAlias);
-    Objects.requireNonNull(source);
-    Objects.requireNonNull(target);
+    Objects.requireNonNull(biFunctionMeta);
     Objects.requireNonNull(classElement);
     Objects.requireNonNull(filedElement);
+  }
+
+  public EntityCtType source() {
+    return biFunctionMeta.source();
+  }
+
+  public EntityCtType target() {
+    return biFunctionMeta.target();
   }
 }
