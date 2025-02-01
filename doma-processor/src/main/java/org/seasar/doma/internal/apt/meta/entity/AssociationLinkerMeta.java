@@ -15,14 +15,30 @@
  */
 package org.seasar.doma.internal.apt.meta.entity;
 
+import java.util.Objects;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import org.seasar.doma.internal.apt.annot.AssociationLinkerAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 
 public record AssociationLinkerMeta(
+    AssociationLinkerAnnot associationLinkerAnnot,
+    String ancestorPath,
     String propertyPath,
+    int propertyPathDepth,
     String tableAlias,
     EntityCtType source,
     EntityCtType target,
     TypeElement classElement,
-    VariableElement filedElement) {}
+    VariableElement filedElement) {
+
+  public AssociationLinkerMeta {
+    Objects.requireNonNull(associationLinkerAnnot);
+    Objects.requireNonNull(propertyPath);
+    Objects.requireNonNull(tableAlias);
+    Objects.requireNonNull(source);
+    Objects.requireNonNull(target);
+    Objects.requireNonNull(classElement);
+    Objects.requireNonNull(filedElement);
+  }
+}

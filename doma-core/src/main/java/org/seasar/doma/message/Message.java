@@ -994,6 +994,8 @@ public enum Message implements MessageResource {
   DOMA4486(
       "The field \"{0}\" in class \"{1}\" was found, but it is not annotated with @Association."),
   DOMA4487("An element annotated with @AggregateStrategy must not extend other interfaces."),
+  DOMA4488(
+      "To specify propertyPath=\"{0}\", a separate definition of @AssociationLinker(propertyPath=\"{1}\") is required."),
 
   // other
   DOMA5001(

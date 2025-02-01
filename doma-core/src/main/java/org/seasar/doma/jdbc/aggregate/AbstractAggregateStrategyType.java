@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -34,22 +33,7 @@ public abstract class AbstractAggregateStrategyType implements AggregateStrategy
     this.root = Objects.requireNonNull(root);
     this.tableAlias = Objects.requireNonNull(tableAlias);
     Objects.requireNonNull(associationLinkerTypes);
-    this.associationLinkerTypes = sortAssociationLinkerTypes(associationLinkerTypes);
-  }
-
-  /**
-   * Sorts a list of {@code AssociationLinkerType} objects in descending order based on their depth.
-   *
-   * @param associationLinkerTypes the list of {@code AssociationLinkerType} objects to be sorted
-   * @return a sorted list of {@code AssociationLinkerType} objects in descending order of their
-   *     depth
-   */
-  private static List<AssociationLinkerType<?, ?>> sortAssociationLinkerTypes(
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    Comparator<AssociationLinkerType<?, ?>> reversedComparator =
-        Comparator.<AssociationLinkerType<?, ?>>comparingInt(AssociationLinkerType::getDepth)
-            .reversed();
-    return associationLinkerTypes.stream().sorted(reversedComparator).toList();
+    this.associationLinkerTypes = associationLinkerTypes;
   }
 
   @Override

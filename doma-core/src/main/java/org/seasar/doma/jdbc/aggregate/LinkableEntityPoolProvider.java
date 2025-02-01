@@ -142,7 +142,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
         collectColumnNames(
             map,
             associationLinkerType.getTarget(),
-            associationLinkerType.getTargetName(),
+            associationLinkerType.getPropertyPath(),
             associationLinkerType.getTableAlias());
       }
     }

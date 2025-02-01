@@ -90,8 +90,8 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       Map<String, LinkableEntity> associationCandidate) {
     for (AssociationLinkerType<?, ?> linkerType :
         aggregateStrategyType.getAssociationLinkerTypes()) {
-      LinkableEntity source = associationCandidate.get(linkerType.getSourceName());
-      LinkableEntity target = associationCandidate.get(linkerType.getTargetName());
+      LinkableEntity source = associationCandidate.get(linkerType.getAncestorPath());
+      LinkableEntity target = associationCandidate.get(linkerType.getPropertyPath());
       if (source == null || target == null) {
         continue;
       }
@@ -106,7 +106,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       if (newEntity != null) {
         cache.replace(source.key(), newEntity);
         associationCandidate.replace(
-            linkerType.getSourceName(), new LinkableEntity(source.key(), newEntity));
+            linkerType.getAncestorPath(), new LinkableEntity(source.key(), newEntity));
       }
       combinations.add(keyPair);
     }

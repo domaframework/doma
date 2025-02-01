@@ -16,12 +16,16 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -75,12 +79,31 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     }
     List<AssociationLinkerMeta> associationLinkerMetas =
         findAssociationLinkerMetas(typeElement, root);
-    validateTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
+    validateAllPropertyPaths(associationLinkerMetas);
+    validateAllTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
     return new AggregateStrategyMeta(
         root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
   }
 
-  private void validateTableAliases(
+  private void validateAllPropertyPaths(List<AssociationLinkerMeta> associationLinkerMetas) {
+    Map<String, AssociationLinkerMeta> map =
+        associationLinkerMetas.stream()
+            .collect(Collectors.toMap(AssociationLinkerMeta::propertyPath, Function.identity()));
+    List<AssociationLinkerMeta> validationTargets =
+        associationLinkerMetas.stream().filter(it -> it.propertyPathDepth() > 1).toList();
+    for (AssociationLinkerMeta linkerMeta : validationTargets) {
+      if (!map.containsKey(linkerMeta.ancestorPath())) {
+        throw new AptException(
+            Message.DOMA4488,
+            linkerMeta.filedElement(),
+            linkerMeta.associationLinkerAnnot().getAnnotationMirror(),
+            linkerMeta.associationLinkerAnnot().getPropertyPath(),
+            new Object[] {linkerMeta.propertyPath(), linkerMeta.ancestorPath()});
+      }
+    }
+  }
+
+  private void validateAllTableAliases(
       String rootTableAlias, List<AssociationLinkerMeta> associationLinkerMetas) {
     Set<String> seen = new HashSet<>(1 + associationLinkerMetas.size());
     seen.add(rootTableAlias);
@@ -118,9 +141,13 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
               Message.DOMA4469,
               aggregateStrategyElement,
               new Object[] {aggregateStrategyElement});
+      return associationLinkerMetas;
     }
 
-    return associationLinkerMetas;
+    Comparator<AssociationLinkerMeta> reversedComparator =
+        Comparator.comparingInt(AssociationLinkerMeta::propertyPathDepth).reversed();
+
+    return associationLinkerMetas.stream().sorted(reversedComparator).toList();
   }
 
   private AssociationLinkerAnnot getAssociationLinkerAnnot(VariableElement linkerElement) {
@@ -275,8 +302,22 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
       AssociationLinkerAnnot associationLinkerAnnot,
       BiFunctionMeta biFunctionMeta,
       TypeElement aggregateStrategyElement) {
+    String propertyPath = associationLinkerAnnot.getPropertyPathValue();
+    String[] segments = propertyPath.split("\\.");
+    int propertyPathDepth = segments.length;
+    String ancestorPath;
+    if (propertyPathDepth == 0) {
+      throw new AptIllegalStateException("propertyPath=" + propertyPath);
+    } else if (propertyPathDepth == 1) {
+      ancestorPath = "";
+    } else {
+      ancestorPath = propertyPath.substring(0, propertyPath.lastIndexOf('.'));
+    }
     return new AssociationLinkerMeta(
+        associationLinkerAnnot,
+        ancestorPath,
         associationLinkerAnnot.getPropertyPathValue(),
+        propertyPathDepth,
         associationLinkerAnnot.getTableAliasValue(),
         biFunctionMeta.source,
         biFunctionMeta.target,

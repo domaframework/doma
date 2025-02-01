@@ -12,8 +12,8 @@ public final class _ChildEntityStrategy extends org.seasar.doma.jdbc.aggregate.A
 
     private _ChildEntityStrategy() {
         super(org.seasar.doma.internal.apt.processor.aggregate._ChildEntity.getSingletonInternal(), "c", java.util.List.of(
-            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("dept", "d", org.seasar.doma.internal.apt.processor.aggregate._ChildEntity.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.ChildEntityStrategy.dept),
-            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("emp", "e", org.seasar.doma.internal.apt.processor.aggregate._ChildEntity.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.ChildEntityStrategy.emp)
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "dept", 1, "d", org.seasar.doma.internal.apt.processor.aggregate._ChildEntity.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.ChildEntityStrategy.dept),
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "emp", 1, "e", org.seasar.doma.internal.apt.processor.aggregate._ChildEntity.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.ChildEntityStrategy.emp)
         ));
     }
 

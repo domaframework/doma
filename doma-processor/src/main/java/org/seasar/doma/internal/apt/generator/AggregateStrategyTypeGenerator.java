@@ -85,14 +85,16 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
     while (iter.hasNext()) {
       AssociationLinkerMeta linkerMeta = iter.next();
       iprint(
-          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
-          AssociationLinkerType.class,
-          linkerMeta.propertyPath(),
-          linkerMeta.tableAlias(),
-          linkerMeta.source().getTypeCode(),
-          linkerMeta.target().getTypeCode(),
-          linkerMeta.classElement(),
-          linkerMeta.filedElement());
+          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, \"%5$s\", %6$s, %7$s, %8$s.%9$s)",
+          /* 1 */ AssociationLinkerType.class,
+          /* 2 */ linkerMeta.ancestorPath(),
+          /* 3 */ linkerMeta.propertyPath(),
+          /* 4 */ linkerMeta.propertyPathDepth(),
+          /* 5 */ linkerMeta.tableAlias(),
+          /* 6 */ linkerMeta.source().getTypeCode(),
+          /* 7 */ linkerMeta.target().getTypeCode(),
+          /* 8 */ linkerMeta.classElement(),
+          /* 9 */ linkerMeta.filedElement());
       if (iter.hasNext()) {
         print(",");
       }
