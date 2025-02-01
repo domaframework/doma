@@ -42,6 +42,8 @@ class EntityProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption("-Adoma.test=true");
     addProcessor(new EntityProcessor());
+    addCompilationUnit(Emp.class);
+    addCompilationUnit(Dept.class);
   }
 
   @TestTemplate
