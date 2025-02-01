@@ -29,8 +29,8 @@ import org.seasar.doma.internal.apt.generator.AggregateStrategyTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
-import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMeta;
-import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMetaFactory;
+import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
+import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMetaFactory;
 
 @SupportedAnnotationTypes({"org.seasar.doma.AggregateStrategy"})
 @SupportedOptions({

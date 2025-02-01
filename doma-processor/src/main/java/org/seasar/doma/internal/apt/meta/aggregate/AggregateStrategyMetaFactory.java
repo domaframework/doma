@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.meta.aggregate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,11 +77,10 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     if (root == null) {
       throw new AptException(Message.DOMA4478, typeElement, new Object[] {});
     }
-    List<AssociationLinkerMeta> associationLinkerMetas =
-        findAssociationLinkerMetas(typeElement, root);
+    List<AssociationLinkerMeta> associationLinkerMetas = findAssociationLinkerMetas(typeElement);
     validateAllPropertyPaths(associationLinkerMetas);
     validateAllTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
-    validateAssociationNavigation(root, associationLinkerMetas);
+    validateNavigation(root, associationLinkerMetas);
     return new AggregateStrategyMeta(
         root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
   }
@@ -135,7 +133,7 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     }
   }
 
-  private void validateAssociationNavigation(
+  private void validateNavigation(
       EntityCtType root, List<AssociationLinkerMeta> associationLinkerMetas) {
     for (AssociationLinkerMeta linkerMeta : associationLinkerMetas) {
       TypeMirror source = root.getType();
@@ -146,24 +144,23 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
             resolveEntity(
                 source, segment, linkerMeta.filedElement(), linkerMeta.associationLinkerAnnot());
       }
-      BiFunctionMeta biFunctionMeta = linkerMeta.biFunctionMeta();
-      if (!ctx.getMoreTypes().isSameType(biFunctionMeta.source().getType(), source)) {
+      if (!ctx.getMoreTypes().isSameType(linkerMeta.source().getType(), source)) {
         throw new AptException(
             Message.DOMA4475,
             linkerMeta.filedElement(),
-            new Object[] {biFunctionMeta.source().getType(), source});
+            new Object[] {linkerMeta.source().getType(), source});
       }
-      if (!ctx.getMoreTypes().isSameType(biFunctionMeta.target().getType(), target)) {
+      if (!ctx.getMoreTypes().isSameType(linkerMeta.target().getType(), target)) {
         throw new AptException(
             Message.DOMA4476,
             linkerMeta.filedElement(),
-            new Object[] {biFunctionMeta.target().getType(), target});
+            new Object[] {linkerMeta.target().getType(), target});
       }
     }
   }
 
   private List<AssociationLinkerMeta> findAssociationLinkerMetas(
-      TypeElement aggregateStrategyElement, EntityCtType root) {
+      TypeElement aggregateStrategyElement) {
     List<AssociationLinkerMeta> associationLinkerMetas = new ArrayList<>();
 
     for (VariableElement fieldElement :
@@ -173,10 +170,9 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
         continue;
       }
       validateModifiers(fieldElement);
-      BiFunctionMeta biFunctionMeta = createBiFunctionMeta(fieldElement);
       AssociationLinkerMeta associationLinkerMeta =
           createAssociationLinkerMeta(
-              fieldElement, associationLinkerAnnot, biFunctionMeta, aggregateStrategyElement);
+              fieldElement, associationLinkerAnnot, aggregateStrategyElement);
       associationLinkerMetas.add(associationLinkerMeta);
     }
 
@@ -233,37 +229,6 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     }
   }
 
-  private BiFunctionMeta createBiFunctionMeta(VariableElement linkerElement) {
-    BiFunctionCtType ctType = ctx.getCtTypes().newBiFunctionCtType(linkerElement.asType());
-    if (ctType == null) {
-      throw new AptException(Message.DOMA4465, linkerElement, new Object[] {});
-    }
-    CtTypeVisitor<EntityCtType, String, RuntimeException> entityCtTypeVisitor =
-        new SimpleCtTypeVisitor<>() {
-          @Override
-          protected EntityCtType defaultAction(CtType ctType, String ordinalNumber)
-              throws RuntimeException {
-            throw new AptException(Message.DOMA4466, linkerElement, new Object[] {ordinalNumber});
-          }
-
-          @Override
-          public EntityCtType visitEntityCtType(EntityCtType ctType, String ordinalNumber)
-              throws RuntimeException {
-            return ctType;
-          }
-        };
-
-    EntityCtType source = ctType.getFirstArgCtType().accept(entityCtTypeVisitor, "first");
-    EntityCtType target = ctType.getSecondArgCtType().accept(entityCtTypeVisitor, "second");
-    EntityCtType result = ctType.getResultCtType().accept(entityCtTypeVisitor, "third");
-
-    if (!ctx.getMoreTypes().isSameType(result.getType(), source.getType())) {
-      throw new AptException(Message.DOMA4467, linkerElement, new Object[] {});
-    }
-
-    return new BiFunctionMeta(source, target, result);
-  }
-
   private TypeMirror resolveEntity(
       TypeMirror typeMirror,
       String name,
@@ -295,7 +260,6 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
   }
 
   private Optional<VariableElement> findAssociationField(TypeElement typeElement, String name) {
-    List<VariableElement> results = new LinkedList<>();
     for (TypeElement t = typeElement;
         t != null && t.asType().getKind() != TypeKind.NONE;
         t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
@@ -321,8 +285,8 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
   private AssociationLinkerMeta createAssociationLinkerMeta(
       VariableElement fieldElement,
       AssociationLinkerAnnot associationLinkerAnnot,
-      BiFunctionMeta biFunctionMeta,
       TypeElement aggregateStrategyElement) {
+
     String propertyPath = associationLinkerAnnot.getPropertyPathValue();
     List<String> propertyPathSegments = Arrays.stream(propertyPath.split("\\.")).toList();
     int propertyPathDepth = propertyPathSegments.size();
@@ -334,6 +298,9 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     } else {
       ancestorPath = propertyPath.substring(0, propertyPath.lastIndexOf('.'));
     }
+
+    LinkMeta linkMeta = createLinkMeta(fieldElement);
+
     return new AssociationLinkerMeta(
         associationLinkerAnnot,
         ancestorPath,
@@ -341,8 +308,42 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
         propertyPathSegments,
         propertyPathDepth,
         associationLinkerAnnot.getTableAliasValue(),
-        biFunctionMeta,
+        linkMeta.source,
+        linkMeta.target,
         aggregateStrategyElement,
         fieldElement);
   }
+
+  private LinkMeta createLinkMeta(VariableElement linkerElement) {
+    BiFunctionCtType ctType = ctx.getCtTypes().newBiFunctionCtType(linkerElement.asType());
+    if (ctType == null) {
+      throw new AptException(Message.DOMA4465, linkerElement, new Object[] {});
+    }
+    CtTypeVisitor<EntityCtType, String, RuntimeException> entityCtTypeVisitor =
+        new SimpleCtTypeVisitor<>() {
+          @Override
+          protected EntityCtType defaultAction(CtType ctType, String ordinalNumber)
+              throws RuntimeException {
+            throw new AptException(Message.DOMA4466, linkerElement, new Object[] {ordinalNumber});
+          }
+
+          @Override
+          public EntityCtType visitEntityCtType(EntityCtType ctType, String ordinalNumber)
+              throws RuntimeException {
+            return ctType;
+          }
+        };
+
+    EntityCtType source = ctType.getFirstArgCtType().accept(entityCtTypeVisitor, "first");
+    EntityCtType target = ctType.getSecondArgCtType().accept(entityCtTypeVisitor, "second");
+    EntityCtType result = ctType.getResultCtType().accept(entityCtTypeVisitor, "third");
+
+    if (!ctx.getMoreTypes().isSameType(result.getType(), source.getType())) {
+      throw new AptException(Message.DOMA4467, linkerElement, new Object[] {});
+    }
+
+    return new LinkMeta(source, target);
+  }
+
+  private record LinkMeta(EntityCtType source, EntityCtType target) {}
 }

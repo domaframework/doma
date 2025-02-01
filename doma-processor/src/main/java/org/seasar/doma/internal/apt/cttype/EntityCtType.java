@@ -53,6 +53,14 @@ public class EntityCtType extends AbstractCtType {
     return visitor.visitEntityCtType(this, p);
   }
 
+  /**
+   * Resolves an {@code EntityCtType} from the given {@code CtType}. This method traverses the type
+   * hierarchy of the provided {@code CtType} and identifies if it corresponds to an {@code
+   * EntityCtType}. It also handles nested and optional types.
+   *
+   * @param ctType the {@code CtType} instance to resolve into an {@code EntityCtType}.
+   * @return the resolved {@code EntityCtType} if found; otherwise, null.
+   */
   public static EntityCtType resolveEntityCtType(CtType ctType) {
     class EntityCtTypeVisitor extends SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException> {
       @Override

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.meta.aggregate;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +29,8 @@ public record AssociationLinkerMeta(
     List<String> propertyPathSegments,
     int propertyPathDepth,
     String tableAlias,
-    BiFunctionMeta biFunctionMeta,
+    EntityCtType source,
+    EntityCtType target,
     TypeElement classElement,
     VariableElement filedElement) {
 
@@ -38,16 +39,9 @@ public record AssociationLinkerMeta(
     Objects.requireNonNull(propertyPath);
     Objects.requireNonNull(propertyPathSegments);
     Objects.requireNonNull(tableAlias);
-    Objects.requireNonNull(biFunctionMeta);
+    Objects.requireNonNull(source);
+    Objects.requireNonNull(target);
     Objects.requireNonNull(classElement);
     Objects.requireNonNull(filedElement);
-  }
-
-  public EntityCtType source() {
-    return biFunctionMeta.source();
-  }
-
-  public EntityCtType target() {
-    return biFunctionMeta.target();
   }
 }

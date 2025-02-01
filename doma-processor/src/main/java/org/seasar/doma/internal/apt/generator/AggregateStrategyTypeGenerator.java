@@ -20,8 +20,8 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.Iterator;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
-import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMeta;
-import org.seasar.doma.internal.apt.meta.entity.AssociationLinkerMeta;
+import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
+import org.seasar.doma.internal.apt.meta.aggregate.AssociationLinkerMeta;
 import org.seasar.doma.jdbc.aggregate.AbstractAggregateStrategyType;
 import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
 
