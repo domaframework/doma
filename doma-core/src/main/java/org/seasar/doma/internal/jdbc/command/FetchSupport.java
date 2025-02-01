@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.jdbc.criteria.command;
+package org.seasar.doma.internal.jdbc.command;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 import org.seasar.doma.DomaNullPointerException;
-import org.seasar.doma.internal.jdbc.command.JdbcValueGetter;
 import org.seasar.doma.jdbc.JdbcMappable;
 import org.seasar.doma.jdbc.JdbcMappingFunction;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
@@ -29,7 +28,6 @@ import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
-@Deprecated(forRemoval = true)
 public class FetchSupport {
 
   private final JdbcMappingVisitor jdbcMappingVisitor;

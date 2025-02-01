@@ -34,12 +34,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
+import org.seasar.doma.internal.jdbc.command.FetchSupport;
 import org.seasar.doma.jdbc.DuplicateColumnHandler;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.ResultMappingException;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.UnknownColumnHandler;
-import org.seasar.doma.jdbc.criteria.command.FetchSupport;
 import org.seasar.doma.jdbc.entity.AssociationPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -83,7 +83,6 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
     this.cache = cache;
     this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
     this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
-    // TODO
     this.fetchSupport = new FetchSupport(query);
     this.aggregateStrategyType = aggregateStrategyType;
     this.associationLinkerTypeMap =
