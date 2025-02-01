@@ -12,6 +12,7 @@ select
     e.salary as e_salary,
     e.department_id as e_department_id,
     e.address_id as e_address_id,
+    e.version as e_version,
     a.address_id as a_address_id,
     a.street as a_street,
     a.version as a_version

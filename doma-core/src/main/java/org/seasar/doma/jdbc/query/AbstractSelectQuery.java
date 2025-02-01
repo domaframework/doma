@@ -17,9 +17,11 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -127,7 +129,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         .collect(Collectors.toList());
   }
 
-  protected List<String> expandAggregateColumns(ExpandNode node) {
+  protected List<String> expandAggregateColumns(ExpandNode node, String aliasCsv) {
     if (entityType == null) {
       SqlLocation location = node.getLocation();
       throw new JdbcException(
@@ -136,6 +138,11 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     if (aggregateStrategyType == null) {
       return List.of();
     }
+    Set<String> aliases =
+        Arrays.stream(aliasCsv.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toSet());
     Stream<Pair<String, EntityPropertyType<?, ?>>> rootColumns =
         entityType.getEntityPropertyTypes().stream()
             .map(
@@ -154,6 +161,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     return Stream.concat(rootColumns, associationColumns)
+        .filter(p -> aliases.isEmpty() || aliases.contains(p.fst))
         .map(
             p -> {
               String tableAlias = p.fst;

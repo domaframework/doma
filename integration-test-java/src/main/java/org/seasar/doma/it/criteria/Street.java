@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.it.criteria;
 
+import java.util.Objects;
 import org.seasar.doma.Domain;
 
 @Domain(valueType = String.class)
@@ -42,5 +43,17 @@ public class Street implements CharSequence {
   @Override
   public CharSequence subSequence(int start, int end) {
     return value.subSequence(start, end);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    Street street = (Street) o;
+    return Objects.equals(value, street.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(value);
   }
 }

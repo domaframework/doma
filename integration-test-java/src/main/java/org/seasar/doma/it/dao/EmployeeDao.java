@@ -195,6 +195,7 @@ interface EmployeeStrategy {
   BiFunction<Employee, Department, Employee> department =
       (e, d) -> {
         e.setDepartment(d);
+        d.getEmployeeList().add(e);
         return e;
       };
 

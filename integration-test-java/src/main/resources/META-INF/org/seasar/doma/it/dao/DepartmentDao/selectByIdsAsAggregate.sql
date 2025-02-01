@@ -1,8 +1,5 @@
 select
-    /*%expand "d, e" */*,
-    a.address_id as a_address_id,
-    a.street as a_street,
-    a.version as a_version
+    /*%expand */*
 from
     DEPARTMENT d
 left outer join EMPLOYEE e
@@ -10,4 +7,4 @@ left outer join EMPLOYEE e
 left outer join ADDRESS a
     on e.address_id = a.address_id
 where
-    d.department_id = /*departmentId*/0
+    d.department_id in /*departmentIds*/(0)

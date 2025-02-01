@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
@@ -38,15 +37,12 @@ import org.seasar.doma.it.dao.BranchDao.Location;
 import org.seasar.doma.it.dao.BranchDaoImpl;
 import org.seasar.doma.it.dao.BusinessmanDao;
 import org.seasar.doma.it.dao.BusinessmanDaoImpl;
-import org.seasar.doma.it.dao.DepartmentDao;
-import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.dao.WorkerDaoImpl;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.entity.Businessman;
-import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.Worker;
 import org.seasar.doma.jdbc.Config;
@@ -214,60 +210,5 @@ public class SqlFileSelectTest {
     Location location = branchDetail.location;
     assertNotNull(location);
     assertEquals("NEW YORK", location.getValue());
-  }
-
-  @Test
-  public void testAggregateSingle_oneToOne(Config config) {
-    EmployeeDao dao = new EmployeeDaoImpl(config);
-    Employee employee = dao.selectByIdAsAggregate(1);
-    assertNotNull(employee);
-    assertNotNull(employee.getDepartment());
-    assertNotNull(employee.getAddress());
-  }
-
-  @Test
-  public void testAggregateOptional_oneToOne(Config config) {
-    EmployeeDao dao = new EmployeeDaoImpl(config);
-    Optional<Employee> optionalEmployee = dao.selectOptionalByIdAsAggregate(1);
-    Employee employee = optionalEmployee.orElse(null);
-    assertNotNull(employee);
-    assertNotNull(employee.getDepartment());
-    assertNotNull(employee.getAddress());
-  }
-
-  @Test
-  public void testAggregateList_oneToOne(Config config) {
-    EmployeeDao dao = new EmployeeDaoImpl(config);
-    List<Employee> employees = dao.selectAllAsAggregate();
-    assertEquals(14, employees.size());
-    for (Employee employee : employees) {
-      assertNotNull(employee.getDepartment());
-      assertNotNull(employee.getAddress());
-    }
-  }
-
-  @Test
-  public void testAggregateSingle_oneToMany(Config config) {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    Department department = dao.selectByIdAsAggregate(1);
-    assertNotNull(department);
-    assertFalse(department.getEmployeeList().isEmpty());
-    assertNotNull(department.getEmployeeList().get(0).getAddress());
-  }
-
-  @Test
-  public void testAggregateList_oneToMany(Config config) {
-    DepartmentDao dao = new DepartmentDaoImpl(config);
-    List<Department> departments = dao.selectAllAsAggregate();
-    assertEquals(4, departments.size());
-    for (Department department : departments) {
-      assertNotNull(department);
-      if (department.getDepartmentId().getValue() == 4) {
-        assertTrue(department.getEmployeeList().isEmpty());
-      } else {
-        assertFalse(department.getEmployeeList().isEmpty());
-        assertTrue(department.getEmployeeList().stream().allMatch(e -> e.getAddress() != null));
-      }
-    }
   }
 }

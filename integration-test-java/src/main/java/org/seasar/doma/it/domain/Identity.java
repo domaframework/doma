@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.it.domain;
 
+import java.util.Objects;
 import org.seasar.doma.Domain;
 
 @Domain(valueType = Integer.class)
@@ -28,5 +29,17 @@ public class Identity<T> {
 
   public Integer getValue() {
     return this.value;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    Identity<?> identity = (Identity<?>) o;
+    return Objects.equals(value, identity.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(value);
   }
 }

@@ -117,6 +117,9 @@ public interface DepartmentDao {
   Department selectByIdAsAggregate(Integer departmentId);
 
   @Select(aggregateStrategy = DepartmentStrategy.class)
+  List<Department> selectByIdsAsAggregate(List<Integer> departmentIds);
+
+  @Select(aggregateStrategy = DepartmentStrategy.class)
   List<Department> selectAllAsAggregate();
 
   @AggregateStrategy(root = Department.class, tableAlias = "d")

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.StringJoiner;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -121,7 +122,7 @@ public class NodePreparedSqlBuilder
 
   protected final BiConsumer<PopulateNode, SqlContext> valuesPopulater;
 
-  protected final Function<ExpandNode, List<String>> aggregateColumnsExpander;
+  protected final BiFunction<ExpandNode, String, List<String>> aggregateColumnsExpander;
 
   public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath) {
     this(
@@ -185,7 +186,7 @@ public class NodePreparedSqlBuilder
         sqlLogType,
         columnsExpander,
         valuesPopulater,
-        (node) -> Collections.emptyList());
+        (node, alias) -> Collections.emptyList());
   }
 
   public NodePreparedSqlBuilder(
@@ -196,7 +197,7 @@ public class NodePreparedSqlBuilder
       SqlLogType sqlLogType,
       Function<ExpandNode, List<String>> columnsExpander,
       BiConsumer<PopulateNode, SqlContext> valuesPopulater,
-      Function<ExpandNode, List<String>> aggregateColumnsExpander) {
+      BiFunction<ExpandNode, String, List<String>> aggregateColumnsExpander) {
     assertNotNull(
         config, kind, evaluator, columnsExpander, valuesPopulater, aggregateColumnsExpander);
     this.config = config;
@@ -827,7 +828,7 @@ public class NodePreparedSqlBuilder
     for (String column : columnsExpander.apply(node)) {
       joiner.add(prefix + column);
     }
-    for (String column : aggregateColumnsExpander.apply(node)) {
+    for (String column : aggregateColumnsExpander.apply(node, alias)) {
       joiner.add(column);
     }
     String joined = joiner.toString();
