@@ -32,8 +32,7 @@ public abstract class AbstractAggregateStrategyType implements AggregateStrategy
     Objects.requireNonNull(tableAlias);
     this.root = Objects.requireNonNull(root);
     this.tableAlias = Objects.requireNonNull(tableAlias);
-    Objects.requireNonNull(associationLinkerTypes);
-    this.associationLinkerTypes = associationLinkerTypes;
+    this.associationLinkerTypes = Objects.requireNonNull(associationLinkerTypes);
   }
 
   @Override
