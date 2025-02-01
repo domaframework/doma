@@ -31,8 +31,7 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
  * The AggregateCommand class represents a command designed to execute an aggregate operation on a
- * stream of entities and return a result. This class implements the {@code Command} interface,
- * allowing for execution via a {@code execute} method and providing access to the underlying query.
+ * stream of entities and return a result.
  *
  * @param <RESULT> the result type of the aggregation
  * @param <ENTITY> the root entity type used within the aggregation
@@ -75,25 +74,15 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
     Stream<ENTITY> stream =
         (Stream<ENTITY>)
             cache.entrySet().stream()
-                .filter(e -> e.getKey().belongsToRootEntity())
-                .map(Map.Entry::getValue);
+                .filter(e -> e.getKey().isRootEntityKey())
+                .map(Map.Entry::getValue)
+                .filter(entityType.getEntityClass()::isInstance);
     return streamReducer.reduce(stream);
   }
 
   /**
    * Establishes associations between source and target entities based on the provided combination
-   * of linkage rules and updates the cache with newly associated entities. This method iterates
-   * through association linker types and applies specific linking logic to pair source and target
-   * entities according to their respective keys. The method avoids redundant associations by
-   * checking existing combinations before linking.
-   *
-   * @param cache a map that stores entities indexed by their unique {@link LinkableEntityKey}. It
-   *     is updated during the association process with newly created entities.
-   * @param combinations a set of previously established entity key pairs. This is used to ensure no
-   *     duplicate associations are created. New pairs are added to this set during the process.
-   * @param associationCandidate a map containing potential source and target entities, where keys
-   *     are string identifiers corresponding to their roles (e.g., source or target) and values are
-   *     {@code LinkableEntity} objects.
+   * of linkage rules and updates the cache with newly associated entities.
    */
   private void associate(
       Map<LinkableEntityKey, Object> cache,

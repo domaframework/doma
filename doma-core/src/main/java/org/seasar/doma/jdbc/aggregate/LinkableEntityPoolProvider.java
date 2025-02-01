@@ -43,10 +43,6 @@ import org.seasar.doma.jdbc.query.Query;
  * caching to avoid duplicate instantiation, and handles linking of associated entities. This
  * provider is configured with essential details such as the entity type, query, aggregation
  * strategy, and mapping and fetching mechanisms.
- *
- * <p>It ensures efficient and reusable entity instantiation through its caching mechanism and
- * provides a robust support for mapping result set columns to entity properties, even in cases
- * involving complex associations and aggregation strategies.
  */
 public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableEntityPool> {
 
@@ -85,25 +81,14 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
 
   @Override
   public LinkableEntityPool get(ResultSet resultSet) throws SQLException {
-    List<MappingSupport.Prop> props = cratesProps(resultSet);
+    List<MappingSupport.Prop> props = createProps(resultSet);
     Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup =
         groupPropsByAssociationIdentifier(props);
     return createEntityPool(propGroup);
   }
 
-  /**
-   * Processes the given ResultSet and constructs a list of MappingSupport.Prop objects. Each Prop
-   * object is created by extracting the raw value from the ResultSet using the associated property
-   * type and its index, as defined by the indexMap. If the indexMap is null, it initializes it by
-   * creating a column name mapping and determining the appropriate indexes based on the ResultSet's
-   * metadata.
-   *
-   * @param resultSet the ResultSet from which property values are extracted, must not be null
-   * @return a list of MappingSupport.Prop objects, each representing a property with its extracted
-   *     value
-   * @throws SQLException if a database access error occurs
-   */
-  private List<MappingSupport.Prop> cratesProps(ResultSet resultSet) throws SQLException {
+  /** Processes the given ResultSet and constructs a list of MappingSupport.Prop objects. */
+  private List<MappingSupport.Prop> createProps(ResultSet resultSet) throws SQLException {
     assertNotNull(resultSet);
     if (indexMap == null) {
       Map<String, MappingSupport.PropType> columnNameMap = createColumnNameMap();
@@ -122,15 +107,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
     return props;
   }
 
-  /**
-   * Creates a column name mapping for the entity type associated with this provider. This method
-   * retrieves the entity property types and populates a map where column names are keys and their
-   * corresponding property types are values. It also ensures that the mapping includes appropriate
-   * table aliases for column names to avoid conflicts.
-   *
-   * @return a map where the keys are column names (with applied table aliases) and the values are
-   *     corresponding {@link MappingSupport.PropType} objects
-   */
+  /** Creates a column name mapping for the entity type associated with this provider. */
   private Map<String, MappingSupport.PropType> createColumnNameMap() {
     List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
     Map<String, MappingSupport.PropType> result = new HashMap<>(propertyTypes.size());
@@ -143,15 +120,6 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
    * type and its properties. This method recursively processes entity properties and association
    * properties to populate the given map with column names and corresponding property type
    * information.
-   *
-   * @param map a map where column names (in a prefixed, lowercase format) are mapped to their
-   *     corresponding {@link MappingSupport.PropType} values
-   * @param source the {@link EntityType} representing the source entity for which column names and
-   *     property types are being collected
-   * @param propertyPath the property path used to identify the hierarchy of properties, allowing
-   *     proper association handling
-   * @param tableAlias the table alias used as a prefix for column names to ensure uniqueness across
-   *     multiple joined tables
    */
   private void collectColumnNames(
       Map<String, MappingSupport.PropType> map,
@@ -182,13 +150,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
 
   /**
    * Groups a list of {@link MappingSupport.Prop} objects by their associated {@link
-   * AssociationIdentifier}. The grouping is determined based on the combination of the property
-   * path and entity type for each property.
-   *
-   * @param props a list of {@link MappingSupport.Prop} objects representing entity properties to be
-   *     grouped
-   * @return a map where the keys are {@link AssociationIdentifier} objects and the values are lists
-   *     of {@link MappingSupport.Prop} objects grouped by their association identifier
+   * AssociationIdentifier}.
    */
   private Map<AssociationIdentifier, List<MappingSupport.Prop>> groupPropsByAssociationIdentifier(
       List<MappingSupport.Prop> props) {
@@ -200,15 +162,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
 
   /**
    * Creates and populates a {@link LinkableEntityPool} based on the provided group of properties
-   * organized by their {@link AssociationIdentifier}. The method processes the given properties,
-   * checks their validity, determines the appropriate keys and states, and associates the created
-   * entities with a unique key in the pool. It ensures caching and state preservation for entities.
-   *
-   * @param propGroup a map where keys are {@link AssociationIdentifier} objects representing the
-   *     association identifiers and values are lists of {@link MappingSupport.Prop}, which define
-   *     properties for the entities within that association.
-   * @return a {@link LinkableEntityPool} containing the processed and created entities organized by
-   *     their associations.
+   * organized by their {@link AssociationIdentifier}.
    */
   private LinkableEntityPool createEntityPool(
       Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup) {

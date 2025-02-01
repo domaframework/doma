@@ -40,7 +40,7 @@ public record LinkableEntityKey(AssociationIdentifier associationIdentifier, Lis
     return associationIdentifier.entityType();
   }
 
-  public boolean belongsToRootEntity() {
+  public boolean isRootEntityKey() {
     return associationIdentifier.propertyPath().isEmpty();
   }
 }
