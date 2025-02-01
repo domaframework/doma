@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.apt.processor.aggregate;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.function.BiFunction;
+import org.seasar.doma.AggregateStrategy;
+import org.seasar.doma.AssociationLinker;
 
-/**
- * Indicates an association between entities.
- *
- * <p>This annotation is applied to fields that represent a relationship between entities.
- */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-@EntityField
-public @interface Association {}
+@AggregateStrategy(root = Dept.class, tableAlias = "d")
+interface DeptStrategy {
+  @AssociationLinker(propertyPath = "employees", tableAlias = "e")
+  BiFunction<Dept, Emp, Dept> dept = (d, e) -> d;
+
+  @AssociationLinker(propertyPath = "employees.address", tableAlias = "a")
+  BiFunction<Emp, Address, Emp> address = (e, a) -> e;
+}

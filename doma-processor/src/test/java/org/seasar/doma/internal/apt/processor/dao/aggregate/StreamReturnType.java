@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.apt.processor.dao.aggregate;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.stream.Stream;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Select;
+import org.seasar.doma.Sql;
+import org.seasar.doma.Suppress;
+import org.seasar.doma.message.Message;
 
-/**
- * Indicates an association between entities.
- *
- * <p>This annotation is applied to fields that represent a relationship between entities.
- */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-@EntityField
-public @interface Association {}
+@Dao
+interface StreamReturnType {
+  @Suppress(messages = {Message.DOMA4274})
+  @Sql("select * from emp")
+  @Select(aggregateStrategy = EmpStrategy.class)
+  Stream<Emp> selectAll();
+}

@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma;
+package org.seasar.doma.internal.apt.processor.entity.association;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.List;
+import java.util.Optional;
+import org.seasar.doma.Association;
+import org.seasar.doma.Entity;
 
-/**
- * Indicates an association between entities.
- *
- * <p>This annotation is applied to fields that represent a relationship between entities.
- */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-@EntityField
-public @interface Association {}
+@Entity
+class ListOptionalAssociation {
+  @Association List<Optional<Emp>> employees;
+}

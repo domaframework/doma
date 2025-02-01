@@ -959,7 +959,7 @@ public enum Message implements MessageResource {
   DOMA4471("Fields annotated with AssociationLinker must be final."),
   DOMA4472("The propertyPath must not be blank."),
   DOMA4473(
-      "When the `aggregateStrategy` element of `@Select` is set, the return type must be one of the following: "
+      "When the aggregateStrategy element of @Select is set, the return type must be one of the following: "
           + "the entity class, "
           + "a `List` containing elements of the entity class, "
           + "an `Optional` containing an element of the entity class, "
@@ -983,6 +983,17 @@ public enum Message implements MessageResource {
       "The table alias \"{0}\" is duplicated in @AggregateStrategy or another @AssociationLinker."),
   DOMA4482("An element annotated with @AggregateStrategy must be an interface."),
   DOMA4483("The visibility of an interface annotated with @AggregateStrategy must not be private."),
+  DOMA4484(
+      "When the aggregateStrategy element of @Select is set, the strategy element must be SelectType.RETURN."),
+  DOMA4485(
+      "The type of field \"{0}\" annotated with @Association in class \"{1}\" must be one of the following: "
+          + "the entity class, "
+          + "a `List` containing elements of the entity class, "
+          + "an `Optional` containing an element of the entity class, "
+          + "or a `List` of `Optional` containing elements of the entity class. actual type=\"{2}\""),
+  DOMA4486(
+      "The field \"{0}\" in class \"{1}\" was found, but it is not annotated with @Association."),
+  DOMA4487("An element annotated with @AggregateStrategy must not extend other interfaces."),
 
   // other
   DOMA5001(

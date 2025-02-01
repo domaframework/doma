@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta.entity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,9 +25,12 @@ import java.util.Set;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
+import org.seasar.doma.Association;
+import org.seasar.doma.Entity;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
@@ -61,6 +65,9 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     }
     if (typeElement.getModifiers().contains(Modifier.PRIVATE)) {
       throw new AptException(Message.DOMA4483, typeElement, new Object[] {});
+    }
+    if (!typeElement.getInterfaces().isEmpty()) {
+      throw new AptException(Message.DOMA4487, typeElement, new Object[] {});
     }
     EntityCtType root = ctx.getCtTypes().newEntityCtType(aggregateStrategyAnnot.getRootValue());
     if (root == null) {
@@ -218,10 +225,7 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     if (sourceElement == null) {
       throw new AptIllegalStateException("sourceElement is null. typeMirror=" + typeMirror);
     }
-    Optional<VariableElement> field =
-        ElementFilter.fieldsIn(sourceElement.getEnclosedElements()).stream()
-            .filter(it -> it.getSimpleName().toString().equals(name))
-            .findFirst();
+    Optional<VariableElement> field = findAssociationField(sourceElement, name);
     if (field.isEmpty()) {
       throw new AptException(
           Message.DOMA4474,
@@ -232,16 +236,38 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     }
     TypeMirror fieldType = field.get().asType();
     CtType ctType = ctx.getCtTypes().newCtType(fieldType);
-    EntityCtType entityCtType =
-        EntityCtType.resolveEntityCtType(
-            ctType,
-            () -> {
-              throw new AptException(
-                  Message.DOMA4477,
-                  linkerElement,
-                  new Object[] {name, sourceElement.getQualifiedName(), fieldType});
-            });
+    EntityCtType entityCtType = EntityCtType.resolveEntityCtType(ctType);
+    if (entityCtType == null) {
+      throw new AptException(
+          Message.DOMA4477,
+          linkerElement,
+          new Object[] {name, sourceElement.getQualifiedName(), fieldType});
+    }
     return entityCtType.getType();
+  }
+
+  private Optional<VariableElement> findAssociationField(TypeElement typeElement, String name) {
+    List<VariableElement> results = new LinkedList<>();
+    for (TypeElement t = typeElement;
+        t != null && t.asType().getKind() != TypeKind.NONE;
+        t = ctx.getMoreTypes().toTypeElement(t.getSuperclass())) {
+      if (t.getAnnotation(Entity.class) == null) {
+        continue;
+      }
+      Optional<VariableElement> field =
+          ElementFilter.fieldsIn(t.getEnclosedElements()).stream()
+              .filter(it -> it.getSimpleName().toString().equals(name))
+              .findFirst();
+      if (field.isPresent()) {
+        VariableElement f = field.get();
+        if (f.getAnnotation(Association.class) == null) {
+          throw new AptException(Message.DOMA4486, field.get(), new Object[] {name, f.asType()});
+        } else {
+          return field;
+        }
+      }
+    }
+    return Optional.empty();
   }
 
   private AssociationLinkerMeta createAssociationLinkerMeta(

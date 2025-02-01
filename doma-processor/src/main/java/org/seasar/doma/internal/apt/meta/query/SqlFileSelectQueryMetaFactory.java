@@ -141,13 +141,17 @@ public class SqlFileSelectQueryMetaFactory
   }
 
   private void doAggregateStrategy(SqlFileSelectQueryMeta queryMeta) {
-    EntityCtType entityCtType = queryMeta.getEntityCtType();
     TypeMirror aggregateStrategyType = queryMeta.getSelectAnnot().getAggregateStrategyValue();
     AggregateStrategyCtType aggregateStrategyCtType =
         ctx.getCtTypes().newAggregateStrategyCtType(aggregateStrategyType);
     if (aggregateStrategyCtType != null) {
+      CtType returnCtType = queryMeta.getReturnMeta().getCtType();
+      EntityCtType entityCtType = EntityCtType.resolveEntityCtType(returnCtType);
       if (entityCtType == null) {
         throw new AptException(Message.DOMA4473, methodElement, new Object[] {});
+      }
+      if (queryMeta.getSelectStrategyType() != SelectType.RETURN) {
+        throw new AptException(Message.DOMA4484, methodElement, new Object[] {});
       }
       TypeMirror rootType = aggregateStrategyCtType.getAggregateStrategyAnnot().getRootValue();
       EntityCtType rootCtType = ctx.getCtTypes().newEntityCtType(rootType);

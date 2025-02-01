@@ -53,11 +53,10 @@ public class EntityCtType extends AbstractCtType {
     return visitor.visitEntityCtType(this, p);
   }
 
-  public static EntityCtType resolveEntityCtType(CtType ctType, Runnable errorCallback) {
+  public static EntityCtType resolveEntityCtType(CtType ctType) {
     class EntityCtTypeVisitor extends SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException> {
       @Override
       protected EntityCtType defaultAction(CtType ctType, Void p) throws RuntimeException {
-        errorCallback.run();
         return null;
       }
 

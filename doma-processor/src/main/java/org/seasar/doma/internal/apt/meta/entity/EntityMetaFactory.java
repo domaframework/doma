@@ -56,6 +56,8 @@ import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
@@ -597,11 +599,18 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     void doAssociationPropertyMeta(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
-      // validateFieldAnnotation(fieldElement, entityMeta);
+      validateFieldAnnotation(fieldElement, entityMeta);
+      CtType ctType = ctx.getCtTypes().newCtType(fieldElement.asType());
+      EntityCtType entityCtType = EntityCtType.resolveEntityCtType(ctType);
+      if (entityCtType == null) {
+        throw new AptException(
+            Message.DOMA4485,
+            fieldElement,
+            new Object[] {fieldElement.getSimpleName(), classElement, fieldElement.asType()});
+      }
       AssociationPropertyMeta associationPropertyMeta =
           new AssociationPropertyMeta(fieldElement.getSimpleName().toString());
       entityMeta.addAssociationPropertyMeta(associationPropertyMeta);
-      // validateField(classElement, fieldElement, entityMeta);
     }
 
     void doEntityPropertyMeta(
