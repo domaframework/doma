@@ -31,6 +31,7 @@ val ecjArgs = listOf(
         "org.seasar.doma.internal.apt.processor.EmbeddableProcessor",
         "org.seasar.doma.internal.apt.processor.EntityProcessor",
         "org.seasar.doma.internal.apt.processor.DaoProcessor",
+        "org.seasar.doma.internal.apt.processor.AggregateStrategyProcessor",
         "org.seasar.doma.internal.apt.processor.ScopeProcessor",
     ).joinToString(","),
 )

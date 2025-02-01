@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.processor.aggregate;
 
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import org.seasar.doma.internal.apt.cttype.EntityCtType;
+import java.util.function.BiFunction;
+import org.seasar.doma.AggregateStrategy;
+import org.seasar.doma.AssociationLinker;
 
-public record AssociationLinkerMeta(
-    String propertyPath,
-    String columnPrefix,
-    EntityCtType source,
-    EntityCtType target,
-    TypeElement classElement,
-    VariableElement filedElement) {}
+@AggregateStrategy(root = Emp.class, tableAlias = "e")
+interface BlankTableAlias {
+  @AssociationLinker(propertyPath = "dept", tableAlias = " ")
+  BiFunction<Emp, Dept, Emp> dept = (e, d) -> e;
+}

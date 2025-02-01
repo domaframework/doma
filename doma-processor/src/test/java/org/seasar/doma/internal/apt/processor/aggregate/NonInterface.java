@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.meta.entity;
+package org.seasar.doma.internal.apt.processor.aggregate;
 
-import java.util.List;
+import org.seasar.doma.AggregateStrategy;
 
-public record AggregateHelperMeta(List<AssociationLinkerMeta> associationLinkerMetas) {}
+@AggregateStrategy(root = Emp.class, tableAlias = "e")
+class NonInterface {}

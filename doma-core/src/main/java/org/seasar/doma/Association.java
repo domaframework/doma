@@ -23,8 +23,23 @@ import java.lang.annotation.Target;
 /**
  * Indicates an association between entities.
  *
+ * <pre>
+ * &#064;Entity
+ * class Department {
+ *     &#064;Association
+ *     List&lt;Employee&gt; employeeList;
+ * }
+ *
+ * &#064;Entity
+ * class Employee {
+ *     &#064;Association
+ *     Department department;
+ * }
+ * </pre>
+ *
  * <p>This annotation is applied to fields that represent a relationship between entities.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@EntityField
 public @interface Association {}

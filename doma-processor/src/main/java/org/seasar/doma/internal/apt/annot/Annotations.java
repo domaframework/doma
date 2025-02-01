@@ -29,6 +29,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AnnotateWith;
 import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.AssociationLinker;
@@ -68,6 +69,11 @@ public class Annotations {
 
   public Annotations(Context ctx) {
     this.ctx = ctx;
+  }
+
+  public AggregateStrategyAnnot newAggregateStrategyAnnot(TypeElement typeElement) {
+    assertNotNull(typeElement);
+    return newInstance(typeElement, AggregateStrategy.class, AggregateStrategyAnnot::new);
   }
 
   public AllArgsConstructorAnnot newAllArgsConstructorAnnot(TypeElement typeElement) {

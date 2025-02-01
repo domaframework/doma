@@ -49,7 +49,7 @@ public class SelectAnnot extends AbstractAnnot {
 
   private static final String SQL_LOG = "sqlLog";
 
-  private static final String AGGREGATE_HELPER = "aggregateHelper";
+  private static final String AGGREGATE_STRATEGY = "aggregateStrategy";
 
   private final AnnotationValue strategy;
 
@@ -69,7 +69,7 @@ public class SelectAnnot extends AbstractAnnot {
 
   private final AnnotationValue sqlLog;
 
-  private final AnnotationValue aggregateHelper;
+  private final AnnotationValue aggregateStrategy;
 
   SelectAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
@@ -82,7 +82,7 @@ public class SelectAnnot extends AbstractAnnot {
     this.maxRows = assertNonNullValue(values, MAX_ROWS);
     this.mapKeyNaming = assertNonNullValue(values, MAP_KEY_NAMING);
     this.sqlLog = assertNonNullValue(values, SQL_LOG);
-    this.aggregateHelper = assertNonNullValue(values, AGGREGATE_HELPER);
+    this.aggregateStrategy = assertNonNullValue(values, AGGREGATE_STRATEGY);
   }
 
   public AnnotationValue getStrategy() {
@@ -121,8 +121,8 @@ public class SelectAnnot extends AbstractAnnot {
     return sqlLog;
   }
 
-  public AnnotationValue getAggregateHelper() {
-    return aggregateHelper;
+  public AnnotationValue getAggregateStrategy() {
+    return aggregateStrategy;
   }
 
   public int getQueryTimeoutValue() {
@@ -197,10 +197,10 @@ public class SelectAnnot extends AbstractAnnot {
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
   }
 
-  public TypeMirror getAggregateHelperValue() {
-    TypeMirror type = AnnotationValueUtil.toType(aggregateHelper);
+  public TypeMirror getAggregateStrategyValue() {
+    TypeMirror type = AnnotationValueUtil.toType(aggregateStrategy);
     if (type == null) {
-      throw new AptIllegalStateException(AGGREGATE_HELPER);
+      throw new AptIllegalStateException(AGGREGATE_STRATEGY);
     }
     return type;
   }

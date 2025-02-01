@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.Statement;
-import java.util.function.BiFunction;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.NoResultException;
@@ -166,12 +165,11 @@ public @interface Select {
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 
   /**
-   * Specifies a helper class used for aggregation operations.
+   * Defines how an aggregate is constructed.
    *
-   * <p>The class specified here must contain at least one field of type {@link BiFunction}
-   * annotated with {@link AssociationLinker}.
+   * <p>Specifies the interface annotated with {@link AggregateStrategy}.
    *
-   * @return the class representing the aggregation helper, or {@code Void.class} if not specified
+   * @return the class representing the aggregation strategy, or {@code Void.class} if not specified
    */
-  Class<?> aggregateHelper() default Void.class;
+  Class<?> aggregateStrategy() default Void.class;
 }

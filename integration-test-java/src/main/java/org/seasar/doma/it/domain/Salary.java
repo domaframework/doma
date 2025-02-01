@@ -34,4 +34,35 @@ public class Salary {
   public BigDecimal getValue() {
     return value;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Salary salary = (Salary) o;
+    if (value == null && salary.value == null) {
+      return true;
+    }
+    if (value == null || salary.value == null) {
+      return false;
+    }
+    return value.compareTo(salary.value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    if (value == null) {
+      return 0;
+    }
+    return value.stripTrailingZeros().hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return value == null ? null : value.toPlainString();
+  }
 }

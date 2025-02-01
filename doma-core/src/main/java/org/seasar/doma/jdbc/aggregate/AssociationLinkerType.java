@@ -15,68 +15,65 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * Represents an association linker that connects two entity types based on a property path.
+ *
+ * @param <S> the source entity type
+ * @param <T> the target entity type
+ */
 public class AssociationLinkerType<S, T> {
 
   private final String propertyPath;
-  private final String columnPrefix;
+  private final String tableAlias;
   private final EntityType<S> source;
-  private final String sourceName;
+  private final String ancestorPath;
   private final EntityType<T> target;
-  private final String targetName;
-  private final int depth;
+  private final int propertyPathDepth;
   private final BiFunction<S, T, S> linker;
 
   private AssociationLinkerType(
+      String ancestorPath,
       String propertyPath,
-      String columnPrefix,
+      int propertyPathDepth,
+      String tableAlias,
       EntityType<S> source,
-      String sourceName,
       EntityType<T> target,
-      String targetName,
-      int depth,
       BiFunction<S, T, S> linker) {
-    this.propertyPath = Objects.requireNonNull(propertyPath);
-    this.columnPrefix = Objects.requireNonNull(columnPrefix);
-    this.source = Objects.requireNonNull(source);
-    this.sourceName = Objects.requireNonNull(sourceName);
-    this.target = Objects.requireNonNull(target);
-    this.targetName = Objects.requireNonNull(targetName);
-    this.depth = depth;
-    this.linker = Objects.requireNonNull(linker);
+    this.ancestorPath = ancestorPath;
+    this.propertyPath = propertyPath;
+    this.propertyPathDepth = propertyPathDepth;
+    this.tableAlias = tableAlias;
+    this.source = source;
+    this.target = target;
+    this.linker = linker;
   }
 
   public String getPropertyPath() {
     return propertyPath;
   }
 
-  public String getColumnPrefix() {
-    return columnPrefix;
+  public String getTableAlias() {
+    return tableAlias;
   }
 
   public EntityType<S> getSource() {
     return source;
   }
 
-  public String getSourceName() {
-    return sourceName;
+  public String getAncestorPath() {
+    return ancestorPath;
   }
 
   public EntityType<T> getTarget() {
     return target;
   }
 
-  public String getTargetName() {
-    return targetName;
-  }
-
-  public int getDepth() {
-    return depth;
+  public int getPropertyPathDepth() {
+    return propertyPathDepth;
   }
 
   public BiFunction<S, T, S> getLinker() {
@@ -84,26 +81,20 @@ public class AssociationLinkerType<S, T> {
   }
 
   public static <S, T> AssociationLinkerType<S, T> of(
+      String ancestorPath,
       String propertyPath,
-      String columnPrefix,
+      int propertyPathDepth,
+      String tableAlias,
       EntityType<S> source,
       EntityType<T> target,
-      BiFunction<S, T, S> function) {
-
-    String sourceName;
-    String[] segments = propertyPath.split("\\.");
-
-    if (segments.length == 0) {
-      throw new IllegalArgumentException("propertyPath");
-    } else if (segments.length == 1) {
-      sourceName = "";
-    } else {
-      sourceName = Arrays.stream(segments, 0, segments.length - 1).collect(Collectors.joining("."));
-    }
-
-    int depth = segments.length;
-
+      BiFunction<S, T, S> linker) {
+    Objects.requireNonNull(ancestorPath);
+    Objects.requireNonNull(propertyPath);
+    Objects.requireNonNull(tableAlias);
+    Objects.requireNonNull(source);
+    Objects.requireNonNull(target);
+    Objects.requireNonNull(linker);
     return new AssociationLinkerType<>(
-        propertyPath, columnPrefix, source, sourceName, target, propertyPath, depth, function);
+        ancestorPath, propertyPath, propertyPathDepth, tableAlias, source, target, linker);
   }
 }

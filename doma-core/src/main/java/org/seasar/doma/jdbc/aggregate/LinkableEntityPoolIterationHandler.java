@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.aggregate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
@@ -23,26 +24,33 @@ import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * Handles the iteration of {@link LinkableEntityPool} results from a query execution and manages
+ * the creation and configuration of object providers used to process the results.
+ */
 public class LinkableEntityPoolIterationHandler
     extends AbstractIterationHandler<LinkableEntityPool, List<LinkableEntityPool>> {
 
   private final EntityType<?> entityType;
-  private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
+  private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
+  private final Map<LinkableEntityKey, Object> cache;
 
   public LinkableEntityPoolIterationHandler(
       EntityType<?> entityType,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes,
-      boolean resultMappingEnsured) {
+      AggregateStrategyType aggregateStrategyType,
+      boolean resultMappingEnsured,
+      Map<LinkableEntityKey, Object> cache) {
     super(new ResultListCallback<>());
     this.entityType = Objects.requireNonNull(entityType);
-    this.associationLinkerTypes = Objects.requireNonNull(associationLinkerTypes);
+    this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
     this.resultMappingEnsured = resultMappingEnsured;
+    this.cache = Objects.requireNonNull(cache);
   }
 
   @Override
   protected ObjectProvider<LinkableEntityPool> createObjectProvider(SelectQuery query) {
     return new LinkableEntityPoolProvider(
-        entityType, associationLinkerTypes, query, resultMappingEnsured);
+        entityType, aggregateStrategyType, query, resultMappingEnsured, cache);
   }
 }

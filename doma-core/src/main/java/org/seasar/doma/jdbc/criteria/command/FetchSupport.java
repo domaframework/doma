@@ -29,6 +29,7 @@ import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
+@Deprecated(forRemoval = true)
 public class FetchSupport {
 
   private final JdbcMappingVisitor jdbcMappingVisitor;

@@ -18,8 +18,15 @@ package org.seasar.doma.jdbc.aggregate;
 import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-record AssociationIdentifier(String propertyPath, EntityType<?> entityType) {
-  AssociationIdentifier {
+/**
+ * Represents an identifier for an association in a data model. This identifier consists of a
+ * property path and an entity type.
+ *
+ * @param propertyPath the path to the property, must not be {@code null}
+ * @param entityType the entity type associated with the property, must not be {@code null}
+ */
+public record AssociationIdentifier(String propertyPath, EntityType<?> entityType) {
+  public AssociationIdentifier {
     Objects.requireNonNull(propertyPath);
     Objects.requireNonNull(entityType);
   }

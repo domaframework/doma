@@ -16,10 +16,9 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.function.BiFunction;
 import org.seasar.doma.jdbc.aggregate.AggregateCommand;
-import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
+import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
 import org.seasar.doma.jdbc.aggregate.StreamReducer;
 import org.seasar.doma.jdbc.command.BatchDeleteCommand;
 import org.seasar.doma.jdbc.command.BatchInsertCommand;
@@ -71,8 +70,8 @@ public interface CommandImplementors {
       SelectQuery query,
       EntityType<ENTITY> entityType,
       StreamReducer<RESULT, ENTITY> resultReducer,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    return new AggregateCommand<>(query, entityType, resultReducer, associationLinkerTypes);
+      AggregateStrategyType aggregateStrategyType) {
+    return new AggregateCommand<>(query, entityType, resultReducer, aggregateStrategyType);
   }
 
   /**

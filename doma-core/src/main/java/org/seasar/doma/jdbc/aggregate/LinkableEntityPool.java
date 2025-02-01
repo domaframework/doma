@@ -15,18 +15,31 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
-public class LinkableEntityPool {
-  private final Map<LinkableEntityKey, LinkableEntityData> keyDataMap = new LinkedHashMap<>();
+/**
+ * Represents a pool of {@link LinkableEntity} objects, providing functionality for adding entities
+ * and iterating over the collection.
+ *
+ * <p>This class is designed to manage a collection of {@code LinkableEntity} instances and
+ * guarantees that only non-null entities can be added, ensuring the integrity of the pool. It
+ * implements {@link Iterable}, allowing the underlying collection to be used in enhanced for-loops
+ * or with other iterable utilities.
+ */
+public class LinkableEntityPool implements Iterable<LinkableEntity> {
+  private final List<LinkableEntity> entities = new ArrayList<>();
 
-  public void put(LinkableEntityKey key, LinkableEntityData data) {
-    keyDataMap.put(key, data);
+  public void add(LinkableEntity entity) {
+    Objects.requireNonNull(entity);
+    entities.add(entity);
   }
 
-  public Set<Map.Entry<LinkableEntityKey, LinkableEntityData>> entrySet() {
-    return keyDataMap.entrySet();
+  @SuppressWarnings("NullableProblems")
+  @Override
+  public Iterator<LinkableEntity> iterator() {
+    return entities.iterator();
   }
 }

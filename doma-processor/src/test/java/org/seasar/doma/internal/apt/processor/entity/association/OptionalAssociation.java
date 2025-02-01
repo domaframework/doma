@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.jdbc.aggregate;
+package org.seasar.doma.internal.apt.processor.entity.association;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import org.seasar.doma.jdbc.entity.Property;
+import java.util.Optional;
+import org.seasar.doma.Association;
+import org.seasar.doma.Entity;
 
-public class LinkableEntityData {
-  private final Map<String, Property<Object, ?>> states;
-
-  public LinkableEntityData(Map<String, Property<Object, ?>> states) {
-    Objects.requireNonNull(states);
-    this.states = Collections.unmodifiableMap(states);
-  }
-
-  public Map<String, Property<Object, ?>> getStates() {
-    return states;
-  }
+@Entity
+class OptionalAssociation {
+  @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+  @Association
+  Optional<Emp> emp;
 }

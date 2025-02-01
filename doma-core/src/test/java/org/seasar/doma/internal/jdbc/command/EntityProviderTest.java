@@ -131,7 +131,6 @@ public class EntityProviderTest {
     EntityProvider<Emp> provider =
         new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
 
-    provider.createIndexMap(metaData, entityType);
     Emp emp = provider.get(resultSet);
 
     assertEquals(1, emp.getId());
@@ -146,14 +145,15 @@ public class EntityProviderTest {
     metaData.columns.add(new ColumnMetaData("name"));
     metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
     metaData.columns.add(new ColumnMetaData("version"));
+    @SuppressWarnings("resource")
+    MockResultSet resultSet = new MockResultSet(metaData);
 
     _Emp entityType = _Emp.getSingletonInternal();
     EntityProvider<Emp> provider =
         new EntityProvider<>(
             entityType, new MySelectQuery(new SetDuplicateColumnHandlerConfig()), false);
 
-    assertThrows(
-        DuplicateColumnException.class, () -> provider.createIndexMap(metaData, entityType));
+    assertThrows(DuplicateColumnException.class, () -> provider.get(resultSet));
   }
 
   protected static class MySelectQuery implements SelectQuery {

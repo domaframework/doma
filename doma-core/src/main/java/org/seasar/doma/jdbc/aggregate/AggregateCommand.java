@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,34 +29,31 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.Query;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * The AggregateCommand class represents a command designed to execute an aggregate operation on a
+ * stream of entities and return a result.
+ *
+ * @param <RESULT> the result type of the aggregation
+ * @param <ENTITY> the root entity type used within the aggregation
+ */
 public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   private final SelectQuery query;
   private final EntityType<ENTITY> entityType;
   private final StreamReducer<RESULT, ENTITY> streamReducer;
-  private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
+  private final AggregateStrategyType aggregateStrategyType;
 
   public AggregateCommand(
       SelectQuery query,
       EntityType<ENTITY> entityType,
       StreamReducer<RESULT, ENTITY> streamReducer,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
+      AggregateStrategyType aggregateStrategyType) {
     this.query = Objects.requireNonNull(query);
     this.entityType = Objects.requireNonNull(entityType);
     this.streamReducer = Objects.requireNonNull(streamReducer);
-    Objects.requireNonNull(associationLinkerTypes);
-    this.associationLinkerTypes = sortAssociationLinkerTypes(associationLinkerTypes);
-  }
-
-  private static List<AssociationLinkerType<?, ?>> sortAssociationLinkerTypes(
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    Comparator<AssociationLinkerType<?, ?>> reversedComparator =
-        Comparator.<AssociationLinkerType<?, ?>>comparingInt(AssociationLinkerType::getDepth)
-            .reversed();
-    return associationLinkerTypes.stream().sorted(reversedComparator).toList();
+    this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public RESULT execute() {
     Map<LinkableEntityKey, Object> cache = new LinkedHashMap<>();
     Combinations<LinkableEntityKey> combinations = new Combinations<>();
@@ -65,43 +61,37 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
         new SelectCommand<>(
             query,
             new LinkableEntityPoolIterationHandler(
-                entityType, associationLinkerTypes, query.isResultMappingEnsured()));
+                entityType, aggregateStrategyType, query.isResultMappingEnsured(), cache));
     List<LinkableEntityPool> entityPools = command.execute();
     for (LinkableEntityPool entityPool : entityPools) {
-      Map<String, KeyAndEntity> associationCandidate = new LinkedHashMap<>();
-      for (Map.Entry<LinkableEntityKey, LinkableEntityData> e : entityPool.entrySet()) {
-        LinkableEntityKey key = e.getKey();
-        LinkableEntityData data = e.getValue();
-        Object entity =
-            cache.computeIfAbsent(
-                key,
-                k -> {
-                  EntityType<Object> entityType = (EntityType<Object>) k.entityType();
-                  Object newEntity = entityType.newEntity(data.getStates());
-                  if (!entityType.isImmutable()) {
-                    entityType.saveCurrentStates(newEntity);
-                  }
-                  return newEntity;
-                });
-        associationCandidate.put(key.propertyPath(), new KeyAndEntity(key, entity));
+      Map<String, LinkableEntity> associationCandidate = new LinkedHashMap<>();
+      for (LinkableEntity entry : entityPool) {
+        associationCandidate.put(entry.key().propertyPath(), entry);
       }
       associate(cache, combinations, associationCandidate);
     }
+    @SuppressWarnings("unchecked")
     Stream<ENTITY> stream =
         (Stream<ENTITY>)
             cache.entrySet().stream()
-                .filter(e -> e.getKey().belongsToRootEntity())
-                .map(Map.Entry::getValue);
+                .filter(e -> e.getKey().isRootEntityKey())
+                .map(Map.Entry::getValue)
+                .filter(entityType.getEntityClass()::isInstance);
     return streamReducer.reduce(stream);
   }
 
+  /**
+   * Establishes associations between source and target entities based on the provided combination
+   * of linkage rules and updates the cache with newly associated entities.
+   */
   private void associate(
       Map<LinkableEntityKey, Object> cache,
       Combinations<LinkableEntityKey> combinations,
-      Map<String, KeyAndEntity> associationCandidate) {
-    for (AssociationLinkerType<?, ?> associationLinkerType : associationLinkerTypes) {
-      KeyAndEntity source = associationCandidate.get(associationLinkerType.getSourceName());
-      KeyAndEntity target = associationCandidate.get(associationLinkerType.getTargetName());
+      Map<String, LinkableEntity> associationCandidate) {
+    for (AssociationLinkerType<?, ?> linkerType :
+        aggregateStrategyType.getAssociationLinkerTypes()) {
+      LinkableEntity source = associationCandidate.get(linkerType.getAncestorPath());
+      LinkableEntity target = associationCandidate.get(linkerType.getPropertyPath());
       if (source == null || target == null) {
         continue;
       }
@@ -111,12 +101,12 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       }
       @SuppressWarnings("unchecked")
       BiFunction<Object, Object, Object> linker =
-          (BiFunction<Object, Object, Object>) associationLinkerType.getLinker();
+          (BiFunction<Object, Object, Object>) linkerType.getLinker();
       Object newEntity = linker.apply(source.entity(), target.entity());
       if (newEntity != null) {
         cache.replace(source.key(), newEntity);
         associationCandidate.replace(
-            associationLinkerType.getSourceName(), new KeyAndEntity(source.key(), newEntity));
+            linkerType.getAncestorPath(), new LinkableEntity(source.key(), newEntity));
       }
       combinations.add(keyPair);
     }
@@ -126,6 +116,4 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   public Query getQuery() {
     return query;
   }
-
-  private record KeyAndEntity(LinkableEntityKey key, Object entity) {}
 }

@@ -1,0 +1,127 @@
+package org.seasar.doma.internal.apt.processor.dao.aggregate;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.DaoImplementation
+public class EmpDaoImpl implements org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao, org.seasar.doma.jdbc.ConfigProvider {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final java.lang.reflect.Method __method0 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao.class, "selectAll");
+
+    private static final java.lang.reflect.Method __method1 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao.class, "selectById", java.lang.Integer.class);
+
+    private static final java.lang.reflect.Method __method2 = org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao.class, "selectOptionalById", java.lang.Integer.class);
+
+    private final org.seasar.doma.internal.jdbc.dao.DaoImplSupport __support;
+
+    /**
+     * @param config the config
+     */
+    public EmpDaoImpl(org.seasar.doma.jdbc.Config config) {
+        __support = new org.seasar.doma.internal.jdbc.dao.DaoImplSupport(config);
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.Config getConfig() {
+        return __support.getConfig();
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> selectAll() {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectAll");
+        try {
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method0);
+            __query.setMethod(__method0);
+            __query.setConfig(__support.getConfig());
+            __query.setSqlFilePath("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao#selectAll");
+            __query.setEntityType(org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal());
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl");
+            __query.setCallerMethodName("selectAll");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setAggregateStrategyType(org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            __query.prepare();
+            org.seasar.doma.jdbc.aggregate.AggregateCommand<java.util.List<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp>, org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> __command = __support.getCommandImplementors().createAggregateCommand(__method0, __query, org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal(), new org.seasar.doma.jdbc.aggregate.ToListReducer<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp>(), org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            java.util.List<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectAll", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectAll", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.dao.aggregate.Emp selectById(java.lang.Integer id) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectById", id);
+        try {
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method1);
+            __query.setMethod(__method1);
+            __query.setConfig(__support.getConfig());
+            __query.setSqlFilePath("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao#selectById");
+            __query.setEntityType(org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal());
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl");
+            __query.setCallerMethodName("selectById");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setAggregateStrategyType(org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            __query.prepare();
+            org.seasar.doma.jdbc.aggregate.AggregateCommand<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp, org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> __command = __support.getCommandImplementors().createAggregateCommand(__method1, __query, org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal(), new org.seasar.doma.jdbc.aggregate.ToSingleReducer<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp>(), org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            org.seasar.doma.internal.apt.processor.dao.aggregate.Emp __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectById", __e);
+            throw __e;
+        }
+    }
+
+    @Override
+    public java.util.Optional<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> selectOptionalById(java.lang.Integer id) {
+        __support.entering("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectOptionalById", id);
+        try {
+            org.seasar.doma.jdbc.query.SqlFileSelectQuery __query = __support.getQueryImplementors().createSqlFileSelectQuery(__method2);
+            __query.setMethod(__method2);
+            __query.setConfig(__support.getConfig());
+            __query.setSqlFilePath("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDao#selectOptionalById");
+            __query.setEntityType(org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal());
+            __query.addParameter("id", java.lang.Integer.class, id);
+            __query.setCallerClassName("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl");
+            __query.setCallerMethodName("selectOptionalById");
+            __query.setResultEnsured(false);
+            __query.setResultMappingEnsured(false);
+            __query.setFetchType(org.seasar.doma.FetchType.LAZY);
+            __query.setQueryTimeout(-1);
+            __query.setMaxRows(-1);
+            __query.setFetchSize(-1);
+            __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
+            __query.setAggregateStrategyType(org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            __query.prepare();
+            org.seasar.doma.jdbc.aggregate.AggregateCommand<java.util.Optional<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp>, org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> __command = __support.getCommandImplementors().createAggregateCommand(__method2, __query, org.seasar.doma.internal.apt.processor.dao.aggregate._Emp.getSingletonInternal(), new org.seasar.doma.jdbc.aggregate.ToOptionalReducer<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp>(), org.seasar.doma.internal.apt.processor.dao.aggregate._EmpStrategy.getSingletonInternal());
+            java.util.Optional<org.seasar.doma.internal.apt.processor.dao.aggregate.Emp> __result = __command.execute();
+            __query.complete();
+            __support.exiting("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectOptionalById", __result);
+            return __result;
+        } catch (java.lang.RuntimeException __e) {
+            __support.throwing("org.seasar.doma.internal.apt.processor.dao.aggregate.EmpDaoImpl", "selectOptionalById", __e);
+            throw __e;
+        }
+    }
+
+}

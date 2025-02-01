@@ -17,6 +17,12 @@ package org.seasar.doma.jdbc.aggregate;
 
 import java.util.stream.Stream;
 
+/**
+ * Provides a mechanism for reducing a stream of entities into a single result.
+ *
+ * @param <RESULT> the type of the result of the reduction
+ * @param <ENTITY> the type of the elements in the stream to be reduced
+ */
 public interface StreamReducer<RESULT, ENTITY> {
 
   RESULT reduce(Stream<ENTITY> stream);

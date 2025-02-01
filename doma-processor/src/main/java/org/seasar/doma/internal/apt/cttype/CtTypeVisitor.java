@@ -17,6 +17,8 @@ package org.seasar.doma.internal.apt.cttype;
 
 public interface CtTypeVisitor<R, P, TH extends Throwable> {
 
+  R visitAggregateStrategyCtType(AggregateStrategyCtType ctType, P p) throws TH;
+
   R visitAnyCtType(AnyCtType ctType, P p) throws TH;
 
   R visitBatchResultCtType(BatchResultCtType ctType, P p) throws TH;

@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AssociationLinker;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
@@ -55,13 +56,13 @@ public interface EmployeeDao {
   @Select
   Employee selectById(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   Employee selectByIdAsAggregate(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   Optional<Employee> selectOptionalByIdAsAggregate(Integer employeeId);
 
-  @Select(aggregateHelper = EmployeeHelper.class)
+  @Select(aggregateStrategy = EmployeeStrategy.class)
   List<Employee> selectAllAsAggregate();
 
   @Select
@@ -188,15 +189,17 @@ public interface EmployeeDao {
   int update(Employee entity);
 }
 
-interface EmployeeHelper {
-  @AssociationLinker(propertyPath = "department", columnPrefix = "d_")
+@AggregateStrategy(root = Employee.class, tableAlias = "e")
+interface EmployeeStrategy {
+  @AssociationLinker(propertyPath = "department", tableAlias = "d")
   BiFunction<Employee, Department, Employee> department =
       (e, d) -> {
         e.setDepartment(d);
+        d.getEmployeeList().add(e);
         return e;
       };
 
-  @AssociationLinker(propertyPath = "address", columnPrefix = "a_")
+  @AssociationLinker(propertyPath = "address", tableAlias = "a")
   BiFunction<Employee, Address, Employee> address =
       (e, a) -> {
         e.setAddress(a);

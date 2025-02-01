@@ -16,145 +16,123 @@
 package org.seasar.doma.jdbc.aggregate;
 
 import static java.util.stream.Collectors.toList;
-import static org.seasar.doma.internal.Constants.ROWNUMBER_COLUMN_NAME;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
-import org.seasar.doma.jdbc.DuplicateColumnHandler;
+import org.seasar.doma.internal.jdbc.command.FetchSupport;
+import org.seasar.doma.internal.jdbc.command.MappingSupport;
 import org.seasar.doma.jdbc.Naming;
-import org.seasar.doma.jdbc.ResultMappingException;
-import org.seasar.doma.jdbc.Sql;
-import org.seasar.doma.jdbc.UnknownColumnHandler;
-import org.seasar.doma.jdbc.criteria.command.FetchSupport;
 import org.seasar.doma.jdbc.entity.AssociationPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
-import org.seasar.doma.wrapper.Wrapper;
 
+/**
+ * The LinkableEntityPoolProvider class is responsible for creating and supplying instances of
+ * LinkableEntityPool. It processes database query results, maps them to entity properties, manages
+ * caching to avoid duplicate instantiation, and handles linking of associated entities. This
+ * provider is configured with essential details such as the entity type, query, aggregation
+ * strategy, and mapping and fetching mechanisms.
+ */
 public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableEntityPool> {
 
   private final EntityType<?> entityType;
-
   private final Query query;
-
-  private final boolean resultMappingEnsured;
-
-  private final UnknownColumnHandler unknownColumnHandler;
-
-  private final DuplicateColumnHandler duplicateColumnHandler;
-
-  private Map<Integer, PropType> indexMap;
-
+  private final Map<LinkableEntityKey, Object> cache;
+  private Map<Integer, MappingSupport.PropType> indexMap;
+  private final MappingSupport mappingSupport;
   private final FetchSupport fetchSupport;
-
+  private final AggregateStrategyType aggregateStrategyType;
   private final Map<String, AssociationLinkerType<?, ?>> associationLinkerTypeMap;
 
   public LinkableEntityPoolProvider(
       EntityType<?> entityType,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes,
+      AggregateStrategyType aggregateStrategyType,
       Query query,
-      boolean resultMappingEnsured) {
-    assertNotNull(entityType, associationLinkerTypes, query);
+      boolean resultMappingEnsured,
+      Map<LinkableEntityKey, Object> cache) {
+    assertNotNull(entityType, aggregateStrategyType, query, cache);
     this.entityType = entityType;
     this.query = query;
-    this.resultMappingEnsured = resultMappingEnsured;
-    this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
-    this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
-    // TODO
+    this.cache = cache;
+    this.mappingSupport =
+        new MappingSupport(
+            entityType,
+            query,
+            resultMappingEnsured,
+            query.getConfig().getUnknownColumnHandler(),
+            query.getConfig().getDuplicateColumnHandler());
     this.fetchSupport = new FetchSupport(query);
+    this.aggregateStrategyType = aggregateStrategyType;
     this.associationLinkerTypeMap =
-        associationLinkerTypes.stream()
+        aggregateStrategyType.getAssociationLinkerTypes().stream()
             .collect(Collectors.toMap(AssociationLinkerType::getPropertyPath, Function.identity()));
   }
 
   @Override
   public LinkableEntityPool get(ResultSet resultSet) throws SQLException {
-    List<Prop> props = cratesProps(resultSet);
-    Map<AssociationIdentifier, List<Prop>> propGroup = groupPropsByAssociationIdentifier(props);
+    List<MappingSupport.Prop> props = createProps(resultSet);
+    Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup =
+        groupPropsByAssociationIdentifier(props);
     return createEntityPool(propGroup);
   }
 
-  private List<Prop> cratesProps(ResultSet resultSet) throws SQLException {
+  /** Processes the given ResultSet and constructs a list of MappingSupport.Prop objects. */
+  private List<MappingSupport.Prop> createProps(ResultSet resultSet) throws SQLException {
     assertNotNull(resultSet);
     if (indexMap == null) {
-      indexMap = createIndexMap(resultSet.getMetaData());
+      Map<String, MappingSupport.PropType> columnNameMap = createColumnNameMap();
+      indexMap = mappingSupport.createIndexMap(resultSet.getMetaData(), columnNameMap);
     }
-    List<Prop> props = new ArrayList<>(indexMap.size());
-    for (Map.Entry<Integer, PropType> entry : indexMap.entrySet()) {
+    List<MappingSupport.Prop> props = new ArrayList<>(indexMap.size());
+    for (Map.Entry<Integer, MappingSupport.PropType> entry : indexMap.entrySet()) {
       Integer index = entry.getKey();
-      PropType propType = entry.getValue();
+      MappingSupport.PropType propType = entry.getValue();
       EntityPropertyType<?, ?> propertyType = propType.propertyType();
       @SuppressWarnings("unchecked")
       Property<Object, ?> property = (Property<Object, ?>) propertyType.createProperty();
       Object rawValue = fetchSupport.fetch(resultSet, property, index);
-      props.add(new Prop(propType, property, rawValue));
+      props.add(new MappingSupport.Prop(propType, property, rawValue));
     }
     return props;
   }
 
-  private HashMap<Integer, PropType> createIndexMap(ResultSetMetaData resultSetMeta)
-      throws SQLException {
-    HashMap<Integer, PropType> indexMap = new HashMap<>();
-    HashMap<String, PropType> columnNameMap = createColumnNameMap();
-    Set<PropType> unmappedPropertySet =
-        resultMappingEnsured ? new HashSet<>(columnNameMap.values()) : new HashSet<>();
-    Set<String> seenColumnNames = new HashSet<>();
-    int count = resultSetMeta.getColumnCount();
-    for (int i = 1; i < count + 1; i++) {
-      String columnName = resultSetMeta.getColumnLabel(i);
-      String lowerCaseColumnName = columnName.toLowerCase();
-      if (!seenColumnNames.add(lowerCaseColumnName)) {
-        duplicateColumnHandler.handle(query, lowerCaseColumnName);
-      }
-      PropType propertyType = columnNameMap.get(lowerCaseColumnName);
-      if (propertyType == null) {
-        if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
-          continue;
-        }
-        unknownColumnHandler.handle(query, entityType, lowerCaseColumnName);
-      } else {
-        unmappedPropertySet.remove(propertyType);
-        indexMap.put(i, propertyType);
-      }
-    }
-    if (resultMappingEnsured && !unmappedPropertySet.isEmpty()) {
-      throwResultMappingException(unmappedPropertySet);
-    }
-    return indexMap;
-  }
-
-  private HashMap<String, PropType> createColumnNameMap() {
+  /** Creates a column name mapping for the entity type associated with this provider. */
+  private Map<String, MappingSupport.PropType> createColumnNameMap() {
     List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
-    HashMap<String, PropType> result = new HashMap<>(propertyTypes.size());
-    collectColumnNames(result, entityType, "", "");
+    Map<String, MappingSupport.PropType> result = new HashMap<>(propertyTypes.size());
+    collectColumnNames(result, entityType, "", aggregateStrategyType.getTableAlias());
     return result;
   }
 
+  /**
+   * Collects and maps column names and their associated property types based on the provided entity
+   * type and its properties. This method recursively processes entity properties and association
+   * properties to populate the given map with column names and corresponding property type
+   * information.
+   */
   private void collectColumnNames(
-      Map<String, PropType> map, EntityType<?> source, String propertyPath, String columnPrefix) {
+      Map<String, MappingSupport.PropType> map,
+      EntityType<?> source,
+      String propertyPath,
+      String tableAlias) {
     Naming naming = query.getConfig().getNaming();
+    String prefix = tableAlias + "_";
     for (EntityPropertyType<?, ?> propertyType : source.getEntityPropertyTypes()) {
       String columnName = propertyType.getColumnName(naming::apply);
       map.put(
-          columnPrefix + columnName.toLowerCase(),
-          new PropType(source, propertyType, propertyPath));
+          prefix + columnName.toLowerCase(),
+          new MappingSupport.PropType(source, propertyType, propertyPath));
     }
     String propertyPrefix = propertyPath.isEmpty() ? "" : propertyPath + ".";
     for (AssociationPropertyType associationPropertyType : source.getAssociationPropertyTypes()) {
@@ -164,55 +142,36 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
         collectColumnNames(
             map,
             associationLinkerType.getTarget(),
-            associationLinkerType.getTargetName(),
-            associationLinkerType.getColumnPrefix().toLowerCase());
+            associationLinkerType.getPropertyPath(),
+            associationLinkerType.getTableAlias());
       }
     }
   }
 
-  private void throwResultMappingException(Set<PropType> unmappedPropertySet) {
-    Naming naming = query.getConfig().getNaming();
-    int size = unmappedPropertySet.size();
-    List<String> unmappedPropertyNames = new ArrayList<>(size);
-    List<String> expectedColumnNames = new ArrayList<>(size);
-    for (PropType propType : unmappedPropertySet) {
-      unmappedPropertyNames.add(propType.name());
-      expectedColumnNames.add(propType.columnName(naming::apply));
-    }
-    Class<?> entityClass;
-    Iterator<PropType> iterator = unmappedPropertySet.iterator();
-    if (iterator.hasNext()) {
-      entityClass = iterator.next().entityType().getEntityClass();
-    } else {
-      entityClass = this.entityType.getEntityClass();
-    }
-    Sql<?> sql = query.getSql();
-    throw new ResultMappingException(
-        query.getConfig().getExceptionSqlLogType(),
-        entityClass.getName(),
-        unmappedPropertyNames,
-        expectedColumnNames,
-        sql.getKind(),
-        sql.getRawSql(),
-        sql.getFormattedSql(),
-        sql.getSqlFilePath());
-  }
-
-  private Map<AssociationIdentifier, List<Prop>> groupPropsByAssociationIdentifier(
-      List<Prop> props) {
+  /**
+   * Groups a list of {@link MappingSupport.Prop} objects by their associated {@link
+   * AssociationIdentifier}.
+   */
+  private Map<AssociationIdentifier, List<MappingSupport.Prop>> groupPropsByAssociationIdentifier(
+      List<MappingSupport.Prop> props) {
     return props.stream()
         .collect(
             Collectors.groupingBy(
                 it -> new AssociationIdentifier(it.propertyPath(), it.entityType())));
   }
 
-  private LinkableEntityPool createEntityPool(Map<AssociationIdentifier, List<Prop>> propGroup) {
+  /**
+   * Creates and populates a {@link LinkableEntityPool} based on the provided group of properties
+   * organized by their {@link AssociationIdentifier}.
+   */
+  private LinkableEntityPool createEntityPool(
+      Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup) {
     LinkableEntityPool entityPool = new LinkableEntityPool();
 
-    for (Map.Entry<AssociationIdentifier, List<Prop>> entry : propGroup.entrySet()) {
+    for (Map.Entry<AssociationIdentifier, List<MappingSupport.Prop>> entry : propGroup.entrySet()) {
       AssociationIdentifier identifier = entry.getKey();
-      List<Prop> props = entry.getValue();
-      if (props.stream().allMatch(p -> p.rawValue == null)) {
+      List<MappingSupport.Prop> props = entry.getValue();
+      if (props.stream().allMatch(p -> p.rawValue() == null)) {
         continue;
       }
       LinkableEntityKey entityKey;
@@ -220,49 +179,32 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
         entityKey = new LinkableEntityKey(identifier, Collections.singletonList(new Object()));
       } else {
         List<?> items =
-            props.stream().filter(Prop::isId).map(it -> it.wrapper().get()).collect(toList());
+            props.stream()
+                .filter(MappingSupport.Prop::isId)
+                .map(it -> it.wrapper().get())
+                .collect(toList());
         entityKey = new LinkableEntityKey(identifier, items);
       }
-      Map<String, Property<Object, ?>> states =
-          props.stream().collect(Collectors.toMap(Prop::name, Prop::property));
-      LinkableEntityData data = new LinkableEntityData(states);
-      entityPool.put(entityKey, data);
+      Object entity =
+          cache.computeIfAbsent(
+              entityKey,
+              k -> {
+                @SuppressWarnings("unchecked")
+                EntityType<Object> entityType = (EntityType<Object>) k.entityType();
+                Map<String, Property<Object, ?>> states =
+                    props.stream()
+                        .collect(
+                            Collectors.toMap(
+                                MappingSupport.Prop::name, MappingSupport.Prop::property));
+                Object newEntity = entityType.newEntity(states);
+                if (!entityType.isImmutable()) {
+                  entityType.saveCurrentStates(newEntity);
+                }
+                return newEntity;
+              });
+      entityPool.add(new LinkableEntity(entityKey, entity));
     }
 
     return entityPool;
-  }
-
-  record PropType(
-      EntityType<?> entityType, EntityPropertyType<?, ?> propertyType, String propertyPath) {
-    public String name() {
-      return propertyType.getName();
-    }
-
-    public String columnName(BiFunction<NamingType, String, String> namingFunction) {
-      return propertyType.getColumnName(namingFunction);
-    }
-  }
-
-  record Prop(PropType propType, Property<Object, ?> property, Object rawValue) {
-
-    public EntityType<?> entityType() {
-      return propType.entityType();
-    }
-
-    public String propertyPath() {
-      return propType.propertyPath();
-    }
-
-    public String name() {
-      return propType.propertyType().getName();
-    }
-
-    public boolean isId() {
-      return propType.propertyType().isId();
-    }
-
-    public Wrapper<?> wrapper() {
-      return property.getWrapper();
-    }
   }
 }

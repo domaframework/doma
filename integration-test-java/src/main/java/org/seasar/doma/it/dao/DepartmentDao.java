@@ -17,6 +17,7 @@ package org.seasar.doma.it.dao;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AssociationLinker;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.BatchUpdate;
@@ -112,26 +113,30 @@ public interface DepartmentDao {
   @BatchInsert(duplicateKeyType = DuplicateKeyType.IGNORE)
   int[] insertOnDuplicateKeyIgnore(List<Department> entities);
 
-  @Select(aggregateHelper = DepartmentHelper.class)
+  @Select(aggregateStrategy = DepartmentStrategy.class)
   Department selectByIdAsAggregate(Integer departmentId);
 
-  @Select(aggregateHelper = DepartmentHelper.class)
+  @Select(aggregateStrategy = DepartmentStrategy.class)
+  List<Department> selectByIdsAsAggregate(List<Integer> departmentIds);
+
+  @Select(aggregateStrategy = DepartmentStrategy.class)
   List<Department> selectAllAsAggregate();
-}
 
-interface DepartmentHelper {
-  @AssociationLinker(propertyPath = "employeeList", columnPrefix = "e_")
-  BiFunction<Department, Employee, Department> employeeList =
-      (d, e) -> {
-        d.getEmployeeList().add(e);
-        e.setDepartment(d);
-        return d;
-      };
+  @AggregateStrategy(root = Department.class, tableAlias = "d")
+  interface DepartmentStrategy {
+    @AssociationLinker(propertyPath = "employeeList", tableAlias = "e")
+    BiFunction<Department, Employee, Department> employeeList =
+        (d, e) -> {
+          d.getEmployeeList().add(e);
+          e.setDepartment(d);
+          return d;
+        };
 
-  @AssociationLinker(propertyPath = "employeeList.address", columnPrefix = "a_")
-  BiFunction<Employee, Address, Employee> employeeListAddress =
-      (e, a) -> {
-        e.setAddress(a);
-        return e;
-      };
+    @AssociationLinker(propertyPath = "employeeList.address", tableAlias = "a")
+    BiFunction<Employee, Address, Employee> employeeListAddress =
+        (e, a) -> {
+          e.setAddress(a);
+          return e;
+        };
+  }
 }
