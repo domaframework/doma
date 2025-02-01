@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AssociationLinker;
 import org.seasar.doma.BatchDelete;
 import org.seasar.doma.Dao;
@@ -188,6 +189,7 @@ public interface EmployeeDao {
   int update(Employee entity);
 }
 
+@AggregateStrategy(root = Employee.class, tableAlias = "e")
 interface EmployeeStrategy {
   @AssociationLinker(propertyPath = "department", tableAlias = "d")
   BiFunction<Employee, Department, Employee> department =

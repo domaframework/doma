@@ -121,7 +121,7 @@ public class NodePreparedSqlBuilder
 
   protected final BiConsumer<PopulateNode, SqlContext> valuesPopulater;
 
-  protected final Function<ExpandNode, List<String>> associateColumnsExpander;
+  protected final Function<ExpandNode, List<String>> aggregateColumnsExpander;
 
   public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath) {
     this(
@@ -196,9 +196,9 @@ public class NodePreparedSqlBuilder
       SqlLogType sqlLogType,
       Function<ExpandNode, List<String>> columnsExpander,
       BiConsumer<PopulateNode, SqlContext> valuesPopulater,
-      Function<ExpandNode, List<String>> associateColumnsExpander) {
+      Function<ExpandNode, List<String>> aggregateColumnsExpander) {
     assertNotNull(
-        config, kind, evaluator, columnsExpander, valuesPopulater, associateColumnsExpander);
+        config, kind, evaluator, columnsExpander, valuesPopulater, aggregateColumnsExpander);
     this.config = config;
     this.sqlBuilderSettings = config.getSqlBuilderSettings();
     this.kind = kind;
@@ -207,7 +207,7 @@ public class NodePreparedSqlBuilder
     this.sqlLogType = sqlLogType;
     this.columnsExpander = columnsExpander;
     this.valuesPopulater = valuesPopulater;
-    this.associateColumnsExpander = associateColumnsExpander;
+    this.aggregateColumnsExpander = aggregateColumnsExpander;
   }
 
   public PreparedSql build(SqlNode sqlNode, Function<String, String> commenter) {
@@ -827,7 +827,7 @@ public class NodePreparedSqlBuilder
     for (String column : columnsExpander.apply(node)) {
       joiner.add(prefix + column);
     }
-    for (String column : associateColumnsExpander.apply(node)) {
+    for (String column : aggregateColumnsExpander.apply(node)) {
       joiner.add(column);
     }
     String joined = joiner.toString();

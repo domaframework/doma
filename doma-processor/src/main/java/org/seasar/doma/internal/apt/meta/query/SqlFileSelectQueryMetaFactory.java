@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.Suppress;
@@ -25,6 +26,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
+import org.seasar.doma.internal.apt.cttype.AggregateStrategyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -40,8 +42,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMeta;
-import org.seasar.doma.internal.apt.meta.entity.AggregateStrategyMetaFactory;
 import org.seasar.doma.message.Message;
 
 public class SqlFileSelectQueryMetaFactory
@@ -141,9 +141,27 @@ public class SqlFileSelectQueryMetaFactory
   }
 
   private void doAggregateStrategy(SqlFileSelectQueryMeta queryMeta) {
-    AggregateStrategyMetaFactory factory = new AggregateStrategyMetaFactory(ctx, queryMeta);
-    AggregateStrategyMeta meta = factory.createAggregateStrategyMeta();
-    queryMeta.setAggregateStrategyMeta(meta);
+    EntityCtType entityCtType = queryMeta.getEntityCtType();
+    TypeMirror aggregateStrategyType = queryMeta.getSelectAnnot().getAggregateStrategyValue();
+    AggregateStrategyCtType aggregateStrategyCtType =
+        ctx.getCtTypes().newAggregateStrategyCtType(aggregateStrategyType);
+    if (aggregateStrategyCtType != null) {
+      if (entityCtType == null) {
+        throw new AptException(Message.DOMA4473, methodElement, new Object[] {});
+      }
+      TypeMirror rootType = aggregateStrategyCtType.getAggregateStrategyAnnot().getRootValue();
+      EntityCtType rootCtType = ctx.getCtTypes().newEntityCtType(rootType);
+      if (rootCtType == null) {
+        throw new AptException(Message.DOMA4479, methodElement, new Object[] {});
+      }
+      if (!entityCtType.isSameType(rootCtType)) {
+        throw new AptException(
+            Message.DOMA4480,
+            methodElement,
+            new Object[] {entityCtType.getQualifiedName(), rootCtType.getQualifiedName()});
+      }
+      queryMeta.setAggregateStrategyCtType(aggregateStrategyCtType);
+    }
   }
 
   static class ParamCtTypeVisitor extends SimpleCtTypeVisitor<Void, Void, RuntimeException> {

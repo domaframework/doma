@@ -30,6 +30,7 @@ import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.cttype.AggregateStrategyCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -308,10 +309,10 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     if (m.isResultStream()) {
       iprint("__query.setResultStream(true);%n");
     }
-    if (m.getAggregateStrategyMeta() != null) {
-      iprint("java.util.List<%1$s<?, ?>> __associationLinkerTypes = ", AssociationLinkerType.class);
-      printAssociationLinkerTypes(m.getAggregateStrategyMeta());
-      iprint("__query.setAssociationLinkerTypes(__associationLinkerTypes);%n");
+    if (m.getAggregateStrategyCtType() != null) {
+      iprint(
+          "__query.setAggregateStrategyType(%1$s);%n",
+          m.getAggregateStrategyCtType().getTypeCode());
     }
     iprint("__query.prepare();%n");
 
@@ -2070,8 +2071,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
     @Override
     public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-      AggregateStrategyMeta aggregateStrategyMeta = m.getAggregateStrategyMeta();
-      if (aggregateStrategyMeta == null) {
+      AggregateStrategyCtType aggregateStrategyCtType = m.getAggregateStrategyCtType();
+      if (aggregateStrategyCtType == null) {
         iprint(
             "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%5$s>(%4$s));%n",
             /* 1 */ commandClass,
@@ -2084,24 +2085,26 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       } else {
         if (optional) {
           iprint(
-              "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
+              "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), %8$s);%n",
               /* 1 */ AggregateCommand.class,
               /* 2 */ resultBoxedType,
               /* 3 */ ToOptionalReducer.class,
               /* 4 */ ctType.getTypeCode(),
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
-              /* 7 */ methodName);
+              /* 7 */ methodName,
+              /* 8 */ m.getAggregateStrategyCtType().getTypeCode());
         } else {
           iprint(
-              "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
+              "%1$s<%2$s, %2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), %8$s);%n",
               /* 1 */ AggregateCommand.class,
               /* 2 */ resultBoxedType,
               /* 3 */ ToSingleReducer.class,
               /* 4 */ ctType.getTypeCode(),
               /* 5 */ ctType.getType(),
               /* 6 */ AggregateCommand.class.getSimpleName(),
-              /* 7 */ methodName);
+              /* 7 */ methodName,
+              /* 8 */ m.getAggregateStrategyCtType().getTypeCode());
         }
       }
       return null;
@@ -2201,8 +2204,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
                 @Override
                 public Void visitEntityCtType(EntityCtType ctType, Boolean optional) {
-                  AggregateStrategyMeta aggregateStrategyMeta = m.getAggregateStrategyMeta();
-                  if (aggregateStrategyMeta == null) {
+                  AggregateStrategyCtType aggregateStrategyCtType = m.getAggregateStrategyCtType();
+                  if (aggregateStrategyCtType == null) {
                     iprint(
                         "%1$s<%2$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, new %3$s<%4$s>(%5$s));%n",
                         /* 1 */ commandClass,
@@ -2214,14 +2217,15 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
                         /* 7 */ methodName);
                   } else {
                     iprint(
-                        "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), __associationLinkerTypes);%n",
+                        "%1$s<%2$s, %5$s> __command = __support.getCommandImplementors().create%6$s(%7$s, __query, %4$s, new %3$s<%5$s>(), %8$s);%n",
                         /* 1 */ AggregateCommand.class,
                         /* 2 */ resultBoxedType,
                         /* 3 */ ToListReducer.class,
                         /* 4 */ ctType.getTypeCode(),
                         /* 5 */ ctType.getType(),
                         /* 6 */ AggregateCommand.class.getSimpleName(),
-                        /* 7 */ methodName);
+                        /* 7 */ methodName,
+                        /* 8 */ m.getAggregateStrategyCtType().getTypeCode());
                   }
                   return null;
                 }

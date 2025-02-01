@@ -64,6 +64,12 @@ public class ClassNames {
     return new MetamodelClassNameBuilder(entityClassName, metamodelPrefix, metamodelSuffix).build();
   }
 
+  public static ClassName newAggregateStrategyTypeClassName(
+      CharSequence aggregateStrategyClassName) {
+    assertNotNull(aggregateStrategyClassName);
+    return new ClassNameBuilder(aggregateStrategyClassName).build();
+  }
+
   private static class ClassNameBuilder {
 
     final String binaryName;

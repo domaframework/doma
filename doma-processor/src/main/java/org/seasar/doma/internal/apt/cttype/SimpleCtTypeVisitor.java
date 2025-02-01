@@ -30,6 +30,11 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
   }
 
   @Override
+  public R visitAggregateStrategyCtType(AggregateStrategyCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
+
+  @Override
   public R visitAnyCtType(AnyCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }

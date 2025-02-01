@@ -28,18 +28,18 @@ public class LinkableEntityPoolIterationHandler
     extends AbstractIterationHandler<LinkableEntityPool, List<LinkableEntityPool>> {
 
   private final EntityType<?> entityType;
-  private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
+  private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
   private final Map<LinkableEntityKey, Object> cache;
 
   public LinkableEntityPoolIterationHandler(
       EntityType<?> entityType,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes,
+      AggregateStrategyType aggregateStrategyType,
       boolean resultMappingEnsured,
       Map<LinkableEntityKey, Object> cache) {
     super(new ResultListCallback<>());
     this.entityType = Objects.requireNonNull(entityType);
-    this.associationLinkerTypes = Objects.requireNonNull(associationLinkerTypes);
+    this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
     this.resultMappingEnsured = resultMappingEnsured;
     this.cache = Objects.requireNonNull(cache);
   }
@@ -47,6 +47,6 @@ public class LinkableEntityPoolIterationHandler
   @Override
   protected ObjectProvider<LinkableEntityPool> createObjectProvider(SelectQuery query) {
     return new LinkableEntityPoolProvider(
-        entityType, associationLinkerTypes, query, resultMappingEnsured, cache);
+        entityType, aggregateStrategyType, query, resultMappingEnsured, cache);
   }
 }

@@ -21,6 +21,7 @@ import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
+import org.seasar.doma.internal.apt.cttype.AggregateStrategyCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
@@ -48,7 +49,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   private boolean resultStream;
 
-  private AggregateStrategyMeta aggregateStrategyMeta;
+  private AggregateStrategyCtType aggregateStrategyCtType;
 
   public SqlFileSelectQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -166,12 +167,12 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     this.resultStream = resultStream;
   }
 
-  public AggregateStrategyMeta getAggregateStrategyMeta() {
-    return aggregateStrategyMeta;
+  public AggregateStrategyCtType getAggregateStrategyCtType() {
+    return aggregateStrategyCtType;
   }
 
-  public void setAggregateStrategyMeta(AggregateStrategyMeta aggregateStrategyMeta) {
-    this.aggregateStrategyMeta = aggregateStrategyMeta;
+  public void setAggregateStrategyCtType(AggregateStrategyCtType aggregateStrategyCtType) {
+    this.aggregateStrategyCtType = aggregateStrategyCtType;
   }
 
   @Override

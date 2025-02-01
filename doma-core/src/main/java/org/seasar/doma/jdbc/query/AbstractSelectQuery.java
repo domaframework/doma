@@ -17,13 +17,13 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
@@ -40,9 +40,10 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
-import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
+import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
+import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.PrimitiveLongWrapper;
@@ -71,7 +72,7 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
 
   protected boolean resultStream;
 
-  protected List<AssociationLinkerType<?, ?>> associationLinkerTypes = new ArrayList<>();
+  protected AggregateStrategyType aggregateStrategyType;
 
   protected AbstractSelectQuery() {}
 
@@ -115,6 +116,10 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
       throw new JdbcException(
           Message.DOMA2144, location.getSql(), location.getLineNumber(), location.getPosition());
     }
+    if (aggregateStrategyType != null) {
+      // The expandAggregateColumns method does the processing, so nothing is done here.
+      return List.of();
+    }
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     return entityType.getEntityPropertyTypes().stream()
@@ -122,23 +127,40 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         .collect(Collectors.toList());
   }
 
-  protected List<String> expandAssociationColumns(ExpandNode node) {
+  protected List<String> expandAggregateColumns(ExpandNode node) {
+    if (entityType == null) {
+      SqlLocation location = node.getLocation();
+      throw new JdbcException(
+          Message.DOMA2144, location.getSql(), location.getLineNumber(), location.getPosition());
+    }
+    if (aggregateStrategyType == null) {
+      return List.of();
+    }
+    Stream<Pair<String, EntityPropertyType<?, ?>>> rootColumns =
+        entityType.getEntityPropertyTypes().stream()
+            .map(
+                p -> {
+                  String tableAlias = aggregateStrategyType.getTableAlias();
+                  return new Pair<>(tableAlias, p);
+                });
+    Stream<Pair<String, EntityPropertyType<?, ?>>> associationColumns =
+        aggregateStrategyType.getAssociationLinkerTypes().stream()
+            .flatMap(
+                linkerType -> {
+                  String tableAlias = linkerType.getTableAlias();
+                  return linkerType.getTarget().getEntityPropertyTypes().stream()
+                      .map(p -> new Pair<>(tableAlias, p));
+                });
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
-    return associationLinkerTypes.stream()
-        .flatMap(
-            linkerType -> {
-              String tableAlias = linkerType.getTableAlias();
-              return linkerType.getTarget().getEntityPropertyTypes().stream()
-                  .map(p -> new Pair<>(tableAlias, p));
-            })
+    return Stream.concat(rootColumns, associationColumns)
         .map(
             p -> {
               String tableAlias = p.fst;
               String columnName = p.snd.getColumnName(naming::apply, dialect::applyQuote);
               return String.format("%1$s.%2$s as %1$s_%2$s", tableAlias, columnName);
             })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   protected void populateValues(PopulateNode node, SqlContext context) {
@@ -250,9 +272,8 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     this.resultStream = resultStream;
   }
 
-  public void setAssociationLinkerTypes(List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    this.associationLinkerTypes.clear();
-    this.associationLinkerTypes.addAll(associationLinkerTypes);
+  public void setAggregateStrategyType(AggregateStrategyType aggregateStrategyType) {
+    this.aggregateStrategyType = aggregateStrategyType;
   }
 
   public void setEntityType(EntityType<?> entityType) {

@@ -61,7 +61,7 @@ public class CountQuery extends AbstractSelectQuery {
             sqlLogType,
             this::expandColumns,
             this::populateValues,
-            this::expandAssociationColumns);
+            this::expandAggregateColumns);
     sql = sqlBuilder.build(transformedSqlNode, this::comment);
   }
 

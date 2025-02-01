@@ -16,57 +16,77 @@
 package org.seasar.doma.internal.apt.meta.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
+import java.util.Set;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.tools.Diagnostic;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.annot.AssociationLinkerAnnot;
-import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.CtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
-import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
-import org.seasar.doma.internal.apt.meta.query.SqlFileSelectQueryMeta;
+import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.message.Message;
 
-public class AggregateStrategyMetaFactory {
+public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<AggregateStrategyMeta> {
 
   private final Context ctx;
-  private final SqlFileSelectQueryMeta queryMeta;
 
-  public AggregateStrategyMetaFactory(Context ctx, SqlFileSelectQueryMeta queryMeta) {
+  public AggregateStrategyMetaFactory(Context ctx) {
     this.ctx = Objects.requireNonNull(ctx);
-    this.queryMeta = Objects.requireNonNull(queryMeta);
   }
 
-  public AggregateStrategyMeta createAggregateStrategyMeta() {
-    TypeMirror aggregateStrategyType = queryMeta.getSelectAnnot().getAggregateStrategyValue();
-    if (ctx.getMoreTypes().isSameTypeWithErasure(aggregateStrategyType, Void.class)) {
-      return null;
+  @Override
+  public AggregateStrategyMeta createTypeElementMeta(TypeElement typeElement) {
+    AggregateStrategyAnnot aggregateStrategyAnnot =
+        ctx.getAnnotations().newAggregateStrategyAnnot(typeElement);
+    if (aggregateStrategyAnnot == null) {
+      throw new AptIllegalStateException(
+          "aggregateStrategyAnnot is null. typeElement=" + typeElement);
+    }
+    if (!typeElement.getKind().isInterface()) {
+      throw new AptException(Message.DOMA4482, typeElement, new Object[] {});
+    }
+    if (typeElement.getModifiers().contains(Modifier.PRIVATE)) {
+      throw new AptException(Message.DOMA4483, typeElement, new Object[] {});
+    }
+    EntityCtType root = ctx.getCtTypes().newEntityCtType(aggregateStrategyAnnot.getRootValue());
+    if (root == null) {
+      throw new AptException(Message.DOMA4478, typeElement, new Object[] {});
     }
     List<AssociationLinkerMeta> associationLinkerMetas =
-        findAssociationLinkerMetas(aggregateStrategyType);
-    return new AggregateStrategyMeta(associationLinkerMetas);
+        findAssociationLinkerMetas(typeElement, root);
+    validateTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
+    return new AggregateStrategyMeta(
+        root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
   }
 
-  private List<AssociationLinkerMeta> findAssociationLinkerMetas(TypeMirror aggregateStrategyType) {
-    TypeElement aggregateStrategyElement = ctx.getMoreTypes().toTypeElement(aggregateStrategyType);
-    if (aggregateStrategyElement == null) {
-      throw new AptIllegalStateException("aggregateStrategyElement must not be null");
+  private void validateTableAliases(
+      String rootTableAlias, List<AssociationLinkerMeta> associationLinkerMetas) {
+    Set<String> seen = new HashSet<>(1 + associationLinkerMetas.size());
+    seen.add(rootTableAlias);
+    for (AssociationLinkerMeta linkerMeta : associationLinkerMetas) {
+      if (!seen.add(linkerMeta.tableAlias())) {
+        throw new AptException(
+            Message.DOMA4481, linkerMeta.filedElement(), new Object[] {linkerMeta.tableAlias()});
+      }
     }
-    EntityCtType root = resolveRootEntityCtType();
+  }
+
+  private List<AssociationLinkerMeta> findAssociationLinkerMetas(
+      TypeElement aggregateStrategyElement, EntityCtType root) {
     List<AssociationLinkerMeta> associationLinkerMetas = new ArrayList<>();
 
     for (VariableElement fieldElement :
@@ -84,71 +104,28 @@ public class AggregateStrategyMetaFactory {
       associationLinkerMetas.add(associationLinkerMeta);
     }
 
-    validateAssociationLinkerMetas(queryMeta, associationLinkerMetas);
+    if (associationLinkerMetas.isEmpty()) {
+      ctx.getReporter()
+          .report(
+              Diagnostic.Kind.WARNING,
+              Message.DOMA4469,
+              aggregateStrategyElement,
+              new Object[] {aggregateStrategyElement});
+    }
+
     return associationLinkerMetas;
   }
 
-  private EntityCtType resolveRootEntityCtType() {
-    CtType ctType = queryMeta.getReturnMeta().getCtType();
-    return resolveEntityCtType(
-        ctType,
-        () -> {
-          throw new AptException(Message.DOMA4473, queryMeta.getMethodElement(), new Object[] {});
-        });
-  }
-
-  private EntityCtType resolveEntityCtType(CtType ctType, Runnable errorCallback) {
-    class EntityCtTypeVisitor extends SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException> {
-      @Override
-      protected EntityCtType defaultAction(CtType ctType, Void p) throws RuntimeException {
-        errorCallback.run();
-        return null;
-      }
-
-      @Override
-      public EntityCtType visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
-        return ctType;
-      }
-    }
-
-    return ctType.accept(
-        new EntityCtTypeVisitor() {
-
-          @Override
-          public EntityCtType visitIterableCtType(IterableCtType ctType, Void unused)
-              throws RuntimeException {
-            return ctType
-                .getElementCtType()
-                .accept(
-                    new EntityCtTypeVisitor() {
-                      @Override
-                      public EntityCtType visitOptionalCtType(OptionalCtType ctType, Void unused)
-                          throws RuntimeException {
-                        return ctType.getElementCtType().accept(new EntityCtTypeVisitor(), null);
-                      }
-                    },
-                    null);
-          }
-
-          @Override
-          public EntityCtType visitOptionalCtType(OptionalCtType ctType, Void unused)
-              throws RuntimeException {
-            return ctType.getElementCtType().accept(new EntityCtTypeVisitor(), null);
-          }
-        },
-        null);
-  }
-
-  private AssociationLinkerAnnot getAssociationLinkerAnnot(VariableElement fieldElement) {
+  private AssociationLinkerAnnot getAssociationLinkerAnnot(VariableElement linkerElement) {
     AssociationLinkerAnnot associationLinkerAnnot =
-        ctx.getAnnotations().newAssociationLinkerAnnot(fieldElement);
+        ctx.getAnnotations().newAssociationLinkerAnnot(linkerElement);
     if (associationLinkerAnnot == null) {
       return null;
     }
     if (associationLinkerAnnot.getPropertyPathValue().isBlank()) {
       throw new AptException(
           Message.DOMA4472,
-          fieldElement,
+          linkerElement,
           associationLinkerAnnot.getAnnotationMirror(),
           associationLinkerAnnot.getPropertyPath(),
           new Object[] {});
@@ -156,7 +133,7 @@ public class AggregateStrategyMetaFactory {
     if (associationLinkerAnnot.getTableAliasValue().isBlank()) {
       throw new AptException(
           Message.DOMA4468,
-          fieldElement,
+          linkerElement,
           associationLinkerAnnot.getAnnotationMirror(),
           associationLinkerAnnot.getTableAlias(),
           new Object[] {});
@@ -164,29 +141,29 @@ public class AggregateStrategyMetaFactory {
     return associationLinkerAnnot;
   }
 
-  private void validateModifiers(VariableElement fieldElement) {
-    if (!fieldElement.getModifiers().contains(Modifier.STATIC)) {
-      throw new AptException(Message.DOMA4464, fieldElement, new Object[] {});
+  private void validateModifiers(VariableElement linkerElement) {
+    if (!linkerElement.getModifiers().contains(Modifier.STATIC)) {
+      throw new AptException(Message.DOMA4464, linkerElement, new Object[] {});
     }
-    if (!fieldElement.getModifiers().contains(Modifier.PUBLIC)) {
-      throw new AptException(Message.DOMA4470, fieldElement, new Object[] {});
+    if (!linkerElement.getModifiers().contains(Modifier.PUBLIC)) {
+      throw new AptException(Message.DOMA4470, linkerElement, new Object[] {});
     }
-    if (!fieldElement.getModifiers().contains(Modifier.FINAL)) {
-      throw new AptException(Message.DOMA4471, fieldElement, new Object[] {});
+    if (!linkerElement.getModifiers().contains(Modifier.FINAL)) {
+      throw new AptException(Message.DOMA4471, linkerElement, new Object[] {});
     }
   }
 
-  private BiFunctionMeta createBiFunctionMeta(VariableElement fieldElement) {
-    BiFunctionCtType ctType = ctx.getCtTypes().newBiFunctionCtType(fieldElement.asType());
+  private BiFunctionMeta createBiFunctionMeta(VariableElement linkerElement) {
+    BiFunctionCtType ctType = ctx.getCtTypes().newBiFunctionCtType(linkerElement.asType());
     if (ctType == null) {
-      throw new AptException(Message.DOMA4465, fieldElement, new Object[] {});
+      throw new AptException(Message.DOMA4465, linkerElement, new Object[] {});
     }
     CtTypeVisitor<EntityCtType, String, RuntimeException> entityCtTypeVisitor =
         new SimpleCtTypeVisitor<>() {
           @Override
           protected EntityCtType defaultAction(CtType ctType, String ordinalNumber)
               throws RuntimeException {
-            throw new AptException(Message.DOMA4466, fieldElement, new Object[] {ordinalNumber});
+            throw new AptException(Message.DOMA4466, linkerElement, new Object[] {ordinalNumber});
           }
 
           @Override
@@ -201,7 +178,7 @@ public class AggregateStrategyMetaFactory {
     EntityCtType result = ctType.getResultCtType().accept(entityCtTypeVisitor, "third");
 
     if (!ctx.getMoreTypes().isSameType(result.getType(), source.getType())) {
-      throw new AptException(Message.DOMA4467, fieldElement, new Object[] {});
+      throw new AptException(Message.DOMA4467, linkerElement, new Object[] {});
     }
 
     return new BiFunctionMeta(source, target, result);
@@ -211,7 +188,7 @@ public class AggregateStrategyMetaFactory {
       EntityCtType root,
       AssociationLinkerAnnot associationLinkerAnnot,
       BiFunctionMeta biFunctionMeta,
-      Element element) {
+      VariableElement linkerElement) {
     TypeMirror source = root.getType();
     TypeMirror target = root.getType();
     String[] segments = associationLinkerAnnot.getPropertyPathValue().split("\\.");
@@ -220,22 +197,22 @@ public class AggregateStrategyMetaFactory {
     }
     for (String segment : segments) {
       source = target;
-      target = resolveEntity(source, segment, element, associationLinkerAnnot);
+      target = resolveEntity(source, segment, linkerElement, associationLinkerAnnot);
     }
     if (!ctx.getMoreTypes().isSameType(biFunctionMeta.source.getType(), source)) {
       throw new AptException(
-          Message.DOMA4475, element, new Object[] {biFunctionMeta.source.getType(), source});
+          Message.DOMA4475, linkerElement, new Object[] {biFunctionMeta.source.getType(), source});
     }
     if (!ctx.getMoreTypes().isSameType(biFunctionMeta.target.getType(), target)) {
       throw new AptException(
-          Message.DOMA4476, element, new Object[] {biFunctionMeta.target.getType(), target});
+          Message.DOMA4476, linkerElement, new Object[] {biFunctionMeta.target.getType(), target});
     }
   }
 
   private TypeMirror resolveEntity(
       TypeMirror typeMirror,
       String name,
-      Element element,
+      VariableElement linkerElement,
       AssociationLinkerAnnot associationLinkerAnnot) {
     TypeElement sourceElement = ctx.getMoreTypes().toTypeElement(typeMirror);
     if (sourceElement == null) {
@@ -248,7 +225,7 @@ public class AggregateStrategyMetaFactory {
     if (field.isEmpty()) {
       throw new AptException(
           Message.DOMA4474,
-          element,
+          linkerElement,
           associationLinkerAnnot.getAnnotationMirror(),
           associationLinkerAnnot.getPropertyPath(),
           new Object[] {name, sourceElement.getQualifiedName()});
@@ -256,12 +233,12 @@ public class AggregateStrategyMetaFactory {
     TypeMirror fieldType = field.get().asType();
     CtType ctType = ctx.getCtTypes().newCtType(fieldType);
     EntityCtType entityCtType =
-        resolveEntityCtType(
+        EntityCtType.resolveEntityCtType(
             ctType,
             () -> {
               throw new AptException(
                   Message.DOMA4477,
-                  queryMeta.getMethodElement(),
+                  linkerElement,
                   new Object[] {name, sourceElement.getQualifiedName(), fieldType});
             });
     return entityCtType.getType();
@@ -279,20 +256,6 @@ public class AggregateStrategyMetaFactory {
         biFunctionMeta.target,
         aggregateStrategyElement,
         fieldElement);
-  }
-
-  private static void validateAssociationLinkerMetas(
-      SqlFileSelectQueryMeta queryMeta, List<AssociationLinkerMeta> associationLinkerMetas) {
-    if (associationLinkerMetas.isEmpty()) {
-      ExecutableElement method = queryMeta.getMethodElement();
-      SelectAnnot selectAnnot = queryMeta.getSelectAnnot();
-      throw new AptException(
-          Message.DOMA4469,
-          method,
-          selectAnnot.getAnnotationMirror(),
-          selectAnnot.getAggregateStrategy(),
-          new Object[] {});
-    }
   }
 
   private record BiFunctionMeta(EntityCtType source, EntityCtType target, EntityCtType result) {}

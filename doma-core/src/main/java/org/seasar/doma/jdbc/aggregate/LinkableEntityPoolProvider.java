@@ -66,15 +66,17 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
 
   private final FetchSupport fetchSupport;
 
+  private final AggregateStrategyType aggregateStrategyType;
+
   private final Map<String, AssociationLinkerType<?, ?>> associationLinkerTypeMap;
 
   public LinkableEntityPoolProvider(
       EntityType<?> entityType,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes,
+      AggregateStrategyType aggregateStrategyType,
       Query query,
       boolean resultMappingEnsured,
       Map<LinkableEntityKey, Object> cache) {
-    assertNotNull(entityType, associationLinkerTypes, query, cache);
+    assertNotNull(entityType, aggregateStrategyType, query, cache);
     this.entityType = entityType;
     this.query = query;
     this.resultMappingEnsured = resultMappingEnsured;
@@ -83,8 +85,9 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
     this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
     // TODO
     this.fetchSupport = new FetchSupport(query);
+    this.aggregateStrategyType = aggregateStrategyType;
     this.associationLinkerTypeMap =
-        associationLinkerTypes.stream()
+        aggregateStrategyType.getAssociationLinkerTypes().stream()
             .collect(Collectors.toMap(AssociationLinkerType::getPropertyPath, Function.identity()));
   }
 
@@ -147,14 +150,14 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
   private HashMap<String, PropType> createColumnNameMap() {
     List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
     HashMap<String, PropType> result = new HashMap<>(propertyTypes.size());
-    collectColumnNames(result, entityType, "", null);
+    collectColumnNames(result, entityType, "", aggregateStrategyType.getTableAlias());
     return result;
   }
 
   private void collectColumnNames(
       Map<String, PropType> map, EntityType<?> source, String propertyPath, String tableAlias) {
     Naming naming = query.getConfig().getNaming();
-    String prefix = tableAlias == null ? "" : tableAlias + "_";
+    String prefix = tableAlias + "_";
     for (EntityPropertyType<?, ?> propertyType : source.getEntityPropertyTypes()) {
       String columnName = propertyType.getColumnName(naming::apply);
       map.put(prefix + columnName.toLowerCase(), new PropType(source, propertyType, propertyPath));

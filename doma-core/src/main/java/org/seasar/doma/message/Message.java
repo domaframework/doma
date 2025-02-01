@@ -954,8 +954,7 @@ public enum Message implements MessageResource {
   DOMA4466("The {0} type parameter of BiFunction must be an entity class."),
   DOMA4467("The first and third type parameters of java.util.function.BiFunction must be the same"),
   DOMA4468("The tableAlias must not be blank."),
-  DOMA4469(
-      "No field annotated with @AssociationLinker was found in the class specified in the aggregateStrategy element of @Select."),
+  DOMA4469("No field annotated with @AssociationLinker was found in the class \"{0}\"."),
   DOMA4470("Fields annotated with AssociationLinker must be public."),
   DOMA4471("Fields annotated with AssociationLinker must be final."),
   DOMA4472("The propertyPath must not be blank."),
@@ -976,6 +975,14 @@ public enum Message implements MessageResource {
           + "a `List` containing elements of the entity class, "
           + "an `Optional` containing an element of the entity class, "
           + "or a `List` of `Optional` containing elements of the entity class. actual type=\"{2}\""),
+  DOMA4478("The root element of @AggregateStrategy must be a class annotated with @Entity."),
+  DOMA4479("The root element of @AggregateStrategy must be a class annotated with @Entity."),
+  DOMA4480(
+      "The return type of the entity \"{0}\" does not match the root element type of @AggregateStrategy \"{1}\"."),
+  DOMA4481(
+      "The table alias \"{0}\" is duplicated in @AggregateStrategy or another @AssociationLinker."),
+  DOMA4482("An element annotated with @AggregateStrategy must be an interface."),
+  DOMA4483("The visibility of an interface annotated with @AggregateStrategy must not be private."),
 
   // other
   DOMA5001(

@@ -34,18 +34,17 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   private final SelectQuery query;
   private final EntityType<ENTITY> entityType;
   private final StreamReducer<RESULT, ENTITY> streamReducer;
-  private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
+  private final AggregateStrategyType aggregateStrategyType;
 
   public AggregateCommand(
       SelectQuery query,
       EntityType<ENTITY> entityType,
       StreamReducer<RESULT, ENTITY> streamReducer,
-      List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
+      AggregateStrategyType aggregateStrategyType) {
     this.query = Objects.requireNonNull(query);
     this.entityType = Objects.requireNonNull(entityType);
     this.streamReducer = Objects.requireNonNull(streamReducer);
-    Objects.requireNonNull(associationLinkerTypes);
-    this.associationLinkerTypes = sortAssociationLinkerTypes(associationLinkerTypes);
+    this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
   }
 
   private static List<AssociationLinkerType<?, ?>> sortAssociationLinkerTypes(
@@ -64,7 +63,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
         new SelectCommand<>(
             query,
             new LinkableEntityPoolIterationHandler(
-                entityType, associationLinkerTypes, query.isResultMappingEnsured(), cache));
+                entityType, aggregateStrategyType, query.isResultMappingEnsured(), cache));
     List<LinkableEntityPool> entityPools = command.execute();
     for (LinkableEntityPool entityPool : entityPools) {
       Map<String, LinkableEntity> associationCandidate = new LinkedHashMap<>();
@@ -86,9 +85,10 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       Map<LinkableEntityKey, Object> cache,
       Combinations<LinkableEntityKey> combinations,
       Map<String, LinkableEntity> associationCandidate) {
-    for (AssociationLinkerType<?, ?> associationLinkerType : associationLinkerTypes) {
-      LinkableEntity source = associationCandidate.get(associationLinkerType.getSourceName());
-      LinkableEntity target = associationCandidate.get(associationLinkerType.getTargetName());
+    for (AssociationLinkerType<?, ?> linkerType :
+        aggregateStrategyType.getAssociationLinkerTypes()) {
+      LinkableEntity source = associationCandidate.get(linkerType.getSourceName());
+      LinkableEntity target = associationCandidate.get(linkerType.getTargetName());
       if (source == null || target == null) {
         continue;
       }
@@ -98,12 +98,12 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       }
       @SuppressWarnings("unchecked")
       BiFunction<Object, Object, Object> linker =
-          (BiFunction<Object, Object, Object>) associationLinkerType.getLinker();
+          (BiFunction<Object, Object, Object>) linkerType.getLinker();
       Object newEntity = linker.apply(source.entity(), target.entity());
       if (newEntity != null) {
         cache.replace(source.key(), newEntity);
         associationCandidate.replace(
-            associationLinkerType.getSourceName(), new LinkableEntity(source.key(), newEntity));
+            linkerType.getSourceName(), new LinkableEntity(source.key(), newEntity));
       }
       combinations.add(keyPair);
     }

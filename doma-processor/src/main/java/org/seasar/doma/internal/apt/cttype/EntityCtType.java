@@ -52,4 +52,46 @@ public class EntityCtType extends AbstractCtType {
   public <R, P, TH extends Throwable> R accept(CtTypeVisitor<R, P, TH> visitor, P p) throws TH {
     return visitor.visitEntityCtType(this, p);
   }
+
+  public static EntityCtType resolveEntityCtType(CtType ctType, Runnable errorCallback) {
+    class EntityCtTypeVisitor extends SimpleCtTypeVisitor<EntityCtType, Void, RuntimeException> {
+      @Override
+      protected EntityCtType defaultAction(CtType ctType, Void p) throws RuntimeException {
+        errorCallback.run();
+        return null;
+      }
+
+      @Override
+      public EntityCtType visitEntityCtType(EntityCtType ctType, Void p) throws RuntimeException {
+        return ctType;
+      }
+    }
+
+    return ctType.accept(
+        new EntityCtTypeVisitor() {
+
+          @Override
+          public EntityCtType visitIterableCtType(IterableCtType ctType, Void unused)
+              throws RuntimeException {
+            return ctType
+                .getElementCtType()
+                .accept(
+                    new EntityCtTypeVisitor() {
+                      @Override
+                      public EntityCtType visitOptionalCtType(OptionalCtType ctType, Void unused)
+                          throws RuntimeException {
+                        return ctType.getElementCtType().accept(new EntityCtTypeVisitor(), null);
+                      }
+                    },
+                    null);
+          }
+
+          @Override
+          public EntityCtType visitOptionalCtType(OptionalCtType ctType, Void unused)
+              throws RuntimeException {
+            return ctType.getElementCtType().accept(new EntityCtTypeVisitor(), null);
+          }
+        },
+        null);
+  }
 }
