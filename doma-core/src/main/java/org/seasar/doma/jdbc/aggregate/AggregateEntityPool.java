@@ -15,16 +15,22 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
-import org.seasar.doma.jdbc.entity.EntityType;
 
-public record PathKey(String propertyPath, EntityType<?> entityType) {
-  public PathKey {
-    Objects.requireNonNull(propertyPath);
-    Objects.requireNonNull(entityType);
+public class AggregateEntityPool implements Iterable<AggregateEntityPoolEntry> {
+  private final List<AggregateEntityPoolEntry> entities = new ArrayList<>();
+
+  public void add(AggregateEntityPoolEntry entry) {
+    Objects.requireNonNull(entry);
+    entities.add(entry);
   }
 
-  public boolean isRoot() {
-    return propertyPath.isEmpty();
+  @SuppressWarnings("NullableProblems")
+  @Override
+  public Iterator<AggregateEntityPoolEntry> iterator() {
+    return entities.iterator();
   }
 }

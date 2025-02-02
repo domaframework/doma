@@ -16,20 +16,10 @@
 package org.seasar.doma.jdbc.aggregate;
 
 import java.util.List;
-import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-public record LinkableEntityKey(PathKey pathKey, List<?> items) {
-  public LinkableEntityKey {
-    Objects.requireNonNull(pathKey);
-    Objects.requireNonNull(items);
-  }
-
-  public String propertyPath() {
-    return pathKey.propertyPath();
-  }
-
-  public EntityType<?> entityType() {
-    return pathKey.entityType();
+public record AggregateEntityCacheKey(EntityType<?> entityType, List<?> items) {
+  public static AggregateEntityCacheKey of(AggregateEntityKey entityKey) {
+    return new AggregateEntityCacheKey(entityKey.entityType(), entityKey.items());
   }
 }
