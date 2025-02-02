@@ -16,10 +16,13 @@
 package org.seasar.doma.internal.jdbc.command;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
-public class ColumnNameMapFormatter {
-  public static String format(Map<String, MappingSupport.PropType> columnNameMap) {
+class ColumnNameMapFormatter {
+  static String format(Map<String, MappingSupport.PropType> columnNameMap) {
+    Objects.requireNonNull(columnNameMap);
+
     StringBuilder buf = new StringBuilder();
     buf.append("------------------------------------------------------\n");
     buf.append("Lowercase Column Name -> Property Name (Entity Name)\n");

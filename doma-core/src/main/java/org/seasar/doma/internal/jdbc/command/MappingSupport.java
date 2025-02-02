@@ -98,7 +98,11 @@ public class MappingSupport {
         if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
           continue;
         }
-        unknownColumnHandler.handle(query, entityType, lowerCaseColumnName, columnNameMap);
+        unknownColumnHandler.handle(
+            query,
+            entityType,
+            lowerCaseColumnName,
+            () -> ColumnNameMapFormatter.format(columnNameMap));
       } else {
         unmappedPropertySet.remove(propertyType);
         indexMap.put(i, propertyType);
@@ -159,6 +163,13 @@ public class MappingSupport {
    */
   public record PropType(
       EntityType<?> entityType, EntityPropertyType<?, ?> propertyType, String propertyPath) {
+
+    public PropType {
+      Objects.requireNonNull(entityType);
+      Objects.requireNonNull(propertyType);
+      Objects.requireNonNull(propertyPath);
+    }
+
     public String name() {
       return propertyType.getName();
     }
@@ -179,6 +190,11 @@ public class MappingSupport {
    * @param rawValue The raw value associated with this property, as retrieved from the data source.
    */
   public record Prop(PropType propType, Property<Object, ?> property, Object rawValue) {
+
+    public Prop {
+      Objects.requireNonNull(propType);
+      Objects.requireNonNull(property);
+    }
 
     public EntityType<?> entityType() {
       return propType.entityType();
