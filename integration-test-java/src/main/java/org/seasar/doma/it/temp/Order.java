@@ -1,23 +1,36 @@
+/*
+ * Copyright Doma Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.seasar.doma.it.temp;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import org.seasar.doma.Association;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "t_order")
 public class Order implements Serializable {
   private static final long serialVersionUID = 1L;
-  @Id
-  private int id;
+  @Id private int id;
   @Association private OrderStatus orderStatus;
-  @Association List<OrderItem> orderItems = new ArrayList<>();
-  @Association List<OrderCoupon> orderCoupons = new ArrayList<>();
+  @Association private List<OrderItem> orderItems = new ArrayList<>();
+  @Association private List<OrderCoupon> orderCoupons = new ArrayList<>();
 
   public int getId() {
     return id;

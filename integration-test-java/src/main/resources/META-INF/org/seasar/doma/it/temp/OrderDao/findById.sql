@@ -1,20 +1,5 @@
 SELECT
-    o.id,
-    o.status_code AS os_code,
-    os.name AS os_name,
-    oi.order_id AS oi_order_id,
-    oi.item_code AS oi_item_code,
-    oi.quantity AS oi_quantity,
-    oc.order_id AS oc_order_id,
-    oc.coupon_code AS oc_coupon_code,
-    i.code AS i_code,
-    i.name AS i_name,
-    i.price AS i_price,
-    ct.code AS ct_code,
-    ct.name AS ct_name,
-    cp.code AS cp_code,
-    cp.name AS cp_name,
-    cp.price AS cp_price
+    /*%expand */*
 FROM
     t_order o
     INNER JOIN c_order_status os ON os.code = o.status_code
