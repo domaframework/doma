@@ -65,6 +65,10 @@ public class SqlFileSelectTest {
     assertEquals(Integer.valueOf(1), list.get(1).getEmployeeId());
   }
 
+  private static final java.lang.reflect.Method __method2 =
+      org.seasar.doma.internal.jdbc.dao.DaoImplSupport.getDeclaredMethod(
+          org.seasar.doma.it.dao.EmployeeDao.class, "selectById", java.lang.Integer.class);
+
   @Test
   public void testNull(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);

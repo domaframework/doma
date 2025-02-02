@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
@@ -48,6 +49,8 @@ public class SelectAnnot extends AbstractAnnot {
 
   private static final String SQL_LOG = "sqlLog";
 
+  private static final String AGGREGATE_STRATEGY = "aggregateStrategy";
+
   private final AnnotationValue strategy;
 
   private final AnnotationValue fetch;
@@ -66,6 +69,8 @@ public class SelectAnnot extends AbstractAnnot {
 
   private final AnnotationValue sqlLog;
 
+  private final AnnotationValue aggregateStrategy;
+
   SelectAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
     super(annotationMirror);
     this.strategy = assertNonNullValue(values, STRATEGY);
@@ -77,6 +82,7 @@ public class SelectAnnot extends AbstractAnnot {
     this.maxRows = assertNonNullValue(values, MAX_ROWS);
     this.mapKeyNaming = assertNonNullValue(values, MAP_KEY_NAMING);
     this.sqlLog = assertNonNullValue(values, SQL_LOG);
+    this.aggregateStrategy = assertNonNullValue(values, AGGREGATE_STRATEGY);
   }
 
   public AnnotationValue getStrategy() {
@@ -113,6 +119,10 @@ public class SelectAnnot extends AbstractAnnot {
 
   public AnnotationValue getSqlLog() {
     return sqlLog;
+  }
+
+  public AnnotationValue getAggregateStrategy() {
+    return aggregateStrategy;
   }
 
   public int getQueryTimeoutValue() {
@@ -185,5 +195,13 @@ public class SelectAnnot extends AbstractAnnot {
       throw new AptIllegalStateException(SQL_LOG);
     }
     return SqlLogType.valueOf(enumConstant.getSimpleName().toString());
+  }
+
+  public TypeMirror getAggregateStrategyValue() {
+    TypeMirror type = AnnotationValueUtil.toType(aggregateStrategy);
+    if (type == null) {
+      throw new AptIllegalStateException(AGGREGATE_STRATEGY);
+    }
+    return type;
   }
 }

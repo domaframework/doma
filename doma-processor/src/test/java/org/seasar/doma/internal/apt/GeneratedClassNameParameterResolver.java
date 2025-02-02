@@ -23,6 +23,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.opentest4j.AssertionFailedError;
+import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
@@ -76,6 +77,9 @@ public class GeneratedClassNameParameterResolver implements ParameterResolver {
     }
     if (clazz.isAnnotationPresent(Domain.class)) {
       return ClassNames.newDomainTypeClassName(clazz.getName()).toString();
+    }
+    if (clazz.isAnnotationPresent(AggregateStrategy.class)) {
+      return ClassNames.newAggregateStrategyTypeClassName(clazz.getName()).toString();
     }
     throw new AssertionFailedError("annotation not found.");
   }

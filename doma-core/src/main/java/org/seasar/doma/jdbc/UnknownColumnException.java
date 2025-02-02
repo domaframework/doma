@@ -15,12 +15,14 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.io.Serial;
 import org.seasar.doma.message.Message;
+import org.seasar.doma.message.MessageResource;
 
 /** Thrown to indicate that there is the column that is unknown to an entity. */
 public class UnknownColumnException extends JdbcException {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   protected final String columnName;
 
@@ -45,13 +47,35 @@ public class UnknownColumnException extends JdbcException {
       String rawSql,
       String formattedSql,
       String sqlFilePath) {
-    super(
+    this(
         Message.DOMA2002,
+        new Object[] {
+          columnName,
+          expectedPropertyName,
+          entityClassName,
+          sqlFilePath,
+          choiceSql(logType, rawSql, formattedSql)
+        },
         columnName,
         expectedPropertyName,
         entityClassName,
-        sqlFilePath,
-        choiceSql(logType, rawSql, formattedSql));
+        kind,
+        rawSql,
+        formattedSql,
+        sqlFilePath);
+  }
+
+  protected UnknownColumnException(
+      MessageResource messageCode,
+      Object[] args,
+      String columnName,
+      String expectedPropertyName,
+      String entityClassName,
+      SqlKind kind,
+      String rawSql,
+      String formattedSql,
+      String sqlFilePath) {
+    super(messageCode, args);
     this.columnName = columnName;
     this.expectedPropertyName = expectedPropertyName;
     this.entityClassName = entityClassName;

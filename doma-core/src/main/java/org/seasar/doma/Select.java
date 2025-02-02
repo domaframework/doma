@@ -163,4 +163,13 @@ public @interface Select {
    * @return the output format of SQL logs.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * Defines how an aggregate is constructed.
+   *
+   * <p>Specifies the interface annotated with {@link AggregateStrategy}.
+   *
+   * @return the class representing the aggregation strategy, or {@code Void.class} if not specified
+   */
+  Class<?> aggregateStrategy() default Void.class;
 }

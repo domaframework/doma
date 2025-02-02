@@ -1,0 +1,10 @@
+SELECT
+    /*%expand */*
+FROM
+    EMPLOYEE e
+    LEFT JOIN
+    EMPLOYEE m ON e.MANAGER_ID = m.EMPLOYEE_ID
+WHERE
+    e.MANAGER_ID is not null
+ORDER BY
+    e.EMPLOYEE_ID

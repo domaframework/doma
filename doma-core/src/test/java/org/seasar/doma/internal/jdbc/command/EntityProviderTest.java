@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.function.Supplier;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
@@ -131,7 +132,6 @@ public class EntityProviderTest {
     EntityProvider<Emp> provider =
         new EntityProvider<>(entityType, new MySelectQuery(new MockConfig()), false);
 
-    provider.createIndexMap(metaData, entityType);
     Emp emp = provider.get(resultSet);
 
     assertEquals(1, emp.getId());
@@ -140,20 +140,21 @@ public class EntityProviderTest {
   }
 
   @Test
-  public void testCreateIndexMap_DuplicateColumnHandler() throws SQLException {
+  public void testCreateIndexMap_DuplicateColumnHandler() {
     MockResultSetMetaData metaData = new MockResultSetMetaData();
     metaData.columns.add(new ColumnMetaData("id"));
     metaData.columns.add(new ColumnMetaData("name"));
     metaData.columns.add(new ColumnMetaData("name")); // Duplicate column name
     metaData.columns.add(new ColumnMetaData("version"));
+    @SuppressWarnings("resource")
+    MockResultSet resultSet = new MockResultSet(metaData);
 
     _Emp entityType = _Emp.getSingletonInternal();
     EntityProvider<Emp> provider =
         new EntityProvider<>(
             entityType, new MySelectQuery(new SetDuplicateColumnHandlerConfig()), false);
 
-    assertThrows(
-        DuplicateColumnException.class, () -> provider.createIndexMap(metaData, entityType));
+    assertThrows(DuplicateColumnException.class, () -> provider.get(resultSet));
   }
 
   protected static class MySelectQuery implements SelectQuery {
@@ -249,7 +250,11 @@ public class EntityProviderTest {
 
   protected static class EmptyUnknownColumnHandler implements UnknownColumnHandler {
     @Override
-    public void handle(Query query, EntityType<?> entityType, String unknownColumnName) {}
+    public void handle(
+        Query query,
+        EntityType<?> entityType,
+        String unknownColumnName,
+        Supplier<String> informationSupplier) {}
   }
 
   protected static class EmptyUnknownColumnHandlerConfig extends MockConfig {

@@ -57,6 +57,7 @@ module org.seasar.doma.core {
   exports org.seasar.doma.internal.expr.node;
   exports org.seasar.doma.internal.jdbc.sql.node;
   exports org.seasar.doma.internal.jdbc.util;
+  exports org.seasar.doma.jdbc.aggregate;
 
   // Requires
   requires transitive java.sql;

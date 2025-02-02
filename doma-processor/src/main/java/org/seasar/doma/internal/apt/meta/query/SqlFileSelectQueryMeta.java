@@ -21,10 +21,12 @@ import org.seasar.doma.FetchType;
 import org.seasar.doma.MapKeyNamingType;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
+import org.seasar.doma.internal.apt.cttype.AggregateStrategyCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.FunctionCtType;
 import org.seasar.doma.internal.apt.cttype.SelectOptionsCtType;
+import org.seasar.doma.internal.apt.meta.entity.*;
 import org.seasar.doma.jdbc.SqlLogType;
 
 public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
@@ -46,6 +48,8 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
   private EntityCtType entityCtType;
 
   private boolean resultStream;
+
+  private AggregateStrategyCtType aggregateStrategyCtType;
 
   public SqlFileSelectQueryMeta(TypeElement daoElement, ExecutableElement methodElement) {
     super(daoElement, methodElement);
@@ -111,7 +115,7 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
     this.selectAnnot = selectAnnot;
   }
 
-  SelectAnnot getSelectAnnot() {
+  public SelectAnnot getSelectAnnot() {
     return selectAnnot;
   }
 
@@ -161,6 +165,14 @@ public class SqlFileSelectQueryMeta extends AbstractSqlFileQueryMeta {
 
   public void setResultStream(boolean resultStream) {
     this.resultStream = resultStream;
+  }
+
+  public AggregateStrategyCtType getAggregateStrategyCtType() {
+    return aggregateStrategyCtType;
+  }
+
+  public void setAggregateStrategyCtType(AggregateStrategyCtType aggregateStrategyCtType) {
+    this.aggregateStrategyCtType = aggregateStrategyCtType;
   }
 
   @Override

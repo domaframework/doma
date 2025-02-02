@@ -41,6 +41,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
+import org.seasar.doma.Association;
 import org.seasar.doma.Entity;
 import org.seasar.doma.EntityField;
 import org.seasar.doma.OriginalStates;
@@ -55,6 +56,8 @@ import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
 import org.seasar.doma.internal.apt.annot.TableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
+import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 import org.seasar.doma.jdbc.entity.EntityListener;
@@ -531,6 +534,8 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             continue;
           } else if (fieldElement.getAnnotation(OriginalStates.class) != null) {
             doOriginalStatesField(classElement, fieldElement, entityMeta);
+          } else if (fieldElement.getAnnotation(Association.class) != null) {
+            doAssociationPropertyMeta(classElement, fieldElement, entityMeta);
           } else {
             doEntityPropertyMeta(classElement, fieldElement, entityMeta);
           }
@@ -590,6 +595,22 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       OriginalStatesMeta originalStatesMeta =
           new OriginalStatesMeta(classElement, fieldElement, enclosingElement);
       entityMeta.setOriginalStatesMeta(originalStatesMeta);
+    }
+
+    void doAssociationPropertyMeta(
+        TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
+      validateFieldAnnotation(fieldElement, entityMeta);
+      CtType ctType = ctx.getCtTypes().newCtType(fieldElement.asType());
+      EntityCtType entityCtType = EntityCtType.resolveEntityCtType(ctType);
+      if (entityCtType == null) {
+        throw new AptException(
+            Message.DOMA4485,
+            fieldElement,
+            new Object[] {fieldElement.getSimpleName(), classElement, fieldElement.asType()});
+      }
+      AssociationPropertyMeta associationPropertyMeta =
+          new AssociationPropertyMeta(fieldElement.getSimpleName().toString());
+      entityMeta.addAssociationPropertyMeta(associationPropertyMeta);
     }
 
     void doEntityPropertyMeta(

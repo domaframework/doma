@@ -1,0 +1,27 @@
+package org.seasar.doma.internal.apt.processor.aggregate;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _EmpStrategy extends org.seasar.doma.jdbc.aggregate.AbstractAggregateStrategyType {
+
+    private static final _EmpStrategy __singleton = new _EmpStrategy();
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private _EmpStrategy() {
+        super(org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), "e", java.util.List.of(
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "dept", 1, "d", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.EmpStrategy.dept),
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "address", 1, "a", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Address.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.EmpStrategy.address)
+        ));
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _EmpStrategy getSingletonInternal() {
+        return __singleton;
+    }
+
+}

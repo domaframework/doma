@@ -17,8 +17,36 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
-import org.seasar.doma.jdbc.command.*;
-import org.seasar.doma.jdbc.query.*;
+import org.seasar.doma.jdbc.aggregate.AggregateCommand;
+import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
+import org.seasar.doma.jdbc.aggregate.StreamReducer;
+import org.seasar.doma.jdbc.command.BatchDeleteCommand;
+import org.seasar.doma.jdbc.command.BatchInsertCommand;
+import org.seasar.doma.jdbc.command.BatchUpdateCommand;
+import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.command.CreateCommand;
+import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.command.FunctionCommand;
+import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.ProcedureCommand;
+import org.seasar.doma.jdbc.command.ResultSetHandler;
+import org.seasar.doma.jdbc.command.ScriptCommand;
+import org.seasar.doma.jdbc.command.SelectCommand;
+import org.seasar.doma.jdbc.command.SqlProcessorCommand;
+import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.BatchDeleteQuery;
+import org.seasar.doma.jdbc.query.BatchInsertQuery;
+import org.seasar.doma.jdbc.query.BatchUpdateQuery;
+import org.seasar.doma.jdbc.query.CreateQuery;
+import org.seasar.doma.jdbc.query.DeleteQuery;
+import org.seasar.doma.jdbc.query.FunctionQuery;
+import org.seasar.doma.jdbc.query.InsertQuery;
+import org.seasar.doma.jdbc.query.ProcedureQuery;
+import org.seasar.doma.jdbc.query.ScriptQuery;
+import org.seasar.doma.jdbc.query.SelectQuery;
+import org.seasar.doma.jdbc.query.SqlProcessorQuery;
+import org.seasar.doma.jdbc.query.UpdateQuery;
 
 /** A factory for the {@link Command} implementation classes. */
 public interface CommandImplementors {
@@ -35,6 +63,15 @@ public interface CommandImplementors {
   default <RESULT> SelectCommand<RESULT> createSelectCommand(
       Method method, SelectQuery query, ResultSetHandler<RESULT> resultSetHandler) {
     return new SelectCommand<>(query, resultSetHandler);
+  }
+
+  default <RESULT, ENTITY> AggregateCommand<RESULT, ENTITY> createAggregateCommand(
+      Method method,
+      SelectQuery query,
+      EntityType<ENTITY> entityType,
+      StreamReducer<RESULT, ENTITY> resultReducer,
+      AggregateStrategyType aggregateStrategyType) {
+    return new AggregateCommand<>(query, entityType, resultReducer, aggregateStrategyType);
   }
 
   /**

@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.query;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlFile;
@@ -39,13 +40,18 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
     sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
     SqlNode transformedSqlNode =
         config.getDialect().transformSelectSqlNode(sqlFile.getSqlNode(), options);
-    buildSql(
-        (evaluator, expander) -> {
-          NodePreparedSqlBuilder sqlBuilder =
-              new NodePreparedSqlBuilder(
-                  config, SqlKind.SELECT, sqlFilePath, evaluator, sqlLogType, expander);
-          return sqlBuilder.build(transformedSqlNode, this::comment);
-        });
+    ExpressionEvaluator evaluator = createExpressionEvaluator();
+    NodePreparedSqlBuilder sqlBuilder =
+        new NodePreparedSqlBuilder(
+            config,
+            SqlKind.SELECT,
+            sqlFilePath,
+            evaluator,
+            sqlLogType,
+            this::expandColumns,
+            this::populateValues,
+            this::expandAggregateColumns);
+    sql = sqlBuilder.build(transformedSqlNode, this::comment);
   }
 
   @Override

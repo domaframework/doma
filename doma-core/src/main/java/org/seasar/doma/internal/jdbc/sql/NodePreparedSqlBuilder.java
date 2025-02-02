@@ -21,11 +21,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.StringJoiner;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -120,6 +122,8 @@ public class NodePreparedSqlBuilder
 
   protected final BiConsumer<PopulateNode, SqlContext> valuesPopulater;
 
+  protected final BiFunction<ExpandNode, String, List<String>> aggregateColumnsExpander;
+
   public NodePreparedSqlBuilder(Config config, SqlKind kind, String sqlFilePath) {
     this(
         config,
@@ -174,7 +178,28 @@ public class NodePreparedSqlBuilder
       SqlLogType sqlLogType,
       Function<ExpandNode, List<String>> columnsExpander,
       BiConsumer<PopulateNode, SqlContext> valuesPopulater) {
-    assertNotNull(config, kind, evaluator, columnsExpander, valuesPopulater);
+    this(
+        config,
+        kind,
+        sqlFilePath,
+        evaluator,
+        sqlLogType,
+        columnsExpander,
+        valuesPopulater,
+        (node, alias) -> Collections.emptyList());
+  }
+
+  public NodePreparedSqlBuilder(
+      Config config,
+      SqlKind kind,
+      String sqlFilePath,
+      ExpressionEvaluator evaluator,
+      SqlLogType sqlLogType,
+      Function<ExpandNode, List<String>> columnsExpander,
+      BiConsumer<PopulateNode, SqlContext> valuesPopulater,
+      BiFunction<ExpandNode, String, List<String>> aggregateColumnsExpander) {
+    assertNotNull(
+        config, kind, evaluator, columnsExpander, valuesPopulater, aggregateColumnsExpander);
     this.config = config;
     this.sqlBuilderSettings = config.getSqlBuilderSettings();
     this.kind = kind;
@@ -183,6 +208,7 @@ public class NodePreparedSqlBuilder
     this.sqlLogType = sqlLogType;
     this.columnsExpander = columnsExpander;
     this.valuesPopulater = valuesPopulater;
+    this.aggregateColumnsExpander = aggregateColumnsExpander;
   }
 
   public PreparedSql build(SqlNode sqlNode, Function<String, String> commenter) {
@@ -801,6 +827,9 @@ public class NodePreparedSqlBuilder
     StringJoiner joiner = new StringJoiner(", ");
     for (String column : columnsExpander.apply(node)) {
       joiner.add(prefix + column);
+    }
+    for (String column : aggregateColumnsExpander.apply(node, alias)) {
+      joiner.add(column);
     }
     String joined = joiner.toString();
     p.appendRawSql(joined);

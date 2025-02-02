@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.seasar.doma.jdbc.DuplicateColumnHandler;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.Naming;
@@ -52,6 +53,8 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
 
   protected final DuplicateColumnHandler duplicateColumnHandler;
 
+  private final MappingSupport mappingSupport;
+
   protected Map<Integer, EntityPropertyType<ENTITY, ?>> indexMap;
 
   public EntityProvider(EntityType<ENTITY> entityType, Query query, boolean resultMappingEnsured) {
@@ -62,6 +65,9 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     this.jdbcMappingVisitor = query.getConfig().getDialect().getJdbcMappingVisitor();
     this.unknownColumnHandler = query.getConfig().getUnknownColumnHandler();
     this.duplicateColumnHandler = query.getConfig().getDuplicateColumnHandler();
+    this.mappingSupport =
+        new MappingSupport(
+            entityType, query, resultMappingEnsured, unknownColumnHandler, duplicateColumnHandler);
   }
 
   @Override
@@ -72,7 +78,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
   protected ENTITY build(ResultSet resultSet) throws SQLException {
     assertNotNull(resultSet);
     if (indexMap == null) {
-      indexMap = createIndexMap(resultSet.getMetaData(), entityType);
+      indexMap = createIndexMap(resultSet.getMetaData());
     }
     Map<String, Property<ENTITY, ?>> states = new HashMap<>(indexMap.size());
     for (Map.Entry<Integer, EntityPropertyType<ENTITY, ?>> entry : indexMap.entrySet()) {
@@ -89,6 +95,8 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     return entity;
   }
 
+  @SuppressWarnings("removal")
+  @Deprecated(forRemoval = true)
   protected HashMap<Integer, EntityPropertyType<ENTITY, ?>> createIndexMap(
       ResultSetMetaData resultSetMeta, EntityType<ENTITY> entityType) throws SQLException {
     HashMap<Integer, EntityPropertyType<ENTITY, ?>> indexMap = new HashMap<>();
@@ -120,6 +128,19 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     return indexMap;
   }
 
+  @SuppressWarnings("unchecked")
+  private Map<Integer, EntityPropertyType<ENTITY, ?>> createIndexMap(
+      ResultSetMetaData resultSetMeta) throws SQLException {
+    Map<String, MappingSupport.PropType> columnNameMap = createColumnNameMap();
+    return indexMap =
+        mappingSupport.createIndexMap(resultSetMeta, columnNameMap).entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    e -> (EntityPropertyType<ENTITY, ?>) e.getValue().propertyType()));
+  }
+
+  @Deprecated
   protected HashMap<String, EntityPropertyType<ENTITY, ?>> createColumnNameMap(
       EntityType<ENTITY> entityType) {
     Naming naming = query.getConfig().getNaming();
@@ -132,6 +153,19 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     return result;
   }
 
+  private HashMap<String, MappingSupport.PropType> createColumnNameMap() {
+    Naming naming = query.getConfig().getNaming();
+    List<EntityPropertyType<ENTITY, ?>> propertyTypes = entityType.getEntityPropertyTypes();
+    HashMap<String, MappingSupport.PropType> result = new HashMap<>(propertyTypes.size());
+    for (EntityPropertyType<ENTITY, ?> propertyType : propertyTypes) {
+      String columnName = propertyType.getColumnName(naming::apply);
+      result.put(
+          columnName.toLowerCase(), new MappingSupport.PropType(entityType, propertyType, ""));
+    }
+    return result;
+  }
+
+  @Deprecated(forRemoval = true)
   protected void throwResultMappingException(
       Set<EntityPropertyType<ENTITY, ?>> unmappedPropertySet) {
     Naming naming = query.getConfig().getNaming();

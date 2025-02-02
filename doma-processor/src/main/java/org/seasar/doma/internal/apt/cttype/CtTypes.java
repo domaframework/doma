@@ -71,6 +71,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.BatchResult;
@@ -123,6 +124,24 @@ public class CtTypes {
     this.ctx = ctx;
   }
 
+  public AggregateStrategyCtType newAggregateStrategyCtType(TypeMirror type) {
+    if (ctx.getMoreTypes().isSameTypeWithErasure(type, Void.class)) {
+      return null;
+    }
+    TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
+    if (typeElement == null) {
+      return null;
+    }
+    AggregateStrategyAnnot aggregateStrategyAnnot =
+        ctx.getAnnotations().newAggregateStrategyAnnot(typeElement);
+    if (aggregateStrategyAnnot == null) {
+      return null;
+    }
+    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
+    ClassName typeClassName = ClassNames.newAggregateStrategyTypeClassName(binaryName);
+    return new AggregateStrategyCtType(ctx, type, typeClassName, aggregateStrategyAnnot);
+  }
+
   private AnyCtType newAnyCtType(TypeMirror type) {
     return new AnyCtType(ctx, type);
   }
@@ -165,7 +184,7 @@ public class CtTypes {
     return new Pair<>(wrapperTypeElement, wrapperTypeElement.asType());
   }
 
-  private BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
+  public BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
     DeclaredType declaredType = getSuperDeclaredType(type, BiFunction.class);
     if (declaredType == null) {
       return null;
@@ -382,7 +401,7 @@ public class CtTypes {
     return new EmbeddableCtType(ctx, type, typeClassName);
   }
 
-  private EntityCtType newEntityCtType(TypeMirror type) {
+  public EntityCtType newEntityCtType(TypeMirror type) {
     TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
     if (typeElement == null) {
       return null;
