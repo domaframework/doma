@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.it.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.seasar.doma.Association;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
@@ -50,6 +52,10 @@ public class Employee {
   @Association Department department;
 
   @Association Address address;
+
+  @Association Employee manager;
+
+  @Association List<Employee> assistants = new ArrayList<>();
 
   public Integer getEmployeeId() {
     return employeeId;
@@ -137,5 +143,21 @@ public class Employee {
 
   public void setAddress(Address address) {
     this.address = address;
+  }
+
+  public Employee getManager() {
+    return manager;
+  }
+
+  public void setManager(Employee manager) {
+    this.manager = manager;
+  }
+
+  public List<Employee> getAssistants() {
+    return assistants;
+  }
+
+  public void setAssistant(List<Employee> assistants) {
+    this.assistants = assistants;
   }
 }

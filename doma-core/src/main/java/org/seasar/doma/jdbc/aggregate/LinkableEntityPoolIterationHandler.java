@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.aggregate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
 import org.seasar.doma.jdbc.ObjectProvider;
@@ -34,23 +35,31 @@ public class LinkableEntityPoolIterationHandler
   private final EntityType<?> entityType;
   private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
-  private final Map<LinkableEntityKey, Object> cache;
+  private final Set<EntityCacheKey> rootEntityKeys;
+  private final Map<EntityCacheKey, Object> entityCache;
 
   public LinkableEntityPoolIterationHandler(
       EntityType<?> entityType,
       AggregateStrategyType aggregateStrategyType,
       boolean resultMappingEnsured,
-      Map<LinkableEntityKey, Object> cache) {
+      Set<EntityCacheKey> rootEntityKeys,
+      Map<EntityCacheKey, Object> entityCache) {
     super(new ResultListCallback<>());
     this.entityType = Objects.requireNonNull(entityType);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
     this.resultMappingEnsured = resultMappingEnsured;
-    this.cache = Objects.requireNonNull(cache);
+    this.rootEntityKeys = Objects.requireNonNull(rootEntityKeys);
+    this.entityCache = Objects.requireNonNull(entityCache);
   }
 
   @Override
   protected ObjectProvider<LinkableEntityPool> createObjectProvider(SelectQuery query) {
     return new LinkableEntityPoolProvider(
-        entityType, aggregateStrategyType, query, resultMappingEnsured, cache);
+        entityType,
+        aggregateStrategyType,
+        query,
+        resultMappingEnsured,
+        rootEntityKeys,
+        entityCache);
   }
 }

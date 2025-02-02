@@ -15,10 +15,12 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Combinations;
@@ -55,28 +57,36 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
 
   @Override
   public RESULT execute() {
-    Map<LinkableEntityKey, Object> cache = new LinkedHashMap<>();
-    Combinations<LinkableEntityKey> combinations = new Combinations<>();
+    Set<EntityCacheKey> rootEntityKeys = new LinkedHashSet<>();
+    Map<EntityCacheKey, Object> entityCache = new HashMap<>();
     SelectCommand<List<LinkableEntityPool>> command =
         new SelectCommand<>(
             query,
             new LinkableEntityPoolIterationHandler(
-                entityType, aggregateStrategyType, query.isResultMappingEnsured(), cache));
+                entityType,
+                aggregateStrategyType,
+                query.isResultMappingEnsured(),
+                rootEntityKeys,
+                entityCache));
     List<LinkableEntityPool> entityPools = command.execute();
+
+    Combinations<LinkableEntityKey> combinations = new Combinations<>();
     for (LinkableEntityPool entityPool : entityPools) {
-      Map<String, LinkableEntity> associationCandidate = new LinkedHashMap<>();
-      for (LinkableEntity entry : entityPool) {
-        associationCandidate.put(entry.key().propertyPath(), entry);
+      Map<PathKey, LinkableEntityPoolEntry> associationCandidate = new HashMap<>();
+      for (LinkableEntityPoolEntry entry : entityPool) {
+        associationCandidate.put(entry.entityKey().pathKey(), entry);
       }
-      associate(cache, combinations, associationCandidate);
+      associate(entityCache, combinations, associationCandidate);
     }
+
     @SuppressWarnings("unchecked")
     Stream<ENTITY> stream =
         (Stream<ENTITY>)
-            cache.entrySet().stream()
-                .filter(e -> e.getKey().isRootEntityKey())
-                .map(Map.Entry::getValue)
+            rootEntityKeys.stream()
+                .map(entityCache::get)
+                .filter(Objects::nonNull)
                 .filter(entityType.getEntityClass()::isInstance);
+
     return streamReducer.reduce(stream);
   }
 
@@ -85,30 +95,35 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
    * of linkage rules and updates the cache with newly associated entities.
    */
   private void associate(
-      Map<LinkableEntityKey, Object> cache,
+      Map<EntityCacheKey, Object> entityCache,
       Combinations<LinkableEntityKey> combinations,
-      Map<String, LinkableEntity> associationCandidate) {
+      Map<PathKey, LinkableEntityPoolEntry> associationCandidate) {
+
     for (AssociationLinkerType<?, ?> linkerType :
         aggregateStrategyType.getAssociationLinkerTypes()) {
-      LinkableEntity source = associationCandidate.get(linkerType.getAncestorPath());
-      LinkableEntity target = associationCandidate.get(linkerType.getPropertyPath());
+      LinkableEntityPoolEntry source = associationCandidate.get(linkerType.getSourcePathKey());
+      LinkableEntityPoolEntry target = associationCandidate.get(linkerType.getTargetPathKey());
       if (source == null || target == null) {
         continue;
       }
-      Pair<LinkableEntityKey, LinkableEntityKey> keyPair = new Pair<>(source.key(), target.key());
+
+      Pair<LinkableEntityKey, LinkableEntityKey> keyPair =
+          new Pair<>(source.entityKey(), target.entityKey());
       if (combinations.contains(keyPair)) {
         continue;
       }
+      combinations.add(keyPair);
+
       @SuppressWarnings("unchecked")
       BiFunction<Object, Object, Object> linker =
           (BiFunction<Object, Object, Object>) linkerType.getLinker();
-      Object newEntity = linker.apply(source.entity(), target.entity());
-      if (newEntity != null) {
-        cache.replace(source.key(), newEntity);
+      Object entity = linker.apply(source.entity(), target.entity());
+      if (entity != null) {
+        EntityCacheKey cacheKey = EntityCacheKey.of(source.entityKey());
+        entityCache.replace(cacheKey, entity);
         associationCandidate.replace(
-            linkerType.getAncestorPath(), new LinkableEntity(source.key(), newEntity));
+            source.pathKey(), new LinkableEntityPoolEntry(source.entityKey(), entity));
       }
-      combinations.add(keyPair);
     }
   }
 
