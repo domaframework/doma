@@ -15,6 +15,9 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.util.Map;
+import org.seasar.doma.internal.jdbc.command.ColumnNameMapFormatter;
+import org.seasar.doma.internal.jdbc.command.MappingSupport;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
@@ -30,6 +33,7 @@ public interface UnknownColumnHandler {
    * @param unknownColumnName the name of the unknown column
    * @throws UnknownColumnException if this handler does not allow the unknown column
    */
+  @Deprecated(forRemoval = true)
   default void handle(Query query, EntityType<?> entityType, String unknownColumnName) {
     Sql<?> sql = query.getSql();
     Naming naming = query.getConfig().getNaming();
@@ -43,5 +47,32 @@ public interface UnknownColumnHandler {
         sql.getRawSql(),
         sql.getFormattedSql(),
         sql.getSqlFilePath());
+  }
+
+  /**
+   * Handles the unknown column with additional context provided by the column name map.
+   *
+   * @param query the query associated with the operation
+   * @param entityType the entity type description
+   * @param unknownColumnName the name of the unknown column
+   * @param columnNameMap the map containing column names and their corresponding property types
+   * @throws UnknownColumnAdditionalInfoException if handling the unknown column fails with
+   *     additional information
+   */
+  default void handle(
+      Query query,
+      EntityType<?> entityType,
+      String unknownColumnName,
+      Map<String, MappingSupport.PropType> columnNameMap) {
+    try {
+      handle(query, entityType, unknownColumnName);
+    } catch (UnknownColumnException original) {
+      String additionalInfo = ColumnNameMapFormatter.format(columnNameMap);
+      UnknownColumnAdditionalInfoException ex =
+          new UnknownColumnAdditionalInfoException(
+              query.getConfig().getExceptionSqlLogType(), original, additionalInfo);
+      ex.addSuppressed(original);
+      throw ex;
+    }
   }
 }

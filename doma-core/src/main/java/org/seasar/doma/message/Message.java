@@ -277,6 +277,13 @@ public enum Message implements MessageResource {
   DOMA2237(
       "Duplicate column name \"{0}\" found in ResultSetMetaData. Column names must be unique."
           + "\nPATH=[{1}].\nSQL=[{2}]"),
+  DOMA2238(
+      """
+      While the column "{0}" is in the result set, the corresponding property is not found in the entity class "{1}".
+      Check the following mapping table:
+      {4}
+      PATH=[{2}]
+      SQL=[{3}]"""),
 
   // expression
   DOMA3001(

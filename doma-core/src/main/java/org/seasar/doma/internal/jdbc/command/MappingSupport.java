@@ -98,7 +98,7 @@ public class MappingSupport {
         if (ROWNUMBER_COLUMN_NAME.equals(lowerCaseColumnName)) {
           continue;
         }
-        unknownColumnHandler.handle(query, entityType, lowerCaseColumnName);
+        unknownColumnHandler.handle(query, entityType, lowerCaseColumnName, columnNameMap);
       } else {
         unmappedPropertySet.remove(propertyType);
         indexMap.put(i, propertyType);

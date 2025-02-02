@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.jdbc.mock.ColumnMetaData;
@@ -249,7 +250,11 @@ public class EntityProviderTest {
 
   protected static class EmptyUnknownColumnHandler implements UnknownColumnHandler {
     @Override
-    public void handle(Query query, EntityType<?> entityType, String unknownColumnName) {}
+    public void handle(
+        Query query,
+        EntityType<?> entityType,
+        String unknownColumnName,
+        Map<String, MappingSupport.PropType> columnNameMap) {}
   }
 
   protected static class EmptyUnknownColumnHandlerConfig extends MockConfig {
