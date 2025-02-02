@@ -19,28 +19,17 @@ import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/**
- * Represents a key for an entity that can be linked or associated within a domain model. This key
- * is characterized by its association identifier and a list of associated items.
- *
- * @param associationIdentifier the identifier for the association, must not be {@code null}
- * @param items the items involved in the association, must not be {@code null}
- */
-public record LinkableEntityKey(AssociationIdentifier associationIdentifier, List<?> items) {
+public record LinkableEntityKey(PathKey pathKey, List<?> items) {
   public LinkableEntityKey {
-    Objects.requireNonNull(associationIdentifier);
+    Objects.requireNonNull(pathKey);
     Objects.requireNonNull(items);
   }
 
   public String propertyPath() {
-    return associationIdentifier.propertyPath();
+    return pathKey.propertyPath();
   }
 
   public EntityType<?> entityType() {
-    return associationIdentifier.entityType();
-  }
-
-  public boolean isRootEntityKey() {
-    return associationIdentifier.propertyPath().isEmpty();
+    return pathKey.entityType();
   }
 }

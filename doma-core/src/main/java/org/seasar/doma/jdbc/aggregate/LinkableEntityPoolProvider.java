@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.sql.ResultSet;
@@ -25,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
@@ -37,18 +37,12 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
-/**
- * The LinkableEntityPoolProvider class is responsible for creating and supplying instances of
- * LinkableEntityPool. It processes database query results, maps them to entity properties, manages
- * caching to avoid duplicate instantiation, and handles linking of associated entities. This
- * provider is configured with essential details such as the entity type, query, aggregation
- * strategy, and mapping and fetching mechanisms.
- */
 public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableEntityPool> {
 
   private final EntityType<?> entityType;
   private final Query query;
-  private final Map<LinkableEntityKey, Object> cache;
+  private final Set<EntityCacheKey> rootEntityKeys;
+  private final Map<EntityCacheKey, Object> entityCache;
   private Map<Integer, MappingSupport.PropType> indexMap;
   private final MappingSupport mappingSupport;
   private final FetchSupport fetchSupport;
@@ -60,11 +54,13 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
       AggregateStrategyType aggregateStrategyType,
       Query query,
       boolean resultMappingEnsured,
-      Map<LinkableEntityKey, Object> cache) {
-    assertNotNull(entityType, aggregateStrategyType, query, cache);
+      Set<EntityCacheKey> rootEntityKeys,
+      Map<EntityCacheKey, Object> entityCache) {
+    assertNotNull(entityType, aggregateStrategyType, query, rootEntityKeys, entityCache);
     this.entityType = entityType;
     this.query = query;
-    this.cache = cache;
+    this.rootEntityKeys = rootEntityKeys;
+    this.entityCache = entityCache;
     this.mappingSupport =
         new MappingSupport(
             entityType,
@@ -82,8 +78,7 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
   @Override
   public LinkableEntityPool get(ResultSet resultSet) throws SQLException {
     List<MappingSupport.Prop> props = createProps(resultSet);
-    Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup =
-        groupPropsByAssociationIdentifier(props);
+    Map<PathKey, List<MappingSupport.Prop>> propGroup = groupPropsByPathKey(props);
     return createEntityPool(propGroup);
   }
 
@@ -148,63 +143,60 @@ public class LinkableEntityPoolProvider extends AbstractObjectProvider<LinkableE
     }
   }
 
-  /**
-   * Groups a list of {@link MappingSupport.Prop} objects by their associated {@link
-   * AssociationIdentifier}.
-   */
-  private Map<AssociationIdentifier, List<MappingSupport.Prop>> groupPropsByAssociationIdentifier(
+  private Map<PathKey, List<MappingSupport.Prop>> groupPropsByPathKey(
       List<MappingSupport.Prop> props) {
     return props.stream()
-        .collect(
-            Collectors.groupingBy(
-                it -> new AssociationIdentifier(it.propertyPath(), it.entityType())));
+        .collect(Collectors.groupingBy(it -> new PathKey(it.propertyPath(), it.entityType())));
   }
 
   /**
    * Creates and populates a {@link LinkableEntityPool} based on the provided group of properties
-   * organized by their {@link AssociationIdentifier}.
+   * organized by their {@link PathKey}.
    */
-  private LinkableEntityPool createEntityPool(
-      Map<AssociationIdentifier, List<MappingSupport.Prop>> propGroup) {
+  private LinkableEntityPool createEntityPool(Map<PathKey, List<MappingSupport.Prop>> propGroup) {
     LinkableEntityPool entityPool = new LinkableEntityPool();
 
-    for (Map.Entry<AssociationIdentifier, List<MappingSupport.Prop>> entry : propGroup.entrySet()) {
-      AssociationIdentifier identifier = entry.getKey();
+    for (Map.Entry<PathKey, List<MappingSupport.Prop>> entry : propGroup.entrySet()) {
+      PathKey pathKey = entry.getKey();
       List<MappingSupport.Prop> props = entry.getValue();
       if (props.stream().allMatch(p -> p.rawValue() == null)) {
         continue;
       }
-      LinkableEntityKey entityKey;
-      if (entityType.getIdPropertyTypes().isEmpty()) {
-        entityKey = new LinkableEntityKey(identifier, Collections.singletonList(new Object()));
-      } else {
-        List<?> items =
-            props.stream()
-                .filter(MappingSupport.Prop::isId)
-                .map(it -> it.wrapper().get())
-                .collect(toList());
-        entityKey = new LinkableEntityKey(identifier, items);
+      LinkableEntityKey entityKey = createLinkableEntityKey(pathKey, props);
+      EntityCacheKey cacheKey = EntityCacheKey.of(entityKey);
+      Object entity = entityCache.computeIfAbsent(cacheKey, k -> createEntity(k, props));
+      entityPool.add(new LinkableEntityPoolEntry(entityKey, entity));
+      if (pathKey.isRoot()) {
+        rootEntityKeys.add(cacheKey);
       }
-      Object entity =
-          cache.computeIfAbsent(
-              entityKey,
-              k -> {
-                @SuppressWarnings("unchecked")
-                EntityType<Object> entityType = (EntityType<Object>) k.entityType();
-                Map<String, Property<Object, ?>> states =
-                    props.stream()
-                        .collect(
-                            Collectors.toMap(
-                                MappingSupport.Prop::name, MappingSupport.Prop::property));
-                Object newEntity = entityType.newEntity(states);
-                if (!entityType.isImmutable()) {
-                  entityType.saveCurrentStates(newEntity);
-                }
-                return newEntity;
-              });
-      entityPool.add(new LinkableEntity(entityKey, entity));
     }
 
     return entityPool;
+  }
+
+  private static LinkableEntityKey createLinkableEntityKey(
+      PathKey pathKey, List<MappingSupport.Prop> props) {
+    LinkableEntityKey entityKey;
+    if (pathKey.entityType().getIdPropertyTypes().isEmpty()) {
+      entityKey = new LinkableEntityKey(pathKey, Collections.singletonList(new Object()));
+    } else {
+      List<?> items =
+          props.stream().filter(MappingSupport.Prop::isId).map(it -> it.wrapper().get()).toList();
+      entityKey = new LinkableEntityKey(pathKey, items);
+    }
+    return entityKey;
+  }
+
+  private static Object createEntity(EntityCacheKey cacheKey, List<MappingSupport.Prop> props) {
+    @SuppressWarnings("unchecked")
+    EntityType<Object> entityType = (EntityType<Object>) cacheKey.entityType();
+    Map<String, Property<Object, ?>> states =
+        props.stream()
+            .collect(Collectors.toMap(MappingSupport.Prop::name, MappingSupport.Prop::property));
+    Object newEntity = entityType.newEntity(states);
+    if (!entityType.isImmutable()) {
+      entityType.saveCurrentStates(newEntity);
+    }
+    return newEntity;
   }
 }

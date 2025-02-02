@@ -19,13 +19,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.IntegrationTestEnvironment;
@@ -274,5 +279,83 @@ public class AggregateTest {
     DepartmentDao dao = new DepartmentDaoImpl(config);
     List<Department> departments = dao.selectByIdsAsAggregate(List.of(0));
     assertTrue(departments.isEmpty());
+  }
+
+  @Test
+  public void testSelfJoin(Config config) {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
+    List<Employee> employeeList = dao.selectAllWithManager();
+
+    // managers
+    Map<Integer, Employee> managerMap =
+        employeeList.stream()
+            .map(Employee::getManager)
+            .filter(Objects::nonNull)
+            .collect(
+                Collectors.toMap(
+                    Employee::getEmployeeId,
+                    Function.identity(),
+                    (f, s) -> {
+                      assertSame(f, s);
+                      return f;
+                    }));
+
+    for (Employee employee : employeeList) {
+      Employee manager = managerMap.get(employee.getEmployeeId());
+      if (manager != null) {
+        assertSame(manager, employee);
+      }
+    }
+
+    // assistants
+    Map<Integer, Employee> assistantMap =
+        employeeList.stream()
+            .flatMap(e -> e.getAssistants().stream())
+            .collect(
+                Collectors.toMap(
+                    Employee::getEmployeeId,
+                    Function.identity(),
+                    (f, s) -> {
+                      assertSame(f, s);
+                      return f;
+                    }));
+
+    for (Employee employee : employeeList) {
+      Employee assistant = assistantMap.get(employee.getEmployeeId());
+      if (assistant != null) {
+        assertSame(assistant, employee);
+      }
+    }
+
+    // employee
+    List<Integer> idList = employeeList.stream().map(Employee::getEmployeeId).toList();
+    assertEquals(List.of(1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14), idList);
+
+    Employee jones = employeeList.get(3);
+    assertEquals(4, jones.getEmployeeId());
+    assertEquals("JONES", jones.getEmployeeName());
+    assertEquals(1, jones.getVersion());
+    assertEquals(new Identity<>(2), jones.getDepartmentId());
+    assertEquals(new Salary(new BigDecimal(2975)), jones.getSalary());
+    assertEquals(Date.valueOf(LocalDate.of(1981, 4, 2)), jones.getHiredate());
+    assertEquals(4, jones.getAddressId());
+    assertEquals(9, jones.getManagerId());
+    assertEquals(9, jones.getManager().getEmployeeId());
+    assertEquals(
+        List.of(8, 13), jones.getAssistants().stream().map(Employee::getEmployeeId).toList());
+
+    assertEquals(2, jones.getAssistants().size());
+    assertSame(jones, jones.getAssistants().get(0).getManager());
+    assertSame(jones, jones.getAssistants().get(1).getManager());
+
+    for (Employee employee : employeeList) {
+      Employee m = employee.getManager();
+      System.out.printf(
+          "id=%d, name=%s, manager=%s, assistants=%s%n",
+          employee.getEmployeeId(),
+          employee.getEmployeeName(),
+          employee.getManager() == null ? null : employee.getManager().getEmployeeId(),
+          employee.getAssistants().stream().map(Employee::getEmployeeId).toList());
+    }
   }
 }

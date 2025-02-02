@@ -15,22 +15,11 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
+import org.seasar.doma.jdbc.entity.EntityType;
 
-public class LinkableEntityPool implements Iterable<LinkableEntityPoolEntry> {
-  private final List<LinkableEntityPoolEntry> entities = new ArrayList<>();
-
-  public void add(LinkableEntityPoolEntry entry) {
-    Objects.requireNonNull(entry);
-    entities.add(entry);
-  }
-
-  @SuppressWarnings("NullableProblems")
-  @Override
-  public Iterator<LinkableEntityPoolEntry> iterator() {
-    return entities.iterator();
+public record EntityCacheKey(EntityType<?> entityType, List<?> items) {
+  public static EntityCacheKey of(LinkableEntityKey entityKey) {
+    return new EntityCacheKey(entityKey.entityType(), entityKey.items());
   }
 }

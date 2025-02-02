@@ -65,6 +65,9 @@ public interface EmployeeDao {
   @Select(aggregateStrategy = EmployeeStrategy.class)
   List<Employee> selectAllAsAggregate();
 
+  @Select(aggregateStrategy = ManagerStrategy.class)
+  List<Employee> selectAllWithManager();
+
   @Select
   Employee selectById(Integer employeeId, SelectOptions options);
 
@@ -203,6 +206,18 @@ interface EmployeeStrategy {
   BiFunction<Employee, Address, Employee> address =
       (e, a) -> {
         e.setAddress(a);
+        return e;
+      };
+}
+
+@AggregateStrategy(root = Employee.class, tableAlias = "e")
+interface ManagerStrategy {
+
+  @AssociationLinker(propertyPath = "manager", tableAlias = "m")
+  BiFunction<Employee, Employee, Employee> manager =
+      (e, m) -> {
+        m.getAssistants().add(e);
+        e.setManager(m);
         return e;
       };
 }
