@@ -34,6 +34,10 @@ public final class EntityKey {
     return entityMetamodel;
   }
 
+  public List<?> getItems() {
+    return items;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

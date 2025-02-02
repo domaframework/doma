@@ -17,10 +17,13 @@ package org.seasar.doma.jdbc.criteria.command;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiFunction;
 import org.seasar.doma.internal.util.Combinations;
 import org.seasar.doma.internal.util.Pair;
@@ -47,23 +50,26 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
   @Override
   @SuppressWarnings("unchecked")
   public List<ENTITY> execute() {
-    Map<EntityKey, Object> cache = new LinkedHashMap<>();
+    Set<CacheKey> rootEntityKeys = new LinkedHashSet<>();
+    Map<CacheKey, Object> cache = new HashMap<>();
     Combinations<EntityKey> combinations = new Combinations<>();
     SelectCommand<List<EntityPool>> command =
         new SelectCommand<>(
-            query, new EntityPoolIterationHandler(context.getProjectionEntityMetamodels()));
+            query,
+            new EntityPoolIterationHandler(
+                entityMetamodel, rootEntityKeys, context.getProjectionEntityMetamodels()));
     List<EntityPool> entityPools = command.execute();
     for (EntityPool entityPool : entityPools) {
       Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate = new LinkedHashMap<>();
       for (Map.Entry<EntityKey, EntityData> e : entityPool.entrySet()) {
         EntityKey key = e.getKey();
         EntityData data = e.getValue();
+        CacheKey cacheKey = CacheKey.of(key);
         Object entity =
             cache.computeIfAbsent(
-                key,
+                cacheKey,
                 k -> {
-                  EntityMetamodel<?> entityMetamodel = k.getEntityMetamodel();
-                  EntityType<Object> entityType = (EntityType<Object>) entityMetamodel.asType();
+                  EntityType<Object> entityType = (EntityType<Object>) k.entityType();
                   Object newEntity = entityType.newEntity(data.getStates());
                   if (!entityType.isImmutable()) {
                     entityType.saveCurrentStates(newEntity);
@@ -75,14 +81,11 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
       associate(cache, combinations, associationCandidate);
     }
     return (List<ENTITY>)
-        cache.entrySet().stream()
-            .filter(e -> e.getKey().getEntityMetamodel() == entityMetamodel)
-            .map(Map.Entry::getValue)
-            .collect(toList());
+        rootEntityKeys.stream().map(cache::get).filter(Objects::nonNull).collect(toList());
   }
 
   private void associate(
-      Map<EntityKey, Object> cache,
+      Map<CacheKey, Object> cache,
       Combinations<EntityKey> combinations,
       Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate) {
     for (Map.Entry<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
@@ -100,7 +103,7 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
       }
       Object newEntity = associator.apply(keyAndEntity1.snd, keyAndEntity2.snd);
       if (newEntity != null) {
-        cache.replace(keyAndEntity1.fst, newEntity);
+        cache.replace(CacheKey.of(keyAndEntity1.fst), newEntity);
         associationCandidate.replace(metamodelPair.fst, new Pair<>(keyAndEntity1.fst, newEntity));
       }
       combinations.add(keyPair);

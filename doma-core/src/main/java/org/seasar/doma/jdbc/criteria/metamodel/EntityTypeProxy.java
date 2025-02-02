@@ -182,4 +182,17 @@ public class EntityTypeProxy<ENTITY> implements EntityType<ENTITY> {
   public void postDelete(ENTITY entity, PostDeleteContext<ENTITY> context) {
     entityType.postDelete(entity, context);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    EntityTypeProxy<?> that = (EntityTypeProxy<?>) o;
+    return Objects.equals(entityType, that.entityType)
+        && Objects.equals(qualifiedTableName, that.qualifiedTableName);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(entityType, qualifiedTableName);
+  }
 }
