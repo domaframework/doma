@@ -26,24 +26,24 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
- * Handles the iteration of {@link LinkableEntityPool} results from a query execution and manages
+ * Handles the iteration of {@link AggregateEntityPool} results from a query execution and manages
  * the creation and configuration of object providers used to process the results.
  */
-public class LinkableEntityPoolIterationHandler
-    extends AbstractIterationHandler<LinkableEntityPool, List<LinkableEntityPool>> {
+public class AggregateEntityPoolIterationHandler
+    extends AbstractIterationHandler<AggregateEntityPool, List<AggregateEntityPool>> {
 
   private final EntityType<?> entityType;
   private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
-  private final Set<EntityCacheKey> rootEntityKeys;
-  private final Map<EntityCacheKey, Object> entityCache;
+  private final Set<AggregateEntityCacheKey> rootEntityKeys;
+  private final Map<AggregateEntityCacheKey, Object> entityCache;
 
-  public LinkableEntityPoolIterationHandler(
+  public AggregateEntityPoolIterationHandler(
       EntityType<?> entityType,
       AggregateStrategyType aggregateStrategyType,
       boolean resultMappingEnsured,
-      Set<EntityCacheKey> rootEntityKeys,
-      Map<EntityCacheKey, Object> entityCache) {
+      Set<AggregateEntityCacheKey> rootEntityKeys,
+      Map<AggregateEntityCacheKey, Object> entityCache) {
     super(new ResultListCallback<>());
     this.entityType = Objects.requireNonNull(entityType);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
@@ -53,8 +53,8 @@ public class LinkableEntityPoolIterationHandler
   }
 
   @Override
-  protected ObjectProvider<LinkableEntityPool> createObjectProvider(SelectQuery query) {
-    return new LinkableEntityPoolProvider(
+  protected ObjectProvider<AggregateEntityPool> createObjectProvider(SelectQuery query) {
+    return new AggregateEntityPoolProvider(
         entityType,
         aggregateStrategyType,
         query,

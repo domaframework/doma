@@ -15,11 +15,15 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
-import java.util.List;
-import org.seasar.doma.jdbc.entity.EntityType;
+import java.util.Objects;
 
-public record EntityCacheKey(EntityType<?> entityType, List<?> items) {
-  public static EntityCacheKey of(LinkableEntityKey entityKey) {
-    return new EntityCacheKey(entityKey.entityType(), entityKey.items());
+public record AggregateEntityPoolEntry(AggregateEntityKey entityKey, Object entity) {
+  public AggregateEntityPoolEntry {
+    Objects.requireNonNull(entityKey);
+    Objects.requireNonNull(entity);
+  }
+
+  public AggregatePathKey pathKey() {
+    return entityKey.pathKey();
   }
 }
