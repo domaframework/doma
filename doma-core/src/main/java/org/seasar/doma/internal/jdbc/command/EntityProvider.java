@@ -95,6 +95,7 @@ public class EntityProvider<ENTITY> extends AbstractObjectProvider<ENTITY> {
     return entity;
   }
 
+  @SuppressWarnings("removal")
   @Deprecated(forRemoval = true)
   protected HashMap<Integer, EntityPropertyType<ENTITY, ?>> createIndexMap(
       ResultSetMetaData resultSetMeta, EntityType<ENTITY> entityType) throws SQLException {

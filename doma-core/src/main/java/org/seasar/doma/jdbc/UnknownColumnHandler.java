@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc;
 
+import java.util.function.Supplier;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
@@ -30,6 +31,7 @@ public interface UnknownColumnHandler {
    * @param unknownColumnName the name of the unknown column
    * @throws UnknownColumnException if this handler does not allow the unknown column
    */
+  @Deprecated(forRemoval = true)
   default void handle(Query query, EntityType<?> entityType, String unknownColumnName) {
     Sql<?> sql = query.getSql();
     Naming naming = query.getConfig().getNaming();
@@ -43,5 +45,33 @@ public interface UnknownColumnHandler {
         sql.getRawSql(),
         sql.getFormattedSql(),
         sql.getSqlFilePath());
+  }
+
+  /**
+   * Handles an unknown column during query execution. Provides additional information for the
+   * exception when the column is unrecognized by the entity.
+   *
+   * @param query the query being executed
+   * @param entityType the entity type containing the metadata about the entity
+   * @param unknownColumnName the name of the column that is unknown
+   * @param informationSupplier the supplier that provides additional information about the unknown
+   *     column
+   * @throws UnknownColumnAdditionalInfoException if the unknown column cannot be handled
+   */
+  default void handle(
+      Query query,
+      EntityType<?> entityType,
+      String unknownColumnName,
+      Supplier<String> informationSupplier) {
+    try {
+      handle(query, entityType, unknownColumnName);
+    } catch (UnknownColumnException original) {
+      String additionalInfo = informationSupplier.get();
+      UnknownColumnAdditionalInfoException ex =
+          new UnknownColumnAdditionalInfoException(
+              query.getConfig().getExceptionSqlLogType(), original, additionalInfo);
+      ex.addSuppressed(original);
+      throw ex;
+    }
   }
 }
