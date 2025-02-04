@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.command.FetchSupport;
 import org.seasar.doma.jdbc.ObjectProvider;
@@ -35,11 +36,18 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityPoolProvider implements ObjectProvider<EntityPool> {
+  private final EntityMetamodel<?> rootEntityMetamodel;
+  private final Set<CacheKey> rootEntityKeys;
   private final Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels;
   private final FetchSupport fetchSupport;
 
   public EntityPoolProvider(
-      Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels, Query query) {
+      EntityMetamodel<?> rootEntityMetamodel,
+      Set<CacheKey> rootEntityKeys,
+      Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels,
+      Query query) {
+    this.rootEntityMetamodel = Objects.requireNonNull(rootEntityMetamodel);
+    this.rootEntityKeys = Objects.requireNonNull(rootEntityKeys);
     this.projectionEntityMetamodels = Objects.requireNonNull(projectionEntityMetamodels);
     Objects.requireNonNull(query);
     this.fetchSupport = new FetchSupport(query);
@@ -82,6 +90,9 @@ public class EntityPoolProvider implements ObjectProvider<EntityPool> {
           props.stream().collect(Collectors.toMap(p -> p.propType.getName(), p -> p.prop));
       EntityData data = new EntityData(states);
       entityPool.put(key, data);
+      if (key.getEntityMetamodel() == rootEntityMetamodel) {
+        rootEntityKeys.add(CacheKey.of(key));
+      }
     }
     return entityPool;
   }

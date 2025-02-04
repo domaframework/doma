@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.criteria.command;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
 import org.seasar.doma.jdbc.ObjectProvider;
@@ -27,16 +28,23 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 
 public class EntityPoolIterationHandler
     extends AbstractIterationHandler<EntityPool, List<EntityPool>> {
+  private final EntityMetamodel<?> rootEntityMetamodel;
+  private final Set<CacheKey> rootEntityKeys;
   private final Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels;
 
   public EntityPoolIterationHandler(
+      EntityMetamodel<?> rootEntityMetamodel,
+      Set<CacheKey> rootEntityKeys,
       Map<EntityMetamodel<?>, List<PropertyMetamodel<?>>> projectionEntityMetamodels) {
     super(new ResultListCallback<>());
+    this.rootEntityMetamodel = Objects.requireNonNull(rootEntityMetamodel);
+    this.rootEntityKeys = Objects.requireNonNull(rootEntityKeys);
     this.projectionEntityMetamodels = Objects.requireNonNull(projectionEntityMetamodels);
   }
 
   @Override
   protected ObjectProvider<EntityPool> createObjectProvider(SelectQuery query) {
-    return new EntityPoolProvider(projectionEntityMetamodels, query);
+    return new EntityPoolProvider(
+        rootEntityMetamodel, rootEntityKeys, projectionEntityMetamodels, query);
   }
 }

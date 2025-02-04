@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.seasar.doma.it.criteria.CustomExpressions.addOne;
@@ -949,5 +950,25 @@ public class QueryDslEntitySelectTest {
 
     assertEquals("TOKYO", iterator.next());
     assertEquals("KYOTO", iterator.next());
+  }
+
+  @Test
+  void selfJoin_association() {
+    Employee_ e = new Employee_();
+    Employee_ m = new Employee_();
+
+    QueryDsl queryDsl = new QueryDsl(config);
+    List<Employee> employees =
+        queryDsl
+            .from(e)
+            .leftJoin(m, on -> on.eq(e.managerId, m.employeeId))
+            .where(c -> c.in(e.employeeId, List.of(6, 9)))
+            .orderBy(c -> c.asc(e.employeeId))
+            .associate(e, m, (Employee::setManager))
+            .fetch();
+    assertEquals(2, employees.size());
+    Employee blake = employees.get(0);
+    Employee king = employees.get(1);
+    assertSame(king, blake.getManager());
   }
 }
