@@ -25,6 +25,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Combinations;
 import org.seasar.doma.internal.util.Pair;
+import org.seasar.doma.jdbc.EntityId;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -40,52 +41,48 @@ import org.seasar.doma.jdbc.query.SelectQuery;
  */
 public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   private final SelectQuery query;
-  private final EntityType<ENTITY> entityType;
+  private final EntityType<ENTITY> rootEntityType;
   private final StreamReducer<RESULT, ENTITY> streamReducer;
   private final AggregateStrategyType aggregateStrategyType;
 
   public AggregateCommand(
       SelectQuery query,
-      EntityType<ENTITY> entityType,
+      EntityType<ENTITY> rootEntityType,
       StreamReducer<RESULT, ENTITY> streamReducer,
       AggregateStrategyType aggregateStrategyType) {
     this.query = Objects.requireNonNull(query);
-    this.entityType = Objects.requireNonNull(entityType);
+    this.rootEntityType = Objects.requireNonNull(rootEntityType);
     this.streamReducer = Objects.requireNonNull(streamReducer);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
   }
 
   @Override
   public RESULT execute() {
-    Set<AggregateEntityCacheKey> rootEntityKeys = new LinkedHashSet<>();
-    Map<AggregateEntityCacheKey, Object> entityCache = new HashMap<>();
-    SelectCommand<List<AggregateEntityPool>> command =
+    Set<EntityId> rootEntityIds = new LinkedHashSet<>();
+    Map<EntityId, Object> entityCache = new HashMap<>();
+    Combinations<AssociationEntityKey> combinations = new Combinations<>();
+
+    SelectCommand<List<AssociationEntityPool>> command =
         new SelectCommand<>(
             query,
-            new AggregateEntityPoolIterationHandler(
-                entityType,
+            new AssociationEntityPoolIterationHandler(
+                rootEntityType,
                 aggregateStrategyType,
                 query.isResultMappingEnsured(),
-                rootEntityKeys,
+                rootEntityIds,
                 entityCache));
-    List<AggregateEntityPool> entityPools = command.execute();
-
-    Combinations<AggregateEntityKey> combinations = new Combinations<>();
-    for (AggregateEntityPool entityPool : entityPools) {
-      Map<AggregatePathKey, AggregateEntityPoolEntry> associationCandidate = new HashMap<>();
-      for (AggregateEntityPoolEntry entry : entityPool) {
-        associationCandidate.put(entry.entityKey().pathKey(), entry);
-      }
-      associate(entityCache, combinations, associationCandidate);
+    List<AssociationEntityPool> entityPools = command.execute();
+    for (AssociationEntityPool entityPool : entityPools) {
+      associate(entityCache, combinations, entityPool);
     }
 
     @SuppressWarnings("unchecked")
     Stream<ENTITY> stream =
         (Stream<ENTITY>)
-            rootEntityKeys.stream()
+            rootEntityIds.stream()
                 .map(entityCache::get)
                 .filter(Objects::nonNull)
-                .filter(entityType.getEntityClass()::isInstance);
+                .filter(rootEntityType.getEntityClass()::isInstance);
 
     return streamReducer.reduce(stream);
   }
@@ -95,19 +92,19 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
    * of linkage rules and updates the cache with newly associated entities.
    */
   private void associate(
-      Map<AggregateEntityCacheKey, Object> entityCache,
-      Combinations<AggregateEntityKey> combinations,
-      Map<AggregatePathKey, AggregateEntityPoolEntry> associationCandidate) {
+      Map<EntityId, Object> entityCache,
+      Combinations<AssociationEntityKey> combinations,
+      AssociationEntityPool entityPool) {
 
     for (AssociationLinkerType<?, ?> linkerType :
         aggregateStrategyType.getAssociationLinkerTypes()) {
-      AggregateEntityPoolEntry source = associationCandidate.get(linkerType.getSourcePathKey());
-      AggregateEntityPoolEntry target = associationCandidate.get(linkerType.getTargetPathKey());
+      AssociationEntityPoolEntry source = entityPool.get(linkerType.getSourcePathKey());
+      AssociationEntityPoolEntry target = entityPool.get(linkerType.getTargetPathKey());
       if (source == null || target == null) {
         continue;
       }
 
-      Pair<AggregateEntityKey, AggregateEntityKey> keyPair =
+      Pair<AssociationEntityKey, AssociationEntityKey> keyPair =
           new Pair<>(source.entityKey(), target.entityKey());
       if (combinations.contains(keyPair)) {
         continue;
@@ -117,12 +114,10 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       @SuppressWarnings("unchecked")
       BiFunction<Object, Object, Object> linker =
           (BiFunction<Object, Object, Object>) linkerType.getLinker();
-      Object entity = linker.apply(source.entity(), target.entity());
-      if (entity != null) {
-        AggregateEntityCacheKey cacheKey = AggregateEntityCacheKey.of(source.entityKey());
-        entityCache.replace(cacheKey, entity);
-        associationCandidate.replace(
-            source.pathKey(), new AggregateEntityPoolEntry(source.entityKey(), entity));
+      Object newEntity = linker.apply(source.entity(), target.entity());
+      if (newEntity != null && newEntity != source.entity()) {
+        entityCache.replace(source.entityId(), newEntity);
+        entityPool.replace(new AssociationEntityPoolEntry(source.entityKey(), newEntity));
       }
     }
   }

@@ -80,12 +80,12 @@ public class AssociationLinkerType<S, T> {
     return linker;
   }
 
-  public AggregatePathKey getSourcePathKey() {
-    return new AggregatePathKey(ancestorPath, source);
+  public AssociationPathKey getSourcePathKey() {
+    return new AssociationPathKey(ancestorPath, source);
   }
 
-  public AggregatePathKey getTargetPathKey() {
-    return new AggregatePathKey(propertyPath, target);
+  public AssociationPathKey getTargetPathKey() {
+    return new AssociationPathKey(propertyPath, target);
   }
 
   public static <S, T> AssociationLinkerType<S, T> of(

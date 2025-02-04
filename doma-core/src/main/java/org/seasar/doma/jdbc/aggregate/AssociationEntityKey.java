@@ -15,16 +15,17 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
+import java.util.List;
 import java.util.Objects;
-import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.EntityId;
 
-public record AggregatePathKey(String propertyPath, EntityType<?> entityType) {
-  public AggregatePathKey {
-    Objects.requireNonNull(propertyPath);
-    Objects.requireNonNull(entityType);
+public record AssociationEntityKey(AssociationPathKey pathKey, List<?> items) {
+  public AssociationEntityKey {
+    Objects.requireNonNull(pathKey);
+    Objects.requireNonNull(items);
   }
 
-  public boolean isRoot() {
-    return propertyPath.isEmpty();
+  public EntityId entityId() {
+    return new EntityId(pathKey.entityType(), items);
   }
 }

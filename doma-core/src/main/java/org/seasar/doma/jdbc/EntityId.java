@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.jdbc.criteria.command;
+package org.seasar.doma.jdbc;
 
 import java.util.List;
+import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-public record CacheKey(EntityType<?> entityType, List<?> items) {
-  static CacheKey of(EntityKey key) {
-    return new CacheKey(key.getEntityMetamodel().asType(), key.getItems());
+public record EntityId(EntityType<?> entityType, List<?> items) {
+  public EntityId {
+    Objects.requireNonNull(entityType);
+    Objects.requireNonNull(items);
   }
 }

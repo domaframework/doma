@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.jdbc.aggregate;
+package org.seasar.doma.it.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import org.seasar.doma.Association;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.Table;
 
-public class AggregateEntityPool implements Iterable<AggregateEntityPoolEntry> {
-  private final List<AggregateEntityPoolEntry> entities = new ArrayList<>();
-
-  public void add(AggregateEntityPoolEntry entry) {
-    Objects.requireNonNull(entry);
-    entities.add(entry);
-  }
-
-  @SuppressWarnings("NullableProblems")
-  @Override
-  public Iterator<AggregateEntityPoolEntry> iterator() {
-    return entities.iterator();
+@Entity
+@Table(name = "EMPLOYEE")
+public record ImmutableEmp(
+    @Id Integer employeeId,
+    String employeeName,
+    @Association ImmutableDept dept,
+    @Association ImmutableEmp manager) {
+  public ImmutableEmp(Integer employeeId, String employeeName) {
+    this(employeeId, employeeName, null, null);
   }
 }

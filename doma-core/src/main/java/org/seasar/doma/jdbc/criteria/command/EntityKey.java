@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.criteria.command;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.jdbc.EntityId;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 
 public final class EntityKey {
@@ -36,6 +37,10 @@ public final class EntityKey {
 
   public List<?> getItems() {
     return items;
+  }
+
+  public EntityId asEntityId() {
+    return new EntityId(entityMetamodel.asType(), items);
   }
 
   @Override

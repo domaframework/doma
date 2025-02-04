@@ -39,11 +39,15 @@ import org.seasar.doma.it.dao.DepartmentDao;
 import org.seasar.doma.it.dao.DepartmentDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
+import org.seasar.doma.it.dao.ImmutableEmpDao;
+import org.seasar.doma.it.dao.ImmutableEmpDaoImpl;
 import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.entity.Address;
 import org.seasar.doma.it.entity.Department;
 import org.seasar.doma.it.entity.Employee;
+import org.seasar.doma.it.entity.ImmutableDept;
+import org.seasar.doma.it.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.Config;
 
 @ExtendWith(IntegrationTestEnvironment.class)
@@ -284,6 +288,18 @@ public class AggregateTest {
   @Test
   public void testSelfJoin(Config config) {
     EmployeeDao dao = new EmployeeDaoImpl(config);
+    List<Employee> employeeList = dao.selectByIdWithManager(List.of(6, 9));
+
+    Employee blake = employeeList.get(0);
+    Employee king = employeeList.get(1);
+    assertNotNull(blake);
+    assertNotNull(king);
+    assertSame(king, blake.getManager());
+  }
+
+  @Test
+  public void testSelfJoin_bidirectional(Config config) {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
     List<Employee> employeeList = dao.selectAllWithManager();
 
     // managers
@@ -357,5 +373,32 @@ public class AggregateTest {
           employee.getManager() == null ? null : employee.getManager().getEmployeeId(),
           employee.getAssistants().stream().map(Employee::getEmployeeId).toList());
     }
+  }
+
+  @Test
+  public void testImmutable(Config config) {
+    ImmutableEmpDao dao = new ImmutableEmpDaoImpl(config);
+    ImmutableEmp emp = dao.selectById(1);
+    assertNotNull(emp);
+    assertEquals("SMITH", emp.employeeName());
+    ImmutableDept dept = emp.dept();
+    assertNotNull(dept);
+    assertEquals(2, dept.departmentId());
+    assertEquals("RESEARCH", dept.departmentName());
+  }
+
+  @Test
+  public void testImmutable_selfJoin(Config config) {
+    ImmutableEmpDao dao = new ImmutableEmpDaoImpl(config);
+    List<ImmutableEmp> employeeList = dao.selectByIds(List.of(6, 9));
+    ImmutableEmp blake = employeeList.get(0);
+    ImmutableEmp king = employeeList.get(1);
+    assertNotNull(blake);
+    assertNotNull(blake.dept());
+    assertNotNull(blake.manager());
+    assertNotNull(king);
+    assertNotNull(king.dept());
+    assertNull(king.manager());
+    assertEquals(king.employeeName(), blake.manager().employeeName());
   }
 }

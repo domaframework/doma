@@ -21,45 +21,46 @@ import java.util.Objects;
 import java.util.Set;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
+import org.seasar.doma.jdbc.EntityId;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
 /**
- * Handles the iteration of {@link AggregateEntityPool} results from a query execution and manages
+ * Handles the iteration of {@link AssociationEntityPool} results from a query execution and manages
  * the creation and configuration of object providers used to process the results.
  */
-public class AggregateEntityPoolIterationHandler
-    extends AbstractIterationHandler<AggregateEntityPool, List<AggregateEntityPool>> {
+public class AssociationEntityPoolIterationHandler
+    extends AbstractIterationHandler<AssociationEntityPool, List<AssociationEntityPool>> {
 
-  private final EntityType<?> entityType;
+  private final EntityType<?> rootEntityType;
   private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
-  private final Set<AggregateEntityCacheKey> rootEntityKeys;
-  private final Map<AggregateEntityCacheKey, Object> entityCache;
+  private final Set<EntityId> rootEntityIds;
+  private final Map<EntityId, Object> entityCache;
 
-  public AggregateEntityPoolIterationHandler(
-      EntityType<?> entityType,
+  public AssociationEntityPoolIterationHandler(
+      EntityType<?> rootEntityType,
       AggregateStrategyType aggregateStrategyType,
       boolean resultMappingEnsured,
-      Set<AggregateEntityCacheKey> rootEntityKeys,
-      Map<AggregateEntityCacheKey, Object> entityCache) {
+      Set<EntityId> rootEntityIds,
+      Map<EntityId, Object> entityCache) {
     super(new ResultListCallback<>());
-    this.entityType = Objects.requireNonNull(entityType);
+    this.rootEntityType = Objects.requireNonNull(rootEntityType);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);
     this.resultMappingEnsured = resultMappingEnsured;
-    this.rootEntityKeys = Objects.requireNonNull(rootEntityKeys);
+    this.rootEntityIds = Objects.requireNonNull(rootEntityIds);
     this.entityCache = Objects.requireNonNull(entityCache);
   }
 
   @Override
-  protected ObjectProvider<AggregateEntityPool> createObjectProvider(SelectQuery query) {
-    return new AggregateEntityPoolProvider(
-        entityType,
+  protected ObjectProvider<AssociationEntityPool> createObjectProvider(SelectQuery query) {
+    return new AssociationEntityPoolProvider(
+        rootEntityType,
         aggregateStrategyType,
         query,
         resultMappingEnsured,
-        rootEntityKeys,
+        rootEntityIds,
         entityCache);
   }
 }
