@@ -5,7 +5,7 @@ junit = "5.11.4"
 [libraries]
 jdbc-h2 = { module = "com.h2database:h2", version = "2.3.232" }
 jdbc-mysql = { module = "mysql:mysql-connector-java", version = "8.0.33" }
-jdbc-oracle = { module = "com.oracle.database.jdbc:ojdbc11", version = "23.6.0.24.10" }
+jdbc-oracle = { module = "com.oracle.database.jdbc:ojdbc11", version = "23.7.0.25.01" }
 jdbc-postgresql = { module = "org.postgresql:postgresql", version = "42.7.5" }
 jdbc-sqlite = { module = "org.xerial:sqlite-jdbc", version = "3.48.0.0" }
 jdbc-sqlserver = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "12.8.1.jre11" }
