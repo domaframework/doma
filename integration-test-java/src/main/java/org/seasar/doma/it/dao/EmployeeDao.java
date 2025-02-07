@@ -68,6 +68,9 @@ public interface EmployeeDao {
   @Select(aggregateStrategy = ManagerStrategy.class)
   List<Employee> selectAllWithManager();
 
+  @Select(aggregateStrategy = ManagerStrategy.class)
+  List<Employee> selectByIdWithManager(List<Integer> ids);
+
   @Select
   Employee selectById(Integer employeeId, SelectOptions options);
 

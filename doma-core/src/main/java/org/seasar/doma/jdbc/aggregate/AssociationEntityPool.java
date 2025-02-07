@@ -15,15 +15,26 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-public record AggregateEntityPoolEntry(AggregateEntityKey entityKey, Object entity) {
-  public AggregateEntityPoolEntry {
-    Objects.requireNonNull(entityKey);
-    Objects.requireNonNull(entity);
+public class AssociationEntityPool {
+  private final Map<AssociationPathKey, AssociationEntityPoolEntry> entries = new HashMap<>();
+
+  public void add(AssociationEntityPoolEntry entry) {
+    Objects.requireNonNull(entry);
+    entries.put(entry.pathKey(), entry);
   }
 
-  public AggregatePathKey pathKey() {
-    return entityKey.pathKey();
+  public AssociationEntityPoolEntry get(AssociationPathKey pathKey) {
+    Objects.requireNonNull(pathKey);
+    return entries.get(pathKey);
+  }
+
+  public void replace(AssociationEntityPoolEntry entry) {
+    Objects.requireNonNull(entry);
+    Objects.requireNonNull(entry);
+    entries.replace(entry.pathKey(), entry);
   }
 }

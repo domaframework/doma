@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
 import org.seasar.doma.internal.jdbc.command.FetchSupport;
 import org.seasar.doma.internal.jdbc.command.MappingSupport;
+import org.seasar.doma.jdbc.EntityId;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.AssociationPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -37,33 +38,33 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.query.Query;
 
-public class AggregateEntityPoolProvider extends AbstractObjectProvider<AggregateEntityPool> {
+public class AssociationEntityPoolProvider extends AbstractObjectProvider<AssociationEntityPool> {
 
-  private final EntityType<?> entityType;
+  private final EntityType<?> rootEntityType;
   private final Query query;
-  private final Set<AggregateEntityCacheKey> rootEntityKeys;
-  private final Map<AggregateEntityCacheKey, Object> entityCache;
+  private final Set<EntityId> rootEntityIds;
+  private final Map<EntityId, Object> entityCache;
   private Map<Integer, MappingSupport.PropType> indexMap;
   private final MappingSupport mappingSupport;
   private final FetchSupport fetchSupport;
   private final AggregateStrategyType aggregateStrategyType;
   private final Map<String, AssociationLinkerType<?, ?>> associationLinkerTypeMap;
 
-  public AggregateEntityPoolProvider(
-      EntityType<?> entityType,
+  public AssociationEntityPoolProvider(
+      EntityType<?> rootEntityType,
       AggregateStrategyType aggregateStrategyType,
       Query query,
       boolean resultMappingEnsured,
-      Set<AggregateEntityCacheKey> rootEntityKeys,
-      Map<AggregateEntityCacheKey, Object> entityCache) {
-    assertNotNull(entityType, aggregateStrategyType, query, rootEntityKeys, entityCache);
-    this.entityType = entityType;
+      Set<EntityId> rootEntityIds,
+      Map<EntityId, Object> entityCache) {
+    assertNotNull(rootEntityType, aggregateStrategyType, query, rootEntityIds, entityCache);
+    this.rootEntityType = rootEntityType;
     this.query = query;
-    this.rootEntityKeys = rootEntityKeys;
+    this.rootEntityIds = rootEntityIds;
     this.entityCache = entityCache;
     this.mappingSupport =
         new MappingSupport(
-            entityType,
+            rootEntityType,
             query,
             resultMappingEnsured,
             query.getConfig().getUnknownColumnHandler(),
@@ -76,9 +77,9 @@ public class AggregateEntityPoolProvider extends AbstractObjectProvider<Aggregat
   }
 
   @Override
-  public AggregateEntityPool get(ResultSet resultSet) throws SQLException {
+  public AssociationEntityPool get(ResultSet resultSet) throws SQLException {
     List<MappingSupport.Prop> props = createProps(resultSet);
-    Map<AggregatePathKey, List<MappingSupport.Prop>> propGroup = groupPropsByPathKey(props);
+    Map<AssociationPathKey, List<MappingSupport.Prop>> propGroup = groupPropsByPathKey(props);
     return createEntityPool(propGroup);
   }
 
@@ -104,9 +105,10 @@ public class AggregateEntityPoolProvider extends AbstractObjectProvider<Aggregat
 
   /** Creates a column name mapping for the entity type associated with this provider. */
   private Map<String, MappingSupport.PropType> createColumnNameMap() {
-    List<? extends EntityPropertyType<?, ?>> propertyTypes = entityType.getEntityPropertyTypes();
+    List<? extends EntityPropertyType<?, ?>> propertyTypes =
+        rootEntityType.getEntityPropertyTypes();
     Map<String, MappingSupport.PropType> result = new HashMap<>(propertyTypes.size());
-    collectColumnNames(result, entityType, "", aggregateStrategyType.getTableAlias());
+    collectColumnNames(result, rootEntityType, "", aggregateStrategyType.getTableAlias());
     return result;
   }
 
@@ -143,56 +145,56 @@ public class AggregateEntityPoolProvider extends AbstractObjectProvider<Aggregat
     }
   }
 
-  private Map<AggregatePathKey, List<MappingSupport.Prop>> groupPropsByPathKey(
+  private Map<AssociationPathKey, List<MappingSupport.Prop>> groupPropsByPathKey(
       List<MappingSupport.Prop> props) {
     return props.stream()
         .collect(
-            Collectors.groupingBy(it -> new AggregatePathKey(it.propertyPath(), it.entityType())));
+            Collectors.groupingBy(
+                it -> new AssociationPathKey(it.propertyPath(), it.entityType())));
   }
 
   /**
-   * Creates and populates a {@link AggregateEntityPool} based on the provided group of properties
-   * organized by their {@link AggregatePathKey}.
+   * Creates and populates a {@link AssociationEntityPool} based on the provided group of properties
+   * organized by their {@link AssociationPathKey}.
    */
-  private AggregateEntityPool createEntityPool(
-      Map<AggregatePathKey, List<MappingSupport.Prop>> propGroup) {
-    AggregateEntityPool entityPool = new AggregateEntityPool();
+  private AssociationEntityPool createEntityPool(
+      Map<AssociationPathKey, List<MappingSupport.Prop>> propGroup) {
+    AssociationEntityPool entityPool = new AssociationEntityPool();
 
-    for (Map.Entry<AggregatePathKey, List<MappingSupport.Prop>> entry : propGroup.entrySet()) {
-      AggregatePathKey pathKey = entry.getKey();
+    for (Map.Entry<AssociationPathKey, List<MappingSupport.Prop>> entry : propGroup.entrySet()) {
+      AssociationPathKey pathKey = entry.getKey();
       List<MappingSupport.Prop> props = entry.getValue();
       if (props.stream().allMatch(p -> p.rawValue() == null)) {
         continue;
       }
-      AggregateEntityKey entityKey = createEntityKey(pathKey, props);
-      AggregateEntityCacheKey cacheKey = AggregateEntityCacheKey.of(entityKey);
-      Object entity = entityCache.computeIfAbsent(cacheKey, k -> createEntity(k, props));
-      entityPool.add(new AggregateEntityPoolEntry(entityKey, entity));
+      AssociationEntityKey entityKey = createEntityKey(pathKey, props);
+      EntityId entityId = entityKey.entityId();
+      Object entity = entityCache.computeIfAbsent(entityId, id -> createEntity(id, props));
+      entityPool.add(new AssociationEntityPoolEntry(entityKey, entity));
       if (pathKey.isRoot()) {
-        rootEntityKeys.add(cacheKey);
+        rootEntityIds.add(entityId);
       }
     }
 
     return entityPool;
   }
 
-  private static AggregateEntityKey createEntityKey(
-      AggregatePathKey pathKey, List<MappingSupport.Prop> props) {
-    AggregateEntityKey entityKey;
+  private static AssociationEntityKey createEntityKey(
+      AssociationPathKey pathKey, List<MappingSupport.Prop> props) {
+    AssociationEntityKey entityKey;
     if (pathKey.entityType().getIdPropertyTypes().isEmpty()) {
-      entityKey = new AggregateEntityKey(pathKey, Collections.singletonList(new Object()));
+      entityKey = new AssociationEntityKey(pathKey, Collections.singletonList(new Object()));
     } else {
       List<?> items =
           props.stream().filter(MappingSupport.Prop::isId).map(it -> it.wrapper().get()).toList();
-      entityKey = new AggregateEntityKey(pathKey, items);
+      entityKey = new AssociationEntityKey(pathKey, items);
     }
     return entityKey;
   }
 
-  private static Object createEntity(
-      AggregateEntityCacheKey cacheKey, List<MappingSupport.Prop> props) {
+  private static Object createEntity(EntityId entityId, List<MappingSupport.Prop> props) {
     @SuppressWarnings("unchecked")
-    EntityType<Object> entityType = (EntityType<Object>) cacheKey.entityType();
+    EntityType<Object> entityType = (EntityType<Object>) entityId.entityType();
     Map<String, Property<Object, ?>> states =
         props.stream()
             .collect(Collectors.toMap(MappingSupport.Prop::name, MappingSupport.Prop::property));
