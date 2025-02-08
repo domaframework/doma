@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.aggregate;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.seasar.doma.jdbc.entity.EntityType;
 
@@ -23,9 +24,21 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * its associated entities.
  */
 public interface AggregateStrategyType {
+
+  String getName();
+
   EntityType<?> getRoot();
 
   String getTableAlias();
 
   List<AssociationLinkerType<?, ?>> getAssociationLinkerTypes();
+
+  default List<String> getTableAliases() {
+    List<String> result = new ArrayList<>();
+    result.add(getTableAlias());
+    for (AssociationLinkerType<?, ?> associationLinkerType : getAssociationLinkerTypes()) {
+      result.add(associationLinkerType.getTableAlias());
+    }
+    return result;
+  }
 }

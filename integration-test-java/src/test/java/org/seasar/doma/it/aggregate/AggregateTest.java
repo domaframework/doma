@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.criteria.Street;
 import org.seasar.doma.it.dao.DepartmentDao;
@@ -49,6 +51,7 @@ import org.seasar.doma.it.entity.Employee;
 import org.seasar.doma.it.entity.ImmutableDept;
 import org.seasar.doma.it.entity.ImmutableEmp;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.message.Message;
 
 @ExtendWith(IntegrationTestEnvironment.class)
 public class AggregateTest {
@@ -400,5 +403,18 @@ public class AggregateTest {
     assertNotNull(king.dept());
     assertNull(king.manager());
     assertEquals(king.employeeName(), blake.manager().employeeName());
+  }
+
+  @Test
+  public void illegalAlias(Config config) {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+    DomaException ex =
+        assertThrows(
+            DomaException.class,
+            () -> {
+              dao.illegalAlias(1);
+            });
+    assertEquals(Message.DOMA2239, ex.getMessageResource());
+    System.out.println(ex.getMessage());
   }
 }

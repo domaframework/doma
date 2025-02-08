@@ -11,7 +11,7 @@ public final class _DeptStrategy extends org.seasar.doma.jdbc.aggregate.Abstract
     }
 
     private _DeptStrategy() {
-        super(org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), "d", java.util.List.of(
+        super("org.seasar.doma.internal.apt.processor.aggregate.DeptStrategy", org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), "d", java.util.List.of(
             org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("employees", "employees.address", 2, "a", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Address.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.DeptStrategy.address),
             org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "employees", 1, "e", org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate.DeptStrategy.dept)
         ));

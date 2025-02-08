@@ -82,7 +82,7 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
     validateAllTableAliases(aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
     validateNavigation(root, associationLinkerMetas);
     return new AggregateStrategyMeta(
-        root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
+        typeElement, root, aggregateStrategyAnnot.getTableAliasValue(), associationLinkerMetas);
   }
 
   private void validateAllPropertyPaths(List<AssociationLinkerMeta> associationLinkerMetas) {

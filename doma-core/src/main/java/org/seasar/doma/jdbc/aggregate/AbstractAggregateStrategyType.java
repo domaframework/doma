@@ -21,18 +21,25 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 public abstract class AbstractAggregateStrategyType implements AggregateStrategyType {
 
+  private final String name;
   private final EntityType<?> root;
   private final String tableAlias;
   private final List<AssociationLinkerType<?, ?>> associationLinkerTypes;
 
   protected AbstractAggregateStrategyType(
+      String name,
       EntityType<?> root,
       String tableAlias,
       List<AssociationLinkerType<?, ?>> associationLinkerTypes) {
-    Objects.requireNonNull(tableAlias);
+    this.name = Objects.requireNonNull(name);
     this.root = Objects.requireNonNull(root);
     this.tableAlias = Objects.requireNonNull(tableAlias);
     this.associationLinkerTypes = Objects.requireNonNull(associationLinkerTypes);
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 
   @Override

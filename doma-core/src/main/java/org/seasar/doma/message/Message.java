@@ -284,6 +284,8 @@ public enum Message implements MessageResource {
       {4}
       PATH=[{2}]
       SQL=[{3}]"""),
+  DOMA2239(
+      "The table alias \"{0}\" passed to the expansion directive is not defined in the aggregate strategy \"{1}\"."),
 
   // expression
   DOMA3001(
