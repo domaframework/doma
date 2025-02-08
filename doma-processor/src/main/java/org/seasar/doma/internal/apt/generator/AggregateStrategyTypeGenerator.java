@@ -78,8 +78,10 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
     iprint("private %1$s() {%n", simpleName);
     indent();
     iprint(
-        "super(%1$s, \"%2$s\", java.util.List.of(%n",
-        strategyMeta.root().getTypeCode(), strategyMeta.tableAlias());
+        "super(\"%1$s\", %2$s, \"%3$s\", java.util.List.of(%n",
+        /* 1 */ strategyMeta.typeElement().getQualifiedName(),
+        /* 2 */ strategyMeta.root().getTypeCode(),
+        /* 3 */ strategyMeta.tableAlias());
     indent();
     Iterator<AssociationLinkerMeta> iter = strategyMeta.associationLinkerMetas().iterator();
     while (iter.hasNext()) {

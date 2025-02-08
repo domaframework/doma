@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +27,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.FetchType;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
 import org.seasar.doma.internal.expr.Value;
@@ -45,7 +47,6 @@ import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.PrimitiveLongWrapper;
@@ -138,34 +139,38 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     if (aggregateStrategyType == null) {
       return List.of();
     }
-    Set<String> aliases =
+
+    Set<String> definedAliases = new HashSet<>(aggregateStrategyType.getTableAliases());
+    Set<String> requiredAliases =
         Arrays.stream(aliasCsv.split(","))
             .map(String::trim)
             .filter(s -> !s.isEmpty())
+            .peek(
+                s -> {
+                  if (!definedAliases.contains(s)) {
+                    throw new DomaException(Message.DOMA2239, s, aggregateStrategyType.getName());
+                  }
+                })
             .collect(Collectors.toSet());
-    Stream<Pair<String, EntityPropertyType<?, ?>>> rootColumns =
-        entityType.getEntityPropertyTypes().stream()
-            .map(
-                p -> {
-                  String tableAlias = aggregateStrategyType.getTableAlias();
-                  return new Pair<>(tableAlias, p);
-                });
-    Stream<Pair<String, EntityPropertyType<?, ?>>> associationColumns =
-        aggregateStrategyType.getAssociationLinkerTypes().stream()
-            .flatMap(
-                linkerType -> {
-                  String tableAlias = linkerType.getTableAlias();
-                  return linkerType.getTarget().getEntityPropertyTypes().stream()
-                      .map(p -> new Pair<>(tableAlias, p));
-                });
+
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
-    return Stream.concat(rootColumns, associationColumns)
-        .filter(p -> aliases.isEmpty() || aliases.contains(p.fst))
+
+    Stream<Pair<String, EntityType<?>>> rootStream =
+        Stream.of(
+            new Pair<>(aggregateStrategyType.getTableAlias(), aggregateStrategyType.getRoot()));
+    Stream<Pair<String, EntityType<?>>> associationStream =
+        aggregateStrategyType.getAssociationLinkerTypes().stream()
+            .map(it -> new Pair<>(it.getTableAlias(), it.getTarget()));
+
+    return Stream.concat(rootStream, associationStream)
+        .filter(pair -> requiredAliases.isEmpty() || requiredAliases.contains(pair.fst))
+        .flatMap(
+            pair -> pair.snd.getEntityPropertyTypes().stream().map(it -> new Pair<>(pair.fst, it)))
         .map(
-            p -> {
-              String tableAlias = p.fst;
-              String columnName = p.snd.getColumnName(naming::apply, dialect::applyQuote);
+            pair -> {
+              String tableAlias = pair.fst;
+              String columnName = pair.snd.getColumnName(naming::apply, dialect::applyQuote);
               return String.format("%1$s.%2$s as %1$s_%2$s", tableAlias, columnName);
             })
         .toList();

@@ -17,11 +17,15 @@ package org.seasar.doma.internal.apt.meta.aggregate;
 
 import java.util.List;
 import java.util.Objects;
+import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
 public record AggregateStrategyMeta(
-    EntityCtType root, String tableAlias, List<AssociationLinkerMeta> associationLinkerMetas)
+    TypeElement typeElement,
+    EntityCtType root,
+    String tableAlias,
+    List<AssociationLinkerMeta> associationLinkerMetas)
     implements TypeElementMeta {
 
   public AggregateStrategyMeta {
