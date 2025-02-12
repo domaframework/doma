@@ -28,6 +28,7 @@ import java.util.function.BiFunction;
 import org.seasar.doma.internal.util.Combinations;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.EntityId;
+import org.seasar.doma.jdbc.EntityRef;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
@@ -52,7 +53,7 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
   @SuppressWarnings("unchecked")
   public List<ENTITY> execute() {
     Set<EntityId> rootEntityIds = new LinkedHashSet<>();
-    Map<EntityId, Object> cache = new HashMap<>();
+    Map<EntityId, EntityRef> cache = new HashMap<>();
     Combinations<EntityKey> combinations = new Combinations<>();
     SelectCommand<List<EntityPool>> command =
         new SelectCommand<>(
@@ -61,51 +62,59 @@ public class AssociateCommand<ENTITY> implements Command<List<ENTITY>> {
                 entityMetamodel, rootEntityIds, context.getProjectionEntityMetamodels()));
     List<EntityPool> entityPools = command.execute();
     for (EntityPool entityPool : entityPools) {
-      Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate = new LinkedHashMap<>();
+      Map<EntityMetamodel<?>, Pair<EntityKey, EntityRef>> associationCandidate =
+          new LinkedHashMap<>();
       for (Map.Entry<EntityKey, EntityData> e : entityPool.entrySet()) {
         EntityKey key = e.getKey();
         EntityData data = e.getValue();
         EntityId entityId = key.asEntityId();
-        Object entity =
+        EntityRef entityRef =
             cache.computeIfAbsent(
                 entityId,
                 k -> {
                   EntityType<Object> entityType = (EntityType<Object>) k.entityType();
-                  Object newEntity = entityType.newEntity(data.getStates());
+                  Object entity = entityType.newEntity(data.getStates());
                   if (!entityType.isImmutable()) {
-                    entityType.saveCurrentStates(newEntity);
+                    entityType.saveCurrentStates(entity);
                   }
-                  return newEntity;
+                  return new EntityRef(entity);
                 });
-        associationCandidate.put(key.getEntityMetamodel(), new Pair<>(key, entity));
+        associationCandidate.put(key.getEntityMetamodel(), new Pair<>(key, entityRef));
       }
-      associate(cache, combinations, associationCandidate);
+      associate(combinations, associationCandidate);
     }
     return (List<ENTITY>)
-        rootEntityIds.stream().map(cache::get).filter(Objects::nonNull).collect(toList());
+        rootEntityIds.stream()
+            .map(cache::get)
+            .map(EntityRef::getEntity)
+            .filter(Objects::nonNull)
+            .collect(toList());
   }
 
   private void associate(
-      Map<EntityId, Object> cache,
       Combinations<EntityKey> combinations,
-      Map<EntityMetamodel<?>, Pair<EntityKey, Object>> associationCandidate) {
+      Map<EntityMetamodel<?>, Pair<EntityKey, EntityRef>> associationCandidate) {
     for (Map.Entry<Pair<EntityMetamodel<?>, EntityMetamodel<?>>, BiFunction<Object, Object, Object>>
         e : context.associations.entrySet()) {
       Pair<EntityMetamodel<?>, EntityMetamodel<?>> metamodelPair = e.getKey();
       BiFunction<Object, Object, Object> associator = e.getValue();
-      Pair<EntityKey, Object> keyAndEntity1 = associationCandidate.get(metamodelPair.fst);
-      Pair<EntityKey, Object> keyAndEntity2 = associationCandidate.get(metamodelPair.snd);
-      if (keyAndEntity1 == null || keyAndEntity2 == null) {
+      Pair<EntityKey, EntityRef> source = associationCandidate.get(metamodelPair.fst);
+      Pair<EntityKey, EntityRef> target = associationCandidate.get(metamodelPair.snd);
+      if (source == null || target == null) {
         continue;
       }
-      Pair<EntityKey, EntityKey> keyPair = new Pair<>(keyAndEntity1.fst, keyAndEntity2.fst);
+      Pair<EntityKey, EntityKey> keyPair = new Pair<>(source.fst, target.fst);
       if (combinations.contains(keyPair)) {
         continue;
       }
-      Object newEntity = associator.apply(keyAndEntity1.snd, keyAndEntity2.snd);
-      if (newEntity != null) {
-        cache.replace(keyAndEntity1.fst.asEntityId(), newEntity);
-        associationCandidate.replace(metamodelPair.fst, new Pair<>(keyAndEntity1.fst, newEntity));
+      EntityRef sourceEntityRef = source.snd;
+      EntityRef targetEntityRef = target.snd;
+      Object sourceEntity = sourceEntityRef.getEntity();
+      Object targetEntity = targetEntityRef.getEntity();
+      Object resultEntity = associator.apply(sourceEntity, targetEntity);
+      if (resultEntity != null && resultEntity != sourceEntity) {
+        // Update a reference to an immutable entity
+        sourceEntityRef.setEntity(resultEntity);
       }
       combinations.add(keyPair);
     }
