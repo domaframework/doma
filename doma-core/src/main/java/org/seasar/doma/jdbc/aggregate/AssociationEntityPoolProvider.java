@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.command.AbstractObjectProvider;
 import org.seasar.doma.internal.jdbc.command.FetchSupport;
 import org.seasar.doma.internal.jdbc.command.MappingSupport;
 import org.seasar.doma.jdbc.EntityId;
+import org.seasar.doma.jdbc.EntityRef;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.AssociationPropertyType;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
@@ -43,7 +44,7 @@ public class AssociationEntityPoolProvider extends AbstractObjectProvider<Associ
   private final EntityType<?> rootEntityType;
   private final Query query;
   private final Set<EntityId> rootEntityIds;
-  private final Map<EntityId, Object> entityCache;
+  private final Map<EntityId, EntityRef> entityCache;
   private Map<Integer, MappingSupport.PropType> indexMap;
   private final MappingSupport mappingSupport;
   private final FetchSupport fetchSupport;
@@ -56,7 +57,7 @@ public class AssociationEntityPoolProvider extends AbstractObjectProvider<Associ
       Query query,
       boolean resultMappingEnsured,
       Set<EntityId> rootEntityIds,
-      Map<EntityId, Object> entityCache) {
+      Map<EntityId, EntityRef> entityCache) {
     assertNotNull(rootEntityType, aggregateStrategyType, query, rootEntityIds, entityCache);
     this.rootEntityType = rootEntityType;
     this.query = query;
@@ -169,8 +170,8 @@ public class AssociationEntityPoolProvider extends AbstractObjectProvider<Associ
       }
       AssociationEntityKey entityKey = createEntityKey(pathKey, props);
       EntityId entityId = entityKey.entityId();
-      Object entity = entityCache.computeIfAbsent(entityId, id -> createEntity(id, props));
-      entityPool.add(new AssociationEntityPoolEntry(entityKey, entity));
+      EntityRef entityRef = entityCache.computeIfAbsent(entityId, id -> createEntityRef(id, props));
+      entityPool.add(new AssociationEntityPoolEntry(entityKey, entityRef));
       if (pathKey.isRoot()) {
         rootEntityIds.add(entityId);
       }
@@ -192,16 +193,16 @@ public class AssociationEntityPoolProvider extends AbstractObjectProvider<Associ
     return entityKey;
   }
 
-  private static Object createEntity(EntityId entityId, List<MappingSupport.Prop> props) {
+  private static EntityRef createEntityRef(EntityId entityId, List<MappingSupport.Prop> props) {
     @SuppressWarnings("unchecked")
     EntityType<Object> entityType = (EntityType<Object>) entityId.entityType();
     Map<String, Property<Object, ?>> states =
         props.stream()
             .collect(Collectors.toMap(MappingSupport.Prop::name, MappingSupport.Prop::property));
-    Object newEntity = entityType.newEntity(states);
+    Object entity = entityType.newEntity(states);
     if (!entityType.isImmutable()) {
-      entityType.saveCurrentStates(newEntity);
+      entityType.saveCurrentStates(entity);
     }
-    return newEntity;
+    return new EntityRef(entity);
   }
 }
