@@ -22,6 +22,7 @@ import java.util.Set;
 import org.seasar.doma.internal.jdbc.command.AbstractIterationHandler;
 import org.seasar.doma.internal.jdbc.command.ResultListCallback;
 import org.seasar.doma.jdbc.EntityId;
+import org.seasar.doma.jdbc.EntityRef;
 import org.seasar.doma.jdbc.ObjectProvider;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.SelectQuery;
@@ -37,14 +38,14 @@ public class AssociationEntityPoolIterationHandler
   private final AggregateStrategyType aggregateStrategyType;
   private final boolean resultMappingEnsured;
   private final Set<EntityId> rootEntityIds;
-  private final Map<EntityId, Object> entityCache;
+  private final Map<EntityId, EntityRef> entityCache;
 
   public AssociationEntityPoolIterationHandler(
       EntityType<?> rootEntityType,
       AggregateStrategyType aggregateStrategyType,
       boolean resultMappingEnsured,
       Set<EntityId> rootEntityIds,
-      Map<EntityId, Object> entityCache) {
+      Map<EntityId, EntityRef> entityCache) {
     super(new ResultListCallback<>());
     this.rootEntityType = Objects.requireNonNull(rootEntityType);
     this.aggregateStrategyType = Objects.requireNonNull(aggregateStrategyType);

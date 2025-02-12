@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.jdbc.aggregate;
+package org.seasar.doma.jdbc;
 
 import java.util.Objects;
-import org.seasar.doma.jdbc.EntityId;
-import org.seasar.doma.jdbc.EntityRef;
 
-public record AssociationEntityPoolEntry(AssociationEntityKey entityKey, EntityRef entityRef) {
-  public AssociationEntityPoolEntry {
-    Objects.requireNonNull(entityKey);
-    Objects.requireNonNull(entityRef);
+public class EntityRef {
+
+  private Object entity;
+
+  public EntityRef(Object entity) {
+    this.entity = Objects.requireNonNull(entity);
   }
 
-  public AssociationPathKey pathKey() {
-    return entityKey.pathKey();
+  public Object getEntity() {
+    return entity;
   }
 
-  public EntityId entityId() {
-    return entityKey.entityId();
+  public void setEntity(Object entity) {
+    this.entity = Objects.requireNonNull(entity);
   }
 }

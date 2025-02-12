@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 import org.seasar.doma.internal.util.Combinations;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.jdbc.EntityId;
+import org.seasar.doma.jdbc.EntityRef;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.entity.EntityType;
@@ -59,7 +60,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
   @Override
   public RESULT execute() {
     Set<EntityId> rootEntityIds = new LinkedHashSet<>();
-    Map<EntityId, Object> entityCache = new HashMap<>();
+    Map<EntityId, EntityRef> entityCache = new HashMap<>();
     Combinations<AssociationEntityKey> combinations = new Combinations<>();
 
     SelectCommand<List<AssociationEntityPool>> command =
@@ -73,7 +74,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
                 entityCache));
     List<AssociationEntityPool> entityPools = command.execute();
     for (AssociationEntityPool entityPool : entityPools) {
-      associate(entityCache, combinations, entityPool);
+      associate(combinations, entityPool);
     }
 
     @SuppressWarnings("unchecked")
@@ -81,6 +82,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
         (Stream<ENTITY>)
             rootEntityIds.stream()
                 .map(entityCache::get)
+                .map(EntityRef::getEntity)
                 .filter(Objects::nonNull)
                 .filter(rootEntityType.getEntityClass()::isInstance);
 
@@ -92,9 +94,7 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
    * of linkage rules and updates the cache with newly associated entities.
    */
   private void associate(
-      Map<EntityId, Object> entityCache,
-      Combinations<AssociationEntityKey> combinations,
-      AssociationEntityPool entityPool) {
+      Combinations<AssociationEntityKey> combinations, AssociationEntityPool entityPool) {
 
     for (AssociationLinkerType<?, ?> linkerType :
         aggregateStrategyType.getAssociationLinkerTypes()) {
@@ -114,10 +114,14 @@ public class AggregateCommand<RESULT, ENTITY> implements Command<RESULT> {
       @SuppressWarnings("unchecked")
       BiFunction<Object, Object, Object> linker =
           (BiFunction<Object, Object, Object>) linkerType.getLinker();
-      Object newEntity = linker.apply(source.entity(), target.entity());
-      if (newEntity != null && newEntity != source.entity()) {
-        entityCache.replace(source.entityId(), newEntity);
-        entityPool.replace(new AssociationEntityPoolEntry(source.entityKey(), newEntity));
+      EntityRef sourceEntityRef = source.entityRef();
+      EntityRef targetEntityRef = target.entityRef();
+      Object sourceEntity = sourceEntityRef.getEntity();
+      Object targetEntity = targetEntityRef.getEntity();
+      Object resultEntity = linker.apply(sourceEntity, targetEntity);
+      if (resultEntity != null && resultEntity != sourceEntity) {
+        // Update a reference to an immutable entity
+        sourceEntityRef.setEntity(resultEntity);
       }
     }
   }
