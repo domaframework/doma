@@ -307,7 +307,7 @@ public class CtTypes {
   }
 
   private DomainInfo getExternalDomainInfo(TypeMirror domainType) {
-    DomainInfo info = getExternalDomainInfoFromDomainType(domainType);
+    DomainInfo info = getExternalDomainInfoFromMetadata(domainType);
     if (info != null) {
       return info;
     }
@@ -318,7 +318,7 @@ public class CtTypes {
    * This method searches for metadata of an External Domain class, extracts the relevant
    * information, and returns it as a DomainInfo.
    */
-  private DomainInfo getExternalDomainInfoFromDomainType(TypeMirror domainType) {
+  private DomainInfo getExternalDomainInfoFromMetadata(TypeMirror domainType) {
     TypeElement domainTypeElement = ctx.getMoreTypes().toTypeElement(domainType);
     if (domainTypeElement == null) {
       return null;
