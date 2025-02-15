@@ -82,6 +82,7 @@ import org.seasar.doma.jdbc.Reference;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.ArrayWrapper;
 import org.seasar.doma.wrapper.BigDecimalWrapper;
@@ -306,6 +307,56 @@ public class CtTypes {
   }
 
   private DomainInfo getExternalDomainInfo(TypeMirror domainType) {
+    DomainInfo info = getExternalDomainInfoFromMetadata(domainType);
+    if (info != null) {
+      return info;
+    }
+    return getExternalDomainInfoFromConverterType(domainType);
+  }
+
+  /**
+   * This method searches for metadata of an External Domain class, extracts the relevant
+   * information, and returns it as a DomainInfo.
+   */
+  private DomainInfo getExternalDomainInfoFromMetadata(TypeMirror domainType) {
+    TypeElement domainTypeElement = ctx.getMoreTypes().toTypeElement(domainType);
+    if (domainTypeElement == null) {
+      return null;
+    }
+    ClassName className =
+        ClassNames.newExternalDomainTypeClassName(domainTypeElement.getQualifiedName());
+    TypeElement externalDomainMetadataElement = ctx.getMoreElements().getTypeElement(className);
+    if (externalDomainMetadataElement == null) {
+      return null;
+    }
+    TypeMirror[] argTypes = getDomainTypeArgTypes(externalDomainMetadataElement.asType());
+    if (argTypes == null) {
+      return null;
+    }
+    return new DomainInfo(argTypes[0], true);
+  }
+
+  private TypeMirror[] getDomainTypeArgTypes(TypeMirror typeMirror) {
+    for (TypeMirror supertype : ctx.getMoreTypes().directSupertypes(typeMirror)) {
+      if (!ctx.getMoreTypes().isAssignableWithErasure(supertype, DomainType.class)) {
+        continue;
+      }
+      if (ctx.getMoreTypes().isSameTypeWithErasure(supertype, DomainType.class)) {
+        DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(supertype);
+        assertNotNull(declaredType);
+        List<? extends TypeMirror> args = declaredType.getTypeArguments();
+        assertEquals(2, args.size());
+        return new TypeMirror[] {args.get(0), args.get(1)};
+      }
+      TypeMirror[] argTypes = getDomainTypeArgTypes(supertype);
+      if (argTypes != null) {
+        return argTypes;
+      }
+    }
+    return null;
+  }
+
+  private DomainInfo getExternalDomainInfoFromConverterType(TypeMirror domainType) {
     String csv = ctx.getOptions().getDomainConverters();
     if (csv != null) {
       for (String value : csv.split(",")) {

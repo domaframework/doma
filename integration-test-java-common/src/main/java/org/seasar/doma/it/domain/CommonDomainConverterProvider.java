@@ -18,9 +18,6 @@ package org.seasar.doma.it.domain;
 import org.seasar.doma.DomainConverters;
 
 @DomainConverters({
-  LocationConverter.class,
-  HiredateConverter.class,
-  StringArrayConverter.class,
-  PostgresUUIDConverter.class
+  AgeConverter.class,
 })
-public class DomainConverterProvider {}
+public class CommonDomainConverterProvider {}
