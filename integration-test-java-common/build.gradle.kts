@@ -8,8 +8,6 @@ val compiler: String by project
 dependencies {
     annotationProcessor(project(":doma-processor"))
     implementation(project(":doma-core"))
-    implementation(project(":integration-test-java-common"))
-    testImplementation(project(":integration-test-common"))
     if (compiler == "ecj") {
         implementation(libs.ecj)
         // See https://github.com/TheMrMilchmann/gradle-ecj/issues/30
@@ -18,22 +16,14 @@ dependencies {
 }
 
 val commonArgs = listOf(
-    "-Adoma.domain.converters=org.seasar.doma.it.domain.DomainConverterProvider",
+    "-Adoma.domain.converters=org.seasar.doma.it.domain.CommonDomainConverterProvider",
 )
 
 // The processors are not automatically detected, so it must be explicitly specified.
 val ecjArgs = listOf(
     "-processor",
     listOf(
-        "org.seasar.doma.internal.apt.processor.DomainProcessor",
-        "org.seasar.doma.internal.apt.processor.DataTypeProcessor",
         "org.seasar.doma.internal.apt.processor.ExternalDomainProcessor",
-        "org.seasar.doma.internal.apt.processor.DomainConvertersProcessor",
-        "org.seasar.doma.internal.apt.processor.EmbeddableProcessor",
-        "org.seasar.doma.internal.apt.processor.EntityProcessor",
-        "org.seasar.doma.internal.apt.processor.DaoProcessor",
-        "org.seasar.doma.internal.apt.processor.AggregateStrategyProcessor",
-        "org.seasar.doma.internal.apt.processor.ScopeProcessor",
     ).joinToString(","),
 )
 
