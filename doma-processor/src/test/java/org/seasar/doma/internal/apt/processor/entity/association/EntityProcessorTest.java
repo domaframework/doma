@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.processor.entity.association;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
@@ -33,6 +34,7 @@ import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
+import org.seasar.doma.message.Message;
 
 class EntityProcessorTest extends CompilerSupport {
 
@@ -111,6 +113,47 @@ class EntityProcessorTest extends CompilerSupport {
               new SimpleParameterResolver(new Class[] {compilationUnit}),
               new ResourceParameterResolver(compilationUnit),
               new GeneratedClassNameParameterResolver(annotatedClass),
+              new SimpleParameterResolver(options));
+        }
+      };
+    }
+  }
+
+  @TestTemplate
+  @ExtendWith(ErrorInvocationContextProvider.class)
+  void error(Class<?> clazz, Message message, String... options) throws Exception {
+    addOption(options);
+    addCompilationUnit(clazz);
+    compile();
+    assertFalse(getCompiledResult());
+    assertMessage(message);
+  }
+
+  static class ErrorInvocationContextProvider implements TestTemplateInvocationContextProvider {
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+      return true;
+    }
+
+    @Override
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
+        ExtensionContext context) {
+      return Stream.of(invocationContext(IllegalAssociation.class, Message.DOMA4485));
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        Class<?> clazz, Message message, String... options) {
+      return new TestTemplateInvocationContext() {
+        @Override
+        public String getDisplayName(int invocationIndex) {
+          return clazz.getSimpleName();
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+          return Arrays.asList(
+              new SimpleParameterResolver(clazz),
+              new SimpleParameterResolver(message),
               new SimpleParameterResolver(options));
         }
       };
