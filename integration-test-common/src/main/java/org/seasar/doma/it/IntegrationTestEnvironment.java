@@ -36,7 +36,9 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.seasar.doma.it.dao.ScriptDao;
 import org.seasar.doma.it.dao.ScriptDaoImpl;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.ScriptException;
+import org.seasar.doma.jdbc.SimpleConfig;
 import org.seasar.doma.jdbc.dialect.Db2Dialect;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.H2Dialect;
@@ -45,6 +47,7 @@ import org.seasar.doma.jdbc.dialect.MssqlDialect;
 import org.seasar.doma.jdbc.dialect.MysqlDialect;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.dialect.PostgresDialect;
+import org.seasar.doma.slf4j.Slf4jJdbcLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +65,7 @@ public class IntegrationTestEnvironment
 
   private final Dbms dbms;
 
-  private final AppConfig config;
+  private final SimpleConfig config;
 
   private final ScriptDao scriptDao;
 
@@ -73,7 +76,12 @@ public class IntegrationTestEnvironment
     logger.debug("url={}", Objects.requireNonNull(url));
     dbms = determineDbms(driver);
     Dialect dialect = createDialect(dbms);
-    config = new AppConfig(dialect, dbms, url, "test", "test");
+    config =
+        SimpleConfig.builder(url, "test", "test")
+            .dialect(dialect)
+            .jdbcLogger(new Slf4jJdbcLogger())
+            .naming(Naming.SNAKE_UPPER_CASE)
+            .build();
     scriptDao = new ScriptDaoImpl(config);
   }
 
@@ -138,12 +146,12 @@ public class IntegrationTestEnvironment
   @Override
   public void beforeTestExecution(ExtensionContext context) {
     scriptDao.reset();
-    config.getLocalTransaction().begin();
+    config.getLocalTransactionManager().getTransaction().begin();
   }
 
   @Override
   public void afterTestExecution(ExtensionContext context) {
-    config.getLocalTransaction().rollback();
+    config.getLocalTransactionManager().getTransaction().rollback();
   }
 
   @Override
