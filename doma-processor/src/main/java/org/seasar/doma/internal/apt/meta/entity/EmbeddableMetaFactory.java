@@ -50,7 +50,7 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
@@ -59,9 +59,9 @@ import org.seasar.doma.message.Message;
 
 public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public EmbeddableMetaFactory(Context ctx) {
+  public EmbeddableMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }
@@ -104,9 +104,9 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
   protected static class DefaultStrategy implements Strategy {
 
-    final Context ctx;
+    final RoundContext ctx;
 
-    DefaultStrategy(Context ctx) {
+    DefaultStrategy(RoundContext ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
     }
@@ -296,7 +296,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
-    AllArgsConstructorStrategy(Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
+    AllArgsConstructorStrategy(RoundContext ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
       super(ctx);
       assertNotNull(allArgsConstructorAnnot);
       this.allArgsConstructorAnnot = allArgsConstructorAnnot;
@@ -335,7 +335,7 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     final ValueAnnot valueAnnot;
 
-    ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+    ValueStrategy(RoundContext ctx, ValueAnnot valueAnnot) {
       super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 
 class DeclarationsTest extends CompilerSupport {
@@ -45,7 +46,7 @@ class DeclarationsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newPrimitiveBooleanTypeDeclaration();
             assertNotNull(typeDeclaration);
@@ -60,7 +61,7 @@ class DeclarationsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(List.class);
             assertNotNull(typeDeclaration);
             assertTrue(
@@ -74,7 +75,7 @@ class DeclarationsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(List.class);
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(type);
             assertNotNull(typeDeclaration);
@@ -89,7 +90,7 @@ class DeclarationsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(List.class);
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(typeElement);
             assertNotNull(typeDeclaration);

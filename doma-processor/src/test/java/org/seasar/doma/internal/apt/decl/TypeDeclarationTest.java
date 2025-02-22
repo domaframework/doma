@@ -28,6 +28,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 
 class TypeDeclarationTest extends CompilerSupport {
@@ -75,7 +76,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             boolean isSameType =
@@ -91,7 +92,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(Inner.class);
             assertEquals(
                 testClass.getName() + "$" + Inner.class.getSimpleName(),
@@ -105,7 +106,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertFalse(typeDeclaration.isUnknownType());
@@ -113,7 +114,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newUnknownTypeDeclaration();
             assertTrue(typeDeclaration.isUnknownType());
           }
@@ -125,7 +126,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror nullType = ctx.getMoreTypes().getNullType();
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(nullType);
             assertTrue(typeDeclaration.isNullType());
@@ -138,7 +139,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Boolean.class);
             assertTrue(typeDeclaration.isBooleanType());
@@ -146,7 +147,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(boolean.class);
             assertTrue(typeDeclaration.isBooleanType());
@@ -154,7 +155,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertFalse(typeDeclaration.isBooleanType());
@@ -167,14 +168,14 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(int.class);
             assertFalse(typeDeclaration.isTextType());
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertTrue(typeDeclaration.isTextType());
@@ -182,14 +183,14 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(char.class);
             assertTrue(typeDeclaration.isTextType());
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Character.class);
             assertTrue(typeDeclaration.isTextType());
@@ -202,14 +203,14 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(int.class);
             assertTrue(typeDeclaration.isNumberType());
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Integer.class);
             assertTrue(typeDeclaration.isNumberType());
@@ -217,7 +218,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(BigDecimal.class);
             assertTrue(typeDeclaration.isNumberType());
@@ -225,7 +226,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertFalse(typeDeclaration.isNumberType());
@@ -238,7 +239,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertTrue(typeDeclaration.is(String.class));
@@ -246,7 +247,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             assertFalse(typeDeclaration.is(Integer.class));
@@ -260,7 +261,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             List<TypeParameterDeclaration> typeParams =
@@ -270,7 +271,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             Optional<FieldDeclaration> field =
                 typeDeclaration.getFieldDeclaration("myFunctionField");
@@ -304,7 +305,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Number.class);
             List<TypeParameterDeclaration> typeParams =
@@ -314,7 +315,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             List<TypeParameterDeclaration> typeParams =
@@ -336,7 +337,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             Optional<ConstructorDeclaration> constructorDeclaration =
@@ -346,7 +347,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(String.class);
             TypeDeclaration arg1 = ctx.getDeclarations().newTypeDeclaration(Object.class);
@@ -363,7 +364,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             Optional<FieldDeclaration> fieldDeclaration =
                 typeDeclaration.getFieldDeclaration("myField");
@@ -375,7 +376,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             Optional<FieldDeclaration> fieldDeclaration =
                 typeDeclaration.getFieldDeclaration("noSuchField");
@@ -390,7 +391,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             Optional<FieldDeclaration> fieldDeclaration =
                 typeDeclaration.getStaticFieldDeclaration("myStaticField");
@@ -402,7 +403,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             Optional<FieldDeclaration> fieldDeclaration =
                 typeDeclaration.getStaticFieldDeclaration("noSuchField");
@@ -417,7 +418,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             TypeDeclaration parameterDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Integer.class);
@@ -433,7 +434,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             TypeDeclaration parameterDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Integer.class);
@@ -451,7 +452,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             TypeDeclaration parameterDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Integer.class);
@@ -467,7 +468,7 @@ class TypeDeclarationTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(testClass);
             TypeDeclaration parameterDeclaration =
                 ctx.getDeclarations().newTypeDeclaration(Integer.class);
@@ -484,7 +485,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration left = ctx.getDeclarations().newTypeDeclaration(String.class);
             TypeDeclaration right = ctx.getDeclarations().newTypeDeclaration(String.class);
             TypeDeclaration result = left.emulateConcatOperation(right);
@@ -499,7 +500,7 @@ class TypeDeclarationTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeDeclaration left = ctx.getDeclarations().newTypeDeclaration(Integer.class);
             TypeDeclaration right = ctx.getDeclarations().newTypeDeclaration(BigDecimal.class);
             TypeDeclaration result = left.emulateArithmeticOperation(right);

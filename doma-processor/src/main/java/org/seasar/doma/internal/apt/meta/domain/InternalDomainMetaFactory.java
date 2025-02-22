@@ -37,7 +37,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.DomainAnnot;
 import org.seasar.doma.internal.apt.annot.ValueAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -48,9 +48,9 @@ import org.seasar.doma.message.Message;
 
 public class InternalDomainMetaFactory implements TypeElementMetaFactory<InternalDomainMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public InternalDomainMetaFactory(Context ctx) {
+  public InternalDomainMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }
@@ -99,9 +99,9 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
 
   protected static class DefaultStrategy implements Strategy {
 
-    final Context ctx;
+    final RoundContext ctx;
 
-    DefaultStrategy(Context ctx) {
+    DefaultStrategy(RoundContext ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
     }
@@ -355,7 +355,7 @@ public class InternalDomainMetaFactory implements TypeElementMetaFactory<Interna
 
     final ValueAnnot valueAnnot;
 
-    ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+    ValueStrategy(RoundContext ctx, ValueAnnot valueAnnot) {
       super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;

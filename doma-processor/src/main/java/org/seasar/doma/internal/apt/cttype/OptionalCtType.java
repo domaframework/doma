@@ -18,13 +18,13 @@ package org.seasar.doma.internal.apt.cttype;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class OptionalCtType extends AbstractCtType {
 
   private final CtType elementCtType;
 
-  OptionalCtType(Context ctx, TypeMirror type, CtType elementCtType) {
+  OptionalCtType(RoundContext ctx, TypeMirror type, CtType elementCtType) {
     super(ctx, type);
     assertNotNull(elementCtType);
     this.elementCtType = elementCtType;

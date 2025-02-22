@@ -25,6 +25,7 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
@@ -39,7 +40,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -64,7 +65,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -89,7 +90,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testIf");
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
@@ -114,7 +115,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testIfSuppressed");
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
@@ -139,7 +140,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testIfAndEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -168,7 +169,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testIfAndEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -195,7 +196,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -220,7 +221,7 @@ class BatchSqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =

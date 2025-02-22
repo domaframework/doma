@@ -44,7 +44,7 @@ import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.Annot;
 import org.seasar.doma.internal.apt.annot.AnnotateWithAnnot;
 import org.seasar.doma.internal.apt.annot.BatchModifyAnnot;
@@ -92,12 +92,12 @@ import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final List<BiFunction<TypeElement, ExecutableElement, QueryMetaFactory>> providers =
       new ArrayList<>(15);
 
-  public DaoMetaFactory(Context ctx) {
+  public DaoMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
     providers.add((dao, method) -> new SqlFileSelectQueryMetaFactory(ctx, dao, method));

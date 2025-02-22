@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.error;
+package org.seasar.doma.internal.apt.processor;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.message.Message;
 
-class AbstractProcessorTest extends CompilerSupport {
+class ElementProcessorSupportTest extends CompilerSupport {
 
   @BeforeEach
   void beforeEach() {
@@ -39,7 +39,7 @@ class AbstractProcessorTest extends CompilerSupport {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(
-        new MyProcessor(
+        new MyAnnotationProcessor(
             __ -> {
               throw new AptIllegalStateException("hoge");
             }));
@@ -56,7 +56,7 @@ class AbstractProcessorTest extends CompilerSupport {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(
-        new MyProcessor(
+        new MyAnnotationProcessor(
             __ -> {
               throw new NullPointerException("hoge");
             }));
@@ -73,7 +73,7 @@ class AbstractProcessorTest extends CompilerSupport {
     Class<?> target = Person.class;
     addCompilationUnit(target);
     addProcessor(
-        new MyProcessor(
+        new MyAnnotationProcessor(
             __ -> {
               throw new AssertionError("hoge");
             }));

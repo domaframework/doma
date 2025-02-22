@@ -26,14 +26,14 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Transient;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 
 public class EntityPropertyNameCollector {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public EntityPropertyNameCollector(Context ctx) {
+  public EntityPropertyNameCollector(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }

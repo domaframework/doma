@@ -33,15 +33,15 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.util.Zip;
 
 public class Declarations {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public Declarations(Context ctx) {
+  public Declarations(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }

@@ -30,7 +30,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.ExpressionParser;
@@ -54,7 +54,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
 
   private static final int SQL_MAX_LENGTH = 5000;
 
-  protected final Context ctx;
+  protected final RoundContext ctx;
 
   protected final ExecutableElement methodElement;
 
@@ -69,7 +69,7 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
   private final ExpressionValidator expressionValidator;
 
   public SqlValidator(
-      Context ctx,
+      RoundContext ctx,
       ExecutableElement methodElement,
       LinkedHashMap<String, TypeMirror> parameterTypeMap,
       String path,

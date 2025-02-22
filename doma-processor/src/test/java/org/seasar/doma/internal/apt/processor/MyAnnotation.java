@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.error;
+package org.seasar.doma.internal.apt.processor;
 
-@MyAnnotation
-public class Person {}
+public @interface MyAnnotation {}

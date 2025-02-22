@@ -30,14 +30,11 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.cdi.ApplicationScoped;
-import org.seasar.doma.internal.apt.processor.DaoProcessor;
-import org.seasar.doma.internal.apt.processor.DomainProcessor;
-import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.internal.apt.processor.entity.Emp;
 import org.seasar.doma.internal.apt.processor.entity.Emp2;
 import org.seasar.doma.internal.apt.processor.entity.ImmutableEmp;
@@ -53,10 +50,9 @@ class DaoProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption("-Adoma.test=true");
 
-    addProcessor(new DaoProcessor());
+    addProcessor(new DomaProcessor());
 
-    // Process the dependent entities
-    addProcessor(new EntityProcessor());
+    // Add the dependent entities
     addCompilationUnit(Emp.class);
     addCompilationUnit(Emp2.class);
     addCompilationUnit(ImmutableEmp.class);
@@ -65,12 +61,10 @@ class DaoProcessorTest extends CompilerSupport {
     addCompilationUnit(Issue214Entity.class);
     addCompilationUnit(ParentEntity.class);
 
-    // Process the dependent embeddables
-    addProcessor(new EmbeddableProcessor());
+    // Add the dependent embeddables
     addCompilationUnit(UserAddress.class);
 
-    // Process the dependent domains
-    addProcessor(new DomainProcessor());
+    // Add the dependent domains
     addCompilationUnit(PhoneNumber.class);
     addCompilationUnit(JobType.class);
     addCompilationUnit(Age.class);

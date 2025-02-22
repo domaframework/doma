@@ -26,6 +26,7 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.expr.ExpressionParser;
@@ -42,7 +43,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -69,7 +70,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -91,7 +92,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -113,7 +114,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -139,7 +140,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -161,7 +162,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -184,7 +185,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -206,7 +207,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -229,7 +230,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -256,7 +257,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -284,7 +285,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -307,7 +308,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -334,7 +335,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -362,7 +363,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -384,7 +385,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -411,7 +412,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -434,7 +435,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -457,7 +458,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -484,7 +485,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -511,7 +512,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -539,7 +540,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -566,7 +567,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -588,7 +589,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -611,7 +612,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -634,7 +635,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -657,7 +658,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -680,7 +681,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -703,7 +704,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -726,7 +727,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -748,7 +749,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -771,7 +772,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -794,7 +795,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -817,7 +818,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPerson", Person.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
@@ -840,7 +841,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -863,7 +864,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -886,7 +887,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -908,7 +909,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -930,7 +931,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -952,7 +953,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -974,7 +975,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -1001,7 +1002,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =
@@ -1023,7 +1024,7 @@ class ExpressionValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testEmp", Emp.class);
             Map<String, TypeMirror> parameterTypeMap = createParameterTypeMap(methodElement);
             ExpressionValidator validator =

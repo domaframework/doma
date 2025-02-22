@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.cttype;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class BiFunctionCtType extends AbstractCtType {
 
@@ -29,7 +29,7 @@ public class BiFunctionCtType extends AbstractCtType {
   private final CtType resultCtType;
 
   BiFunctionCtType(
-      Context ctx,
+      RoundContext ctx,
       TypeMirror type,
       CtType firstArgCtType,
       CtType secondArgCtType,

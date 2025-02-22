@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import org.seasar.doma.EmbeddableTypeImplementation;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
@@ -38,7 +38,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
   private final EmbeddableMeta embeddableMeta;
 
   public EmbeddableTypeGenerator(
-      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
+      RoundContext ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
     super(ctx, className, printer);
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;

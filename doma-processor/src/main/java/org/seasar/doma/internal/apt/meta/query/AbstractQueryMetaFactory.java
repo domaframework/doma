@@ -27,7 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyNameCollector;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
@@ -35,13 +35,14 @@ import org.seasar.doma.message.Message;
 
 abstract class AbstractQueryMetaFactory<M extends AbstractQueryMeta> implements QueryMetaFactory {
 
-  final Context ctx;
+  final RoundContext ctx;
 
   final TypeElement daoElement;
 
   final ExecutableElement methodElement;
 
-  AbstractQueryMetaFactory(Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+  AbstractQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     assertNotNull(ctx, daoElement, methodElement);
     this.ctx = ctx;
     this.daoElement = daoElement;

@@ -17,50 +17,65 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
-import javax.lang.model.element.Name;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.AggregateStrategyTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.JavaFileGenerator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
 import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMetaFactory;
 
-@SupportedAnnotationTypes({"org.seasar.doma.AggregateStrategy"})
-@SupportedOptions({
-  Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH,
-})
-public class AggregateStrategyProcessor extends AbstractGeneratingProcessor<AggregateStrategyMeta> {
+public class AggregateStrategyProcessor implements ElementProcessor<AggregateStrategyMeta> {
 
-  public AggregateStrategyProcessor() {
-    super(AggregateStrategy.class);
+  private final RoundContext ctx;
+  private final ElementProcessorSupport<AggregateStrategyMeta> support;
+  private final AggregateStrategyMetaFactory factory;
+
+  public AggregateStrategyProcessor(RoundContext ctx) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.support = new ElementProcessorSupport<>(ctx, AggregateStrategy.class);
+    this.factory = new AggregateStrategyMetaFactory(ctx);
   }
 
   @Override
-  protected TypeElementMetaFactory<AggregateStrategyMeta> createTypeElementMetaFactory() {
+  public List<AggregateStrategyMeta> process(Set<? extends Element> elements) {
+    return support.processTypeElements(elements, this::processEach);
+  }
+
+  private AggregateStrategyMeta processEach(TypeElement typeElement) {
+    var meta = factory.createTypeElementMeta(typeElement);
+    if (!meta.isError()) {
+      generate(typeElement, meta);
+    }
+    return meta;
+  }
+
+  private void generate(TypeElement typeElement, AggregateStrategyMeta meta) {
+    var javaFileGenerator =
+        new JavaFileGenerator<>(ctx, this::createClassName, this::createGenerator);
+    javaFileGenerator.generate(typeElement, meta);
+  }
+
+  private TypeElementMetaFactory<AggregateStrategyMeta> createTypeElementMetaFactory() {
     return new AggregateStrategyMetaFactory(ctx);
   }
 
-  @Override
-  protected ClassName createClassName(TypeElement typeElement, AggregateStrategyMeta meta) {
+  private ClassName createClassName(TypeElement typeElement, AggregateStrategyMeta meta) {
     assertNotNull(typeElement, meta);
-    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
+    var binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     return ClassNames.newAggregateStrategyTypeClassName(binaryName);
   }
 
-  @Override
-  protected Generator createGenerator(
+  private Generator createGenerator(
       ClassName className, Printer printer, AggregateStrategyMeta meta) {
     assertNotNull(className, meta, printer);
     return new AggregateStrategyTypeGenerator(ctx, className, printer, meta);

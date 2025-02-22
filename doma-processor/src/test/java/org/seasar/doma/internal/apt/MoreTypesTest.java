@@ -55,7 +55,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(String.class);
             TypeElement typeElement = ctx.getMoreTypes().toTypeElement(type);
             assertNotNull(typeElement);
@@ -68,7 +68,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(String.class);
             DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(type);
             assertNotNull(declaredType);
@@ -81,7 +81,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(List.class);
             TypeParameterElement typeParameterElement =
                 typeElement.getTypeParameters().iterator().next();
@@ -97,7 +97,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror componentType = ctx.getMoreTypes().getTypeMirror(String.class);
             TypeMirror type = ctx.getMoreTypes().getArrayType(componentType);
             ArrayType arrayType = ctx.getMoreTypes().toArrayType(type);
@@ -111,7 +111,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror componentType = ctx.getMoreTypes().getTypeMirror(String.class);
             TypeMirror type = ctx.getMoreTypes().getArrayType(componentType);
             assertTrue(ctx.getMoreTypes().isArray(type));
@@ -124,7 +124,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror intType = ctx.getMoreTypes().getPrimitiveType(TypeKind.INT);
             assertEquals("int", ctx.getMoreTypes().getTypeName(intType));
             TypeMirror listType = ctx.getMoreElements().getTypeElement(List.class).asType();
@@ -133,7 +133,7 @@ class MoreTypesTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(NumberList.class);
             TypeParameterElement typeParameterElement =
                 typeElement.getTypeParameters().iterator().next();
@@ -147,7 +147,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getPrimitiveType(TypeKind.INT);
             TypeMirror t1 = ctx.getMoreTypes().boxIfPrimitive(type);
             TypeMirror t2 = ctx.getMoreTypes().getTypeMirror(Integer.class);
@@ -156,7 +156,7 @@ class MoreTypesTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror t1 = ctx.getMoreTypes().getTypeMirror(Integer.class);
             TypeMirror t2 = ctx.getMoreTypes().boxIfPrimitive(t1);
             assertTrue(ctx.getMoreTypes().isSameType(t1, t2));
@@ -169,7 +169,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(int.class);
             assertNotNull(type);
             assertEquals("int", type.toString());
@@ -177,7 +177,7 @@ class MoreTypesTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(String.class);
             assertNotNull(type);
             assertEquals("java.lang.String", type.toString());
@@ -185,7 +185,7 @@ class MoreTypesTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(String[].class);
             assertNotNull(type);
             assertEquals("java.lang.String[]", type.toString());
@@ -198,7 +198,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement listTypeElement = ctx.getMoreElements().getTypeElement(List.class);
             TypeMirror stringType = ctx.getMoreTypes().getTypeMirror(String.class);
             TypeMirror t1 = ctx.getMoreTypes().getDeclaredType(listTypeElement, stringType);
@@ -217,7 +217,7 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement listTypeElement = ctx.getMoreElements().getTypeElement(List.class);
             TypeMirror stringType = ctx.getMoreTypes().getTypeMirror(String.class);
             TypeMirror t1 = ctx.getMoreTypes().getDeclaredType(listTypeElement, stringType);
@@ -234,28 +234,28 @@ class MoreTypesTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getPrimitiveType(TypeKind.INT);
             assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(type, int.class));
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getNoType(TypeKind.VOID);
             assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(type, void.class));
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(int[].class);
             assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(type, int[].class));
           }
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeMirror type = ctx.getMoreTypes().getTypeMirror(String[].class);
             assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(type, String[].class));
           }

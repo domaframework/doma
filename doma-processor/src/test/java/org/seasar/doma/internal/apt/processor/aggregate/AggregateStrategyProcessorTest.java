@@ -30,11 +30,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.AggregateStrategyProcessor;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.message.Message;
 
 class AggregateStrategyProcessorTest extends CompilerSupport {
@@ -43,13 +42,11 @@ class AggregateStrategyProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption("-Adoma.test=true");
 
-    addProcessor(new EntityProcessor());
+    addProcessor(new DomaProcessor());
     addCompilationUnit(Emp.class);
     addCompilationUnit(Dept.class);
     addCompilationUnit(Address.class);
     addCompilationUnit(ChildEntity.class);
-
-    addProcessor(new AggregateStrategyProcessor());
   }
 
   @TestTemplate

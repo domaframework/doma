@@ -31,8 +31,8 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.Sql;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.message.Message;
 
 /** Test case for {@link Sql} */
@@ -41,7 +41,7 @@ class SqlTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
-    addProcessor(new DaoProcessor());
+    addProcessor(new DomaProcessor());
   }
 
   @Test

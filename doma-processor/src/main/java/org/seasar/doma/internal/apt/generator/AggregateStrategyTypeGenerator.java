@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Iterator;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
 import org.seasar.doma.internal.apt.meta.aggregate.AssociationLinkerMeta;
 import org.seasar.doma.jdbc.aggregate.AbstractAggregateStrategyType;
@@ -30,7 +30,7 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
   private final AggregateStrategyMeta strategyMeta;
 
   public AggregateStrategyTypeGenerator(
-      Context ctx, ClassName className, Printer printer, AggregateStrategyMeta strategyMeta) {
+      RoundContext ctx, ClassName className, Printer printer, AggregateStrategyMeta strategyMeta) {
     super(ctx, className, printer);
     assertNotNull(strategyMeta);
     this.strategyMeta = strategyMeta;

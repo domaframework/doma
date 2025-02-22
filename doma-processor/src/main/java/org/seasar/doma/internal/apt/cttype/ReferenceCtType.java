@@ -16,13 +16,13 @@
 package org.seasar.doma.internal.apt.cttype;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class ReferenceCtType extends AbstractCtType {
 
   private final CtType referentCtType;
 
-  ReferenceCtType(Context ctx, TypeMirror type, CtType referentCtType) {
+  ReferenceCtType(RoundContext ctx, TypeMirror type, CtType referentCtType) {
     super(ctx, type);
     this.referentCtType = referentCtType;
   }

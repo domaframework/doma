@@ -27,7 +27,7 @@ import javax.lang.model.type.TypeKind;
 import org.seasar.doma.AnnotationTarget;
 import org.seasar.doma.DaoImplementation;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AnnotationAnnot;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.ParentDaoMeta;
@@ -47,7 +47,7 @@ public class DaoImplGenerator extends AbstractGenerator {
   private final CharSequence parentDaoClassName;
 
   public DaoImplGenerator(
-      Context ctx,
+      RoundContext ctx,
       ClassName className,
       Printer printer,
       DaoMeta daoMeta,

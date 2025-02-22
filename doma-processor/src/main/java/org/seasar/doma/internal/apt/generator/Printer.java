@@ -25,7 +25,7 @@ import java.util.Formatter;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class Printer {
 
@@ -33,11 +33,11 @@ public class Printer {
 
   private final StringBuilder indentBuffer = new StringBuilder();
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final Formatter formatter;
 
-  public Printer(Context ctx, Formatter formatter) {
+  public Printer(RoundContext ctx, Formatter formatter) {
     assertNotNull(ctx, formatter);
     this.ctx = ctx;
     this.formatter = formatter;

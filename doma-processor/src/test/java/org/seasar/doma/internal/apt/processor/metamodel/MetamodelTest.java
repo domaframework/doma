@@ -31,11 +31,9 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.DomainProcessor;
-import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.message.Message;
 
 class MetamodelTest extends CompilerSupport {
@@ -43,14 +41,12 @@ class MetamodelTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
-    addProcessor(new EntityProcessor());
+    addProcessor(new DomaProcessor());
 
-    // Process the dependent domains
-    addProcessor(new DomainProcessor());
+    // Add the dependent domains
     addCompilationUnit(Name.class);
 
-    // Process the dependent embeddables
-    addProcessor(new EmbeddableProcessor());
+    // Add the dependent embeddables
     addCompilationUnit(EmpInfo.class);
   }
 

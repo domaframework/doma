@@ -19,14 +19,14 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
 public class EmbeddableCtType extends AbstractCtType {
 
   private final ClassName typeClassName;
 
-  EmbeddableCtType(Context ctx, TypeMirror type, ClassName typeClassName) {
+  EmbeddableCtType(RoundContext ctx, TypeMirror type, ClassName typeClassName) {
     super(ctx, type);
     assertNotNull(typeClassName);
     this.typeClassName = typeClassName;
