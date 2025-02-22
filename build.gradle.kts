@@ -117,7 +117,9 @@ subprojects {
     apply(plugin = "java")
 
     dependencies {
+        testImplementation(platform(catalog.junit.bom))
         testImplementation(catalog.junit.jupiter.api)
+        testRuntimeOnly(catalog.junit.platform.launcher)
         testRuntimeOnly(catalog.junit.jupiter.engine)
         testRuntimeOnly(catalog.apiguardian)
     }
