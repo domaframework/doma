@@ -23,7 +23,7 @@ import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.SelectType;
 import org.seasar.doma.Suppress;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.SelectAnnot;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.AggregateStrategyCtType;
@@ -48,7 +48,7 @@ public class SqlFileSelectQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileSelectQueryMeta> {
 
   public SqlFileSelectQueryMetaFactory(
-      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     super(ctx, daoElement, methodElement);
   }
 

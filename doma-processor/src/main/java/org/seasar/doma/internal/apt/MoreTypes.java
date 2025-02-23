@@ -43,11 +43,11 @@ import javax.lang.model.util.Types;
 
 public class MoreTypes implements Types {
 
-  private final Context ctx;
+  private final ProcessingContext ctx;
 
   private final Types typeUtils;
 
-  public MoreTypes(Context ctx, Types typeUtils) {
+  public MoreTypes(ProcessingContext ctx, Types typeUtils) {
     assertNotNull(ctx, typeUtils);
     this.ctx = ctx;
     this.typeUtils = typeUtils;

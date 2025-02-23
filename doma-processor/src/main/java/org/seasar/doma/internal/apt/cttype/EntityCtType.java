@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
 public class EntityCtType extends AbstractCtType {
@@ -29,7 +29,7 @@ public class EntityCtType extends AbstractCtType {
 
   private final ClassName typeClassName;
 
-  EntityCtType(Context ctx, TypeMirror type, boolean immutable, ClassName typeClassName) {
+  EntityCtType(RoundContext ctx, TypeMirror type, boolean immutable, ClassName typeClassName) {
     super(ctx, type);
     assertNotNull(typeClassName);
     this.immutable = immutable;

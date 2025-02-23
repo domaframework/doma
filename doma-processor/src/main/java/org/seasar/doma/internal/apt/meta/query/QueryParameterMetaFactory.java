@@ -21,7 +21,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.CollectorCtType;
@@ -42,11 +42,11 @@ import org.seasar.doma.message.Message;
 
 class QueryParameterMetaFactory {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final VariableElement parameterElement;
 
-  public QueryParameterMetaFactory(Context ctx, VariableElement parameterElement) {
+  public QueryParameterMetaFactory(RoundContext ctx, VariableElement parameterElement) {
     assertNotNull(ctx, parameterElement);
     this.ctx = ctx;
     this.parameterElement = parameterElement;

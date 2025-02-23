@@ -32,7 +32,7 @@ import org.seasar.doma.Version;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 import org.seasar.doma.internal.apt.annot.TableGeneratorAnnot;
@@ -52,14 +52,14 @@ import org.seasar.doma.message.Message;
 
 class EntityPropertyMetaFactory {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final EntityMeta entityMeta;
 
   private final VariableElement fieldElement;
 
   public EntityPropertyMetaFactory(
-      Context ctx, EntityMeta entityMeta, VariableElement fieldElement) {
+      RoundContext ctx, EntityMeta entityMeta, VariableElement fieldElement) {
     assertNotNull(ctx, entityMeta, fieldElement);
     this.ctx = ctx;
     this.entityMeta = entityMeta;

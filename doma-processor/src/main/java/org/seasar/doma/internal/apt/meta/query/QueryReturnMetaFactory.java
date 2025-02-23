@@ -20,17 +20,17 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
 class QueryReturnMetaFactory {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final ExecutableElement methodElement;
 
-  public QueryReturnMetaFactory(Context ctx, QueryMeta queryMeta) {
+  public QueryReturnMetaFactory(RoundContext ctx, QueryMeta queryMeta) {
     assertNotNull(ctx, queryMeta);
     this.ctx = ctx;
     methodElement = queryMeta.getMethodElement();

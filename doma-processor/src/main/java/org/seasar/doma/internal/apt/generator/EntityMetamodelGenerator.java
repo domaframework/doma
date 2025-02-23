@@ -26,7 +26,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
@@ -46,7 +46,7 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
   private final ClassName entityTypeName;
 
   public EntityMetamodelGenerator(
-      Context ctx,
+      RoundContext ctx,
       ClassName className,
       Printer printer,
       EntityMeta entityMeta,

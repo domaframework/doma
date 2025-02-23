@@ -15,15 +15,13 @@ dependencies {
     }
 }
 
-val commonArgs = listOf(
-    "-Adoma.domain.converters=org.seasar.doma.it.domain.CommonDomainConverterProvider",
-)
+val commonArgs = listOf<String>()
 
 // The processors are not automatically detected, so it must be explicitly specified.
 val ecjArgs = listOf(
     "-processor",
     listOf(
-        "org.seasar.doma.internal.apt.processor.ExternalDomainProcessor",
+        "org.seasar.doma.internal.apt.DomaProcessor",
     ).joinToString(","),
 )
 

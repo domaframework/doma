@@ -70,7 +70,7 @@ import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
 import org.seasar.doma.internal.util.Pair;
@@ -119,9 +119,9 @@ import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class CtTypes {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public CtTypes(Context ctx) {
+  public CtTypes(RoundContext ctx) {
     this.ctx = ctx;
   }
 
@@ -307,17 +307,25 @@ public class CtTypes {
   }
 
   private DomainInfo getExternalDomainInfo(TypeMirror domainType) {
-    DomainInfo info = getExternalDomainInfoFromMetadata(domainType);
+    DomainInfo info = getExternalDomainInfoFromOptions(domainType);
     if (info != null) {
       return info;
     }
-    return getExternalDomainInfoFromConverterType(domainType);
+    info = getExternalDomainInfoFromMetadata(domainType);
+    if (info != null) {
+      return info;
+    }
+    return getExternalDomainInfoFromRoundContext(domainType);
   }
 
-  /**
-   * This method searches for metadata of an External Domain class, extracts the relevant
-   * information, and returns it as a DomainInfo.
-   */
+  private DomainInfo getExternalDomainInfoFromRoundContext(TypeMirror domainType) {
+    return ctx.getExternalDomainMetaList().stream()
+        .filter(it -> ctx.getMoreTypes().isSameTypeWithErasure(it.asType(), domainType))
+        .findFirst()
+        .map(it -> new DomainInfo(it.getValueType(), true))
+        .orElse(null);
+  }
+
   private DomainInfo getExternalDomainInfoFromMetadata(TypeMirror domainType) {
     TypeElement domainTypeElement = ctx.getMoreTypes().toTypeElement(domainType);
     if (domainTypeElement == null) {
@@ -356,7 +364,7 @@ public class CtTypes {
     return null;
   }
 
-  private DomainInfo getExternalDomainInfoFromConverterType(TypeMirror domainType) {
+  private DomainInfo getExternalDomainInfoFromOptions(TypeMirror domainType) {
     String csv = ctx.getOptions().getDomainConverters();
     if (csv != null) {
       for (String value : csv.split(",")) {

@@ -32,7 +32,7 @@ import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.DataTypeAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
@@ -41,9 +41,9 @@ import org.seasar.doma.message.Message;
 
 public class DataTypeMetaFactory implements TypeElementMetaFactory<DataTypeMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public DataTypeMetaFactory(Context ctx) {
+  public DataTypeMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }

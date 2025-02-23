@@ -15,56 +15,37 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.DomainConverters;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Options;
-import org.seasar.doma.internal.apt.annot.DomainConvertersAnnot;
+import org.seasar.doma.internal.apt.RoundContext;
+import org.seasar.doma.internal.apt.meta.NullElementMeta;
 import org.seasar.doma.message.Message;
 
-/**
- * @author taedium
- * @since 1.25.0
- */
-@SupportedAnnotationTypes({"org.seasar.doma.DomainConverters"})
-@SupportedOptions({
-  Options.RESOURCES_DIR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH
-})
-public class DomainConvertersProcessor extends AbstractProcessor {
+public class DomainConvertersProcessor implements ElementProcessor<NullElementMeta> {
 
-  public DomainConvertersProcessor() {
-    super(DomainConverters.class);
+  private final RoundContext ctx;
+  private final ElementProcessorSupport<NullElementMeta> support;
+
+  public DomainConvertersProcessor(RoundContext ctx) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.support = new ElementProcessorSupport<>(ctx, DomainConverters.class);
   }
 
   @Override
-  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      return true;
-    }
-    for (TypeElement a : annotations) {
-      for (TypeElement typeElement : ElementFilter.typesIn(roundEnv.getElementsAnnotatedWith(a))) {
-        handleTypeElement(typeElement, this::validate);
-      }
-    }
-    return true;
+  public List<NullElementMeta> process(Set<? extends Element> elements) {
+    return support.processTypeElements(elements, this::validateEach);
   }
 
-  protected void validate(TypeElement typeElement) {
-    DomainConvertersAnnot convertersMirror =
-        ctx.getAnnotations().newDomainConvertersAnnot(typeElement);
-    for (TypeMirror convType : convertersMirror.getValueValue()) {
-      TypeElement convElement = ctx.getMoreTypes().toTypeElement(convType);
+  private NullElementMeta validateEach(TypeElement typeElement) {
+    var convertersMirror = ctx.getAnnotations().newDomainConvertersAnnot(typeElement);
+    for (var convType : convertersMirror.getValueValue()) {
+      var convElement = ctx.getMoreTypes().toTypeElement(convType);
       if (convElement == null) {
         continue;
       }
@@ -76,5 +57,6 @@ public class DomainConvertersProcessor extends AbstractProcessor {
             new Object[] {convElement.getQualifiedName()});
       }
     }
+    return NullElementMeta.INSTANCE;
   }
 }

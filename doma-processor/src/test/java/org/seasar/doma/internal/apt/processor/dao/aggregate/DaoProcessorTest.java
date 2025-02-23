@@ -30,12 +30,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.AggregateStrategyProcessor;
-import org.seasar.doma.internal.apt.processor.DaoProcessor;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.internal.apt.processor.entity.ChildEntity;
 import org.seasar.doma.message.Message;
 
@@ -45,14 +43,12 @@ class DaoProcessorTest extends CompilerSupport {
   void beforeEach() {
     addOption("-Adoma.test=true");
 
-    addProcessor(new DaoProcessor());
+    addProcessor(new DomaProcessor());
 
-    // Process the dependent entities
-    addProcessor(new EntityProcessor());
+    // Add the dependent entities
     addCompilationUnit(Emp.class, Dept.class, Address.class, ChildEntity.class);
 
-    // Process the dependent aggregate strategies
-    addProcessor(new AggregateStrategyProcessor());
+    // Add the dependent aggregate strategies
     addCompilationUnit(EmpStrategy.class);
   }
 

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.generator;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
@@ -38,7 +38,7 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   private final EntityPropertyMeta propertyMeta;
 
   EntityTypePropertyGenerator(
-      Context ctx,
+      RoundContext ctx,
       ClassName className,
       Printer printer,
       EntityMeta entityMeta,

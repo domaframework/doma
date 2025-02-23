@@ -54,13 +54,13 @@ import org.seasar.doma.internal.util.Zip;
 
 public class MoreElements implements Elements {
 
-  private final Context ctx;
+  private final ProcessingContext ctx;
 
   private final Elements elementUtils;
 
   private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
 
-  public MoreElements(Context ctx, Elements elementUtils) {
+  public MoreElements(ProcessingContext ctx, Elements elementUtils) {
     assertNotNull(ctx, elementUtils);
     this.ctx = ctx;
     this.elementUtils = elementUtils;

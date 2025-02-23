@@ -21,7 +21,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.List;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
 public class DomainCtType extends AbstractCtType {
@@ -33,7 +33,7 @@ public class DomainCtType extends AbstractCtType {
   private final ClassName typeClassName;
 
   DomainCtType(
-      Context ctx,
+      RoundContext ctx,
       TypeMirror type,
       BasicCtType basicCtType,
       List<CtType> typeArgCtTypes,

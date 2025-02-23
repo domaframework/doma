@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.generator.Code;
 
@@ -29,7 +29,7 @@ public class AggregateStrategyCtType extends AbstractCtType {
   private final AggregateStrategyAnnot aggregateStrategyAnnot;
 
   AggregateStrategyCtType(
-      Context ctx,
+      RoundContext ctx,
       TypeMirror type,
       ClassName typeClassName,
       AggregateStrategyAnnot aggregateStrategyAnnot) {

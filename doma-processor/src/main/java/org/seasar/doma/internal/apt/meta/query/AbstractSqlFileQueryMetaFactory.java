@@ -28,7 +28,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import org.seasar.doma.internal.WrapException;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.validator.SqlValidator;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
@@ -43,7 +43,7 @@ abstract class AbstractSqlFileQueryMetaFactory<M extends AbstractSqlFileQueryMet
     extends AbstractQueryMetaFactory<M> {
 
   AbstractSqlFileQueryMetaFactory(
-      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     super(ctx, daoElement, methodElement);
   }
 

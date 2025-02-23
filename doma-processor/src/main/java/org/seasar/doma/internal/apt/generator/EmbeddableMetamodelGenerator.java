@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
@@ -33,7 +33,7 @@ public class EmbeddableMetamodelGenerator extends AbstractGenerator {
   private final EmbeddableMeta embeddableMeta;
 
   public EmbeddableMetamodelGenerator(
-      Context ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
+      RoundContext ctx, ClassName className, Printer printer, EmbeddableMeta embeddableMeta) {
     super(ctx, className, printer);
     assertNotNull(embeddableMeta);
     this.embeddableMeta = embeddableMeta;

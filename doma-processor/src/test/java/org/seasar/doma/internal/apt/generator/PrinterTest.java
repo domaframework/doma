@@ -29,6 +29,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 
 class PrinterTest extends CompilerSupport {
@@ -52,7 +53,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
             printer.print("%1$s", String.class);
@@ -66,7 +67,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             TypeMirror typeMirror = typeElement.asType();
             Formatter formatter = new Formatter();
@@ -82,7 +83,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);
@@ -98,7 +99,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(testClass);
             VariableElement field =
                 ElementFilter.fieldsIn(typeElement.getEnclosedElements()).stream()
@@ -118,7 +119,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             TypeMirror typeMirror = typeElement.asType();
             List<Object> list =
@@ -143,7 +144,7 @@ class PrinterTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             Code code = new Code(p -> p.print("%1$s", String.class));
             Formatter formatter = new Formatter();
             Printer printer = new Printer(ctx, formatter);

@@ -16,12 +16,12 @@
 package org.seasar.doma.internal.apt.cttype;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class BatchResultCtType extends AbstractCtType {
   private final CtType elementCtType;
 
-  BatchResultCtType(Context ctx, TypeMirror type, CtType elementCtType) {
+  BatchResultCtType(RoundContext ctx, TypeMirror type, CtType elementCtType) {
     super(ctx, type);
     this.elementCtType = elementCtType;
   }

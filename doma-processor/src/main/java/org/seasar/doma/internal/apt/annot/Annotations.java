@@ -60,14 +60,14 @@ import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Table;
 import org.seasar.doma.TableGenerator;
 import org.seasar.doma.Update;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
 public class Annotations {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public Annotations(Context ctx) {
+  public Annotations(RoundContext ctx) {
     this.ctx = ctx;
   }
 

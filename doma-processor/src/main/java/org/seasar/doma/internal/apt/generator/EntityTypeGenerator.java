@@ -23,7 +23,7 @@ import java.util.function.BiFunction;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.EntityTypeImplementation;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
@@ -60,7 +60,7 @@ public class EntityTypeGenerator extends AbstractGenerator {
   private final EntityMeta entityMeta;
 
   public EntityTypeGenerator(
-      Context ctx, ClassName className, Printer printer, EntityMeta entityMeta) {
+      RoundContext ctx, ClassName className, Printer printer, EntityMeta entityMeta) {
     super(ctx, className, printer);
     assertNotNull(entityMeta);
     this.entityMeta = entityMeta;

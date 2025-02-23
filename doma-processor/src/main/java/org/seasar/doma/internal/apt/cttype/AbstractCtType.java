@@ -21,11 +21,11 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public abstract class AbstractCtType implements CtType {
 
-  protected final Context ctx;
+  protected final RoundContext ctx;
 
   protected final TypeMirror type;
 
@@ -35,7 +35,7 @@ public abstract class AbstractCtType implements CtType {
 
   protected final String simpleName;
 
-  protected AbstractCtType(Context ctx, TypeMirror type) {
+  protected AbstractCtType(RoundContext ctx, TypeMirror type) {
     assertNotNull(ctx, type);
     this.ctx = ctx;
     this.type = type;

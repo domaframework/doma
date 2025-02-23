@@ -34,8 +34,8 @@ import java.util.Optional;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
 import org.seasar.doma.internal.apt.MoreTypes;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.ArrayCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -66,7 +66,7 @@ public class TypeDeclaration {
     NUMBER_PRIORITY_MAP.put(Byte.class.getName(), 10);
   }
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final TypeMirror type;
 
@@ -79,7 +79,7 @@ public class TypeDeclaration {
   private final int numberPriority;
 
   protected TypeDeclaration(
-      Context ctx,
+      RoundContext ctx,
       TypeMirror type,
       CtType ctType,
       TypeElement typeElement,

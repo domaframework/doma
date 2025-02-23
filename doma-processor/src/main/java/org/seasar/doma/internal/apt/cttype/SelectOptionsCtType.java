@@ -16,11 +16,11 @@
 package org.seasar.doma.internal.apt.cttype;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class SelectOptionsCtType extends AbstractCtType {
 
-  SelectOptionsCtType(Context ctx, TypeMirror type) {
+  SelectOptionsCtType(RoundContext ctx, TypeMirror type) {
     super(ctx, type);
   }
 

@@ -13,6 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.error;
+package org.seasar.doma.internal.apt.meta;
 
-public @interface MyAnnotation {}
+public class NullElementMeta implements ElementMeta {
+
+  public static final NullElementMeta INSTANCE = new NullElementMeta();
+
+  private NullElementMeta() {}
+
+  @Override
+  public boolean isError() {
+    return false;
+  }
+}

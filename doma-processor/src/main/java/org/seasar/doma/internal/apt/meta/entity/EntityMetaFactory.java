@@ -50,7 +50,7 @@ import org.seasar.doma.Transient;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AllArgsConstructorAnnot;
 import org.seasar.doma.internal.apt.annot.EntityAnnot;
 import org.seasar.doma.internal.apt.annot.MetamodelAnnot;
@@ -67,9 +67,9 @@ import org.seasar.doma.message.Message;
 
 public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  public EntityMetaFactory(Context ctx) {
+  public EntityMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }
@@ -211,9 +211,9 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
   protected static class DefaultStrategy implements Strategy {
 
-    final Context ctx;
+    final RoundContext ctx;
 
-    DefaultStrategy(Context ctx) {
+    DefaultStrategy(RoundContext ctx) {
       assertNotNull(ctx);
       this.ctx = ctx;
     }
@@ -720,7 +720,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     final AllArgsConstructorAnnot allArgsConstructorAnnot;
 
-    AllArgsConstructorStrategy(Context ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
+    AllArgsConstructorStrategy(RoundContext ctx, AllArgsConstructorAnnot allArgsConstructorAnnot) {
       super(ctx);
       assertNotNull(allArgsConstructorAnnot);
       this.allArgsConstructorAnnot = allArgsConstructorAnnot;
@@ -777,7 +777,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
 
     final ValueAnnot valueAnnot;
 
-    ValueStrategy(Context ctx, ValueAnnot valueAnnot) {
+    ValueStrategy(RoundContext ctx, ValueAnnot valueAnnot) {
       super(ctx);
       assertNotNull(valueAnnot);
       this.valueAnnot = valueAnnot;

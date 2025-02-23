@@ -32,7 +32,7 @@ import javax.lang.model.util.ElementFilter;
 
 public abstract class TestProcessor extends AbstractProcessor {
 
-  protected Context ctx;
+  protected ProcessingContext ctx;
 
   private boolean handled;
 
@@ -41,7 +41,7 @@ public abstract class TestProcessor extends AbstractProcessor {
   @Override
   public synchronized void init(ProcessingEnvironment env) {
     super.init(env);
-    ctx = new Context(env);
+    ctx = new ProcessingContext(env);
     ctx.init();
   }
 
@@ -66,12 +66,13 @@ public abstract class TestProcessor extends AbstractProcessor {
     if (roundEnv.processingOver() || handled) {
       return true;
     }
-    run();
+    RoundContext roundContext = new RoundContext(ctx, roundEnv, annotations);
+    run(roundContext);
     handled = true;
     return false;
   }
 
-  protected abstract void run();
+  protected abstract void run(RoundContext roundContext);
 
   protected ExecutableElement createMethodElement(
       Class<?> clazz, String methodName, Class<?>... parameterClasses) {

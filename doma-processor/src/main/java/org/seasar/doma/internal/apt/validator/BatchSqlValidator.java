@@ -20,7 +20,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.Suppress;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.jdbc.sql.node.EmbeddedVariableNode;
 import org.seasar.doma.internal.jdbc.sql.node.ForNode;
 import org.seasar.doma.internal.jdbc.sql.node.IfNode;
@@ -37,7 +37,7 @@ public class BatchSqlValidator extends SqlValidator {
   private final Suppress suppress;
 
   public BatchSqlValidator(
-      Context ctx,
+      RoundContext ctx,
       ExecutableElement methodElement,
       LinkedHashMap<String, TypeMirror> parameterTypeMap,
       String path,

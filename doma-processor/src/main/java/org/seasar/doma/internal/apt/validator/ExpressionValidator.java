@@ -33,7 +33,7 @@ import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.decl.ConstructorDeclaration;
 import org.seasar.doma.internal.apt.decl.FieldDeclaration;
 import org.seasar.doma.internal.apt.decl.MethodDeclaration;
@@ -74,7 +74,7 @@ import org.seasar.doma.message.Message;
 
 public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaration, Void> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final ExecutableElement methodElement;
 
@@ -87,12 +87,12 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
   private final String exprFunctionsClassName;
 
   ExpressionValidator(
-      Context ctx, ExecutableElement methodElement, Map<String, TypeMirror> parameterTypeMap) {
+      RoundContext ctx, ExecutableElement methodElement, Map<String, TypeMirror> parameterTypeMap) {
     this(ctx, methodElement, parameterTypeMap, ctx.getOptions().getExprFunctions());
   }
 
   ExpressionValidator(
-      Context ctx,
+      RoundContext ctx,
       ExecutableElement methodElement,
       Map<String, TypeMirror> parameterTypeMap,
       String exprFunctionsClassName) {

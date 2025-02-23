@@ -22,7 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.message.Message;
 
 public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQueryMeta>
@@ -31,7 +31,10 @@ public abstract class AbstractCreateQueryMetaFactory<M extends AbstractCreateQue
   private final Class<?> returnClass;
 
   AbstractCreateQueryMetaFactory(
-      Context ctx, TypeElement daoElement, ExecutableElement methodElement, Class<?> returnClass) {
+      RoundContext ctx,
+      TypeElement daoElement,
+      ExecutableElement methodElement,
+      Class<?> returnClass) {
     super(ctx, daoElement, methodElement);
     assertNotNull(returnClass);
     this.returnClass = returnClass;

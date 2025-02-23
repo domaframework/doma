@@ -18,12 +18,12 @@ package org.seasar.doma.internal.apt.meta.query;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQueryMeta> {
 
   public DefaultQueryMetaFactory(
-      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     super(ctx, daoElement, methodElement);
   }
 

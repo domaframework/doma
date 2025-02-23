@@ -22,7 +22,7 @@ import org.seasar.doma.In;
 import org.seasar.doma.InOut;
 import org.seasar.doma.Out;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ResultSetAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
@@ -42,7 +42,8 @@ import org.seasar.doma.message.Message;
 public abstract class AutoModuleQueryMetaFactory<M extends AutoModuleQueryMeta>
     extends AbstractQueryMetaFactory<M> {
 
-  AutoModuleQueryMetaFactory(Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+  AutoModuleQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     super(ctx, daoElement, methodElement);
   }
 

@@ -24,19 +24,21 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 import org.seasar.doma.internal.util.IOUtil;
 import org.seasar.doma.message.Message;
 
 public class JavaFileGenerator<M extends TypeElementMeta> {
 
-  private final Context ctx;
+  private final RoundContext ctx;
   private final ClassNameFactory<M> classNameFactory;
   private final GeneratorFactory<M> generatorFactory;
 
   public JavaFileGenerator(
-      Context ctx, ClassNameFactory<M> classNameFactory, GeneratorFactory<M> generatorFactory) {
+      RoundContext ctx,
+      ClassNameFactory<M> classNameFactory,
+      GeneratorFactory<M> generatorFactory) {
     this.ctx = Objects.requireNonNull(ctx);
     this.classNameFactory = Objects.requireNonNull(classNameFactory);
     this.generatorFactory = Objects.requireNonNull(generatorFactory);

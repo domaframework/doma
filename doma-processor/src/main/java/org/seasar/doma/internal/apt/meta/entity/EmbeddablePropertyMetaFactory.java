@@ -19,18 +19,18 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.cttype.*;
 import org.seasar.doma.message.Message;
 
 class EmbeddablePropertyMetaFactory {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
   private final VariableElement fieldElement;
 
-  public EmbeddablePropertyMetaFactory(Context ctx, VariableElement fieldElement) {
+  public EmbeddablePropertyMetaFactory(RoundContext ctx, VariableElement fieldElement) {
     assertNotNull(ctx, fieldElement);
     this.ctx = ctx;
     this.fieldElement = fieldElement;

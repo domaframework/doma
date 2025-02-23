@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +30,11 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.seasar.doma.internal.apt.AnnotationTypes;
 import org.seasar.doma.internal.apt.CompilationUnitsParameterResolver;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.ScopeProcessor;
 import org.seasar.doma.message.Message;
 
 public class ScopeProcessorTest extends CompilerSupport {
@@ -40,12 +42,17 @@ public class ScopeProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
-    addProcessor(new ScopeProcessor());
+    addProcessor(
+        new DomaProcessor() {
+          @Override
+          public Set<String> getSupportedAnnotationTypes() {
+            return Set.of(AnnotationTypes.SCOPE);
+          }
+        });
   }
 
   @Test
   void success() throws Exception {
-    addCompilationUnit(Item.class);
     addCompilationUnit(ItemScope.class);
     compile();
     assertTrue(getCompiledResult());

@@ -16,11 +16,11 @@
 package org.seasar.doma.internal.apt.cttype;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class MapCtType extends AbstractCtType {
 
-  MapCtType(Context ctx, TypeMirror type) {
+  MapCtType(RoundContext ctx, TypeMirror type) {
     super(ctx, type);
   }
 

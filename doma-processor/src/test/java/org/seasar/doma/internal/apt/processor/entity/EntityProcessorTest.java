@@ -30,15 +30,12 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.lombok.AllArgsConstructor;
 import org.seasar.doma.internal.apt.lombok.Value;
-import org.seasar.doma.internal.apt.processor.DomainProcessor;
-import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
-import org.seasar.doma.internal.apt.processor.ExternalDomainProcessor;
 import org.seasar.doma.message.Message;
 
 class EntityProcessorTest extends CompilerSupport {
@@ -48,25 +45,22 @@ class EntityProcessorTest extends CompilerSupport {
     addOption(
         "-Adoma.test=true",
         "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
-    addProcessor(new EntityProcessor());
+    addProcessor(new DomaProcessor());
 
-    // Process the dependent domains
-    addProcessor(new DomainProcessor());
+    // Add the dependent domains
     addCompilationUnit(Identifier.class);
     addCompilationUnit(Name.class);
     addCompilationUnit(Names.class);
     addCompilationUnit(Ver.class);
     addCompilationUnit(Weight.class);
 
-    // Process the dependent external domains
-    addProcessor(new ExternalDomainProcessor());
+    // Add the dependent external domains
     addCompilationUnit(BranchConverter.class);
     addCompilationUnit(PrimaryKeyConverter.class);
     addCompilationUnit(VersionNoConverter.class);
     addCompilationUnit(StringArrayConverter.class);
 
-    // Process the dependent embeddables
-    addProcessor(new EmbeddableProcessor());
+    // Add the dependent embeddables
     addCompilationUnit(UserAddress.class);
   }
 

@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.cttype;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class CollectorCtType extends AbstractCtType {
 
@@ -26,7 +26,7 @@ public class CollectorCtType extends AbstractCtType {
 
   private final CtType returnCtType;
 
-  CollectorCtType(Context ctx, TypeMirror type, CtType targetCtType, CtType returnCtType) {
+  CollectorCtType(RoundContext ctx, TypeMirror type, CtType targetCtType, CtType returnCtType) {
     super(ctx, type);
     assertNotNull(targetCtType, returnCtType);
     this.targetCtType = targetCtType;

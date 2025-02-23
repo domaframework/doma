@@ -19,77 +19,85 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import org.seasar.doma.internal.apt.*;
+import org.seasar.doma.internal.apt.meta.ElementMeta;
 import org.seasar.doma.message.Message;
 
-public abstract class AbstractProcessor extends javax.annotation.processing.AbstractProcessor {
+class ElementProcessorSupport<M extends ElementMeta> {
 
-  protected final Class<? extends Annotation> supportedAnnotationType;
+  private final RoundContext ctx;
+  private final Class<? extends Annotation> supportedAnnotationType;
 
-  protected Context ctx;
-
-  protected AbstractProcessor(Class<? extends Annotation> supportedAnnotationType) {
-    this.supportedAnnotationType = supportedAnnotationType;
+  ElementProcessorSupport(RoundContext ctx, Class<? extends Annotation> supportedAnnotationType) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.supportedAnnotationType = Objects.requireNonNull(supportedAnnotationType);
   }
 
-  @Override
-  public synchronized void init(ProcessingEnvironment processingEnv) {
-    super.init(processingEnv);
-    ctx = new Context(processingEnv);
-    ctx.init();
+  List<M> processTypeElements(Set<? extends Element> elements, Function<TypeElement, M> handler) {
+    return ElementFilter.typesIn(elements).stream()
+        .map(it -> handleTypeElement(it, handler))
+        .filter(Objects::nonNull)
+        .filter(it -> !it.isError())
+        .toList();
   }
 
-  @Override
-  public SourceVersion getSupportedSourceVersion() {
-    return SourceVersion.latest();
+  List<M> processMethodElements(
+      Set<? extends Element> elements, Function<ExecutableElement, M> handler) {
+    return ElementFilter.methodsIn(elements).stream()
+        .map(it -> handleMethodElement(it, handler))
+        .filter(Objects::nonNull)
+        .filter(it -> !it.isError())
+        .toList();
   }
 
-  protected void handleTypeElement(TypeElement element, Consumer<TypeElement> handler) {
-    handleElement(element, handler, () -> element.getQualifiedName().toString());
+  private M handleTypeElement(TypeElement element, Function<TypeElement, M> handler) {
+    return handleElement(element, handler, () -> element.getQualifiedName().toString());
   }
 
-  protected void handleExecutableElement(
-      ExecutableElement element, Consumer<ExecutableElement> handler) {
-    handleElement(
+  private M handleMethodElement(ExecutableElement element, Function<ExecutableElement, M> handler) {
+    return handleElement(
         element,
         handler,
         () -> {
-          Element owner = element.getEnclosingElement();
+          var owner = element.getEnclosingElement();
           return owner + "#" + element.getSimpleName();
         });
   }
 
-  private <E extends Element> void handleElement(
-      E element, Consumer<E> handler, Supplier<String> elementNameSupplier) {
-    Annotation annotation = element.getAnnotation(supportedAnnotationType);
+  private <E extends Element> M handleElement(
+      E element, Function<E, M> handler, Supplier<String> elementNameSupplier) {
+    var annotation = element.getAnnotation(supportedAnnotationType);
     if (annotation == null) {
-      return;
+      return null;
     }
     if (ctx.getOptions().isDebugEnabled()) {
       ctx.getReporter()
           .debug(Message.DOMA4090, new Object[] {getClass().getName(), elementNameSupplier.get()});
     }
+    M result = null;
     try {
       if (ctx.getOptions().isTraceEnabled()) {
-        long startTime = System.nanoTime();
-        handler.accept(element);
-        long endTime = System.nanoTime();
-        long execTimeMillis = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+        var startTime = System.nanoTime();
+        result = handler.apply(element);
+        var endTime = System.nanoTime();
+        var execTimeMillis = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
         ctx.getReporter()
             .debug(
                 Message.DOMA4463,
                 new Object[] {execTimeMillis, getClass().getName(), elementNameSupplier.get()});
       } else {
-        handler.accept(element);
+        result = handler.apply(element);
       }
     } catch (AptException e) {
       ctx.getReporter().report(e);
@@ -109,6 +117,7 @@ public abstract class AbstractProcessor extends javax.annotation.processing.Abst
       ctx.getReporter()
           .debug(Message.DOMA4091, new Object[] {getClass().getName(), elementNameSupplier.get()});
     }
+    return result;
   }
 
   private String getStackTraceAsString(Throwable throwable) {
