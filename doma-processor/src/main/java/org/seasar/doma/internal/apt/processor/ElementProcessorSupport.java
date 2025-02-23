@@ -95,7 +95,9 @@ class ElementProcessorSupport<M extends ElementMeta> {
         ctx.getReporter()
             .debug(
                 Message.DOMA4463,
-                new Object[] {execTimeMillis, getClass().getName(), elementNameSupplier.get()});
+                new Object[] {
+                  execTimeMillis, supportedAnnotationType.getName(), elementNameSupplier.get()
+                });
       } else {
         result = handler.apply(element);
       }
