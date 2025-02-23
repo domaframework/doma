@@ -479,9 +479,7 @@ public enum Message implements MessageResource {
   DOMA4093("The field annotated with @Version must be numeric."),
   DOMA4095("The field annotated with @GeneratedValue must be numeric."),
   DOMA4096(
-      "The class \"{0}\" is not supported as a persistent type. "
-          + "If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. "
-          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+      "The class \"{0}\" is not supported as a persistent type. By using @ExternalDomain, you can make that type persistent."),
   DOMA4097("The return type must be {0}."),
   DOMA4098("The type of the parameter annotated with @Out must be org.seasar.doma.jdbc.Reference."),
   DOMA4100("{0} is illegal as the type argument of Reference."),
@@ -852,10 +850,7 @@ public enum Message implements MessageResource {
   DOMA4297(
       "The embeddable class \"{0}\" cannot be used as a persistent property in the embeddable class."),
   DOMA4298(
-      "The class \"{0}\" is not supported as a persistent type. "
-          + "If you intend to map the class to the external domain class with @ExternalDomain, "
-          + "the configuration may be not enough. "
-          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+      "The class \"{0}\" is not supported as a persistent type. By using @ExternalDomain, you can make that type persistent."),
   DOMA4299("The raw type of the class \"{0}\" cannot be used as a persistent property."),
   DOMA4301(
       "The type argument of the class \"{0}\" that is a wildcard or type variable cannot be used as a persistent property."),
