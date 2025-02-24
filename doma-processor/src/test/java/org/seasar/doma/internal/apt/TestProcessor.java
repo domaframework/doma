@@ -67,6 +67,7 @@ public abstract class TestProcessor extends AbstractProcessor {
       return true;
     }
     RoundContext roundContext = new RoundContext(ctx, roundEnv, annotations);
+    roundContext.init();
     run(roundContext);
     handled = true;
     return false;

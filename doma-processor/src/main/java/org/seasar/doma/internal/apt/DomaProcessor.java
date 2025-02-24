@@ -116,6 +116,7 @@ public class DomaProcessor extends AbstractProcessor {
     }
 
     var roundContext = new RoundContext(processingContext, roundEnv, annotations);
+    roundContext.init();
 
     for (var operator : operators) {
       var elements = roundContext.getElementsAnnotatedWith(operator.name);
