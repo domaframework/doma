@@ -30,6 +30,7 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.seasar.doma.internal.apt.CompilationUnitsParameterResolver;
 import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.GeneratedClassNameParameterResolver;
@@ -100,9 +101,9 @@ class ExternalDomainProcessorTest extends CompilerSupport {
 
   @TestTemplate
   @ExtendWith(ErrorInvocationContextProvider.class)
-  void error(Class<?> clazz, Message message, String... options) throws Exception {
+  void error(List<Class<?>> compilationUnits, Message message, String... options) throws Exception {
     addOption(options);
-    addCompilationUnit(clazz);
+    compilationUnits.forEach(this::addCompilationUnit);
     compile();
     assertFalse(getCompiledResult());
     assertMessage(message);
@@ -125,21 +126,27 @@ class ExternalDomainProcessorTest extends CompilerSupport {
           invocationContext(AbstractDomainConverter.class, Message.DOMA4192),
           invocationContext(MultidimensionalArrayConverter.class, Message.DOMA4447),
           invocationContext(ListArrayConverter.class, Message.DOMA4448),
-          invocationContext(BasicTypeConverter.class, Message.DOMA4460));
+          invocationContext(BasicTypeConverter.class, Message.DOMA4460),
+          invocationContext(List.of(URLConverter1.class, URLConverter2.class), Message.DOMA4490));
     }
 
     private TestTemplateInvocationContext invocationContext(
         Class<?> clazz, Message message, String... options) {
+      return invocationContext(List.of(clazz), message, options);
+    }
+
+    private TestTemplateInvocationContext invocationContext(
+        List<Class<?>> classes, Message message, String... options) {
       return new TestTemplateInvocationContext() {
         @Override
         public String getDisplayName(int invocationIndex) {
-          return clazz.getSimpleName();
+          return classes.get(0).getSimpleName();
         }
 
         @Override
         public List<Extension> getAdditionalExtensions() {
           return Arrays.asList(
-              new SimpleParameterResolver(clazz),
+              new CompilationUnitsParameterResolver(classes.toArray(new Class<?>[0])),
               new SimpleParameterResolver(message),
               new SimpleParameterResolver(options));
         }

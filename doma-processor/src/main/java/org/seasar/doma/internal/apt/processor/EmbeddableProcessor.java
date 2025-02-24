@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.lang.model.element.Element;
@@ -33,7 +32,7 @@ import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
-public class EmbeddableProcessor implements ElementProcessor<EmbeddableMeta> {
+public class EmbeddableProcessor implements ElementProcessor {
 
   private final RoundContext ctx;
   private final ElementProcessorSupport<EmbeddableMeta> support;
@@ -46,8 +45,8 @@ public class EmbeddableProcessor implements ElementProcessor<EmbeddableMeta> {
   }
 
   @Override
-  public List<EmbeddableMeta> process(Set<? extends Element> elements) {
-    return support.processTypeElements(elements, this::processEach);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, this::processEach);
   }
 
   private EmbeddableMeta processEach(TypeElement typeElement) {

@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor;
+package org.seasar.doma.internal.apt.processor.domain;
 
-import java.util.Set;
-import javax.lang.model.element.Element;
+import java.net.URL;
+import org.seasar.doma.ExternalDomain;
+import org.seasar.doma.jdbc.domain.DomainConverter;
 
-public interface ElementProcessor {
-  void process(Set<? extends Element> elements);
+@ExternalDomain
+public class URLConverter1 implements DomainConverter<URL, String> {
+
+  @Override
+  public String fromDomainToValue(URL url) {
+    return "";
+  }
+
+  @Override
+  public URL fromValueToDomain(String value) {
+    return null;
+  }
 }

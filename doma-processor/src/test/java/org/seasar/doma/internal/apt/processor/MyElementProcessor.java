@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import javax.lang.model.element.Element;
@@ -23,7 +22,7 @@ import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.NullElementMeta;
 
-public class MyElementProcessor implements ElementProcessor<NullElementMeta> {
+public class MyElementProcessor implements ElementProcessor {
 
   private final RoundContext ctx;
   private final Function<TypeElement, NullElementMeta> handler;
@@ -36,7 +35,7 @@ public class MyElementProcessor implements ElementProcessor<NullElementMeta> {
   }
 
   @Override
-  public List<NullElementMeta> process(Set<? extends Element> elements) {
-    return support.processTypeElements(elements, handler);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, handler);
   }
 }

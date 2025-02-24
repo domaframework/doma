@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import javax.lang.model.element.Element;
@@ -34,7 +33,7 @@ import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMetaFactory;
 import org.seasar.doma.internal.util.ClassUtil;
 
-public class DaoProcessor implements ElementProcessor<DaoMeta> {
+public class DaoProcessor implements ElementProcessor {
 
   private final RoundContext ctx;
   private final ElementProcessorSupport<DaoMeta> support;
@@ -53,8 +52,8 @@ public class DaoProcessor implements ElementProcessor<DaoMeta> {
   }
 
   @Override
-  public List<DaoMeta> process(Set<? extends Element> elements) {
-    return support.processTypeElements(elements, this::processEach);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, this::processEach);
   }
 
   private DaoMeta processEach(TypeElement typeElement) {

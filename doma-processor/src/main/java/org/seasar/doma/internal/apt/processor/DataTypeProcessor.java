@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import java.util.List;
 import java.util.Set;
 import javax.lang.model.element.Element;
 import org.seasar.doma.DataType;
@@ -23,7 +22,7 @@ import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.domain.DataTypeMeta;
 import org.seasar.doma.internal.apt.meta.domain.DataTypeMetaFactory;
 
-public class DataTypeProcessor implements ElementProcessor<DataTypeMeta> {
+public class DataTypeProcessor implements ElementProcessor {
 
   private final DomainProcessorSupport<DataTypeMeta> support;
 
@@ -32,7 +31,7 @@ public class DataTypeProcessor implements ElementProcessor<DataTypeMeta> {
   }
 
   @Override
-  public List<DataTypeMeta> process(Set<? extends Element> elements) {
-    return support.process(elements);
+  public void process(Set<? extends Element> elements) {
+    support.process(elements);
   }
 }

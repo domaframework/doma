@@ -17,7 +17,6 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.lang.model.element.Element;
@@ -34,7 +33,7 @@ import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
 import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMetaFactory;
 
-public class AggregateStrategyProcessor implements ElementProcessor<AggregateStrategyMeta> {
+public class AggregateStrategyProcessor implements ElementProcessor {
 
   private final RoundContext ctx;
   private final ElementProcessorSupport<AggregateStrategyMeta> support;
@@ -47,8 +46,8 @@ public class AggregateStrategyProcessor implements ElementProcessor<AggregateStr
   }
 
   @Override
-  public List<AggregateStrategyMeta> process(Set<? extends Element> elements) {
-    return support.processTypeElements(elements, this::processEach);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, this::processEach);
   }
 
   private AggregateStrategyMeta processEach(TypeElement typeElement) {

@@ -25,7 +25,6 @@ import static org.seasar.doma.internal.apt.AnnotationTypes.ENTITY;
 import static org.seasar.doma.internal.apt.AnnotationTypes.EXTERNAL_DOMAIN;
 import static org.seasar.doma.internal.apt.AnnotationTypes.SCOPE;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -81,20 +80,21 @@ import org.seasar.doma.internal.apt.processor.ScopeProcessor;
 })
 public class DomaProcessor extends AbstractProcessor {
 
-  private final List<Operator> operators = new ArrayList<>();
+  private final List<Operator> operators;
   private ProcessingContext processingContext;
 
   public DomaProcessor() {
-    operators.add(new Operator(EXTERNAL_DOMAIN, DomaProcessor::processExternalDomainElements));
-    operators.add(new Operator(DATA_TYPE, DomaProcessor::processDataTypeElements));
-    operators.add(new Operator(DOMAIN, DomaProcessor::processDomainElements));
-    operators.add(new Operator(DOMAIN_CONVERTERS, DomaProcessor::processDomainConvertersElements));
-    operators.add(new Operator(EMBEDDABLE, DomaProcessor::processEmbeddableElements));
-    operators.add(new Operator(ENTITY, DomaProcessor::processEntityElements));
-    operators.add(
-        new Operator(AGGREGATE_STRATEGY, DomaProcessor::processAggregateStrategyElements));
-    operators.add(new Operator(DAO, DomaProcessor::processDaoElements));
-    operators.add(new Operator(SCOPE, DomaProcessor::processScopeElements));
+    operators =
+        List.of(
+            new Operator(EXTERNAL_DOMAIN, DomaProcessor::processExternalDomain),
+            new Operator(DATA_TYPE, DomaProcessor::processDataType),
+            new Operator(DOMAIN, DomaProcessor::processDomain),
+            new Operator(DOMAIN_CONVERTERS, DomaProcessor::processDomainConverters),
+            new Operator(EMBEDDABLE, DomaProcessor::processEmbeddable),
+            new Operator(ENTITY, DomaProcessor::processEntity),
+            new Operator(AGGREGATE_STRATEGY, DomaProcessor::processAggregateStrategy),
+            new Operator(DAO, DomaProcessor::processDao),
+            new Operator(SCOPE, DomaProcessor::processScope));
   }
 
   @Override
@@ -127,57 +127,51 @@ public class DomaProcessor extends AbstractProcessor {
     return true;
   }
 
-  private static void processAggregateStrategyElements(
+  private static void processAggregateStrategy(
       RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new AggregateStrategyProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processDaoElements(
-      RoundContext roundContext, Set<? extends Element> elements) {
+  private static void processDao(RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new DaoProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processDataTypeElements(
-      RoundContext roundContext, Set<? extends Element> elements) {
+  private static void processDataType(RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new DataTypeProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processDomainConvertersElements(
+  private static void processDomainConverters(
       RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new DomainConvertersProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processDomainElements(
-      RoundContext roundContext, Set<? extends Element> elements) {
+  private static void processDomain(RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new DomainProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processEmbeddableElements(
+  private static void processEmbeddable(
       RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new EmbeddableProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processEntityElements(
-      RoundContext roundContext, Set<? extends Element> elements) {
+  private static void processEntity(RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new EntityProcessor(roundContext);
     processor.process(elements);
   }
 
-  private static void processExternalDomainElements(
+  private static void processExternalDomain(
       RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new ExternalDomainProcessor(roundContext);
-    var metaList = processor.process(elements);
-    roundContext.getExternalDomainMetaList().addAll(metaList);
+    processor.process(elements);
   }
 
-  private static void processScopeElements(
-      RoundContext roundContext, Set<? extends Element> elements) {
+  private static void processScope(RoundContext roundContext, Set<? extends Element> elements) {
     var processor = new ScopeProcessor(roundContext);
     processor.process(elements);
   }

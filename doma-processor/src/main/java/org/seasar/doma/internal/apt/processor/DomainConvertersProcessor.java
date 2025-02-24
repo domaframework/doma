@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.lang.model.element.Element;
@@ -27,7 +26,7 @@ import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.NullElementMeta;
 import org.seasar.doma.message.Message;
 
-public class DomainConvertersProcessor implements ElementProcessor<NullElementMeta> {
+public class DomainConvertersProcessor implements ElementProcessor {
 
   private final RoundContext ctx;
   private final ElementProcessorSupport<NullElementMeta> support;
@@ -38,8 +37,8 @@ public class DomainConvertersProcessor implements ElementProcessor<NullElementMe
   }
 
   @Override
-  public List<NullElementMeta> process(Set<? extends Element> elements) {
-    return support.processTypeElements(elements, this::validateEach);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, this::validateEach);
   }
 
   private NullElementMeta validateEach(TypeElement typeElement) {

@@ -1001,6 +1001,8 @@ public enum Message implements MessageResource {
   DOMA4488(
       "To specify propertyPath=\"{0}\", a separate definition of @AssociationLinker(propertyPath=\"{1}\") is required."),
   DOMA4489("The property path \"{0}\" is duplicated in another @AssociationLinker."),
+  DOMA4490(
+      "Multiple @ExternalDomain definitions were found for type \"{0}\". \"{1}\" conflicts with \"{2}\"."),
 
   // other
   DOMA5001(

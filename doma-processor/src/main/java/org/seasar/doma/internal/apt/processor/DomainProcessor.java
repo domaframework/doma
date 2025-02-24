@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import java.util.List;
 import java.util.Set;
 import javax.lang.model.element.Element;
 import org.seasar.doma.Domain;
@@ -23,7 +22,7 @@ import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.domain.InternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.InternalDomainMetaFactory;
 
-public class DomainProcessor implements ElementProcessor<InternalDomainMeta> {
+public class DomainProcessor implements ElementProcessor {
 
   private final DomainProcessorSupport<InternalDomainMeta> support;
 
@@ -32,7 +31,7 @@ public class DomainProcessor implements ElementProcessor<InternalDomainMeta> {
   }
 
   @Override
-  public List<InternalDomainMeta> process(Set<? extends Element> elements) {
-    return support.process(elements);
+  public void process(Set<? extends Element> elements) {
+    support.process(elements);
   }
 }
