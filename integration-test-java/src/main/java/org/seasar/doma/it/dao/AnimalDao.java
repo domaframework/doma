@@ -24,7 +24,7 @@ import org.seasar.doma.it.entity.Animal;
 @Dao
 public interface AnimalDao {
 
-  @Sql("select * from animal where id = /*id*/0")
+  @Sql("select * from ANIMAL where ID = /*id*/0")
   @Select
   Animal selectById(Integer id);
 
