@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.util.Objects;
 import javax.annotation.processing.ProcessingEnvironment;
 
 public class ProcessingContext {
@@ -29,7 +30,7 @@ public class ProcessingContext {
   private Resources resources;
 
   public ProcessingContext(ProcessingEnvironment env) {
-    this.env = env;
+    this.env = Objects.requireNonNull(env);
   }
 
   public void init() {
