@@ -15,14 +15,12 @@
  */
 package org.seasar.doma.jdbc.domain;
 
-import org.seasar.doma.DomainConverters;
 import org.seasar.doma.ExternalDomain;
 
 /**
- * A converter between domain objects and basic values.
+ * A converter interface for mapping between domain objects and their corresponding basic values.
  *
- * <p>The implementation class should be annotated with {@link ExternalDomain} and be registered to
- * {@link DomainConverters}.
+ * <p>The implementation class should be annotated with {@link ExternalDomain}.
  *
  * <pre>
  * &#064;ExternalDomain
@@ -33,31 +31,33 @@ import org.seasar.doma.ExternalDomain;
  *     }
  *
  *     public Salary fromValueToDomain(BigDecimal value) {
+ *         if (value == null) {
+ *             return null;
+ *         }
  *         return new Salary(value);
  *     }
  * }
  * </pre>
  *
  * @see ExternalDomain
- * @see DomainConverters
- * @param <DOMAIN> the domain type
- * @param <BASIC> the basic type
+ * @param <DOMAIN> the type of the domain object
+ * @param <BASIC> the type of the basic value
  */
 public interface DomainConverter<DOMAIN, BASIC> {
 
   /**
-   * Converts from a domain object to a basic value.
+   * Converts a domain object into a basic value.
    *
-   * @param domain the domain object
-   * @return the basic value
+   * @param domain the domain object; must not be null
+   * @return the basic value; can be null
    */
   BASIC fromDomainToValue(DOMAIN domain);
 
   /**
-   * Converts from a basic value to a domain object.
+   * Converts a basic value into a domain object.
    *
-   * @param value the basic value
-   * @return the domain object
+   * @param value the basic value; can be null
+   * @return the domain object; can be null
    */
   DOMAIN fromValueToDomain(BASIC value);
 }

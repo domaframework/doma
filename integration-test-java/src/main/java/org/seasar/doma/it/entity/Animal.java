@@ -13,24 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.it.domain;
+package org.seasar.doma.it.entity;
 
-import org.seasar.doma.ExternalDomain;
-import org.seasar.doma.jdbc.domain.DomainConverter;
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+import org.seasar.doma.it.domain.Age;
 
-@ExternalDomain
-public class AgeConverter implements DomainConverter<Age, Integer> {
-
-  @Override
-  public Integer fromDomainToValue(Age domain) {
-    return domain.value();
-  }
-
-  @Override
-  public Age fromValueToDomain(Integer value) {
-    if (value == null) {
-      return null;
-    }
-    return new Age(value);
-  }
+@Entity
+public class Animal {
+  @Id public Integer id;
+  public String name;
+  public Age age;
 }

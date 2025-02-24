@@ -13,11 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.it.domain;
+package org.seasar.doma.it.dao;
 
-import org.seasar.doma.DomainConverters;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Sql;
+import org.seasar.doma.it.entity.Animal;
 
-@DomainConverters({
-  AgeConverter.class,
-})
-public class CommonDomainConverterProvider {}
+@Dao
+public interface AnimalDao {
+
+  @Sql("select * from animal where id = /*id*/0")
+  @Select
+  Animal selectById(Integer id);
+
+  @Insert
+  int insert(Animal animal);
+}

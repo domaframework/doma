@@ -38,6 +38,9 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  *     }
  *
  *     public Salary fromValueToDomain(BigDecimal value) {
+ *         if (value == null) {
+ *             return null;
+ *         }
  *         return new Salary(value);
  *     }
  * }
@@ -46,7 +49,6 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
  * <p>The annotated instance is required to be thread safe.
  *
  * @see DomainConverter
- * @see DomainConverters
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
