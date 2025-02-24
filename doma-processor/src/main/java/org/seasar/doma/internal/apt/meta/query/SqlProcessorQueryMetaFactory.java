@@ -20,7 +20,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.annot.SqlProcessorAnnot;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
@@ -34,7 +34,7 @@ public class SqlProcessorQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlProcessorQueryMeta> {
 
   public SqlProcessorQueryMetaFactory(
-      Context ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
     super(ctx, daoElement, methodElement);
   }
 

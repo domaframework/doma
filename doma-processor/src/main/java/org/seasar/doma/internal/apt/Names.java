@@ -25,9 +25,9 @@ import javax.lang.model.type.TypeMirror;
 
 public class Names {
 
-  private final Context ctx;
+  private final RoundContext ctx;
 
-  Names(Context ctx) {
+  Names(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
   }

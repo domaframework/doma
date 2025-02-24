@@ -29,17 +29,17 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Scope;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
 import org.seasar.doma.internal.apt.decl.TypeParameterDeclaration;
 
 public class ScopeClassMetaFactory {
 
-  private final Context ctx;
+  private final RoundContext ctx;
   private final TypeElement typeElement;
   private final List<TypeParameterDeclaration> allTypeParameterDeclarations;
 
-  public ScopeClassMetaFactory(Context ctx, TypeElement typeElement) {
+  public ScopeClassMetaFactory(RoundContext ctx, TypeElement typeElement) {
     this.ctx = Objects.requireNonNull(ctx);
     this.typeElement = Objects.requireNonNull(typeElement);
     TypeDeclaration typeDeclaration = ctx.getDeclarations().newTypeDeclaration(typeElement);

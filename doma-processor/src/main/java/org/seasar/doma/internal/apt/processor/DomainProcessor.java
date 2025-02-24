@@ -15,31 +15,23 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import org.seasar.doma.Domain;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.domain.InternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.InternalDomainMetaFactory;
 
-@SupportedAnnotationTypes({"org.seasar.doma.Domain"})
-@SupportedOptions({
-  Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR,
-  Options.LOMBOK_VALUE,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH
-})
-public class DomainProcessor extends AbstractDomainProcessor<InternalDomainMeta> {
+public class DomainProcessor implements ElementProcessor {
 
-  public DomainProcessor() {
-    super(Domain.class);
+  private final DomainProcessorSupport<InternalDomainMeta> support;
+
+  public DomainProcessor(RoundContext ctx) {
+    support = new DomainProcessorSupport<>(ctx, Domain.class, new InternalDomainMetaFactory(ctx));
   }
 
   @Override
-  protected InternalDomainMetaFactory createTypeElementMetaFactory() {
-    return new InternalDomainMetaFactory(ctx);
+  public void process(Set<? extends Element> elements) {
+    support.process(elements);
   }
 }

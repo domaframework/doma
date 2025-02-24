@@ -479,9 +479,7 @@ public enum Message implements MessageResource {
   DOMA4093("The field annotated with @Version must be numeric."),
   DOMA4095("The field annotated with @GeneratedValue must be numeric."),
   DOMA4096(
-      "The class \"{0}\" is not supported as a persistent type. "
-          + "If you intend to map the class to the external domain class with @ExternalDomain, the configuration may be not enough. "
-          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+      "The class \"{0}\" is not supported as a persistent type. By using @ExternalDomain, you can make that type persistent."),
   DOMA4097("The return type must be {0}."),
   DOMA4098("The type of the parameter annotated with @Out must be org.seasar.doma.jdbc.Reference."),
   DOMA4100("{0} is illegal as the type argument of Reference."),
@@ -852,10 +850,7 @@ public enum Message implements MessageResource {
   DOMA4297(
       "The embeddable class \"{0}\" cannot be used as a persistent property in the embeddable class."),
   DOMA4298(
-      "The class \"{0}\" is not supported as a persistent type. "
-          + "If you intend to map the class to the external domain class with @ExternalDomain, "
-          + "the configuration may be not enough. "
-          + "Check the class annotated with @DomainConverters and the annotation processing option \"doma.domain.converters\"."),
+      "The class \"{0}\" is not supported as a persistent type. By using @ExternalDomain, you can make that type persistent."),
   DOMA4299("The raw type of the class \"{0}\" cannot be used as a persistent property."),
   DOMA4301(
       "The type argument of the class \"{0}\" that is a wildcard or type variable cannot be used as a persistent property."),
@@ -957,7 +952,7 @@ public enum Message implements MessageResource {
       "If a method annotated with @MultiInsert targets immutable entities for insertion, the return type must be org.seasar.doma.jdbc.MultiResult."
           + "The type argument of org.seasar.doma.jdbc.MultiResult must be the immutable entity class."),
   DOMA4462("The property \"{0}\" is not found in the entity class \"{1}\"."),
-  DOMA4463("'{'\"execTimeMillis\": {0}, \"processor\": \"{1}\", \"element\": \"{2}\"'}'"),
+  DOMA4463("'{'\"execTimeMillis\": {0}, \"annotation\": \"{1}\", \"element\": \"{2}\"'}'"),
   DOMA4464("Fields annotated with AssociationLinker must be static."),
   DOMA4465("Fields annotated with AssociationLinker must be java.util.function.BiFunction."),
   DOMA4466("The {0} type parameter of BiFunction must be an entity class."),
@@ -1006,6 +1001,8 @@ public enum Message implements MessageResource {
   DOMA4488(
       "To specify propertyPath=\"{0}\", a separate definition of @AssociationLinker(propertyPath=\"{1}\") is required."),
   DOMA4489("The property path \"{0}\" is duplicated in another @AssociationLinker."),
+  DOMA4490(
+      "Multiple @ExternalDomain definitions were found for type \"{0}\". \"{1}\" conflicts with \"{2}\"."),
 
   // other
   DOMA5001(

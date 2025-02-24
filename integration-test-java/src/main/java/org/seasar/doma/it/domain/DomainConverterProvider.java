@@ -17,8 +17,9 @@ package org.seasar.doma.it.domain;
 
 import org.seasar.doma.DomainConverters;
 
+// Do not register LocationConverter.class to test auto-detection.
 @DomainConverters({
-  LocationConverter.class,
+  // LocationConverter.class,
   HiredateConverter.class,
   StringArrayConverter.class,
   PostgresUUIDConverter.class

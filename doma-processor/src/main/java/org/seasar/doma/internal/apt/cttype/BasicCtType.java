@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalarSuppliers;
@@ -32,7 +32,8 @@ public class BasicCtType extends AbstractCtType {
 
   private final TypeElement wrapperTypeElement;
 
-  BasicCtType(Context ctx, TypeMirror type, Pair<TypeElement, TypeMirror> wrapperElementAndType) {
+  BasicCtType(
+      RoundContext ctx, TypeMirror type, Pair<TypeElement, TypeMirror> wrapperElementAndType) {
     super(ctx, type);
     assertNotNull(wrapperElementAndType);
     this.boxedType = ctx.getMoreTypes().boxIfPrimitive(type);

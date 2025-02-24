@@ -19,7 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import org.seasar.doma.DomainTypeImplementation;
 import org.seasar.doma.internal.ClassName;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.domain.DomainMeta;
 import org.seasar.doma.internal.util.BoxedPrimitiveUtil;
 import org.seasar.doma.jdbc.domain.AbstractDomainType;
@@ -29,7 +29,7 @@ public class DomainTypeGenerator extends AbstractGenerator {
   private final DomainMeta domainMeta;
 
   public DomainTypeGenerator(
-      Context ctx, ClassName className, Printer printer, DomainMeta domainMeta) {
+      RoundContext ctx, ClassName className, Printer printer, DomainMeta domainMeta) {
     super(ctx, className, printer);
     assertNotNull(domainMeta);
     this.domainMeta = domainMeta;

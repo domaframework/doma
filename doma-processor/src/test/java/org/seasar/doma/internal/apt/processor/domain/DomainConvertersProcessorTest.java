@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
-import org.seasar.doma.internal.apt.processor.DomainConvertersProcessor;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.message.Message;
 
 class DomainConvertersProcessorTest extends CompilerSupport {
@@ -29,7 +29,7 @@ class DomainConvertersProcessorTest extends CompilerSupport {
   @BeforeEach
   void beforeEach() {
     addOption("-Adoma.test=true");
-    addProcessor(new DomainConvertersProcessor());
+    addProcessor(new DomaProcessor());
   }
 
   @Test

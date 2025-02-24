@@ -27,6 +27,7 @@ import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
@@ -41,7 +42,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testTypeParameterResolution", CriteriaHolder.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -68,7 +69,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -92,7 +93,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable_list", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -116,7 +117,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -140,7 +141,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -164,7 +165,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable_list", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -188,7 +189,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testBindVariable_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -212,7 +213,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -236,7 +237,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
@@ -261,7 +262,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testFor_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -287,7 +288,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
@@ -318,7 +319,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testFor_notIterable", Iterator.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -350,7 +351,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testFor_noTypeArgument", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -382,7 +383,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testExpand", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -407,7 +408,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testExpand", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -438,7 +439,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
@@ -462,7 +463,7 @@ class SqlValidatorTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
                 createMethodElement(target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =

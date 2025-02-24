@@ -15,30 +15,23 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import org.seasar.doma.DataType;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.domain.DataTypeMeta;
 import org.seasar.doma.internal.apt.meta.domain.DataTypeMetaFactory;
 
-@SupportedAnnotationTypes({"org.seasar.doma.DataType"})
-@SupportedOptions({
-  Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH
-})
-public class DataTypeProcessor extends AbstractDomainProcessor<DataTypeMeta> {
+public class DataTypeProcessor implements ElementProcessor {
 
-  public DataTypeProcessor() {
-    super(DataType.class);
+  private final DomainProcessorSupport<DataTypeMeta> support;
+
+  public DataTypeProcessor(RoundContext ctx) {
+    support = new DomainProcessorSupport<>(ctx, DataType.class, new DataTypeMetaFactory(ctx));
   }
 
   @Override
-  protected DataTypeMetaFactory createTypeElementMetaFactory() {
-    return new DataTypeMetaFactory(ctx);
+  public void process(Set<? extends Element> elements) {
+    support.process(elements);
   }
 }

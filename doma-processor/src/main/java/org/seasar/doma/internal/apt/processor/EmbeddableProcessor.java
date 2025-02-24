@@ -17,55 +17,59 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
-import javax.lang.model.element.Name;
+import java.util.Objects;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.EmbeddableTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.JavaFileGenerator;
 import org.seasar.doma.internal.apt.generator.Printer;
-import org.seasar.doma.internal.apt.meta.TypeElementMetaFactory;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMetaFactory;
 
-@SupportedAnnotationTypes({"org.seasar.doma.Embeddable"})
-@SupportedOptions({
-  Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR,
-  Options.LOMBOK_VALUE,
-  Options.LOMBOK_ALL_ARGS_CONSTRUCTOR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH,
-  Options.METAMODEL_ENABLED,
-  Options.METAMODEL_PREFIX,
-  Options.METAMODEL_SUFFIX
-})
-public class EmbeddableProcessor extends AbstractGeneratingProcessor<EmbeddableMeta> {
+public class EmbeddableProcessor implements ElementProcessor {
 
-  public EmbeddableProcessor() {
-    super(Embeddable.class);
+  private final RoundContext ctx;
+  private final ElementProcessorSupport<EmbeddableMeta> support;
+  private final EmbeddableMetaFactory factory;
+
+  public EmbeddableProcessor(RoundContext ctx) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.support = new ElementProcessorSupport<>(ctx, Embeddable.class);
+    this.factory = new EmbeddableMetaFactory(ctx);
   }
 
   @Override
-  protected TypeElementMetaFactory<EmbeddableMeta> createTypeElementMetaFactory() {
-    return new EmbeddableMetaFactory(ctx);
+  public void process(Set<? extends Element> elements) {
+    support.processTypeElements(elements, this::processEach);
   }
 
-  @Override
-  protected ClassName createClassName(TypeElement typeElement, EmbeddableMeta meta) {
+  private EmbeddableMeta processEach(TypeElement typeElement) {
+    var meta = factory.createTypeElementMeta(typeElement);
+    if (!meta.isError()) {
+      generate(typeElement, meta);
+    }
+    return meta;
+  }
+
+  private void generate(TypeElement typeElement, EmbeddableMeta meta) {
+    var javaFileGenerator =
+        new JavaFileGenerator<>(ctx, this::createClassName, this::createGenerator);
+    javaFileGenerator.generate(typeElement, meta);
+  }
+
+  private ClassName createClassName(TypeElement typeElement, EmbeddableMeta meta) {
     assertNotNull(typeElement, meta);
-    Name binaryName = ctx.getMoreElements().getBinaryName(typeElement);
+    var binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     return ClassNames.newEmbeddableTypeClassName(binaryName);
   }
 
-  @Override
-  protected Generator createGenerator(ClassName className, Printer printer, EmbeddableMeta meta) {
+  private Generator createGenerator(ClassName className, Printer printer, EmbeddableMeta meta) {
     assertNotNull(className, meta, printer);
     return new EmbeddableTypeGenerator(ctx, className, printer, meta);
   }

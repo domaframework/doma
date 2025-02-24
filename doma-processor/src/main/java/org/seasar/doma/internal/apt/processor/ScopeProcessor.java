@@ -15,57 +15,43 @@
  */
 package org.seasar.doma.internal.apt.processor;
 
+import java.util.Objects;
 import java.util.Set;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.Scope;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.RoundContext;
+import org.seasar.doma.internal.apt.meta.NullElementMeta;
 import org.seasar.doma.message.Message;
 
-@SupportedAnnotationTypes({"org.seasar.doma.Scope"})
-@SupportedOptions({
-  Options.RESOURCES_DIR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH
-})
-public class ScopeProcessor extends AbstractProcessor {
+public class ScopeProcessor implements ElementProcessor {
 
-  public ScopeProcessor() {
-    super(Scope.class);
+  private final RoundContext ctx;
+  private final ElementProcessorSupport<NullElementMeta> support;
+
+  public ScopeProcessor(RoundContext ctx) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.support = new ElementProcessorSupport<>(ctx, Scope.class);
   }
 
   @Override
-  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    if (roundEnv.processingOver()) {
-      return true;
-    }
-    for (TypeElement a : annotations) {
-      for (ExecutableElement element :
-          ElementFilter.methodsIn(roundEnv.getElementsAnnotatedWith(a))) {
-        handleExecutableElement(element, this::validate);
-      }
-    }
-    return true;
+  public void process(Set<? extends Element> elements) {
+    support.processMethodElements(elements, this::validateEach);
   }
 
-  protected void validate(ExecutableElement method) {
-    if (method.getParameters().size() < 1) {
+  private NullElementMeta validateEach(ExecutableElement method) {
+    if (method.getParameters().isEmpty()) {
       throw new AptException(Message.DOMA4457, method, new Object[] {});
     }
-    Set<Modifier> modifiers = method.getModifiers();
+    var modifiers = method.getModifiers();
     if (modifiers.contains(Modifier.STATIC)) {
       throw new AptException(Message.DOMA4458, method, new Object[] {});
     }
     if (!modifiers.contains(Modifier.PUBLIC)) {
       throw new AptException(Message.DOMA4459, method, new Object[] {});
     }
+    return NullElementMeta.INSTANCE;
   }
 }

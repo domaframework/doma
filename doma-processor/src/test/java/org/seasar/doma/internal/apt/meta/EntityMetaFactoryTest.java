@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import javax.lang.model.element.TypeElement;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
@@ -36,7 +37,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);
@@ -54,7 +55,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);
@@ -72,7 +73,7 @@ class EntityMetaFactoryTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(target);
             EntityMetaFactory entityMetaFactory = new EntityMetaFactory(ctx);
             EntityMeta entityMeta = entityMetaFactory.createTypeElementMeta(typeElement);

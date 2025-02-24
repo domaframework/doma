@@ -32,10 +32,10 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.CompilerKind;
 import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.Run;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
-import org.seasar.doma.internal.apt.processor.EntityProcessor;
 
 public class ScopeTest extends CompilerSupport {
 
@@ -43,7 +43,7 @@ public class ScopeTest extends CompilerSupport {
   void beforeEach() {
     addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
-    addProcessor(new EntityProcessor());
+    addProcessor(new DomaProcessor());
   }
 
   @Run(onlyIf = {CompilerKind.JAVAC})

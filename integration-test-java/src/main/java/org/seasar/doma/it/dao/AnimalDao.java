@@ -13,6 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.error;
+package org.seasar.doma.it.dao;
 
-public @interface MyAnnotation {}
+import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
+import org.seasar.doma.Sql;
+import org.seasar.doma.it.entity.Animal;
+
+@Dao
+public interface AnimalDao {
+
+  @Sql("select * from ANIMAL where ID = /*id*/0")
+  @Select
+  Animal selectById(Integer id);
+
+  @Insert
+  int insert(Animal animal);
+}

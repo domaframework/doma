@@ -19,13 +19,13 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.List;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.Context;
+import org.seasar.doma.internal.apt.RoundContext;
 
 public class IterableCtType extends AbstractCtType {
 
   private final CtType elementCtType;
 
-  IterableCtType(Context ctx, TypeMirror type, CtType elementCtType) {
+  IterableCtType(RoundContext ctx, TypeMirror type, CtType elementCtType) {
     super(ctx, type);
     assertNotNull(elementCtType);
     this.elementCtType = elementCtType;

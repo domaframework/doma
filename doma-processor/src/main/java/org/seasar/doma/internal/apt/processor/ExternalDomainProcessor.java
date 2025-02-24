@@ -17,50 +17,72 @@ package org.seasar.doma.internal.apt.processor;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
-import javax.lang.model.element.Name;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.ExternalDomain;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
-import org.seasar.doma.internal.apt.Options;
+import org.seasar.doma.internal.apt.AptException;
+import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.ExternalDomainTypeGenerator;
 import org.seasar.doma.internal.apt.generator.Generator;
+import org.seasar.doma.internal.apt.generator.JavaFileGenerator;
 import org.seasar.doma.internal.apt.generator.Printer;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMetaFactory;
+import org.seasar.doma.message.Message;
 
-@SupportedAnnotationTypes({"org.seasar.doma.ExternalDomain"})
-@SupportedOptions({
-  Options.VERSION_VALIDATION,
-  Options.RESOURCES_DIR,
-  Options.TEST,
-  Options.TRACE,
-  Options.DEBUG,
-  Options.CONFIG_PATH
-})
-public class ExternalDomainProcessor extends AbstractGeneratingProcessor<ExternalDomainMeta> {
+public class ExternalDomainProcessor implements ElementProcessor {
 
-  public ExternalDomainProcessor() {
-    super(ExternalDomain.class);
+  private final RoundContext ctx;
+  private final ElementProcessorSupport<ExternalDomainMeta> support;
+  private final ExternalDomainMetaFactory factory;
+  private final Map<String, TypeElement> processed = new HashMap<>();
+
+  public ExternalDomainProcessor(RoundContext ctx) {
+    this.ctx = Objects.requireNonNull(ctx);
+    this.support = new ElementProcessorSupport<>(ctx, ExternalDomain.class);
+    this.factory = new ExternalDomainMetaFactory(ctx);
   }
 
   @Override
-  protected ExternalDomainMetaFactory createTypeElementMetaFactory() {
-    return new ExternalDomainMetaFactory(ctx);
+  public void process(Set<? extends Element> elements) {
+    var metaList = support.processTypeElements(elements, this::processEach);
+    ctx.getExternalDomainMetaList().addAll(metaList);
   }
 
-  @Override
-  protected ClassName createClassName(TypeElement typeElement, ExternalDomainMeta meta) {
+  private ExternalDomainMeta processEach(TypeElement typeElement) {
+    var meta = factory.createTypeElementMeta(typeElement);
+    var key = meta.asType().toString();
+    var anotherTypeElement = processed.get(key);
+    if (anotherTypeElement != null) {
+      throw new AptException(
+          Message.DOMA4490, typeElement, new Object[] {key, typeElement, anotherTypeElement});
+    }
+    if (!meta.isError()) {
+      generate(typeElement, meta);
+    }
+    processed.put(key, typeElement);
+    return meta;
+  }
+
+  private void generate(TypeElement typeElement, ExternalDomainMeta meta) {
+    var javaFileGenerator =
+        new JavaFileGenerator<>(ctx, this::createClassName, this::createGenerator);
+    javaFileGenerator.generate(typeElement, meta);
+  }
+
+  private ClassName createClassName(TypeElement typeElement, ExternalDomainMeta meta) {
     assertNotNull(typeElement, meta);
-    Name name = ctx.getNames().createExternalDomainName(meta.asType());
+    var name = ctx.getNames().createExternalDomainName(meta.asType());
     return ClassNames.newExternalDomainTypeClassName(name);
   }
 
-  @Override
-  protected Generator createGenerator(
-      ClassName className, Printer printer, ExternalDomainMeta meta) {
+  private Generator createGenerator(ClassName className, Printer printer, ExternalDomainMeta meta) {
     assertNotNull(className, meta, printer);
     return new ExternalDomainTypeGenerator(ctx, className, printer, meta);
   }

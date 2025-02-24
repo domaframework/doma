@@ -101,7 +101,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement method =
                 createMethodElement(testClass, "test", String.class, String.class);
             Iterator<? extends VariableElement> parameters = method.getParameters().iterator();
@@ -118,7 +118,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             Element element = ctx.getMoreElements().getTypeElement(String.class);
             TypeElement typeElement = ctx.getMoreElements().toTypeElement(element);
             assertNotNull(typeElement);
@@ -131,7 +131,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement outerTypeElement =
                 ctx.getMoreElements()
                     .getTypeElementFromBinaryName("org.seasar.doma.internal.apt.MoreElementsTest");
@@ -145,7 +145,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement outerTypeElement =
                 ctx.getMoreElements().getTypeElement(MoreElementsTest.class);
             assertNotNull(outerTypeElement);
@@ -161,7 +161,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement method = createMethodElement(testClass, "beforeEach");
             AnnotationMirror annotationMirror =
                 ctx.getMoreElements().getAnnotationMirror(method, BeforeEach.class);
@@ -173,7 +173,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             ExecutableElement method = createMethodElement(testClass, "beforeEach");
             AnnotationMirror annotationMirror =
                 ctx.getMoreElements()
@@ -191,7 +191,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(String.class);
             ExecutableElement constructor = ctx.getMoreElements().getNoArgConstructor(typeElement);
             assertNotNull(constructor);
@@ -205,7 +205,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(Inner.class);
             AnnotationMirror annotationMirror =
                 ctx.getMoreElements().getAnnotationMirror(typeElement, MyAnnotation.class);
@@ -224,7 +224,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement =
                 ctx.getMoreElements().getTypeElement(ParameterizedClass.class);
             TypeParametersDef def = ctx.getMoreElements().getTypeParametersDef(typeElement);
@@ -240,7 +240,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(List.class);
             List<String> names =
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
@@ -249,7 +249,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(BoundType.class);
             List<String> names =
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
@@ -258,7 +258,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(IntersectionType.class);
             List<String> names =
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
@@ -268,7 +268,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(Enum.class);
             List<String> names =
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
@@ -277,7 +277,7 @@ class MoreElementsTest extends CompilerSupport {
         },
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(ReferredTypeVar.class);
             List<String> names =
                 ctx.getMoreElements().getTypeParameterNames(typeElement.getTypeParameters());
@@ -292,7 +292,7 @@ class MoreElementsTest extends CompilerSupport {
     addProcessor(
         new TestProcessor() {
           @Override
-          protected void run() {
+          protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(MyDao.class);
             ExecutableElement doIt = createMethodElement(MyDao.class, "doIt");
             assertTrue(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, doIt));
