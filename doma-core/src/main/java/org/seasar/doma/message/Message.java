@@ -479,7 +479,9 @@ public enum Message implements MessageResource {
   DOMA4093("The field annotated with @Version must be numeric."),
   DOMA4095("The field annotated with @GeneratedValue must be numeric."),
   DOMA4096(
-      "The class \"{0}\" is not supported as a persistent type. By using @ExternalDomain, you can make that type persistent."),
+      "The class \"{0}\" is not supported as a persistent type. "
+          + "By using @ExternalDomain, you can make that type persistent. "
+          + "Or, did you perhaps forget to specify @Association or @Transient for the field?"),
   DOMA4097("The return type must be {0}."),
   DOMA4098("The type of the parameter annotated with @Out must be org.seasar.doma.jdbc.Reference."),
   DOMA4100("{0} is illegal as the type argument of Reference."),
