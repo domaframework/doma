@@ -26,9 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
+import org.seasar.doma.it.IdentityOverridableConfig;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.BusinessmanDao;
@@ -211,6 +213,51 @@ public class AutoBatchInsertTest {
       assertNotNull(entity2.getId());
       assertTrue(entity.getId() < entity2.getId());
     }
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  public void testId_Identity_override(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      IdentityStrategy entity = new IdentityStrategy();
+      entity.setId(1000 + i);
+      IdentityStrategy entity2 = new IdentityStrategy();
+      entity2.setId(2000 + i);
+      int[] result = dao.insert(Arrays.asList(entity, entity2));
+      assertEquals(2, result.length);
+      assertEquals(1, result[0]);
+      assertEquals(1, result[1]);
+      assertNotNull(entity.getId());
+      assertNotNull(entity2.getId());
+    }
+    var expected =
+        IntStream.concat(IntStream.rangeClosed(1000, 1109), IntStream.rangeClosed(2000, 2109))
+            .boxed()
+            .toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE})
+  public void testId_Identity_dontOverride(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      IdentityStrategy entity = new IdentityStrategy();
+      IdentityStrategy entity2 = new IdentityStrategy();
+      int[] result = dao.insert(Arrays.asList(entity, entity2));
+      assertEquals(2, result.length);
+      assertEquals(1, result[0]);
+      assertEquals(1, result[1]);
+      assertNotNull(entity.getId());
+      assertNotNull(entity2.getId());
+    }
+    var expected = IntStream.rangeClosed(1, 220).boxed().toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
   }
 
   @Test

@@ -91,6 +91,16 @@ public interface Dialect {
   boolean includesIdentityColumn();
 
   /**
+   * Determines if the identity column is included based on the provided identifier value.
+   *
+   * @param idValue an identity value; may be null
+   * @return true if the identity column is included, false otherwise
+   */
+  default boolean includesIdentityColumn(Object idValue) {
+    return includesIdentityColumn();
+  }
+
+  /**
    * Whether this object supports the IDENTITY column.
    *
    * @return {@code true}, if this object supports it
