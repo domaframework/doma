@@ -84,8 +84,13 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
     }
   }
 
+  @Deprecated
   public boolean isIncluded(IdGenerationConfig config) {
     return idGenerator.includesIdentityColumn(config);
+  }
+
+  public boolean isIncluded(IdGenerationConfig config, Object idValue) {
+    return idGenerator.includesIdentityColumn(config, idValue);
   }
 
   public boolean isBatchSupported(IdGenerationConfig config) {

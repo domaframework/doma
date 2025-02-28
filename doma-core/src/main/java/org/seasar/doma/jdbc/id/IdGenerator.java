@@ -55,7 +55,21 @@ public interface IdGenerator {
    * @param config the configuration
    * @return {@code true} if supported
    */
+  @Deprecated
   boolean includesIdentityColumn(IdGenerationConfig config);
+
+  /**
+   * Determines whether the identity column is included in the SQL INSERT statements based on the
+   * given configuration and identity value.
+   *
+   * @param config the configuration for identity generation
+   * @param idValue an identity value; may be null
+   * @return {@code true} if the identity column is included in the SQL INSERT statements, otherwise
+   *     {@code false}
+   */
+  default boolean includesIdentityColumn(IdGenerationConfig config, Object idValue) {
+    return includesIdentityColumn(config);
+  }
 
   /**
    * Generates the identity value before an insert.
