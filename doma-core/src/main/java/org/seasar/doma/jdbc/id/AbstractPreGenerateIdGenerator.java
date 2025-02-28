@@ -60,8 +60,14 @@ public abstract class AbstractPreGenerateIdGenerator extends AbstractIdGenerator
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean includesIdentityColumn(IdGenerationConfig config) {
+    return true;
+  }
+
+  @Override
+  public boolean includesIdentityColumn(IdGenerationConfig config, Object idValue) {
     return true;
   }
 

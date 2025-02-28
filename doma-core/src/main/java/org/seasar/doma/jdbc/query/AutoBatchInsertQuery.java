@@ -139,13 +139,13 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         continue;
       }
       if (propertyType.isId()) {
+        Property<ENTITY, ?> property = propertyType.createProperty();
+        property.load(currentEntity);
         if (propertyType != generatedIdPropertyType
-            || generatedIdPropertyType.isIncluded(idGenerationConfig)) {
+            || generatedIdPropertyType.isIncluded(idGenerationConfig, property.get())) {
           targetPropertyTypes.add(propertyType);
         }
         if (generatedIdPropertyType == null) {
-          Property<ENTITY, ?> property = propertyType.createProperty();
-          property.load(currentEntity);
           if (property.getWrapper().get() == null) {
             throw new JdbcException(Message.DOMA2020, entityType.getName(), propertyType.getName());
           }

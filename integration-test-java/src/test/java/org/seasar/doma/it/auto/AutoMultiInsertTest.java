@@ -29,9 +29,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
+import org.seasar.doma.it.IdentityOverridableConfig;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.BranchDao;
@@ -240,6 +242,51 @@ public class AutoMultiInsertTest {
     assertNotNull(entity1.getId());
     assertNotNull(entity2.getId());
     assertNotNull(entity3.getId());
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
+  public void testId_Identity_override(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    IdentityStrategy entity1 = new IdentityStrategy();
+    IdentityStrategy entity2 = new IdentityStrategy();
+    IdentityStrategy entity3 = new IdentityStrategy();
+    entity1.setId(10);
+    entity2.setId(20);
+    entity3.setId(30);
+    int result = dao.insertMultiRows(Arrays.asList(entity1, entity2, entity3));
+
+    assertEquals(3, result);
+    assertNotNull(entity1.getId());
+    assertNotNull(entity2.getId());
+    assertNotNull(entity3.getId());
+
+    var expected = Stream.of(10, 20, 30).toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER, Dbms.SQLITE})
+  public void testId_Identity_dontOverride(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    IdentityStrategy entity1 = new IdentityStrategy();
+    IdentityStrategy entity2 = new IdentityStrategy();
+    IdentityStrategy entity3 = new IdentityStrategy();
+    int result = dao.insertMultiRows(Arrays.asList(entity1, entity2, entity3));
+
+    assertEquals(3, result);
+    assertNotNull(entity1.getId());
+    assertNotNull(entity2.getId());
+    assertNotNull(entity3.getId());
+
+    var expected = Stream.of(1, 2, 3).toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
   }
 
   @Test
