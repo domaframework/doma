@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ 3.3.x ]
   pull_request:
-    branches: [ master ]
+    branches: [ 3.3.x ]
   workflow_dispatch:
 
 env:

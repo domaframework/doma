@@ -307,7 +307,7 @@ rootProject.apply {
     release {
         newVersionCommitMessage.set("[Gradle Release Plugin] - [skip ci] new version commit: ")
         git {
-            requireBranch.set("master")
+            requireBranch.set("3.3.x")
         }
     }
 
