@@ -20,6 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class Annotations {
   private final RoundContext ctx;
 
   public Annotations(RoundContext ctx) {
-    this.ctx = ctx;
+    this.ctx = Objects.requireNonNull(ctx);
   }
 
   public AggregateStrategyAnnot newAggregateStrategyAnnot(TypeElement typeElement) {

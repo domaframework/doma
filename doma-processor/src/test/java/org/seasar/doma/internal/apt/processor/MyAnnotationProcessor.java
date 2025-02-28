@@ -59,6 +59,7 @@ public class MyAnnotationProcessor extends AbstractProcessor {
       return true;
     }
     var roundContext = new RoundContext(ctx, roundEnv, annotations);
+    roundContext.init();
     var elements = roundContext.getElementsAnnotatedWith(MyAnnotation.class.getName());
     var processor = new MyElementProcessor(roundContext, handler);
     processor.process(elements);

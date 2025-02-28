@@ -32,11 +32,12 @@ public class RoundContext {
   private final ProcessingContext processingContext;
   private final RoundEnvironment roundEnvironment;
   private final Set<? extends TypeElement> annotationElements;
-  private final Annotations annotations;
-  private final Declarations declarations;
-  private final CtTypes ctTypes;
-  private final Names names;
   private final List<ExternalDomainMeta> externalDomainMetaList = new ArrayList<>();
+  private boolean initialized;
+  private Annotations annotations;
+  private Declarations declarations;
+  private CtTypes ctTypes;
+  private Names names;
 
   public RoundContext(
       ProcessingContext processingContext,
@@ -45,62 +46,87 @@ public class RoundContext {
     this.processingContext = Objects.requireNonNull(processingContext);
     this.roundEnvironment = Objects.requireNonNull(roundEnvironment);
     this.annotationElements = Objects.requireNonNull(annotationElements);
-    this.annotations = new Annotations(this);
-    this.declarations = new Declarations(this);
-    this.ctTypes = new CtTypes(this);
-    this.names = new Names(this);
+  }
+
+  public void init() {
+    if (initialized) {
+      throw new AptIllegalStateException("already initialized");
+    }
+    annotations = new Annotations(this);
+    declarations = new Declarations(this);
+    ctTypes = new CtTypes(this);
+    names = new Names(this);
+    initialized = true;
   }
 
   public RoundEnvironment getRoundEnvironment() {
+    assertInitialized();
     return roundEnvironment;
   }
 
   public MoreElements getMoreElements() {
+    assertInitialized();
     return processingContext.getMoreElements();
   }
 
   public MoreTypes getMoreTypes() {
+    assertInitialized();
     return processingContext.getMoreTypes();
   }
 
   public Options getOptions() {
+    assertInitialized();
     return processingContext.getOptions();
   }
 
   public Reporter getReporter() {
+    assertInitialized();
     return processingContext.getReporter();
   }
 
   public Resources getResources() {
+    assertInitialized();
     return processingContext.getResources();
   }
 
   public Annotations getAnnotations() {
+    assertInitialized();
     return annotations;
   }
 
   public Declarations getDeclarations() {
+    assertInitialized();
     return declarations;
   }
 
   public CtTypes getCtTypes() {
+    assertInitialized();
     return ctTypes;
   }
 
   public Names getNames() {
+    assertInitialized();
     return names;
   }
 
   public List<ExternalDomainMeta> getExternalDomainMetaList() {
+    assertInitialized();
     return externalDomainMetaList;
   }
 
   public Set<? extends Element> getElementsAnnotatedWith(String annotationName) {
+    assertInitialized();
     Objects.requireNonNull(annotationName);
     return annotationElements.stream()
         .filter(a -> a.getQualifiedName().contentEquals(annotationName))
         .findFirst()
         .map(roundEnvironment::getElementsAnnotatedWith)
         .orElse(Set.of());
+  }
+
+  private void assertInitialized() {
+    if (!initialized) {
+      throw new AptIllegalStateException("not yet initialized");
+    }
   }
 }

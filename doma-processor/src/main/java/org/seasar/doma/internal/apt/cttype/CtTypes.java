@@ -122,7 +122,7 @@ public class CtTypes {
   private final RoundContext ctx;
 
   public CtTypes(RoundContext ctx) {
-    this.ctx = ctx;
+    this.ctx = Objects.requireNonNull(ctx);
   }
 
   public AggregateStrategyCtType newAggregateStrategyCtType(TypeMirror type) {
