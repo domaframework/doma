@@ -22,23 +22,18 @@ jobs:
         if: github.event.inputs.version != null
         run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
-      - uses: actions/github-script@v7
+      - name: Get latest draft release title
         if: github.event.inputs.version == null
-        id: candidate-version
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            const list = await github.rest.repos.listReleases({
-              owner: "domaframework",
-              repo: "doma",
-            });
-            console.log(list)
-            return list.data[0].name
-
-      - name: Assign candidate version
-        if: github.event.inputs.version == null
-        run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
+        run: |
+          TITLE=$(gh api repos/${{ github.repository }}/releases \
+            --jq '.[] | select(.draft==true) | .name' | head -n 1)
+          if [[ -z "$TITLE" ]]; then
+            echo "No draft release found."
+            exit 1
+          fi          
+          echo "RELEASE_VERSION=$TITLE" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the latest LTS JDK
         uses: actions/setup-java@v4
@@ -57,7 +52,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3.5.0
+        uses: gradle/actions/setup-gradle@v4.3.0
 
       - name: Release ${{ env.RELEASE_VERSION }}
         run: >
