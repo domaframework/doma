@@ -124,7 +124,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
       property.load(entity);
       if (propertyType.isId()) {
         if (propertyType != generatedIdPropertyType
-            || generatedIdPropertyType.isIncluded(idGenerationConfig, property.get())) {
+            || generatedIdPropertyType.isIncluded(
+                idGenerationConfig, property.getWrapper().get())) {
           targetPropertyTypes.add(propertyType);
         }
         if (generatedIdPropertyType == null && property.getWrapper().get() == null) {
