@@ -62,6 +62,9 @@ public interface IdGenerator {
    * Determines whether the identity column is included in the SQL INSERT statements based on the
    * given configuration and identity value.
    *
+   * <p>The type of {@code idValue} must be one of the basic types. It must never be a domain class
+   * or an Optional type that wraps a basic type.
+   *
    * @param config the configuration for identity generation
    * @param idValue an identity value; may be null
    * @return {@code true} if the identity column is included in the SQL INSERT statements, otherwise

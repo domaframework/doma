@@ -93,6 +93,9 @@ public interface Dialect {
   /**
    * Determines if the identity column is included based on the provided identifier value.
    *
+   * <p>The type of {@code idValue} must be one of the basic types. It must never be a domain class
+   * or an Optional type that wraps a basic type.
+   *
    * @param idValue an identity value; may be null
    * @return true if the identity column is included, false otherwise
    */

@@ -49,6 +49,8 @@ import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
+import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
+import org.seasar.doma.it.dao.OptionalIdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.StaffDao;
@@ -69,6 +71,7 @@ import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.IdentityStrategy2;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.OptionalIdentityStrategy;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.Staff;
 import org.seasar.doma.it.entity.TableStrategy;
@@ -271,6 +274,63 @@ public class AutoBatchInsertTest {
     }
     List<IdentityStrategy> list = dao.selectAll();
     assertEquals(220, list.size());
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
+  public void testId_OptionalIdentity_override(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+    OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      OptionalIdentityStrategy entity = new OptionalIdentityStrategy();
+      entity.setId(Optional.of(1000 + i));
+      OptionalIdentityStrategy entity2 = new OptionalIdentityStrategy();
+      entity2.setId(Optional.of(2000 + i));
+      int[] result = dao.insert(Arrays.asList(entity, entity2));
+      assertEquals(2, result.length);
+      assertEquals(1, result[0]);
+      assertEquals(1, result[1]);
+      assertNotNull(entity.getId());
+      assertNotNull(entity2.getId());
+    }
+    var expected =
+        IntStream.concat(IntStream.rangeClosed(1000, 1109), IntStream.rangeClosed(2000, 2109))
+            .boxed()
+            .toList();
+    var actual =
+        dao.selectAll().stream()
+            .map(OptionalIdentityStrategy::getId)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .sorted()
+            .toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  @Run(unless = {Dbms.ORACLE})
+  public void testId_OptionalIdentity_dontOverride(Config config) {
+    IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
+    OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      OptionalIdentityStrategy entity = new OptionalIdentityStrategy();
+      OptionalIdentityStrategy entity2 = new OptionalIdentityStrategy();
+      int[] result = dao.insert(Arrays.asList(entity, entity2));
+      assertEquals(2, result.length);
+      assertEquals(1, result[0]);
+      assertEquals(1, result[1]);
+      assertNotNull(entity.getId());
+      assertNotNull(entity2.getId());
+    }
+    var expected = IntStream.rangeClosed(1, 220).boxed().toList();
+    var actual =
+        dao.selectAll().stream()
+            .map(OptionalIdentityStrategy::getId)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .sorted()
+            .toList();
+    assertEquals(expected, actual);
   }
 
   @Test
