@@ -142,7 +142,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
         Property<ENTITY, ?> property = propertyType.createProperty();
         property.load(currentEntity);
         if (propertyType != generatedIdPropertyType
-            || generatedIdPropertyType.isIncluded(idGenerationConfig, property.get())) {
+            || generatedIdPropertyType.isIncluded(
+                idGenerationConfig, property.getWrapper().get())) {
           targetPropertyTypes.add(propertyType);
         }
         if (generatedIdPropertyType == null) {
