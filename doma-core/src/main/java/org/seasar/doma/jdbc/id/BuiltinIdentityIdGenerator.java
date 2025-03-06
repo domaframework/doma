@@ -37,9 +37,15 @@ public class BuiltinIdentityIdGenerator extends AbstractIdGenerator implements I
     return config.getDialect().supportsBatchExecutionReturningGeneratedValues();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean includesIdentityColumn(IdGenerationConfig config) {
     return config.getDialect().includesIdentityColumn();
+  }
+
+  @Override
+  public boolean includesIdentityColumn(IdGenerationConfig config, Object idValue) {
+    return config.getDialect().includesIdentityColumn(idValue);
   }
 
   @Override

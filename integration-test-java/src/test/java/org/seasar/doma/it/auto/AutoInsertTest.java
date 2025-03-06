@@ -25,9 +25,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.sql.Date;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
+import org.seasar.doma.it.IdentityOverridableConfig;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.BranchDao;
@@ -50,6 +52,8 @@ import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
+import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
+import org.seasar.doma.it.dao.OptionalIdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDao;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
@@ -72,6 +76,7 @@ import org.seasar.doma.it.entity.Dept;
 import org.seasar.doma.it.entity.IdentityStrategy;
 import org.seasar.doma.it.entity.IdentityStrategy2;
 import org.seasar.doma.it.entity.NoId;
+import org.seasar.doma.it.entity.OptionalIdentityStrategy;
 import org.seasar.doma.it.entity.PrimitiveIdentityStrategy;
 import org.seasar.doma.it.entity.SequenceStrategy;
 import org.seasar.doma.it.entity.Staff;
@@ -221,6 +226,79 @@ public class AutoInsertTest {
       dao.insert(entity);
       assertNotNull(entity.getId());
     }
+  }
+
+  @Test
+  @Run(unless = {Dbms.SQLSERVER})
+  public void testId_Identity_override(Config config) {
+    Config newConfig = new IdentityOverridableConfig(config);
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      IdentityStrategy entity = new IdentityStrategy();
+      entity.setId(1000 + i);
+      dao.insert(entity);
+      assertNotNull(entity.getId());
+    }
+    var expected = IntStream.rangeClosed(1000, 1109).boxed().toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testId_Identity_dontOverride(Config config) {
+    Config newConfig = new IdentityOverridableConfig(config);
+    IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      IdentityStrategy entity = new IdentityStrategy();
+      dao.insert(entity);
+      assertNotNull(entity.getId());
+    }
+    var expected = IntStream.rangeClosed(1, 110).boxed().toList();
+    var actual = dao.selectAll().stream().map(IdentityStrategy::getId).sorted().toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  @Run(unless = {Dbms.SQLSERVER})
+  public void testId_OptionalIdentity_override(Config config) {
+    Config newConfig = new IdentityOverridableConfig(config);
+    OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      OptionalIdentityStrategy entity = new OptionalIdentityStrategy();
+      entity.setId(Optional.of(1000 + i));
+      dao.insert(entity);
+      assertNotNull(entity.getId());
+    }
+    var expected = IntStream.rangeClosed(1000, 1109).boxed().toList();
+    var actual =
+        dao.selectAll().stream()
+            .map(OptionalIdentityStrategy::getId)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .sorted()
+            .toList();
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  @Run(unless = {Dbms.SQLSERVER})
+  public void testId_OptionalIdentity_dontOverride(Config config) {
+    Config newConfig = new IdentityOverridableConfig(config);
+    OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
+    for (int i = 0; i < 110; i++) {
+      OptionalIdentityStrategy entity = new OptionalIdentityStrategy();
+      dao.insert(entity);
+      assertNotNull(entity.getId());
+    }
+    var expected = IntStream.rangeClosed(1, 110).boxed().toList();
+    var actual =
+        dao.selectAll().stream()
+            .map(OptionalIdentityStrategy::getId)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .sorted()
+            .toList();
+    assertEquals(expected, actual);
   }
 
   @Test
