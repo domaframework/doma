@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 import javax.sql.DataSource;
@@ -281,8 +282,10 @@ class SimpleConfigBuilderImpl implements SimpleConfigBuilder {
             return transactionManager.requiresNew(callback::execute);
           }
         };
+    var dataSourceName = UUID.randomUUID().toString();
     return new SimpleConfigImpl(
         dataSource,
+        dataSourceName,
         dialect,
         sqlFileRepository,
         scriptFileLoader,

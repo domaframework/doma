@@ -98,4 +98,12 @@ class SimpleConfigBuilderImplTest {
     assertInstanceOf(PostgresDialect.class, SimpleConfigBuilderImpl.inferDialect("postgresql"));
     assertNull(SimpleConfigBuilderImpl.inferDialect("unknown"));
   }
+
+  @Test
+  void dataSourceName() {
+    SimpleConfig config1 = SimpleConfigBuilderImpl.of("jdbc:h2:mem:test1").build();
+    SimpleConfig config2 = SimpleConfigBuilderImpl.of("jdbc:h2:mem:test2").build();
+
+    assertNotEquals(config1.getDataSourceName(), config2.getDataSourceName());
+  }
 }

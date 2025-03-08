@@ -40,6 +40,7 @@ public class SimpleConfigImplTest {
     SimpleConfig config =
         new SimpleConfigImpl(
             localTransactionDataSource,
+            "test",
             dialect,
             ConfigSupport.defaultSqlFileRepository,
             ConfigSupport.defaultScriptFileLoader,
