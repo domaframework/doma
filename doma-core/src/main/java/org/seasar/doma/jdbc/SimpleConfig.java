@@ -118,6 +118,7 @@ public interface SimpleConfig extends Config {
 class SimpleConfigImpl implements Config, SimpleConfig {
 
   private final LocalTransactionDataSource dataSource;
+  private final String dataSourceName;
   private final Dialect dialect;
   private final SqlFileRepository sqlFileRepository;
   private final ScriptFileLoader scriptFileLoader;
@@ -143,6 +144,7 @@ class SimpleConfigImpl implements Config, SimpleConfig {
 
   SimpleConfigImpl(
       LocalTransactionDataSource dataSource,
+      String dataSourceName,
       Dialect dialect,
       SqlFileRepository sqlFileRepository,
       ScriptFileLoader scriptFileLoader,
@@ -166,6 +168,7 @@ class SimpleConfigImpl implements Config, SimpleConfig {
       int queryTimeout,
       int batchSize) {
     this.dataSource = Objects.requireNonNull(dataSource);
+    this.dataSourceName = Objects.requireNonNull(dataSourceName);
     this.dialect = Objects.requireNonNull(dialect);
     this.sqlFileRepository = Objects.requireNonNull(sqlFileRepository);
     this.scriptFileLoader = Objects.requireNonNull(scriptFileLoader);
@@ -193,6 +196,11 @@ class SimpleConfigImpl implements Config, SimpleConfig {
   @Override
   public DataSource getDataSource() {
     return dataSource;
+  }
+
+  @Override
+  public String getDataSourceName() {
+    return dataSourceName;
   }
 
   @Override
