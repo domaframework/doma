@@ -39,7 +39,7 @@ public class RoundContext {
   private CtTypes ctTypes;
   private Names names;
 
-  public RoundContext(
+  RoundContext(
       ProcessingContext processingContext,
       RoundEnvironment roundEnvironment,
       Set<? extends TypeElement> annotationElements) {
@@ -48,7 +48,7 @@ public class RoundContext {
     this.annotationElements = Objects.requireNonNull(annotationElements);
   }
 
-  public void init() {
+  void init() {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
