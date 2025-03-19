@@ -18,11 +18,11 @@ package org.seasar.doma.internal.apt.processor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
-import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.message.Message;
 
-class ElementProcessorSupportTest extends CompilerSupport {
+class ElementProcessorSupportTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {

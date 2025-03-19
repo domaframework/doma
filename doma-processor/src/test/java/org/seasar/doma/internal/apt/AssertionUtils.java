@@ -1,4 +1,21 @@
 /*
+ * Copyright Doma Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.seasar.doma.internal.apt;
+
+/*
  * Copyright 2004-2010 the Seasar Foundation and the Others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +30,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.aptina.unit;
-
-import java.util.Collection;
-
 /**
+ * This class was forked from <a
+ * href="https://github.com/seasarorg/aptina/tree/1.0.0/aptina/aptina-unit">aptina-unit</a>.
+ *
  * @author koichik
  */
 class AssertionUtils {
@@ -51,35 +67,6 @@ class AssertionUtils {
       if (array[i] == null) {
         throw new AssertionError(name + "[" + i + "] must not be null");
       }
-    }
-  }
-
-  public static void assertNotEmpty(final String name, final Collection<?> collection)
-      throws AssertionError {
-    if (collection == null) {
-      throw new AssertionError(name + " must not be null");
-    }
-    if (collection.isEmpty()) {
-      throw new AssertionError(name + " must not be empty");
-    }
-    int i = 0;
-    for (final Object element : collection) {
-      if (element == null) {
-        throw new AssertionError(name + "[" + i + "] must not be null");
-      }
-      ++i;
-    }
-  }
-
-  public static void assertEquals(final int expected, final int actual) throws AssertionError {
-    if (expected != actual) {
-      throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
-    }
-  }
-
-  public static void assertEquals(final long expected, final long actual) throws AssertionError {
-    if (expected != actual) {
-      throw new AssertionError("expected <" + expected + ">, but was <" + actual + ">");
     }
   }
 }

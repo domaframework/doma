@@ -30,14 +30,14 @@ import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.CompilerKind;
-import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.Run;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 
-public class ScopeTest extends CompilerSupport {
+public class ScopeTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {

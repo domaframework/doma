@@ -16,7 +16,10 @@
 package org.seasar.doma.internal.apt;
 
 import java.util.Objects;
+import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.TypeElement;
 
 public class ProcessingContext {
 
@@ -43,6 +46,15 @@ public class ProcessingContext {
     resources = new Resources(env.getFiler(), env.getOptions().get(Options.RESOURCES_DIR));
     options = new Options(env.getOptions(), resources);
     initialized = true;
+  }
+
+  public RoundContext createRoundContext(
+      Set<? extends TypeElement> annotationElements, RoundEnvironment roundEnvironment) {
+    Objects.requireNonNull(annotationElements);
+    Objects.requireNonNull(roundEnvironment);
+    var roundContext = new RoundContext(this, roundEnvironment, annotationElements);
+    roundContext.init();
+    return roundContext;
   }
 
   public MoreElements getMoreElements() {

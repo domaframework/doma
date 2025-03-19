@@ -115,11 +115,10 @@ public class DomaProcessor extends AbstractProcessor {
       return true;
     }
 
-    var roundContext = new RoundContext(processingContext, roundEnv, annotations);
-    roundContext.init();
+    var roundContext = processingContext.createRoundContext(annotations, roundEnv);
 
     for (var operator : operators) {
-      var elements = roundContext.getElementsAnnotatedWith(operator.name);
+      var elements = roundContext.getElementsAnnotatedWith(operator.annotationName);
       if (!elements.isEmpty()) {
         operator.consumer.accept(roundContext, elements);
       }
@@ -177,9 +176,10 @@ public class DomaProcessor extends AbstractProcessor {
     processor.process(elements);
   }
 
-  private record Operator(String name, BiConsumer<RoundContext, Set<? extends Element>> consumer) {
+  private record Operator(
+      String annotationName, BiConsumer<RoundContext, Set<? extends Element>> consumer) {
     Operator {
-      Objects.requireNonNull(name);
+      Objects.requireNonNull(annotationName);
       Objects.requireNonNull(consumer);
     }
   }

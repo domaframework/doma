@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.message.Message;
 
-class DomainConvertersProcessorTest extends CompilerSupport {
+class DomainConvertersProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {

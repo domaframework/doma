@@ -28,13 +28,13 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
-import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.CriteriaGeneratedClassNameParameterResolver;
 import org.seasar.doma.internal.apt.DomaProcessor;
 import org.seasar.doma.internal.apt.ResourceParameterResolver;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 
-class MetamodelOptionTest extends CompilerSupport {
+class MetamodelOptionTest extends AbstractCompilerTest {
 
   private static final String PREFIX = "Q";
   private static final String SUFFIX = "Metamodel";

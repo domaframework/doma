@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.lang.model.element.TypeElement;
 import org.junit.jupiter.api.Test;
-import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
@@ -28,7 +28,7 @@ import org.seasar.doma.internal.apt.meta.entity.EntityMetaFactory;
 import org.seasar.doma.internal.apt.processor.entity.NamingType1Entity;
 import org.seasar.doma.jdbc.entity.NamingType;
 
-class EntityMetaFactoryTest extends CompilerSupport {
+class EntityMetaFactoryTest extends AbstractCompilerTest {
 
   @Test
   void testNaming1Type() throws Exception {

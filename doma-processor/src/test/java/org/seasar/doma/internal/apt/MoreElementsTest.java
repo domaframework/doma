@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.seasar.doma.ParameterName;
 import org.seasar.doma.internal.apt.def.TypeParametersDef;
 
-class MoreElementsTest extends CompilerSupport {
+class MoreElementsTest extends AbstractCompilerTest {
   @SuppressWarnings("unused")
   private void test(String arg1, @ParameterName("aaa") String arg2) {}
 

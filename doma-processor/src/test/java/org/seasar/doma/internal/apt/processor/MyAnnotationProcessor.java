@@ -24,7 +24,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.ProcessingContext;
-import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.meta.NullElementMeta;
 
 public class MyAnnotationProcessor extends AbstractProcessor {
@@ -58,8 +57,7 @@ public class MyAnnotationProcessor extends AbstractProcessor {
     if (roundEnv.processingOver()) {
       return true;
     }
-    var roundContext = new RoundContext(ctx, roundEnv, annotations);
-    roundContext.init();
+    var roundContext = ctx.createRoundContext(annotations, roundEnv);
     var elements = roundContext.getElementsAnnotatedWith(MyAnnotation.class.getName());
     var processor = new MyElementProcessor(roundContext, handler);
     processor.process(elements);

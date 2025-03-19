@@ -75,18 +75,15 @@ allprojects {
     }
 
     spotless {
-        val targetExclude = "src/test/java/org/seasar/aptina/unit/*.java"
         val licenseHeaderFile = rootProject.file("spotless/copyright.java")
 
         lineEndings = com.diffplug.spotless.LineEnding.UNIX
         java {
-            targetExclude(targetExclude)
             googleJavaFormat(catalog.google.java.format.get().version)
             licenseHeaderFile(licenseHeaderFile)
         }
         // https://github.com/diffplug/spotless/issues/532
         format("javaMisc") {
-            targetExclude(targetExclude)
             target("src/**/package-info.java", "src/**/module-info.java")
             licenseHeaderFile(licenseHeaderFile, "(package|module|\\/\\*\\*)")
         }
