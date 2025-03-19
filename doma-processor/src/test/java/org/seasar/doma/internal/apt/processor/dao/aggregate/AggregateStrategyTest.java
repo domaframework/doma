@@ -37,7 +37,7 @@ import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.internal.apt.processor.entity.ChildEntity;
 import org.seasar.doma.message.Message;
 
-class DaoProcessorTest extends AbstractCompilerTest {
+class AggregateStrategyTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
