@@ -27,11 +27,11 @@ import javax.lang.model.type.TypeVariable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.seasar.doma.internal.apt.CompilerSupport;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 
-class TypeDeclarationTest extends CompilerSupport {
+class TypeDeclarationTest extends AbstractCompilerTest {
 
   @SuppressWarnings("InnerClassMayBeStatic")
   private class Inner {}

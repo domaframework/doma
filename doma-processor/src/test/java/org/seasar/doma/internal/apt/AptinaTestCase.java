@@ -80,7 +80,8 @@ import org.seasar.doma.message.Message;
  *
  * @author koichik
  */
-class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, ExecutionCondition {
+class AptinaTestCase
+    implements BeforeEachCallback, AfterEachCallback, ExecutionCondition, CompilerExtension {
 
   private final CompilerKind compilerKind;
   private Locale locale;
@@ -161,19 +162,23 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     }
   }
 
-  void enableCompilationAssertion() {
+  @Override
+  public void enableCompilationAssertion() {
     this.compilationAssertion = true;
   }
 
-  void disableCompilationAssertion() {
+  @Override
+  public void disableCompilationAssertion() {
     this.compilationAssertion = false;
   }
 
-  void setSourceOutput(Path sourceOutput) {
+  @Override
+  public void setSourceOutput(Path sourceOutput) {
     this.sourceOutput = sourceOutput;
   }
 
-  void setClassOutput(Path classOutput) {
+  @Override
+  public void setClassOutput(Path classOutput) {
     this.classOutput = classOutput;
   }
 
@@ -184,35 +189,40 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     }
   }
 
-  void addOption(final String... options) {
+  @Override
+  public void addOption(final String... options) {
     assertNotEmpty("options", options);
     this.options.addAll(asList(options));
   }
 
-  void addProcessor(final Processor... processors) {
+  @Override
+  public void addProcessor(final Processor... processors) {
     assertNotEmpty("processors", processors);
     this.processors.addAll(asList(processors));
   }
 
-  void addCompilationUnit(final Class<?>... classes) {
+  @Override
+  public void addCompilationUnit(final Class<?>... classes) {
     assertNotNull("clazz", classes);
     for (final Class<?> clazz : classes) {
       addCompilationUnit(clazz.getName());
     }
   }
 
-  void addCompilationUnit(final String className) {
+  private void addCompilationUnit(final String className) {
     assertNotEmpty("className", className);
     compilationUnits.add(new InputCompilationUnit(className));
   }
 
-  void addCompilationUnit(final String className, final CharSequence source) {
+  @Override
+  public void addCompilationUnit(final String className, final CharSequence source) {
     assertNotEmpty("className", className);
     assertNotEmpty("source", source);
     compilationUnits.add(new OutputCompilationUnit(className, source.toString()));
   }
 
-  void compile() throws IOException {
+  @Override
+  public void compile() throws IOException {
     if (sourceOutput == null) {
       throw new IllegalStateException("sourceOutput is not set");
     }
@@ -240,12 +250,13 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     compilationUnits.clear();
   }
 
-  Boolean getCompiledResult() throws IllegalStateException {
+  @Override
+  public Boolean getCompiledResult() throws IllegalStateException {
     assertCompiled();
     return compiledResult;
   }
 
-  List<Diagnostic<? extends JavaFileObject>> getDiagnostics() throws IllegalStateException {
+  private List<Diagnostic<? extends JavaFileObject>> getDiagnostics() throws IllegalStateException {
     assertCompiled();
     List<Diagnostic<? extends JavaFileObject>> results = new ArrayList<>();
     for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) {
@@ -262,7 +273,7 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     return results;
   }
 
-  String getGeneratedSource(final String className)
+  private String getGeneratedSource(final String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotEmpty("className", className);
     assertCompiled();
@@ -279,7 +290,8 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     return content.toString();
   }
 
-  void assertEqualsGeneratedSourceWithResource(URL expectedResourceUrl, String className)
+  @Override
+  public void assertEqualsGeneratedSourceWithResource(URL expectedResourceUrl, String className)
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
     assertNotEmpty("className", className);
@@ -332,7 +344,8 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     assertNull(actualReader.readLine(), "line:" + lineNo);
   }
 
-  void assertMessage(Message message) {
+  @Override
+  public void assertMessage(Message message) {
     for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
       Message m = extractMessage(diagnostic);
       if (m == message) {
@@ -356,7 +369,8 @@ class AptinaTestCase implements BeforeEachCallback, AfterEachCallback, Execution
     return null;
   }
 
-  void assertNoError() {
+  @Override
+  public void assertNoError() {
     boolean match = getDiagnostics().stream().anyMatch(d -> d.getKind() == Diagnostic.Kind.ERROR);
     if (match) {
       fail();

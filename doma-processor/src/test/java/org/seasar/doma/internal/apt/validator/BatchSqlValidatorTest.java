@@ -23,15 +23,15 @@ import java.util.LinkedHashMap;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.message.Message;
 
-class BatchSqlValidatorTest extends CompilerSupport {
+class BatchSqlValidatorTest extends AbstractCompilerTest {
 
   @Test
   void testEmbeddedVariable() throws Exception {

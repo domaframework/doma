@@ -34,7 +34,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MoreTypesTest extends CompilerSupport {
+class MoreTypesTest extends AbstractCompilerTest {
 
   @SuppressWarnings("InnerClassMayBeStatic")
   private class NumberList<E extends Number> extends ArrayList<E> {}

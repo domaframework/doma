@@ -24,8 +24,8 @@ import java.util.Map;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.AptException;
-import org.seasar.doma.internal.apt.CompilerSupport;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.TestProcessor;
 import org.seasar.doma.internal.apt.decl.TypeDeclaration;
@@ -34,7 +34,7 @@ import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
 
 @SuppressWarnings("ThrowablePrintedToSystemOut")
-class ExpressionValidatorTest extends CompilerSupport {
+class ExpressionValidatorTest extends AbstractCompilerTest {
 
   @Test
   void testVariable_notFound() throws Exception {

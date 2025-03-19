@@ -30,41 +30,39 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
 import org.seasar.doma.message.Message;
 
-public abstract class CompilerSupport {
+public abstract class AbstractCompilerTest {
 
-  private @RegisterExtension final AptinaTestCase delegate = new AptinaTestCase();
-
+  private @RegisterExtension final CompilerExtension extension = new AptinaTestCase();
   private @TempDir Path sourceOutput;
-
   private @TempDir Path classOutput;
 
   @BeforeEach
   final void setupTempDirs() {
-    delegate.setSourceOutput(sourceOutput);
-    delegate.setClassOutput(classOutput);
+    extension.setSourceOutput(sourceOutput);
+    extension.setClassOutput(classOutput);
   }
 
   protected void enableCompilationAssertion() {
-    delegate.enableCompilationAssertion();
+    extension.enableCompilationAssertion();
   }
 
   protected void disableCompilationAssertion() {
-    delegate.disableCompilationAssertion();
+    extension.disableCompilationAssertion();
   }
 
   protected void addOption(final String... options) {
     if (options.length == 0) {
       return;
     }
-    delegate.addOption(options);
+    extension.addOption(options);
   }
 
   protected void addProcessor(final Processor... processors) {
-    delegate.addProcessor(processors);
+    extension.addProcessor(processors);
   }
 
   protected void addCompilationUnit(final Class<?>... classes) {
-    delegate.addCompilationUnit(classes);
+    extension.addCompilationUnit(classes);
   }
 
   protected void addResourceFileCompilationUnit(final String fqn) {
@@ -73,7 +71,7 @@ public abstract class CompilerSupport {
       Objects.requireNonNull(in);
       try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
         String source = reader.lines().collect(Collectors.joining("\n"));
-        delegate.addCompilationUnit(fqn, source);
+        extension.addCompilationUnit(fqn, source);
       }
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -81,23 +79,23 @@ public abstract class CompilerSupport {
   }
 
   protected void compile() throws IOException {
-    delegate.compile();
+    extension.compile();
   }
 
   protected Boolean getCompiledResult() throws IllegalStateException {
-    return delegate.getCompiledResult();
+    return extension.getCompiledResult();
   }
 
   protected void assertEqualsGeneratedSourceWithResource(
       final URL expectedResourceUrl, final String className) throws Exception {
-    delegate.assertEqualsGeneratedSourceWithResource(expectedResourceUrl, className);
+    extension.assertEqualsGeneratedSourceWithResource(expectedResourceUrl, className);
   }
 
   protected void assertMessage(Message message) {
-    delegate.assertMessage(message);
+    extension.assertMessage(message);
   }
 
   protected void assertNoError() {
-    delegate.assertNoError();
+    extension.assertNoError();
   }
 }
