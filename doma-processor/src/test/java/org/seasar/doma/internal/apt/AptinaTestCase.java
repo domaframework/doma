@@ -295,13 +295,8 @@ class AptinaTestCase
       throws IllegalStateException, IOException, SourceNotGeneratedException {
     assertNotNull("expectedResourceUrl", expectedResourceUrl);
     assertNotEmpty("className", className);
-    try {
-      assertCompiled();
-      assertEqualsGeneratedSource(readFromResource(expectedResourceUrl), className);
-    } catch (AssertionError error) {
-      System.out.println(getGeneratedSource(className));
-      throw error;
-    }
+    assertCompiled();
+    assertEqualsGeneratedSource(readFromResource(expectedResourceUrl), className);
   }
 
   private void assertEqualsGeneratedSource(final CharSequence expected, final String className)
@@ -310,7 +305,12 @@ class AptinaTestCase
     assertCompiled();
     final String actual = getGeneratedSource(className);
     assertNotNull("actual", actual);
-    assertEqualsByLine(expected == null ? null : expected.toString(), actual);
+    try {
+      assertEqualsByLine(expected == null ? null : expected.toString(), actual);
+    } catch (AssertionError error) {
+      System.out.println(actual);
+      throw error;
+    }
   }
 
   private void assertEqualsByLine(final String expected, final String actual) {
@@ -346,6 +346,7 @@ class AptinaTestCase
 
   @Override
   public void assertMessage(Message message) {
+    assertCompiled();
     for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
       Message m = extractMessage(diagnostic);
       if (m == message) {
@@ -371,6 +372,7 @@ class AptinaTestCase
 
   @Override
   public void assertNoError() {
+    assertCompiled();
     boolean match = getDiagnostics().stream().anyMatch(d -> d.getKind() == Diagnostic.Kind.ERROR);
     if (match) {
       fail();
