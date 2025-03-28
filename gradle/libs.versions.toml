@@ -27,7 +27,7 @@ testcontainers-sqlserver = { module = "org.testcontainers:mssqlserver" }
 
 ecj = { module = "org.eclipse.jdt:ecj", version = "3.41.0" }
 
-google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.25.2" }
+google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.26.0" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.5.0" }
 
 [plugins]
