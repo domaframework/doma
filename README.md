@@ -63,6 +63,9 @@ Examples
 
 ### Type-safe Criteria API
 
+This code uses a type-safe Criteria API to fetch employees from a specific department 
+while establishing associations between the related entities:
+
 ```java
 var queryDsl = new QueryDsl(config);
 var e = new Employee_();
@@ -84,23 +87,44 @@ for more information.
 
 ### SQL templates
 
+This code uses an SQL template to fetch employees from a specific department
+while establishing associations between the related entities:
+
 ```java
 @Dao
 public interface EmployeeDao {
 
   @Sql(
     """
-    select * from EMPLOYEE where
-    /*%if salary != null*/
-      SALARY >= /*salary*/9999
-    /*%end*/
+    select
+      /*%expand*/*
+    from
+      EMPLOYEE e
+      inner join
+      DEPARTMENT d
+        on e.departmentId = d.departmentId
+    where
+      /*%if departmentName != null*/
+      d.DEPARTMENT_NAME = /*departmentName*/'test'
+      /*%end*/
     """)
-  @Select
-  List<Employee> selectBySalary(BigDecimal salary);
+  @Select(aggregateStrategy = EmployeeStrategy.class)
+  List<Employee> selectByDepartmentName(String departmentName);
+
+  @AggregateStrategy(root = Employee.class, tableAlias = "e")
+  interface EmployeeStrategy {
+    @AssociationLinker(propertyPath = "department", tableAlias = "d")
+    BiFunction<Employee, Department, Employee> department = (e, d) -> {
+      e.setDepartment(d);
+      d.getEmployees().add(e);
+      return e;
+    };    
+  }
 }
 ```
 
-See [SQL templates](https://doma.readthedocs.io/en/latest/sql/)
+See [SQL templates](https://doma.readthedocs.io/en/latest/sql/) and 
+[Aggregate strategies](https://doma.readthedocs.io/en/latest/aggregate-strategy/)
 for more information.
 
 ### More Examples
