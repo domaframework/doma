@@ -1,14 +1,13 @@
 Doma
 ====
 
-Doma is a database access framework for Java.
-Doma has various strengths:
+Doma is a database access framework for Java with several notable strengths:
 
-- Verifies and generates source code **at compile time** using [annotation processing][apt].
-- Provides type-safe Criteria API.
-- Supports Kotlin.
-- Uses SQL templates, called "two-way SQL".
-- Has no dependence on other libraries.
+- It checks and generates source code at compile time using annotation processing.
+- It supports associations between entities.
+- It offers a type-safe Criteria API.
+- It includes SQL templates, known as “two-way SQL.”
+- It runs independently, without relying on any other libraries.
 
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
