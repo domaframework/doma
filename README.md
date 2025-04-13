@@ -1,14 +1,13 @@
 Doma
 ====
 
-Doma is a database access framework for Java.
-Doma has various strengths:
+Doma is a database access framework for Java with several notable strengths:
 
-- Verifies and generates source code **at compile time** using [annotation processing][apt].
-- Provides type-safe Criteria API.
-- Supports Kotlin.
-- Uses SQL templates, called "two-way SQL".
-- Has no dependence on other libraries.
+- It checks and generates source code at compile time using annotation processing.
+- It supports associations between entities.
+- It offers a type-safe Criteria API.
+- It includes SQL templates, known as “two-way SQL.”
+- It runs independently, without relying on any other libraries.
 
 [![Build Status](https://github.com/domaframework/doma/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/domaframework/doma/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
@@ -64,6 +63,9 @@ Examples
 
 ### Type-safe Criteria API
 
+This code uses a type-safe Criteria API to fetch employees from a specific department
+while establishing associations between the related entities:
+
 ```java
 var queryDsl = new QueryDsl(config);
 var e = new Employee_();
@@ -85,23 +87,44 @@ for more information.
 
 ### SQL templates
 
+This code uses an SQL template to fetch employees from a specific department
+while establishing associations between the related entities:
+
 ```java
 @Dao
 public interface EmployeeDao {
 
   @Sql(
     """
-    select * from EMPLOYEE where
-    /*%if salary != null*/
-      SALARY >= /*salary*/9999
-    /*%end*/
+    select
+      /*%expand*/*
+    from
+      EMPLOYEE e
+      inner join
+      DEPARTMENT d
+        on e.departmentId = d.departmentId
+    where
+      /*%if departmentName != null*/
+      d.DEPARTMENT_NAME = /*departmentName*/'test'
+      /*%end*/
     """)
-  @Select
-  List<Employee> selectBySalary(BigDecimal salary);
+  @Select(aggregateStrategy = EmployeeStrategy.class)
+  List<Employee> selectByDepartmentName(String departmentName);
+
+  @AggregateStrategy(root = Employee.class, tableAlias = "e")
+  interface EmployeeStrategy {
+    @AssociationLinker(propertyPath = "department", tableAlias = "d")
+    BiFunction<Employee, Department, Employee> department = (e, d) -> {
+      e.setDepartment(d);
+      d.getEmployees().add(e);
+      return e;
+    };
+  }
 }
 ```
 
-See [SQL templates](https://doma.readthedocs.io/en/latest/sql/)
+See [SQL templates](https://doma.readthedocs.io/en/latest/sql/) and
+[Aggregate strategies](https://doma.readthedocs.io/en/latest/aggregate-strategy/)
 for more information.
 
 ### More Examples
@@ -238,5 +261,6 @@ Major versions
 | Java 21 |        | v      | v      |
 | Java 22 |        | v      | v      |
 | Java 23 |        |        | v      |
+| Java 24 |        |        | v      |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
