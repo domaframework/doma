@@ -63,7 +63,7 @@ Examples
 
 ### Type-safe Criteria API
 
-This code uses a type-safe Criteria API to fetch employees from a specific department 
+This code uses a type-safe Criteria API to fetch employees from a specific department
 while establishing associations between the related entities:
 
 ```java
@@ -118,12 +118,12 @@ public interface EmployeeDao {
       e.setDepartment(d);
       d.getEmployees().add(e);
       return e;
-    };    
+    };
   }
 }
 ```
 
-See [SQL templates](https://doma.readthedocs.io/en/latest/sql/) and 
+See [SQL templates](https://doma.readthedocs.io/en/latest/sql/) and
 [Aggregate strategies](https://doma.readthedocs.io/en/latest/aggregate-strategy/)
 for more information.
 
