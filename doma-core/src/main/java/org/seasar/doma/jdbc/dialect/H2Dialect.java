@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.query.InsertAssembler;
+import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
@@ -89,5 +91,10 @@ public class H2Dialect extends H214199Dialect {
   @Override
   public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
     return new H2UpsertAssembler(context);
+  }
+
+  @Override
+  public <ENTITY> InsertAssembler getInsertAssembler(InsertAssemblerContext<ENTITY> context) {
+    return new H2InsertAssembler<>(context);
   }
 }

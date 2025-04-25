@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.dialect;
 import java.util.List;
 import java.util.function.Consumer;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
@@ -41,6 +42,9 @@ public class SqliteUpsertAssembler implements UpsertAssembler {
 
   private final List<InsertRow> insertRows;
   private final List<QueryOperandPair> setValues;
+  private final Naming naming;
+  private final Dialect dialect;
+  private final boolean returning;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public SqliteUpsertAssembler(UpsertAssemblerContext context) {
@@ -52,6 +56,9 @@ public class SqliteUpsertAssembler implements UpsertAssembler {
     this.insertPropertyTypes = context.insertPropertyTypes;
     this.insertRows = context.insertRows;
     this.setValues = context.setValues;
+    this.naming = context.naming;
+    this.dialect = context.dialect;
+    this.returning = context.returning;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
 
@@ -89,6 +96,9 @@ public class SqliteUpsertAssembler implements UpsertAssembler {
             buf.appendSql(" = ");
             p.getRight().accept(queryOperandVisitor);
           });
+    }
+    if (returning) {
+      StandardAssemblerUtil.assembleReturning(buf, entityType, naming, dialect);
     }
   }
 

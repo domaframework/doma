@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.jdbc.criteria.statement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +33,6 @@ public class EntityqlInsertIntermediate<ENTITY>
   private final ENTITY entity;
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
-  private final List<PropertyMetamodel<?>> keys = new ArrayList<>();
 
   public EntityqlInsertIntermediate(
       Config config,
@@ -56,10 +54,15 @@ public class EntityqlInsertIntermediate<ENTITY>
    * @param keys keys the keys used for duplicate checking
    * @return selecting set statement builder
    */
-  public Statement<Result<ENTITY>> keys(PropertyMetamodel<?>... keys) {
+  public EntityqlInsertTerminal<ENTITY> keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
-    this.keys.addAll(Arrays.stream(keys).toList());
-    return this;
+    return new EntityqlInsertTerminal<>(
+        config, entityMetamodel, entity, settings, duplicateKeyType, Arrays.stream(keys).toList());
+  }
+
+  public Statement<Result<ENTITY>> returning() {
+    return new EntityqlInsertTerminal<>(
+        config, entityMetamodel, entity, settings, duplicateKeyType, List.of(), true);
   }
 
   /**
@@ -78,7 +81,7 @@ public class EntityqlInsertIntermediate<ENTITY>
   protected Command<Result<ENTITY>> createCommand() {
     EntityqlInsertTerminal<ENTITY> terminal =
         new EntityqlInsertTerminal<>(
-            config, entityMetamodel, entity, settings, duplicateKeyType, keys);
+            config, entityMetamodel, entity, settings, duplicateKeyType, List.of());
     return terminal.createCommand();
   }
 }

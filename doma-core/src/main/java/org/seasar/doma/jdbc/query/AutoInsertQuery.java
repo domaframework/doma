@@ -52,6 +52,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
+  protected boolean returning;
+
   public AutoInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -159,27 +161,11 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
-    builder.appendSql("insert into ");
-    builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
-    builder.appendSql(" (");
-    if (!targetPropertyTypes.isEmpty()) {
-      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-        builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
-        builder.appendSql(", ");
-      }
-      builder.cutBackSql(2);
-    }
-    builder.appendSql(") values (");
-    if (!targetPropertyTypes.isEmpty()) {
-      for (EntityPropertyType<ENTITY, ?> propertyType : targetPropertyTypes) {
-        Property<ENTITY, ?> property = propertyType.createProperty();
-        property.load(entity);
-        builder.appendParameter(property.asInParameter());
-        builder.appendSql(", ");
-      }
-      builder.cutBackSql(2);
-    }
-    builder.appendSql(")");
+    InsertAssemblerContext<ENTITY> context =
+        InsertAssemblerContextBuilder.build(
+            builder, entityType, naming, dialect, targetPropertyTypes, entity, returning);
+    InsertAssembler insertAssembler = dialect.getInsertAssembler(context);
+    insertAssembler.assemble();
   }
 
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
@@ -199,7 +185,8 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
             dialect,
             idPropertyTypes,
             targetPropertyTypes,
-            entity);
+            entity,
+            returning);
     UpsertAssembler upsertAssembler = dialect.getUpsertAssembler(context);
     upsertAssembler.assemble();
   }
@@ -241,6 +228,10 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
+  }
+
+  public void setReturning(boolean returning) {
+    this.returning = returning;
   }
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {

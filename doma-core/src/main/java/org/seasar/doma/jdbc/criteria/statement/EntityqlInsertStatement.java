@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
@@ -63,6 +64,11 @@ public class EntityqlInsertStatement<ENTITY>
     this.duplicateKeyType = DuplicateKeyType.IGNORE;
     return new EntityqlInsertIntermediate<>(
         config, entityMetamodel, entity, settings, duplicateKeyType);
+  }
+
+  public Statement<Result<ENTITY>> returning() {
+    return new EntityqlInsertTerminal<>(
+        config, entityMetamodel, entity, settings, duplicateKeyType, List.of(), true);
   }
 
   /**

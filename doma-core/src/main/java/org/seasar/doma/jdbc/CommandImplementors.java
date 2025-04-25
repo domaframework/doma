@@ -28,6 +28,7 @@ import org.seasar.doma.jdbc.command.CreateCommand;
 import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.command.FunctionCommand;
 import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.InsertReturningCommand;
 import org.seasar.doma.jdbc.command.ProcedureCommand;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ScriptCommand;
@@ -105,6 +106,19 @@ public interface CommandImplementors {
    */
   default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
     return new UpdateCommand(query);
+  }
+
+  /**
+   * Creates an {@link InsertReturningCommand} object.
+   *
+   * @param method the DAO method
+   * @param query the query
+   * @param resultSetHandler the result set handler
+   * @return the command
+   */
+  default <RESULT> InsertReturningCommand<RESULT> createInsertReturningCommand(
+      Method method, InsertQuery query, ResultSetHandler<RESULT> resultSetHandler) {
+    return new InsertReturningCommand<>(query, resultSetHandler);
   }
 
   /**
