@@ -35,6 +35,7 @@ import org.seasar.doma.jdbc.command.ScriptCommand;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.command.SqlProcessorCommand;
 import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.command.UpdateReturningCommand;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
@@ -119,6 +120,12 @@ public interface CommandImplementors {
   default <RESULT> InsertReturningCommand<RESULT> createInsertReturningCommand(
       Method method, InsertQuery query, ResultSetHandler<RESULT> resultSetHandler) {
     return new InsertReturningCommand<>(query, resultSetHandler);
+  }
+
+  // TODO
+  default <RESULT> UpdateReturningCommand<RESULT> createUpdateReturningCommand(
+      Method method, UpdateQuery query, ResultSetHandler<RESULT> resultSetHandler) {
+    return new UpdateReturningCommand<>(query, resultSetHandler);
   }
 
   /**

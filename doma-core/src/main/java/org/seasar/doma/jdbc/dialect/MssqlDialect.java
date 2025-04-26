@@ -32,6 +32,8 @@ import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpdateAssembler;
+import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
@@ -179,5 +181,10 @@ public class MssqlDialect extends Mssql2008Dialect {
   public <ENTITY> MultiInsertAssembler getMultiInsertAssembler(
       MultiInsertAssemblerContext<ENTITY> context) {
     return new MssqlMultiInsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
+    return new MssqlUpdateAssembler<>(context);
   }
 }

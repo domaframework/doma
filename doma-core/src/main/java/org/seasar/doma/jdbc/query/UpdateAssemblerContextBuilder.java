@@ -21,21 +21,38 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
-public class InsertAssemblerContextBuilder {
+public class UpdateAssemblerContextBuilder {
 
-  public static <ENTITY> InsertAssemblerContext<ENTITY> build(
+  public static <ENTITY> UpdateAssemblerContext<ENTITY> build(
       PreparedSqlBuilder buf,
       EntityType<ENTITY> entityType,
       Naming naming,
       Dialect dialect,
-      List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
+      UpdateQueryHelper<ENTITY> updateQueryHelper,
+      List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
+      List<EntityPropertyType<ENTITY, ?>> updatePropertyTypes,
+      VersionPropertyType<ENTITY, ?, ?> versionPropertyType,
+      EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
+      boolean versionIgnored,
       ENTITY entity,
       boolean returning) {
 
     // TODO: check arguments
 
-    return new InsertAssemblerContext<>(
-        buf, entityType, naming, dialect, insertPropertyTypes, entity, returning);
+    return new UpdateAssemblerContext<>(
+        buf,
+        entityType,
+        naming,
+        dialect,
+        updateQueryHelper,
+        idPropertyTypes,
+        updatePropertyTypes,
+        versionPropertyType,
+        tenantIdPropertyType,
+        versionIgnored,
+        entity,
+        returning);
   }
 }

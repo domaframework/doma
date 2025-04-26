@@ -25,12 +25,10 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostUpdateContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreUpdateContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.Property;
 
 public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements UpdateQuery {
 
@@ -43,6 +41,8 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   protected boolean unchangedPropertyIncluded;
 
   protected UpdateQueryHelper<ENTITY> helper;
+
+  protected boolean returning;
 
   public AutoUpdateQuery(EntityType<ENTITY> entityType) {
     super(entityType);
@@ -103,54 +103,26 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.UPDATE, sqlLogType);
-    builder.appendSql("update ");
-    builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
-    builder.appendSql(" set ");
-    helper.populateValues(entity, targetPropertyTypes, versionPropertyType, builder);
-    boolean whereClauseAppended = false;
-    if (idPropertyTypes.size() > 0) {
-      builder.appendSql(" where ");
-      whereClauseAppended = true;
-      for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
-        Property<ENTITY, ?> property = propertyType.createProperty();
-        property.load(entity);
-        builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
-        builder.appendSql(" = ");
-        builder.appendParameter(property.asInParameter());
-        builder.appendSql(" and ");
-      }
-      builder.cutBackSql(5);
-    }
-    if (!versionIgnored && versionPropertyType != null) {
-      if (whereClauseAppended) {
-        builder.appendSql(" and ");
-      } else {
-        builder.appendSql(" where ");
-        whereClauseAppended = true;
-      }
-      Property<ENTITY, ?> property = versionPropertyType.createProperty();
-      property.load(entity);
-      builder.appendSql(versionPropertyType.getColumnName(naming::apply, dialect::applyQuote));
-      builder.appendSql(" = ");
-      builder.appendParameter(property.asInParameter());
-    }
-    if (tenantIdPropertyType != null) {
-      if (whereClauseAppended) {
-        builder.appendSql(" and ");
-      } else {
-        builder.appendSql(" where ");
-        //noinspection UnusedAssignment
-        whereClauseAppended = true;
-      }
-      Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
-      property.load(entity);
-      builder.appendSql(tenantIdPropertyType.getColumnName(naming::apply, dialect::applyQuote));
-      builder.appendSql(" = ");
-      builder.appendParameter(property.asInParameter());
-    }
+
+    UpdateAssemblerContext<ENTITY> context =
+        UpdateAssemblerContextBuilder.build(
+            builder,
+            entityType,
+            config.getNaming(),
+            dialect,
+            helper,
+            idPropertyTypes,
+            targetPropertyTypes,
+            versionPropertyType,
+            tenantIdPropertyType,
+            versionIgnored,
+            entity,
+            returning);
+    UpdateAssembler updateAssembler = dialect.getUpdateAssembler(context);
+    updateAssembler.assemble();
+
     sql = builder.build(this::comment);
   }
 
@@ -194,6 +166,10 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
     this.unchangedPropertyIncluded = unchangedPropertyIncluded;
+  }
+
+  public void setReturning(boolean returning) {
+    this.returning = returning;
   }
 
   protected static class AutoPreUpdateContext<E> extends AbstractPreUpdateContext<E> {

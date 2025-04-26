@@ -22,6 +22,8 @@ import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpdateAssembler;
+import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
@@ -104,5 +106,10 @@ public class H2Dialect extends H214199Dialect {
   public <ENTITY> MultiInsertAssembler getMultiInsertAssembler(
       MultiInsertAssemblerContext<ENTITY> context) {
     return new H2MultiInsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
+    return new H2UpdateAssembler<>(context);
   }
 }

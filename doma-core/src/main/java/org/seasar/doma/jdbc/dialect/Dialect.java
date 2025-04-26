@@ -35,6 +35,8 @@ import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpdateAssembler;
+import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.type.JdbcType;
@@ -400,5 +402,9 @@ public interface Dialect {
 
   default <ENTITY> InsertAssembler getInsertAssembler(InsertAssemblerContext<ENTITY> context) {
     return new DefaultInsertAssembler<>(context);
+  }
+
+  default <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
+    return new DefaultUpdateAssembler<>(context);
   }
 }

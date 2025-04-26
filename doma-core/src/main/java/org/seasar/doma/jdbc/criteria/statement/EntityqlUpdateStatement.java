@@ -16,11 +16,13 @@
 package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.Objects;
+import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.command.UpdateReturningCommand;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -34,16 +36,31 @@ public class EntityqlUpdateStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final UpdateSettings settings;
+  private final boolean returning;
 
   public EntityqlUpdateStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       UpdateSettings settings) {
+    this(config, entityMetamodel, entity, settings, false);
+  }
+
+  private EntityqlUpdateStatement(
+      Config config,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      ENTITY entity,
+      UpdateSettings settings,
+      boolean returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
+    this.returning = returning;
+  }
+
+  public Statement<Result<ENTITY>> returning() {
+    return new EntityqlUpdateStatement<>(config, entityMetamodel, entity, settings, true);
   }
 
   /**
@@ -83,10 +100,42 @@ public class EntityqlUpdateStatement<ENTITY>
     query.setUnchangedPropertyIncluded(false);
     query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
+    query.setReturning(returning);
     query.prepare();
+    if (returning) {
+      return createReturningCommand(entityType, query);
+    } else {
+      return createCommand(query);
+    }
+  }
+
+  private Command<Result<ENTITY>> createReturningCommand(
+      EntityType<ENTITY> entityType, AutoUpdateQuery<ENTITY> query) {
+    UpdateReturningCommand<ENTITY> command =
+        config
+            .getCommandImplementors()
+            .createUpdateReturningCommand(
+                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType));
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public Result<ENTITY> execute() {
+        ENTITY entity = command.execute();
+        int count = entity == null ? 0 : 1;
+        query.complete();
+        return new Result<>(count, entity);
+      }
+    };
+  }
+
+  private Command<Result<ENTITY>> createCommand(AutoUpdateQuery<ENTITY> query) {
     UpdateCommand command =
         config.getCommandImplementors().createUpdateCommand(EXECUTE_METHOD, query);
-    return new Command<Result<ENTITY>>() {
+    return new Command<>() {
       @Override
       public Query getQuery() {
         return query;
