@@ -21,16 +21,16 @@ import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 
 public class StandardInsertAssembler<ENTITY> implements InsertAssembler {
   private final InsertAssemblerContext<ENTITY> context;
-  private final DefaultInsertAssembler<ENTITY> defaultInsertAssembler;
+  private final DefaultInsertAssembler<ENTITY> insertAssembler;
 
   public StandardInsertAssembler(InsertAssemblerContext<ENTITY> context) {
     this.context = Objects.requireNonNull(context);
-    this.defaultInsertAssembler = new DefaultInsertAssembler<>(context);
+    this.insertAssembler = new DefaultInsertAssembler<>(context);
   }
 
   @Override
   public void assemble() {
-    defaultInsertAssembler.assemble();
+    insertAssembler.assemble();
 
     if (context.returning) {
       StandardAssemblerUtil.assembleReturning(

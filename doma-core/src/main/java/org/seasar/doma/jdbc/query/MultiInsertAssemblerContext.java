@@ -36,6 +36,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
   public final Dialect dialect;
   public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final List<ENTITY> entities;
+  public boolean returning;
 
   /**
    * Creates an instance.
@@ -53,7 +54,8 @@ public class MultiInsertAssemblerContext<ENTITY> {
       Naming naming,
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
-      List<ENTITY> entities) {
+      List<ENTITY> entities,
+      boolean returning) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(naming);
@@ -70,5 +72,6 @@ public class MultiInsertAssemblerContext<ENTITY> {
     this.dialect = dialect;
     this.insertPropertyTypes = insertPropertyTypes;
     this.entities = entities;
+    this.returning = returning;
   }
 }

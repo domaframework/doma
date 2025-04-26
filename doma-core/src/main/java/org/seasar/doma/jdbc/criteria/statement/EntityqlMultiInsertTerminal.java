@@ -19,11 +19,13 @@ import static org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStateme
 
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.InsertReturningCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -40,6 +42,7 @@ public class EntityqlMultiInsertTerminal<ENTITY>
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
   private final List<PropertyMetamodel<?>> keys;
+  private final boolean returning;
 
   public EntityqlMultiInsertTerminal(
       Config config,
@@ -48,12 +51,29 @@ public class EntityqlMultiInsertTerminal<ENTITY>
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
       List<PropertyMetamodel<?>> keys) {
+    this(config, entityMetamodel, entities, settings, duplicateKeyType, keys, false);
+  }
+
+  public EntityqlMultiInsertTerminal(
+      Config config,
+      EntityMetamodel<ENTITY> entityMetamodel,
+      List<ENTITY> entities,
+      InsertSettings settings,
+      DuplicateKeyType duplicateKeyType,
+      List<PropertyMetamodel<?>> keys,
+      boolean returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
     this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
     this.keys = Objects.requireNonNull(keys);
+    this.returning = returning;
+  }
+
+  public Statement<MultiResult<ENTITY>> returning() {
+    return new EntityqlMultiInsertTerminal<>(
+        config, entityMetamodel, entities, settings, duplicateKeyType, keys, true);
   }
 
   /**
@@ -88,7 +108,38 @@ public class EntityqlMultiInsertTerminal<ENTITY>
     query.setDuplicateKeyType(this.duplicateKeyType);
     query.setDuplicateKeyNames(
         keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setReturning(returning);
     query.prepare();
+    if (returning) {
+      return createReturningCommand(entityType, query);
+    } else {
+      return createCommand(query);
+    }
+  }
+
+  private Command<MultiResult<ENTITY>> createReturningCommand(
+      EntityType<ENTITY> entityType, AutoMultiInsertQuery<ENTITY> query) {
+    InsertReturningCommand<List<ENTITY>> command =
+        config
+            .getCommandImplementors()
+            .createInsertReturningCommand(
+                EXECUTE_METHOD, query, new EntityResultListHandler<>(entityType));
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public MultiResult<ENTITY> execute() {
+        List<ENTITY> entities = command.execute();
+        query.complete();
+        return new MultiResult<>(entities.size(), entities);
+      }
+    };
+  }
+
+  private Command<MultiResult<ENTITY>> createCommand(AutoMultiInsertQuery<ENTITY> query) {
     InsertCommand command =
         config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
     return new Command<>() {

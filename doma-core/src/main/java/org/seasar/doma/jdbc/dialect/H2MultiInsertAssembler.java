@@ -16,26 +16,38 @@
 package org.seasar.doma.jdbc.dialect;
 
 import java.util.Objects;
+import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Naming;
+import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
 
-public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
+public class H2MultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
 
-  private final MultiInsertAssemblerContext<ENTITY> context;
+  private final PreparedSqlBuilder buf;
+  private final EntityType<?> entityType;
+  private final Naming naming;
+  private final Dialect dialect;
+  private final boolean returning;
   private final DefaultMultiInsertAssembler<ENTITY> multiInsertAssembler;
 
-  public StandardMultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
-    this.context = Objects.requireNonNull(context);
+  public H2MultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
+    Objects.requireNonNull(context);
+    this.buf = context.buf;
+    this.entityType = context.entityType;
+    this.naming = context.naming;
+    this.dialect = context.dialect;
+    this.returning = context.returning;
     this.multiInsertAssembler = new DefaultMultiInsertAssembler<>(context);
   }
 
   @Override
   public void assemble() {
-    multiInsertAssembler.assemble();
-
-    if (context.returning) {
-      StandardAssemblerUtil.assembleReturning(
-          context.buf, context.entityType, context.naming, context.dialect);
+    if (returning) {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, multiInsertAssembler::assemble);
+    } else {
+      multiInsertAssembler.assemble();
     }
   }
 }

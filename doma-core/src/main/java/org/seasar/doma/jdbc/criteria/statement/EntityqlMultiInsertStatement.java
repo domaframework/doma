@@ -70,6 +70,12 @@ public class EntityqlMultiInsertStatement<ENTITY>
         config, entityMetamodel, entities, settings, duplicateKeyType);
   }
 
+  public Statement<MultiResult<ENTITY>> returning() {
+    return new EntityqlMultiInsertIntermediate<>(
+            config, entityMetamodel, entities, settings, duplicateKeyType)
+        .returning();
+  }
+
   /**
    * {@inheritDoc}
    *

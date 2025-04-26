@@ -53,6 +53,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
+  protected boolean returning;
+
   public AutoMultiInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -187,7 +189,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     MultiInsertAssemblerContext<ENTITY> context =
         MultiInsertAssemblerContextBuilder.buildFromEntityList(
-            builder, entityType, naming, dialect, targetPropertyTypes, entities);
+            builder, entityType, naming, dialect, targetPropertyTypes, entities, returning);
     MultiInsertAssembler assembler = dialect.getMultiInsertAssembler(context);
     assembler.assemble();
   }
@@ -209,7 +211,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
             dialect,
             idPropertyTypes,
             targetPropertyTypes,
-            entities);
+            entities,
+            returning);
     UpsertAssembler assembler = dialect.getUpsertAssembler(context);
     assembler.assemble();
   }
@@ -250,6 +253,10 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
+  }
+
+  public void setReturning(boolean returning) {
+    this.returning = returning;
   }
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {

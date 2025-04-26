@@ -29,7 +29,7 @@ public class H2InsertAssembler<ENTITY> implements InsertAssembler {
   private final Naming naming;
   private final Dialect dialect;
   private final boolean returning;
-  private final DefaultInsertAssembler<ENTITY> defaultInsertAssembler;
+  private final DefaultInsertAssembler<ENTITY> insertAssembler;
 
   public H2InsertAssembler(InsertAssemblerContext<ENTITY> context) {
     Objects.requireNonNull(context);
@@ -38,16 +38,16 @@ public class H2InsertAssembler<ENTITY> implements InsertAssembler {
     this.naming = context.naming;
     this.dialect = context.dialect;
     this.returning = context.returning;
-    this.defaultInsertAssembler = new DefaultInsertAssembler<>(context);
+    this.insertAssembler = new DefaultInsertAssembler<>(context);
   }
 
   @Override
   public void assemble() {
     if (returning) {
       H2AssemblerUtil.assembleFinalTable(
-          buf, entityType, naming, dialect, defaultInsertAssembler::assemble);
+          buf, entityType, naming, dialect, insertAssembler::assemble);
     } else {
-      defaultInsertAssembler.assemble();
+      insertAssembler.assemble();
     }
   }
 }

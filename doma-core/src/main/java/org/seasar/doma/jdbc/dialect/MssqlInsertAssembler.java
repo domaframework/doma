@@ -29,7 +29,7 @@ public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
   private final Naming naming;
   private final Dialect dialect;
   private final boolean returning;
-  private final DefaultInsertAssembler<ENTITY> defaultInsertAssembler;
+  private final DefaultInsertAssembler<ENTITY> insertAssembler;
 
   public MssqlInsertAssembler(InsertAssemblerContext<ENTITY> context) {
     Objects.requireNonNull(context);
@@ -38,14 +38,14 @@ public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
     this.naming = context.naming;
     this.dialect = context.dialect;
     this.returning = context.returning;
-    this.defaultInsertAssembler = new DefaultInsertAssembler<>(context);
+    this.insertAssembler = new DefaultInsertAssembler<>(context);
   }
 
   @Override
   public void assemble() {
-    defaultInsertAssembler.assembleInsertInto();
+    insertAssembler.assembleInsertInto();
     assembleOutput();
-    defaultInsertAssembler.assembleValues();
+    insertAssembler.assembleValues();
   }
 
   private void assembleOutput() {
