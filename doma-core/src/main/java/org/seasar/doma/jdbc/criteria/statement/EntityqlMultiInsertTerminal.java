@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import static org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStatement.EMPTY_SQL;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
@@ -123,7 +124,10 @@ public class EntityqlMultiInsertTerminal<ENTITY>
         config
             .getCommandImplementors()
             .createInsertReturningCommand(
-                EXECUTE_METHOD, query, new EntityResultListHandler<>(entityType));
+                EXECUTE_METHOD,
+                query,
+                new EntityResultListHandler<>(entityType),
+                Collections::emptyList);
     return new Command<>() {
       @Override
       public Query getQuery() {

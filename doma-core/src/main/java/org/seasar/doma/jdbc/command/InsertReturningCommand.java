@@ -17,13 +17,17 @@ package org.seasar.doma.jdbc.command;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.function.Supplier;
 import org.seasar.doma.jdbc.query.InsertQuery;
 import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 public class InsertReturningCommand<RESULT> extends ModifyReturningCommand<InsertQuery, RESULT> {
 
-  public InsertReturningCommand(InsertQuery query, ResultSetHandler<RESULT> resultSetHandler) {
-    super(query, resultSetHandler);
+  public InsertReturningCommand(
+      InsertQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    super(query, resultSetHandler, emptyResultSupplier);
   }
 
   @Override

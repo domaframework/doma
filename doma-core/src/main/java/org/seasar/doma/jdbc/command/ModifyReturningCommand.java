@@ -46,11 +46,17 @@ public abstract class ModifyReturningCommand<QUERY extends ModifyQuery, RESULT>
 
   protected final ResultSetHandler<RESULT> resultSetHandler;
 
-  protected ModifyReturningCommand(QUERY query, ResultSetHandler<RESULT> resultSetHandler) {
-    assertNotNull(query, resultSetHandler);
+  protected final Supplier<RESULT> emptyResultSupplier;
+
+  protected ModifyReturningCommand(
+      QUERY query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    assertNotNull(query, resultSetHandler, emptyResultSupplier);
     this.query = query;
     this.sql = query.getSql();
     this.resultSetHandler = resultSetHandler;
+    this.emptyResultSupplier = emptyResultSupplier;
   }
 
   @Override
@@ -64,8 +70,7 @@ public abstract class ModifyReturningCommand<QUERY extends ModifyQuery, RESULT>
       JdbcLogger logger = query.getConfig().getJdbcLogger();
       logger.logSqlExecutionSkipping(
           query.getClassName(), query.getMethodName(), query.getSqlExecutionSkipCause());
-      // TODO
-      return null;
+      return emptyResultSupplier.get();
     }
     Connection connection = JdbcUtil.getConnection(query.getConfig().getDataSource());
     try {

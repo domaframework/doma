@@ -339,6 +339,16 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
+  void returning_skip() {
+    Department_ d = new Department_();
+
+    MultiResult<Department> result =
+        dsl.insert(d).multi(Collections.emptyList()).returning().execute();
+    assertTrue(result.getEntities().isEmpty());
+    assertEquals(0, result.getCount());
+  }
+
+  @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_ignore() {
     Department_ d = new Department_();

@@ -107,7 +107,7 @@ public class EntityqlDeleteStatement<ENTITY>
         config
             .getCommandImplementors()
             .createDeleteReturningCommand(
-                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType));
+                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType), () -> null);
     return new Command<>() {
       @Override
       public Query getQuery() {

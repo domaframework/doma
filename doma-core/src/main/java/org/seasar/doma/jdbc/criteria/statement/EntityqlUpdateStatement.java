@@ -115,7 +115,7 @@ public class EntityqlUpdateStatement<ENTITY>
         config
             .getCommandImplementors()
             .createUpdateReturningCommand(
-                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType));
+                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType), () -> null);
     return new Command<>() {
       @Override
       public Query getQuery() {

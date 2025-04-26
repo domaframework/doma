@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import org.seasar.doma.jdbc.aggregate.AggregateCommand;
 import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
 import org.seasar.doma.jdbc.aggregate.StreamReducer;
@@ -112,8 +113,11 @@ public interface CommandImplementors {
 
   // TODO
   default <RESULT> DeleteReturningCommand<RESULT> createDeleteReturningCommand(
-      Method method, DeleteQuery query, ResultSetHandler<RESULT> resultSetHandler) {
-    return new DeleteReturningCommand<>(query, resultSetHandler);
+      Method method,
+      DeleteQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new DeleteReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
   }
 
   /**
@@ -125,14 +129,20 @@ public interface CommandImplementors {
    * @return the command
    */
   default <RESULT> InsertReturningCommand<RESULT> createInsertReturningCommand(
-      Method method, InsertQuery query, ResultSetHandler<RESULT> resultSetHandler) {
-    return new InsertReturningCommand<>(query, resultSetHandler);
+      Method method,
+      InsertQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new InsertReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
   }
 
   // TODO
   default <RESULT> UpdateReturningCommand<RESULT> createUpdateReturningCommand(
-      Method method, UpdateQuery query, ResultSetHandler<RESULT> resultSetHandler) {
-    return new UpdateReturningCommand<>(query, resultSetHandler);
+      Method method,
+      UpdateQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new UpdateReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
   }
 
   /**
