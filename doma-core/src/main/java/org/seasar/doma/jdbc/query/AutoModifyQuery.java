@@ -59,7 +59,7 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
 
   protected SqlLogType sqlLogType;
 
-  protected boolean returning;
+  protected ReturningProperties returning = ReturningProperties.NONE;
 
   protected AutoModifyQuery(EntityType<ENTITY> entityType) {
     AssertionUtil.assertNotNull(entityType);
@@ -129,7 +129,7 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
     this.sqlLogType = sqlLogType;
   }
 
-  public void setReturning(boolean returning) {
+  public void setReturning(ReturningProperties returning) {
     this.returning = returning;
   }
 

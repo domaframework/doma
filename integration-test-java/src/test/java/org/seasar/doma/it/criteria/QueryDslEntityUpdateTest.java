@@ -109,6 +109,27 @@ public class QueryDslEntityUpdateTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    employee.setEmployeeName("aaa");
+    employee.setSalary(new Salary("2000"));
+
+    Result<Employee> result =
+        dsl.update(e).single(employee).returning(e.employeeName, e.version).execute();
+    assertEquals(1, result.getCount());
+    assertNotEquals(employee, result.getEntity());
+
+    Employee resultEntity = result.getEntity();
+    assertNotNull(resultEntity);
+    assertEquals("aaa", resultEntity.getEmployeeName());
+    assertNull(resultEntity.getSalary());
+    assertEquals(employee.getVersion() + 1, resultEntity.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_OptimisticLockException() {
     Employee_ e = new Employee_();
 

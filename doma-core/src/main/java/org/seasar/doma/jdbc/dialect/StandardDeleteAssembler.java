@@ -32,9 +32,9 @@ public class StandardDeleteAssembler<ENTITY> implements DeleteAssembler {
   public void assemble() {
     deleteAssembler.assemble();
 
-    if (context.returning) {
+    if (!context.returning.isNone()) {
       StandardAssemblerUtil.assembleReturning(
-          context.buf, context.entityType, context.naming, context.dialect);
+          context.buf, context.entityType, context.naming, context.dialect, context.returning);
     }
   }
 }

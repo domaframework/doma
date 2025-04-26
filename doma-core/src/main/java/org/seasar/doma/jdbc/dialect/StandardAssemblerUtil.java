@@ -19,12 +19,17 @@ import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 final class StandardAssemblerUtil {
   static void assembleReturning(
-      PreparedSqlBuilder buf, EntityType<?> entityType, Naming naming, Dialect dialect) {
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      ReturningProperties returning) {
     buf.appendSql(" returning ");
-    for (EntityPropertyType<?, ?> propertyType : entityType.getEntityPropertyTypes()) {
+    for (EntityPropertyType<?, ?> propertyType : returning.resolve(entityType)) {
       buf.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
       buf.appendSql(", ");
     }

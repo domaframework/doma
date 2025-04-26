@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpdateAssembler;
 import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 
@@ -28,7 +29,7 @@ public class H2UpdateAssembler<ENTITY> implements UpdateAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultUpdateAssembler<ENTITY> updateAssembler;
 
   public H2UpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
@@ -43,11 +44,11 @@ public class H2UpdateAssembler<ENTITY> implements UpdateAssembler {
 
   @Override
   public void assemble() {
-    if (returning) {
-      H2AssemblerUtil.assembleFinalTable(
-          buf, entityType, naming, dialect, updateAssembler::assemble);
-    } else {
+    if (returning.isNone()) {
       updateAssembler.assemble();
+    } else {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, returning, updateAssembler::assemble);
     }
   }
 }

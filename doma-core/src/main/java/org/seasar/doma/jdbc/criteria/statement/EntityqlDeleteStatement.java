@@ -25,9 +25,11 @@ import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.command.DeleteReturningCommand;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoDeleteQuery;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class EntityqlDeleteStatement<ENTITY>
     extends AbstractStatement<EntityqlDeleteStatement<ENTITY>, Result<ENTITY>> {
@@ -35,14 +37,14 @@ public class EntityqlDeleteStatement<ENTITY>
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final DeleteSettings settings;
-  private final boolean returning;
+  private final ReturningProperties returning;
 
   public EntityqlDeleteStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       DeleteSettings settings) {
-    this(config, entityMetamodel, entity, settings, false);
+    this(config, entityMetamodel, entity, settings, ReturningProperties.NONE);
   }
 
   private EntityqlDeleteStatement(
@@ -50,7 +52,7 @@ public class EntityqlDeleteStatement<ENTITY>
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       DeleteSettings settings,
-      boolean returning) {
+      ReturningProperties returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
@@ -58,8 +60,9 @@ public class EntityqlDeleteStatement<ENTITY>
     this.returning = returning;
   }
 
-  public Statement<Result<ENTITY>> returning() {
-    return new EntityqlDeleteStatement<>(config, entityMetamodel, entity, settings, true);
+  public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
+    var returning = SpecificMetamodels.of(entityMetamodel, properties);
+    return new EntityqlDeleteStatement<>(config, entityMetamodel, entity, settings, returning);
   }
 
   /**
@@ -94,11 +97,29 @@ public class EntityqlDeleteStatement<ENTITY>
     query.setMessage(settings.getComment());
     query.setReturning(returning);
     query.prepare();
-    if (returning) {
-      return createReturningCommand(entityType, query);
-    } else {
+    if (returning.isNone()) {
       return createCommand(query);
+    } else {
+      return createReturningCommand(entityType, query);
     }
+  }
+
+  private Command<Result<ENTITY>> createCommand(AutoDeleteQuery<ENTITY> query) {
+    DeleteCommand command =
+        config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public Result<ENTITY> execute() {
+        int count = command.execute();
+        query.complete();
+        return new Result<>(count, query.getEntity());
+      }
+    };
   }
 
   private Command<Result<ENTITY>> createReturningCommand(
@@ -120,24 +141,6 @@ public class EntityqlDeleteStatement<ENTITY>
         int count = entity == null ? 0 : 1;
         query.complete();
         return new Result<>(count, entity);
-      }
-    };
-  }
-
-  private Command<Result<ENTITY>> createCommand(AutoDeleteQuery<ENTITY> query) {
-    DeleteCommand command =
-        config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);
-    return new Command<>() {
-      @Override
-      public Query getQuery() {
-        return query;
-      }
-
-      @Override
-      public Result<ENTITY> execute() {
-        int count = command.execute();
-        query.complete();
-        return new Result<>(count, query.getEntity());
       }
     };
   }

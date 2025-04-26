@@ -34,6 +34,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoMultiInsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class EntityqlMultiInsertTerminal<ENTITY>
     extends AbstractStatement<EntityqlMultiInsertTerminal<ENTITY>, MultiResult<ENTITY>> {
@@ -43,7 +44,7 @@ public class EntityqlMultiInsertTerminal<ENTITY>
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
   private final List<PropertyMetamodel<?>> keys;
-  private final boolean returning;
+  private final ReturningProperties returning;
 
   public EntityqlMultiInsertTerminal(
       Config config,
@@ -52,7 +53,14 @@ public class EntityqlMultiInsertTerminal<ENTITY>
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
       List<PropertyMetamodel<?>> keys) {
-    this(config, entityMetamodel, entities, settings, duplicateKeyType, keys, false);
+    this(
+        config,
+        entityMetamodel,
+        entities,
+        settings,
+        duplicateKeyType,
+        keys,
+        ReturningProperties.NONE);
   }
 
   public EntityqlMultiInsertTerminal(
@@ -62,19 +70,20 @@ public class EntityqlMultiInsertTerminal<ENTITY>
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
       List<PropertyMetamodel<?>> keys,
-      boolean returning) {
+      ReturningProperties returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
     this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
     this.keys = Objects.requireNonNull(keys);
-    this.returning = returning;
+    this.returning = Objects.requireNonNull(returning);
   }
 
-  public Statement<MultiResult<ENTITY>> returning() {
+  public Statement<MultiResult<ENTITY>> returning(PropertyMetamodel<?>... properties) {
+    var returning = SpecificMetamodels.of(entityMetamodel, properties);
     return new EntityqlMultiInsertTerminal<>(
-        config, entityMetamodel, entities, settings, duplicateKeyType, keys, true);
+        config, entityMetamodel, entities, settings, duplicateKeyType, keys, returning);
   }
 
   /**
@@ -111,11 +120,29 @@ public class EntityqlMultiInsertTerminal<ENTITY>
         keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.setReturning(returning);
     query.prepare();
-    if (returning) {
-      return createReturningCommand(entityType, query);
-    } else {
+    if (returning.isNone()) {
       return createCommand(query);
+    } else {
+      return createReturningCommand(entityType, query);
     }
+  }
+
+  private Command<MultiResult<ENTITY>> createCommand(AutoMultiInsertQuery<ENTITY> query) {
+    InsertCommand command =
+        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public MultiResult<ENTITY> execute() {
+        int count = command.execute();
+        query.complete();
+        return new MultiResult<>(count, query.getEntities());
+      }
+    };
   }
 
   private Command<MultiResult<ENTITY>> createReturningCommand(
@@ -139,24 +166,6 @@ public class EntityqlMultiInsertTerminal<ENTITY>
         List<ENTITY> entities = command.execute();
         query.complete();
         return new MultiResult<>(entities.size(), entities);
-      }
-    };
-  }
-
-  private Command<MultiResult<ENTITY>> createCommand(AutoMultiInsertQuery<ENTITY> query) {
-    InsertCommand command =
-        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
-    return new Command<>() {
-      @Override
-      public Query getQuery() {
-        return query;
-      }
-
-      @Override
-      public MultiResult<ENTITY> execute() {
-        int count = command.execute();
-        query.complete();
-        return new MultiResult<>(count, query.getEntities());
       }
     };
   }

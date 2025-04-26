@@ -35,7 +35,7 @@ public class DeleteAssemblerContextBuilder {
       EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
       boolean versionIgnored,
       ENTITY entity,
-      boolean returning) {
+      ReturningProperties returning) {
 
     // TODO: check arguments
 

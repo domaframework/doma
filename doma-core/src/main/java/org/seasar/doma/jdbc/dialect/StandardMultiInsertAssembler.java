@@ -33,9 +33,9 @@ public class StandardMultiInsertAssembler<ENTITY> implements MultiInsertAssemble
   public void assemble() {
     multiInsertAssembler.assemble();
 
-    if (context.returning) {
+    if (!context.returning.isNone()) {
       StandardAssemblerUtil.assembleReturning(
-          context.buf, context.entityType, context.naming, context.dialect);
+          context.buf, context.entityType, context.naming, context.dialect, context.returning);
     }
   }
 }

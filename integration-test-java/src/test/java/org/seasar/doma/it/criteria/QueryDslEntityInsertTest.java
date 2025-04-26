@@ -313,6 +313,34 @@ public class QueryDslEntityInsertTest {
 
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Result<Department> result =
+        dsl.insert(d).single(department).returning(d.departmentNo, d.departmentName).execute();
+    assertNotEquals(department, result.getEntity());
+    assertEquals(1, result.getCount());
+    Department resultEntity = result.getEntity();
+    assertNull(resultEntity.getDepartmentId());
+    assertEquals(department.getDepartmentNo(), resultEntity.getDepartmentNo());
+    assertEquals(department.getDepartmentName(), resultEntity.getDepartmentName());
+    assertNull(resultEntity.getLocation());
+    assertNull(resultEntity.getVersion());
+
+    Department department2 =
+        dsl.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    assertNotNull(department2);
+    assertEquals("aaa", department2.getDepartmentName());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   public void returning_identityTable() {
     IdentityTable_ i = new IdentityTable_();
 

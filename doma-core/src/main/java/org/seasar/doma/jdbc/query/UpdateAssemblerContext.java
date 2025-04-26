@@ -41,7 +41,7 @@ public class UpdateAssemblerContext<ENTITY> {
   public final EntityPropertyType<ENTITY, ?> tenantIdPropertyType;
   public boolean versionIgnored;
   public final ENTITY entity;
-  public boolean returning;
+  public ReturningProperties returning;
 
   UpdateAssemblerContext(
       PreparedSqlBuilder buf,
@@ -55,7 +55,7 @@ public class UpdateAssemblerContext<ENTITY> {
       EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
       boolean versionIgnored,
       ENTITY entity,
-      boolean returning) {
+      ReturningProperties returning) {
     this.buf = Objects.requireNonNull(buf);
     this.entityType = Objects.requireNonNull(entityType);
     this.naming = Objects.requireNonNull(naming);
@@ -67,6 +67,6 @@ public class UpdateAssemblerContext<ENTITY> {
     this.tenantIdPropertyType = tenantIdPropertyType;
     this.versionIgnored = versionIgnored;
     this.entity = Objects.requireNonNull(entity);
-    this.returning = returning;
+    this.returning = Objects.requireNonNull(returning);
   }
 }

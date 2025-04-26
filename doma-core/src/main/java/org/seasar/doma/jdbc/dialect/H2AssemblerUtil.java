@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 final class H2AssemblerUtil {
 
@@ -26,8 +27,9 @@ final class H2AssemblerUtil {
       EntityType<?> entityType,
       Naming naming,
       Dialect dialect,
+      ReturningProperties returning,
       Runnable block) {
-    assembleTable(buf, entityType, naming, dialect, block, "final");
+    assembleTable(buf, entityType, naming, dialect, returning, block, "final");
   }
 
   static void assembleOldTable(
@@ -35,8 +37,9 @@ final class H2AssemblerUtil {
       EntityType<?> entityType,
       Naming naming,
       Dialect dialect,
+      ReturningProperties returning,
       Runnable block) {
-    assembleTable(buf, entityType, naming, dialect, block, "old");
+    assembleTable(buf, entityType, naming, dialect, returning, block, "old");
   }
 
   static void assembleTable(
@@ -44,10 +47,11 @@ final class H2AssemblerUtil {
       EntityType<?> entityType,
       Naming naming,
       Dialect dialect,
+      ReturningProperties returning,
       Runnable block,
       String tableType) {
     buf.appendSql("select ");
-    for (var p : entityType.getEntityPropertyTypes()) {
+    for (var p : returning.resolve(entityType)) {
       buf.appendSql(p.getColumnName(naming::apply, dialect::applyQuote));
       buf.appendSql(", ");
     }

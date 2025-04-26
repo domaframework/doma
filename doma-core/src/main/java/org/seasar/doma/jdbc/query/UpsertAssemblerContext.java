@@ -54,7 +54,7 @@ public class UpsertAssemblerContext {
   /** set clause property-value pair list */
   public final List<QueryOperandPair> setValues;
 
-  public final boolean returning;
+  public final ReturningProperties returning;
 
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
@@ -84,7 +84,7 @@ public class UpsertAssemblerContext {
       List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
       List<InsertRow> insertRows,
       List<QueryOperandPair> setValues,
-      boolean returning) {
+      ReturningProperties returning) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);
@@ -94,6 +94,7 @@ public class UpsertAssemblerContext {
     Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(insertRows);
     Objects.requireNonNull(setValues);
+    Objects.requireNonNull(returning);
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",

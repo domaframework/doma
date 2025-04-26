@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DeleteAssembler;
 import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class MssqlDeleteAssembler<ENTITY> implements DeleteAssembler {
 
@@ -28,7 +29,7 @@ public class MssqlDeleteAssembler<ENTITY> implements DeleteAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultDeleteAssembler<ENTITY> deleteAssembler;
 
   public MssqlDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
@@ -50,8 +51,8 @@ public class MssqlDeleteAssembler<ENTITY> implements DeleteAssembler {
   }
 
   private void assembleOutput() {
-    if (returning) {
-      MssqlAssemblerUtil.assembleDeletedOutput(buf, entityType, naming, dialect);
+    if (!returning.isNone()) {
+      MssqlAssemblerUtil.assembleDeletedOutput(buf, entityType, naming, dialect, returning);
     }
   }
 }

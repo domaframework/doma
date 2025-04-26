@@ -22,6 +22,7 @@ import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class EntityqlInsertStatement<ENTITY>
@@ -65,10 +66,10 @@ public class EntityqlInsertStatement<ENTITY>
         config, entityMetamodel, entity, settings, duplicateKeyType);
   }
 
-  public Statement<Result<ENTITY>> returning() {
+  public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
     return new EntityqlInsertIntermediate<>(
             config, entityMetamodel, entity, settings, duplicateKeyType)
-        .returning();
+        .returning(properties);
   }
 
   /**

@@ -18,17 +18,26 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 final class MssqlAssemblerUtil {
 
   static void assembleInsertedOutput(
-      PreparedSqlBuilder buf, EntityType<?> entityType, Naming naming, Dialect dialect) {
-    assembleOutput(buf, entityType, naming, dialect, "inserted");
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      ReturningProperties returning) {
+    assembleOutput(buf, entityType, naming, dialect, returning, "inserted");
   }
 
   static void assembleDeletedOutput(
-      PreparedSqlBuilder buf, EntityType<?> entityType, Naming naming, Dialect dialect) {
-    assembleOutput(buf, entityType, naming, dialect, "deleted");
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      ReturningProperties returning) {
+    assembleOutput(buf, entityType, naming, dialect, returning, "deleted");
   }
 
   private static void assembleOutput(
@@ -36,9 +45,10 @@ final class MssqlAssemblerUtil {
       EntityType<?> entityType,
       Naming naming,
       Dialect dialect,
+      ReturningProperties returning,
       String tableType) {
     buf.appendSql("output ");
-    for (var p : entityType.getEntityPropertyTypes()) {
+    for (var p : returning.resolve(entityType)) {
       buf.appendSql(tableType);
       buf.appendSql(".");
       buf.appendSql(p.getColumnName(naming::apply, dialect::applyQuote));

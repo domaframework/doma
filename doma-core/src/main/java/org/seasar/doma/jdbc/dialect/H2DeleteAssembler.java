@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DeleteAssembler;
 import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class H2DeleteAssembler<ENTITY> implements DeleteAssembler {
 
@@ -28,7 +29,7 @@ public class H2DeleteAssembler<ENTITY> implements DeleteAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultDeleteAssembler<ENTITY> deleteAssembler;
 
   public H2DeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
@@ -43,10 +44,11 @@ public class H2DeleteAssembler<ENTITY> implements DeleteAssembler {
 
   @Override
   public void assemble() {
-    if (returning) {
-      H2AssemblerUtil.assembleOldTable(buf, entityType, naming, dialect, deleteAssembler::assemble);
-    } else {
+    if (returning.isNone()) {
       deleteAssembler.assemble();
+    } else {
+      H2AssemblerUtil.assembleOldTable(
+          buf, entityType, naming, dialect, returning, deleteAssembler::assemble);
     }
   }
 }

@@ -23,6 +23,7 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpdateAssembler;
 import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpdateQueryHelper;
@@ -40,7 +41,7 @@ public class DefaultUpdateAssembler<ENTITY> implements UpdateAssembler {
   private final EntityPropertyType<ENTITY, ?> tenantIdPropertyType;
   private final boolean versionIgnored;
   private final ENTITY entity;
-  private final boolean returning;
+  private final ReturningProperties returning;
 
   public DefaultUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
     Objects.requireNonNull(context);

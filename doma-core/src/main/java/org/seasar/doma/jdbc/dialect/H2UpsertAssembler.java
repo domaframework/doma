@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -50,7 +51,7 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   private final Dialect dialect;
 
-  private final boolean returning;
+  private final ReturningProperties returning;
 
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
@@ -70,10 +71,11 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   @Override
   public void assemble() {
-    if (returning) {
-      H2AssemblerUtil.assembleFinalTable(buf, entityType, naming, dialect, this::assembleMergeInto);
-    } else {
+    if (returning.isNone()) {
       assembleMergeInto();
+    } else {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, returning, this::assembleMergeInto);
     }
   }
 

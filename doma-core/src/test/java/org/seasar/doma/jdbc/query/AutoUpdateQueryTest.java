@@ -269,7 +269,7 @@ public class AutoUpdateQueryTest {
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
-    query.setReturning(true);
+    query.setReturning(ReturningProperties.ALL);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);

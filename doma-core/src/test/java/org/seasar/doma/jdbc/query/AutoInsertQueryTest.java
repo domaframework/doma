@@ -221,7 +221,7 @@ public class AutoInsertQueryTest {
   }
 
   @Test
-  public void testReturning() {
+  public void testReturning_allProperties() {
     runtimeConfig.dialect = new PostgresDialect();
 
     Emp emp = new Emp();
@@ -233,7 +233,7 @@ public class AutoInsertQueryTest {
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
-    query.setReturning(true);
+    query.setReturning(ReturningProperties.ALL);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -242,6 +242,101 @@ public class AutoInsertQueryTest {
     PreparedSql sql = query.getSql();
     assertEquals(
         "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?) returning ID, NAME, SALARY, VERSION",
+        sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(4, parameters.size());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals("aaa", parameters.get(1).getWrapper().get());
+    assertEquals(new BigDecimal(200), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
+  }
+
+  @Test
+  public void testReturning_includeProperties() {
+    runtimeConfig.dialect = new PostgresDialect();
+
+    Emp emp = new Emp();
+    emp.setId(10);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal(200));
+
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(emp);
+    query.setReturning(new ReturningProperties.SpecificNames(List.of("id", "name"), List.of()));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    PreparedSql sql = query.getSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?) returning ID, NAME",
+        sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(4, parameters.size());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals("aaa", parameters.get(1).getWrapper().get());
+    assertEquals(new BigDecimal(200), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
+  }
+
+  @Test
+  public void testReturning_excludeProperties() {
+    runtimeConfig.dialect = new PostgresDialect();
+
+    Emp emp = new Emp();
+    emp.setId(10);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal(200));
+
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(emp);
+    query.setReturning(
+        new ReturningProperties.SpecificNames(List.of(), List.of("salary", "version")));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    PreparedSql sql = query.getSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?) returning ID, NAME",
+        sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(4, parameters.size());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals("aaa", parameters.get(1).getWrapper().get());
+    assertEquals(new BigDecimal(200), parameters.get(2).getWrapper().get());
+    assertEquals(1, parameters.get(3).getWrapper().get());
+  }
+
+  @Test
+  public void testReturning_includeAndExcludeProperties() {
+    runtimeConfig.dialect = new PostgresDialect();
+
+    Emp emp = new Emp();
+    emp.setId(10);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal(200));
+
+    AutoInsertQuery<Emp> query = new AutoInsertQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(emp);
+    query.setReturning(
+        new ReturningProperties.SpecificNames(List.of("id", "name", "salary"), List.of("salary")));
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    PreparedSql sql = query.getSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?) returning ID, NAME",
         sql.getRawSql());
     List<InParameter<?>> parameters = sql.getParameters();
     assertEquals(4, parameters.size());

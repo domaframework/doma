@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class MssqlMultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
 
@@ -28,7 +29,7 @@ public class MssqlMultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultMultiInsertAssembler<ENTITY> multiInsertAssembler;
 
   public MssqlMultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
@@ -50,8 +51,8 @@ public class MssqlMultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
   }
 
   private void assembleOutput() {
-    if (returning) {
-      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
+    if (!returning.isNone()) {
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect, returning);
     }
   }
 }

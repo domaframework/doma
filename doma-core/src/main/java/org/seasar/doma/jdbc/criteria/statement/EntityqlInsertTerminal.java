@@ -30,6 +30,7 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class EntityqlInsertTerminal<ENTITY>
     extends AbstractStatement<EntityqlInsertTerminal<ENTITY>, Result<ENTITY>> {
@@ -39,7 +40,7 @@ public class EntityqlInsertTerminal<ENTITY>
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
   private final List<PropertyMetamodel<?>> keys;
-  private final boolean returning;
+  private final ReturningProperties returning;
 
   public EntityqlInsertTerminal(
       Config config,
@@ -48,7 +49,14 @@ public class EntityqlInsertTerminal<ENTITY>
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
       List<PropertyMetamodel<?>> keys) {
-    this(config, entityMetamodel, entity, settings, duplicateKeyType, keys, false);
+    this(
+        config,
+        entityMetamodel,
+        entity,
+        settings,
+        duplicateKeyType,
+        keys,
+        ReturningProperties.NONE);
   }
 
   public EntityqlInsertTerminal(
@@ -58,19 +66,20 @@ public class EntityqlInsertTerminal<ENTITY>
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
       List<PropertyMetamodel<?>> keys,
-      boolean returning) {
+      ReturningProperties returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
     this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
     this.keys = Objects.requireNonNull(keys);
-    this.returning = returning;
+    this.returning = Objects.requireNonNull(returning);
   }
 
-  public Statement<Result<ENTITY>> returning() {
+  public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
+    var returning = SpecificMetamodels.of(entityMetamodel, properties);
     return new EntityqlInsertTerminal<>(
-        config, entityMetamodel, entity, settings, duplicateKeyType, keys, true);
+        config, entityMetamodel, entity, settings, duplicateKeyType, keys, returning);
   }
 
   /**
@@ -109,11 +118,29 @@ public class EntityqlInsertTerminal<ENTITY>
     query.setReturning(returning);
     query.prepare();
 
-    if (returning) {
-      return createReturningCommand(entityType, query);
-    } else {
+    if (returning.isNone()) {
       return createCommand(query);
+    } else {
+      return createReturningCommand(entityType, query);
     }
+  }
+
+  private Command<Result<ENTITY>> createCommand(AutoInsertQuery<ENTITY> query) {
+    InsertCommand command =
+        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public Result<ENTITY> execute() {
+        int count = command.execute();
+        query.complete();
+        return new Result<>(count, query.getEntity());
+      }
+    };
   }
 
   private Command<Result<ENTITY>> createReturningCommand(
@@ -135,24 +162,6 @@ public class EntityqlInsertTerminal<ENTITY>
         int count = entity == null ? 0 : 1;
         query.complete();
         return new Result<>(count, entity);
-      }
-    };
-  }
-
-  private Command<Result<ENTITY>> createCommand(AutoInsertQuery<ENTITY> query) {
-    InsertCommand command =
-        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
-    return new Command<>() {
-      @Override
-      public Query getQuery() {
-        return query;
-      }
-
-      @Override
-      public Result<ENTITY> execute() {
-        int count = command.execute();
-        query.complete();
-        return new Result<>(count, query.getEntity());
       }
     };
   }

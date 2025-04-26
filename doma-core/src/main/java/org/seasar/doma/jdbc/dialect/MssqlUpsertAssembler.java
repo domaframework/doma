@@ -24,6 +24,7 @@ import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -40,7 +41,7 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
   private final List<QueryOperandPair> setValues;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public MssqlUpsertAssembler(UpsertAssemblerContext context) {
@@ -100,8 +101,8 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
   }
 
   private void assembleOutput() {
-    if (returning) {
-      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
+    if (!returning.isNone()) {
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect, returning);
     }
   }
 

@@ -85,6 +85,26 @@ public class QueryDslEntityDeleteTest {
   }
 
   @Test
+  void returning_specificProperties() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    Result<Employee> result =
+        dsl.delete(e).single(employee).returning(e.employeeId, e.employeeName).execute();
+    assertEquals(1, result.getCount());
+    assertNotEquals(employee, result.getEntity());
+
+    var resultEntity = result.getEntity();
+    assertEquals(5, resultEntity.getEmployeeId());
+    assertEquals("MARTIN", resultEntity.getEmployeeName());
+    assertNull(resultEntity.getDepartmentId());
+
+    Employee entity = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    assertNull(entity);
+  }
+
+  @Test
   void returning_OptimisticLockException() {
     Employee_ e = new Employee_();
 

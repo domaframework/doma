@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpdateAssembler;
 import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 
@@ -28,7 +29,7 @@ public class MssqlUpdateAssembler<ENTITY> implements UpdateAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultUpdateAssembler<ENTITY> updateAssembler;
 
   public MssqlUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
@@ -50,8 +51,8 @@ public class MssqlUpdateAssembler<ENTITY> implements UpdateAssembler {
   }
 
   private void assembleOutput() {
-    if (returning) {
-      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
+    if (!returning.isNone()) {
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect, returning);
     }
   }
 }

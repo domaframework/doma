@@ -36,7 +36,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
   public final Dialect dialect;
   public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final List<ENTITY> entities;
-  public boolean returning;
+  public ReturningProperties returning;
 
   /**
    * Creates an instance.
@@ -55,13 +55,14 @@ public class MultiInsertAssemblerContext<ENTITY> {
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       List<ENTITY> entities,
-      boolean returning) {
+      ReturningProperties returning) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(naming);
     Objects.requireNonNull(dialect);
     Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(entities);
+    Objects.requireNonNull(returning);
     if (entities.isEmpty()) {
       throw new DomaIllegalArgumentException(
           "entities", "The entities must not be empty when performing an insert.");

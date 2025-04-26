@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
 
@@ -28,7 +29,7 @@ public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultInsertAssembler<ENTITY> insertAssembler;
 
   public MssqlInsertAssembler(InsertAssemblerContext<ENTITY> context) {
@@ -50,8 +51,8 @@ public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
   }
 
   private void assembleOutput() {
-    if (returning) {
-      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
+    if (!returning.isNone()) {
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect, returning);
     }
   }
 }

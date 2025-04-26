@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
 import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class H2MultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
 
@@ -28,7 +29,7 @@ public class H2MultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultMultiInsertAssembler<ENTITY> multiInsertAssembler;
 
   public H2MultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
@@ -43,11 +44,11 @@ public class H2MultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
 
   @Override
   public void assemble() {
-    if (returning) {
-      H2AssemblerUtil.assembleFinalTable(
-          buf, entityType, naming, dialect, multiInsertAssembler::assemble);
-    } else {
+    if (returning.isNone()) {
       multiInsertAssembler.assemble();
+    } else {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, returning, multiInsertAssembler::assemble);
     }
   }
 }

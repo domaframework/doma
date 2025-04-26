@@ -32,9 +32,9 @@ public class StandardUpdateAssembler<ENTITY> implements UpdateAssembler {
   public void assemble() {
     updateAssembler.assemble();
 
-    if (context.returning) {
+    if (!context.returning.isNone()) {
       StandardAssemblerUtil.assembleReturning(
-          context.buf, context.entityType, context.naming, context.dialect);
+          context.buf, context.entityType, context.naming, context.dialect, context.returning);
     }
   }
 }

@@ -35,7 +35,7 @@ public class InsertAssemblerContext<ENTITY> {
   public final Dialect dialect;
   public final List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes;
   public final ENTITY entity;
-  public boolean returning;
+  public ReturningProperties returning;
 
   /**
    * Creates an instance.
@@ -55,13 +55,14 @@ public class InsertAssemblerContext<ENTITY> {
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity,
-      boolean returning) {
+      ReturningProperties returning) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(naming);
     Objects.requireNonNull(dialect);
     Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(entity);
+    Objects.requireNonNull(returning);
     this.buf = buf;
     this.entityType = entityType;
     this.naming = naming;

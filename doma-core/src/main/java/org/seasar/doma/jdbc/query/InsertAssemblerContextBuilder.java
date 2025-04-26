@@ -31,7 +31,7 @@ public class InsertAssemblerContextBuilder {
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity,
-      boolean returning) {
+      ReturningProperties returning) {
 
     // TODO: check arguments
 

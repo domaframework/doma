@@ -339,6 +339,45 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department department2 = new Department();
+    department2.setDepartmentId(100);
+    department2.setDepartmentNo(100);
+    department2.setDepartmentName("ccc");
+    department2.setLocation("ddd");
+
+    List<Department> departments = Arrays.asList(department, department2);
+
+    MultiResult<Department> result =
+        dsl.insert(d).multi(departments).returning(d.departmentNo, d.departmentName).execute();
+    assertNotEquals(departments, result.getEntities());
+    assertEquals(2, result.getCount());
+
+    var entity1 = result.getEntities().get(0);
+    assertNull(entity1.getDepartmentId());
+    assertEquals(99, entity1.getDepartmentNo());
+    assertEquals("aaa", entity1.getDepartmentName());
+    assertNull(entity1.getLocation());
+    assertNull(entity1.getVersion());
+
+    var entity2 = result.getEntities().get(1);
+    assertNull(entity2.getDepartmentId());
+    assertEquals(100, entity2.getDepartmentNo());
+    assertEquals("ccc", entity2.getDepartmentName());
+    assertNull(entity2.getLocation());
+    assertNull(entity2.getVersion());
+  }
+
+  @Test
   void returning_skip() {
     Department_ d = new Department_();
 

@@ -21,6 +21,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 public class H2InsertAssembler<ENTITY> implements InsertAssembler {
 
@@ -28,7 +29,7 @@ public class H2InsertAssembler<ENTITY> implements InsertAssembler {
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
-  private final boolean returning;
+  private final ReturningProperties returning;
   private final DefaultInsertAssembler<ENTITY> insertAssembler;
 
   public H2InsertAssembler(InsertAssemblerContext<ENTITY> context) {
@@ -43,11 +44,11 @@ public class H2InsertAssembler<ENTITY> implements InsertAssembler {
 
   @Override
   public void assemble() {
-    if (returning) {
-      H2AssemblerUtil.assembleFinalTable(
-          buf, entityType, naming, dialect, insertAssembler::assemble);
-    } else {
+    if (returning.isNone()) {
       insertAssembler.assemble();
+    } else {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, returning, insertAssembler::assemble);
     }
   }
 }
