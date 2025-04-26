@@ -21,11 +21,26 @@ import org.seasar.doma.jdbc.entity.EntityType;
 
 final class MssqlAssemblerUtil {
 
-  static void assembleOutput(
+  static void assembleInsertedOutput(
       PreparedSqlBuilder buf, EntityType<?> entityType, Naming naming, Dialect dialect) {
-    buf.appendSql(" output ");
+    assembleOutput(buf, entityType, naming, dialect, "inserted");
+  }
+
+  static void assembleDeletedOutput(
+      PreparedSqlBuilder buf, EntityType<?> entityType, Naming naming, Dialect dialect) {
+    assembleOutput(buf, entityType, naming, dialect, "deleted");
+  }
+
+  private static void assembleOutput(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      String tableType) {
+    buf.appendSql("output ");
     for (var p : entityType.getEntityPropertyTypes()) {
-      buf.appendSql("inserted.");
+      buf.appendSql(tableType);
+      buf.appendSql(".");
       buf.appendSql(p.getColumnName(naming::apply, dialect::applyQuote));
       buf.appendSql(", ");
     }

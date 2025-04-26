@@ -44,13 +44,14 @@ public class MssqlUpdateAssembler<ENTITY> implements UpdateAssembler {
   @Override
   public void assemble() {
     updateAssembler.assembleUpdateSet();
+    buf.appendSql(" ");
     assembleOutput();
     updateAssembler.assembleWhere();
   }
 
   private void assembleOutput() {
     if (returning) {
-      MssqlAssemblerUtil.assembleOutput(buf, entityType, naming, dialect);
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
     }
   }
 }

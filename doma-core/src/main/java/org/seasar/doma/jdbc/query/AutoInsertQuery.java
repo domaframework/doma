@@ -52,8 +52,6 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
-  protected boolean returning;
-
   public AutoInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -228,10 +226,6 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
-  }
-
-  public void setReturning(boolean returning) {
-    this.returning = returning;
   }
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {

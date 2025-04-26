@@ -42,8 +42,6 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected UpdateQueryHelper<ENTITY> helper;
 
-  protected boolean returning;
-
   public AutoUpdateQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -166,10 +164,6 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   public void setUnchangedPropertyIncluded(Boolean unchangedPropertyIncluded) {
     this.unchangedPropertyIncluded = unchangedPropertyIncluded;
-  }
-
-  public void setReturning(boolean returning) {
-    this.returning = returning;
   }
 
   protected static class AutoPreUpdateContext<E> extends AbstractPreUpdateContext<E> {

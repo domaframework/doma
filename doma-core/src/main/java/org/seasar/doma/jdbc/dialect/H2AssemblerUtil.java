@@ -27,13 +27,34 @@ final class H2AssemblerUtil {
       Naming naming,
       Dialect dialect,
       Runnable block) {
+    assembleTable(buf, entityType, naming, dialect, block, "final");
+  }
+
+  static void assembleOldTable(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      Runnable block) {
+    assembleTable(buf, entityType, naming, dialect, block, "old");
+  }
+
+  static void assembleTable(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      Naming naming,
+      Dialect dialect,
+      Runnable block,
+      String tableType) {
     buf.appendSql("select ");
     for (var p : entityType.getEntityPropertyTypes()) {
       buf.appendSql(p.getColumnName(naming::apply, dialect::applyQuote));
       buf.appendSql(", ");
     }
     buf.cutBackSql(2);
-    buf.appendSql(" from final table (");
+    buf.appendSql(" from ");
+    buf.appendSql(tableType);
+    buf.appendSql(" table (");
     block.run();
     buf.appendSql(")");
   }

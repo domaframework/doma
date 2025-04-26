@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.query.DeleteAssembler;
+import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
 import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
@@ -111,5 +113,10 @@ public class H2Dialect extends H214199Dialect {
   @Override
   public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
     return new H2UpdateAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> DeleteAssembler getDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
+    return new H2DeleteAssembler<>(context);
   }
 }

@@ -22,12 +22,9 @@ import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
-import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.entity.Property;
 
 public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements DeleteQuery {
 
@@ -70,52 +67,22 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void prepareSql() {
-    Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
     PreparedSqlBuilder builder = new PreparedSqlBuilder(config, SqlKind.DELETE, sqlLogType);
-    builder.appendSql("delete from ");
-    builder.appendSql(entityType.getQualifiedTableName(naming::apply, dialect::applyQuote));
-    boolean whereClauseAppended = false;
-    if (idPropertyTypes.size() > 0) {
-      builder.appendSql(" where ");
-      whereClauseAppended = true;
-      for (EntityPropertyType<ENTITY, ?> propertyType : idPropertyTypes) {
-        Property<ENTITY, ?> property = propertyType.createProperty();
-        property.load(entity);
-        builder.appendSql(propertyType.getColumnName(naming::apply, dialect::applyQuote));
-        builder.appendSql(" = ");
-        builder.appendParameter(property.asInParameter());
-        builder.appendSql(" and ");
-      }
-      builder.cutBackSql(5);
-    }
-    if (versionPropertyType != null && !versionIgnored) {
-      if (whereClauseAppended) {
-        builder.appendSql(" and ");
-      } else {
-        builder.appendSql(" where ");
-        whereClauseAppended = true;
-      }
-      Property<ENTITY, ?> property = versionPropertyType.createProperty();
-      property.load(entity);
-      builder.appendSql(versionPropertyType.getColumnName(naming::apply, dialect::applyQuote));
-      builder.appendSql(" = ");
-      builder.appendParameter(property.asInParameter());
-    }
-    if (tenantIdPropertyType != null) {
-      if (whereClauseAppended) {
-        builder.appendSql(" and ");
-      } else {
-        builder.appendSql(" where ");
-        //noinspection UnusedAssignment
-        whereClauseAppended = true;
-      }
-      Property<ENTITY, ?> property = tenantIdPropertyType.createProperty();
-      property.load(entity);
-      builder.appendSql(tenantIdPropertyType.getColumnName(naming::apply, dialect::applyQuote));
-      builder.appendSql(" = ");
-      builder.appendParameter(property.asInParameter());
-    }
+    DeleteAssemblerContext<ENTITY> assemblerContext =
+        DeleteAssemblerContextBuilder.build(
+            builder,
+            entityType,
+            config.getNaming(),
+            dialect,
+            idPropertyTypes,
+            versionPropertyType,
+            tenantIdPropertyType,
+            versionIgnored,
+            entity,
+            returning);
+    DeleteAssembler deleteAssembler = dialect.getDeleteAssembler(assemblerContext);
+    deleteAssembler.assemble();
     sql = builder.build(this::comment);
   }
 

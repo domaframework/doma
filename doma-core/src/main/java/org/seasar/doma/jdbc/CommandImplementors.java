@@ -26,6 +26,7 @@ import org.seasar.doma.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.CreateCommand;
 import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.command.DeleteReturningCommand;
 import org.seasar.doma.jdbc.command.FunctionCommand;
 import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.command.InsertReturningCommand;
@@ -107,6 +108,12 @@ public interface CommandImplementors {
    */
   default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
     return new UpdateCommand(query);
+  }
+
+  // TODO
+  default <RESULT> DeleteReturningCommand<RESULT> createDeleteReturningCommand(
+      Method method, DeleteQuery query, ResultSetHandler<RESULT> resultSetHandler) {
+    return new DeleteReturningCommand<>(query, resultSetHandler);
   }
 
   /**

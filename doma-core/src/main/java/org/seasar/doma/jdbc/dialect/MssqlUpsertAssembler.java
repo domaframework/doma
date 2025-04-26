@@ -94,13 +94,14 @@ public class MssqlUpsertAssembler implements UpsertAssembler {
       }
       buf.cutBackSql(2);
     }
+    buf.appendSql(" ");
     assembleOutput();
     buf.appendSql(";");
   }
 
   private void assembleOutput() {
     if (returning) {
-      MssqlAssemblerUtil.assembleOutput(buf, entityType, naming, dialect);
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
     }
   }
 

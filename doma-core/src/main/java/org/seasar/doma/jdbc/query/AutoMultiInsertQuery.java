@@ -53,8 +53,6 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
-  protected boolean returning;
-
   public AutoMultiInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
@@ -253,10 +251,6 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
-  }
-
-  public void setReturning(boolean returning) {
-    this.returning = returning;
   }
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {

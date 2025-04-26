@@ -44,13 +44,14 @@ public class MssqlInsertAssembler<ENTITY> implements InsertAssembler {
   @Override
   public void assemble() {
     insertAssembler.assembleInsertInto();
+    buf.appendSql(" ");
     assembleOutput();
     insertAssembler.assembleValues();
   }
 
   private void assembleOutput() {
     if (returning) {
-      MssqlAssemblerUtil.assembleOutput(buf, entityType, naming, dialect);
+      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
     }
   }
 }

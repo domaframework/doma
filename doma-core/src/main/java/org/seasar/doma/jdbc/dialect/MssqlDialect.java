@@ -28,6 +28,8 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.query.DeleteAssembler;
+import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
 import org.seasar.doma.jdbc.query.InsertAssembler;
 import org.seasar.doma.jdbc.query.InsertAssemblerContext;
 import org.seasar.doma.jdbc.query.MultiInsertAssembler;
@@ -186,5 +188,10 @@ public class MssqlDialect extends Mssql2008Dialect {
   @Override
   public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
     return new MssqlUpdateAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> DeleteAssembler getDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
+    return new MssqlDeleteAssembler<>(context);
   }
 }

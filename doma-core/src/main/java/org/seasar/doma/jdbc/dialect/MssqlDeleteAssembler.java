@@ -19,39 +19,39 @@ import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.MultiInsertAssembler;
-import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.DeleteAssembler;
+import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
 
-public class MssqlMultiInsertAssembler<ENTITY> implements MultiInsertAssembler {
+public class MssqlDeleteAssembler<ENTITY> implements DeleteAssembler {
 
   private final PreparedSqlBuilder buf;
   private final EntityType<?> entityType;
   private final Naming naming;
   private final Dialect dialect;
   private final boolean returning;
-  private final DefaultMultiInsertAssembler<ENTITY> multiInsertAssembler;
+  private final DefaultDeleteAssembler<ENTITY> deleteAssembler;
 
-  public MssqlMultiInsertAssembler(MultiInsertAssemblerContext<ENTITY> context) {
+  public MssqlDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
     Objects.requireNonNull(context);
     this.buf = context.buf;
     this.entityType = context.entityType;
     this.naming = context.naming;
     this.dialect = context.dialect;
     this.returning = context.returning;
-    this.multiInsertAssembler = new DefaultMultiInsertAssembler<>(context);
+    this.deleteAssembler = new DefaultDeleteAssembler<>(context);
   }
 
   @Override
   public void assemble() {
-    multiInsertAssembler.assembleInsertInto();
+    deleteAssembler.assembleDeleteFrom();
     buf.appendSql(" ");
     assembleOutput();
-    multiInsertAssembler.assembleValues();
+    deleteAssembler.assembleWhere();
   }
 
   private void assembleOutput() {
     if (returning) {
-      MssqlAssemblerUtil.assembleInsertedOutput(buf, entityType, naming, dialect);
+      MssqlAssemblerUtil.assembleDeletedOutput(buf, entityType, naming, dialect);
     }
   }
 }

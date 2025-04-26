@@ -31,6 +31,7 @@ import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.dialect.PostgresDialect;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class AutoDeleteQueryTest {
@@ -134,5 +135,34 @@ public class AutoDeleteQueryTest {
     assertEquals(10, parameters.get(0).getWrapper().get());
     assertEquals(100, parameters.get(1).getWrapper().get());
     assertEquals("bbb", parameters.get(2).getWrapper().get());
+  }
+
+  @Test
+  public void testReturning() {
+    runtimeConfig.dialect = new PostgresDialect();
+
+    Emp emp = new Emp();
+    emp.setId(10);
+    emp.setName("aaa");
+    emp.setVersion(100);
+
+    AutoDeleteQuery<Emp> query = new AutoDeleteQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setEntity(emp);
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.setReturning(true);
+    query.prepare();
+
+    PreparedSql sql = query.getSql();
+    assertEquals(
+        "delete from EMP where ID = ? and VERSION = ? returning ID, NAME, SALARY, VERSION",
+        sql.getRawSql());
+    List<InParameter<?>> parameters = sql.getParameters();
+    assertEquals(2, parameters.size());
+    assertEquals(10, parameters.get(0).getWrapper().get());
+    assertEquals(100, parameters.get(1).getWrapper().get());
   }
 }
