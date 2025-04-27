@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -39,6 +40,11 @@ public class QueryDslEntityDeleteTest {
 
   public QueryDslEntityDeleteTest(Config config) {
     this.dsl = new QueryDsl(config);
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -135,5 +141,24 @@ public class QueryDslEntityDeleteTest {
             .execute();
     assertEquals(0, result.getCount());
     assertNull(result.getEntity());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office = new Office();
+    office.setDepartmentId(100);
+    office.setDepartmentNo(100);
+    office.setDepartmentName("PLANNING");
+    office.setLocation("TOKYO");
+
+    dsl.insert(o).single(office).execute();
+    dsl.delete(o).single(office).returning(o.departmentId, o.version).execute();
+
+    assertEquals(
+        "preInsert:. postInsert:. preDelete:departmentId,version. postDelete:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

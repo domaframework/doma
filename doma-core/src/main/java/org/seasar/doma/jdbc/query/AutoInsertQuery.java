@@ -73,7 +73,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected void preInsert() {
     AutoPreInsertContext<ENTITY> context =
-        new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType);
+        new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType, returning);
     entityType.preInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -209,7 +209,7 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected void postInsert() {
     AutoPostInsertContext<ENTITY> context =
-        new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType);
+        new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType, returning);
     entityType.postInsert(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -230,17 +230,41 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    private final ReturningProperties returningProperties;
+
     public AutoPreInsertContext(
-        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        DuplicateKeyType duplicateKeyType,
+        ReturningProperties returningProperties) {
       super(entityType, method, config, duplicateKeyType);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 
   protected static class AutoPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    private final ReturningProperties returningProperties;
+
     public AutoPostInsertContext(
-        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        DuplicateKeyType duplicateKeyType,
+        ReturningProperties returningProperties) {
       super(entityType, method, config, duplicateKeyType);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 }

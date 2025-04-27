@@ -77,7 +77,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   protected void preUpdate() {
     List<EntityPropertyType<ENTITY, ?>> targetPropertyTypes = helper.getTargetPropertyTypes(entity);
     AutoPreUpdateContext<ENTITY> context =
-        new AutoPreUpdateContext<>(entityType, method, config, targetPropertyTypes);
+        new AutoPreUpdateContext<>(entityType, method, config, targetPropertyTypes, returning);
     entityType.preUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -142,7 +142,7 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       targetPropertyTypes.add(versionPropertyType);
     }
     AutoPostUpdateContext<ENTITY> context =
-        new AutoPostUpdateContext<>(entityType, method, config, targetPropertyTypes);
+        new AutoPostUpdateContext<>(entityType, method, config, targetPropertyTypes, returning);
     entityType.postUpdate(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -168,15 +168,18 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected static class AutoPreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
+    private final ReturningProperties returningProperties;
     protected final Set<String> changedPropertyNames;
 
     public AutoPreUpdateContext(
         EntityType<E> entityType,
         Method method,
         Config config,
-        List<EntityPropertyType<E, ?>> targetPropertyTypes) {
+        List<EntityPropertyType<E, ?>> targetPropertyTypes,
+        ReturningProperties returningProperties) {
       super(entityType, method, config);
-      assertNotNull(targetPropertyTypes);
+      assertNotNull(targetPropertyTypes, returningProperties);
+      this.returningProperties = returningProperties;
       changedPropertyNames = new HashSet<>(targetPropertyTypes.size());
       for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
         changedPropertyNames.add(propertyType.getName());
@@ -193,19 +196,27 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       validatePropertyDefined(propertyName);
       return changedPropertyNames.contains(propertyName);
     }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
+    }
   }
 
   protected static class AutoPostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
+    private final ReturningProperties returningProperties;
     protected final Set<String> changedPropertyNames;
 
     public AutoPostUpdateContext(
         EntityType<E> entityType,
         Method method,
         Config config,
-        List<EntityPropertyType<E, ?>> targetPropertyTypes) {
+        List<EntityPropertyType<E, ?>> targetPropertyTypes,
+        ReturningProperties returningProperties) {
       super(entityType, method, config);
-      assertNotNull(targetPropertyTypes);
+      assertNotNull(targetPropertyTypes, returningProperties);
+      this.returningProperties = returningProperties;
       changedPropertyNames = new HashSet<>(targetPropertyTypes.size());
       for (EntityPropertyType<E, ?> propertyType : targetPropertyTypes) {
         changedPropertyNames.add(propertyType.getName());
@@ -216,6 +227,11 @@ public class AutoUpdateQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     public boolean isPropertyChanged(String propertyName) {
       validatePropertyDefined(propertyName);
       return changedPropertyNames.contains(propertyName);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 }

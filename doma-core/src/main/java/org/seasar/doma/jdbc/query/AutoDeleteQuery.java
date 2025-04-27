@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.query;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import org.seasar.doma.internal.jdbc.entity.AbstractPostDeleteContext;
 import org.seasar.doma.internal.jdbc.entity.AbstractPreDeleteContext;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
@@ -51,7 +52,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void preDelete() {
-    AutoPreDeleteContext<ENTITY> context = new AutoPreDeleteContext<>(entityType, method, config);
+    AutoPreDeleteContext<ENTITY> context =
+        new AutoPreDeleteContext<>(entityType, method, config, returning);
     entityType.preDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -92,7 +94,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   protected void postDelete() {
-    AutoPostDeleteContext<ENTITY> context = new AutoPostDeleteContext<>(entityType, method, config);
+    AutoPostDeleteContext<ENTITY> context =
+        new AutoPostDeleteContext<>(entityType, method, config, returning);
     entityType.postDelete(entity, context);
     if (context.getNewEntity() != null) {
       entity = context.getNewEntity();
@@ -109,15 +112,39 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   protected static class AutoPreDeleteContext<E> extends AbstractPreDeleteContext<E> {
 
-    public AutoPreDeleteContext(EntityType<E> entityType, Method method, Config config) {
+    private final ReturningProperties returningProperties;
+
+    public AutoPreDeleteContext(
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        ReturningProperties returningProperties) {
       super(entityType, method, config);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 
   protected static class AutoPostDeleteContext<E> extends AbstractPostDeleteContext<E> {
 
-    public AutoPostDeleteContext(EntityType<E> entityType, Method method, Config config) {
+    private final ReturningProperties returningProperties;
+
+    public AutoPostDeleteContext(
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        ReturningProperties returningProperties) {
       super(entityType, method, config);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 }

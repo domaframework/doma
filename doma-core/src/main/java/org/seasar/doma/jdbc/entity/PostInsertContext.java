@@ -20,6 +20,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.Insert;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 /**
  * A context for a post process of an insert.
@@ -72,4 +73,13 @@ public interface PostInsertContext<E> {
    * @return the type of the duplicate key
    */
   DuplicateKeyType getDuplicateKeyType();
+
+  /**
+   * Returns the instance of {@code ReturningProperties} associated with the context.
+   *
+   * @return the {@code ReturningProperties} instance, never {@code null}
+   */
+  default ReturningProperties getReturningProperties() {
+    return ReturningProperties.NONE;
+  }
 }

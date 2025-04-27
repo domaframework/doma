@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -45,6 +46,11 @@ public class QueryDslEntityMultiInsertTest {
   public QueryDslEntityMultiInsertTest(Config config) {
     this.dsl = new QueryDsl(config);
     this.dialect = config.getDialect();
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -620,5 +626,29 @@ public class QueryDslEntityMultiInsertTest {
     assertEquals(1, entity.getId());
     assertEquals("1", entity.getUniqueValue());
     assertEquals("A", entity.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office1 = new Office();
+    office1.setDepartmentId(100);
+    office1.setDepartmentNo(100);
+    office1.setDepartmentName("PLANNING");
+    office1.setLocation("TOKYO");
+
+    Office office2 = new Office();
+    office2.setDepartmentId(200);
+    office2.setDepartmentNo(200);
+    office2.setDepartmentName("PLANNING");
+    office2.setLocation("TOKYO");
+
+    dsl.insert(o).multi(List.of(office1, office2)).returning(o.departmentId, o.version).execute();
+
+    assertEquals(
+        "preInsert:departmentId,version. preInsert:departmentId,version. postInsert:departmentId,version. postInsert:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

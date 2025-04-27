@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNull;
 
 import java.math.BigDecimal;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -41,6 +42,11 @@ public class QueryDslEntityUpdateTest {
 
   public QueryDslEntityUpdateTest(Config config) {
     this.dsl = new QueryDsl(config);
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -160,5 +166,20 @@ public class QueryDslEntityUpdateTest {
 
     Employee resultEntity = result.getEntity();
     assertNull(resultEntity);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office = dsl.from(o).where(c -> c.eq(o.departmentId, 1)).fetchOne();
+    office.setDepartmentName("PLANNING");
+
+    dsl.update(o).single(office).returning(o.departmentId, o.version).execute();
+
+    assertEquals(
+        "preUpdate:departmentId,version. postUpdate:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

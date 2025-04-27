@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -40,6 +41,11 @@ public class QueryDslEntityInsertTest {
   public QueryDslEntityInsertTest(Config config) {
     this.dsl = new QueryDsl(config);
     this.dialect = config.getDialect();
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -501,5 +507,23 @@ public class QueryDslEntityInsertTest {
     var result2 = dsl.insert(i).single(entity2).onDuplicateKeyIgnore().returning().execute();
     assertEquals(0, result2.getCount());
     assertNull(result2.getEntity());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office = new Office();
+    office.setDepartmentId(100);
+    office.setDepartmentNo(100);
+    office.setDepartmentName("PLANNING");
+    office.setLocation("TOKYO");
+
+    dsl.insert(o).single(office).returning(o.departmentId, o.version).execute();
+
+    assertEquals(
+        "preInsert:departmentId,version. postInsert:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }
