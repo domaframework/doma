@@ -15,10 +15,12 @@
  */
 package org.seasar.doma.it.dao;
 
+import java.util.List;
 import java.util.Optional;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
 import org.seasar.doma.Returning;
 import org.seasar.doma.Select;
 import org.seasar.doma.Sql;
@@ -62,4 +64,13 @@ public interface ReturningDao {
 
   @Update(returning = @Returning)
   Employee updateThenReturnExceptVersion(Employee employee);
+
+  @MultiInsert(returning = @Returning)
+  List<Employee> insertMultipleThenReturnAll(List<Employee> employees);
+
+  @MultiInsert(returning = @Returning(include = "employeeId"))
+  List<Employee> insertMultipleThenReturnOnlyId(List<Employee> employees);
+
+  @MultiInsert(returning = @Returning(exclude = "version"))
+  List<Employee> insertMultipleThenReturnExceptVersion(List<Employee> employees);
 }

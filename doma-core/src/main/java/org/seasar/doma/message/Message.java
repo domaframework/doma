@@ -1011,6 +1011,8 @@ public enum Message implements MessageResource {
   DOMA4494("The property \"{0}\" is not found in the entity class \"{1}\"."),
   DOMA4495(
       "When \"returning = @Returning\" is specified, the return type must be the same as the parameter type or an Optional whose element is the parameter type."),
+  DOMA4496(
+      "When \"returning = @Returning\" is specified, the return type must be a List of the entity class \"{0}\"."),
 
   // other
   DOMA5001(

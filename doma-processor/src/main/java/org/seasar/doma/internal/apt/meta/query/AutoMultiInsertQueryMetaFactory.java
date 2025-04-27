@@ -19,6 +19,7 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.MultiInsertAnnot;
@@ -64,13 +65,22 @@ public class AutoMultiInsertQueryMetaFactory
   protected void doReturnType(AutoMultiInsertQueryMeta queryMeta) {
     QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
     EntityCtType entityCtType = queryMeta.getEntityCtType();
-    if (entityCtType != null && entityCtType.isImmutable()) {
-      if (!returnMeta.isMultiResult(entityCtType)) {
-        throw new AptException(Message.DOMA4461, methodElement, new Object[] {});
+    if (queryMeta.getReturningAnnot() == null) {
+      if (entityCtType != null && entityCtType.isImmutable()) {
+        if (!returnMeta.isMultiResult(entityCtType)) {
+          throw new AptException(Message.DOMA4461, methodElement, new Object[] {});
+        }
+      } else {
+        if (!returnMeta.isPrimitiveInt()) {
+          throw new AptException(Message.DOMA4001, methodElement, new Object[] {});
+        }
       }
     } else {
-      if (!returnMeta.isPrimitiveInt()) {
-        throw new AptException(Message.DOMA4001, methodElement, new Object[] {});
+      TypeElement listElement = ctx.getMoreElements().getTypeElement(List.class);
+      TypeMirror listType = ctx.getMoreTypes().getDeclaredType(listElement, entityCtType.getType());
+      if (!ctx.getMoreTypes().isSameType(returnMeta.getType(), listType)) {
+        throw new AptException(
+            Message.DOMA4496, methodElement, new Object[] {entityCtType.getQualifiedName()});
       }
     }
     queryMeta.setReturnMeta(returnMeta);
@@ -135,5 +145,12 @@ public class AutoMultiInsertQueryMetaFactory
         insertAnnot.getInclude(),
         insertAnnot.getExclude(),
         insertAnnot.getDuplicateKeys());
+
+    var returningAnnot = queryMeta.getReturningAnnot();
+    if (returningAnnot != null) {
+      var returningAnnotValidator =
+          new ReturningAnnotValidator(ctx, entityCtType.getType(), methodElement, returningAnnot);
+      returningAnnotValidator.validate();
+    }
   }
 }

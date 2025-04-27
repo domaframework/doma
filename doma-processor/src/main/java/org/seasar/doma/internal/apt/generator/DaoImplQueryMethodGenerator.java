@@ -656,20 +656,43 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
       iprint("__query.setDuplicateKeyNames(%1$s);%n", toConstants(duplicateKeys));
     }
 
-    iprint("__query.prepare();%n");
-    iprint(
-        "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
-        m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
-
-    EntityCtType entityCtType = m.getEntityCtType();
-    if (entityCtType != null && entityCtType.isImmutable()) {
-      iprint("int __count = __command.execute();%n");
-      iprint("__query.complete();%n");
+    ReturningAnnot returningAnnot = m.getReturningAnnot();
+    if (returningAnnot != null) {
       iprint(
-          "%1$s __result = new %1$s(__count, __query.getEntities());%n",
-          m.getReturnMeta().getType());
+          "__query.setReturning(new %1$s(%2$s.of(%3$s), %2$s.of(%4$s)));%n",
+          /* 1 */ ReturningProperties.SpecificNames.class.getName().replace('$', '.'),
+          /* 2 */ List.class,
+          /* 3 */ toConstants(returningAnnot.getIncludeValue()),
+          /* 4 */ toConstants(returningAnnot.getExcludeValue()));
+    }
+
+    iprint("__query.prepare();%n");
+
+    if (returningAnnot == null) {
+      iprint(
+          "%1$s __command = __support.getCommandImplementors().create%2$s(%3$s, __query);%n",
+          m.getCommandClass().getName(), m.getCommandClass().getSimpleName(), methodName);
+
+      EntityCtType entityCtType = m.getEntityCtType();
+      if (entityCtType != null && entityCtType.isImmutable()) {
+        iprint("int __count = __command.execute();%n");
+        iprint("__query.complete();%n");
+        iprint(
+            "%1$s __result = new %1$s(__count, __query.getEntities());%n",
+            m.getReturnMeta().getType());
+      } else {
+        iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getType());
+        iprint("__query.complete();%n");
+      }
     } else {
-      iprint("%1$s __result = __command.execute();%n", m.getReturnMeta().getType());
+      iprint(
+          "var __command = __support.getCommandImplementors().create%1$s(%2$s, __query, new %3$s<>(%4$s), %5$s);%n",
+          /* 1 */ m.getCommandClass().getSimpleName(),
+          /* 2 */ methodName,
+          /* 3 */ EntityResultListHandler.class,
+          /* 4 */ m.getEntityCtType().getTypeCode(),
+          /* 5 */ "java.util.Collections::emptyList");
+      iprint("var __result = __command.execute();%n");
       iprint("__query.complete();%n");
     }
 

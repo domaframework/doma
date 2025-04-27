@@ -130,7 +130,7 @@ public class QueryReturnMeta {
     return ctType.isSameType(entityCtType);
   }
 
-  public boolean isOptionalEntity(EntityCtType entityCtType) {
+  public boolean isEntityOptional(EntityCtType entityCtType) {
     return ctType.accept(
         new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
           @Override

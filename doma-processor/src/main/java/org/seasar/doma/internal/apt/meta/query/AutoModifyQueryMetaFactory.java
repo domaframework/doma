@@ -90,7 +90,7 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
         }
       }
     } else {
-      if (!returnMeta.isEntity(entityCtType) && !returnMeta.isOptionalEntity(entityCtType)) {
+      if (!returnMeta.isEntity(entityCtType) && !returnMeta.isEntityOptional(entityCtType)) {
         throw new AptException(Message.DOMA4495, methodElement, new Object[] {});
       }
     }

@@ -260,7 +260,15 @@ public class Annotations {
 
   public MultiInsertAnnot newMultiInsertAnnot(ExecutableElement method) {
     assertNotNull(method);
-    return newInstance(method, MultiInsert.class, MultiInsertAnnot::new);
+    AnnotationMirror multiInsertMirror =
+        ctx.getMoreElements().getAnnotationMirror(method, MultiInsert.class);
+    if (multiInsertMirror == null) {
+      return null;
+    }
+    ReturningAnnot returningAnnot = newReturningAnnot(multiInsertMirror, ModifyAnnot.RETURNING);
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(multiInsertMirror);
+    return new MultiInsertAnnot(multiInsertMirror, returningAnnot, valuesWithDefaults);
   }
 
   public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {

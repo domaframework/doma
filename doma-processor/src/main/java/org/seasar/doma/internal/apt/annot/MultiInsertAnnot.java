@@ -31,27 +31,23 @@ public class MultiInsertAnnot extends AbstractAnnot {
 
   private static final String QUERY_TIMEOUT = "queryTimeout";
   private static final String INCLUDE = "include";
-
   private static final String EXCLUDE = "exclude";
-
   private static final String SQL_LOG = "sqlLog";
-
   private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
-
   private static final String DUPLICATE_KEYS = "duplicateKeys";
 
   private final AnnotationValue queryTimeout;
   private final AnnotationValue include;
-
   private final AnnotationValue exclude;
-
   private final AnnotationValue sqlLog;
-
   private final AnnotationValue duplicateKeyType;
-
   private final AnnotationValue duplicateKeys;
+  private final ReturningAnnot returningAnnot;
 
-  MultiInsertAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+  MultiInsertAnnot(
+      AnnotationMirror annotationMirror,
+      ReturningAnnot returningAnnot,
+      Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
     // non null values
@@ -63,6 +59,7 @@ public class MultiInsertAnnot extends AbstractAnnot {
     this.exclude = values.get(EXCLUDE);
     this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
     this.duplicateKeys = values.get(DUPLICATE_KEYS);
+    this.returningAnnot = returningAnnot;
   }
 
   public AnnotationValue getQueryTimeout() {
@@ -83,6 +80,10 @@ public class MultiInsertAnnot extends AbstractAnnot {
 
   public AnnotationValue getSqlLog() {
     return sqlLog;
+  }
+
+  public ReturningAnnot getReturningAnnot() {
+    return returningAnnot;
   }
 
   public int getQueryTimeoutValue() {

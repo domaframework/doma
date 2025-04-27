@@ -174,7 +174,8 @@ class DaoProcessorTest extends AbstractCompilerTest {
           invocationContext(MultipleAnnotateWithDao.class),
           invocationContext(IgnoreGeneratedKeysDao.class),
           invocationContext(AutoMultiInsertDao.class),
-          invocationContext(ReturningDao.class));
+          invocationContext(ReturningDao.class),
+          invocationContext(MultiInsertReturningDao.class));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {
@@ -272,7 +273,10 @@ class DaoProcessorTest extends AbstractCompilerTest {
           invocationContext(ReturningDao_IllegalSqlAnnotation.class, Message.DOMA4492),
           invocationContext(ReturningDao_IllegalInclude.class, Message.DOMA4493),
           invocationContext(ReturningDao_IllegalExclude.class, Message.DOMA4494),
-          invocationContext(ReturningDao_IllegalReturnType.class, Message.DOMA4495));
+          invocationContext(ReturningDao_IllegalReturnType.class, Message.DOMA4495),
+          invocationContext(MultiInsertReturningDao_IllegalInclude.class, Message.DOMA4493),
+          invocationContext(MultiInsertReturningDao_IllegalExclude.class, Message.DOMA4494),
+          invocationContext(MultiInsertReturningDao_IllegalReturnType.class, Message.DOMA4496));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, Message message) {
