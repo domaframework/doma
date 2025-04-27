@@ -23,11 +23,15 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.BusinessmanDao;
 import org.seasar.doma.it.dao.BusinessmanDaoImpl;
 import org.seasar.doma.it.dao.CompKeyEmployeeDao;
 import org.seasar.doma.it.dao.CompKeyEmployeeDaoImpl;
+import org.seasar.doma.it.dao.DeleteReturningDao;
+import org.seasar.doma.it.dao.DeleteReturningDaoImpl;
 import org.seasar.doma.it.dao.EmployeeDao;
 import org.seasar.doma.it.dao.EmployeeDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
@@ -202,5 +206,44 @@ public class AutoDeleteTest {
     }
     salesman.departmentId = tenantId;
     dao.delete(salesman);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning(Config config) {
+    DeleteReturningDao dao = new DeleteReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    var result = dao.deleteThenReturnAll(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertEquals("SMITH", result.getEmployeeName());
+    assertEquals(1, result.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_include(Config config) {
+    DeleteReturningDao dao = new DeleteReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    var result = dao.deleteThenReturnOnlyId(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertNull(result.getEmployeeName());
+    assertNull(result.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_exclude(Config config) {
+    DeleteReturningDao dao = new DeleteReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    var result = dao.deleteThenReturnExceptVersion(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertEquals("SMITH", result.getEmployeeName());
+    assertNull(result.getVersion());
   }
 }

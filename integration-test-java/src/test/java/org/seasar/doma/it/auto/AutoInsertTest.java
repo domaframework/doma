@@ -50,14 +50,14 @@ import org.seasar.doma.it.dao.IdentityStrategy2Dao;
 import org.seasar.doma.it.dao.IdentityStrategy2DaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
+import org.seasar.doma.it.dao.InsertReturningDao;
+import org.seasar.doma.it.dao.InsertReturningDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
 import org.seasar.doma.it.dao.OptionalIdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDao;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDaoImpl;
-import org.seasar.doma.it.dao.ReturningDao;
-import org.seasar.doma.it.dao.ReturningDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.StaffDao;
@@ -723,7 +723,41 @@ public class AutoInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   public void returning(Config config) {
-    ReturningDao dao = new ReturningDaoImpl(config);
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnAll(entity);
+    assertEquals(1, result.getId());
+    assertEquals(10, result.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_include(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnOnlyId(entity);
+    assertEquals(1, result.getId());
+    assertNull(result.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_exclude(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnExceptValue(entity);
+    assertEquals(1, result.getId());
+    assertNull(result.getValue());
   }
 }

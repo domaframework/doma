@@ -17,6 +17,7 @@ package org.seasar.doma.it.entity;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
+import org.seasar.doma.Version;
 import org.seasar.doma.it.criteria.Street;
 
 @Entity
@@ -24,7 +25,7 @@ public class Address {
 
   @Id private Integer addressId;
   private Street street;
-  private Integer version;
+  @Version private Integer version;
 
   public Integer getAddressId() {
     return addressId;
