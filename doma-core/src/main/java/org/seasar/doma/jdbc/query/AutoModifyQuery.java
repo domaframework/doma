@@ -66,6 +66,14 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
     this.entityType = entityType;
   }
 
+  @Override
+  public void prepare() {
+    super.prepare();
+    if (!returning.isNone() && !config.getDialect().supportsReturning()) {
+      throw new JdbcException(Message.DOMA2240, config.getDialect().getName());
+    }
+  }
+
   protected void prepareSpecialPropertyTypes() {
     idPropertyTypes = entityType.getIdPropertyTypes();
     versionPropertyType = entityType.getVersionPropertyType();

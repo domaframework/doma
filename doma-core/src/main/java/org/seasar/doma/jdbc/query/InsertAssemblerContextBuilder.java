@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc.query;
 
 import java.util.List;
+import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -33,9 +34,13 @@ public class InsertAssemblerContextBuilder {
       ENTITY entity,
       ReturningProperties returning) {
 
-    // TODO: check arguments
-
     return new InsertAssemblerContext<>(
-        buf, entityType, naming, dialect, insertPropertyTypes, entity, returning);
+        Objects.requireNonNull(buf),
+        Objects.requireNonNull(entityType),
+        Objects.requireNonNull(naming),
+        Objects.requireNonNull(dialect),
+        Objects.requireNonNull(insertPropertyTypes),
+        Objects.requireNonNull(entity),
+        Objects.requireNonNull(returning));
   }
 }

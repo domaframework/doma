@@ -22,6 +22,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -36,7 +37,7 @@ public class DeleteAssemblerContext<ENTITY> {
   public final Dialect dialect;
   public final List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
   public final VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
-  public final EntityPropertyType<ENTITY, ?> tenantIdPropertyType;
+  public final TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType;
   public boolean versionIgnored;
   public final ENTITY entity;
   public ReturningProperties returning;
@@ -48,7 +49,7 @@ public class DeleteAssemblerContext<ENTITY> {
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
       VersionPropertyType<ENTITY, ?, ?> versionPropertyType,
-      EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
+      TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType,
       boolean versionIgnored,
       ENTITY entity,
       ReturningProperties returning) {

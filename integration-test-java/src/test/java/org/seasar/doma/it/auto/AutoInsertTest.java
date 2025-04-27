@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -759,5 +760,18 @@ public class AutoInsertTest {
     var result = dao.insertThenReturnExceptValue(entity);
     assertEquals(1, result.getId());
     assertNull(result.getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_notSupported(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var ex = assertThrows(JdbcException.class, () -> dao.insertThenReturnAll(entity));
+    assertEquals(Message.DOMA2240, ex.getMessageResource());
+    System.out.println(ex.getMessage());
   }
 }

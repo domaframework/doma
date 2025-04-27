@@ -46,7 +46,7 @@ public class InsertAssemblerContext<ENTITY> {
    * @param dialect the SQL dialect
    * @param insertPropertyTypes the property types that are targets for the insert
    * @param entity the entity
-   * @param returning whether a returning clause is required
+   * @param returning the properties to be returned after insert execution
    */
   InsertAssemblerContext(
       PreparedSqlBuilder buf,
@@ -56,19 +56,12 @@ public class InsertAssemblerContext<ENTITY> {
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity,
       ReturningProperties returning) {
-    Objects.requireNonNull(buf);
-    Objects.requireNonNull(entityType);
-    Objects.requireNonNull(naming);
-    Objects.requireNonNull(dialect);
-    Objects.requireNonNull(insertPropertyTypes);
-    Objects.requireNonNull(entity);
-    Objects.requireNonNull(returning);
-    this.buf = buf;
-    this.entityType = entityType;
-    this.naming = naming;
-    this.dialect = dialect;
-    this.insertPropertyTypes = insertPropertyTypes;
-    this.entity = entity;
-    this.returning = returning;
+    this.buf = Objects.requireNonNull(buf);
+    this.entityType = Objects.requireNonNull(entityType);
+    this.naming = Objects.requireNonNull(naming);
+    this.dialect = Objects.requireNonNull(dialect);
+    this.insertPropertyTypes = Objects.requireNonNull(insertPropertyTypes);
+    this.entity = Objects.requireNonNull(entity);
+    this.returning = Objects.requireNonNull(returning);
   }
 }

@@ -116,4 +116,9 @@ public class OracleDialect extends Oracle11Dialect {
       MultiInsertAssemblerContext<ENTITY> context) {
     return new OracleMultiInsertAssembler<>(context);
   }
+
+  @Override
+  public boolean supportsReturning() {
+    return false;
+  }
 }

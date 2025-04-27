@@ -22,6 +22,7 @@ import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 /**
@@ -52,7 +53,7 @@ public class UpdateAssemblerContext<ENTITY> {
       List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
       List<EntityPropertyType<ENTITY, ?>> updatePropertyTypes,
       VersionPropertyType<ENTITY, ?, ?> versionPropertyType,
-      EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
+      TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType,
       boolean versionIgnored,
       ENTITY entity,
       ReturningProperties returning) {
@@ -63,8 +64,8 @@ public class UpdateAssemblerContext<ENTITY> {
     this.updateQueryHelper = Objects.requireNonNull(updateQueryHelper);
     this.idPropertyTypes = Objects.requireNonNull(idPropertyTypes);
     this.updatePropertyTypes = Objects.requireNonNull(updatePropertyTypes);
-    this.versionPropertyType = versionPropertyType;
-    this.tenantIdPropertyType = tenantIdPropertyType;
+    this.versionPropertyType = versionPropertyType; // nullable
+    this.tenantIdPropertyType = tenantIdPropertyType; // nullable
     this.versionIgnored = versionIgnored;
     this.entity = Objects.requireNonNull(entity);
     this.returning = Objects.requireNonNull(returning);

@@ -16,11 +16,13 @@
 package org.seasar.doma.jdbc.query;
 
 import java.util.List;
+import java.util.Objects;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
+import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
 
 public class DeleteAssemblerContextBuilder {
@@ -32,23 +34,21 @@ public class DeleteAssemblerContextBuilder {
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
       VersionPropertyType<ENTITY, ?, ?> versionPropertyType,
-      EntityPropertyType<ENTITY, ?> tenantIdPropertyType,
+      TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType,
       boolean versionIgnored,
       ENTITY entity,
       ReturningProperties returning) {
 
-    // TODO: check arguments
-
     return new DeleteAssemblerContext<>(
-        buf,
-        entityType,
-        naming,
-        dialect,
-        idPropertyTypes,
-        versionPropertyType,
-        tenantIdPropertyType,
+        Objects.requireNonNull(buf),
+        Objects.requireNonNull(entityType),
+        Objects.requireNonNull(naming),
+        Objects.requireNonNull(dialect),
+        Objects.requireNonNull(idPropertyTypes),
+        versionPropertyType, // nullable
+        tenantIdPropertyType, // nullable
         versionIgnored,
-        entity,
-        returning);
+        Objects.requireNonNull(entity),
+        Objects.requireNonNull(returning));
   }
 }

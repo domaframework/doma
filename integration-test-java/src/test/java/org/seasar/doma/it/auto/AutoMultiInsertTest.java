@@ -134,6 +134,14 @@ public class AutoMultiInsertTest {
   }
 
   @Test
+  public void testEmpty(Config config) {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+
+    int result = dao.insertMultiRows(Collections.emptyList());
+    assertEquals(0, result);
+  }
+
+  @Test
   public void testImmutable(Config config) {
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(99), 99, "hoge", new Location<>("foo"), null);
@@ -852,6 +860,15 @@ public class AutoMultiInsertTest {
     assertEquals(102, result2.getAddressId());
     assertEquals("STREET 102", result2.getStreet().getValue());
     assertEquals(1, result2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_empty(Config config) {
+    MultiInsertReturningDao dao = new MultiInsertReturningDaoImpl(config);
+
+    var results = dao.insertThenReturnAll(Collections.emptyList());
+    assertEquals(0, results.size());
   }
 
   @Test

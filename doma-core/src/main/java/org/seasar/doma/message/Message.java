@@ -286,6 +286,7 @@ public enum Message implements MessageResource {
       SQL=[{3}]"""),
   DOMA2239(
       "The table alias \"{0}\" passed to the expansion directive is not defined in the aggregate strategy \"{1}\"."),
+  DOMA2240("The dialect \"{0}\" does not support the RETURNING clause or an equivalent feature."),
 
   // expression
   DOMA3001(
@@ -1053,6 +1054,8 @@ public enum Message implements MessageResource {
   DOMA6011(
       "The number of propertyMetamodels in the specified derived table does not match for the propertyMetamodels in the　entityMetamodel."
           + "The number of propertyMetamodels in the entityMetamodel is {0} but the number of propertyMetamodels in the derived table is {1}."),
+  DOMA6012("The specified property \"name={0}, index={1}\" is not included in the entity \"{2}\"."),
+  DOMA6013("The expected entity type \"{0}\" does not match the actual entity type \"{1}\"."),
   ;
 
   private final String messagePattern;

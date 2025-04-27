@@ -393,24 +393,58 @@ public interface Dialect {
   UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context);
 
   /**
-   * Returns the MultiInsertAssembler implementation for the given context.
+   * Provides an implementation of {@code MultiInsertAssembler} based on the given context.
    *
-   * @param <ENTITY> the entity type
-   * @param context the MultiInsertAssemblerContext object
-   * @return the MultiInsertAssembler object for the given context
+   * @param <ENTITY> the type of the entity to be handled by the assembler
+   * @param context the context that holds the information required to create the {@code
+   *     MultiInsertAssembler}
+   * @return an instance of {@code MultiInsertAssembler} specific to the provided entity context
    */
   <ENTITY> MultiInsertAssembler getMultiInsertAssembler(
       MultiInsertAssemblerContext<ENTITY> context);
 
+  /**
+   * Provides an implementation of {@code InsertAssembler} based on the given context.
+   *
+   * @param <ENTITY> the type of the entity to be handled by the assembler
+   * @param context the context that holds the information required to create the {@code
+   *     InsertAssembler}
+   * @return an instance of {@code InsertAssembler} specific to the provided entity context
+   */
   default <ENTITY> InsertAssembler getInsertAssembler(InsertAssemblerContext<ENTITY> context) {
     return new DefaultInsertAssembler<>(context);
   }
 
+  /**
+   * Provides an implementation of {@code UpdateAssembler} based on the given context.
+   *
+   * @param <ENTITY> the type of the entity to be handled by the assembler
+   * @param context the context that holds the information required to create the {@code
+   *     UpdateAssembler}
+   * @return an instance of {@code UpdateAssembler} specific to the provided entity context
+   */
   default <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
     return new DefaultUpdateAssembler<>(context);
   }
 
+  /**
+   * Provides an implementation of {@code DeleteAssembler} based on the given context.
+   *
+   * @param <ENTITY> the type of the entity to be handled by the assembler
+   * @param context the context that holds the information required to create the {@code
+   *     DeleteAssembler}
+   * @return an instance of {@code DeleteAssembler} specific to the provided entity context
+   */
   default <ENTITY> DeleteAssembler getDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
     return new DefaultDeleteAssembler<>(context);
+  }
+
+  /**
+   * Determines if the current implementation supports the RETURNING feature in database operations.
+   *
+   * @return true if the RETURNING feature is supported, false otherwise
+   */
+  default boolean supportsReturning() {
+    return true;
   }
 }

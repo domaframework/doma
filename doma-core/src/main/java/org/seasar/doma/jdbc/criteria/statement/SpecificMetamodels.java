@@ -19,11 +19,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.DomaException;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.ReturningProperties;
+import org.seasar.doma.message.Message;
 
 record SpecificMetamodels(
     EntityMetamodel<?> entityMetamodel, List<PropertyMetamodel<?>> propertyMetamodels)
@@ -33,9 +35,10 @@ record SpecificMetamodels(
   public List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType) {
     Objects.requireNonNull(entityType);
     if (!entityMetamodel.asType().equals(entityType)) {
-      // TODO
-      throw new IllegalArgumentException(
-          "The specified entity type is not equal to the entity type of the entity metamodel.");
+      throw new DomaException(
+          Message.DOMA6013,
+          entityMetamodel.asType().getEntityClass().getName(),
+          entityType.getEntityClass().getName());
     }
     return propertyMetamodels.stream().map(PropertyMetamodel::asType).toList();
   }
@@ -50,11 +53,8 @@ record SpecificMetamodels(
     for (int i = 0; i < propertyMetamodels.length; i++) {
       var p = propertyMetamodels[i];
       if (!allProperties.contains(p)) {
-        // TODO
-        throw new IllegalArgumentException(
-            String.format(
-                "The specified properties are not included in the entity. name=%s, index=%d",
-                p.getName(), i));
+        throw new DomaException(
+            Message.DOMA6012, p.getName(), i, entityMetamodel.asType().getEntityClass().getName());
       }
     }
     return new SpecificMetamodels(entityMetamodel, Arrays.stream(propertyMetamodels).toList());
