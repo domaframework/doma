@@ -77,7 +77,7 @@ public class EntityqlInsertTerminal<ENTITY>
   }
 
   public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = SpecificMetamodels.of(entityMetamodel, properties);
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
     return new EntityqlInsertTerminal<>(
         config, entityMetamodel, entity, settings, duplicateKeyType, keys, returning);
   }

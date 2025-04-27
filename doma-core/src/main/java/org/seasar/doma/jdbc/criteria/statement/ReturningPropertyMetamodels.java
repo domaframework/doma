@@ -27,9 +27,16 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.message.Message;
 
-record SpecificMetamodels(
-    EntityMetamodel<?> entityMetamodel, List<PropertyMetamodel<?>> propertyMetamodels)
-    implements ReturningProperties {
+class ReturningPropertyMetamodels implements ReturningProperties {
+
+  private final EntityMetamodel<?> entityMetamodel;
+  private final List<? extends EntityPropertyType<?, ?>> propertyTypes;
+
+  private ReturningPropertyMetamodels(
+      EntityMetamodel<?> entityMetamodel, List<? extends EntityPropertyType<?, ?>> propertyTypes) {
+    this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
+    this.propertyTypes = Objects.requireNonNull(propertyTypes);
+  }
 
   @Override
   public List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType) {
@@ -40,7 +47,7 @@ record SpecificMetamodels(
           entityMetamodel.asType().getEntityClass().getName(),
           entityType.getEntityClass().getName());
     }
-    return propertyMetamodels.stream().map(PropertyMetamodel::asType).toList();
+    return propertyTypes;
   }
 
   static ReturningProperties of(
@@ -57,6 +64,7 @@ record SpecificMetamodels(
             Message.DOMA6012, p.getName(), i, entityMetamodel.asType().getEntityClass().getName());
       }
     }
-    return new SpecificMetamodels(entityMetamodel, Arrays.stream(propertyMetamodels).toList());
+    return new ReturningPropertyMetamodels(
+        entityMetamodel, Arrays.stream(propertyMetamodels).map(PropertyMetamodel::asType).toList());
   }
 }

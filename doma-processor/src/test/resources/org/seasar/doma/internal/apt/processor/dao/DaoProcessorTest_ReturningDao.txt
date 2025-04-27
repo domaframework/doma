@@ -62,7 +62,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createDeleteReturningCommand(__method0, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -92,7 +92,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of("id"), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of("id"), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createDeleteReturningCommand(__method1, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -122,7 +122,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of("id", "name"), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of("id", "name"), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createDeleteReturningCommand(__method2, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -152,7 +152,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setSqlLogType(org.seasar.doma.jdbc.SqlLogType.FORMATTED);
             __query.setVersionIgnored(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of("version")));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of("version")));
             __query.prepare();
             var __command = __support.getCommandImplementors().createDeleteReturningCommand(__method3, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -185,7 +185,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.setDuplicateKeyNames();
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createInsertReturningCommand(__method4, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -218,7 +218,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.setDuplicateKeyNames();
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createInsertReturningCommand(__method5, __query, new org.seasar.doma.internal.jdbc.command.OptionalEntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), java.util.Optional::empty);
             var __result = __command.execute();
@@ -251,7 +251,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.setDuplicateKeyNames();
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of("id"), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of("id"), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createInsertReturningCommand(__method6, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -284,7 +284,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setIncludedPropertyNames();
             __query.setExcludedPropertyNames();
             __query.setDuplicateKeyNames();
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of("version")));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of("version")));
             __query.prepare();
             var __command = __support.getCommandImplementors().createInsertReturningCommand(__method7, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -318,7 +318,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setExcludedPropertyNames();
             __query.setUnchangedPropertyIncluded(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createUpdateReturningCommand(__method8, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -352,7 +352,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setExcludedPropertyNames();
             __query.setUnchangedPropertyIncluded(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of("id"), java.util.List.of()));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of("id"), java.util.List.of()));
             __query.prepare();
             var __command = __support.getCommandImplementors().createUpdateReturningCommand(__method9, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();
@@ -386,7 +386,7 @@ public class ReturningDaoImpl implements org.seasar.doma.internal.apt.processor.
             __query.setExcludedPropertyNames();
             __query.setUnchangedPropertyIncluded(false);
             __query.setOptimisticLockExceptionSuppressed(false);
-            __query.setReturning(new org.seasar.doma.jdbc.query.ReturningProperties.SpecificNames(java.util.List.of(), java.util.List.of("version")));
+            __query.setReturning(org.seasar.doma.jdbc.query.ReturningPropertyNames.of(java.util.List.of(), java.util.List.of("version")));
             __query.prepare();
             var __command = __support.getCommandImplementors().createUpdateReturningCommand(__method10, __query, new org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler<>(org.seasar.doma.internal.apt.processor.entity._Emp.getSingletonInternal()), () -> null);
             var __result = __command.execute();

@@ -15,59 +15,48 @@
  */
 package org.seasar.doma.jdbc.query;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/** Represents returning properties. */
 public interface ReturningProperties {
 
-  ReturningProperties NONE =
-      entityType -> {
-        throw new UnsupportedOperationException("unsupported");
-      };
+  /** A predefined instance of {@link ReturningProperties} that represents no properties. */
+  ReturningProperties NONE = __ -> Collections.emptyList();
 
+  /** A predefined instance of {@link ReturningProperties} that represents all properties. */
   ReturningProperties ALL =
-      entityType -> {
-        Objects.requireNonNull(entityType);
-        return entityType.getEntityPropertyTypes();
+      it -> {
+        Objects.requireNonNull(it);
+        return it.getEntityPropertyTypes();
       };
 
+  /**
+   * Checks if the current {@code ReturningProperties} instance represents no properties.
+   *
+   * @return {@code true} if this instance is equal to {@code NONE}, otherwise {@code false}
+   */
   default boolean isNone() {
     return this == NONE;
   }
 
-  List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType);
-
-  class SpecificNames implements ReturningProperties {
-
-    private final List<String> includedNames;
-    private final List<String> excludedNames;
-
-    public SpecificNames(List<String> includedNames, List<String> excludedNames) {
-      this.includedNames = Objects.requireNonNull(includedNames);
-      this.excludedNames = Objects.requireNonNull(excludedNames);
-    }
-
-    @Override
-    public List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType) {
-      Objects.requireNonNull(entityType);
-      var includedPropertyTypes = extractIncludedPropertyTypes(entityType);
-      var excludedPropertyTypes = extractExcludedPropertyTypes(entityType);
-      return includedPropertyTypes.stream()
-          .filter(it -> !excludedPropertyTypes.contains(it))
-          .toList();
-    }
-
-    private List<? extends EntityPropertyType<?, ?>> extractIncludedPropertyTypes(
-        EntityType<?> entityType) {
-      var list = includedNames.stream().map(entityType::getEntityPropertyType).toList();
-      return list.isEmpty() ? entityType.getEntityPropertyTypes() : list;
-    }
-
-    private List<? extends EntityPropertyType<?, ?>> extractExcludedPropertyTypes(
-        EntityType<?> entityType) {
-      return excludedNames.stream().map(entityType::getEntityPropertyType).toList();
-    }
+  /**
+   * Checks if the current {@code ReturningProperties} instance represents all properties.
+   *
+   * @return {@code true} if this instance is equal to {@code ALL}, otherwise {@code false}
+   */
+  default boolean isAll() {
+    return this == ALL;
   }
+
+  /**
+   * Resolves a list of entity property types for the given entity type.
+   *
+   * @param entityType the entity type for which to resolve property types
+   * @return a list of entity property types associated with the given entity type
+   */
+  List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType);
 }

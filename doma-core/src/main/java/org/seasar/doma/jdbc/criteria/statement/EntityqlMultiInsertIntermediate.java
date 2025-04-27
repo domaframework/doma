@@ -69,7 +69,7 @@ public class EntityqlMultiInsertIntermediate<ENTITY>
   }
 
   public Statement<MultiResult<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = SpecificMetamodels.of(entityMetamodel, properties);
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
     return new EntityqlMultiInsertTerminal<>(
         config, entityMetamodel, entities, settings, duplicateKeyType, List.of(), returning);
   }

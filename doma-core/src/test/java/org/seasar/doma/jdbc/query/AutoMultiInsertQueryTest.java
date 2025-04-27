@@ -273,7 +273,7 @@ public class AutoMultiInsertQueryTest {
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
-    query.setReturning(ReturningProperties.ALL);
+    query.setReturning(ReturningPropertyNames.of(List.of(), List.of()));
     query.prepare();
 
     PreparedSql sql = query.getSql();
@@ -306,7 +306,7 @@ public class AutoMultiInsertQueryTest {
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
-    query.setReturning(ReturningProperties.ALL);
+    query.setReturning(ReturningPropertyNames.of(List.of(), List.of()));
     query.prepare();
 
     PreparedSql sql = query.getSql();

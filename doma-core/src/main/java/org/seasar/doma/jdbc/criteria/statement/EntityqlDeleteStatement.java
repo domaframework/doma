@@ -61,7 +61,7 @@ public class EntityqlDeleteStatement<ENTITY>
   }
 
   public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = SpecificMetamodels.of(entityMetamodel, properties);
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
     return new EntityqlDeleteStatement<>(config, entityMetamodel, entity, settings, returning);
   }
 

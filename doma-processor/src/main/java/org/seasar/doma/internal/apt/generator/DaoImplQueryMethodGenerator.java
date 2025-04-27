@@ -214,7 +214,7 @@ import org.seasar.doma.jdbc.aggregate.ToListReducer;
 import org.seasar.doma.jdbc.aggregate.ToOptionalReducer;
 import org.seasar.doma.jdbc.aggregate.ToSingleReducer;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
-import org.seasar.doma.jdbc.query.ReturningProperties;
+import org.seasar.doma.jdbc.query.ReturningPropertyNames;
 
 public class DaoImplQueryMethodGenerator extends AbstractGenerator
     implements QueryMetaVisitor<Void> {
@@ -476,8 +476,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     ReturningAnnot returningAnnot = m.getReturningAnnot();
     if (returningAnnot != null) {
       iprint(
-          "__query.setReturning(new %1$s(%2$s.of(%3$s), %2$s.of(%4$s)));%n",
-          /* 1 */ ReturningProperties.SpecificNames.class.getName().replace('$', '.'),
+          "__query.setReturning(%1$s.of(%2$s.of(%3$s), %2$s.of(%4$s)));%n",
+          /* 1 */ ReturningPropertyNames.class.getName().replace('$', '.'),
           /* 2 */ List.class,
           /* 3 */ toConstants(returningAnnot.getIncludeValue()),
           /* 4 */ toConstants(returningAnnot.getExcludeValue()));
@@ -659,8 +659,8 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
     ReturningAnnot returningAnnot = m.getReturningAnnot();
     if (returningAnnot != null) {
       iprint(
-          "__query.setReturning(new %1$s(%2$s.of(%3$s), %2$s.of(%4$s)));%n",
-          /* 1 */ ReturningProperties.SpecificNames.class.getName().replace('$', '.'),
+          "__query.setReturning(%1$s.of(%2$s.of(%3$s), %2$s.of(%4$s)));%n",
+          /* 1 */ ReturningPropertyNames.class.getName().replace('$', '.'),
           /* 2 */ List.class,
           /* 3 */ toConstants(returningAnnot.getIncludeValue()),
           /* 4 */ toConstants(returningAnnot.getExcludeValue()));

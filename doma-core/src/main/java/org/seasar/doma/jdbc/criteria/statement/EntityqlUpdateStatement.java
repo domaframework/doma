@@ -61,7 +61,7 @@ public class EntityqlUpdateStatement<ENTITY>
   }
 
   public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = SpecificMetamodels.of(entityMetamodel, properties);
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
     return new EntityqlUpdateStatement<>(config, entityMetamodel, entity, settings, returning);
   }
 

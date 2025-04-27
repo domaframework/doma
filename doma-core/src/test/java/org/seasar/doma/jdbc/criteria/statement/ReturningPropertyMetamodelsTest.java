@@ -23,19 +23,19 @@ import org.seasar.doma.jdbc.criteria.entity.Dept_;
 import org.seasar.doma.jdbc.criteria.entity.Emp_;
 import org.seasar.doma.message.Message;
 
-class SpecificMetamodelsTest {
+class ReturningPropertyMetamodelsTest {
 
   @Test
   void of() {
     var e = new Emp_();
-    assertNotNull(SpecificMetamodels.of(e, e.id));
+    assertNotNull(ReturningPropertyMetamodels.of(e, e.id));
   }
 
   @Test
   void of_error() {
     var e = new Emp_();
     var d = new Dept_();
-    var ex = assertThrows(DomaException.class, () -> SpecificMetamodels.of(e, d.name));
+    var ex = assertThrows(DomaException.class, () -> ReturningPropertyMetamodels.of(e, d.name));
     assertEquals(Message.DOMA6012, ex.getMessageResource());
     System.out.println(ex.getMessage());
   }
@@ -43,7 +43,7 @@ class SpecificMetamodelsTest {
   @Test
   void resolve() {
     var e = new Emp_();
-    var returning = SpecificMetamodels.of(e, e.id);
+    var returning = ReturningPropertyMetamodels.of(e, e.id);
     var list = returning.resolve(e.asType());
     assertEquals(1, list.size());
     assertEquals(e.id.asType(), list.get(0));
@@ -53,7 +53,7 @@ class SpecificMetamodelsTest {
   void resolve_error() {
     var e = new Emp_();
     var d = new Dept_();
-    var returning = SpecificMetamodels.of(e, e.id);
+    var returning = ReturningPropertyMetamodels.of(e, e.id);
     var ex = assertThrows(DomaException.class, () -> returning.resolve(d.asType()));
     assertEquals(Message.DOMA6013, ex.getMessageResource());
     System.out.println(ex.getMessage());

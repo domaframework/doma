@@ -233,7 +233,7 @@ public class AutoInsertQueryTest {
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
-    query.setReturning(ReturningProperties.ALL);
+    query.setReturning(ReturningPropertyNames.of(List.of(), List.of()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -264,7 +264,7 @@ public class AutoInsertQueryTest {
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
-    query.setReturning(new ReturningProperties.SpecificNames(List.of("id", "name"), List.of()));
+    query.setReturning(ReturningPropertyNames.of(List.of("id", "name"), List.of()));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -295,8 +295,7 @@ public class AutoInsertQueryTest {
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
-    query.setReturning(
-        new ReturningProperties.SpecificNames(List.of(), List.of("salary", "version")));
+    query.setReturning(ReturningPropertyNames.of(List.of(), List.of("salary", "version")));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
@@ -328,7 +327,7 @@ public class AutoInsertQueryTest {
     query.setConfig(runtimeConfig);
     query.setEntity(emp);
     query.setReturning(
-        new ReturningProperties.SpecificNames(List.of("id", "name", "salary"), List.of("salary")));
+        ReturningPropertyNames.of(List.of("id", "name", "salary"), List.of("salary")));
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
     query.setSqlLogType(SqlLogType.FORMATTED);
