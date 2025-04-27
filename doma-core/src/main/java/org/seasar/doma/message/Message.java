@@ -1005,6 +1005,12 @@ public enum Message implements MessageResource {
   DOMA4489("The property path \"{0}\" is duplicated in another @AssociationLinker."),
   DOMA4490(
       "Multiple @ExternalDomain definitions were found for type \"{0}\". \"{1}\" conflicts with \"{2}\"."),
+  DOMA4491("\"returning = @Returning\" cannot be specified when \"sqlFile = true\"."),
+  DOMA4492("\"returning = @Returning\" is not allowed in combination with @Sql."),
+  DOMA4493("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4494("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4495(
+      "When \"returning = @Returning\" is specified, the return type must be the same as the parameter type or an Optional whose element is the parameter type."),
 
   // other
   DOMA5001(

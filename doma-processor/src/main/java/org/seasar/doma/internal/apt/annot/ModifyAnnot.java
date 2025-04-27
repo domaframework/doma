@@ -52,6 +52,10 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private static final String DUPLICATE_KEYS = "duplicateKeys";
 
+  static final String RETURNING = "returning";
+
+  private final ReturningAnnot returningAnnot;
+
   private final AnnotationValue sqlFile;
 
   private final AnnotationValue queryTimeout;
@@ -74,7 +78,10 @@ public abstract class ModifyAnnot extends AbstractAnnot {
 
   private final AnnotationValue duplicateKeys;
 
-  ModifyAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
+  ModifyAnnot(
+      AnnotationMirror annotationMirror,
+      ReturningAnnot returningAnnot,
+      Map<String, AnnotationValue> values) {
     super(annotationMirror);
 
     // non null values
@@ -83,6 +90,7 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     this.sqlLog = assertNonNullValue(values, SQL_LOG);
 
     // nullable values
+    this.returningAnnot = returningAnnot;
     this.ignoreVersion = values.get(IGNORE_VERSION);
     this.excludeNull = values.get(EXCLUDE_NULL);
     this.suppressOptimisticLockException = values.get(SUPPRESS_OPTIMISTIC_LOCK_EXCEPTION);
@@ -91,6 +99,10 @@ public abstract class ModifyAnnot extends AbstractAnnot {
     this.exclude = values.get(EXCLUDE);
     this.duplicateKeyType = values.get(DUPLICATE_KEY_TYPE);
     this.duplicateKeys = values.get(DUPLICATE_KEYS);
+  }
+
+  public ReturningAnnot getReturningAnnot() {
+    return returningAnnot;
   }
 
   public AnnotationValue getSqlFile() {

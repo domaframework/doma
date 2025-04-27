@@ -73,6 +73,18 @@ public class QueryReturnMeta {
     return ctType.getType().getKind() == TypeKind.VOID;
   }
 
+  public boolean isOptional() {
+    return ctType.accept(
+        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
+          @Override
+          public Boolean visitOptionalCtType(OptionalCtType ctType, Void unused)
+              throws RuntimeException {
+            return true;
+          }
+        },
+        null);
+  }
+
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isResult(EntityCtType entityCtType) {
     return ctType.accept(
@@ -109,6 +121,22 @@ public class QueryReturnMeta {
               throws RuntimeException {
             CtType elementCtType = ctType.getElementCtType();
             return elementCtType.isSameType(entityCtType);
+          }
+        },
+        null);
+  }
+
+  public boolean isEntity(EntityCtType entityCtType) {
+    return ctType.isSameType(entityCtType);
+  }
+
+  public boolean isOptionalEntity(EntityCtType entityCtType) {
+    return ctType.accept(
+        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
+          @Override
+          public Boolean visitOptionalCtType(OptionalCtType ctType, Void unused)
+              throws RuntimeException {
+            return ctType.getElementCtType().isSameType(entityCtType);
           }
         },
         null);

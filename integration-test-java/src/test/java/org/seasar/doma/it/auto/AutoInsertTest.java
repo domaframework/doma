@@ -56,6 +56,8 @@ import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
 import org.seasar.doma.it.dao.OptionalIdentityStrategyDaoImpl;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDao;
 import org.seasar.doma.it.dao.PrimitiveIdentityStrategyDaoImpl;
+import org.seasar.doma.it.dao.ReturningDao;
+import org.seasar.doma.it.dao.ReturningDaoImpl;
 import org.seasar.doma.it.dao.SequenceStrategyDao;
 import org.seasar.doma.it.dao.SequenceStrategyDaoImpl;
 import org.seasar.doma.it.dao.StaffDao;
@@ -718,5 +720,10 @@ public class AutoInsertTest {
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("B", entities.get(0).getValue());
+  }
+
+  @Test
+  public void returning(Config config) {
+    ReturningDao dao = new ReturningDaoImpl(config);
   }
 }

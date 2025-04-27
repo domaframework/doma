@@ -79,13 +79,19 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
   protected void doReturnType(AutoModifyQueryMeta queryMeta) {
     QueryReturnMeta returnMeta = createReturnMeta(queryMeta);
     EntityCtType entityCtType = queryMeta.getEntityCtType();
-    if (entityCtType != null && entityCtType.isImmutable()) {
-      if (!returnMeta.isResult(entityCtType)) {
-        throw new AptException(Message.DOMA4222, methodElement, new Object[] {});
+    if (queryMeta.getReturningAnnot() == null) {
+      if (entityCtType != null && entityCtType.isImmutable()) {
+        if (!returnMeta.isResult(entityCtType)) {
+          throw new AptException(Message.DOMA4222, methodElement, new Object[] {});
+        }
+      } else {
+        if (!returnMeta.isPrimitiveInt()) {
+          throw new AptException(Message.DOMA4001, methodElement, new Object[] {});
+        }
       }
     } else {
-      if (!returnMeta.isPrimitiveInt()) {
-        throw new AptException(Message.DOMA4001, methodElement, new Object[] {});
+      if (!returnMeta.isEntity(entityCtType) && !returnMeta.isOptionalEntity(entityCtType)) {
+        throw new AptException(Message.DOMA4495, methodElement, new Object[] {});
       }
     }
     queryMeta.setReturnMeta(returnMeta);
@@ -132,5 +138,12 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
         modifyAnnot.getInclude(),
         modifyAnnot.getExclude(),
         modifyAnnot.getDuplicateKeys());
+
+    var returningAnnot = queryMeta.getReturningAnnot();
+    if (returningAnnot != null) {
+      var returningAnnotValidator =
+          new ReturningAnnotValidator(ctx, entityCtType.getType(), methodElement, returningAnnot);
+      returningAnnotValidator.validate();
+    }
   }
 }

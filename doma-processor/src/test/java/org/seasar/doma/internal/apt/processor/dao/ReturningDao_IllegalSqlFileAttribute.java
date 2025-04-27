@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.annot;
+package org.seasar.doma.internal.apt.processor.dao;
 
-import java.util.Map;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
+import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Returning;
+import org.seasar.doma.internal.apt.processor.entity.Emp;
 
-public class DeleteAnnot extends ModifyAnnot {
+@Dao
+public interface ReturningDao_IllegalSqlFileAttribute {
 
-  DeleteAnnot(
-      AnnotationMirror annotationMirror,
-      ReturningAnnot returningAnnot,
-      Map<String, AnnotationValue> values) {
-    super(annotationMirror, returningAnnot, values);
-  }
+  @Delete(sqlFile = true, returning = @Returning)
+  Emp deleteThenReturnAll(Emp employee);
 }

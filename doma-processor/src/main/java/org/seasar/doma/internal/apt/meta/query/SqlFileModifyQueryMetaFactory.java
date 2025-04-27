@@ -40,6 +40,7 @@ public class SqlFileModifyQueryMetaFactory
     if (queryMeta == null) {
       return null;
     }
+    doAnnotation(queryMeta);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
     doReturnType(queryMeta);
@@ -75,6 +76,21 @@ public class SqlFileModifyQueryMetaFactory
 
   private boolean usesSqlTemplate(SqlAnnot sqlAnnot, ModifyAnnot modifyAnnot) {
     return sqlAnnot != null || modifyAnnot.getSqlFileValue();
+  }
+
+  private void doAnnotation(SqlFileModifyQueryMeta queryMeta) {
+    var modifyAnnot = queryMeta.getModifyAnnot();
+    var returningAnnot = modifyAnnot.getReturningAnnot();
+    if (returningAnnot != null) {
+      if (modifyAnnot.getSqlFileValue()) {
+        throw new AptException(
+            Message.DOMA4491, methodElement, returningAnnot.getAnnotationMirror(), new Object[] {});
+      }
+      if (queryMeta.getSqlAnnot() != null) {
+        throw new AptException(
+            Message.DOMA4492, methodElement, returningAnnot.getAnnotationMirror(), new Object[] {});
+      }
+    }
   }
 
   @Override
