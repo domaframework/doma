@@ -59,18 +59,20 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   @Override
   public void prepare() {
+    super.prepare();
+    assertNotNull(method, entityType, entities);
+
     Dialect dialect = config.getDialect();
     if (!dialect.supportsMultiRowInsertStatement()) {
       throw new JdbcException(Message.DOMA2236, dialect.getName());
     }
 
-    super.prepare();
-    assertNotNull(method, entityType, entities);
     if (entities.isEmpty()) {
       sqlExecutionSkipCause = SqlExecutionSkipCause.MULTI_INSERT_TARGET_NONEXISTENT;
       return;
     }
     executable = true;
+
     entity = entities.stream().findFirst().orElseThrow(IllegalStateException::new);
     preInsert();
     prepareSpecialPropertyTypes();

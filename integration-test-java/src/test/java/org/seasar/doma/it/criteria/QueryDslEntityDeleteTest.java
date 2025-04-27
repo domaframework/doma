@@ -24,7 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
@@ -68,6 +70,7 @@ public class QueryDslEntityDeleteTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning() {
     Employee_ e = new Employee_();
 
@@ -85,6 +88,7 @@ public class QueryDslEntityDeleteTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_specificProperties() {
     Employee_ e = new Employee_();
 
@@ -105,6 +109,7 @@ public class QueryDslEntityDeleteTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_OptimisticLockException() {
     Employee_ e = new Employee_();
 
@@ -116,6 +121,7 @@ public class QueryDslEntityDeleteTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_suppressOptimisticLockException() {
     Employee_ e = new Employee_();
 

@@ -378,6 +378,7 @@ public class QueryDslEntityMultiInsertTest {
   }
 
   @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
   void returning_skip() {
     Department_ d = new Department_();
 
