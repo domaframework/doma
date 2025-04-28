@@ -16,9 +16,13 @@
 package org.seasar.doma.it.criteria
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.extension.ExtendWith
+import org.seasar.doma.it.Dbms
 import org.seasar.doma.it.IntegrationTestEnvironment
+import org.seasar.doma.it.Run
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 import java.math.BigDecimal
@@ -57,5 +61,27 @@ class KQueryDslEntityUpdateTest(config: Config) {
             .update(e) { suppressOptimisticLockException = true }.single(employee)
             .execute()
         assertEquals(0, result.count)
+    }
+
+    @Test
+    @Run(unless = [Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE])
+    fun returning() {
+        val e = Employee_()
+
+        val employee =
+            dsl.from(e).where { eq(e.employeeId, 5) }
+                .fetchOne()!!
+        employee.employeeName = "aaa"
+        employee.salary = Salary("2000")
+
+        val result = dsl.update(e).single(employee).returning().execute()
+        assertEquals(1, result.count)
+        assertNotEquals(employee, result.entity)
+
+        val resultEntity = result.entity
+        assertNotNull(resultEntity)
+        assertEquals("aaa", resultEntity.employeeName)
+        assertEquals(0, BigDecimal("2000").compareTo(resultEntity.salary!!.value))
+        assertEquals(employee.version!! + 1, resultEntity.version)
     }
 }

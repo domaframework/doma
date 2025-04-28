@@ -17,9 +17,15 @@ package org.seasar.doma.kotlin.jdbc.criteria.statement
 
 import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.Sql
-import org.seasar.doma.jdbc.criteria.statement.Statement
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
+import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertIntermediate
 
-class KEntityqlUpsertStatement<ENTITY>(private val statement: Statement<Result<ENTITY>>) : KStatement<Result<ENTITY>> {
+class KEntityqlUpsertStatement<ENTITY>(private val statement: EntityqlInsertIntermediate<ENTITY>) : KStatement<Result<ENTITY>> {
+
+    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<Result<ENTITY>> {
+        val s = statement.returning(*properties)
+        return KStatementAdapter(s)
+    }
 
     override fun execute(): Result<ENTITY> {
         return statement.execute()

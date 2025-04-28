@@ -16,13 +16,12 @@
 package org.seasar.doma.kotlin.jdbc.criteria.statement
 
 import org.seasar.doma.jdbc.BatchResult
-import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.criteria.statement.UnifiedUpdateStarting
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KSetDeclaration
 
 class KUnifiedUpdateStarting<ENTITY : Any>(private val statement: UnifiedUpdateStarting<ENTITY>) {
 
-    fun single(entity: ENTITY): KStatement<Result<ENTITY>> {
+    fun single(entity: ENTITY): KEntityqlUpdateStatement<ENTITY> {
         return KEntityqlUpdateStatement(statement.single(entity))
     }
 

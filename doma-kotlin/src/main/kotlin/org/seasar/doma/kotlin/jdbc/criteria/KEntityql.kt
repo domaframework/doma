@@ -26,13 +26,12 @@ import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlBatchDeleteStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlBatchInsertStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlBatchUpdateStatement
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlDeleteStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlInsertStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlMultiInsertStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlSelectStarting
-import org.seasar.doma.kotlin.jdbc.criteria.statement.KEntityqlUpdateStatement
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KSetOperand
 import org.seasar.doma.kotlin.jdbc.criteria.statement.KStatement
+import org.seasar.doma.kotlin.jdbc.criteria.statement.KStatementAdapter
 
 @Suppress("DEPRECATION")
 @Deprecated(
@@ -66,7 +65,7 @@ class KEntityql(config: Config) {
         block: UpdateSettings.() -> Unit = {},
     ): KStatement<Result<ENTITY>> {
         val statement = entityql.update(entityMetamodel, entity, block)
-        return KEntityqlUpdateStatement(statement)
+        return KStatementAdapter(statement)
     }
 
     fun <ENTITY : Any> delete(
@@ -75,7 +74,7 @@ class KEntityql(config: Config) {
         block: DeleteSettings.() -> Unit = {},
     ): KStatement<Result<ENTITY>> {
         val statement = entityql.delete(entityMetamodel, entity, block)
-        return KEntityqlDeleteStatement(statement)
+        return KStatementAdapter(statement)
     }
 
     fun <ENTITY : Any> insert(
