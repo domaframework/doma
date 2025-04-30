@@ -325,18 +325,16 @@ public class QueryDslEntityMultiInsertTest {
 
     List<Department> departments = Arrays.asList(department, department2);
 
-    MultiResult<Department> result = dsl.insert(d).multi(departments).returning().execute();
-    assertNotEquals(departments, result.getEntities());
-    assertEquals(2, result.getCount());
+    var entities = dsl.insert(d).multi(departments).returning().fetch();
 
-    var entity1 = result.getEntities().get(0);
+    var entity1 = entities.get(0);
     assertEquals(99, entity1.getDepartmentId());
     assertEquals(99, entity1.getDepartmentNo());
     assertEquals("aaa", entity1.getDepartmentName());
     assertEquals("bbb", entity1.getLocation());
     assertEquals(1, entity1.getVersion());
 
-    var entity2 = result.getEntities().get(1);
+    var entity2 = entities.get(1);
     assertEquals(100, entity2.getDepartmentId());
     assertEquals(100, entity2.getDepartmentNo());
     assertEquals("ccc", entity2.getDepartmentName());
@@ -363,19 +361,18 @@ public class QueryDslEntityMultiInsertTest {
 
     List<Department> departments = Arrays.asList(department, department2);
 
-    MultiResult<Department> result =
-        dsl.insert(d).multi(departments).returning(d.departmentNo, d.departmentName).execute();
-    assertNotEquals(departments, result.getEntities());
-    assertEquals(2, result.getCount());
+    var entities =
+        dsl.insert(d).multi(departments).returning(d.departmentNo, d.departmentName).fetch();
+    assertNotEquals(departments, entities);
 
-    var entity1 = result.getEntities().get(0);
+    var entity1 = entities.get(0);
     assertNull(entity1.getDepartmentId());
     assertEquals(99, entity1.getDepartmentNo());
     assertEquals("aaa", entity1.getDepartmentName());
     assertNull(entity1.getLocation());
     assertNull(entity1.getVersion());
 
-    var entity2 = result.getEntities().get(1);
+    var entity2 = entities.get(1);
     assertNull(entity2.getDepartmentId());
     assertEquals(100, entity2.getDepartmentNo());
     assertEquals("ccc", entity2.getDepartmentName());
@@ -388,10 +385,8 @@ public class QueryDslEntityMultiInsertTest {
   void returning_skip() {
     Department_ d = new Department_();
 
-    MultiResult<Department> result =
-        dsl.insert(d).multi(Collections.emptyList()).returning().execute();
-    assertTrue(result.getEntities().isEmpty());
-    assertEquals(0, result.getCount());
+    var entities = dsl.insert(d).multi(Collections.emptyList()).returning().fetch();
+    assertTrue(entities.isEmpty());
   }
 
   @Test
@@ -423,12 +418,10 @@ public class QueryDslEntityMultiInsertTest {
     department.setLocation("bbb_updated");
 
     List<Department> departments = Arrays.asList(department, department3);
-    MultiResult<Department> result =
-        dsl.insert(d).multi(departments).onDuplicateKeyIgnore().returning().execute();
-    assertNotEquals(departments, result.getEntities());
-    assertEquals(1, result.getCount());
+    var entities = dsl.insert(d).multi(departments).onDuplicateKeyIgnore().returning().fetch();
+    assertNotEquals(departments, entities);
 
-    var entity1 = result.getEntities().get(0);
+    var entity1 = entities.get(0);
     assertEquals(101, entity1.getDepartmentId());
     assertEquals(101, entity1.getDepartmentNo());
     assertEquals("eee", entity1.getDepartmentName());
@@ -465,19 +458,17 @@ public class QueryDslEntityMultiInsertTest {
     department.setLocation("bbb_updated");
 
     List<Department> departments = Arrays.asList(department, department3);
-    MultiResult<Department> result =
-        dsl.insert(d).multi(departments).onDuplicateKeyUpdate().returning().execute();
-    assertNotEquals(departments, result.getEntities());
-    assertEquals(2, result.getCount());
+    var entities = dsl.insert(d).multi(departments).onDuplicateKeyUpdate().returning().fetch();
+    assertNotEquals(departments, entities);
 
-    var entity1 = result.getEntities().get(0);
+    var entity1 = entities.get(0);
     assertEquals(99, entity1.getDepartmentId());
     assertEquals(99, entity1.getDepartmentNo());
     assertEquals("aaa_updated", entity1.getDepartmentName());
     assertEquals("bbb_updated", entity1.getLocation());
     assertEquals(1, entity1.getVersion());
 
-    var entity2 = result.getEntities().get(1);
+    var entity2 = entities.get(1);
     assertEquals(101, entity2.getDepartmentId());
     assertEquals(101, entity2.getDepartmentNo());
     assertEquals("eee", entity2.getDepartmentName());
@@ -497,19 +488,13 @@ public class QueryDslEntityMultiInsertTest {
     entity2.setUniqueValue("2");
     entity2.setValue("B");
 
-    var result =
+    var entities =
         dsl.insert(i)
             .multi(List.of(entity1, entity2))
             .onDuplicateKeyUpdate()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(2, result.getCount());
-    assertEquals(2, result.getEntities().size());
-    assertEquals(1, result.getEntities().get(0).getId());
-    assertEquals(2, result.getEntities().get(1).getId());
-
-    var entities = result.getEntities();
+            .fetch();
     assertEquals(2, entities.size());
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
@@ -531,32 +516,30 @@ public class QueryDslEntityMultiInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    var result1 =
+    var entities1 =
         dsl.insert(i)
             .multi(List.of(entity1))
             .onDuplicateKeyUpdate()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    var result2 =
+            .fetch();
+    var entities2 =
         dsl.insert(i)
             .multi(List.of(entity2))
             .onDuplicateKeyUpdate()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
+            .fetch();
 
-    assertEquals(1, result1.getCount());
-    assertEquals(1, result1.getEntities().size());
-    assertEquals(1, result2.getCount());
-    assertEquals(1, result2.getEntities().size());
+    assertEquals(1, entities1.size());
+    assertEquals(1, entities2.size());
 
-    var resultEntity1 = result1.getEntities().get(0);
+    var resultEntity1 = entities1.get(0);
     assertEquals(1, resultEntity1.getId());
     assertEquals("1", resultEntity1.getUniqueValue());
     assertEquals("A", resultEntity1.getValue());
 
-    var resultEntity2 = result2.getEntities().get(0);
+    var resultEntity2 = entities2.get(0);
     assertEquals(1, resultEntity2.getId());
     assertEquals("1", resultEntity2.getUniqueValue());
     assertEquals("B", resultEntity2.getValue());
@@ -574,27 +557,25 @@ public class QueryDslEntityMultiInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    var result1 =
+    var entities1 =
         dsl.insert(i)
             .multi(List.of(entity1))
             .onDuplicateKeyIgnore()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(1, result1.getCount());
-    assertEquals(1, result1.getEntities().size());
+            .fetch();
+    assertEquals(1, entities1.size());
 
-    var result2 =
+    var entities2 =
         dsl.insert(i)
             .multi(List.of(entity2))
             .onDuplicateKeyIgnore()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(0, result2.getCount());
-    assertEquals(0, result2.getEntities().size());
+            .fetch();
+    assertEquals(0, entities2.size());
 
-    var entity = result1.getEntities().get(0);
+    var entity = entities1.get(0);
     assertEquals(1, entity.getId());
     assertEquals("1", entity.getUniqueValue());
     assertEquals("A", entity.getValue());
@@ -612,17 +593,16 @@ public class QueryDslEntityMultiInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    var result =
+    var entities =
         dsl.insert(i)
             .multi(List.of(entity1, entity2))
             .onDuplicateKeyIgnore()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(1, result.getCount());
-    assertEquals(1, result.getEntities().size());
+            .fetch();
+    assertEquals(1, entities.size());
 
-    var entity = result.getEntities().get(0);
+    var entity = entities.get(0);
     assertEquals(1, entity.getId());
     assertEquals("1", entity.getUniqueValue());
     assertEquals("A", entity.getValue());
@@ -645,7 +625,7 @@ public class QueryDslEntityMultiInsertTest {
     office2.setDepartmentName("PLANNING");
     office2.setLocation("TOKYO");
 
-    dsl.insert(o).multi(List.of(office1, office2)).returning(o.departmentId, o.version).execute();
+    dsl.insert(o).multi(List.of(office1, office2)).returning(o.departmentId, o.version).fetch();
 
     assertEquals(
         "preInsert:departmentId,version. preInsert:departmentId,version. postInsert:departmentId,version. postInsert:departmentId,version. ",

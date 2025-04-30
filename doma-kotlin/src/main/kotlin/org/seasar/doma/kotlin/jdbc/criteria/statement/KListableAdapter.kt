@@ -15,23 +15,19 @@
  */
 package org.seasar.doma.kotlin.jdbc.criteria.statement
 
-import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.Sql
-import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
-import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertIntermediate
+import org.seasar.doma.jdbc.criteria.statement.Listable
 
-class KEntityqlUpsertStatement<ENTITY>(private val statement: EntityqlInsertIntermediate<ENTITY>) : KStatement<Result<ENTITY>> {
-
-    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
-        val singular = statement.returning(*properties)
-        return KSingularAdapter(singular)
+class KListableAdapter<ELEMENT>(val listable: Listable<ELEMENT>) : KListable<ELEMENT> {
+    override fun peek(block: (Sql<*>) -> Unit): KListable<ELEMENT> {
+        return KListableAdapter(listable.peek(block))
     }
 
-    override fun execute(): Result<ENTITY> {
-        return statement.execute()
+    override fun execute(): List<ELEMENT> {
+        return listable.execute()
     }
 
     override fun asSql(): Sql<*> {
-        return statement.asSql()
+        return listable.asSql()
     }
 }

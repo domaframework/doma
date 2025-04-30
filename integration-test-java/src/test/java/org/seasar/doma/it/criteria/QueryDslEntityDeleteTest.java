@@ -17,6 +17,7 @@ package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -82,11 +83,10 @@ public class QueryDslEntityDeleteTest {
 
     Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
 
-    Result<Employee> result = dsl.delete(e).single(employee).returning().execute();
-    assertEquals(1, result.getCount());
-    assertNotEquals(employee, result.getEntity());
+    var resultEntity = dsl.delete(e).single(employee).returning().execute();
+    assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
 
-    var resultEntity = result.getEntity();
     assertEquals(5, resultEntity.getEmployeeId());
 
     Employee entity = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
@@ -100,12 +100,11 @@ public class QueryDslEntityDeleteTest {
 
     Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
 
-    Result<Employee> result =
-        dsl.delete(e).single(employee).returning(e.employeeId, e.employeeName).execute();
-    assertEquals(1, result.getCount());
-    assertNotEquals(employee, result.getEntity());
+    var resultEntity =
+        dsl.delete(e).single(employee).returning(e.employeeId, e.employeeName).fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
 
-    var resultEntity = result.getEntity();
     assertEquals(5, resultEntity.getEmployeeId());
     assertEquals("MARTIN", resultEntity.getEmployeeName());
     assertNull(resultEntity.getDepartmentId());
@@ -123,7 +122,7 @@ public class QueryDslEntityDeleteTest {
     employee.setEmployeeId(100);
 
     assertThrows(
-        OptimisticLockException.class, () -> dsl.delete(e).single(employee).returning().execute());
+        OptimisticLockException.class, () -> dsl.delete(e).single(employee).returning().fetchOne());
   }
 
   @Test
@@ -134,13 +133,12 @@ public class QueryDslEntityDeleteTest {
     Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
     employee.setEmployeeId(100);
 
-    Result<Employee> result =
+    var resultEntity =
         dsl.delete(e, settings -> settings.setSuppressOptimisticLockException(true))
             .single(employee)
             .returning()
-            .execute();
-    assertEquals(0, result.getCount());
-    assertNull(result.getEntity());
+            .fetchOne();
+    assertNull(resultEntity);
   }
 
   @Test
@@ -155,7 +153,7 @@ public class QueryDslEntityDeleteTest {
     office.setLocation("TOKYO");
 
     dsl.insert(o).single(office).execute();
-    dsl.delete(o).single(office).returning(o.departmentId, o.version).execute();
+    dsl.delete(o).single(office).returning(o.departmentId, o.version).fetchOne();
 
     assertEquals(
         "preInsert:. postInsert:. preDelete:departmentId,version. postDelete:departmentId,version. ",

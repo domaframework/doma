@@ -102,12 +102,10 @@ public class QueryDslEntityUpdateTest {
     employee.setEmployeeName("aaa");
     employee.setSalary(new Salary("2000"));
 
-    Result<Employee> result = dsl.update(e).single(employee).returning().execute();
-    assertEquals(1, result.getCount());
-    assertNotEquals(employee, result.getEntity());
-
-    Employee resultEntity = result.getEntity();
+    Employee resultEntity = dsl.update(e).single(employee).returning().fetchOne();
     assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
+
     assertEquals("aaa", resultEntity.getEmployeeName());
     assertEquals(0, new BigDecimal("2000").compareTo(resultEntity.getSalary().getValue()));
     assertEquals(employee.getVersion() + 1, resultEntity.getVersion());
@@ -122,13 +120,11 @@ public class QueryDslEntityUpdateTest {
     employee.setEmployeeName("aaa");
     employee.setSalary(new Salary("2000"));
 
-    Result<Employee> result =
-        dsl.update(e).single(employee).returning(e.employeeName, e.version).execute();
-    assertEquals(1, result.getCount());
-    assertNotEquals(employee, result.getEntity());
-
-    Employee resultEntity = result.getEntity();
+    Employee resultEntity =
+        dsl.update(e).single(employee).returning(e.employeeName, e.version).fetchOne();
     assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
+
     assertEquals("aaa", resultEntity.getEmployeeName());
     assertNull(resultEntity.getSalary());
     assertEquals(employee.getVersion() + 1, resultEntity.getVersion());
@@ -156,15 +152,11 @@ public class QueryDslEntityUpdateTest {
     employee.setEmployeeId(100);
     employee.setEmployeeName("aaa");
 
-    Result<Employee> result =
+    Employee resultEntity =
         dsl.update(e, settings -> settings.setSuppressOptimisticLockException(true))
             .single(employee)
             .returning()
-            .execute();
-    assertEquals(0, result.getCount());
-    assertNotEquals(employee, result.getEntity());
-
-    Employee resultEntity = result.getEntity();
+            .fetchOne();
     assertNull(resultEntity);
   }
 

@@ -15,47 +15,48 @@
  */
 package org.seasar.doma.jdbc.criteria.statement;
 
+import static org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStatement.EMPTY_SQL;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.internal.jdbc.command.EntityResultListHandler;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Result;
+import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
-public class EntityqlInsertTerminal<ENTITY>
-    extends AbstractStatement<EntityqlInsertTerminal<ENTITY>, Result<ENTITY>> {
+public class EntityqlMultiInsertReturningStatement<ENTITY>
+    extends AbstractStatement<EntityqlMultiInsertReturningStatement<ENTITY>, List<ENTITY>>
+    implements Listable<ENTITY> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
-  private final ENTITY entity;
+  private final List<ENTITY> entities;
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
   private final List<PropertyMetamodel<?>> keys;
+  private final ReturningProperties returning;
 
-  public EntityqlInsertTerminal(
+  public EntityqlMultiInsertReturningStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
-      ENTITY entity,
+      List<ENTITY> entities,
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
-      List<PropertyMetamodel<?>> keys) {
+      List<PropertyMetamodel<?>> keys,
+      ReturningProperties returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
-    this.entity = Objects.requireNonNull(entity);
+    this.entities = Objects.requireNonNull(entities);
     this.settings = Objects.requireNonNull(settings);
     this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
     this.keys = Objects.requireNonNull(keys);
-  }
-
-  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
-    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
-    return new EntityqlInsertReturningStatement<>(
-        config, entityMetamodel, entity, settings, duplicateKeyType, keys, returning);
+    this.returning = Objects.requireNonNull(returning);
   }
 
   /**
@@ -66,14 +67,40 @@ public class EntityqlInsertTerminal<ENTITY>
    */
   @SuppressWarnings("EmptyMethod")
   @Override
-  public Result<ENTITY> execute() {
+  public List<ENTITY> execute() {
     return super.execute();
   }
 
   @Override
-  protected Command<Result<ENTITY>> createCommand() {
-    var query = createQuery();
-    var command = config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+  protected Command<List<ENTITY>> createCommand() {
+    var entityType = entityMetamodel.asType();
+    var query =
+        config.getQueryImplementors().createAutoMultiInsertQuery(EXECUTE_METHOD, entityType);
+    query.setMethod(EXECUTE_METHOD);
+    query.setConfig(config);
+    query.setEntities(entities);
+    query.setCallerClassName(getClass().getName());
+    query.setCallerMethodName(EXECUTE_METHOD_NAME);
+    query.setQueryTimeout(settings.getQueryTimeout());
+    query.setSqlLogType(settings.getSqlLogType());
+    query.setIncludedPropertyNames(
+        settings.include().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setExcludedPropertyNames(
+        settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setMessage(settings.getComment());
+    query.setDuplicateKeyType(this.duplicateKeyType);
+    query.setDuplicateKeyNames(
+        keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setReturning(returning);
+    query.prepare();
+    var command =
+        config
+            .getCommandImplementors()
+            .createInsertReturningCommand(
+                EXECUTE_METHOD,
+                query,
+                new EntityResultListHandler<>(entityType),
+                Collections::emptyList);
     return new Command<>() {
       @Override
       public Query getQuery() {
@@ -81,35 +108,19 @@ public class EntityqlInsertTerminal<ENTITY>
       }
 
       @Override
-      public Result<ENTITY> execute() {
-        var count = command.execute();
+      public List<ENTITY> execute() {
+        List<ENTITY> entities = command.execute();
         query.complete();
-        return new Result<>(count, query.getEntity());
+        return entities;
       }
     };
   }
 
-  protected AutoInsertQuery<ENTITY> createQuery() {
-    EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoInsertQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
-    query.setMethod(EXECUTE_METHOD);
-    query.setConfig(config);
-    query.setEntity(entity);
-    query.setCallerClassName(getClass().getName());
-    query.setCallerMethodName(EXECUTE_METHOD_NAME);
-    query.setQueryTimeout(settings.getQueryTimeout());
-    query.setSqlLogType(settings.getSqlLogType());
-    query.setNullExcluded(settings.getExcludeNull());
-    query.setIncludedPropertyNames(
-        settings.include().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
-    query.setExcludedPropertyNames(
-        settings.exclude().stream().map(PropertyMetamodel::getName).toArray(String[]::new));
-    query.setMessage(settings.getComment());
-    query.setDuplicateKeyType(duplicateKeyType);
-    query.setDuplicateKeyNames(
-        keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
-    query.prepare();
-    return query;
+  @Override
+  public Sql<?> asSql() {
+    if (entities.isEmpty()) {
+      return EMPTY_SQL;
+    }
+    return super.asSql();
   }
 }

@@ -74,12 +74,9 @@ class KQueryDslEntityUpdateTest(config: Config) {
         employee.employeeName = "aaa"
         employee.salary = Salary("2000")
 
-        val result = dsl.update(e).single(employee).returning().execute()
-        assertEquals(1, result.count)
-        assertNotEquals(employee, result.entity)
-
-        val resultEntity = result.entity
+        val resultEntity = dsl.update(e).single(employee).returning().fetchOne()
         assertNotNull(resultEntity)
+        assertNotEquals(employee, resultEntity)
         assertEquals("aaa", resultEntity.employeeName)
         assertEquals(0, BigDecimal("2000").compareTo(resultEntity.salary!!.value))
         assertEquals(employee.version!! + 1, resultEntity.version)

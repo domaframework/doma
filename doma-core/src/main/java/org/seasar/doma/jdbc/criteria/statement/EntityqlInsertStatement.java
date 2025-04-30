@@ -66,7 +66,7 @@ public class EntityqlInsertStatement<ENTITY>
         config, entityMetamodel, entity, settings, duplicateKeyType);
   }
 
-  public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
+  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
     return new EntityqlInsertIntermediate<>(
             config, entityMetamodel, entity, settings, duplicateKeyType)
         .returning(properties);

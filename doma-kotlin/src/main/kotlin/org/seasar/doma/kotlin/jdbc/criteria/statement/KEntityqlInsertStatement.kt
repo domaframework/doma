@@ -32,9 +32,9 @@ class KEntityqlInsertStatement<ENTITY>(
         return KEntityqlUpsertStatement(statement.onDuplicateKeyIgnore())
     }
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<Result<ENTITY>> {
-        val s = statement.returning(*properties)
-        return KStatementAdapter(s)
+    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
+        val singular = statement.returning(*properties)
+        return KSingularAdapter(singular)
     }
 
     override fun execute(): Result<ENTITY> {

@@ -20,11 +20,12 @@ import org.seasar.doma.jdbc.Sql
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import org.seasar.doma.jdbc.criteria.statement.EntityqlUpdateStatement
 
-class KEntityqlUpdateStatement<ENTITY>(private val statement: EntityqlUpdateStatement<ENTITY>) : KStatement<Result<ENTITY>> {
+class KEntityqlUpdateStatement<ENTITY>(private val statement: EntityqlUpdateStatement<ENTITY>) :
+    KStatement<Result<ENTITY>> {
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<Result<ENTITY>> {
-        val s = statement.returning(*properties)
-        return KStatementAdapter(s)
+    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
+        val singular = statement.returning(*properties)
+        return KSingularAdapter(singular)
     }
 
     override fun execute(): Result<ENTITY> {

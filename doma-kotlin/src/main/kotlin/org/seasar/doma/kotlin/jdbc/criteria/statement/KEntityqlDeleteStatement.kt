@@ -22,9 +22,9 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlDeleteStatement
 
 class KEntityqlDeleteStatement<ENTITY>(private val statement: EntityqlDeleteStatement<ENTITY>) : KStatement<Result<ENTITY>> {
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<Result<ENTITY>> {
-        val s = statement.returning(*properties)
-        return KStatementAdapter(s)
+    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
+        val singular = statement.returning(*properties)
+        return KSingularAdapter(singular)
     }
 
     override fun execute(): Result<ENTITY> {

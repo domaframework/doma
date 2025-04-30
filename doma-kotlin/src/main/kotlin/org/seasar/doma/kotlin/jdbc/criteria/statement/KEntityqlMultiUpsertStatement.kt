@@ -23,9 +23,9 @@ import org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertIntermediate
 class KEntityqlMultiUpsertStatement<ENTITY>(private val statement: EntityqlMultiInsertIntermediate<ENTITY>) :
     KStatement<MultiResult<ENTITY>> {
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<MultiResult<ENTITY>> {
-        val s = statement.returning(*properties)
-        return KStatementAdapter(s)
+    fun returning(vararg properties: PropertyMetamodel<*>): KListable<ENTITY> {
+        val listable = statement.returning(*properties)
+        return KListableAdapter(listable)
     }
 
     override fun execute(): MultiResult<ENTITY> {

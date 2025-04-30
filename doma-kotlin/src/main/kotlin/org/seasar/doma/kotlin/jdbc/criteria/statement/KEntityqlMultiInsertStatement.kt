@@ -32,9 +32,9 @@ class KEntityqlMultiInsertStatement<ENTITY>(
         return KEntityqlMultiUpsertStatement(statement.onDuplicateKeyIgnore())
     }
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KStatement<MultiResult<ENTITY>> {
-        val s = statement.returning(*properties)
-        return KStatementAdapter(s)
+    fun returning(vararg properties: PropertyMetamodel<*>): KListable<ENTITY> {
+        val listable = statement.returning(*properties)
+        return KListableAdapter(listable)
     }
 
     override fun execute(): MultiResult<ENTITY> {

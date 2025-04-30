@@ -301,10 +301,9 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    Result<Department> result = dsl.insert(d).single(department).returning().execute();
-    assertNotEquals(department, result.getEntity());
-    assertEquals(1, result.getCount());
-    Department resultEntity = result.getEntity();
+    Department resultEntity = dsl.insert(d).single(department).returning().fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(department, resultEntity);
     assertEquals(department.getDepartmentId(), resultEntity.getDepartmentId());
     assertEquals(department.getDepartmentNo(), resultEntity.getDepartmentNo());
     assertEquals(department.getDepartmentName(), resultEntity.getDepartmentName());
@@ -328,11 +327,10 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentName("aaa");
     department.setLocation("bbb");
 
-    Result<Department> result =
-        dsl.insert(d).single(department).returning(d.departmentNo, d.departmentName).execute();
-    assertNotEquals(department, result.getEntity());
-    assertEquals(1, result.getCount());
-    Department resultEntity = result.getEntity();
+    Department resultEntity =
+        dsl.insert(d).single(department).returning(d.departmentNo, d.departmentName).fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(department, resultEntity);
     assertNull(resultEntity.getDepartmentId());
     assertEquals(department.getDepartmentNo(), resultEntity.getDepartmentNo());
     assertEquals(department.getDepartmentName(), resultEntity.getDepartmentName());
@@ -354,10 +352,8 @@ public class QueryDslEntityInsertTest {
     entity1.setUniqueValue("1");
     entity1.setValue("A");
 
-    var result1 = dsl.insert(i).single(entity1).returning().execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(entity1, result1.getEntity());
-    var resultEntity = result1.getEntity();
+    var resultEntity = dsl.insert(i).single(entity1).returning().fetchOne();
+    assertNotEquals(entity1, resultEntity);
     assertNotNull(resultEntity.getId());
     assertEquals("1", resultEntity.getUniqueValue());
     assertEquals("A", resultEntity.getValue());
@@ -373,12 +369,10 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentNo(50);
     department.setDepartmentName("PLANNING");
     department.setLocation("TOKYO");
-    Result<Department> result1 =
-        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(department, result1.getEntity());
-
-    Department resultDepartment = result1.getEntity();
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
     // inserted
     assertEquals(50, resultDepartment.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment.getDepartmentName());
@@ -395,11 +389,10 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentNo(60);
     department.setDepartmentName("DEVELOPMENT");
     department.setLocation("KYOTO");
-    Result<Department> result1 =
-        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(department, result1.getEntity());
-    Department resultDepartment = result1.getEntity();
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
     // updated
     assertEquals(60, resultDepartment.getDepartmentNo());
     assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
@@ -416,11 +409,10 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentNo(50);
     department.setDepartmentName("PLANNING");
     department.setLocation("TOKYO");
-    Result<Department> result1 =
-        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(department, result1.getEntity());
-    Department resultDepartment = result1.getEntity();
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
     // inserted
     assertEquals(50, resultDepartment.getDepartmentNo());
     assertEquals("PLANNING", resultDepartment.getDepartmentName());
@@ -437,10 +429,9 @@ public class QueryDslEntityInsertTest {
     department.setDepartmentNo(60);
     department.setDepartmentName("DEVELOPMENT");
     department.setLocation("KYOTO");
-    Result<Department> result1 =
-        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().execute();
-    assertEquals(0, result1.getCount());
-    assertNull(result1.getEntity());
+    Department resultEntity =
+        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNull(resultEntity);
   }
 
   @Test
@@ -455,30 +446,28 @@ public class QueryDslEntityInsertTest {
     entity2.setUniqueValue("2");
     entity2.setValue("B");
 
-    var result1 =
+    var resultEntity1 =
         dsl.insert(i)
             .single(entity1)
             .onDuplicateKeyUpdate()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(entity1, result1.getEntity());
-    var resultEntity1 = result1.getEntity();
+            .fetchOne();
+    assertNotNull(resultEntity1);
+    assertNotEquals(entity1, resultEntity1);
     assertNotNull(resultEntity1.getId());
     assertEquals("1", resultEntity1.getUniqueValue());
     assertEquals("A", resultEntity1.getValue());
 
-    var result2 =
+    var resultEntity2 =
         dsl.insert(i)
             .single(entity2)
             .onDuplicateKeyUpdate()
             .keys(i.uniqueValue)
             .returning()
-            .execute();
-    assertEquals(1, result2.getCount());
-    assertNotEquals(entity2, result2.getEntity());
-    var resultEntity2 = result2.getEntity();
+            .fetchOne();
+    assertNotNull(resultEntity2);
+    assertNotEquals(entity2, resultEntity2);
     assertNotNull(resultEntity2.getId());
     assertEquals("2", resultEntity2.getUniqueValue());
     assertEquals("B", resultEntity2.getValue());
@@ -496,17 +485,15 @@ public class QueryDslEntityInsertTest {
     entity2.setUniqueValue("1");
     entity2.setValue("B");
 
-    var result1 = dsl.insert(i).single(entity1).onDuplicateKeyIgnore().returning().execute();
-    assertEquals(1, result1.getCount());
-    assertNotEquals(entity1, result1.getEntity());
-    var resultEntity1 = result1.getEntity();
+    var resultEntity1 = dsl.insert(i).single(entity1).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNotNull(resultEntity1);
+    assertNotEquals(entity1, resultEntity1);
     assertNotNull(resultEntity1.getId());
     assertEquals("1", resultEntity1.getUniqueValue());
     assertEquals("A", resultEntity1.getValue());
 
-    var result2 = dsl.insert(i).single(entity2).onDuplicateKeyIgnore().returning().execute();
-    assertEquals(0, result2.getCount());
-    assertNull(result2.getEntity());
+    var resultEntity2 = dsl.insert(i).single(entity2).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNull(resultEntity2);
   }
 
   @Test
@@ -520,7 +507,7 @@ public class QueryDslEntityInsertTest {
     office.setDepartmentName("PLANNING");
     office.setLocation("TOKYO");
 
-    dsl.insert(o).single(office).returning(o.departmentId, o.version).execute();
+    dsl.insert(o).single(office).returning(o.departmentId, o.version).fetchOne();
 
     assertEquals(
         "preInsert:departmentId,version. postInsert:departmentId,version. ",

@@ -24,7 +24,6 @@ import org.seasar.doma.it.Dbms
 import org.seasar.doma.it.IntegrationTestEnvironment
 import org.seasar.doma.it.Run
 import org.seasar.doma.jdbc.Config
-import org.seasar.doma.jdbc.Result
 import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 
 @ExtendWith(IntegrationTestEnvironment::class)
@@ -58,10 +57,9 @@ class KQueryDslEntityInsertTest(config: Config) {
         department.departmentName = "aaa"
         department.location = "bbb"
 
-        val result: Result<Department> = dsl.insert(d).single(department).returning().execute()
-        assertNotEquals(department, result.getEntity())
-        assertEquals(1, result.count)
-        val resultEntity = result.getEntity()
+        val resultEntity = dsl.insert(d).single(department).returning().execute()
+        assertNotNull(resultEntity)
+        assertNotEquals(department, resultEntity)
         assertEquals(department.departmentId, resultEntity.departmentId)
         assertEquals(department.departmentNo, resultEntity.departmentNo)
         assertEquals(department.departmentName, resultEntity.departmentName)

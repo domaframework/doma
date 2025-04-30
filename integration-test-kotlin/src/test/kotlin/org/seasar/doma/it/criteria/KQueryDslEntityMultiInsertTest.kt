@@ -17,7 +17,6 @@ package org.seasar.doma.it.criteria
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.seasar.doma.it.Dbms
@@ -50,18 +49,17 @@ class KQueryDslEntityMultiInsertTest(config: Config) {
 
         val departments = listOf(department, department2)
 
-        val result = dsl.insert(d).multi(departments).returning().execute()
-        assertNotEquals(departments, result.entities)
-        Assertions.assertEquals(2, result.count)
+        val entities = dsl.insert(d).multi(departments).returning().fetch()
+        Assertions.assertEquals(2, entities.size)
 
-        val entity1 = result.getEntities().get(0)
+        val entity1 = entities.get(0)
         Assertions.assertEquals(99, entity1.departmentId)
         Assertions.assertEquals(99, entity1.departmentNo)
         assertEquals("aaa", entity1.departmentName)
         assertEquals("bbb", entity1.location)
         Assertions.assertEquals(1, entity1.version)
 
-        val entity2 = result.getEntities().get(1)
+        val entity2 = entities.get(1)
         Assertions.assertEquals(100, entity2.departmentId)
         Assertions.assertEquals(100, entity2.departmentNo)
         assertEquals("ccc", entity2.departmentName)

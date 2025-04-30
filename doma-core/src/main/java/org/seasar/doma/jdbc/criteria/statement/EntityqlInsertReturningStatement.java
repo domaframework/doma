@@ -17,9 +17,10 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import java.util.List;
 import java.util.Objects;
+import org.seasar.doma.internal.jdbc.command.EntitySingleResultHandler;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
+import org.seasar.doma.jdbc.command.InsertReturningCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -27,35 +28,34 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.AutoInsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
-public class EntityqlInsertTerminal<ENTITY>
-    extends AbstractStatement<EntityqlInsertTerminal<ENTITY>, Result<ENTITY>> {
+class EntityqlInsertReturningStatement<ENTITY>
+    extends AbstractStatement<EntityqlInsertReturningStatement<ENTITY>, ENTITY>
+    implements Singular<ENTITY> {
 
   private final EntityMetamodel<ENTITY> entityMetamodel;
   private final ENTITY entity;
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
   private final List<PropertyMetamodel<?>> keys;
+  private final ReturningProperties returning;
 
-  public EntityqlInsertTerminal(
+  public EntityqlInsertReturningStatement(
       Config config,
       EntityMetamodel<ENTITY> entityMetamodel,
       ENTITY entity,
       InsertSettings settings,
       DuplicateKeyType duplicateKeyType,
-      List<PropertyMetamodel<?>> keys) {
+      List<PropertyMetamodel<?>> keys,
+      ReturningProperties returning) {
     super(Objects.requireNonNull(config));
     this.entityMetamodel = Objects.requireNonNull(entityMetamodel);
     this.entity = Objects.requireNonNull(entity);
     this.settings = Objects.requireNonNull(settings);
     this.duplicateKeyType = Objects.requireNonNull(duplicateKeyType);
     this.keys = Objects.requireNonNull(keys);
-  }
-
-  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
-    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
-    return new EntityqlInsertReturningStatement<>(
-        config, entityMetamodel, entity, settings, duplicateKeyType, keys, returning);
+    this.returning = Objects.requireNonNull(returning);
   }
 
   /**
@@ -66,30 +66,12 @@ public class EntityqlInsertTerminal<ENTITY>
    */
   @SuppressWarnings("EmptyMethod")
   @Override
-  public Result<ENTITY> execute() {
+  public ENTITY execute() {
     return super.execute();
   }
 
   @Override
-  protected Command<Result<ENTITY>> createCommand() {
-    var query = createQuery();
-    var command = config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
-    return new Command<>() {
-      @Override
-      public Query getQuery() {
-        return query;
-      }
-
-      @Override
-      public Result<ENTITY> execute() {
-        var count = command.execute();
-        query.complete();
-        return new Result<>(count, query.getEntity());
-      }
-    };
-  }
-
-  protected AutoInsertQuery<ENTITY> createQuery() {
+  protected Command<ENTITY> createCommand() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoInsertQuery<ENTITY> query =
         config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
@@ -109,7 +91,26 @@ public class EntityqlInsertTerminal<ENTITY>
     query.setDuplicateKeyType(duplicateKeyType);
     query.setDuplicateKeyNames(
         keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
+    query.setReturning(returning);
     query.prepare();
-    return query;
+
+    InsertReturningCommand<ENTITY> command =
+        config
+            .getCommandImplementors()
+            .createInsertReturningCommand(
+                EXECUTE_METHOD, query, new EntitySingleResultHandler<>(entityType), () -> null);
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public ENTITY execute() {
+        ENTITY entity = command.execute();
+        query.complete();
+        return entity;
+      }
+    };
   }
 }

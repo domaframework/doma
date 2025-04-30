@@ -60,10 +60,10 @@ public class EntityqlInsertIntermediate<ENTITY>
         config, entityMetamodel, entity, settings, duplicateKeyType, Arrays.stream(keys).toList());
   }
 
-  public Statement<Result<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
     return new EntityqlInsertTerminal<>(
-        config, entityMetamodel, entity, settings, duplicateKeyType, List.of(), returning);
+            config, entityMetamodel, entity, settings, duplicateKeyType, List.of())
+        .returning(properties);
   }
 
   /**

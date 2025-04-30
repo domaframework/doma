@@ -15,23 +15,17 @@
  */
 package org.seasar.doma.kotlin.jdbc.criteria.statement
 
-import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.Sql
-import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
-import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertIntermediate
 
-class KEntityqlUpsertStatement<ENTITY>(private val statement: EntityqlInsertIntermediate<ENTITY>) : KStatement<Result<ENTITY>> {
+interface KSingular<ELEMENT> : KStatement<ELEMENT> {
 
-    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
-        val singular = statement.returning(*properties)
-        return KSingularAdapter(singular)
+    fun fetchOne(): ELEMENT {
+        return execute()
     }
 
-    override fun execute(): Result<ENTITY> {
-        return statement.execute()
+    fun fetchOneOrNull(): ELEMENT? {
+        return execute()
     }
 
-    override fun asSql(): Sql<*> {
-        return statement.asSql()
-    }
+    override fun peek(block: (Sql<*>) -> Unit): KSingular<ELEMENT>
 }

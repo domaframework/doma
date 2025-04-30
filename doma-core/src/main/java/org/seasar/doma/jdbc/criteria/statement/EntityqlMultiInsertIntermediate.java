@@ -68,10 +68,10 @@ public class EntityqlMultiInsertIntermediate<ENTITY>
         Arrays.stream(keys).toList());
   }
 
-  public Statement<MultiResult<ENTITY>> returning(PropertyMetamodel<?>... properties) {
-    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+  public Listable<ENTITY> returning(PropertyMetamodel<?>... properties) {
     return new EntityqlMultiInsertTerminal<>(
-        config, entityMetamodel, entities, settings, duplicateKeyType, List.of(), returning);
+            config, entityMetamodel, entities, settings, duplicateKeyType, List.of())
+        .returning(properties);
   }
 
   /**
