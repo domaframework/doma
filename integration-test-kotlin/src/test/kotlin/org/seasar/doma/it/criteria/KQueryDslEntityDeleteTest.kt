@@ -16,10 +16,15 @@
 package org.seasar.doma.it.criteria
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.extension.ExtendWith
+import org.seasar.doma.it.Dbms
 import org.seasar.doma.it.IntegrationTestEnvironment
+import org.seasar.doma.it.Run
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 
@@ -48,5 +53,24 @@ class KQueryDslEntityDeleteTest(config: Config) {
             .delete(e) { suppressOptimisticLockException = true }.single(employee)
             .execute()
         assertEquals(0, result.count)
+    }
+
+    @Test
+    @Run(unless = [Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE])
+    fun returning() {
+        val e = Employee_()
+
+        val employee =
+            dsl.from(e).where { eq(e.employeeId, 5) }.fetchOne()
+
+        val resultEntity = dsl.delete(e).single(employee).returning().fetchOne()
+        assertNotNull(resultEntity)
+        assertNotEquals(employee, resultEntity)
+
+        assertEquals(5, resultEntity.employeeId)
+
+        val entity =
+            dsl.from(e).where { eq(e.employeeId, 5) }.fetchOneOrNull()
+        assertNull(entity)
     }
 }

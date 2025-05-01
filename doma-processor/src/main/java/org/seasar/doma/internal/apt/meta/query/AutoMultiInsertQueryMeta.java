@@ -19,8 +19,10 @@ import java.util.List;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.annot.MultiInsertAnnot;
+import org.seasar.doma.internal.apt.annot.ReturningAnnot;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.jdbc.SqlLogType;
+import org.seasar.doma.jdbc.command.InsertReturningCommand;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
@@ -59,6 +61,10 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
     this.multiInsertAnnot = multiInsertAnnot;
   }
 
+  public ReturningAnnot getReturningAnnot() {
+    return multiInsertAnnot.getReturningAnnot();
+  }
+
   public int getQueryTimeout() {
     return multiInsertAnnot.getQueryTimeoutValue();
   }
@@ -81,6 +87,15 @@ public class AutoMultiInsertQueryMeta extends AbstractQueryMeta {
 
   public DuplicateKeyType getDuplicateKeyType() {
     return multiInsertAnnot.getDuplicateKeyTypeValue();
+  }
+
+  @Override
+  public Class<?> getCommandClass() {
+    var returningAnnot = multiInsertAnnot.getReturningAnnot();
+    if (returningAnnot == null) {
+      return super.getCommandClass();
+    }
+    return InsertReturningCommand.class;
   }
 
   @Override

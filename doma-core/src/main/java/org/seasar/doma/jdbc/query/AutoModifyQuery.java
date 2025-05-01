@@ -59,9 +59,19 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
 
   protected SqlLogType sqlLogType;
 
+  protected ReturningProperties returning = ReturningProperties.NONE;
+
   protected AutoModifyQuery(EntityType<ENTITY> entityType) {
     AssertionUtil.assertNotNull(entityType);
     this.entityType = entityType;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    if (!returning.isNone() && !config.getDialect().supportsReturning()) {
+      throw new JdbcException(Message.DOMA2240, config.getDialect().getName());
+    }
   }
 
   protected void prepareSpecialPropertyTypes() {
@@ -125,6 +135,10 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
 
   public void setSqlLogType(SqlLogType sqlLogType) {
     this.sqlLogType = sqlLogType;
+  }
+
+  public void setReturning(ReturningProperties returning) {
+    this.returning = returning;
   }
 
   @Override

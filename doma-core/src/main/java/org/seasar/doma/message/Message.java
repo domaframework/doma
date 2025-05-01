@@ -286,6 +286,7 @@ public enum Message implements MessageResource {
       SQL=[{3}]"""),
   DOMA2239(
       "The table alias \"{0}\" passed to the expansion directive is not defined in the aggregate strategy \"{1}\"."),
+  DOMA2240("The dialect \"{0}\" does not support the RETURNING clause or an equivalent feature."),
 
   // expression
   DOMA3001(
@@ -1005,6 +1006,14 @@ public enum Message implements MessageResource {
   DOMA4489("The property path \"{0}\" is duplicated in another @AssociationLinker."),
   DOMA4490(
       "Multiple @ExternalDomain definitions were found for type \"{0}\". \"{1}\" conflicts with \"{2}\"."),
+  DOMA4491("\"returning = @Returning\" cannot be specified when \"sqlFile = true\"."),
+  DOMA4492("\"returning = @Returning\" is not allowed in combination with @Sql."),
+  DOMA4493("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4494("The property \"{0}\" is not found in the entity class \"{1}\"."),
+  DOMA4495(
+      "When \"returning = @Returning\" is specified, the return type must be the same as the parameter type or an Optional whose element is the parameter type."),
+  DOMA4496(
+      "When \"returning = @Returning\" is specified, the return type must be a List of the entity class \"{0}\"."),
 
   // other
   DOMA5001(
@@ -1045,6 +1054,8 @@ public enum Message implements MessageResource {
   DOMA6011(
       "The number of propertyMetamodels in the specified derived table does not match for the propertyMetamodels in the　entityMetamodel."
           + "The number of propertyMetamodels in the entityMetamodel is {0} but the number of propertyMetamodels in the derived table is {1}."),
+  DOMA6012("The specified property \"name={0}, index={1}\" is not included in the entity \"{2}\"."),
+  DOMA6013("The expected entity type \"{0}\" does not match the actual entity type \"{1}\"."),
   ;
 
   private final String messagePattern;

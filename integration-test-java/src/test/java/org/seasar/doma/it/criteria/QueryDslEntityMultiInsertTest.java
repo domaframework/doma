@@ -17,6 +17,7 @@ package org.seasar.doma.it.criteria;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -44,6 +46,11 @@ public class QueryDslEntityMultiInsertTest {
   public QueryDslEntityMultiInsertTest(Config config) {
     this.dsl = new QueryDsl(config);
     this.dialect = config.getDialect();
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -297,5 +304,331 @@ public class QueryDslEntityMultiInsertTest {
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("A", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department department2 = new Department();
+    department2.setDepartmentId(100);
+    department2.setDepartmentNo(100);
+    department2.setDepartmentName("ccc");
+    department2.setLocation("ddd");
+
+    List<Department> departments = Arrays.asList(department, department2);
+
+    var entities = dsl.insert(d).multi(departments).returning().fetch();
+
+    var entity1 = entities.get(0);
+    assertEquals(99, entity1.getDepartmentId());
+    assertEquals(99, entity1.getDepartmentNo());
+    assertEquals("aaa", entity1.getDepartmentName());
+    assertEquals("bbb", entity1.getLocation());
+    assertEquals(1, entity1.getVersion());
+
+    var entity2 = entities.get(1);
+    assertEquals(100, entity2.getDepartmentId());
+    assertEquals(100, entity2.getDepartmentNo());
+    assertEquals("ccc", entity2.getDepartmentName());
+    assertEquals("ddd", entity2.getLocation());
+    assertEquals(1, entity2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department department2 = new Department();
+    department2.setDepartmentId(100);
+    department2.setDepartmentNo(100);
+    department2.setDepartmentName("ccc");
+    department2.setLocation("ddd");
+
+    List<Department> departments = Arrays.asList(department, department2);
+
+    var entities =
+        dsl.insert(d).multi(departments).returning(d.departmentNo, d.departmentName).fetch();
+    assertNotEquals(departments, entities);
+
+    var entity1 = entities.get(0);
+    assertNull(entity1.getDepartmentId());
+    assertEquals(99, entity1.getDepartmentNo());
+    assertEquals("aaa", entity1.getDepartmentName());
+    assertNull(entity1.getLocation());
+    assertNull(entity1.getVersion());
+
+    var entity2 = entities.get(1);
+    assertNull(entity2.getDepartmentId());
+    assertEquals(100, entity2.getDepartmentNo());
+    assertEquals("ccc", entity2.getDepartmentName());
+    assertNull(entity2.getLocation());
+    assertNull(entity2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_skip() {
+    Department_ d = new Department_();
+
+    var entities = dsl.insert(d).multi(Collections.emptyList()).returning().fetch();
+    assertTrue(entities.isEmpty());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_ignore() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department department2 = new Department();
+    department2.setDepartmentId(100);
+    department2.setDepartmentNo(100);
+    department2.setDepartmentName("ccc");
+    department2.setLocation("ddd");
+
+    Department department3 = new Department();
+    department3.setDepartmentId(101);
+    department3.setDepartmentNo(101);
+    department3.setDepartmentName("eee");
+    department3.setLocation("fff");
+
+    dsl.insert(d).multi(Arrays.asList(department, department2)).execute();
+
+    department.setDepartmentName("aaa_updated");
+    department.setLocation("bbb_updated");
+
+    List<Department> departments = Arrays.asList(department, department3);
+    var entities = dsl.insert(d).multi(departments).onDuplicateKeyIgnore().returning().fetch();
+    assertNotEquals(departments, entities);
+
+    var entity1 = entities.get(0);
+    assertEquals(101, entity1.getDepartmentId());
+    assertEquals(101, entity1.getDepartmentNo());
+    assertEquals("eee", entity1.getDepartmentName());
+    assertEquals("fff", entity1.getLocation());
+    assertEquals(1, entity1.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_update() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department department2 = new Department();
+    department2.setDepartmentId(100);
+    department2.setDepartmentNo(100);
+    department2.setDepartmentName("ccc");
+    department2.setLocation("ddd");
+
+    Department department3 = new Department();
+    department3.setDepartmentId(101);
+    department3.setDepartmentNo(101);
+    department3.setDepartmentName("eee");
+    department3.setLocation("fff");
+
+    dsl.insert(d).multi(Arrays.asList(department, department2)).execute();
+
+    department.setDepartmentName("aaa_updated");
+    department.setLocation("bbb_updated");
+
+    List<Department> departments = Arrays.asList(department, department3);
+    var entities = dsl.insert(d).multi(departments).onDuplicateKeyUpdate().returning().fetch();
+    assertNotEquals(departments, entities);
+
+    var entity1 = entities.get(0);
+    assertEquals(99, entity1.getDepartmentId());
+    assertEquals(99, entity1.getDepartmentNo());
+    assertEquals("aaa_updated", entity1.getDepartmentName());
+    assertEquals("bbb_updated", entity1.getLocation());
+    assertEquals(1, entity1.getVersion());
+
+    var entity2 = entities.get(1);
+    assertEquals(101, entity2.getDepartmentId());
+    assertEquals(101, entity2.getDepartmentNo());
+    assertEquals("eee", entity2.getDepartmentName());
+    assertEquals("fff", entity2.getLocation());
+    assertEquals(1, entity2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
+  public void returning_onDuplicateKeyUpdate_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    var entities =
+        dsl.insert(i)
+            .multi(List.of(entity1, entity2))
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+    assertEquals(2, entities.size());
+    assertEquals(1, entities.get(0).getId());
+    assertEquals("1", entities.get(0).getUniqueValue());
+    assertEquals("A", entities.get(0).getValue());
+    assertEquals(2, entities.get(1).getId());
+    assertEquals("2", entities.get(1).getUniqueValue());
+    assertEquals("B", entities.get(1).getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
+  public void returning_onDuplicateKeyUpdate_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var entities1 =
+        dsl.insert(i)
+            .multi(List.of(entity1))
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+    var entities2 =
+        dsl.insert(i)
+            .multi(List.of(entity2))
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+
+    assertEquals(1, entities1.size());
+    assertEquals(1, entities2.size());
+
+    var resultEntity1 = entities1.get(0);
+    assertEquals(1, resultEntity1.getId());
+    assertEquals("1", resultEntity1.getUniqueValue());
+    assertEquals("A", resultEntity1.getValue());
+
+    var resultEntity2 = entities2.get(0);
+    assertEquals(1, resultEntity2.getId());
+    assertEquals("1", resultEntity2.getUniqueValue());
+    assertEquals("B", resultEntity2.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
+  public void returning_onDuplicateKeyIgnore_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var entities1 =
+        dsl.insert(i)
+            .multi(List.of(entity1))
+            .onDuplicateKeyIgnore()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+    assertEquals(1, entities1.size());
+
+    var entities2 =
+        dsl.insert(i)
+            .multi(List.of(entity2))
+            .onDuplicateKeyIgnore()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+    assertEquals(0, entities2.size());
+
+    var entity = entities1.get(0);
+    assertEquals(1, entity.getId());
+    assertEquals("1", entity.getUniqueValue());
+    assertEquals("A", entity.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE, Dbms.SQLITE, Dbms.SQLSERVER})
+  public void returning_onDuplicateKeyIgnore_duplicated_atOnce_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var entities =
+        dsl.insert(i)
+            .multi(List.of(entity1, entity2))
+            .onDuplicateKeyIgnore()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetch();
+    assertEquals(1, entities.size());
+
+    var entity = entities.get(0);
+    assertEquals(1, entity.getId());
+    assertEquals("1", entity.getUniqueValue());
+    assertEquals("A", entity.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office1 = new Office();
+    office1.setDepartmentId(100);
+    office1.setDepartmentNo(100);
+    office1.setDepartmentName("PLANNING");
+    office1.setLocation("TOKYO");
+
+    Office office2 = new Office();
+    office2.setDepartmentId(200);
+    office2.setDepartmentNo(200);
+    office2.setDepartmentName("PLANNING");
+    office2.setLocation("TOKYO");
+
+    dsl.insert(o).multi(List.of(office1, office2)).returning(o.departmentId, o.version).fetch();
+
+    assertEquals(
+        "preInsert:departmentId,version. preInsert:departmentId,version. postInsert:departmentId,version. postInsert:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

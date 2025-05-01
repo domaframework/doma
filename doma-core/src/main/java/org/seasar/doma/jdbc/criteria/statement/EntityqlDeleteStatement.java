@@ -20,11 +20,9 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.command.DeleteCommand;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoDeleteQuery;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlDeleteStatement<ENTITY>
@@ -45,6 +43,12 @@ public class EntityqlDeleteStatement<ENTITY>
     this.settings = Objects.requireNonNull(settings);
   }
 
+  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+    return new EntityqlDeleteReturningStatement<>(
+        config, entityMetamodel, entity, settings, returning);
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -62,9 +66,8 @@ public class EntityqlDeleteStatement<ENTITY>
 
   @Override
   protected Command<Result<ENTITY>> createCommand() {
-    EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoDeleteQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoDeleteQuery(EXECUTE_METHOD, entityType);
+    var entityType = entityMetamodel.asType();
+    var query = config.getQueryImplementors().createAutoDeleteQuery(EXECUTE_METHOD, entityType);
     query.setConfig(config);
     query.setMethod(EXECUTE_METHOD);
     query.setEntity(entity);
@@ -76,9 +79,8 @@ public class EntityqlDeleteStatement<ENTITY>
     query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
     query.prepare();
-    DeleteCommand command =
-        config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);
-    return new Command<Result<ENTITY>>() {
+    var command = config.getCommandImplementors().createDeleteCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
       @Override
       public Query getQuery() {
         return query;

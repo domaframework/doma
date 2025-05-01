@@ -52,6 +52,10 @@ public class ResourceParameterResolver implements ParameterResolver {
     Class<?> testClass = extensionContext.getTestClass().orElseThrow(AssertionError::new);
     String prefix = testClass.getName().replace(".", "/");
     String path = String.format("%s_%s.txt", prefix, className);
-    return ResourceUtil.getResource(path);
+    URL url = ResourceUtil.getResource(path);
+    if (url == null) {
+      throw new AssertionError("The path not found: " + path);
+    }
+    return url;
   }
 }

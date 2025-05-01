@@ -20,7 +20,6 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
@@ -53,6 +52,12 @@ public class EntityqlInsertTerminal<ENTITY>
     this.keys = Objects.requireNonNull(keys);
   }
 
+  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+    return new EntityqlInsertReturningStatement<>(
+        config, entityMetamodel, entity, settings, duplicateKeyType, keys, returning);
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -67,6 +72,24 @@ public class EntityqlInsertTerminal<ENTITY>
 
   @Override
   protected Command<Result<ENTITY>> createCommand() {
+    var query = createQuery();
+    var command = config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
+      @Override
+      public Query getQuery() {
+        return query;
+      }
+
+      @Override
+      public Result<ENTITY> execute() {
+        var count = command.execute();
+        query.complete();
+        return new Result<>(count, query.getEntity());
+      }
+    };
+  }
+
+  protected AutoInsertQuery<ENTITY> createQuery() {
     EntityType<ENTITY> entityType = entityMetamodel.asType();
     AutoInsertQuery<ENTITY> query =
         config.getQueryImplementors().createAutoInsertQuery(EXECUTE_METHOD, entityType);
@@ -87,20 +110,6 @@ public class EntityqlInsertTerminal<ENTITY>
     query.setDuplicateKeyNames(
         keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.prepare();
-    InsertCommand command =
-        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
-    return new Command<>() {
-      @Override
-      public Query getQuery() {
-        return query;
-      }
-
-      @Override
-      public Result<ENTITY> execute() {
-        int count = command.execute();
-        query.complete();
-        return new Result<>(count, query.getEntity());
-      }
-    };
+    return query;
   }
 }

@@ -17,12 +17,14 @@ package org.seasar.doma.jdbc.dialect;
 
 import java.util.List;
 import org.seasar.doma.internal.jdbc.sql.PreparedSqlBuilder;
+import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.InsertRow;
 import org.seasar.doma.jdbc.query.QueryOperand;
 import org.seasar.doma.jdbc.query.QueryOperandPair;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssemblerSupport;
@@ -45,6 +47,12 @@ public class H2UpsertAssembler implements UpsertAssembler {
 
   private final List<QueryOperandPair> setValues;
 
+  private final Naming naming;
+
+  private final Dialect dialect;
+
+  private final ReturningProperties returning;
+
   private final QueryOperand.Visitor queryOperandVisitor = new QueryOperandVisitor();
 
   public H2UpsertAssembler(UpsertAssemblerContext context) {
@@ -55,11 +63,23 @@ public class H2UpsertAssembler implements UpsertAssembler {
     this.insertPropertyTypes = context.insertPropertyTypes;
     this.insertRows = context.insertRows;
     this.setValues = context.setValues;
+    this.naming = context.naming;
+    this.dialect = context.dialect;
+    this.returning = context.returning;
     this.upsertAssemblerSupport = new UpsertAssemblerSupport(context.naming, context.dialect);
   }
 
   @Override
   public void assemble() {
+    if (returning.isNone()) {
+      assembleMergeInto();
+    } else {
+      H2AssemblerUtil.assembleFinalTable(
+          buf, entityType, naming, dialect, returning, this::assembleMergeInto);
+    }
+  }
+
+  private void assembleMergeInto() {
     buf.appendSql("merge into ");
     tableNameAndAlias(entityType);
     buf.appendSql(" using (");

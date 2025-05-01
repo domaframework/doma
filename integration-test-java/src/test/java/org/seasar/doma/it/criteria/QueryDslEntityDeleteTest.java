@@ -16,13 +16,21 @@
 package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.QueryDsl;
 
@@ -33,6 +41,11 @@ public class QueryDslEntityDeleteTest {
 
   public QueryDslEntityDeleteTest(Config config) {
     this.dsl = new QueryDsl(config);
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -61,5 +74,89 @@ public class QueryDslEntityDeleteTest {
             .single(employee)
             .execute();
     assertEquals(0, result.getCount());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    var resultEntity = dsl.delete(e).single(employee).returning().execute();
+    assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
+
+    assertEquals(5, resultEntity.getEmployeeId());
+
+    Employee entity = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    assertNull(entity);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+
+    var resultEntity =
+        dsl.delete(e).single(employee).returning(e.employeeId, e.employeeName).fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(employee, resultEntity);
+
+    assertEquals(5, resultEntity.getEmployeeId());
+    assertEquals("MARTIN", resultEntity.getEmployeeName());
+    assertNull(resultEntity.getDepartmentId());
+
+    Employee entity = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    assertNull(entity);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_OptimisticLockException() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    employee.setEmployeeId(100);
+
+    assertThrows(
+        OptimisticLockException.class, () -> dsl.delete(e).single(employee).returning().fetchOne());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_suppressOptimisticLockException() {
+    Employee_ e = new Employee_();
+
+    Employee employee = dsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    employee.setEmployeeId(100);
+
+    var resultEntity =
+        dsl.delete(e, settings -> settings.setSuppressOptimisticLockException(true))
+            .single(employee)
+            .returning()
+            .fetchOne();
+    assertNull(resultEntity);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office = new Office();
+    office.setDepartmentId(100);
+    office.setDepartmentNo(100);
+    office.setDepartmentName("PLANNING");
+    office.setLocation("TOKYO");
+
+    dsl.insert(o).single(office).execute();
+    dsl.delete(o).single(office).returning(o.departmentId, o.version).fetchOne();
+
+    assertEquals(
+        "preInsert:. postInsert:. preDelete:departmentId,version. postDelete:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

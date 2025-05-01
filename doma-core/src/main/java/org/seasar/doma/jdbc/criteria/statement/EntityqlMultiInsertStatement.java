@@ -25,6 +25,7 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 public class EntityqlMultiInsertStatement<ENTITY>
@@ -68,6 +69,12 @@ public class EntityqlMultiInsertStatement<ENTITY>
     this.duplicateKeyType = DuplicateKeyType.IGNORE;
     return new EntityqlMultiInsertIntermediate<>(
         config, entityMetamodel, entities, settings, duplicateKeyType);
+  }
+
+  public Listable<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    return new EntityqlMultiInsertIntermediate<>(
+            config, entityMetamodel, entities, settings, duplicateKeyType)
+        .returning(properties);
   }
 
   /**

@@ -20,6 +20,7 @@ import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.OriginalStates;
 import org.seasar.doma.Update;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.query.ReturningProperties;
 
 /**
  * A context for a pre process of an update.
@@ -86,4 +87,13 @@ public interface PreUpdateContext<E> {
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   void setNewEntity(E newEntity);
+
+  /**
+   * Returns the instance of {@code ReturningProperties} associated with the context.
+   *
+   * @return the {@code ReturningProperties} instance, never {@code null}
+   */
+  default ReturningProperties getReturningProperties() {
+    return ReturningProperties.NONE;
+  }
 }

@@ -20,12 +20,9 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.OptimisticLockException;
 import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.command.UpdateCommand;
 import org.seasar.doma.jdbc.criteria.context.UpdateSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoUpdateQuery;
 import org.seasar.doma.jdbc.query.Query;
 
 public class EntityqlUpdateStatement<ENTITY>
@@ -46,6 +43,12 @@ public class EntityqlUpdateStatement<ENTITY>
     this.settings = Objects.requireNonNull(settings);
   }
 
+  public Singular<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+    return new EntityqlUpdateReturningStatement<>(
+        config, entityMetamodel, entity, settings, returning);
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -64,9 +67,8 @@ public class EntityqlUpdateStatement<ENTITY>
 
   @Override
   protected Command<Result<ENTITY>> createCommand() {
-    EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoUpdateQuery<ENTITY> query =
-        config.getQueryImplementors().createAutoUpdateQuery(EXECUTE_METHOD, entityType);
+    var entityType = entityMetamodel.asType();
+    var query = config.getQueryImplementors().createAutoUpdateQuery(EXECUTE_METHOD, entityType);
     query.setConfig(config);
     query.setEntity(entity);
     query.setMethod(EXECUTE_METHOD);
@@ -84,9 +86,8 @@ public class EntityqlUpdateStatement<ENTITY>
     query.setOptimisticLockExceptionSuppressed(settings.getSuppressOptimisticLockException());
     query.setMessage(settings.getComment());
     query.prepare();
-    UpdateCommand command =
-        config.getCommandImplementors().createUpdateCommand(EXECUTE_METHOD, query);
-    return new Command<Result<ENTITY>>() {
+    var command = config.getCommandImplementors().createUpdateCommand(EXECUTE_METHOD, query);
+    return new Command<>() {
       @Override
       public Query getQuery() {
         return query;

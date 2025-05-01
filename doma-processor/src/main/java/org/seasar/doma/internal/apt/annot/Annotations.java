@@ -188,7 +188,14 @@ public class Annotations {
 
   public DeleteAnnot newDeleteAnnot(ExecutableElement method) {
     assertNotNull(method);
-    return newInstance(method, Delete.class, DeleteAnnot::new);
+    AnnotationMirror deleteMirror = ctx.getMoreElements().getAnnotationMirror(method, Delete.class);
+    if (deleteMirror == null) {
+      return null;
+    }
+    ReturningAnnot returningAnnot = newReturningAnnot(deleteMirror, ModifyAnnot.RETURNING);
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(deleteMirror);
+    return new DeleteAnnot(deleteMirror, returningAnnot, valuesWithDefaults);
   }
 
   public EmbeddableAnnot newEmbeddableAnnot(TypeElement typeElement) {
@@ -241,12 +248,27 @@ public class Annotations {
 
   public InsertAnnot newInsertAnnot(ExecutableElement method) {
     assertNotNull(method);
-    return newInstance(method, Insert.class, InsertAnnot::new);
+    AnnotationMirror insertMirror = ctx.getMoreElements().getAnnotationMirror(method, Insert.class);
+    if (insertMirror == null) {
+      return null;
+    }
+    ReturningAnnot returningAnnot = newReturningAnnot(insertMirror, ModifyAnnot.RETURNING);
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(insertMirror);
+    return new InsertAnnot(insertMirror, returningAnnot, valuesWithDefaults);
   }
 
   public MultiInsertAnnot newMultiInsertAnnot(ExecutableElement method) {
     assertNotNull(method);
-    return newInstance(method, MultiInsert.class, MultiInsertAnnot::new);
+    AnnotationMirror multiInsertMirror =
+        ctx.getMoreElements().getAnnotationMirror(method, MultiInsert.class);
+    if (multiInsertMirror == null) {
+      return null;
+    }
+    ReturningAnnot returningAnnot = newReturningAnnot(multiInsertMirror, ModifyAnnot.RETURNING);
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(multiInsertMirror);
+    return new MultiInsertAnnot(multiInsertMirror, returningAnnot, valuesWithDefaults);
   }
 
   public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {
@@ -271,6 +293,27 @@ public class Annotations {
   public ResultSetAnnot newResultSetAnnot(VariableElement param) {
     assertNotNull(param);
     return newInstance(param, ResultSet.class, ResultSetAnnot::new);
+  }
+
+  private ReturningAnnot newReturningAnnot(AnnotationMirror annotationMirror) {
+    assertNotNull(annotationMirror);
+    return newInstance(annotationMirror, ReturningAnnot::new);
+  }
+
+  private ReturningAnnot newReturningAnnot(
+      AnnotationMirror ownerAnnotationMirror, String returningElementName) {
+    assertNotNull(ownerAnnotationMirror, returningElementName);
+    Map<String, AnnotationValue> valuesWithoutDefaults =
+        ctx.getMoreElements().getValuesWithoutDefaults(ownerAnnotationMirror);
+    AnnotationValue returning = valuesWithoutDefaults.get(returningElementName);
+    if (returning == null) {
+      return null;
+    }
+    AnnotationMirror returningMirror = AnnotationValueUtil.toAnnotation(returning);
+    if (returningMirror == null) {
+      return null;
+    }
+    return newReturningAnnot(returningMirror);
   }
 
   public ScriptAnnot newScriptAnnot(ExecutableElement method) {
@@ -315,7 +358,14 @@ public class Annotations {
 
   public UpdateAnnot newUpdateAnnot(ExecutableElement method) {
     assertNotNull(method);
-    return newInstance(method, Update.class, UpdateAnnot::new);
+    AnnotationMirror updateMirror = ctx.getMoreElements().getAnnotationMirror(method, Update.class);
+    if (updateMirror == null) {
+      return null;
+    }
+    ReturningAnnot returningAnnot = newReturningAnnot(updateMirror, ModifyAnnot.RETURNING);
+    Map<String, AnnotationValue> valuesWithDefaults =
+        ctx.getMoreElements().getValuesWithDefaults(updateMirror);
+    return new UpdateAnnot(updateMirror, returningAnnot, valuesWithDefaults);
   }
 
   public ValueAnnot newValueAnnot(TypeElement typeElement) {

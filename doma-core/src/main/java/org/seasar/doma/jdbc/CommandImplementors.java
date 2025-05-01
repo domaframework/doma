@@ -17,6 +17,7 @@ package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import org.seasar.doma.jdbc.aggregate.AggregateCommand;
 import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
 import org.seasar.doma.jdbc.aggregate.StreamReducer;
@@ -26,14 +27,17 @@ import org.seasar.doma.jdbc.command.BatchUpdateCommand;
 import org.seasar.doma.jdbc.command.Command;
 import org.seasar.doma.jdbc.command.CreateCommand;
 import org.seasar.doma.jdbc.command.DeleteCommand;
+import org.seasar.doma.jdbc.command.DeleteReturningCommand;
 import org.seasar.doma.jdbc.command.FunctionCommand;
 import org.seasar.doma.jdbc.command.InsertCommand;
+import org.seasar.doma.jdbc.command.InsertReturningCommand;
 import org.seasar.doma.jdbc.command.ProcedureCommand;
 import org.seasar.doma.jdbc.command.ResultSetHandler;
 import org.seasar.doma.jdbc.command.ScriptCommand;
 import org.seasar.doma.jdbc.command.SelectCommand;
 import org.seasar.doma.jdbc.command.SqlProcessorCommand;
 import org.seasar.doma.jdbc.command.UpdateCommand;
+import org.seasar.doma.jdbc.command.UpdateReturningCommand;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
@@ -65,6 +69,20 @@ public interface CommandImplementors {
     return new SelectCommand<>(query, resultSetHandler);
   }
 
+  /**
+   * Creates an {@link AggregateCommand} object for aggregating entities based on a specified query
+   * and strategy.
+   *
+   * @param <RESULT> the result type of the aggregation
+   * @param <ENTITY> the entity type used in the aggregation
+   * @param method the DAO method associated with the command
+   * @param query the select query to be executed
+   * @param entityType the type of the root entity for aggregation
+   * @param resultReducer the reducer used to process the stream of aggregated entities into a final
+   *     result
+   * @param aggregateStrategyType the strategy type used for aggregation logic
+   * @return a new {@link AggregateCommand} instance configured with the provided parameters
+   */
   default <RESULT, ENTITY> AggregateCommand<RESULT, ENTITY> createAggregateCommand(
       Method method,
       SelectQuery query,
@@ -105,6 +123,58 @@ public interface CommandImplementors {
    */
   default UpdateCommand createUpdateCommand(Method method, UpdateQuery query) {
     return new UpdateCommand(query);
+  }
+
+  /**
+   * Creates a {@link DeleteReturningCommand} object.
+   *
+   * @param <RESULT> the result type of the command
+   * @param method the DAO method
+   * @param query the delete query
+   * @param resultSetHandler the handler for processing the result set
+   * @param emptyResultSupplier the supplier for providing an empty result
+   * @return the created {@link DeleteReturningCommand} object
+   */
+  default <RESULT> DeleteReturningCommand<RESULT> createDeleteReturningCommand(
+      Method method,
+      DeleteQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new DeleteReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
+  }
+
+  /**
+   * Creates an {@link InsertReturningCommand} object.
+   *
+   * @param method the DAO method
+   * @param query the query
+   * @param resultSetHandler the result set handler
+   * @return the command
+   */
+  default <RESULT> InsertReturningCommand<RESULT> createInsertReturningCommand(
+      Method method,
+      InsertQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new InsertReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
+  }
+
+  /**
+   * Creates an {@link UpdateReturningCommand} object.
+   *
+   * @param <RESULT> the result type of the command
+   * @param method the DAO method
+   * @param query the update query
+   * @param resultSetHandler the handler for processing the result set
+   * @param emptyResultSupplier the supplier for providing an empty result
+   * @return the created {@link UpdateReturningCommand} object
+   */
+  default <RESULT> UpdateReturningCommand<RESULT> createUpdateReturningCommand(
+      Method method,
+      UpdateQuery query,
+      ResultSetHandler<RESULT> resultSetHandler,
+      Supplier<RESULT> emptyResultSupplier) {
+    return new UpdateReturningCommand<>(query, resultSetHandler, emptyResultSupplier);
   }
 
   /**

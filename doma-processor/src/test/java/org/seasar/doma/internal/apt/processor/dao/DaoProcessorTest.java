@@ -173,7 +173,9 @@ class DaoProcessorTest extends AbstractCompilerTest {
               "-Adoma.cdi.ApplicationScoped=" + ApplicationScoped.class.getCanonicalName()),
           invocationContext(MultipleAnnotateWithDao.class),
           invocationContext(IgnoreGeneratedKeysDao.class),
-          invocationContext(AutoMultiInsertDao.class));
+          invocationContext(AutoMultiInsertDao.class),
+          invocationContext(ReturningDao.class),
+          invocationContext(MultiInsertReturningDao.class));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, String... options) {
@@ -266,7 +268,15 @@ class DaoProcessorTest extends AbstractCompilerTest {
               MultiInsertIllegalReturnTypeForImmutableEntityDao.class, Message.DOMA4461),
           invocationContext(InsertIllegalDuplicateKeyDao.class, Message.DOMA4462),
           invocationContext(BatchInsertIllegalDuplicateKeyDao.class, Message.DOMA4462),
-          invocationContext(MultiInsertIllegalDuplicateKeyDao.class, Message.DOMA4462));
+          invocationContext(MultiInsertIllegalDuplicateKeyDao.class, Message.DOMA4462),
+          invocationContext(ReturningDao_IllegalSqlFileAttribute.class, Message.DOMA4491),
+          invocationContext(ReturningDao_IllegalSqlAnnotation.class, Message.DOMA4492),
+          invocationContext(ReturningDao_IllegalInclude.class, Message.DOMA4493),
+          invocationContext(ReturningDao_IllegalExclude.class, Message.DOMA4494),
+          invocationContext(ReturningDao_IllegalReturnType.class, Message.DOMA4495),
+          invocationContext(MultiInsertReturningDao_IllegalInclude.class, Message.DOMA4493),
+          invocationContext(MultiInsertReturningDao_IllegalExclude.class, Message.DOMA4494),
+          invocationContext(MultiInsertReturningDao_IllegalReturnType.class, Message.DOMA4496));
     }
 
     private TestTemplateInvocationContext invocationContext(Class<?> clazz, Message message) {

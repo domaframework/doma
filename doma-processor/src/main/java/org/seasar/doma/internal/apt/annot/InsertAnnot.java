@@ -21,7 +21,10 @@ import javax.lang.model.element.AnnotationValue;
 
 public class InsertAnnot extends ModifyAnnot {
 
-  InsertAnnot(AnnotationMirror annotationMirror, Map<String, AnnotationValue> values) {
-    super(annotationMirror, values);
+  InsertAnnot(
+      AnnotationMirror annotationMirror,
+      ReturningAnnot returningAnnot,
+      Map<String, AnnotationValue> values) {
+    super(annotationMirror, returningAnnot, values);
   }
 }

@@ -23,12 +23,9 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.MultiResult;
 import org.seasar.doma.jdbc.Sql;
 import org.seasar.doma.jdbc.command.Command;
-import org.seasar.doma.jdbc.command.InsertCommand;
 import org.seasar.doma.jdbc.criteria.context.InsertSettings;
 import org.seasar.doma.jdbc.criteria.metamodel.EntityMetamodel;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
-import org.seasar.doma.jdbc.entity.EntityType;
-import org.seasar.doma.jdbc.query.AutoMultiInsertQuery;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.Query;
 
@@ -56,6 +53,12 @@ public class EntityqlMultiInsertTerminal<ENTITY>
     this.keys = Objects.requireNonNull(keys);
   }
 
+  public Listable<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    var returning = ReturningPropertyMetamodels.of(entityMetamodel, properties);
+    return new EntityqlMultiInsertReturningStatement<>(
+        config, entityMetamodel, entities, settings, duplicateKeyType, keys, returning);
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -70,8 +73,8 @@ public class EntityqlMultiInsertTerminal<ENTITY>
 
   @Override
   protected Command<MultiResult<ENTITY>> createCommand() {
-    EntityType<ENTITY> entityType = entityMetamodel.asType();
-    AutoMultiInsertQuery<ENTITY> query =
+    var entityType = entityMetamodel.asType();
+    var query =
         config.getQueryImplementors().createAutoMultiInsertQuery(EXECUTE_METHOD, entityType);
     query.setMethod(EXECUTE_METHOD);
     query.setConfig(config);
@@ -89,8 +92,7 @@ public class EntityqlMultiInsertTerminal<ENTITY>
     query.setDuplicateKeyNames(
         keys.stream().map(PropertyMetamodel::getName).toArray(String[]::new));
     query.prepare();
-    InsertCommand command =
-        config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
+    var command = config.getCommandImplementors().createInsertCommand(EXECUTE_METHOD, query);
     return new Command<>() {
       @Override
       public Query getQuery() {
@@ -99,7 +101,7 @@ public class EntityqlMultiInsertTerminal<ENTITY>
 
       @Override
       public MultiResult<ENTITY> execute() {
-        int count = command.execute();
+        var count = command.execute();
         query.complete();
         return new MultiResult<>(count, query.getEntities());
       }

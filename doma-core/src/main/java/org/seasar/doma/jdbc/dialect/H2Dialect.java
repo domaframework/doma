@@ -18,6 +18,14 @@ package org.seasar.doma.jdbc.dialect;
 import org.seasar.doma.expr.ExpressionFunctions;
 import org.seasar.doma.jdbc.JdbcMappingVisitor;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
+import org.seasar.doma.jdbc.query.DeleteAssembler;
+import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
+import org.seasar.doma.jdbc.query.InsertAssembler;
+import org.seasar.doma.jdbc.query.InsertAssemblerContext;
+import org.seasar.doma.jdbc.query.MultiInsertAssembler;
+import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpdateAssembler;
+import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
@@ -89,5 +97,26 @@ public class H2Dialect extends H214199Dialect {
   @Override
   public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
     return new H2UpsertAssembler(context);
+  }
+
+  @Override
+  public <ENTITY> InsertAssembler getInsertAssembler(InsertAssemblerContext<ENTITY> context) {
+    return new H2InsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> MultiInsertAssembler getMultiInsertAssembler(
+      MultiInsertAssemblerContext<ENTITY> context) {
+    return new H2MultiInsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
+    return new H2UpdateAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> DeleteAssembler getDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
+    return new H2DeleteAssembler<>(context);
   }
 }

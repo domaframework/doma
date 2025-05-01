@@ -289,6 +289,11 @@ public class MysqlDialect extends StandardDialect {
     return new MysqlUpsertAssembler(context, version);
   }
 
+  @Override
+  public boolean supportsReturning() {
+    return false;
+  }
+
   public enum MySqlVersion {
     V5,
     V8

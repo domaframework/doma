@@ -59,18 +59,20 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   @Override
   public void prepare() {
+    super.prepare();
+    assertNotNull(method, entityType, entities);
+
     Dialect dialect = config.getDialect();
     if (!dialect.supportsMultiRowInsertStatement()) {
       throw new JdbcException(Message.DOMA2236, dialect.getName());
     }
 
-    super.prepare();
-    assertNotNull(method, entityType, entities);
     if (entities.isEmpty()) {
       sqlExecutionSkipCause = SqlExecutionSkipCause.MULTI_INSERT_TARGET_NONEXISTENT;
       return;
     }
     executable = true;
+
     entity = entities.stream().findFirst().orElseThrow(IllegalStateException::new);
     preInsert();
     prepareSpecialPropertyTypes();
@@ -87,7 +89,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     while (iterator.hasNext()) {
       ENTITY entity = iterator.next();
       AutoPreInsertContext<ENTITY> context =
-          new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType);
+          new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType, returning);
       entityType.preInsert(entity, context);
       ENTITY newEntity = context.getNewEntity();
       if (newEntity != null) {
@@ -187,7 +189,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     MultiInsertAssemblerContext<ENTITY> context =
         MultiInsertAssemblerContextBuilder.buildFromEntityList(
-            builder, entityType, naming, dialect, targetPropertyTypes, entities);
+            builder, entityType, naming, dialect, targetPropertyTypes, entities, returning);
     MultiInsertAssembler assembler = dialect.getMultiInsertAssembler(context);
     assembler.assemble();
   }
@@ -209,7 +211,8 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
             dialect,
             idPropertyTypes,
             targetPropertyTypes,
-            entities);
+            entities,
+            returning);
     UpsertAssembler assembler = dialect.getUpsertAssembler(context);
     assembler.assemble();
   }
@@ -235,7 +238,7 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     while (iterator.hasNext()) {
       ENTITY entity = iterator.next();
       AutoPostInsertContext<ENTITY> context =
-          new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType);
+          new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType, returning);
       entityType.postInsert(entity, context);
       ENTITY newEntity = context.getNewEntity();
       if (newEntity != null) {
@@ -254,17 +257,41 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
 
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    private final ReturningProperties returningProperties;
+
     public AutoPreInsertContext(
-        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        DuplicateKeyType duplicateKeyType,
+        ReturningProperties returningProperties) {
       super(entityType, method, config, duplicateKeyType);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 
   protected static class AutoPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    private final ReturningProperties returningProperties;
+
     public AutoPostInsertContext(
-        EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
+        EntityType<E> entityType,
+        Method method,
+        Config config,
+        DuplicateKeyType duplicateKeyType,
+        ReturningProperties returningProperties) {
       super(entityType, method, config, duplicateKeyType);
+      this.returningProperties = Objects.requireNonNull(returningProperties);
+    }
+
+    @Override
+    public ReturningProperties getReturningProperties() {
+      return returningProperties;
     }
   }
 

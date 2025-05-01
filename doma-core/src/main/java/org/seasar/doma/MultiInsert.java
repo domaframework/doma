@@ -116,4 +116,10 @@ public @interface MultiInsert {
    * @return the keys that should be used to determine if a duplicate key exists.
    */
   String[] duplicateKeys() default {};
+
+  /**
+   * @return the {@link Returning} annotation configuration, which defines inclusions or exclusions
+   *     for returning values.
+   */
+  Returning returning() default @Returning;
 }

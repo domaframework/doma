@@ -36,6 +36,28 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<?, ?>> keys,
       List<QueryOperandPair> insertValues,
       List<QueryOperandPair> setValues) {
+    return build(
+        buf,
+        entityType,
+        duplicateKeyType,
+        naming,
+        dialect,
+        keys,
+        insertValues,
+        setValues,
+        ReturningProperties.NONE);
+  }
+
+  public static UpsertAssemblerContext build(
+      PreparedSqlBuilder buf,
+      EntityType<?> entityType,
+      DuplicateKeyType duplicateKeyType,
+      Naming naming,
+      Dialect dialect,
+      List<EntityPropertyType<?, ?>> keys,
+      List<QueryOperandPair> insertValues,
+      List<QueryOperandPair> setValues,
+      ReturningProperties returning) {
 
     List<? extends EntityPropertyType<?, ?>> resolvedKeys = resolveKeys(entityType, keys);
     List<? extends EntityPropertyType<?, ?>> insertPropertyTypes =
@@ -56,7 +78,8 @@ public class UpsertAssemblerContextBuilder {
         resolvedKeys,
         insertPropertyTypes,
         rows,
-        setValues);
+        setValues,
+        returning);
   }
 
   public static <ENTITY> UpsertAssemblerContext buildFromEntity(
@@ -70,6 +93,31 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       ENTITY entity) {
 
+    return buildFromEntity(
+        buf,
+        entityType,
+        duplicateKeyType,
+        duplicateKeys,
+        naming,
+        dialect,
+        idPropertyTypes,
+        insertPropertyTypes,
+        entity,
+        ReturningProperties.NONE);
+  }
+
+  public static <ENTITY> UpsertAssemblerContext buildFromEntity(
+      PreparedSqlBuilder buf,
+      EntityType<ENTITY> entityType,
+      DuplicateKeyType duplicateKeyType,
+      List<EntityPropertyType<ENTITY, ?>> duplicateKeys,
+      Naming naming,
+      Dialect dialect,
+      List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
+      List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
+      ENTITY entity,
+      ReturningProperties returning) {
+
     return buildFromEntityList(
         buf,
         entityType,
@@ -79,7 +127,8 @@ public class UpsertAssemblerContextBuilder {
         dialect,
         idPropertyTypes,
         insertPropertyTypes,
-        Collections.singletonList(entity));
+        Collections.singletonList(entity),
+        returning);
   }
 
   public static <ENTITY> UpsertAssemblerContext buildFromEntityList(
@@ -92,6 +141,30 @@ public class UpsertAssemblerContextBuilder {
       List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
       List<ENTITY> entities) {
+    return buildFromEntityList(
+        buf,
+        entityType,
+        duplicateKeyType,
+        duplicateKeys,
+        naming,
+        dialect,
+        idPropertyTypes,
+        insertPropertyTypes,
+        entities,
+        ReturningProperties.NONE);
+  }
+
+  public static <ENTITY> UpsertAssemblerContext buildFromEntityList(
+      PreparedSqlBuilder buf,
+      EntityType<ENTITY> entityType,
+      DuplicateKeyType duplicateKeyType,
+      List<EntityPropertyType<ENTITY, ?>> duplicateKeys,
+      Naming naming,
+      Dialect dialect,
+      List<EntityPropertyType<ENTITY, ?>> idPropertyTypes,
+      List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
+      List<ENTITY> entities,
+      ReturningProperties returning) {
 
     List<InsertRow> rows =
         entities.stream()
@@ -119,7 +192,8 @@ public class UpsertAssemblerContextBuilder {
         !duplicateKeys.isEmpty() ? duplicateKeys : idPropertyTypes,
         insertPropertyTypes,
         rows,
-        Collections.emptyList());
+        Collections.emptyList(),
+        returning);
   }
 
   private static UpsertAssemblerContext buildInternal(
@@ -132,7 +206,8 @@ public class UpsertAssemblerContextBuilder {
       List<? extends EntityPropertyType<?, ?>> keys,
       List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
       List<InsertRow> insertRows,
-      List<QueryOperandPair> setValues) {
+      List<QueryOperandPair> setValues,
+      ReturningProperties returning) {
 
     List<QueryOperandPair> resolvedSetValues =
         resolveSetValues(keys, insertPropertyTypes, setValues);
@@ -147,7 +222,8 @@ public class UpsertAssemblerContextBuilder {
         keys,
         insertPropertyTypes,
         insertRows,
-        resolvedSetValues);
+        resolvedSetValues,
+        returning);
   }
 
   private static List<? extends EntityPropertyType<?, ?>> resolveKeys(

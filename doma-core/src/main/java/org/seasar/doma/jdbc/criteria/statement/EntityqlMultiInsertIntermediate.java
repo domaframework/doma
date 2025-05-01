@@ -17,7 +17,6 @@ package org.seasar.doma.jdbc.criteria.statement;
 
 import static org.seasar.doma.jdbc.criteria.statement.EntityqlMultiInsertStatement.EMPTY_SQL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +36,6 @@ public class EntityqlMultiInsertIntermediate<ENTITY>
   private final List<ENTITY> entities;
   private final InsertSettings settings;
   private final DuplicateKeyType duplicateKeyType;
-  private final List<PropertyMetamodel<?>> keys = new ArrayList<>();
 
   public EntityqlMultiInsertIntermediate(
       Config config,
@@ -59,10 +57,21 @@ public class EntityqlMultiInsertIntermediate<ENTITY>
    * @param keys keys the keys used for duplicate checking
    * @return selecting set statement builder
    */
-  public Statement<MultiResult<ENTITY>> keys(PropertyMetamodel<?>... keys) {
+  public EntityqlMultiInsertTerminal<ENTITY> keys(PropertyMetamodel<?>... keys) {
     Objects.requireNonNull(keys);
-    this.keys.addAll(Arrays.stream(keys).toList());
-    return this;
+    return new EntityqlMultiInsertTerminal<>(
+        config,
+        entityMetamodel,
+        entities,
+        settings,
+        duplicateKeyType,
+        Arrays.stream(keys).toList());
+  }
+
+  public Listable<ENTITY> returning(PropertyMetamodel<?>... properties) {
+    return new EntityqlMultiInsertTerminal<>(
+            config, entityMetamodel, entities, settings, duplicateKeyType, List.of())
+        .returning(properties);
   }
 
   /**
@@ -81,7 +90,7 @@ public class EntityqlMultiInsertIntermediate<ENTITY>
   protected Command<MultiResult<ENTITY>> createCommand() {
     EntityqlMultiInsertTerminal<ENTITY> terminal =
         new EntityqlMultiInsertTerminal<>(
-            config, entityMetamodel, entities, settings, duplicateKeyType, keys);
+            config, entityMetamodel, entities, settings, duplicateKeyType, List.of());
     return terminal.createCommand();
   }
 

@@ -36,6 +36,7 @@ import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IdentityOverridableConfig;
 import org.seasar.doma.it.IntegrationTestEnvironment;
 import org.seasar.doma.it.Run;
+import org.seasar.doma.it.criteria.Street;
 import org.seasar.doma.it.dao.BranchDao;
 import org.seasar.doma.it.dao.BranchDao.Branch;
 import org.seasar.doma.it.dao.BranchDao.BranchDetail;
@@ -54,6 +55,8 @@ import org.seasar.doma.it.dao.IdentityStrategy2Dao;
 import org.seasar.doma.it.dao.IdentityStrategy2DaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
+import org.seasar.doma.it.dao.MultiInsertReturningDao;
+import org.seasar.doma.it.dao.MultiInsertReturningDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
@@ -72,6 +75,7 @@ import org.seasar.doma.it.domain.Identity;
 import org.seasar.doma.it.domain.Location;
 import org.seasar.doma.it.domain.Salary;
 import org.seasar.doma.it.embeddable.StaffInfo;
+import org.seasar.doma.it.entity.Address;
 import org.seasar.doma.it.entity.Businessman;
 import org.seasar.doma.it.entity.CompKeyDepartment;
 import org.seasar.doma.it.entity.CompKeyDept;
@@ -127,6 +131,14 @@ public class AutoMultiInsertTest {
     assertEquals("bar", department2.getDepartmentName());
     assertEquals("boo", department2.getLocation().getValue());
     assertEquals(Integer.valueOf(1), department2.getVersion());
+  }
+
+  @Test
+  public void testEmpty(Config config) {
+    DepartmentDao dao = new DepartmentDaoImpl(config);
+
+    int result = dao.insertMultiRows(Collections.emptyList());
+    assertEquals(0, result);
   }
 
   @Test
@@ -820,5 +832,98 @@ public class AutoMultiInsertTest {
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("B", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning(Config config) {
+    MultiInsertReturningDao dao = new MultiInsertReturningDaoImpl(config);
+
+    var entity1 = new Address();
+    entity1.setAddressId(101);
+    entity1.setStreet(new Street("STREET 101"));
+
+    var entity2 = new Address();
+    entity2.setAddressId(102);
+    entity2.setStreet(new Street("STREET 102"));
+
+    var results = dao.insertThenReturnAll(List.of(entity1, entity2));
+    assertEquals(2, results.size());
+
+    var result1 = results.get(0);
+    var result2 = results.get(1);
+
+    assertEquals(101, result1.getAddressId());
+    assertEquals("STREET 101", result1.getStreet().getValue());
+    assertEquals(1, result1.getVersion());
+
+    assertEquals(102, result2.getAddressId());
+    assertEquals("STREET 102", result2.getStreet().getValue());
+    assertEquals(1, result2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_empty(Config config) {
+    MultiInsertReturningDao dao = new MultiInsertReturningDaoImpl(config);
+
+    var results = dao.insertThenReturnAll(Collections.emptyList());
+    assertEquals(0, results.size());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_include(Config config) {
+    MultiInsertReturningDao dao = new MultiInsertReturningDaoImpl(config);
+
+    var entity1 = new Address();
+    entity1.setAddressId(101);
+    entity1.setStreet(new Street("STREET 101"));
+
+    var entity2 = new Address();
+    entity2.setAddressId(102);
+    entity2.setStreet(new Street("STREET 102"));
+
+    var results = dao.insertThenReturnOnlyId(List.of(entity1, entity2));
+    assertEquals(2, results.size());
+
+    var result1 = results.get(0);
+    var result2 = results.get(1);
+
+    assertEquals(101, result1.getAddressId());
+    assertNull(result1.getStreet());
+    assertNull(result1.getVersion());
+
+    assertEquals(102, result2.getAddressId());
+    assertNull(result2.getStreet());
+    assertNull(result2.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_exclude(Config config) {
+    MultiInsertReturningDao dao = new MultiInsertReturningDaoImpl(config);
+
+    var entity1 = new Address();
+    entity1.setAddressId(101);
+    entity1.setStreet(new Street("STREET 101"));
+
+    var entity2 = new Address();
+    entity2.setAddressId(102);
+    entity2.setStreet(new Street("STREET 102"));
+
+    var results = dao.insertThenReturnExceptVersion(List.of(entity1, entity2));
+    assertEquals(2, results.size());
+
+    var result1 = results.get(0);
+    var result2 = results.get(1);
+
+    assertEquals(101, result1.getAddressId());
+    assertEquals("STREET 101", result1.getStreet().getValue());
+    assertNull(result1.getVersion());
+
+    assertEquals(102, result2.getAddressId());
+    assertEquals("STREET 102", result2.getStreet().getValue());
+    assertNull(result2.getVersion());
   }
 }

@@ -17,6 +17,7 @@ package org.seasar.doma.it.auto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
@@ -24,7 +25,9 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.seasar.doma.it.Dbms;
 import org.seasar.doma.it.IntegrationTestEnvironment;
+import org.seasar.doma.it.Run;
 import org.seasar.doma.it.dao.BranchDao;
 import org.seasar.doma.it.dao.BranchDao.Branch;
 import org.seasar.doma.it.dao.BranchDao.BranchDetail;
@@ -46,6 +49,8 @@ import org.seasar.doma.it.dao.SalesmanDao;
 import org.seasar.doma.it.dao.SalesmanDaoImpl;
 import org.seasar.doma.it.dao.StaffDao;
 import org.seasar.doma.it.dao.StaffDaoImpl;
+import org.seasar.doma.it.dao.UpdateReturningDao;
+import org.seasar.doma.it.dao.UpdateReturningDaoImpl;
 import org.seasar.doma.it.dao.WorkerDao;
 import org.seasar.doma.it.dao.WorkerDaoImpl;
 import org.seasar.doma.it.domain.Salary;
@@ -362,5 +367,75 @@ public class AutoUpdateTest {
     assertEquals(13, staff.staffInfo.managerId);
     assertEquals(2, staff.departmentId.intValue());
     assertEquals(1, staff.addressId.intValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning(Config config) {
+    UpdateReturningDao dao = new UpdateReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    entity.setEmployeeName("aaa");
+    var result = dao.updateThenReturnAll(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertEquals("aaa", result.getEmployeeName());
+    assertEquals(2, result.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_include(Config config) {
+    UpdateReturningDao dao = new UpdateReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    entity.setEmployeeName("aaa");
+    var result = dao.updateThenReturnOnlyId(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertNull(result.getEmployeeName());
+    assertNull(result.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_exclude(Config config) {
+    UpdateReturningDao dao = new UpdateReturningDaoImpl(config);
+
+    var entity = dao.selectById(1);
+    entity.setEmployeeName("aaa");
+    var result = dao.updateThenReturnExceptVersion(entity);
+
+    assertEquals(1, entity.getAddressId());
+    assertEquals("aaa", result.getEmployeeName());
+    assertNull(result.getVersion());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_includeEmbeddedProperty(Config config) {
+    UpdateReturningDao dao = new UpdateReturningDaoImpl(config);
+
+    var entity = dao.selectStaffById(1);
+    entity.employeeName = "aaa";
+    var result = dao.updateStaffThenReturnManagerAndSalary(entity);
+
+    assertNull(result.employeeId);
+    assertNull(result.staffInfo.hiredate);
+    assertNotNull(result.staffInfo.salary);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_excludeEmbeddedProperty(Config config) {
+    UpdateReturningDao dao = new UpdateReturningDaoImpl(config);
+
+    var entity = dao.selectStaffById(1);
+    entity.employeeName = "aaa";
+    var result = dao.updateStaffThenReturnExceptSalary(entity);
+
+    assertNotNull(result.employeeId);
+    assertNotNull(result.staffInfo.hiredate);
+    assertNull(result.staffInfo.salary);
   }
 }

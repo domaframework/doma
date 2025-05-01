@@ -138,4 +138,10 @@ public @interface Update {
    * @return the output format of SQL logs.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
+
+  /**
+   * @return the {@link Returning} annotation configuration, which defines inclusions or exclusions
+   *     for returning values.
+   */
+  Returning returning() default @Returning;
 }

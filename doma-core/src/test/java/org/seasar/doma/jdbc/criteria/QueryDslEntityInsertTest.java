@@ -92,4 +92,21 @@ class QueryDslEntityInsertTest {
     Sql<?> sql = stmt.asSql();
     assertEquals("insert into EMP (ID, NAME, VERSION) values (1, 'aaa', 1)", sql.getFormattedSql());
   }
+
+  @Test
+  void returning() {
+    Emp emp = new Emp();
+    emp.setId(1);
+    emp.setName("aaa");
+    emp.setSalary(new BigDecimal("1000"));
+    emp.setVersion(1);
+
+    Emp_ e = new Emp_();
+    Buildable<?> stmt = dsl.insert(e).single(emp).returning();
+
+    Sql<?> sql = stmt.asSql();
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (1, 'aaa', 1000, 1) returning ID, NAME, SALARY, VERSION",
+        sql.getFormattedSql());
+  }
 }

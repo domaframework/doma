@@ -16,10 +16,12 @@
 package org.seasar.doma.it.criteria;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.seasar.doma.it.Dbms;
@@ -39,6 +41,11 @@ public class QueryDslEntityInsertTest {
   public QueryDslEntityInsertTest(Config config) {
     this.dsl = new QueryDsl(config);
     this.dialect = config.getDialect();
+  }
+
+  @BeforeEach
+  void before() {
+    OfficeListener.buffer.setLength(0);
   }
 
   @Test
@@ -281,5 +288,229 @@ public class QueryDslEntityInsertTest {
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("A", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department resultEntity = dsl.insert(d).single(department).returning().fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(department, resultEntity);
+    assertEquals(department.getDepartmentId(), resultEntity.getDepartmentId());
+    assertEquals(department.getDepartmentNo(), resultEntity.getDepartmentNo());
+    assertEquals(department.getDepartmentName(), resultEntity.getDepartmentName());
+    assertEquals(department.getLocation(), resultEntity.getLocation());
+    assertEquals(1, resultEntity.getVersion());
+
+    Department department2 =
+        dsl.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    assertNotNull(department2);
+    assertEquals("aaa", department2.getDepartmentName());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  void returning_specificProperties() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+
+    Department resultEntity =
+        dsl.insert(d).single(department).returning(d.departmentNo, d.departmentName).fetchOne();
+    assertNotNull(resultEntity);
+    assertNotEquals(department, resultEntity);
+    assertNull(resultEntity.getDepartmentId());
+    assertEquals(department.getDepartmentNo(), resultEntity.getDepartmentNo());
+    assertEquals(department.getDepartmentName(), resultEntity.getDepartmentName());
+    assertNull(resultEntity.getLocation());
+    assertNull(resultEntity.getVersion());
+
+    Department department2 =
+        dsl.from(d).where(c -> c.eq(d.departmentId, department.getDepartmentId())).fetchOne();
+    assertNotNull(department2);
+    assertEquals("aaa", department2.getDepartmentName());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+
+    var resultEntity = dsl.insert(i).single(entity1).returning().fetchOne();
+    assertNotEquals(entity1, resultEntity);
+    assertNotNull(resultEntity.getId());
+    assertEquals("1", resultEntity.getUniqueValue());
+    assertEquals("A", resultEntity.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_onDuplicateKeyUpdate_nonDuplicated() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(5);
+    department.setDepartmentNo(50);
+    department.setDepartmentName("PLANNING");
+    department.setLocation("TOKYO");
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_onDuplicateKeyUpdate_duplicated() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(1);
+    department.setDepartmentNo(60);
+    department.setDepartmentName("DEVELOPMENT");
+    department.setLocation("KYOTO");
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyUpdate().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
+    // updated
+    assertEquals(60, resultDepartment.getDepartmentNo());
+    assertEquals("DEVELOPMENT", resultDepartment.getDepartmentName());
+    assertEquals("KYOTO", resultDepartment.getLocation());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_onDuplicateKeyIgnore_nonDuplicated() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(5);
+    department.setDepartmentNo(50);
+    department.setDepartmentName("PLANNING");
+    department.setLocation("TOKYO");
+    Department resultDepartment =
+        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNotNull(resultDepartment);
+    assertNotEquals(department, resultDepartment);
+    // inserted
+    assertEquals(50, resultDepartment.getDepartmentNo());
+    assertEquals("PLANNING", resultDepartment.getDepartmentName());
+    assertEquals("TOKYO", resultDepartment.getLocation());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_onDuplicateKeyIgnore_duplicated() {
+    Department_ d = new Department_();
+
+    Department department = new Department();
+    department.setDepartmentId(1);
+    department.setDepartmentNo(60);
+    department.setDepartmentName("DEVELOPMENT");
+    department.setLocation("KYOTO");
+    Department resultEntity =
+        dsl.insert(d).single(department).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNull(resultEntity);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_onDuplicateKeyUpdate_nonDuplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("2");
+    entity2.setValue("B");
+
+    var resultEntity1 =
+        dsl.insert(i)
+            .single(entity1)
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetchOne();
+    assertNotNull(resultEntity1);
+    assertNotEquals(entity1, resultEntity1);
+    assertNotNull(resultEntity1.getId());
+    assertEquals("1", resultEntity1.getUniqueValue());
+    assertEquals("A", resultEntity1.getValue());
+
+    var resultEntity2 =
+        dsl.insert(i)
+            .single(entity2)
+            .onDuplicateKeyUpdate()
+            .keys(i.uniqueValue)
+            .returning()
+            .fetchOne();
+    assertNotNull(resultEntity2);
+    assertNotEquals(entity2, resultEntity2);
+    assertNotNull(resultEntity2.getId());
+    assertEquals("2", resultEntity2.getUniqueValue());
+    assertEquals("B", resultEntity2.getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.POSTGRESQL, Dbms.SQLITE})
+  public void returning_onDuplicateKeyIgnore_duplicated_identityTable() {
+    IdentityTable_ i = new IdentityTable_();
+
+    var entity1 = new IdentityTable();
+    entity1.setUniqueValue("1");
+    entity1.setValue("A");
+    var entity2 = new IdentityTable();
+    entity2.setUniqueValue("1");
+    entity2.setValue("B");
+
+    var resultEntity1 = dsl.insert(i).single(entity1).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNotNull(resultEntity1);
+    assertNotEquals(entity1, resultEntity1);
+    assertNotNull(resultEntity1.getId());
+    assertEquals("1", resultEntity1.getUniqueValue());
+    assertEquals("A", resultEntity1.getValue());
+
+    var resultEntity2 = dsl.insert(i).single(entity2).onDuplicateKeyIgnore().returning().fetchOne();
+    assertNull(resultEntity2);
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_listener() {
+    Office_ o = new Office_();
+
+    Office office = new Office();
+    office.setDepartmentId(100);
+    office.setDepartmentNo(100);
+    office.setDepartmentName("PLANNING");
+    office.setLocation("TOKYO");
+
+    dsl.insert(o).single(office).returning(o.departmentId, o.version).fetchOne();
+
+    assertEquals(
+        "preInsert:departmentId,version. postInsert:departmentId,version. ",
+        OfficeListener.buffer.toString());
   }
 }

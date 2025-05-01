@@ -54,6 +54,8 @@ public class UpsertAssemblerContext {
   /** set clause property-value pair list */
   public final List<QueryOperandPair> setValues;
 
+  public final ReturningProperties returning;
+
   /**
    * Constructs an instance of UpsertAssemblerContext with the specified prepared SQL builder,
    * entity
@@ -69,6 +71,7 @@ public class UpsertAssemblerContext {
    * @param insertRows the insert rows
    * @param setValues the set clause property-value pair list(optional).Required in case of
    *     duplicateKeyType.UPDATE
+   * @param returning whether returning values is required
    */
   UpsertAssemblerContext(
       PreparedSqlBuilder buf,
@@ -80,7 +83,8 @@ public class UpsertAssemblerContext {
       List<? extends EntityPropertyType<?, ?>> keys,
       List<? extends EntityPropertyType<?, ?>> insertPropertyTypes,
       List<InsertRow> insertRows,
-      List<QueryOperandPair> setValues) {
+      List<QueryOperandPair> setValues,
+      ReturningProperties returning) {
     Objects.requireNonNull(buf);
     Objects.requireNonNull(entityType);
     Objects.requireNonNull(duplicateKeyType);
@@ -90,6 +94,7 @@ public class UpsertAssemblerContext {
     Objects.requireNonNull(insertPropertyTypes);
     Objects.requireNonNull(insertRows);
     Objects.requireNonNull(setValues);
+    Objects.requireNonNull(returning);
     if (duplicateKeyType == DuplicateKeyType.EXCEPTION) {
       throw new DomaIllegalArgumentException(
           "duplicateKeyType",
@@ -125,5 +130,6 @@ public class UpsertAssemblerContext {
     this.insertPropertyTypes = insertPropertyTypes;
     this.insertRows = insertRows;
     this.setValues = setValues;
+    this.returning = returning;
   }
 }

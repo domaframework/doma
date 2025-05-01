@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import org.seasar.doma.jdbc.BatchResult;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.Result;
 import org.seasar.doma.jdbc.criteria.context.DeleteContext;
 import org.seasar.doma.jdbc.criteria.context.DeleteSettings;
 import org.seasar.doma.jdbc.criteria.declaration.DeleteDeclaration;
@@ -58,7 +57,7 @@ public class UnifiedDeleteStarting<ENTITY> {
    * @param entity the entity
    * @return the delete statement
    */
-  public Statement<Result<ENTITY>> single(ENTITY entity) {
+  public EntityqlDeleteStatement<ENTITY> single(ENTITY entity) {
     Objects.requireNonNull(entity);
     return asEntityqlDeleteStatement(entity);
   }

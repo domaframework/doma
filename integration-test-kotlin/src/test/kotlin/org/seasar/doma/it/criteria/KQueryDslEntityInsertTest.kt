@@ -16,9 +16,13 @@
 package org.seasar.doma.it.criteria
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.extension.ExtendWith
+import org.seasar.doma.it.Dbms
 import org.seasar.doma.it.IntegrationTestEnvironment
+import org.seasar.doma.it.Run
 import org.seasar.doma.jdbc.Config
 import org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl
 
@@ -39,6 +43,34 @@ class KQueryDslEntityInsertTest(config: Config) {
         assertEquals(department, result.entity)
         val department2 = dsl.from(d).where { eq(d.departmentId, department.departmentId) }.fetchOne()
         checkNotNull(department2)
+        assertEquals("aaa", department2.departmentName)
+    }
+
+    @Test
+    @Run(unless = [Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE])
+    fun returning() {
+        val d = Department_()
+
+        val department = Department()
+        department.departmentId = 99
+        department.departmentNo = 99
+        department.departmentName = "aaa"
+        department.location = "bbb"
+
+        val resultEntity = dsl.insert(d).single(department).returning().execute()
+        assertNotNull(resultEntity)
+        assertNotEquals(department, resultEntity)
+        assertEquals(department.departmentId, resultEntity.departmentId)
+        assertEquals(department.departmentNo, resultEntity.departmentNo)
+        assertEquals(department.departmentName, resultEntity.departmentName)
+        assertEquals(department.location, resultEntity.location)
+        assertEquals(1, resultEntity.version)
+
+        val department2 =
+            dsl.from(d)
+                .where { eq(d.departmentId, department.departmentId) }
+                .fetchOne()
+        assertNotNull(department2)
         assertEquals("aaa", department2.departmentName)
     }
 }

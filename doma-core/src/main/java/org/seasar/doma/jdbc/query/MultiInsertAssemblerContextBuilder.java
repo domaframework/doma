@@ -30,9 +30,10 @@ public class MultiInsertAssemblerContextBuilder {
       Naming naming,
       Dialect dialect,
       List<EntityPropertyType<ENTITY, ?>> insertPropertyTypes,
-      List<ENTITY> entities) {
+      List<ENTITY> entities,
+      ReturningProperties returning) {
 
     return new MultiInsertAssemblerContext<>(
-        buf, entityType, naming, dialect, insertPropertyTypes, entities);
+        buf, entityType, naming, dialect, insertPropertyTypes, entities, returning);
   }
 }

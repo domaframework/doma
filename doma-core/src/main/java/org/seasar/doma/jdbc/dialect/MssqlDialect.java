@@ -28,6 +28,14 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingVisitor;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.query.DeleteAssembler;
+import org.seasar.doma.jdbc.query.DeleteAssemblerContext;
+import org.seasar.doma.jdbc.query.InsertAssembler;
+import org.seasar.doma.jdbc.query.InsertAssemblerContext;
+import org.seasar.doma.jdbc.query.MultiInsertAssembler;
+import org.seasar.doma.jdbc.query.MultiInsertAssemblerContext;
+import org.seasar.doma.jdbc.query.UpdateAssembler;
+import org.seasar.doma.jdbc.query.UpdateAssemblerContext;
 import org.seasar.doma.jdbc.query.UpsertAssembler;
 import org.seasar.doma.jdbc.query.UpsertAssemblerContext;
 
@@ -164,5 +172,26 @@ public class MssqlDialect extends Mssql2008Dialect {
   @Override
   public UpsertAssembler getUpsertAssembler(UpsertAssemblerContext context) {
     return new MssqlUpsertAssembler(context);
+  }
+
+  @Override
+  public <ENTITY> InsertAssembler getInsertAssembler(InsertAssemblerContext<ENTITY> context) {
+    return new MssqlInsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> MultiInsertAssembler getMultiInsertAssembler(
+      MultiInsertAssemblerContext<ENTITY> context) {
+    return new MssqlMultiInsertAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> UpdateAssembler getUpdateAssembler(UpdateAssemblerContext<ENTITY> context) {
+    return new MssqlUpdateAssembler<>(context);
+  }
+
+  @Override
+  public <ENTITY> DeleteAssembler getDeleteAssembler(DeleteAssemblerContext<ENTITY> context) {
+    return new MssqlDeleteAssembler<>(context);
   }
 }

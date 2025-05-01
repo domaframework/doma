@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -50,6 +51,8 @@ import org.seasar.doma.it.dao.IdentityStrategy2Dao;
 import org.seasar.doma.it.dao.IdentityStrategy2DaoImpl;
 import org.seasar.doma.it.dao.IdentityStrategyDao;
 import org.seasar.doma.it.dao.IdentityStrategyDaoImpl;
+import org.seasar.doma.it.dao.InsertReturningDao;
+import org.seasar.doma.it.dao.InsertReturningDaoImpl;
 import org.seasar.doma.it.dao.NoIdDao;
 import org.seasar.doma.it.dao.NoIdDaoImpl;
 import org.seasar.doma.it.dao.OptionalIdentityStrategyDao;
@@ -718,5 +721,57 @@ public class AutoInsertTest {
     assertEquals(1, entities.get(0).getId());
     assertEquals("1", entities.get(0).getUniqueValue());
     assertEquals("B", entities.get(0).getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnAll(entity);
+    assertEquals(1, result.getId());
+    assertEquals(10, result.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_include(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnOnlyId(entity);
+    assertEquals(1, result.getId());
+    assertNull(result.getValue());
+  }
+
+  @Test
+  @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_exclude(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var result = dao.insertThenReturnExceptValue(entity);
+    assertEquals(1, result.getId());
+    assertNull(result.getValue());
+  }
+
+  @Test
+  @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.ORACLE})
+  public void returning_notSupported(Config config) {
+    InsertReturningDao dao = new InsertReturningDaoImpl(config);
+
+    var entity = new IdentityStrategy();
+    entity.setValue(10);
+
+    var ex = assertThrows(JdbcException.class, () -> dao.insertThenReturnAll(entity));
+    assertEquals(Message.DOMA2240, ex.getMessageResource());
+    System.out.println(ex.getMessage());
   }
 }

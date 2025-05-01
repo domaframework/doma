@@ -17,18 +17,24 @@ package org.seasar.doma.kotlin.jdbc.criteria.statement
 
 import org.seasar.doma.jdbc.Result
 import org.seasar.doma.jdbc.Sql
+import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import org.seasar.doma.jdbc.criteria.statement.EntityqlInsertStatement
 
 class KEntityqlInsertStatement<ENTITY>(
     private val statement: EntityqlInsertStatement<ENTITY>,
 ) : KStatement<Result<ENTITY>> {
 
-    fun onDuplicateKeyUpdate(): KStatement<Result<ENTITY>> {
+    fun onDuplicateKeyUpdate(): KEntityqlUpsertStatement<ENTITY> {
         return KEntityqlUpsertStatement(statement.onDuplicateKeyUpdate())
     }
 
-    fun onDuplicateKeyIgnore(): KStatement<Result<ENTITY>> {
+    fun onDuplicateKeyIgnore(): KEntityqlUpsertStatement<ENTITY> {
         return KEntityqlUpsertStatement(statement.onDuplicateKeyIgnore())
+    }
+
+    fun returning(vararg properties: PropertyMetamodel<*>): KSingular<ENTITY> {
+        val singular = statement.returning(*properties)
+        return KSingularAdapter(singular)
     }
 
     override fun execute(): Result<ENTITY> {
