@@ -23,9 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates a class that implements a DAO interface.
  *
- * <p>This annotation is used internally by the Doma framework to mark classes
- * that are generated as implementations of DAO interfaces defined with the {@link Dao}
- * annotation.
+ * <p>This annotation is used internally by the Doma framework to mark classes that are generated as
+ * implementations of DAO interfaces defined with the {@link Dao} annotation.
  *
  * @see Dao
  */

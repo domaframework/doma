@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
  * Indicates that the annotated annotation may be applied to methods of {@link Dao} annotated
  * interfaces.
  *
- * <p>This is a meta-annotation used to mark other annotations that are designed to be
- * applied to DAO methods. The Doma framework uses this to validate annotation usage
- * during compile-time processing.
+ * <p>This is a meta-annotation used to mark other annotations that are designed to be applied to
+ * DAO methods. The Doma framework uses this to validate annotation usage during compile-time
+ * processing.
  *
  * @see Dao
  */

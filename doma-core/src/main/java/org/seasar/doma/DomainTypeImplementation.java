@@ -23,9 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates a class that implements a domain type.
  *
- * <p>This annotation is used internally by the Doma framework to mark classes
- * that are generated as implementations of domain types defined with the {@link Domain}
- * annotation.
+ * <p>This annotation is used internally by the Doma framework to mark classes that are generated as
+ * implementations of domain types defined with the {@link Domain} annotation.
  *
  * @see Domain
  */

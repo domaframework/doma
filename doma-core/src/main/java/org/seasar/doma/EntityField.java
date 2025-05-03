@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
  * Indicates that an annotated annotation may be applied to fields of {@link Entity} annotated
  * classes.
  *
- * <p>This is a meta-annotation used to mark other annotations that are designed to be
- * applied to entity fields. The Doma framework uses this to validate annotation usage
- * during compile-time processing.
+ * <p>This is a meta-annotation used to mark other annotations that are designed to be applied to
+ * entity fields. The Doma framework uses this to validate annotation usage during compile-time
+ * processing.
  *
  * @see Entity
  */

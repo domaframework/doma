@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates a class that can be embedded within an entity class.
  *
- * <p>An embeddable class represents a reusable component that groups related properties
- * which can be embedded into one or more entity classes.
+ * <p>An embeddable class represents a reusable component that groups related properties which can
+ * be embedded into one or more entity classes.
  *
  * <p>The embeddable class must have a non-private constructor that accepts all properties of the
  * class as arguments.
@@ -65,8 +65,8 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * <p>The embeddable instance is not required to be thread safe, as it is typically used
- * within the context of a single entity instance.
+ * <p>The embeddable instance is not required to be thread safe, as it is typically used within the
+ * context of a single entity instance.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
