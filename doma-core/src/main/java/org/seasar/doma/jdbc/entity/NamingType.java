@@ -21,15 +21,29 @@ import org.seasar.doma.Table;
 import org.seasar.doma.internal.util.StringUtil;
 
 /**
- * A naming convention.
+ * Defines naming conventions for converting between entity/property names and table/column names.
  *
- * <p>This convention resolves the table name from the entity name when {@link Table#name()} is not
- * specified at the entity class, and also resolves the column name from the entity property name
- * when {@link Column#name()} is not specified at the property field.
+ * <p>This enum provides strategies for automatically deriving database table names from entity class
+ * names when {@link Table#name()} is not specified, and for deriving database column names from
+ * entity property names when {@link Column#name()} is not specified.
+ *
+ * <p>Naming conventions are essential for maintaining consistent naming patterns between
+ * Java code and database schemas, especially in applications that follow specific
+ * naming standards.
+ *
+ * @see org.seasar.doma.Entity#naming()
+ * @see org.seasar.doma.Table
+ * @see org.seasar.doma.Column
  */
 public enum NamingType {
 
-  /** Converts nothing. */
+  /**
+   * Preserves the original name without any conversion.
+   *
+   * <p>This naming convention leaves entity and property names unchanged when
+   * mapping to table and column names. Use this when your Java naming conventions
+   * already match your database naming conventions.
+   */
   NONE {
 
     @Override
@@ -44,14 +58,20 @@ public enum NamingType {
   },
 
   /**
-   * Converts the camel case text to the text that is snake case and upper case.
+   * Converts camel case text to snake case with uppercase letters.
    *
-   * <p>For examples:
+   * <p>This naming convention transforms Java camelCase identifiers to
+   * database-style SNAKE_CASE identifiers with all uppercase letters.
+   * This is commonly used in databases that follow uppercase naming conventions.
+   *
+   * <p>Examples:
    *
    * <ul>
-   *   <li><code>aaaBbb</code> is converted to <code>AAA_BBB</code>.
-   *   <li><code>aaa3Bbb</code> is converted to <code>AAA3_BBB</code>.
+   *   <li><code>aaaBbb</code> is converted to <code>AAA_BBB</code>
+   *   <li><code>aaa3Bbb</code> is converted to <code>AAA3_BBB</code>
    * </ul>
+   *
+   * @see #SNAKE_LOWER_CASE
    */
   SNAKE_UPPER_CASE {
 
@@ -74,14 +94,20 @@ public enum NamingType {
   },
 
   /**
-   * Converts the camel case text to the text that is snake case and lower case.
+   * Converts camel case text to snake case with lowercase letters.
    *
-   * <p>For examples:
+   * <p>This naming convention transforms Java camelCase identifiers to
+   * database-style snake_case identifiers with all lowercase letters.
+   * This is commonly used in databases that follow lowercase naming conventions.
+   *
+   * <p>Examples:
    *
    * <ul>
-   *   <li><code>aaaBbb</code> is converted to <code>aaa_bbb</code>.
-   *   <li><code>aaa3Bbb</code> is converted to <code>aaa3_bbb</code>.
+   *   <li><code>aaaBbb</code> is converted to <code>aaa_bbb</code>
+   *   <li><code>aaa3Bbb</code> is converted to <code>aaa3_bbb</code>
    * </ul>
+   *
+   * @see #SNAKE_UPPER_CASE
    */
   SNAKE_LOWER_CASE {
 
@@ -104,13 +130,20 @@ public enum NamingType {
   },
 
   /**
-   * Converts the camel case text to the upper case text.
+   * Converts camel case text to all uppercase text without adding underscores.
    *
-   * <p>For examples:
+   * <p>This naming convention transforms Java camelCase identifiers to
+   * database-style identifiers with all uppercase letters, but without
+   * adding underscores between words.
+   *
+   * <p>Example:
    *
    * <ul>
-   *   <li><code>aaaBbb</code> is converted to <code>AAABBB</code>.
+   *   <li><code>aaaBbb</code> is converted to <code>AAABBB</code>
    * </ul>
+   *
+   * @see #LOWER_CASE
+   * @see #SNAKE_UPPER_CASE
    */
   UPPER_CASE {
 
@@ -132,13 +165,20 @@ public enum NamingType {
   },
 
   /**
-   * Converts the camel case text to the lower case text.
+   * Converts camel case text to all lowercase text without adding underscores.
    *
-   * <p>For examples:
+   * <p>This naming convention transforms Java camelCase identifiers to
+   * database-style identifiers with all lowercase letters, but without
+   * adding underscores between words.
+   *
+   * <p>Example:
    *
    * <ul>
-   *   <li><code>aaaBbb</code> is converted to <code>aaabbb</code>.
+   *   <li><code>aaaBbb</code> is converted to <code>aaabbb</code>
    * </ul>
+   *
+   * @see #UPPER_CASE
+   * @see #SNAKE_LOWER_CASE
    */
   LOWER_CASE {
 
@@ -160,18 +200,27 @@ public enum NamingType {
   };
 
   /**
-   * Applies this convention.
+   * Applies this naming convention to convert a Java identifier to a database identifier.
    *
-   * @param text the entity name or the property name
-   * @return the table name or the column name
+   * <p>This method is used to convert entity class names to table names and
+   * entity property names to column names according to the specific naming convention.
+   *
+   * @param text the entity name or property name to convert
+   * @return the converted table name or column name
+   * @throws DomaNullPointerException if the text is {@code null}
    */
   public abstract String apply(String text);
 
   /**
-   * Reverts the text to the original as much as possible.
+   * Attempts to convert a database identifier back to its original Java identifier form.
    *
-   * @param text the text that is converted by this convention
-   * @return the original
+   * <p>This method performs the reverse operation of {@link #apply(String)}, converting
+   * database table and column names back to their corresponding Java entity and property
+   * names. The conversion may not be perfect for all naming conventions.
+   *
+   * @param text the database table or column name to convert back
+   * @return the Java entity or property name
+   * @throws DomaNullPointerException if the text is {@code null}
    */
   public abstract String revert(String text);
 }
