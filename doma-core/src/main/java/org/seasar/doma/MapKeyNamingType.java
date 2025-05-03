@@ -20,7 +20,11 @@ import org.seasar.doma.internal.util.StringUtil;
 /**
  * Defines naming convention rules for the keys contained in a {@code Map<Object, String>} object.
  *
- * <p>The key name is resolved from a column name by applying this convention.
+ * <p>The key name is resolved from a column name by applying this convention. This is used
+ * when mapping database query results to Map objects.
+ *
+ * <p>Different naming conventions can be applied to transform column names into map keys
+ * according to the desired format (camel case, upper case, lower case, or unchanged).
  */
 public enum MapKeyNamingType {
 
