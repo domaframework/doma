@@ -21,12 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates the tenant id.
+ * Indicates a field that represents the tenant identifier in a multi-tenant application.
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
- * <p>The column mapped to the annotated field is included in WHERE clause in auto-generated SQL
- * statements
+ * <p>The column mapped to the annotated field is automatically included in the WHERE clause of auto-generated SQL
+ * statements to ensure proper data isolation between tenants.
  *
  * <pre>
  * &#064;Entity
