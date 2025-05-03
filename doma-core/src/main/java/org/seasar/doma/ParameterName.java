@@ -20,7 +20,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** Indicates a parameter name. */
+/**
+ * Indicates a parameter name for DAO methods.
+ *
+ * <p>This annotation is used to explicitly specify the name of a parameter
+ * that will be referenced in SQL templates or other database operations.
+ */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ParameterName {
