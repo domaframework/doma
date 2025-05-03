@@ -16,7 +16,10 @@
 package org.seasar.doma;
 
 /**
- * Defines the locations where annotations may appear.
+ * Defines the locations where annotations may appear in Java code.
+ *
+ * <p>This enum is used to specify the valid target locations for annotations
+ * within the Doma framework's annotation processing system.
  *
  * @see Annotation
  */
