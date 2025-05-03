@@ -21,11 +21,11 @@ import org.seasar.doma.jdbc.JdbcMappable;
 /**
  * Represents a property of an entity class that can be mapped to a database column.
  *
- * <p>This interface defines methods for getting and setting property values on entity
- * instances, as well as converting between entity property values and database column values.
+ * <p>This interface defines methods for getting and setting property values on entity instances, as
+ * well as converting between entity property values and database column values.
  *
- * <p>Implementations of this interface are typically generated at compile time by the
- * Doma annotation processor based on {@link org.seasar.doma.Entity} annotated classes.
+ * <p>Implementations of this interface are typically generated at compile time by the Doma
+ * annotation processor based on {@link org.seasar.doma.Entity} annotated classes.
  *
  * @param <ENTITY> the entity type that contains this property
  * @param <BASIC> the basic type that represents the property's value
@@ -46,19 +46,20 @@ public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
   /**
    * Returns the non-optional value of this property.
    *
-   * <p>If the property value is wrapped in an Optional, this method unwraps it.
-   * This method may throw an exception if the property value is null.
+   * <p>If the property value is wrapped in an Optional, this method unwraps it. This method may
+   * throw an exception if the property value is null.
    *
    * @return the non-optional value of this property
-   * @throws java.util.NoSuchElementException if the property value is null and wrapped in an Optional
+   * @throws java.util.NoSuchElementException if the property value is null and wrapped in an
+   *     Optional
    */
   Object getAsNonOptional();
 
   /**
    * Loads the value from the entity into this property.
    *
-   * <p>This method extracts the property value from the given entity instance
-   * and stores it in this property object for later use.
+   * <p>This method extracts the property value from the given entity instance and stores it in this
+   * property object for later use.
    *
    * @param entity the entity instance to load the value from
    * @return this property instance for method chaining
@@ -68,8 +69,8 @@ public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
   /**
    * Saves the current value of this property to the given entity instance.
    *
-   * <p>This method updates the property value in the given entity instance
-   * with the current value stored in this property object.
+   * <p>This method updates the property value in the given entity instance with the current value
+   * stored in this property object.
    *
    * @param entity the entity instance to save the value to
    * @return this property instance for method chaining

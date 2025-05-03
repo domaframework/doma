@@ -21,10 +21,9 @@ import org.seasar.doma.message.Message;
 /**
  * Exception thrown when a property is referenced but not defined in an entity class.
  *
- * <p>This exception is typically thrown when attempting to access a property
- * that exists in the entity class but is not properly defined as a persistent
- * property (e.g., not annotated with {@link org.seasar.doma.Column} or excluded
- * from persistence).
+ * <p>This exception is typically thrown when attempting to access a property that exists in the
+ * entity class but is not properly defined as a persistent property (e.g., not annotated with
+ * {@link org.seasar.doma.Column} or excluded from persistence).
  *
  * @see org.seasar.doma.jdbc.entity.EntityType
  * @see org.seasar.doma.jdbc.entity.EntityPropertyType

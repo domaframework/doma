@@ -87,7 +87,7 @@ public final class Tuple4<T1, T2, T3, T4> {
 
   /**
    * Returns the first element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the first element
@@ -98,7 +98,7 @@ public final class Tuple4<T1, T2, T3, T4> {
 
   /**
    * Returns the second element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the second element
@@ -109,7 +109,7 @@ public final class Tuple4<T1, T2, T3, T4> {
 
   /**
    * Returns the third element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the third element
@@ -120,7 +120,7 @@ public final class Tuple4<T1, T2, T3, T4> {
 
   /**
    * Returns the fourth element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the fourth element

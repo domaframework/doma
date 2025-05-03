@@ -20,8 +20,8 @@ import java.util.Objects;
 /**
  * A tuple class that holds two elements of potentially different types.
  *
- * <p>This class is used in the criteria API to represent pairs of values returned from
- * database queries, allowing for type-safe access to multiple columns in query results.
+ * <p>This class is used in the criteria API to represent pairs of values returned from database
+ * queries, allowing for type-safe access to multiple columns in query results.
  *
  * @param <T1> the type of the first element
  * @param <T2> the type of the second element
@@ -61,7 +61,7 @@ public final class Tuple2<T1, T2> {
 
   /**
    * Returns the first element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the first element
@@ -72,7 +72,7 @@ public final class Tuple2<T1, T2> {
 
   /**
    * Returns the second element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the second element

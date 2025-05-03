@@ -113,7 +113,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the first element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the first element
@@ -124,7 +124,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the second element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the second element
@@ -135,7 +135,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the third element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the third element
@@ -146,7 +146,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the fourth element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the fourth element
@@ -157,7 +157,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the fifth element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the fifth element
@@ -168,7 +168,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> {
 
   /**
    * Returns the sixth element of this tuple.
-   * 
+   *
    * <p>This method provides Kotlin-style component access.
    *
    * @return the sixth element

@@ -21,9 +21,8 @@ import org.seasar.doma.message.Message;
 /**
  * Exception thrown when a property is not found in an entity class.
  *
- * <p>This exception is typically thrown when attempting to access a property
- * that does not exist in an entity, either through reflection or when mapping
- * query results to entity objects.
+ * <p>This exception is typically thrown when attempting to access a property that does not exist in
+ * an entity, either through reflection or when mapping query results to entity objects.
  *
  * @see org.seasar.doma.jdbc.entity.EntityType
  * @see org.seasar.doma.jdbc.entity.EntityPropertyType

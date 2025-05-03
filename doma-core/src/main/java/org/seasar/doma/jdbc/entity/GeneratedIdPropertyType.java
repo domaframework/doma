@@ -34,12 +34,12 @@ import org.seasar.doma.wrapper.NumberWrapperVisitor;
 /**
  * A property type for entity ID fields whose values are automatically generated.
  *
- * <p>This class handles ID generation strategies such as database identity columns,
- * sequences, and table-based ID generation. It provides methods for generating IDs
- * both before and after database insert operations.
+ * <p>This class handles ID generation strategies such as database identity columns, sequences, and
+ * table-based ID generation. It provides methods for generating IDs both before and after database
+ * insert operations.
  *
- * <p>This property type is used for fields annotated with both {@link org.seasar.doma.Id}
- * and {@link org.seasar.doma.GeneratedValue} in entity classes.
+ * <p>This property type is used for fields annotated with both {@link org.seasar.doma.Id} and
+ * {@link org.seasar.doma.GeneratedValue} in entity classes.
  *
  * @param <ENTITY> the entity type that contains this property
  * @param <BASIC> the numeric type of the ID property (must extend Number)
@@ -56,8 +56,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Constructs a new generated ID property type.
    *
-   * <p>This constructor is typically called by the Doma annotation processor
-   * when generating implementations of {@link EntityType}.
+   * <p>This constructor is typically called by the Doma annotation processor when generating
+   * implementations of {@link EntityType}.
    *
    * @param entityClass the entity class
    * @param scalarSupplier the supplier of scalar that represents the property value
@@ -85,10 +85,10 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
 
   /**
    * {@inheritDoc}
-   * 
-   * <p>This implementation always returns {@code true} since this property type
-   * represents an ID property with a generated value.
-   * 
+   *
+   * <p>This implementation always returns {@code true} since this property type represents an ID
+   * property with a generated value.
+   *
    * @return {@code true}
    */
   @Override
@@ -99,8 +99,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Validates that the ID generation strategy is supported by the current database dialect.
    *
-   * <p>This method checks if the configured generation strategy (IDENTITY, SEQUENCE, etc.)
-   * is compatible with the database dialect being used. If not, a JdbcException is thrown.
+   * <p>This method checks if the configured generation strategy (IDENTITY, SEQUENCE, etc.) is
+   * compatible with the database dialect being used. If not, a JdbcException is thrown.
    *
    * @param config the ID generation configuration
    * @throws JdbcException if the generation strategy is not supported by the dialect
@@ -118,8 +118,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Determines if the specified generation type is supported by the given dialect.
    *
-   * <p>Different databases support different ID generation strategies. For example,
-   * not all databases support identity columns or sequences.
+   * <p>Different databases support different ID generation strategies. For example, not all
+   * databases support identity columns or sequences.
    *
    * @param generationType the ID generation type to check
    * @param dialect the database dialect
@@ -160,8 +160,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Generates and sets an ID value for an entity before it is inserted into the database.
    *
-   * <p>This method is used for ID generation strategies that generate values before
-   * the insert operation, such as SEQUENCE and TABLE.
+   * <p>This method is used for ID generation strategies that generate values before the insert
+   * operation, such as SEQUENCE and TABLE.
    *
    * @param entityType the entity type
    * @param entity the entity instance
@@ -175,8 +175,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Generates and sets ID values for multiple entities before they are inserted into the database.
    *
-   * <p>This method is used for batch operations with ID generation strategies that
-   * generate values before the insert operation, such as SEQUENCE and TABLE.
+   * <p>This method is used for batch operations with ID generation strategies that generate values
+   * before the insert operation, such as SEQUENCE and TABLE.
    *
    * @param entityType the entity type
    * @param entities the list of entity instances
@@ -199,8 +199,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Retrieves and sets an ID value for an entity after it has been inserted into the database.
    *
-   * <p>This method is used for ID generation strategies that generate values during
-   * the insert operation, such as IDENTITY.
+   * <p>This method is used for ID generation strategies that generate values during the insert
+   * operation, such as IDENTITY.
    *
    * @param entityType the entity type
    * @param entity the entity instance
@@ -218,10 +218,11 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   }
 
   /**
-   * Retrieves and sets ID values for multiple entities after they have been inserted into the database.
+   * Retrieves and sets ID values for multiple entities after they have been inserted into the
+   * database.
    *
-   * <p>This method is used for batch operations with ID generation strategies that
-   * generate values during the insert operation, such as IDENTITY.
+   * <p>This method is used for batch operations with ID generation strategies that generate values
+   * during the insert operation, such as IDENTITY.
    *
    * @param entityType the entity type
    * @param entities the list of entity instances
@@ -248,8 +249,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * Sets the ID value if necessary.
    *
-   * <p>This method sets the ID value only if the current value is null or negative.
-   * It is used internally by the preInsert and postInsert methods.
+   * <p>This method sets the ID value only if the current value is null or negative. It is used
+   * internally by the preInsert and postInsert methods.
    *
    * @param entityType the entity type metadata
    * @param entity the entity instance to modify
@@ -264,8 +265,8 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
   /**
    * A visitor implementation that sets an ID value in a number wrapper.
    *
-   * <p>This class is used by the {@link #setIfNecessary} method to set the ID value
-   * only if the current value is null or negative.
+   * <p>This class is used by the {@link #setIfNecessary} method to set the ID value only if the
+   * current value is null or negative.
    */
   protected static class ValueSetter
       implements NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {

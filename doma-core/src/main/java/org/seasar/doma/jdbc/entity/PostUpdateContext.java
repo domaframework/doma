@@ -25,10 +25,10 @@ import org.seasar.doma.jdbc.query.ReturningProperties;
 /**
  * A context for post-processing an entity after an update operation.
  *
- * <p>This interface provides methods to check if an entity or its properties have changed
- * since the last database read, as well as methods to access and modify the entity being updated.
- * It is typically used in entity listener implementations to perform custom logic after
- * an update operation.
+ * <p>This interface provides methods to check if an entity or its properties have changed since the
+ * last database read, as well as methods to access and modify the entity being updated. It is
+ * typically used in entity listener implementations to perform custom logic after an update
+ * operation.
  *
  * <p>The context is passed to the {@code postUpdate} method of entity listeners.
  *
@@ -42,8 +42,8 @@ public interface PostUpdateContext<E> {
   /**
    * Determines whether a specific property of the entity has been changed.
    *
-   * <p>This method checks if the specified property has been modified by comparing
-   * its current value with the original value stored in the {@link OriginalStates} field.
+   * <p>This method checks if the specified property has been modified by comparing its current
+   * value with the original value stored in the {@link OriginalStates} field.
    *
    * <p>This method always returns {@code true} when {@link Update#sqlFile()} returns {@code true},
    * as SQL file-based updates do not perform change detection.
@@ -58,18 +58,19 @@ public interface PostUpdateContext<E> {
   /**
    * Returns the entity type metadata for the entity being updated.
    *
-   * <p>The entity type provides access to metadata about the entity class,
-   * including its properties, naming conventions, and other configuration.
+   * <p>The entity type provides access to metadata about the entity class, including its
+   * properties, naming conventions, and other configuration.
    *
    * @return the entity type metadata
    */
   EntityType<E> getEntityType();
 
   /**
-   * Returns the DAO method that is annotated with {@link Update} and triggered this update operation.
+   * Returns the DAO method that is annotated with {@link Update} and triggered this update
+   * operation.
    *
-   * <p>This method provides access to the reflection Method object representing
-   * the DAO method that initiated the update operation.
+   * <p>This method provides access to the reflection Method object representing the DAO method that
+   * initiated the update operation.
    *
    * @return the Method object representing the DAO method
    */
@@ -78,8 +79,8 @@ public interface PostUpdateContext<E> {
   /**
    * Returns the Doma configuration associated with this update operation.
    *
-   * <p>The configuration provides access to database connection, dialect,
-   * and other runtime settings for the current operation.
+   * <p>The configuration provides access to database connection, dialect, and other runtime
+   * settings for the current operation.
    *
    * @return the Doma configuration
    */
@@ -88,8 +89,8 @@ public interface PostUpdateContext<E> {
   /**
    * Returns the entity instance that was updated.
    *
-   * <p>This is the entity instance after the update operation and any modifications
-   * made by entity listeners in their postUpdate methods.
+   * <p>This is the entity instance after the update operation and any modifications made by entity
+   * listeners in their postUpdate methods.
    *
    * @return the updated entity instance
    */
@@ -98,8 +99,8 @@ public interface PostUpdateContext<E> {
   /**
    * Sets a new entity instance to be used after the update operation.
    *
-   * <p>This method is primarily used with immutable entity classes, allowing
-   * entity listeners to replace the entity instance with a modified version.
+   * <p>This method is primarily used with immutable entity classes, allowing entity listeners to
+   * replace the entity instance with a modified version.
    *
    * @param newEntity the new entity instance to use
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
@@ -109,8 +110,8 @@ public interface PostUpdateContext<E> {
   /**
    * Returns the returning properties configuration for this update operation.
    *
-   * <p>Returning properties specify which columns should be returned by the database
-   * after an update operation, typically used with the RETURNING clause in SQL.
+   * <p>Returning properties specify which columns should be returned by the database after an
+   * update operation, typically used with the RETURNING clause in SQL.
    *
    * @return the returning properties configuration, never {@code null}
    * @see org.seasar.doma.Returning

@@ -23,13 +23,12 @@ import org.seasar.doma.internal.util.StringUtil;
 /**
  * Defines naming conventions for converting between entity/property names and table/column names.
  *
- * <p>This enum provides strategies for automatically deriving database table names from entity class
- * names when {@link Table#name()} is not specified, and for deriving database column names from
- * entity property names when {@link Column#name()} is not specified.
+ * <p>This enum provides strategies for automatically deriving database table names from entity
+ * class names when {@link Table#name()} is not specified, and for deriving database column names
+ * from entity property names when {@link Column#name()} is not specified.
  *
- * <p>Naming conventions are essential for maintaining consistent naming patterns between
- * Java code and database schemas, especially in applications that follow specific
- * naming standards.
+ * <p>Naming conventions are essential for maintaining consistent naming patterns between Java code
+ * and database schemas, especially in applications that follow specific naming standards.
  *
  * @see org.seasar.doma.Entity#naming()
  * @see org.seasar.doma.Table
@@ -40,9 +39,9 @@ public enum NamingType {
   /**
    * Preserves the original name without any conversion.
    *
-   * <p>This naming convention leaves entity and property names unchanged when
-   * mapping to table and column names. Use this when your Java naming conventions
-   * already match your database naming conventions.
+   * <p>This naming convention leaves entity and property names unchanged when mapping to table and
+   * column names. Use this when your Java naming conventions already match your database naming
+   * conventions.
    */
   NONE {
 
@@ -60,9 +59,9 @@ public enum NamingType {
   /**
    * Converts camel case text to snake case with uppercase letters.
    *
-   * <p>This naming convention transforms Java camelCase identifiers to
-   * database-style SNAKE_CASE identifiers with all uppercase letters.
-   * This is commonly used in databases that follow uppercase naming conventions.
+   * <p>This naming convention transforms Java camelCase identifiers to database-style SNAKE_CASE
+   * identifiers with all uppercase letters. This is commonly used in databases that follow
+   * uppercase naming conventions.
    *
    * <p>Examples:
    *
@@ -96,9 +95,9 @@ public enum NamingType {
   /**
    * Converts camel case text to snake case with lowercase letters.
    *
-   * <p>This naming convention transforms Java camelCase identifiers to
-   * database-style snake_case identifiers with all lowercase letters.
-   * This is commonly used in databases that follow lowercase naming conventions.
+   * <p>This naming convention transforms Java camelCase identifiers to database-style snake_case
+   * identifiers with all lowercase letters. This is commonly used in databases that follow
+   * lowercase naming conventions.
    *
    * <p>Examples:
    *
@@ -132,9 +131,8 @@ public enum NamingType {
   /**
    * Converts camel case text to all uppercase text without adding underscores.
    *
-   * <p>This naming convention transforms Java camelCase identifiers to
-   * database-style identifiers with all uppercase letters, but without
-   * adding underscores between words.
+   * <p>This naming convention transforms Java camelCase identifiers to database-style identifiers
+   * with all uppercase letters, but without adding underscores between words.
    *
    * <p>Example:
    *
@@ -167,9 +165,8 @@ public enum NamingType {
   /**
    * Converts camel case text to all lowercase text without adding underscores.
    *
-   * <p>This naming convention transforms Java camelCase identifiers to
-   * database-style identifiers with all lowercase letters, but without
-   * adding underscores between words.
+   * <p>This naming convention transforms Java camelCase identifiers to database-style identifiers
+   * with all lowercase letters, but without adding underscores between words.
    *
    * <p>Example:
    *
@@ -202,8 +199,8 @@ public enum NamingType {
   /**
    * Applies this naming convention to convert a Java identifier to a database identifier.
    *
-   * <p>This method is used to convert entity class names to table names and
-   * entity property names to column names according to the specific naming convention.
+   * <p>This method is used to convert entity class names to table names and entity property names
+   * to column names according to the specific naming convention.
    *
    * @param text the entity name or property name to convert
    * @return the converted table name or column name
@@ -214,9 +211,9 @@ public enum NamingType {
   /**
    * Attempts to convert a database identifier back to its original Java identifier form.
    *
-   * <p>This method performs the reverse operation of {@link #apply(String)}, converting
-   * database table and column names back to their corresponding Java entity and property
-   * names. The conversion may not be perfect for all naming conventions.
+   * <p>This method performs the reverse operation of {@link #apply(String)}, converting database
+   * table and column names back to their corresponding Java entity and property names. The
+   * conversion may not be perfect for all naming conventions.
    *
    * @param text the database table or column name to convert back
    * @return the Java entity or property name

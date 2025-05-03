@@ -16,19 +16,19 @@
 /**
  * Provides classes and interfaces for entity mapping and lifecycle management.
  *
- * <p>This package contains the core components for mapping Java objects to database
- * tables and managing their lifecycle during database operations. Key components include:
+ * <p>This package contains the core components for mapping Java objects to database tables and
+ * managing their lifecycle during database operations. Key components include:
  *
  * <ul>
- *   <li>{@link org.seasar.doma.jdbc.entity.EntityType} - Metadata about entity classes</li>
- *   <li>{@link org.seasar.doma.jdbc.entity.EntityPropertyType} - Metadata about entity properties</li>
- *   <li>{@link org.seasar.doma.jdbc.entity.EntityListener} - Lifecycle callbacks for entities</li>
- *   <li>{@link org.seasar.doma.jdbc.entity.NamingType} - Naming conventions for table and column names</li>
+ *   <li>{@link org.seasar.doma.jdbc.entity.EntityType} - Metadata about entity classes
+ *   <li>{@link org.seasar.doma.jdbc.entity.EntityPropertyType} - Metadata about entity properties
+ *   <li>{@link org.seasar.doma.jdbc.entity.EntityListener} - Lifecycle callbacks for entities
+ *   <li>{@link org.seasar.doma.jdbc.entity.NamingType} - Naming conventions for table and column
+ *       names
  * </ul>
  *
- * <p>The classes in this package are typically used by the Doma annotation processor
- * to generate implementations at compile time, rather than being used directly by
- * application code.
+ * <p>The classes in this package are typically used by the Doma annotation processor to generate
+ * implementations at compile time, rather than being used directly by application code.
  *
  * @see org.seasar.doma.Entity
  * @see org.seasar.doma.Table

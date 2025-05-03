@@ -24,10 +24,9 @@ import org.seasar.doma.jdbc.query.ReturningProperties;
 /**
  * A context for post-processing an entity after a delete operation.
  *
- * <p>This interface provides methods to access and modify the entity that was deleted,
- * as well as methods to access configuration and metadata about the delete operation.
- * It is typically used in entity listener implementations to perform custom logic after
- * a delete operation.
+ * <p>This interface provides methods to access and modify the entity that was deleted, as well as
+ * methods to access configuration and metadata about the delete operation. It is typically used in
+ * entity listener implementations to perform custom logic after a delete operation.
  *
  * <p>The context is passed to the {@code postDelete} method of entity listeners.
  *
@@ -40,18 +39,19 @@ public interface PostDeleteContext<E> {
   /**
    * Returns the entity type metadata for the entity that was deleted.
    *
-   * <p>The entity type provides access to metadata about the entity class,
-   * including its properties, naming conventions, and other configuration.
+   * <p>The entity type provides access to metadata about the entity class, including its
+   * properties, naming conventions, and other configuration.
    *
    * @return the entity type metadata
    */
   EntityType<E> getEntityType();
 
   /**
-   * Returns the DAO method that is annotated with {@link Delete} and triggered this delete operation.
+   * Returns the DAO method that is annotated with {@link Delete} and triggered this delete
+   * operation.
    *
-   * <p>This method provides access to the reflection Method object representing
-   * the DAO method that initiated the delete operation.
+   * <p>This method provides access to the reflection Method object representing the DAO method that
+   * initiated the delete operation.
    *
    * @return the Method object representing the DAO method
    */
@@ -60,8 +60,8 @@ public interface PostDeleteContext<E> {
   /**
    * Returns the Doma configuration associated with this delete operation.
    *
-   * <p>The configuration provides access to database connection, dialect,
-   * and other runtime settings for the current operation.
+   * <p>The configuration provides access to database connection, dialect, and other runtime
+   * settings for the current operation.
    *
    * @return the Doma configuration
    */
@@ -70,8 +70,8 @@ public interface PostDeleteContext<E> {
   /**
    * Returns the entity instance that was deleted.
    *
-   * <p>This is the entity instance after the delete operation and any modifications
-   * made by entity listeners in their postDelete methods.
+   * <p>This is the entity instance after the delete operation and any modifications made by entity
+   * listeners in their postDelete methods.
    *
    * @return the deleted entity instance
    */
@@ -80,9 +80,9 @@ public interface PostDeleteContext<E> {
   /**
    * Sets a new entity instance to be used after the delete operation.
    *
-   * <p>This method is primarily used with immutable entity classes, allowing
-   * entity listeners to replace the entity instance with a modified version
-   * after it has been deleted from the database.
+   * <p>This method is primarily used with immutable entity classes, allowing entity listeners to
+   * replace the entity instance with a modified version after it has been deleted from the
+   * database.
    *
    * @param newEntity the new entity instance to use
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
@@ -92,8 +92,8 @@ public interface PostDeleteContext<E> {
   /**
    * Returns the returning properties configuration for this delete operation.
    *
-   * <p>Returning properties specify which columns should be returned by the database
-   * after a delete operation, typically used with the RETURNING clause in SQL.
+   * <p>Returning properties specify which columns should be returned by the database after a delete
+   * operation, typically used with the RETURNING clause in SQL.
    *
    * @return the returning properties configuration, never {@code null}
    * @see org.seasar.doma.Returning

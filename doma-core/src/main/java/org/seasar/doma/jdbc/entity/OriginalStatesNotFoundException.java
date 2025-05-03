@@ -22,10 +22,10 @@ import org.seasar.doma.message.Message;
 /**
  * Exception thrown when a field annotated with {@link OriginalStates} is not found in an entity.
  *
- * <p>This exception is typically thrown when Doma attempts to access the original states
- * of an entity but cannot find a field annotated with {@link OriginalStates}. The original
- * states field is required for optimistic concurrency control and for determining which
- * properties have changed since the entity was loaded.
+ * <p>This exception is typically thrown when Doma attempts to access the original states of an
+ * entity but cannot find a field annotated with {@link OriginalStates}. The original states field
+ * is required for optimistic concurrency control and for determining which properties have changed
+ * since the entity was loaded.
  *
  * @see org.seasar.doma.OriginalStates
  * @see org.seasar.doma.jdbc.entity.EntityType
@@ -43,7 +43,8 @@ public class OriginalStatesNotFoundException extends JdbcException {
    *
    * @param cause the cause of this exception
    * @param entityClassName the fully qualified name of the entity class
-   * @param fieldName the name of the field that was expected to be annotated with {@link OriginalStates}
+   * @param fieldName the name of the field that was expected to be annotated with {@link
+   *     OriginalStates}
    */
   public OriginalStatesNotFoundException(
       Throwable cause, String entityClassName, String fieldName) {

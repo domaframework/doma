@@ -19,14 +19,15 @@ import java.util.function.Supplier;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 
 /**
- * Represents a property in an entity class that is used as a primary key with an application-assigned value.
+ * Represents a property in an entity class that is used as a primary key with an
+ * application-assigned value.
  *
- * <p>An assigned ID property is annotated with {@link org.seasar.doma.Id} but not with
- * {@link org.seasar.doma.GeneratedValue}, indicating that the application is responsible
- * for assigning the ID value before the entity is inserted into the database.
+ * <p>An assigned ID property is annotated with {@link org.seasar.doma.Id} but not with {@link
+ * org.seasar.doma.GeneratedValue}, indicating that the application is responsible for assigning the
+ * ID value before the entity is inserted into the database.
  *
- * <p>Implementations of this class are typically generated at compile time by the
- * Doma annotation processor.
+ * <p>Implementations of this class are typically generated at compile time by the Doma annotation
+ * processor.
  *
  * @param <ENTITY> the entity type containing this assigned ID property
  * @param <BASIC> the basic type of the assigned ID property
@@ -40,8 +41,8 @@ public class AssignedIdPropertyType<ENTITY, BASIC, CONTAINER>
   /**
    * Constructs a new assigned ID property type.
    *
-   * <p>This constructor is typically called by the Doma annotation processor
-   * when generating implementations of {@link EntityType}.
+   * <p>This constructor is typically called by the Doma annotation processor when generating
+   * implementations of {@link EntityType}.
    *
    * @param entityClass the entity class
    * @param scalarSupplier the supplier of scalar that represents the property value
@@ -62,10 +63,10 @@ public class AssignedIdPropertyType<ENTITY, BASIC, CONTAINER>
 
   /**
    * {@inheritDoc}
-   * 
-   * <p>This implementation always returns {@code true} since this property type
-   * represents an ID property with an application-assigned value.
-   * 
+   *
+   * <p>This implementation always returns {@code true} since this property type represents an ID
+   * property with an application-assigned value.
+   *
    * @return {@code true}
    */
   @Override

@@ -21,9 +21,9 @@ import org.seasar.doma.message.Message;
 /**
  * Exception thrown when access to an entity property fails.
  *
- * <p>This exception is typically thrown when there is an error accessing a property
- * of an entity, such as when reflection fails due to security restrictions or when
- * a getter or setter method throws an exception.
+ * <p>This exception is typically thrown when there is an error accessing a property of an entity,
+ * such as when reflection fails due to security restrictions or when a getter or setter method
+ * throws an exception.
  *
  * @see org.seasar.doma.jdbc.entity.EntityType
  * @see org.seasar.doma.jdbc.entity.EntityPropertyType

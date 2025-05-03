@@ -21,12 +21,12 @@ import java.util.function.Function;
 /**
  * Describes a property of an entity class that maps to a database column.
  *
- * <p>This interface defines methods for accessing property metadata, such as
- * property name, column name, and various property characteristics (ID, version, etc.).
- * It also provides methods for creating property instances and copying property values.
+ * <p>This interface defines methods for accessing property metadata, such as property name, column
+ * name, and various property characteristics (ID, version, etc.). It also provides methods for
+ * creating property instances and copying property values.
  *
- * <p>Implementations of this interface are typically generated at compile time by the
- * Doma annotation processor based on {@link org.seasar.doma.Entity} annotated classes.
+ * <p>Implementations of this interface are typically generated at compile time by the Doma
+ * annotation processor based on {@link org.seasar.doma.Entity} annotated classes.
  *
  * <p>This instance is not required to be thread safe.
  *
@@ -40,8 +40,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Returns the name of this property.
    *
-   * <p>The property name typically corresponds to the field or method name
-   * in the entity class that is mapped to a database column.
+   * <p>The property name typically corresponds to the field or method name in the entity class that
+   * is mapped to a database column.
    *
    * @return the property name
    */
@@ -50,8 +50,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Returns the database column name that this property maps to.
    *
-   * <p>The column name is determined based on the {@link org.seasar.doma.Column} annotation
-   * if present, or derived from the property name using the entity's naming convention.
+   * <p>The column name is determined based on the {@link org.seasar.doma.Column} annotation if
+   * present, or derived from the property name using the entity's naming convention.
    *
    * @return the database column name
    * @see org.seasar.doma.Column
@@ -61,8 +61,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Returns the database column name with optional quotation marks applied.
    *
-   * <p>This method allows customizing how quotation marks are applied to the column name,
-   * which is useful when generating SQL for different database dialects.
+   * <p>This method allows customizing how quotation marks are applied to the column name, which is
+   * useful when generating SQL for different database dialects.
    *
    * @param quoteFunction the function that applies quotation marks to the column name
    * @return the column name with quotation marks applied as specified
@@ -73,8 +73,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Returns the database column name with naming convention applied.
    *
-   * <p>This method allows customizing how naming conventions are applied to the column name,
-   * which is useful when generating SQL for different database naming styles.
+   * <p>This method allows customizing how naming conventions are applied to the column name, which
+   * is useful when generating SQL for different database naming styles.
    *
    * @param namingFunction the function that applies naming convention to the column name
    * @return the column name with naming convention applied
@@ -85,9 +85,9 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Returns the database column name with both naming convention and quotation marks applied.
    *
-   * <p>This method combines the functionality of {@link #getColumnName(BiFunction)} and
-   * {@link #getColumnName(Function)} to apply both naming conventions and quotation marks
-   * to the column name.
+   * <p>This method combines the functionality of {@link #getColumnName(BiFunction)} and {@link
+   * #getColumnName(Function)} to apply both naming conventions and quotation marks to the column
+   * name.
    *
    * @param namingFunction the function that applies naming convention to the column name
    * @param quoteFunction the function that applies quotation marks to the column name
@@ -102,8 +102,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Determines whether quotation marks are required for the column name.
    *
-   * <p>This method indicates if the column name should be quoted in SQL statements,
-   * which is typically needed for reserved words or column names with special characters.
+   * <p>This method indicates if the column name should be quoted in SQL statements, which is
+   * typically needed for reserved words or column names with special characters.
    *
    * @return {@code true} if quotation marks are required, {@code false} otherwise
    * @see org.seasar.doma.Column#quote()
@@ -113,8 +113,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Determines whether this property represents a primary key (identifier).
    *
-   * <p>This method indicates if the property is annotated with {@link org.seasar.doma.Id},
-   * which marks it as a primary key column in the database table.
+   * <p>This method indicates if the property is annotated with {@link org.seasar.doma.Id}, which
+   * marks it as a primary key column in the database table.
    *
    * @return {@code true} if this property is a primary key, {@code false} otherwise
    * @see org.seasar.doma.Id
@@ -146,11 +146,12 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Determines whether the column mapped to this property is included in SQL INSERT statements.
    *
-   * <p>This method indicates if the property should be included when generating
-   * INSERT statements. Properties may be excluded from INSERT statements if they
-   * are auto-generated or should not be explicitly set.
+   * <p>This method indicates if the property should be included when generating INSERT statements.
+   * Properties may be excluded from INSERT statements if they are auto-generated or should not be
+   * explicitly set.
    *
-   * @return {@code true} if the property is included in SQL INSERT statements, {@code false} otherwise
+   * @return {@code true} if the property is included in SQL INSERT statements, {@code false}
+   *     otherwise
    * @see org.seasar.doma.Column#insertable()
    */
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -159,11 +160,12 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Determines whether the column mapped to this property is included in SQL UPDATE statements.
    *
-   * <p>This method indicates if the property should be included when generating
-   * UPDATE statements. Properties may be excluded from UPDATE statements if they
-   * are read-only or should not be modified after creation.
+   * <p>This method indicates if the property should be included when generating UPDATE statements.
+   * Properties may be excluded from UPDATE statements if they are read-only or should not be
+   * modified after creation.
    *
-   * @return {@code true} if the property is included in SQL UPDATE statements, {@code false} otherwise
+   * @return {@code true} if the property is included in SQL UPDATE statements, {@code false}
+   *     otherwise
    * @see org.seasar.doma.Column#updatable()
    */
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -172,9 +174,8 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Creates a property instance for this property type.
    *
-   * <p>The created property instance can be used to get and set property values
-   * on entity instances, as well as to convert between entity property values
-   * and database column values.
+   * <p>The created property instance can be used to get and set property values on entity
+   * instances, as well as to convert between entity property values and database column values.
    *
    * @return a new property instance
    * @see Property
@@ -184,11 +185,11 @@ public interface EntityPropertyType<ENTITY, BASIC> {
   /**
    * Copies the value of this property from one entity instance to another.
    *
-   * <p>This method performs a deep copy of the property value. However, it does not
-   * copy JDBC-specific objects such as {@code Blob}, {@code Clob}, or {@code SQLXML}.
+   * <p>This method performs a deep copy of the property value. However, it does not copy
+   * JDBC-specific objects such as {@code Blob}, {@code Clob}, or {@code SQLXML}.
    *
-   * <p>This method is useful for creating copies of entity instances while preserving
-   * the values of their properties.
+   * <p>This method is useful for creating copies of entity instances while preserving the values of
+   * their properties.
    *
    * @param dest the entity instance that is the copy destination
    * @param src the entity instance that is the copy source
