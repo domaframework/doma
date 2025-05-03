@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates an association between entities.
+ * Indicates an association relationship between entities.
  *
  * <pre>
  * &#064;Entity
@@ -37,7 +37,8 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * <p>This annotation is applied to fields that represent a relationship between entities.
+ * <p>This annotation is applied to fields that represent a relationship between entities, enabling
+ * the framework to automatically handle entity relationships during database operations.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
