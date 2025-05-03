@@ -31,11 +31,14 @@ import org.seasar.doma.message.Message;
  * A runtime configuration for DAOs.
  *
  * <p>The implementation must be thread safe.
+ *
+ * <p>This interface provides configuration settings for database connections, SQL dialects,
+ * and various other components used by the Doma framework.
  */
 public interface Config {
 
   /**
-   * Returns the data source.
+   * Returns the data source for database connections.
    *
    * @return the data source
    */
