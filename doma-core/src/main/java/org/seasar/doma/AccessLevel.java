@@ -15,7 +15,11 @@
  */
 package org.seasar.doma;
 
-/** Defines access levels in The Java Language. */
+/** 
+ * Defines access levels in the Java language.
+ * 
+ * <p>This enum is used to specify the visibility of generated classes in the Doma framework.
+ */
 public enum AccessLevel {
 
   /** {@code public} */
