@@ -24,7 +24,7 @@ import java.sql.Connection;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * Indicates to create an {@link Array} instance.
+ * Indicates a method that creates an {@link Array} instance for use with SQL array types.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
