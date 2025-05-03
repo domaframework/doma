@@ -74,7 +74,8 @@ public @interface TableGenerator {
   String valueColumnName() default "VALUE";
 
   /**
-   * @return the value to be used as the primary key in the generator table to identify this generator.
+   * @return the value to be used as the primary key in the generator table to identify this
+   *     generator.
    */
   String pkColumnValue();
 
@@ -84,7 +85,8 @@ public @interface TableGenerator {
   long initialValue() default 1;
 
   /**
-   * @return the allocation size, which determines how many values are fetched at once from the generator table.
+   * @return the allocation size, which determines how many values are fetched at once from the
+   *     generator table.
    */
   long allocationSize() default 1;
 

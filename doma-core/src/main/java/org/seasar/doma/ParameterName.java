@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates a parameter name for DAO methods.
  *
- * <p>This annotation is used to explicitly specify the name of a parameter
- * that will be referenced in SQL templates or other database operations.
+ * <p>This annotation is used to explicitly specify the name of a parameter that will be referenced
+ * in SQL templates or other database operations.
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

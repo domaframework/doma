@@ -79,8 +79,8 @@ public @interface Function {
   String name() default "";
 
   /**
-   * @return whether quotation marks should be used for the catalog name, the schema name and the stored
-   *     function name in SQL statements.
+   * @return whether quotation marks should be used for the catalog name, the schema name and the
+   *     stored function name in SQL statements.
    */
   boolean quote() default false;
 

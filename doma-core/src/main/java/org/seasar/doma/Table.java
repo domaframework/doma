@@ -57,8 +57,8 @@ public @interface Table {
   String name() default "";
 
   /**
-   * @return whether quotation marks should be used for the catalog name, the schema name and the table
-   *     name in SQL statements.
+   * @return whether quotation marks should be used for the catalog name, the schema name and the
+   *     table name in SQL statements.
    */
   boolean quote() default false;
 }

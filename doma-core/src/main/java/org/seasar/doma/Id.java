@@ -25,9 +25,9 @@ import java.lang.annotation.Target;
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
- * <p>This annotation marks a field as representing a primary key column in the database table.
- * It can be used in conjunction with {@link GeneratedValue} to specify how the identifier
- * should be generated.
+ * <p>This annotation marks a field as representing a primary key column in the database table. It
+ * can be used in conjunction with {@link GeneratedValue} to specify how the identifier should be
+ * generated.
  *
  * <pre>
  * &#064;Entity

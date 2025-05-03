@@ -67,7 +67,8 @@ public @interface SequenceGenerator {
   long initialValue() default 1;
 
   /**
-   * @return the allocation size for the sequence, which determines how many values are fetched at once.
+   * @return the allocation size for the sequence, which determines how many values are fetched at
+   *     once.
    */
   long allocationSize() default 1;
 
