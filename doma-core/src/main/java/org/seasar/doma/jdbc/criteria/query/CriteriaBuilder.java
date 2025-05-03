@@ -31,13 +31,42 @@ import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
  */
 public interface CriteriaBuilder {
 
+  /**
+   * Builds a SQL fragment for string concatenation operation.
+   *
+   * @param buf the SQL builder to append the concatenation expression to
+   * @param leftOperand the runnable that builds the left operand of the concatenation
+   * @param rightOperand the runnable that builds the right operand of the concatenation
+   */
   void concat(PreparedSqlBuilder buf, Runnable leftOperand, Runnable rightOperand);
 
+  /**
+   * Builds a SQL fragment for pagination with offset and limit.
+   *
+   * @param buf the SQL builder to append the pagination expression to
+   * @param offset the number of rows to skip
+   * @param limit the maximum number of rows to return
+   */
   void offsetAndFetch(PreparedSqlBuilder buf, int offset, int limit);
 
+  /**
+   * Builds a SQL fragment for locking using table hints.
+   *
+   * @param buf the SQL builder to append the locking expression to
+   * @param option the locking options
+   * @param column the consumer that specifies which columns to lock
+   */
   void lockWithTableHint(
       PreparedSqlBuilder buf, ForUpdateOption option, Consumer<PropertyMetamodel<?>> column);
 
+  /**
+   * Builds a SQL fragment for FOR UPDATE clause.
+   *
+   * @param buf the SQL builder to append the FOR UPDATE expression to
+   * @param option the FOR UPDATE options
+   * @param column the consumer that specifies which columns to lock
+   * @param aliasManager the manager for table aliases
+   */
   void forUpdate(
       PreparedSqlBuilder buf,
       ForUpdateOption option,
