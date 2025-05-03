@@ -23,75 +23,111 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.query.ReturningProperties;
 
 /**
- * A context for a pre process of an update.
+ * A context for pre-processing an entity before an update operation.
  *
- * @param <E> the entity type
+ * <p>This interface provides methods to check if an entity or its properties have changed
+ * since the last database read, as well as methods to access and modify the entity being updated.
+ * It is typically used in entity listener implementations to perform custom logic before
+ * an update operation.
+ *
+ * <p>The context is passed to the {@code preUpdate} method of entity listeners.
+ *
+ * @param <E> the entity type being updated
+ * @see org.seasar.doma.jdbc.entity.EntityListener#preUpdate(Object, PreUpdateContext)
+ * @see org.seasar.doma.Update
+ * @see org.seasar.doma.OriginalStates
  */
 public interface PreUpdateContext<E> {
 
   /**
-   * Whether the entity is changed.
+   * Determines whether the entity has been changed since it was last read from the database.
    *
-   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} returns {@code true}.
+   * <p>This method checks if any property of the entity has been modified by comparing
+   * the current values with the original values stored in the {@link OriginalStates} field.
    *
-   * @return {@code true} if the entity is changed
+   * <p>This method always returns {@code true} when {@link Update#sqlFile()} returns {@code true},
+   * as SQL file-based updates do not perform change detection.
+   *
+   * @return {@code true} if the entity has been changed, {@code false} otherwise
+   * @see OriginalStates
    */
   boolean isEntityChanged();
 
   /**
-   * Whether the entity property is changed.
+   * Determines whether a specific property of the entity has been changed.
    *
-   * <p>This method always returns {@code true}, when {@link Update#sqlFile()} returns {@code true}.
+   * <p>This method checks if the specified property has been modified by comparing
+   * its current value with the original value stored in the {@link OriginalStates} field.
    *
-   * @param propertyName the name of property
-   * @return {@code true} if the property is changed
-   * @exception EntityPropertyNotDefinedException if the property is not defined in the entity
+   * <p>This method always returns {@code true} when {@link Update#sqlFile()} returns {@code true},
+   * as SQL file-based updates do not perform change detection.
+   *
+   * @param propertyName the name of the property to check
+   * @return {@code true} if the property has been changed, {@code false} otherwise
+   * @throws EntityPropertyNotDefinedException if the property is not defined in the entity
    * @see OriginalStates
    */
   boolean isPropertyChanged(String propertyName);
 
   /**
-   * Returns the entity description.
+   * Returns the entity type metadata for the entity being updated.
    *
-   * @return the entity description
+   * <p>The entity type provides access to metadata about the entity class,
+   * including its properties, naming conventions, and other configuration.
+   *
+   * @return the entity type metadata
    */
   EntityType<?> getEntityType();
 
   /**
-   * The method that is annotated with {@link Update}.
+   * Returns the DAO method that is annotated with {@link Update} and triggered this update operation.
    *
-   * @return the method
+   * <p>This method provides access to the reflection Method object representing
+   * the DAO method that initiated the update operation.
+   *
+   * @return the Method object representing the DAO method
    */
   Method getMethod();
 
   /**
-   * Returns the configuration.
+   * Returns the Doma configuration associated with this update operation.
    *
-   * @return the configuration
+   * <p>The configuration provides access to database connection, dialect,
+   * and other runtime settings for the current operation.
+   *
+   * @return the Doma configuration
    */
   Config getConfig();
 
   /**
-   * Returns the new entity.
+   * Returns the entity instance that is being updated.
    *
-   * @return the new entity
+   * <p>This is the entity instance after any modifications made by entity listeners
+   * in their preUpdate methods.
+   *
+   * @return the entity instance being updated
    */
   E getNewEntity();
 
   /**
-   * Sets the new entity.
+   * Sets a new entity instance to be used for the update operation.
    *
-   * <p>This method is available, when the entity is immutable.
+   * <p>This method is primarily used with immutable entity classes, allowing
+   * entity listeners to replace the entity instance with a modified version.
    *
-   * @param newEntity the entity
+   * @param newEntity the new entity instance to use for the update
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   void setNewEntity(E newEntity);
 
   /**
-   * Returns the instance of {@code ReturningProperties} associated with the context.
+   * Returns the returning properties configuration for this update operation.
    *
-   * @return the {@code ReturningProperties} instance, never {@code null}
+   * <p>Returning properties specify which columns should be returned by the database
+   * after an update operation, typically used with the RETURNING clause in SQL.
+   *
+   * @return the returning properties configuration, never {@code null}
+   * @see org.seasar.doma.Returning
    */
   default ReturningProperties getReturningProperties() {
     return ReturningProperties.NONE;
