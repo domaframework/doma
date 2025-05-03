@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
- * <p>The column mapped to the annotated field is automatically included in the WHERE clause of auto-generated SQL
- * statements to ensure proper data isolation between tenants.
+ * <p>The column mapped to the annotated field is automatically included in the WHERE clause of
+ * auto-generated SQL statements to ensure proper data isolation between tenants.
  *
  * <pre>
  * &#064;Entity

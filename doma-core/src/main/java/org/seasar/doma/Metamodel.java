@@ -21,8 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Indicates a metamodel class that provides type-safe access to entity properties.
  *
- * <p>Metamodel classes enable compile-time type checking when referencing entity properties
- * in criteria queries and other database operations.
+ * <p>Metamodel classes enable compile-time type checking when referencing entity properties in
+ * criteria queries and other database operations.
  *
  * <p>For example, the name of the metamodel is "MyEmployeeMetamodel" when you specify the prefix
  * and the suffix as follows:
