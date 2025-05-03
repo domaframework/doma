@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.SqlFileNotFoundException;
 import org.seasar.doma.jdbc.SqlLogType;
 
 /**
- * Indicates a delete.
+ * Indicates a delete operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
@@ -63,7 +63,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 public @interface Delete {
 
   /**
-   * @return whether the annotated method is mapped to an SQL file.
+   * @return whether the annotated method should be mapped to an SQL file.
    */
   boolean sqlFile() default false;
 
@@ -97,7 +97,7 @@ public @interface Delete {
   boolean suppressOptimisticLockException() default false;
 
   /**
-   * @return the output format of SQL logs.
+   * @return the output format to be used for SQL logs when this delete operation is executed.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 
