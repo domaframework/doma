@@ -19,47 +19,70 @@ import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.JdbcMappable;
 
 /**
- * An entity property.
+ * Represents a property of an entity class that can be mapped to a database column.
  *
- * @param <ENTITY> the entity type
- * @param <BASIC> the basic type
+ * <p>This interface defines methods for getting and setting property values on entity
+ * instances, as well as converting between entity property values and database column values.
+ *
+ * <p>Implementations of this interface are typically generated at compile time by the
+ * Doma annotation processor based on {@link org.seasar.doma.Entity} annotated classes.
+ *
+ * @param <ENTITY> the entity type that contains this property
+ * @param <BASIC> the basic type that represents the property's value
+ * @see org.seasar.doma.Entity
+ * @see org.seasar.doma.Column
  */
 public interface Property<ENTITY, BASIC> extends JdbcMappable<BASIC> {
 
   /**
-   * Returns the value of this property.
+   * Returns the current value of this property.
    *
-   * @return the value of this property
+   * <p>The returned value may be wrapped in an Optional if the property is nullable.
+   *
+   * @return the current value of this property, possibly wrapped in an Optional
    */
   Object get();
 
   /**
-   * Return the non optional value of this property.
+   * Returns the non-optional value of this property.
    *
-   * @return the non optional value of this property
+   * <p>If the property value is wrapped in an Optional, this method unwraps it.
+   * This method may throw an exception if the property value is null.
+   *
+   * @return the non-optional value of this property
+   * @throws java.util.NoSuchElementException if the property value is null and wrapped in an Optional
    */
   Object getAsNonOptional();
 
   /**
-   * Loads the value from the entity to this property.
+   * Loads the value from the entity into this property.
    *
-   * @param entity the entity
-   * @return this instance
+   * <p>This method extracts the property value from the given entity instance
+   * and stores it in this property object for later use.
+   *
+   * @param entity the entity instance to load the value from
+   * @return this property instance for method chaining
    */
   Property<ENTITY, BASIC> load(ENTITY entity);
 
   /**
-   * Saves the value from this property to the entity.
+   * Saves the current value of this property to the given entity instance.
    *
-   * @param entity the entity
-   * @return this instance
+   * <p>This method updates the property value in the given entity instance
+   * with the current value stored in this property object.
+   *
+   * @param entity the entity instance to save the value to
+   * @return this property instance for method chaining
    */
   Property<ENTITY, BASIC> save(ENTITY entity);
 
   /**
-   * Returns this property as {@link InParameter}.
+   * Returns this property as an {@link InParameter} for use in SQL execution.
    *
-   * @return the input parameter
+   * <p>This method allows the property to be used as a parameter in SQL statements.
+   *
+   * @return an input parameter representing this property's value
+   * @see org.seasar.doma.jdbc.query.Query
    */
   InParameter<BASIC> asInParameter();
 }
