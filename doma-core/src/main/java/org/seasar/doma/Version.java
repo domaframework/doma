@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicate a version property that is used for optimistic locking.
+ * Indicates a version property that is used for optimistic locking.
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *

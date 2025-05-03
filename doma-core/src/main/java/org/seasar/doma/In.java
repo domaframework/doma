@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a IN parameter of stored functions or stored procedures.
+ * Indicates an IN parameter of stored functions or stored procedures.
  *
  * <p>The annotated parameter must be one of the parameters of the method that is annotated with
  * {@link Function} or {@link Procedure}.
