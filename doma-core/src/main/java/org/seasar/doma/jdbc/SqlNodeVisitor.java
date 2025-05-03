@@ -18,11 +18,12 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.internal.jdbc.sql.node.*;
 
 /**
- * A visitor interface for traversing and processing {@link SqlNode} objects in the SQL statement tree.
+ * A visitor interface for traversing and processing {@link SqlNode} objects in the SQL statement
+ * tree.
  *
- * <p>This interface implements the visitor design pattern, providing methods to process
- * each type of SQL node in the parsed SQL statement tree. Implementations can define
- * specific behavior for each node type during traversal.
+ * <p>This interface implements the visitor design pattern, providing methods to process each type
+ * of SQL node in the parsed SQL statement tree. Implementations can define specific behavior for
+ * each node type during traversal.
  *
  * <p>The implementation class must be thread safe.
  *

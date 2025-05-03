@@ -18,8 +18,8 @@ package org.seasar.doma.jdbc;
 /**
  * Represents a parameter used in SQL statements.
  *
- * <p>This interface defines the common behavior for parameters that can be
- * bound to prepared statements during SQL execution.
+ * <p>This interface defines the common behavior for parameters that can be bound to prepared
+ * statements during SQL execution.
  *
  * @see Sql
  */

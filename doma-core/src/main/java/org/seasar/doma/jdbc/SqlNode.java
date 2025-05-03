@@ -21,9 +21,9 @@ import org.seasar.doma.DomaNullPointerException;
 /**
  * Represents a node in the parsed SQL statement tree structure.
  *
- * <p>SQL statements in Doma are parsed into a tree of SqlNode objects that can be
- * traversed and processed using the visitor pattern. This interface defines the
- * common behavior for all types of SQL nodes.
+ * <p>SQL statements in Doma are parsed into a tree of SqlNode objects that can be traversed and
+ * processed using the visitor pattern. This interface defines the common behavior for all types of
+ * SQL nodes.
  *
  * <p>The implementation class is not required to be thread safe.
  *
