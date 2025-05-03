@@ -23,7 +23,8 @@ import java.util.List;
 import org.seasar.doma.jdbc.ResultMappingException;
 
 /**
- * Indicates a parameter that receives a result set fetched by stored functions or stored procedures.
+ * Indicates a parameter that receives a result set fetched by stored functions or stored
+ * procedures.
  *
  * <p>The annotated parameter type must be {@link List} and it must be one of parameters of the
  * method that is annotated with {@link Function} or {@link Procedure}.

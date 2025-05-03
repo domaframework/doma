@@ -24,8 +24,8 @@ import org.seasar.doma.message.Message;
 /**
  * Used to suppress specific warning messages during Doma's processing.
  *
- * <p>This annotation can be applied to types or methods to prevent certain
- * warning messages from being reported during compile-time validation.
+ * <p>This annotation can be applied to types or methods to prevent certain warning messages from
+ * being reported during compile-time validation.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

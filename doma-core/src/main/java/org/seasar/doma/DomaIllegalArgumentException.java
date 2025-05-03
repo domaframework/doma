@@ -20,8 +20,8 @@ import org.seasar.doma.message.Message;
 /**
  * Thrown to indicate that an argument does not meet the preconditions required by a method.
  *
- * <p>This exception class makes it easy to distinguish between issues caused by Doma's specifications
- * and actual bugs in the Doma framework.
+ * <p>This exception class makes it easy to distinguish between issues caused by Doma's
+ * specifications and actual bugs in the Doma framework.
  */
 public class DomaIllegalArgumentException extends DomaException {
 

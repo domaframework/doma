@@ -18,10 +18,11 @@ package org.seasar.doma;
 import org.seasar.doma.message.Message;
 
 /**
- * Thrown to indicate that an argument is {@code null} and null values are not allowed for this parameter.
+ * Thrown to indicate that an argument is {@code null} and null values are not allowed for this
+ * parameter.
  *
- * <p>This exception class makes it easy to distinguish between issues caused by Doma's specifications
- * and actual bugs in the Doma framework.
+ * <p>This exception class makes it easy to distinguish between issues caused by Doma's
+ * specifications and actual bugs in the Doma framework.
  */
 public class DomaNullPointerException extends DomaException {
 
