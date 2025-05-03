@@ -18,6 +18,9 @@ package org.seasar.doma;
 /**
  * Indicates that specific properties of an entity should be included or excluded in the context of
  * a {@link Dao} operation.
+ * 
+ * <p>This annotation allows fine-grained control over which entity properties are processed
+ * during database operations.
  *
  * <ul>
  *   <li>These attributes are optional and can be used together.
