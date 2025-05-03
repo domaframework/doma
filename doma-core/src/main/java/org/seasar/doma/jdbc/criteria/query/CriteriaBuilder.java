@@ -23,9 +23,9 @@ import org.seasar.doma.jdbc.criteria.option.ForUpdateOption;
 /**
  * A builder interface for database-specific SQL criteria operations.
  *
- * <p>This interface provides methods to build SQL fragments that are specific to
- * each database dialect, such as pagination, string concatenation, and locking operations.
- * Implementations are provided by each database dialect.
+ * <p>This interface provides methods to build SQL fragments that are specific to each database
+ * dialect, such as pagination, string concatenation, and locking operations. Implementations are
+ * provided by each database dialect.
  *
  * @see org.seasar.doma.jdbc.dialect.Dialect#getCriteriaBuilder()
  */
