@@ -40,7 +40,7 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 public @interface DomainConverters {
 
   /**
-   * @return the aggregation of {@code DomainConverter} classes.
+   * @return the array of {@code DomainConverter} classes that should be registered for domain type conversion.
    */
   Class<? extends DomainConverter<?, ?>>[] value() default {};
 }
