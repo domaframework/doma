@@ -53,6 +53,21 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
 
   protected final IdGenerator idGenerator;
 
+  /**
+   * Constructs a new generated ID property type.
+   *
+   * <p>This constructor is typically called by the Doma annotation processor
+   * when generating implementations of {@link EntityType}.
+   *
+   * @param entityClass the entity class
+   * @param scalarSupplier the supplier of scalar that represents the property value
+   * @param name the property name
+   * @param columnName the column name
+   * @param namingType the naming convention
+   * @param quoteRequired whether the column name requires quoting in SQL
+   * @param idGenerator the ID generator for this property
+   * @throws DomaNullPointerException if {@code idGenerator} is {@code null}
+   */
   public GeneratedIdPropertyType(
       Class<ENTITY> entityClass,
       Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
@@ -68,6 +83,14 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
     this.idGenerator = idGenerator;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>This implementation always returns {@code true} since this property type
+   * represents an ID property with a generated value.
+   * 
+   * @return {@code true}
+   */
   @Override
   public boolean isId() {
     return true;
@@ -222,11 +245,28 @@ public class GeneratedIdPropertyType<ENTITY, BASIC extends Number, CONTAINER>
         .collect(Collectors.toList());
   }
 
+  /**
+   * Sets the ID value if necessary.
+   *
+   * <p>This method sets the ID value only if the current value is null or negative.
+   * It is used internally by the preInsert and postInsert methods.
+   *
+   * @param entityType the entity type metadata
+   * @param entity the entity instance to modify
+   * @param supplier the supplier of the ID value to set
+   * @return the modified entity instance (may be the same instance if the entity is mutable)
+   */
   protected ENTITY setIfNecessary(
       EntityType<ENTITY> entityType, ENTITY entity, Supplier<Long> supplier) {
     return modifyIfNecessary(entityType, entity, new ValueSetter(), supplier);
   }
 
+  /**
+   * A visitor implementation that sets an ID value in a number wrapper.
+   *
+   * <p>This class is used by the {@link #setIfNecessary} method to set the ID value
+   * only if the current value is null or negative.
+   */
   protected static class ValueSetter
       implements NumberWrapperVisitor<Boolean, Supplier<Long>, Void, RuntimeException> {
 
