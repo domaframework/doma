@@ -144,8 +144,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-core:3.6.0")
-    annotationProcessor("org.seasar.doma:doma-processor:3.6.0")
+    implementation("org.seasar.doma:doma-core:3.7.0")
+    annotationProcessor("org.seasar.doma:doma-processor:3.7.0")
 }
 ```
 
@@ -157,8 +157,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:3.6.0")
-    kapt("org.seasar.doma:doma-processor:3.6.0")
+    implementation("org.seasar.doma:doma-kotlin:3.7.0")
+    kapt("org.seasar.doma:doma-processor:3.7.0")
 }
 ```
 
@@ -171,7 +171,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>3.6.0</doma.version>
+    <doma.version>3.7.0</doma.version>
 </properties>
 ...
 <dependencies>
