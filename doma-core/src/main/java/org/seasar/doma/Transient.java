@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated field is not mapped to a column.
+ * Indicates that the annotated field is not mapped to a database column.
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class.
  *
