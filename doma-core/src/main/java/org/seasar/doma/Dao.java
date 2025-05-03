@@ -75,7 +75,7 @@ import java.lang.annotation.Target;
 public @interface Dao {
 
   /**
-   * @return the access level of the DAO implementation class.
+   * @return the access level that should be used for the generated DAO implementation class.
    */
   AccessLevel accessLevel() default AccessLevel.PUBLIC;
 }
