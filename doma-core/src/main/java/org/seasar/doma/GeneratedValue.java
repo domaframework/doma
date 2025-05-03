@@ -57,7 +57,7 @@ import java.lang.annotation.Target;
 public @interface GeneratedValue {
 
   /**
-   * @return the strategy how to generate identifiers.
+   * @return the strategy for generating identifiers.
    */
   GenerationType strategy();
 }

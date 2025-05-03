@@ -29,7 +29,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /**
- * Indicates a batch insert.
+ * Indicates a batch insert operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
@@ -63,7 +63,7 @@ import org.seasar.doma.jdbc.query.DuplicateKeyType;
 public @interface BatchInsert {
 
   /**
-   * @return whether the annotated method is mapped to an SQL file.
+   * @return whether the annotated method should be mapped to an SQL file.
    */
   boolean sqlFile() default false;
 

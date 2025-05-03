@@ -21,7 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated method handles an SQL statement that is built from an SQL template.
+ * Indicates that the annotated method provides custom processing of SQL statements built from SQL
+ * templates.
+ *
+ * <p>This annotation enables DAO methods to handle SQL execution with custom logic, giving
+ * developers more control over how SQL statements are processed.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *

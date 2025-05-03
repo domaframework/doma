@@ -18,7 +18,16 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** Thrown to indicate that an entity description is not found. */
+/**
+ * Exception thrown when an entity type implementation is not found.
+ *
+ * <p>This exception is typically thrown when Doma cannot locate the generated implementation class
+ * for an entity type. This usually happens when the annotation processor did not generate the
+ * implementation class or when the class is not accessible at runtime.
+ *
+ * @see org.seasar.doma.jdbc.entity.EntityType
+ * @see org.seasar.doma.Entity
+ */
 public class EntityTypeNotFoundException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
@@ -27,6 +36,15 @@ public class EntityTypeNotFoundException extends JdbcException {
 
   private final String entityTypeClassName;
 
+  /**
+   * Constructs a new exception with the specified cause, entity class name, and entity type class
+   * name.
+   *
+   * @param cause the cause of this exception
+   * @param entityClassName the fully qualified name of the entity class
+   * @param entityTypeClassName the fully qualified name of the entity type implementation class
+   *     that was not found
+   */
   public EntityTypeNotFoundException(
       Throwable cause, String entityClassName, String entityTypeClassName) {
     super(Message.DOMA2203, cause, entityClassName, entityTypeClassName, cause);
@@ -34,10 +52,20 @@ public class EntityTypeNotFoundException extends JdbcException {
     this.entityTypeClassName = entityTypeClassName;
   }
 
+  /**
+   * Returns the fully qualified name of the entity class.
+   *
+   * @return the entity class name
+   */
   public String getEntityClassName() {
     return entityClassName;
   }
 
+  /**
+   * Returns the fully qualified name of the entity type implementation class that was not found.
+   *
+   * @return the entity type class name
+   */
   public String getEntityTypeClassName() {
     return entityTypeClassName;
   }

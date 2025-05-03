@@ -24,6 +24,22 @@ import java.util.function.Function;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
 
+/**
+ * Represents a property in an entity class that is mapped to an embeddable object.
+ *
+ * <p>An embeddable property is a property whose type is annotated with {@link
+ * org.seasar.doma.Embeddable} and contains multiple properties that are mapped to database columns.
+ * This class manages the relationship between the entity property and its constituent embeddable
+ * properties.
+ *
+ * <p>Implementations of this class are typically generated at compile time by the Doma annotation
+ * processor.
+ *
+ * @param <ENTITY> the entity type containing this embeddable property
+ * @param <EMBEDDABLE> the embeddable type
+ * @see org.seasar.doma.Embeddable
+ * @see org.seasar.doma.jdbc.entity.EmbeddableType
+ */
 public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
 
   protected final String name;
@@ -62,14 +78,40 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
     this.field = new PropertyField<>(name, entityClass);
   }
 
+  /**
+   * Returns the list of entity property types that are part of this embeddable property.
+   *
+   * <p>These property types represent the individual properties within the embeddable object that
+   * are mapped to database columns.
+   *
+   * @return the list of entity property types in this embeddable property
+   */
   public List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes() {
     return embeddablePropertyTypes;
   }
 
+  /**
+   * Returns a map of entity property types that are part of this embeddable property.
+   *
+   * <p>The map keys are the property names, and the values are the corresponding entity property
+   * types. This provides a convenient way to look up properties by name within the embeddable
+   * object.
+   *
+   * @return a map of property names to entity property types in this embeddable property
+   */
   public Map<String, EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypeMap() {
     return embeddablePropertyTypeMap;
   }
 
+  /**
+   * Sets the embeddable value in the entity.
+   *
+   * <p>This method is used to update the embeddable property in the entity with a new value,
+   * typically during entity construction or when loading data from the database.
+   *
+   * @param entity the entity in which to set the embeddable value
+   * @param value the embeddable value to set
+   */
   public void save(ENTITY entity, EMBEDDABLE value) {
     field.setValue(entity, value);
   }

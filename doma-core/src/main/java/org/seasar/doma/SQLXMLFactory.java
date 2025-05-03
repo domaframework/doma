@@ -24,7 +24,7 @@ import java.sql.SQLXML;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * Indicates to create a {@link SQLXML} instance。
+ * Indicates a method that creates a {@link SQLXML} instance for handling XML data in the database.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *

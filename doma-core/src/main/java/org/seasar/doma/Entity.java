@@ -97,7 +97,7 @@ public @interface Entity {
    * <p>If not specified and the entity class inherits another entity class, this value is inherited
    * from the parent entity class.
    *
-   * <p>An instance of the entity lister class is instantiated only once per entity class.
+   * <p>An instance of the entity listener class is instantiated only once per entity class.
    *
    * @return the entity listener class
    */

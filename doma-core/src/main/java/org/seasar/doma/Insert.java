@@ -28,7 +28,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /**
- * Indicates a insert.
+ * Indicates an insert operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
@@ -62,7 +62,7 @@ import org.seasar.doma.jdbc.query.DuplicateKeyType;
 public @interface Insert {
 
   /**
-   * @return whether the annotated method is mapped to an SQL file.
+   * @return whether the annotated method should be mapped to an SQL file.
    */
   boolean sqlFile() default false;
 
@@ -104,7 +104,7 @@ public @interface Insert {
   String[] exclude() default {};
 
   /**
-   * @return the output format of SQL logs.
+   * @return the output format to be used for SQL logs when this insert operation is executed.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 

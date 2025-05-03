@@ -53,17 +53,17 @@ public @interface Column {
   String name() default "";
 
   /**
-   * @return whether the column is included in SQL INSERT statements.
+   * @return whether the column should be included in SQL INSERT statements.
    */
   boolean insertable() default true;
 
   /**
-   * @return whether the column is included in SQL UPDATE statements.
+   * @return whether the column should be included in SQL UPDATE statements.
    */
   boolean updatable() default true;
 
   /**
-   * @return whether the column name is enclosed by quotation marks in SQL statements.
+   * @return whether the column name should be enclosed by quotation marks in SQL statements.
    */
   boolean quote() default false;
 }

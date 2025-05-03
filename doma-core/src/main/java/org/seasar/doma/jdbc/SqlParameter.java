@@ -15,7 +15,14 @@
  */
 package org.seasar.doma.jdbc;
 
-/** An SQL parameter. */
+/**
+ * Represents a parameter used in SQL statements.
+ *
+ * <p>This interface defines the common behavior for parameters that can be bound to prepared
+ * statements during SQL execution.
+ *
+ * @see Sql
+ */
 public interface SqlParameter {
 
   /**

@@ -59,12 +59,12 @@ import org.seasar.doma.jdbc.UnknownColumnException;
 public @interface Procedure {
 
   /**
-   * @return the catalog name.
+   * @return the catalog name for the stored procedure.
    */
   String catalog() default "";
 
   /**
-   * @return the schema name.
+   * @return the schema name for the stored procedure.
    */
   String schema() default "";
 
@@ -78,8 +78,8 @@ public @interface Procedure {
   String name() default "";
 
   /**
-   * @return whether quotation marks are used for the catalog name, the schema name and the stored
-   *     procedure name.
+   * @return whether quotation marks should be used for the catalog name, the schema name and the
+   *     stored procedure name in SQL statements.
    */
   boolean quote() default false;
 
@@ -104,7 +104,7 @@ public @interface Procedure {
   MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 
   /**
-   * @return the output format of SQL logs.
+   * @return the output format to be used for SQL logs when this procedure is executed.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }

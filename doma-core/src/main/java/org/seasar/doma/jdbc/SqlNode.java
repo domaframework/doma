@@ -19,11 +19,17 @@ import java.util.List;
 import org.seasar.doma.DomaNullPointerException;
 
 /**
- * An SQL node.
+ * Represents a node in the parsed SQL statement tree structure.
+ *
+ * <p>SQL statements in Doma are parsed into a tree of SqlNode objects that can be traversed and
+ * processed using the visitor pattern. This interface defines the common behavior for all types of
+ * SQL nodes.
  *
  * <p>The implementation class is not required to be thread safe.
  *
- * <p>Treat this object for read only when you can not control its life cycle.
+ * <p>Treat this object as read-only when you cannot control its life cycle.
+ *
+ * @see SqlNodeVisitor
  */
 public interface SqlNode {
 

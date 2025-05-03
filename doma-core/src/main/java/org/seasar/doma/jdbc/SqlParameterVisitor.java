@@ -15,6 +15,18 @@
  */
 package org.seasar.doma.jdbc;
 
+/**
+ * A visitor interface for processing different types of SQL parameters.
+ *
+ * <p>This interface implements the visitor design pattern, providing methods to process each type
+ * of SQL parameter. Implementations can define specific behavior for handling different parameter
+ * types during SQL execution.
+ *
+ * @param <R> the result type returned by visit methods
+ * @param <P> the parameter type passed to visit methods
+ * @param <TH> the throwable type that may be thrown by visit methods
+ * @see SqlParameter#accept(SqlParameterVisitor, Object)
+ */
 @SuppressWarnings("SameReturnValue")
 public interface SqlParameterVisitor<R, P, TH extends Throwable> {
 

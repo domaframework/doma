@@ -32,7 +32,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.UnknownColumnException;
 
 /**
- * Indicates a select.
+ * Indicates a select operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
@@ -119,7 +119,7 @@ public @interface Select {
   int maxRows() default -1;
 
   /**
-   * @return the strategy for handling an object that is mapped to a result set.
+   * @return the strategy for handling objects mapped to a result set.
    */
   SelectType strategy() default SelectType.RETURN;
 

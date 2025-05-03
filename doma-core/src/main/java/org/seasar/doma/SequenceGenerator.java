@@ -47,27 +47,28 @@ import org.seasar.doma.jdbc.id.SequenceIdGenerator;
 public @interface SequenceGenerator {
 
   /**
-   * @return the catalog name.
+   * @return the catalog name for the sequence.
    */
   String catalog() default "";
 
   /**
-   * @return the schema name.
+   * @return the schema name for the sequence.
    */
   String schema() default "";
 
   /**
-   * @return the sequence name.
+   * @return the name of the database sequence to use for generating identifiers.
    */
   String sequence();
 
   /**
-   * @return the initial value.
+   * @return the initial value for the sequence.
    */
   long initialValue() default 1;
 
   /**
-   * @return the allocation size.
+   * @return the allocation size for the sequence, which determines how many values are fetched at
+   *     once.
    */
   long allocationSize() default 1;
 

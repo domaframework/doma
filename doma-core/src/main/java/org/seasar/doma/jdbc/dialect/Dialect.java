@@ -45,11 +45,15 @@ import org.seasar.doma.jdbc.type.JdbcType;
 import org.seasar.doma.wrapper.Wrapper;
 
 /**
- * A {@literal RDBMS} dialect.
+ * A database dialect interface that abstracts differences between various RDBMS implementations.
  *
- * <p>This interface absorb the difference between {@literal RDBMS}s.
+ * <p>This interface provides methods to handle database-specific behaviors such as SQL syntax,
+ * identifier quoting, sequence support, and other vendor-specific features. Each supported database
+ * system has its own implementation of this interface.
  *
  * <p>The implementation instance must be thread safe.
+ *
+ * @see org.seasar.doma.jdbc.Config#getDialect()
  */
 public interface Dialect {
 

@@ -21,7 +21,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a strategy for aggregating database records.
+ * Indicates a strategy for aggregating database records into hierarchical entity structures.
+ *
+ * <p>This annotation enables mapping of relational query results to complex object graphs with
+ * parent-child relationships.
  *
  * <p>The element annotated with {@linkplain AggregateStrategy} must be an interface.
  *

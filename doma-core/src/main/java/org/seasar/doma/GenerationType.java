@@ -16,18 +16,32 @@
 package org.seasar.doma;
 
 /**
- * Defines strategies to generate identifiers.
+ * Defines strategies to generate identifiers for entity primary keys.
+ *
+ * <p>This enum is used with the {@link GeneratedValue} annotation to specify how database
+ * identifiers should be automatically generated.
  *
  * @see GeneratedValue
+ * @see SequenceGenerator
+ * @see TableGenerator
  */
 public enum GenerationType {
 
-  /** Database IDENTITY column */
+  /**
+   * Uses a database IDENTITY column for ID generation. The database automatically assigns a unique
+   * value when a row is inserted.
+   */
   IDENTITY,
 
-  /** Database sequence */
+  /**
+   * Uses a database sequence for ID generation. Requires additional configuration via {@link
+   * SequenceGenerator}.
+   */
   SEQUENCE,
 
-  /** Database table */
+  /**
+   * Uses a database table for ID generation. Requires additional configuration via {@link
+   * TableGenerator}.
+   */
   TABLE
 }

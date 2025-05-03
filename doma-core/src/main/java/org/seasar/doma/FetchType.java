@@ -15,7 +15,12 @@
  */
 package org.seasar.doma;
 
-/** Defines how to fetch rows from an SQL SELECT result set. */
+/**
+ * Defines how to fetch rows from an SQL SELECT result set.
+ *
+ * <p>This enum specifies the strategy for retrieving rows from a database query result, balancing
+ * memory usage against database connection time.
+ */
 public enum FetchType {
 
   /**

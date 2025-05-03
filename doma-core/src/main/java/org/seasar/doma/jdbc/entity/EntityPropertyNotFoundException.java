@@ -18,7 +18,15 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** Thrown to indicate that a property is not found in an entity. */
+/**
+ * Exception thrown when a property is not found in an entity class.
+ *
+ * <p>This exception is typically thrown when attempting to access a property that does not exist in
+ * an entity, either through reflection or when mapping query results to entity objects.
+ *
+ * @see org.seasar.doma.jdbc.entity.EntityType
+ * @see org.seasar.doma.jdbc.entity.EntityPropertyType
+ */
 public class EntityPropertyNotFoundException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
@@ -27,16 +35,32 @@ public class EntityPropertyNotFoundException extends JdbcException {
 
   private final String entityPropertyName;
 
+  /**
+   * Constructs a new exception with the specified entity class name and property name.
+   *
+   * @param entityClassName the fully qualified name of the entity class
+   * @param entityPropertyName the name of the property that was not found
+   */
   public EntityPropertyNotFoundException(String entityClassName, String entityPropertyName) {
     super(Message.DOMA2211, entityClassName, entityPropertyName);
     this.entityClassName = entityClassName;
     this.entityPropertyName = entityPropertyName;
   }
 
+  /**
+   * Returns the fully qualified name of the entity class.
+   *
+   * @return the entity class name
+   */
   public String getEntityClassName() {
     return entityClassName;
   }
 
+  /**
+   * Returns the name of the property that was not found.
+   *
+   * @return the entity property name
+   */
   public String getEntityPropertyName() {
     return entityPropertyName;
   }

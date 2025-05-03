@@ -22,14 +22,17 @@ import org.seasar.doma.Sql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * A repository for {@link SqlFile}.
+ * A repository interface for managing and retrieving {@link SqlFile} instances.
  *
- * <p>A SQL file corresponds to a DAO method. The path is built from the full qualified name of the
- * DAO and the method name. For example, when {@code org.example.ExampleDao} interface has {@code
+ * <p>This repository is responsible for locating and loading SQL files that correspond to DAO
+ * methods. The path to a SQL file is built from the fully qualified name of the DAO interface and
+ * the method name. For example, when {@code org.example.ExampleDao} interface has a {@code
  * selectAll} method, the corresponding SQL file path is {@code
  * META-INF/org/example/ExampleDao/selectAll.sql}.
  *
  * <p>The implementation class must be thread safe.
+ *
+ * @see org.seasar.doma.jdbc.Config#getSqlFileRepository()
  */
 public interface SqlFileRepository {
 

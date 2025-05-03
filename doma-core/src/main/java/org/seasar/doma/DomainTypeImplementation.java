@@ -20,6 +20,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates a class that implements a domain type.
+ *
+ * <p>This annotation is used internally by the Doma framework to mark classes that are generated as
+ * implementations of domain types defined with the {@link Domain} annotation.
+ *
+ * @see Domain
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DomainTypeImplementation {}

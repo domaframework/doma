@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a SQL template.
+ * Indicates a SQL template for database operations.
  *
  * <p>This annotation can be combined with following annotations:
  *

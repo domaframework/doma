@@ -23,61 +23,92 @@ import org.seasar.doma.jdbc.query.DuplicateKeyType;
 import org.seasar.doma.jdbc.query.ReturningProperties;
 
 /**
- * A context for a pre process of an insert.
+ * A context for pre-processing an entity before an insert operation.
  *
- * @param <E> the entity type
+ * <p>This interface provides methods to access and modify the entity being inserted, as well as
+ * methods to access configuration and metadata about the insert operation. It is typically used in
+ * entity listener implementations to perform custom logic before an insert operation.
+ *
+ * <p>The context is passed to the {@code preInsert} method of entity listeners.
+ *
+ * @param <E> the entity type being inserted
+ * @see org.seasar.doma.jdbc.entity.EntityListener#preInsert(Object, PreInsertContext)
+ * @see org.seasar.doma.Insert
  */
 public interface PreInsertContext<E> {
 
   /**
-   * Returns the entity description.
+   * Returns the entity type metadata for the entity being inserted.
    *
-   * @return the entity description
+   * <p>The entity type provides access to metadata about the entity class, including its
+   * properties, naming conventions, and other configuration.
+   *
+   * @return the entity type metadata
    */
   EntityType<E> getEntityType();
 
   /**
-   * The method that is annotated with {@link Insert}.
+   * Returns the DAO method that is annotated with {@link Insert} and triggered this insert
+   * operation.
    *
-   * @return the method
+   * <p>This method provides access to the reflection Method object representing the DAO method that
+   * initiated the insert operation.
+   *
+   * @return the Method object representing the DAO method
    */
   Method getMethod();
 
   /**
-   * Returns the configuration.
+   * Returns the Doma configuration associated with this insert operation.
    *
-   * @return the configuration
+   * <p>The configuration provides access to database connection, dialect, and other runtime
+   * settings for the current operation.
+   *
+   * @return the Doma configuration
    */
   Config getConfig();
 
   /**
-   * Returns the new entity.
+   * Returns the entity instance that is about to be inserted.
    *
-   * @return the new entity
+   * <p>This is the entity instance before any modifications made by entity listeners in their
+   * preInsert methods.
+   *
+   * @return the entity instance to be inserted
    */
   E getNewEntity();
 
   /**
-   * Sets the new entity.
+   * Sets a new entity instance to be used for the insert operation.
    *
-   * <p>This method is available, when the entity is immutable.
+   * <p>This method is primarily used with immutable entity classes, allowing entity listeners to
+   * replace the entity instance with a modified version before it is inserted into the database.
    *
-   * @param newEntity the entity
+   * @param newEntity the new entity instance to use
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   void setNewEntity(E newEntity);
 
   /**
-   * Retrieves the type of the duplicate key when inserting a new entity.
+   * Returns the duplicate key handling strategy for this insert operation.
    *
-   * @return the type of the duplicate key
+   * <p>This method indicates how the insert operation should handle duplicate key violations, such
+   * as by updating the existing record, ignoring the error, or throwing an exception.
+   *
+   * @return the duplicate key handling strategy
+   * @see org.seasar.doma.jdbc.query.DuplicateKeyType
+   * @see org.seasar.doma.Insert#duplicateKeyType()
    */
   DuplicateKeyType getDuplicateKeyType();
 
   /**
-   * Returns the instance of {@code ReturningProperties} associated with the context.
+   * Returns the returning properties configuration for this insert operation.
    *
-   * @return the {@code ReturningProperties} instance, never {@code null}
+   * <p>Returning properties specify which columns should be returned by the database after an
+   * insert operation, typically used with the RETURNING clause in SQL.
+   *
+   * @return the returning properties configuration, never {@code null}
+   * @see org.seasar.doma.Returning
    */
   default ReturningProperties getReturningProperties() {
     return ReturningProperties.NONE;

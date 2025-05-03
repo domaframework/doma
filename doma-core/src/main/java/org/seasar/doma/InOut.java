@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.Reference;
 
 /**
- * Indicates a INOUT parameter of stored functions or stored procedures.
+ * Indicates an INOUT parameter for stored functions or stored procedures.
  *
  * <p>The annotated parameter type must be {@link Reference}. The annotated parameter must be one of
  * the parameters of the method that is annotated with {@link Function} or {@link Procedure}.

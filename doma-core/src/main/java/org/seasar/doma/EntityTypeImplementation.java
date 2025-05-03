@@ -20,6 +20,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates an implementation of an entity type.
+ *
+ * <p>This annotation is used to mark classes that implement entity type interfaces.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EntityTypeImplementation {}

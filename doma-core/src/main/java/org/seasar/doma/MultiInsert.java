@@ -27,7 +27,7 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.query.DuplicateKeyType;
 
 /**
- * Indicates a multi-row insert.
+ * Indicates a multi-row insert operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *

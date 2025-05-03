@@ -22,54 +22,80 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.query.ReturningProperties;
 
 /**
- * A context for a pre process of a delete.
+ * A context for pre-processing an entity before a delete operation.
  *
- * @param <E> the entity type
+ * <p>This interface provides methods to access and modify the entity being deleted, as well as
+ * methods to access configuration and metadata about the delete operation. It is typically used in
+ * entity listener implementations to perform custom logic before a delete operation.
+ *
+ * <p>The context is passed to the {@code preDelete} method of entity listeners.
+ *
+ * @param <E> the entity type being deleted
+ * @see org.seasar.doma.jdbc.entity.EntityListener#preDelete(Object, PreDeleteContext)
+ * @see org.seasar.doma.Delete
  */
 public interface PreDeleteContext<E> {
 
   /**
-   * Returns the entity description.
+   * Returns the entity type metadata for the entity being deleted.
    *
-   * @return the entity description
+   * <p>The entity type provides access to metadata about the entity class, including its
+   * properties, naming conventions, and other configuration.
+   *
+   * @return the entity type metadata
    */
   EntityType<E> getEntityType();
 
   /**
-   * The method that is annotated with {@link Delete}.
+   * Returns the DAO method that is annotated with {@link Delete} and triggered this delete
+   * operation.
    *
-   * @return the method
+   * <p>This method provides access to the reflection Method object representing the DAO method that
+   * initiated the delete operation.
+   *
+   * @return the Method object representing the DAO method
    */
   Method getMethod();
 
   /**
-   * Returns the configuration.
+   * Returns the Doma configuration associated with this delete operation.
    *
-   * @return the configuration
+   * <p>The configuration provides access to database connection, dialect, and other runtime
+   * settings for the current operation.
+   *
+   * @return the Doma configuration
    */
   Config getConfig();
 
   /**
-   * Returns the new entity.
+   * Returns the entity instance that is about to be deleted.
    *
-   * @return the new entity
+   * <p>This is the entity instance before any modifications made by entity listeners in their
+   * preDelete methods.
+   *
+   * @return the entity instance to be deleted
    */
   E getNewEntity();
 
   /**
-   * Sets the new entity.
+   * Sets a new entity instance to be used for the delete operation.
    *
-   * <p>This method is available, when the entity is immutable.
+   * <p>This method is primarily used with immutable entity classes, allowing entity listeners to
+   * replace the entity instance with a modified version before it is deleted from the database.
    *
-   * @param newEntity the entity
+   * @param newEntity the new entity instance to use
    * @throws DomaNullPointerException if {@code newEntity} is {@code null}
    */
   void setNewEntity(E newEntity);
 
   /**
-   * Returns the instance of {@code ReturningProperties} associated with the context.
+   * Returns the returning properties configuration for this delete operation.
    *
-   * @return the {@code ReturningProperties} instance, never {@code null}
+   * <p>Returning properties specify which columns should be returned by the database after a delete
+   * operation, typically used with the RETURNING clause in SQL.
+   *
+   * @return the returning properties configuration, never {@code null}
+   * @see org.seasar.doma.Returning
    */
   default ReturningProperties getReturningProperties() {
     return ReturningProperties.NONE;

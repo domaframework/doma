@@ -17,7 +17,14 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.DomaNullPointerException;
 
-/** The SQL file. */
+/**
+ * Represents a SQL file that contains SQL statements for database operations.
+ *
+ * <p>This class encapsulates the path to the SQL file, the raw SQL content, and the parsed SQL node
+ * structure that can be used for execution.
+ *
+ * @see SqlFileRepository
+ */
 public class SqlFile {
 
   /** the SQL file path */
