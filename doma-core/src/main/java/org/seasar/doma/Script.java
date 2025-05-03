@@ -26,7 +26,7 @@ import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 /**
- * Indicates a script.
+ * Indicates a database script execution.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
