@@ -15,7 +15,14 @@
  */
 package org.seasar.doma.jdbc;
 
-/** Defines the SQL kinds. */
+/**
+ * Defines the types of SQL operations supported by the Doma framework.
+ *
+ * <p>This enum categorizes SQL statements by their operation type (SELECT, INSERT, UPDATE, etc.)
+ * and execution mode (single, batch, or multi-row).
+ *
+ * @see Sql#getKind()
+ */
 public enum SqlKind {
 
   /** select */
