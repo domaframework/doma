@@ -18,7 +18,18 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** Thrown to indicate that a property is not defined in an entity. */
+/**
+ * Exception thrown when a property is referenced but not defined in an entity class.
+ *
+ * <p>This exception is typically thrown when attempting to access a property
+ * that exists in the entity class but is not properly defined as a persistent
+ * property (e.g., not annotated with {@link org.seasar.doma.Column} or excluded
+ * from persistence).
+ *
+ * @see org.seasar.doma.jdbc.entity.EntityType
+ * @see org.seasar.doma.jdbc.entity.EntityPropertyType
+ * @see org.seasar.doma.Column
+ */
 public class EntityPropertyNotDefinedException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
@@ -27,16 +38,32 @@ public class EntityPropertyNotDefinedException extends JdbcException {
 
   private final String entityPropertyName;
 
+  /**
+   * Constructs a new exception with the specified entity class name and property name.
+   *
+   * @param entityClassName the fully qualified name of the entity class
+   * @param entityPropertyName the name of the property that is not defined
+   */
   public EntityPropertyNotDefinedException(String entityClassName, String entityPropertyName) {
     super(Message.DOMA2207, entityClassName, entityPropertyName);
     this.entityClassName = entityClassName;
     this.entityPropertyName = entityPropertyName;
   }
 
+  /**
+   * Returns the fully qualified name of the entity class.
+   *
+   * @return the entity class name
+   */
   public String getEntityClassName() {
     return entityClassName;
   }
 
+  /**
+   * Returns the name of the property that is not defined.
+   *
+   * @return the entity property name
+   */
   public String getEntityPropertyName() {
     return entityPropertyName;
   }
