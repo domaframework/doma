@@ -18,7 +18,16 @@ package org.seasar.doma.jdbc.entity;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
-/** Thrown to indicate that the access to an entity property is failed. */
+/**
+ * Exception thrown when access to an entity property fails.
+ *
+ * <p>This exception is typically thrown when there is an error accessing a property
+ * of an entity, such as when reflection fails due to security restrictions or when
+ * a getter or setter method throws an exception.
+ *
+ * @see org.seasar.doma.jdbc.entity.EntityType
+ * @see org.seasar.doma.jdbc.entity.EntityPropertyType
+ */
 public class EntityPropertyAccessException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
@@ -27,6 +36,13 @@ public class EntityPropertyAccessException extends JdbcException {
 
   private final String entityPropertyName;
 
+  /**
+   * Constructs a new exception with the specified cause, entity class name, and property name.
+   *
+   * @param cause the cause of this exception
+   * @param entityClassName the fully qualified name of the entity class
+   * @param entityPropertyName the name of the property that could not be accessed
+   */
   public EntityPropertyAccessException(
       Throwable cause, String entityClassName, String entityPropertyName) {
     super(Message.DOMA2208, cause, entityClassName, entityPropertyName, cause);
@@ -34,10 +50,20 @@ public class EntityPropertyAccessException extends JdbcException {
     this.entityPropertyName = entityPropertyName;
   }
 
+  /**
+   * Returns the fully qualified name of the entity class.
+   *
+   * @return the entity class name
+   */
   public String getEntityClassName() {
     return entityClassName;
   }
 
+  /**
+   * Returns the name of the property that could not be accessed.
+   *
+   * @return the entity property name
+   */
   public String getEntityPropertyName() {
     return entityPropertyName;
   }
