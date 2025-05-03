@@ -15,6 +15,29 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+/**
+ * Represents a property that defines an association between entity classes.
+ *
+ * <p>This interface is used to define relationships between entities, such as
+ * one-to-one, one-to-many, or many-to-many associations. Association properties
+ * are typically created for fields annotated with {@link org.seasar.doma.Association}
+ * in entity classes.
+ *
+ * <p>Implementations of this interface are typically generated at compile time by the
+ * Doma annotation processor.
+ *
+ * @see org.seasar.doma.Association
+ * @see org.seasar.doma.jdbc.entity.EntityType
+ */
 public interface AssociationPropertyType {
+  
+  /**
+   * Returns the name of this association property.
+   *
+   * <p>The name typically corresponds to the field name in the entity class
+   * that is annotated with {@link org.seasar.doma.Association}.
+   *
+   * @return the name of this association property
+   */
   String getName();
 }
