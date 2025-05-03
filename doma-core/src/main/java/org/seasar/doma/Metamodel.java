@@ -52,7 +52,7 @@ public @interface Metamodel {
   String suffix() default "";
 
   /**
-   * @return the scope class array
+   * @return the array of scope classes that define the visibility boundaries for this metamodel
    */
   Class<?>[] scopes() default {};
 }
