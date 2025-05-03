@@ -49,42 +49,42 @@ import org.seasar.doma.jdbc.id.TableIdGenerator;
 public @interface TableGenerator {
 
   /**
-   * @return the catalog name.
+   * @return the catalog name for the generator table.
    */
   String catalog() default "";
 
   /**
-   * @return the schema name.
+   * @return the schema name for the generator table.
    */
   String schema() default "";
 
   /**
-   * @return the table name.
+   * @return the name of the table used for ID generation.
    */
   String table() default "ID_GENERATOR";
 
   /**
-   * @return the column name that is the primary key.
+   * @return the name of the column that serves as the primary key in the generator table.
    */
   String pkColumnName() default "PK";
 
   /**
-   * @return the column name that has generated identifiers.
+   * @return the name of the column that stores the generated identifier values.
    */
   String valueColumnName() default "VALUE";
 
   /**
-   * @return the value of the primary key column.
+   * @return the value to be used as the primary key in the generator table to identify this generator.
    */
   String pkColumnValue();
 
   /**
-   * @return the initial value.
+   * @return the initial value for the sequence counter in the generator table.
    */
   long initialValue() default 1;
 
   /**
-   * @return the allocated size.
+   * @return the allocation size, which determines how many values are fetched at once from the generator table.
    */
   long allocationSize() default 1;
 
