@@ -21,12 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated field holds original states that are fetched from database.
+ * Indicates that the annotated field holds original states of an entity that were fetched from the database.
  *
- * <p>This annotation allows that only modified properties are reflected to SQL UPDATE statements.
+ * <p>This annotation enables partial updates where only modified properties are included in SQL UPDATE statements.
  *
  * <p>The annotated field must be a member of an {@link Entity} annotated class. The field type must
- * be same as the {@link Entity} annotated class.
+ * be the same as the {@link Entity} annotated class.
  *
  * <p>The field must not be modified by application code.
  *
