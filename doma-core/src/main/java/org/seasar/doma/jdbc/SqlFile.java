@@ -20,8 +20,8 @@ import org.seasar.doma.DomaNullPointerException;
 /**
  * Represents a SQL file that contains SQL statements for database operations.
  *
- * <p>This class encapsulates the path to the SQL file, the raw SQL content, and
- * the parsed SQL node structure that can be used for execution.
+ * <p>This class encapsulates the path to the SQL file, the raw SQL content, and the parsed SQL node
+ * structure that can be used for execution.
  *
  * @see SqlFileRepository
  */

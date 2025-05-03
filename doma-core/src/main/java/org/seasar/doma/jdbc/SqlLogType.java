@@ -20,8 +20,8 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /**
  * Defines the output formats for SQL logs.
  *
- * <p>This enum controls how SQL statements and their parameters are formatted
- * when logged by the Doma framework.
+ * <p>This enum controls how SQL statements and their parameters are formatted when logged by the
+ * Doma framework.
  */
 public enum SqlLogType {
 

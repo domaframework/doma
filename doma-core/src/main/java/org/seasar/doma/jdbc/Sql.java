@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * Represents an executable SQL statement with its parameters and metadata.
  *
- * <p>This interface provides access to both the raw SQL string with placeholders
- * and the formatted SQL with actual parameter values for logging purposes.
+ * <p>This interface provides access to both the raw SQL string with placeholders and the formatted
+ * SQL with actual parameter values for logging purposes.
  *
  * <p>The implementation class is not required to be thread safe.
  *
