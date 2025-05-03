@@ -21,11 +21,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * The logger for JDBC related operations.
+ * The logger interface for JDBC related operations in the Doma framework.
+ *
+ * <p>This interface defines methods for logging various database operations including
+ * SQL execution, transaction management, and resource handling.
  *
  * <p>The implementation instance must be thread safe.
  *
  * <p>The implementation methods must not throw any exceptions.
+ *
+ * @see org.seasar.doma.jdbc.Config#getJdbcLogger()
  */
 public interface JdbcLogger {
 
