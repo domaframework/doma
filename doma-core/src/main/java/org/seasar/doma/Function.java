@@ -60,12 +60,12 @@ import org.seasar.doma.jdbc.UnknownColumnException;
 public @interface Function {
 
   /**
-   * @return the catalog name.
+   * @return the catalog name for the stored function.
    */
   String catalog() default "";
 
   /**
-   * @return the schema name.
+   * @return the schema name for the stored function.
    */
   String schema() default "";
 
@@ -79,8 +79,8 @@ public @interface Function {
   String name() default "";
 
   /**
-   * @return whether quotation marks are used for the catalog name, the schema name and the stored
-   *     function name.
+   * @return whether quotation marks should be used for the catalog name, the schema name and the stored
+   *     function name in SQL statements.
    */
   boolean quote() default false;
 
@@ -100,7 +100,7 @@ public @interface Function {
    * <p>This value is used only if a result set is fetched as {@code Map<Object, String>} or {@code
    * List<Map<Object, String>>}.
    *
-   * @return the naming convention
+   * @return the naming convention to be used for map keys when fetching results
    */
   MapKeyNamingType mapKeyNaming() default MapKeyNamingType.NONE;
 
@@ -117,7 +117,7 @@ public @interface Function {
   boolean ensureResultMapping() default false;
 
   /**
-   * @return the output format of SQL logs.
+   * @return the output format to be used for SQL logs when this function is executed.
    */
   SqlLogType sqlLog() default SqlLogType.FORMATTED;
 }
