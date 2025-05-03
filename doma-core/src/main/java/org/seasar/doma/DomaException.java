@@ -17,9 +17,9 @@ package org.seasar.doma;
 
 import org.seasar.doma.message.MessageResource;
 
-/** 
+/**
  * The root exception in the Doma framework.
- * 
+ *
  * <p>All exceptions thrown by the Doma framework extend this class.
  */
 public class DomaException extends RuntimeException {

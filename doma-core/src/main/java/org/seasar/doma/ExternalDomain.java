@@ -22,7 +22,8 @@ import java.lang.annotation.Target;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 
 /**
- * Indicates that an arbitrary class should be handled as if it was a {@link Domain} annotated class.
+ * Indicates that an arbitrary class should be handled as if it was a {@link Domain} annotated
+ * class.
  *
  * <p>The annotated class must implement {@link DomainConverter}.
  *

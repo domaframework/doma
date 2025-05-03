@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates a domain class.
  *
- * <p>A domain class is a user-defined type that wraps a basic value. It can be mapped to a
- * database column.
+ * <p>A domain class is a user-defined type that wraps a basic value. It can be mapped to a database
+ * column.
  *
  * <p>Instantiation by constructor:
  *
@@ -96,7 +96,8 @@ public @interface Domain {
   String accessorMethod() default "getValue";
 
   /**
-   * @return whether the constructor or the factory method should accept {@code null} as an argument.
+   * @return whether the constructor or the factory method should accept {@code null} as an
+   *     argument.
    */
   boolean acceptNull() default false;
 }

@@ -32,8 +32,8 @@ import org.seasar.doma.message.Message;
  *
  * <p>The implementation must be thread safe.
  *
- * <p>This interface provides configuration settings for database connections, SQL dialects,
- * and various other components used by the Doma framework.
+ * <p>This interface provides configuration settings for database connections, SQL dialects, and
+ * various other components used by the Doma framework.
  */
 public interface Config {
 
