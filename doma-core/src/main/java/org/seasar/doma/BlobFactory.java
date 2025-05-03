@@ -24,7 +24,8 @@ import java.sql.Connection;
 import org.seasar.doma.jdbc.JdbcException;
 
 /**
- * Indicates a method that creates a {@link Blob} instance for handling large binary data in the database.
+ * Indicates a method that creates a {@link Blob} instance for handling large binary data in the
+ * database.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *

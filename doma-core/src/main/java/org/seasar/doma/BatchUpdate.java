@@ -31,7 +31,8 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 /**
  * Indicates a method that performs batch update operations on multiple entities.
  *
- * <p>This annotation enables efficient updating of multiple database records in a single batch operation.
+ * <p>This annotation enables efficient updating of multiple database records in a single batch
+ * operation.
  *
  * <p>The annotated method must be a member of a {@link Dao} annotated interface.
  *
