@@ -18,11 +18,15 @@ package org.seasar.doma.jdbc;
 import java.util.List;
 
 /**
- * An SQL.
+ * Represents an executable SQL statement with its parameters and metadata.
+ *
+ * <p>This interface provides access to both the raw SQL string with placeholders
+ * and the formatted SQL with actual parameter values for logging purposes.
  *
  * <p>The implementation class is not required to be thread safe.
  *
- * @param <P> the parameter type
+ * @param <P> the type of SQL parameters used in this SQL statement
+ * @see SqlParameter
  */
 public interface Sql<P extends SqlParameter> {
 
