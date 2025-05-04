@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 
-/** Defines messages that are sent to application developers. */
+/** Defines messages that are displayed to application developers. */
 public enum Message implements MessageResource {
 
   // doma
@@ -43,18 +43,18 @@ public enum Message implements MessageResource {
           + "2)Annotate a field in the entity class with @Column(name = \"{0}\"). "
           + "3)Implement org.seasar.doma.jdbc.UnknownColumnHandler to ignore unknown columns and configure it in org.seasar.doma.jdbc.Config."
           + "\nPATH=[{3}].\nSQL=[{4}]\""),
-  DOMA2003("The SQL execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2003("The SQL execution failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2004(
-      "The SQL execution is failed because of unique constraint violation."
+      "The SQL execution failed because of unique constraint violation."
           + "\nPATH=[{0}].\nSQL=[{1}].\nThe detailed cause is as follows: {2}"),
   DOMA2005("The SQL result is none.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2006("The SQL result is not a single column.\nPATH=[{0}].\nSQL=[{1}]."),
-  DOMA2008("The JDBC operation is failed. The cause is as follows: {1}"),
+  DOMA2008("The JDBC operation failed. The cause is as follows: {1}"),
   DOMA2009(
-      "The SQL execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}\nThe root cause is as follows: {3}"),
+      "The SQL execution failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}\nThe root cause is as follows: {3}"),
   DOMA2010("Cannot get content from the SQL template [{0}]. The cause is as follows: {1}"),
-  DOMA2011("The SQL file \"{0}\" is not found from classpath."),
-  DOMA2012("The script file \"{0}\" is not found from classpath."),
+  DOMA2011("The SQL file \"{0}\" is not found in the classpath."),
+  DOMA2012("The script file \"{0}\" is not found in the classpath."),
   DOMA2015("Cannot get java.sql.Connection. The cause is as follows: {0}"),
   DOMA2016(
       "Cannot get java.sql.PreparedStatement.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}"),
@@ -71,12 +71,12 @@ public enum Message implements MessageResource {
   DOMA2023("Pessimistic locking is not supported in the RDBMS \"{0}\"."),
   DOMA2024("Pessimistic locking with aliases is not supported in the RDBMS \"{0}\"."),
   DOMA2025("Cannot get java.sql.CallableStatement.\nSQL=[{0}].\nThe cause is as follows: {1}"),
-  DOMA2028("The batch execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2028("The batch execution failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2029(
-      "The batch execution is failed because of unique constraint violation.\nPATH=[{0}].\nSQL=[{1}]."
+      "The batch execution failed because of unique constraint violation.\nPATH=[{0}].\nSQL=[{1}]."
           + "\nThe detailed cause is as follows: {2}"),
   DOMA2030(
-      "The batch execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}."
+      "The batch execution failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}."
           + "\nThe root cause is as follows: {3}"),
   DOMA2032("Cannot get java.sql.Statement. The cause is as follows: {0}"),
   DOMA2033("The instance variable \"{0}\" is not set."),
@@ -111,7 +111,7 @@ public enum Message implements MessageResource {
   DOMA2067("The local transaction \"{0}\" is committed."),
   DOMA2068("The local transaction \"{0}\" is rolled back."),
   DOMA2069("The local transaction \"{0}\" is rolled back to the savepoint[{1}]."),
-  DOMA2070("The rollback of the local transaction \"{0}\" is failed."),
+  DOMA2070("The rollback of the local transaction \"{0}\" failed."),
   DOMA2071("Cannot enable auto commit mode."),
   DOMA2072("Cannot set the transaction isolation level \"{0}\"."),
   DOMA2073("Cannot close java.sql.Connection."),
@@ -238,10 +238,10 @@ public enum Message implements MessageResource {
   DOMA2206("The class \"{0}\" must be annotated with @Entity."),
   DOMA2207("The property \"{1}\" is not defined in the entity class \"{0}\"."),
   DOMA2208(
-      "Failed to access to the property \"{1}\" in the entity class \"{0}\". The cause is as follows: {2}"),
+      "Failed to access the property \"{1}\" in the entity class \"{0}\". The cause is as follows: {2}"),
   DOMA2211("The property \"{1}\" is not found in the entity class \"{0}\"."),
   DOMA2212(
-      "Failed to access to the field \"{1}\" that is annotated with @OriginalStates in the entity class \"{0}\". "
+      "Failed to access the field \"{1}\" that is annotated with @OriginalStates in the entity class \"{0}\". "
           + "The cause is as follows: {2}"),
   DOMA2213(
       "The field \"{1}\" that is annotated with @OriginalStates is not found in the entity class \"{0}\". "
@@ -294,7 +294,7 @@ public enum Message implements MessageResource {
           + "Cannot execute the method \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
   DOMA3002(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
-          + "The method \"{3}\" is not found the class \"{2}\". "
+          + "The method \"{3}\" is not found in the class \"{2}\". "
           + "Check the method name, the parameter size, the parameter type and so on."),
   DOMA3003(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
@@ -339,13 +339,13 @@ public enum Message implements MessageResource {
           + "Cannot execute the operator \"{2}\". The operand is null."),
   DOMA3016(
       "Failed to analyze the expression \"{0}\" at column {1}. "
-          + "The single quotation mark \"''\" fro the end of the character literal is not found."),
+          + "The single quotation mark \"''\" for the end of the character literal is not found."),
   DOMA3018(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
           + "The field \"{3}\" is not found in the class \"{2}\". Check that the field name is correct."),
   DOMA3019(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
-          + "Cannot access to the field \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
+          + "Cannot access the field \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
   DOMA3020(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
           + "Cannot execute the operator \"{2}\". "
@@ -402,8 +402,7 @@ public enum Message implements MessageResource {
   DOMA4007(
       "The type argument of java.util.List is {0}. Such List isn''t supported as the return type."),
   DOMA4008("The return type \"{0}\" isn''t supported."),
-  DOMA4011(
-      "The annotation processing for the class \"{0}\" is failed. The cause is as follows: {1}"),
+  DOMA4011("The annotation processing for the class \"{0}\" failed. The cause is as follows: {1}"),
   DOMA4014("Cannot annotate the type with @Dao because the type isn''t an interface."),
   DOMA4015(
       "Cannot annotate the type with @Entity because the type is neither a class nor a record."),
@@ -414,9 +413,9 @@ public enum Message implements MessageResource {
   DOMA4020("The SQL template \"{0}\" is empty."),
   DOMA4021("The path \"{0}\" is a directory, but it must be a file. The absolute path is \"{1}\"."),
   DOMA4024(
-      "The annotation @Version is duplicated. The filed annotated with @Version must be only one in the class hierarchy."),
-  DOMA4025("Cannot use the name stating with \"{0}\", because it is reserved for Doma."),
-  DOMA4026("The name ending with \"{0}\" may be duplicate with the auto-generated classes."),
+      "The annotation @Version is duplicated. There must be only one field annotated with @Version in the class hierarchy."),
+  DOMA4025("Cannot use a name starting with \"{0}\", because it is reserved for Doma."),
+  DOMA4026("The name ending with \"{0}\" may duplicate with the auto-generated classes."),
   DOMA4030(
       "When you use @SequenceGenerator, "
           + "you must annotate the same field with @GeneratedValue(strategy = GenerationType.SEQUENCE)."),
@@ -431,9 +430,9 @@ public enum Message implements MessageResource {
       "When you use @GeneratedValue(strategy = GenerationType.TABLE), "
           + "you must annotate the same field with @TableGenerator."),
   DOMA4036(
-      "When you use @GeneratedValue, The filed annotated with @Id must be only one in the class hierarchy."),
+      "When you use @GeneratedValue, there must be only one field annotated with @Id in the class hierarchy."),
   DOMA4037(
-      "Multiple @GeneratedValue are found. The filed annotated with @GeneratedValue must be one."),
+      "Multiple @GeneratedValue annotations are found. There must be only one field annotated with @GeneratedValue."),
   DOMA4038("The type argument of EntityListener must be a supertype of the entity class \"{2}\"."),
   DOMA4039(
       "The annotation processing is stopped because of compilation error. "
@@ -442,7 +441,7 @@ public enum Message implements MessageResource {
   DOMA4042("The parameter type must be a subtype of java.lang.Iterable."),
   DOMA4043("The type argument of the subtype of java.lang.Iterable must be an entity class."),
   DOMA4051("The entity class cannot have type parameters."),
-  DOMA4053("Multiple SelectOption parameters arn''t allowed."),
+  DOMA4053("Multiple SelectOption parameters aren''t allowed."),
   DOMA4059("The DAO interface cannot have type parameters."),
   DOMA4062("The parameter type annotated with @ResultSet must be java.util.List."),
   DOMA4063("The return type \"{0}\" isn''t supported in the method annotated with @Function."),
@@ -514,7 +513,7 @@ public enum Message implements MessageResource {
   DOMA4115("The constructor \"{2}\" in the expression \"{0}\" at column {1} is not found."),
   DOMA4116(
       "The type \"{4}\" of the left operand \"{3}\" and the type \"{6}\" of the right operand \"{5}\" are "
-          + "not same for the operator \"{2}\" in the expression \"{0}\" at column {1}."),
+          + "not the same for the operator \"{2}\" in the expression \"{0}\" at column {1}."),
   DOMA4117(
       "The type \"{4}\" of the left operand \"{3}\" for the operator \"{2}\" "
           + "in the expression \"{0}\" at column {1} is neither boolean nor Boolean."),
@@ -538,7 +537,7 @@ public enum Message implements MessageResource {
           + "To make it immutable, specify \"true\" to the immutable element of @Entity."),
   DOMA4125(
       "@OriginalStates is duplicated. "
-          + "The filed annotated with @OriginalStates must be only one in the class hierarchy."),
+          + "There must be only one field annotated with @OriginalStates in the class hierarchy."),
   DOMA4126(
       "To execute concatenation, the type \"{4}\" of the right operand \"{3}\" in the expression \"{0}\" "
           + "at column {1} must be either String, Character or char. "
@@ -600,7 +599,7 @@ public enum Message implements MessageResource {
   DOMA4164(
       "The user defined Config class must have a no-args and "
           + "public constructor or have a public static final field that is named \"INSTANCE\".　"
-          + "The type of the field must a the subtype of org.seasar.doma.Config. The class \"{0}\" does not meet these requirements."),
+          + "The type of the field must be a subtype of org.seasar.doma.Config. The class \"{0}\" does not meet these requirements."),
   DOMA4166("The entity listener class must not be abstract. The class \"{0}\" is abstract."),
   DOMA4167(
       "The entity listener class must have a public no-args constructor. "
@@ -633,11 +632,11 @@ public enum Message implements MessageResource {
           + "because \"new\" means the usage of constructor. "
           + "Specify the name of the factory method that is static and non-private."),
   DOMA4185(
-      " ... /** The SQL statement is too long. The only first {0} character are displayed. */"),
+      " ... /** The SQL statement is too long. Only the first {0} characters are displayed. */"),
   DOMA4186(
       "The type argument \"{0}\" is not supported for java.util.List. "
           + "Supported types are as follows: basic classes, domain classes, entity classes and java.util.Map<String, Object>."),
-  DOMA4188("Interfaces annotated with @Dao must be only one as the parent interface."),
+  DOMA4188("Only one interface annotated with @Dao can be used as the parent interface."),
   DOMA4189(
       "Failed to resolve the function \"{2}\" in the expression \"{0}\" at column {1}. "
           + "The class \"{3}\" that is specified for the annotation processing option \"doma.expr.functions\" is not found."),
@@ -692,19 +691,19 @@ public enum Message implements MessageResource {
       "The class \"{0}\" whose type arguments contain a wildcard or type variable "
           + "cannot be used as a type argument of Reference."),
   DOMA4220(
-      "The SQL template \"{0}\" that is not mapped to any methods are found. "
+      "The SQL template \"{0}\" that is not mapped to any methods was found. "
           + "Check the method names or the sqlFile elements of annotations. "
           + "To suppress this warning, annotate the DAO method with @Suppress(messages = '{ Message.DOMA4220 }')."),
   DOMA4221("A non-private constructor is required for the immutable entity class."),
   DOMA4222(
-      "When the immutable entity class is a parameter type for the method annotated with such as @Insert, @Update and @Delete, "
+      "When the immutable entity class is a parameter type for the method annotated with @Insert, @Update, or @Delete, "
           + "the return type must be org.seasar.doma.jdbc.Result. "
-          + "The type argument of org.seasar.doma.jdbc.Result must be same entity class with the parameter type of the method."),
+          + "The type argument of org.seasar.doma.jdbc.Result must be the same entity class as the parameter type of the method."),
   DOMA4223(
       "When the immutable entity class is the type argument of the subtype of Iterable and "
-          + "the iterable is parameter type for the method annotated with such as @BatchInsert, @BatchUpdate and @BatchDelete, "
+          + "the iterable is a parameter type for the method annotated with @BatchInsert, @BatchUpdate, or @BatchDelete, "
           + "the return type must be org.seasar.doma.jdbc.BatchResult. "
-          + "The type argument of org.seasar.doma.jdbc.BatchResult must be same entity class with the type argument of the iterable."),
+          + "The type argument of org.seasar.doma.jdbc.BatchResult must be the same entity class as the type argument of the iterable."),
   DOMA4224("Cannot annotate the fields of the immutable entity class with @OriginalStates."),
   DOMA4225(
       "The \"final\" modifier is required for all persistent fields of the immutable entity class."),
@@ -719,11 +718,11 @@ public enum Message implements MessageResource {
       "The upper bound \"{1}\" of the type parameter \"{0}\" of the entity listener class "
           + "is not compatible with the entity class \"{2}\"."),
   DOMA4230(
-      "The entity listener class \"{0}\" that is took over from the parent entity class "
-          + "must have the type parameter that accepts the entity class \"{1}\"."),
+      "The entity listener class \"{0}\" that is inherited from the parent entity class "
+          + "must have a type parameter that accepts the entity class \"{1}\"."),
   DOMA4231(
       "The upper bound \"{2}\" of the type parameter \"{1}\" of the entity listener class \"{0}\" "
-          + "that is took over from the parent entity class is not compatible with the entity class \"{3}\"."),
+          + "that is inherited from the parent entity class is not compatible with the entity class \"{3}\"."),
   DOMA4232("The raw type of the class \"{0}\" cannot be used."),
   DOMA4233(
       "The type argument of the class \"{0}\" must not be a wildcard or type variable. "
@@ -740,18 +739,18 @@ public enum Message implements MessageResource {
   DOMA4238(
       "The raw type of the class \"{0}\" cannot be used as a type argument of java.util.Optional."),
   DOMA4239(
-      "The class\"{0}\" whose type arguments contains a wildcard or type variable "
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
           + "cannot be used as a type argument of java.util.Optional."),
   DOMA4240("The class \"{0}\" of the parameter must not be the raw type."),
   DOMA4241("The class \"{0}\" of the parameter must not be the wildcard type."),
   DOMA4242("The raw type of the class \"{0}\" cannot be used as a type argument of Stream."),
   DOMA4243(
-      "The class \"{0}\" whose type arguments contains a wildcard or type variable "
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
           + "cannot be used as a type argument of Stream."),
   DOMA4244("The first type argument of Function must be java.util.stream.Stream."),
   DOMA4245("The type argument of Stream is not supported."),
   DOMA4246(
-      "The return type \"{0}\" and the second type argument \"{1}\" of java.util.function.Function are not same."),
+      "The return type \"{0}\" and the second type argument \"{1}\" of java.util.function.Function are not the same."),
   DOMA4247(
       "When you use the java.util.function.Function parameter, "
           + "SelectStrategyType.STREAM must be specified for the strategy element of @Select."),
@@ -785,14 +784,14 @@ public enum Message implements MessageResource {
   DOMA4260(
       "The raw type of the class \"{0}\" cannot be used as the first type argument of Collector."),
   DOMA4261(
-      "The class \"{0}\" whose type arguments contains a wildcard or type variable "
-          + "cannot be used as the fist type argument of Collector."),
+      "The class \"{0}\" whose type arguments contain a wildcard or type variable "
+          + "cannot be used as the first type argument of Collector."),
   DOMA4262("The first type argument of Collector is not supported."),
   DOMA4263(
       "The entity class \"{0}\" as the first type argument of Collector must not be abstract."),
   DOMA4264("Multiple Collector parameters are not allowed."),
   DOMA4265(
-      "The return type \"{0}\" and the third type argument \"{1}\" of Collector are not same."),
+      "The return type \"{0}\" and the third type argument \"{1}\" of Collector are not the same."),
   DOMA4266(
       "When you specify SelectStrategyType.COLLECT for the strategy element of @Select, "
           + "the java.util.stream.Collector parameter is required for the method."),
@@ -857,16 +856,14 @@ public enum Message implements MessageResource {
   DOMA4299("The raw type of the class \"{0}\" cannot be used as a persistent property."),
   DOMA4301(
       "The type argument of the class \"{0}\" that is a wildcard or type variable cannot be used as a persistent property."),
-  DOMA4302("You cannot annotate the the field with @Id, if the field type is embeddable class."),
+  DOMA4302("You cannot annotate the field with @Id if the field type is an embeddable class."),
   DOMA4303(
-      "You cannot annotate the the field with @GeneratedValue, if the field type is embeddable class."),
-  DOMA4304(
-      "You cannot annotate the the field with @Version, if the field type is embeddable class."),
-  DOMA4305("When the entity class has embedded property, @OriginalStates cannot be used."),
-  DOMA4306(
-      "You cannot annotate the the field with @Column, if the field type is embeddable class."),
+      "You cannot annotate the field with @GeneratedValue if the field type is an embeddable class."),
+  DOMA4304("You cannot annotate the field with @Version if the field type is an embeddable class."),
+  DOMA4305("When the entity class has an embedded property, @OriginalStates cannot be used."),
+  DOMA4306("You cannot annotate the field with @Column if the field type is an embeddable class."),
   DOMA4309(
-      "The file path \"{0}\" is different from the path \"{1}\" in filesystem in case-sensitive."),
+      "The file path \"{0}\" is different from the path \"{1}\" in the filesystem when compared in a case-sensitive manner."),
   DOMA4315(
       "The type \"{0}\" is not public and static. "
           + "The entity class and its enclosing type must be public and static."),
@@ -903,33 +900,34 @@ public enum Message implements MessageResource {
   DOMA4427(DOMA4426.getMessagePattern()),
   DOMA4428(DOMA4419.getMessagePattern()),
   DOMA4429(
-      "The method name that is generated by @lombok.Value is not same with the value of the accessorMethod element of @Domain."),
+      "The method name that is generated by @lombok.Value is not the same as the value of the accessorMethod element of @Domain."),
   DOMA4430("There is no instance field to be initialized by @lombok.Value."),
   DOMA4431(
-      "The number of instance fields that is initialized by @lombok.Value must be 1, "
+      "The number of instance fields initialized by @lombok.Value must be 1, "
           + "but the actual number is greater than or equal to 2."),
   DOMA4432(
       "The type \"{0}\" of the instance field that is initialized by @lombok.Value "
-          + "is not same with the type \"{1}\" that is specified to the valueType element of @Domain."),
+          + "is not the same as the type \"{1}\" that is specified to the valueType element of @Domain."),
   DOMA4433(
       "When you annotate the method with @SqlProcessor, the BiFunction parameter is required for the method."),
   DOMA4434("Multiple BiFunction parameters are not allowed."),
   DOMA4435("The second type argument of BiFunction must be org.seasar.doma.jdbc.PreparedSql."),
   DOMA4436(
-      "The return type \"{0}\" is not same with the third type argument \"{1}\" of BiFunction."),
+      "The return type \"{0}\" is not the same as the third type argument \"{1}\" of BiFunction."),
   DOMA4437("The first type argument of BiFunction must be org.seasar.doma.jdbc.Config."),
   DOMA4438("The parameter type \"{0}\" must not be the raw type."),
   DOMA4439("The parameter type \"{0}\" must not contain a wildcard as a type argument."),
   DOMA4440(
-      "The method \"{0}\" in the parent interface is not default method. "
-          + "When the parent interface is not annotated with @Dao, the all methods in the interface must be default methods."),
-  DOMA4441("You cannot annotate the filed with @TenantId, if the field type is embeddable class."),
+      "The method \"{0}\" in the parent interface is not a default method. "
+          + "When the parent interface is not annotated with @Dao, all methods in the interface must be default methods."),
+  DOMA4441(
+      "You cannot annotate the field with @TenantId if the field type is an embeddable class."),
   DOMA4442(
-      "The annotation @TenantId is duplicated. The filed annotated with @TenantId must be only one in the class hierarchy."),
+      "The annotation @TenantId is duplicated. There must be only one field annotated with @TenantId in the class hierarchy."),
   DOMA4443("You cannot annotate the fields of the embeddable class with @TenantId."),
-  DOMA4444("cannot combine with the annotation \"{0}\"."),
+  DOMA4444("This annotation cannot be combined with the annotation \"{0}\"."),
   DOMA4445("When the method is annotated with @Sql, the sqlFile element must be \"false\"."),
-  DOMA4446("cannot annotate the default method."),
+  DOMA4446("This annotation cannot be used on a default method."),
   DOMA4447("The multidimensional array is not supported as a domain class."),
   DOMA4448("The component type of the array must not have any type parameter."),
   DOMA4449("You can annotate only records with @DateType."),
@@ -945,14 +943,14 @@ public enum Message implements MessageResource {
   DOMA4453("The non-private 1-arg constructor is required."),
   DOMA4454("The parameter type \"{0}\" is not supported as a persistent type."),
   DOMA4455("The combination of the prefix=\"{0}\" and the suffix=\"\" is not allowed."),
-  DOMA4456("The non-private 1-arg constructor must be only one, but more than one found."),
-  DOMA4457("You must always receive the EntityMetamodel as the first parameter"),
-  DOMA4458("You can't use static methods"),
-  DOMA4459("Must be a public method"),
+  DOMA4456("There must be only one non-private 1-arg constructor, but more than one was found."),
+  DOMA4457("You must always receive the EntityMetamodel as the first parameter."),
+  DOMA4458("You cannot use static methods."),
+  DOMA4459("The method must be public."),
   DOMA4460(
       "The first type argument \"{0}\" of org.seasar.doma.jdbc.domain.DomainConverter must not be a basic type. However, enum types are exceptionally allowed."),
   DOMA4461(
-      "If a method annotated with @MultiInsert targets immutable entities for insertion, the return type must be org.seasar.doma.jdbc.MultiResult."
+      "If a method annotated with @MultiInsert targets immutable entities for insertion, the return type must be org.seasar.doma.jdbc.MultiResult. "
           + "The type argument of org.seasar.doma.jdbc.MultiResult must be the immutable entity class."),
   DOMA4462("The property \"{0}\" is not found in the entity class \"{1}\"."),
   DOMA4463("'{'\"execTimeMillis\": {0}, \"annotation\": \"{1}\", \"element\": \"{2}\"'}'"),
