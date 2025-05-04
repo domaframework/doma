@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 
-/** Defines messages that are sent to application developers. */
+/** Defines messages that are displayed to application developers. */
 public enum Message implements MessageResource {
 
   // doma
@@ -43,18 +43,18 @@ public enum Message implements MessageResource {
           + "2)Annotate a field in the entity class with @Column(name = \"{0}\"). "
           + "3)Implement org.seasar.doma.jdbc.UnknownColumnHandler to ignore unknown columns and configure it in org.seasar.doma.jdbc.Config."
           + "\nPATH=[{3}].\nSQL=[{4}]\""),
-  DOMA2003("The SQL execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2003("The SQL execution failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2004(
-      "The SQL execution is failed because of unique constraint violation."
+      "The SQL execution failed because of unique constraint violation."
           + "\nPATH=[{0}].\nSQL=[{1}].\nThe detailed cause is as follows: {2}"),
-  DOMA2005("The SQL result is none.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2005("No SQL result was found.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2006("The SQL result is not a single column.\nPATH=[{0}].\nSQL=[{1}]."),
-  DOMA2008("The JDBC operation is failed. The cause is as follows: {1}"),
+  DOMA2008("The JDBC operation failed. The cause is as follows: {1}"),
   DOMA2009(
-      "The SQL execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}\nThe root cause is as follows: {3}"),
+      "The SQL execution failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}\nThe root cause is as follows: {3}"),
   DOMA2010("Cannot get content from the SQL template [{0}]. The cause is as follows: {1}"),
-  DOMA2011("The SQL file \"{0}\" is not found from classpath."),
-  DOMA2012("The script file \"{0}\" is not found from classpath."),
+  DOMA2011("The SQL file \"{0}\" was not found in the classpath."),
+  DOMA2012("The script file \"{0}\" was not found in the classpath."),
   DOMA2015("Cannot get java.sql.Connection. The cause is as follows: {0}"),
   DOMA2016(
       "Cannot get java.sql.PreparedStatement.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}"),
@@ -71,18 +71,18 @@ public enum Message implements MessageResource {
   DOMA2023("Pessimistic locking is not supported in the RDBMS \"{0}\"."),
   DOMA2024("Pessimistic locking with aliases is not supported in the RDBMS \"{0}\"."),
   DOMA2025("Cannot get java.sql.CallableStatement.\nSQL=[{0}].\nThe cause is as follows: {1}"),
-  DOMA2028("The batch execution is failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
+  DOMA2028("The batch execution failed because of optimistic locking.\nPATH=[{0}].\nSQL=[{1}]."),
   DOMA2029(
-      "The batch execution is failed because of unique constraint violation.\nPATH=[{0}].\nSQL=[{1}]."
+      "The batch execution failed because of unique constraint violation.\nPATH=[{0}].\nSQL=[{1}]."
           + "\nThe detailed cause is as follows: {2}"),
   DOMA2030(
-      "The batch execution is failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}."
+      "The batch execution failed.\nPATH=[{0}].\nSQL=[{1}].\nThe cause is as follows: {2}."
           + "\nThe root cause is as follows: {3}"),
   DOMA2032("Cannot get java.sql.Statement. The cause is as follows: {0}"),
   DOMA2033("The instance variable \"{0}\" is not set."),
-  DOMA2034("The unsupported method \"{1}\" of the class \"{0}\" is invoked."),
+  DOMA2034("The unsupported method \"{1}\" of the class \"{0}\" was invoked."),
   DOMA2035("The method \"{1}\" of the class \"{0}\" must not return null."),
-  DOMA2040("The constant \"{1}\" is not found in the Enum type \"{0}\"."),
+  DOMA2040("The constant \"{1}\" was not found in the Enum type \"{0}\"."),
   DOMA2041("Cannot disable auto commit mode. The cause is as follows: {0}"),
   DOMA2042("Cannot enable auto commit mode. The cause is as follows: {0}"),
   DOMA2043("Cannot commit. The cause is as follows: {0}"),
@@ -339,13 +339,13 @@ public enum Message implements MessageResource {
           + "Cannot execute the operator \"{2}\". The operand is null."),
   DOMA3016(
       "Failed to analyze the expression \"{0}\" at column {1}. "
-          + "The single quotation mark \"''\" fro the end of the character literal is not found."),
+          + "The single quotation mark \"''\" for the end of the character literal was not found."),
   DOMA3018(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
-          + "The field \"{3}\" is not found in the class \"{2}\". Check that the field name is correct."),
+          + "The field \"{3}\" was not found in the class \"{2}\". Check that the field name is correct."),
   DOMA3019(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
-          + "Cannot access to the field \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
+          + "Cannot access the field \"{3}\" in the class \"{2}\". The cause is as follows: {4}"),
   DOMA3020(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
           + "Cannot execute the operator \"{2}\". "
@@ -410,13 +410,13 @@ public enum Message implements MessageResource {
   DOMA4016(
       "An unexpected error has occurred. It may be a bug in the Doma framework. Report the following stacktrace: {0}"),
   DOMA4017("The DAO interface must be a top level interface."),
-  DOMA4019("The file \"{0}\" is not found in the classpath. The absolute path is \"{1}\"."),
+  DOMA4019("The file \"{0}\" was not found in the classpath. The absolute path is \"{1}\"."),
   DOMA4020("The SQL template \"{0}\" is empty."),
   DOMA4021("The path \"{0}\" is a directory, but it must be a file. The absolute path is \"{1}\"."),
   DOMA4024(
-      "The annotation @Version is duplicated. The filed annotated with @Version must be only one in the class hierarchy."),
-  DOMA4025("Cannot use the name stating with \"{0}\", because it is reserved for Doma."),
-  DOMA4026("The name ending with \"{0}\" may be duplicate with the auto-generated classes."),
+      "The annotation @Version is duplicated. The field annotated with @Version must be only one in the class hierarchy."),
+  DOMA4025("Cannot use a name starting with \"{0}\", because it is reserved for Doma."),
+  DOMA4026("The name ending with \"{0}\" may duplicate with the auto-generated classes."),
   DOMA4030(
       "When you use @SequenceGenerator, "
           + "you must annotate the same field with @GeneratedValue(strategy = GenerationType.SEQUENCE)."),
@@ -442,7 +442,7 @@ public enum Message implements MessageResource {
   DOMA4042("The parameter type must be a subtype of java.lang.Iterable."),
   DOMA4043("The type argument of the subtype of java.lang.Iterable must be an entity class."),
   DOMA4051("The entity class cannot have type parameters."),
-  DOMA4053("Multiple SelectOption parameters arn''t allowed."),
+  DOMA4053("Multiple SelectOption parameters aren't allowed."),
   DOMA4059("The DAO interface cannot have type parameters."),
   DOMA4062("The parameter type annotated with @ResultSet must be java.util.List."),
   DOMA4063("The return type \"{0}\" isn''t supported in the method annotated with @Function."),
@@ -538,7 +538,7 @@ public enum Message implements MessageResource {
           + "To make it immutable, specify \"true\" to the immutable element of @Entity."),
   DOMA4125(
       "@OriginalStates is duplicated. "
-          + "The filed annotated with @OriginalStates must be only one in the class hierarchy."),
+          + "The field annotated with @OriginalStates must be only one in the class hierarchy."),
   DOMA4126(
       "To execute concatenation, the type \"{4}\" of the right operand \"{3}\" in the expression \"{0}\" "
           + "at column {1} must be either String, Character or char. "
