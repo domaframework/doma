@@ -59,7 +59,6 @@ import org.seasar.doma.jdbc.SqlLogType;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @DaoMethod
-@EntityField
 public @interface Delete {
 
   /**
