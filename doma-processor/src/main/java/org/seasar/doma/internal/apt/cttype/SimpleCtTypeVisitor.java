@@ -140,6 +140,11 @@ public class SimpleCtTypeVisitor<R, P, TH extends Throwable> implements CtTypeVi
   }
 
   @Override
+  public R visitBiConsumerCtType(BiConsumerCtType ctType, P p) throws TH {
+    return defaultAction(ctType, p);
+  }
+
+  @Override
   public R visitConfigCtType(ConfigCtType ctType, P p) throws TH {
     return defaultAction(ctType, p);
   }

@@ -29,6 +29,7 @@ public record AssociationLinkerMeta(
     List<String> propertyPathSegments,
     int propertyPathDepth,
     String tableAlias,
+    AssociationLinkerKind linkerKind,
     EntityCtType source,
     EntityCtType target,
     TypeElement classElement,
@@ -39,6 +40,7 @@ public record AssociationLinkerMeta(
     Objects.requireNonNull(propertyPath);
     Objects.requireNonNull(propertyPathSegments);
     Objects.requireNonNull(tableAlias);
+    Objects.requireNonNull(linkerKind);
     Objects.requireNonNull(source);
     Objects.requireNonNull(target);
     Objects.requireNonNull(classElement);

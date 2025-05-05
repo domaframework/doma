@@ -1,0 +1,27 @@
+package org.seasar.doma.internal.apt.processor.aggregate;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+public final class _EmpStrategy_BiConsumer extends org.seasar.doma.jdbc.aggregate.AbstractAggregateStrategyType {
+
+    private static final _EmpStrategy_BiConsumer __singleton = new _EmpStrategy_BiConsumer();
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private _EmpStrategy_BiConsumer() {
+        super("org.seasar.doma.internal.apt.processor.aggregate.EmpStrategy_BiConsumer", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), "e", java.util.List.of(
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "dept", 1, "d", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Dept.getSingletonInternal(), (a, b) -> { org.seasar.doma.internal.apt.processor.aggregate.EmpStrategy_BiConsumer.dept.accept(a, b); return null; }),
+            org.seasar.doma.jdbc.aggregate.AssociationLinkerType.of("", "address", 1, "a", org.seasar.doma.internal.apt.processor.aggregate._Emp.getSingletonInternal(), org.seasar.doma.internal.apt.processor.aggregate._Address.getSingletonInternal(), (a, b) -> { org.seasar.doma.internal.apt.processor.aggregate.EmpStrategy_BiConsumer.address.accept(a, b); return null; })
+        ));
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _EmpStrategy_BiConsumer getSingletonInternal() {
+        return __singleton;
+    }
+
+}
