@@ -72,7 +72,8 @@ class AggregateStrategyProcessorTest extends AbstractCompilerTest {
       return Stream.of(
           invocationContext(EmpStrategy.class),
           invocationContext(DeptStrategy.class),
-          invocationContext(ChildEntityStrategy.class));
+          invocationContext(ChildEntityStrategy.class),
+          invocationContext(EmpStrategy_BiConsumer.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -149,7 +150,9 @@ class AggregateStrategyProcessorTest extends AbstractCompilerTest {
           invocationContext(InvalidPropertyPath.class, Message.DOMA4474),
           invocationContext(Subtype.class, Message.DOMA4487),
           invocationContext(DuplicatePropertyPath.class, Message.DOMA4489),
-          invocationContext(UnreachableAssociation.class, Message.DOMA4488));
+          invocationContext(UnreachableAssociation.class, Message.DOMA4488),
+          invocationContext(Invalid1stParamTypeOfBiConsumer.class, Message.DOMA4497),
+          invocationContext(Invalid2ndParamTypeOfBiConsumer.class, Message.DOMA4497));
     }
 
     private TestTemplateInvocationContext invocationContext(

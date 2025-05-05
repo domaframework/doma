@@ -43,6 +43,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -195,6 +196,17 @@ public class CtTypes {
     CtType secondArgCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
     CtType resultCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
     return new BiFunctionCtType(ctx, type, firstArgCtType, secondArgCtType, resultCtType);
+  }
+
+  public BiConsumerCtType newBiConsumerCtType(TypeMirror type) {
+    DeclaredType declaredType = getSuperDeclaredType(type, BiConsumer.class);
+    if (declaredType == null) {
+      return null;
+    }
+    Iterator<? extends TypeMirror> typeArgs = declaredType.getTypeArguments().iterator();
+    CtType firstArgCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
+    CtType secondArgCtType = typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType();
+    return new BiConsumerCtType(ctx, type, firstArgCtType, secondArgCtType);
   }
 
   private CollectorCtType newCollectorCtType(TypeMirror type) {
@@ -670,6 +682,7 @@ public class CtTypes {
             this::newCollectorCtType,
             this::newReferenceCtType,
             this::newBiFunctionCtType,
+            this::newBiConsumerCtType,
             this::newPreparedSqlCtType,
             this::newConfigCtType,
             this::newResultCtType,

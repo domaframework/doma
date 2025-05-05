@@ -40,6 +40,7 @@ import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.annot.AssociationLinkerAnnot;
+import org.seasar.doma.internal.apt.cttype.BiConsumerCtType;
 import org.seasar.doma.internal.apt.cttype.BiFunctionCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.CtTypeVisitor;
@@ -308,6 +309,7 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
         propertyPathSegments,
         propertyPathDepth,
         associationLinkerAnnot.getTableAliasValue(),
+        linkMeta.kind,
         linkMeta.source,
         linkMeta.target,
         aggregateStrategyElement,
@@ -315,10 +317,21 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
   }
 
   private LinkMeta createLinkMeta(VariableElement linkerElement) {
-    BiFunctionCtType ctType = ctx.getCtTypes().newBiFunctionCtType(linkerElement.asType());
-    if (ctType == null) {
-      throw new AptException(Message.DOMA4465, linkerElement, new Object[] {});
+    BiFunctionCtType biFunctionCtType =
+        ctx.getCtTypes().newBiFunctionCtType(linkerElement.asType());
+    if (biFunctionCtType != null) {
+      return createLinkMetaForBiFunction(linkerElement, biFunctionCtType);
     }
+    BiConsumerCtType biConsumerCtType =
+        ctx.getCtTypes().newBiConsumerCtType(linkerElement.asType());
+    if (biConsumerCtType != null) {
+      return createLinkMetaForBiConsumer(linkerElement, biConsumerCtType);
+    }
+    throw new AptException(Message.DOMA4465, linkerElement, new Object[] {});
+  }
+
+  private LinkMeta createLinkMetaForBiFunction(
+      VariableElement linkerElement, BiFunctionCtType ctType) {
     CtTypeVisitor<EntityCtType, String, RuntimeException> entityCtTypeVisitor =
         new SimpleCtTypeVisitor<>() {
           @Override
@@ -342,8 +355,31 @@ public class AggregateStrategyMetaFactory implements TypeElementMetaFactory<Aggr
       throw new AptException(Message.DOMA4467, linkerElement, new Object[] {});
     }
 
-    return new LinkMeta(source, target);
+    return new LinkMeta(AssociationLinkerKind.BI_FUNCTION, source, target);
   }
 
-  private record LinkMeta(EntityCtType source, EntityCtType target) {}
+  private LinkMeta createLinkMetaForBiConsumer(
+      VariableElement linkerElement, BiConsumerCtType ctType) {
+    CtTypeVisitor<EntityCtType, String, RuntimeException> entityCtTypeVisitor =
+        new SimpleCtTypeVisitor<>() {
+          @Override
+          protected EntityCtType defaultAction(CtType ctType, String ordinalNumber)
+              throws RuntimeException {
+            throw new AptException(Message.DOMA4497, linkerElement, new Object[] {ordinalNumber});
+          }
+
+          @Override
+          public EntityCtType visitEntityCtType(EntityCtType ctType, String ordinalNumber)
+              throws RuntimeException {
+            return ctType;
+          }
+        };
+
+    EntityCtType source = ctType.getFirstArgCtType().accept(entityCtTypeVisitor, "first");
+    EntityCtType target = ctType.getSecondArgCtType().accept(entityCtTypeVisitor, "second");
+
+    return new LinkMeta(AssociationLinkerKind.BI_CONSUMER, source, target);
+  }
+
+  private record LinkMeta(AssociationLinkerKind kind, EntityCtType source, EntityCtType target) {}
 }

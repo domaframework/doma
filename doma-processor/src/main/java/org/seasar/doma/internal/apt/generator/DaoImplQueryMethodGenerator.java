@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -46,8 +45,6 @@ import org.seasar.doma.internal.apt.cttype.OptionalIntCtType;
 import org.seasar.doma.internal.apt.cttype.OptionalLongCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.cttype.StreamCtType;
-import org.seasar.doma.internal.apt.meta.aggregate.AggregateStrategyMeta;
-import org.seasar.doma.internal.apt.meta.aggregate.AssociationLinkerMeta;
 import org.seasar.doma.internal.apt.meta.dao.DaoMeta;
 import org.seasar.doma.internal.apt.meta.parameter.BasicInOutParameterMeta;
 import org.seasar.doma.internal.apt.meta.parameter.BasicInParameterMeta;
@@ -209,7 +206,6 @@ import org.seasar.doma.internal.jdbc.sql.OptionalLongOutParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalLongResultListParameter;
 import org.seasar.doma.internal.jdbc.sql.OptionalLongSingleResultParameter;
 import org.seasar.doma.jdbc.aggregate.AggregateCommand;
-import org.seasar.doma.jdbc.aggregate.AssociationLinkerType;
 import org.seasar.doma.jdbc.aggregate.ToListReducer;
 import org.seasar.doma.jdbc.aggregate.ToOptionalReducer;
 import org.seasar.doma.jdbc.aggregate.ToSingleReducer;
@@ -353,32 +349,6 @@ public class DaoImplQueryMethodGenerator extends AbstractGenerator
 
     printThrowingStatements(m);
     return null;
-  }
-
-  private void printAssociationLinkerTypes(AggregateStrategyMeta aggregateStrategyMeta) {
-    Objects.requireNonNull(aggregateStrategyMeta);
-    print("java.util.List.of(%n");
-    indent();
-    Iterator<AssociationLinkerMeta> iter =
-        aggregateStrategyMeta.associationLinkerMetas().iterator();
-    while (iter.hasNext()) {
-      AssociationLinkerMeta linkerMeta = iter.next();
-      iprint(
-          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, %5$s, %6$s.%7$s)",
-          AssociationLinkerType.class,
-          linkerMeta.propertyPath(),
-          linkerMeta.tableAlias(),
-          linkerMeta.source().getTypeCode(),
-          linkerMeta.target().getTypeCode(),
-          linkerMeta.classElement(),
-          linkerMeta.filedElement());
-      if (iter.hasNext()) {
-        print(",");
-      }
-      print("%n");
-    }
-    unindent();
-    iprint(");%n");
   }
 
   @Override

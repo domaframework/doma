@@ -85,9 +85,10 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
     indent();
     Iterator<AssociationLinkerMeta> iter = strategyMeta.associationLinkerMetas().iterator();
     while (iter.hasNext()) {
-      AssociationLinkerMeta linkerMeta = iter.next();
+      var linkerMeta = iter.next();
+      var linkerExpression = createLinkerExpression(linkerMeta);
       iprint(
-          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, \"%5$s\", %6$s, %7$s, %8$s.%9$s)",
+          "%1$s.of(\"%2$s\", \"%3$s\", %4$s, \"%5$s\", %6$s, %7$s, %8$s)",
           /* 1 */ AssociationLinkerType.class,
           /* 2 */ linkerMeta.ancestorPath(),
           /* 3 */ linkerMeta.propertyPath(),
@@ -95,8 +96,7 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
           /* 5 */ linkerMeta.tableAlias(),
           /* 6 */ linkerMeta.source().getTypeCode(),
           /* 7 */ linkerMeta.target().getTypeCode(),
-          /* 8 */ linkerMeta.classElement(),
-          /* 9 */ linkerMeta.filedElement());
+          /* 8 */ linkerExpression);
       if (iter.hasNext()) {
         print(",");
       }
@@ -121,5 +121,15 @@ public class AggregateStrategyTypeGenerator extends AbstractGenerator {
     iprint("    return __singleton;%n");
     iprint("}%n");
     print("%n");
+  }
+
+  private String createLinkerExpression(AssociationLinkerMeta linkerMeta) {
+    var expression =
+        String.format("%1$s.%2$s", linkerMeta.classElement(), linkerMeta.filedElement());
+    return switch (linkerMeta.linkerKind()) {
+      case BI_FUNCTION -> expression;
+      case BI_CONSUMER ->
+          String.format("(a, b) -> { %1$s.accept(a, b); return null; }", expression);
+    };
   }
 }

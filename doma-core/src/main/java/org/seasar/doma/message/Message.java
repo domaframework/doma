@@ -955,9 +955,9 @@ public enum Message implements MessageResource {
   DOMA4462("The property \"{0}\" is not found in the entity class \"{1}\"."),
   DOMA4463("'{'\"execTimeMillis\": {0}, \"annotation\": \"{1}\", \"element\": \"{2}\"'}'"),
   DOMA4464("Fields annotated with AssociationLinker must be static."),
-  DOMA4465("Fields annotated with AssociationLinker must be java.util.function.BiFunction."),
+  DOMA4465("Fields annotated with AssociationLinker must be BiFunction or BiConsumer."),
   DOMA4466("The {0} type parameter of BiFunction must be an entity class."),
-  DOMA4467("The first and third type parameters of java.util.function.BiFunction must be the same"),
+  DOMA4467("The first and third type parameters of BiFunction must be the same"),
   DOMA4468("The tableAlias must not be blank."),
   DOMA4469("No field annotated with @AssociationLinker was found in the class \"{0}\"."),
   DOMA4470("Fields annotated with AssociationLinker must be public."),
@@ -971,9 +971,9 @@ public enum Message implements MessageResource {
           + "or a `List` of `Optional` containing elements of the entity class."),
   DOMA4474("The field \"{0}\" could not be found in the class \"{1}\"."),
   DOMA4475(
-      "The first type parameter of java.util.function.BiFunction differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
+      "The first type parameter of BiFunction or BiConsumer differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
   DOMA4476(
-      "The second type parameter of java.util.function.BiFunction differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
+      "The second type parameter of BiFunction or BiConsumer differs from the type resolved by the propertyPath. type parameter=\"{0}\", resolved type=\"{1}\"."),
   DOMA4477(
       "The type of field \"{0}\" in class \"{1}\" must be one of the following: "
           + "the entity class, "
@@ -1012,6 +1012,7 @@ public enum Message implements MessageResource {
       "When \"returning = @Returning\" is specified, the return type must be the same as the parameter type or an Optional whose element is the parameter type."),
   DOMA4496(
       "When \"returning = @Returning\" is specified, the return type must be a List of the entity class \"{0}\"."),
+  DOMA4497("The {0} type parameter of BiConsumer must be an entity class."),
 
   // other
   DOMA5001(

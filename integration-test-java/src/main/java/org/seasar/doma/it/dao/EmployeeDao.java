@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -206,11 +207,7 @@ interface EmployeeStrategy {
       };
 
   @AssociationLinker(propertyPath = "address", tableAlias = "a")
-  BiFunction<Employee, Address, Employee> address =
-      (e, a) -> {
-        e.setAddress(a);
-        return e;
-      };
+  BiConsumer<Employee, Address> address = Employee::setAddress;
 }
 
 @AggregateStrategy(root = Employee.class, tableAlias = "e")
