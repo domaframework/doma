@@ -25,8 +25,8 @@ public enum DuplicateKeyType {
   /**
    * Updates the existing row when a duplicate key is encountered.
    *
-   * <p>This option causes the database to perform an update on the existing row instead of inserting
-   * a new row when a duplicate key is detected.
+   * <p>This option causes the database to perform an update on the existing row instead of
+   * inserting a new row when a duplicate key is detected.
    */
   UPDATE,
 
