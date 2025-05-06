@@ -20,8 +20,15 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.jdbc.SqlKind;
 
+/**
+ * An auto procedure query that calls a database stored procedure.
+ *
+ * <p>This class implements {@link ProcedureQuery} to provide functionality for calling database
+ * stored procedures. It handles parameter binding and SQL generation.
+ */
 public class AutoProcedureQuery extends AutoModuleQuery implements ProcedureQuery {
 
+  /** {@inheritDoc} */
   @Override
   public void prepare() {
     super.prepare();
@@ -32,12 +39,22 @@ public class AutoProcedureQuery extends AutoModuleQuery implements ProcedureQuer
     assertNotNull(sql);
   }
 
+  /**
+   * Prepares the SQL for this procedure query.
+   *
+   * <p>This method builds the callable SQL statement for the procedure call.
+   */
   protected void prepareSql() {
     CallableSqlBuilder builder =
         new CallableSqlBuilder(config, SqlKind.PROCEDURE, qualifiedName, parameters, sqlLogType);
     sql = builder.build(this::comment);
   }
 
+  /**
+   * Sets the procedure name.
+   *
+   * @param procedureName the procedure name
+   */
   public void setProcedureName(String procedureName) {
     setModuleName(procedureName);
   }

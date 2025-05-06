@@ -21,10 +21,20 @@ import org.seasar.doma.internal.jdbc.sql.CallableSqlBuilder;
 import org.seasar.doma.jdbc.ResultParameter;
 import org.seasar.doma.jdbc.SqlKind;
 
+/**
+ * An auto function query that calls a database function.
+ *
+ * <p>This class implements {@link FunctionQuery} to provide functionality for calling database
+ * functions. It handles parameter binding and result retrieval.
+ *
+ * @param <RESULT> the type of the function result
+ */
 public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements FunctionQuery<RESULT> {
 
+  /** The parameter that will hold the function result. */
   protected ResultParameter<RESULT> resultParameter;
 
+  /** {@inheritDoc} */
   @Override
   public void prepare() {
     super.prepare();
@@ -35,6 +45,11 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements Functi
     assertNotNull(sql);
   }
 
+  /**
+   * Prepares the SQL for this function query.
+   *
+   * <p>This method builds the callable SQL statement for the function call.
+   */
   protected void prepareSql() {
     CallableSqlBuilder builder =
         new CallableSqlBuilder(
@@ -42,14 +57,25 @@ public class AutoFunctionQuery<RESULT> extends AutoModuleQuery implements Functi
     sql = builder.build(this::comment);
   }
 
+  /**
+   * Sets the function name.
+   *
+   * @param functionName the function name
+   */
   public void setFunctionName(String functionName) {
     setModuleName(functionName);
   }
 
+  /**
+   * Sets the result parameter.
+   *
+   * @param parameter the result parameter
+   */
   public void setResultParameter(ResultParameter<RESULT> parameter) {
     this.resultParameter = parameter;
   }
 
+  /** {@inheritDoc} */
   @Override
   public RESULT getResult() {
     return resultParameter.getResult();
