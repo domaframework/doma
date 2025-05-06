@@ -27,15 +27,36 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * A query that performs batch insert operations using an external SQL file.
+ *
+ * <p>This class extends {@link SqlFileBatchModifyQuery} to provide functionality for executing
+ * batch INSERT statements defined in external SQL files. It handles entity lifecycle callbacks and
+ * SQL file execution for multiple entities.
+ *
+ * @param <ELEMENT> the type of elements in the batch
+ */
 public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<ELEMENT>
     implements BatchInsertQuery {
 
+  /** The entity handler for this query. */
   protected EntityHandler entityHandler;
 
+  /**
+   * Constructs a new instance with the specified element class.
+   *
+   * @param elementClass the class of elements in the batch
+   */
   public SqlFileBatchInsertQuery(Class<ELEMENT> elementClass) {
     super(elementClass, SqlKind.BATCH_INSERT);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation prepares the SQL statements for each entity in the batch, executing
+   * pre-insert callbacks.
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -60,15 +81,31 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     assertEquals(size, sqls.size());
   }
 
+  /**
+   * Executes pre-insert entity lifecycle callbacks.
+   *
+   * <p>This method delegates to the entity handler if one is available.
+   */
   protected void preInsert() {
     if (entityHandler != null) {
       entityHandler.preInsert();
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation does nothing because this query does not support auto-generated keys.
+   */
   @Override
   public void generateId(Statement statement, int index) {}
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation executes post-insert entity lifecycle callbacks for each entity in the
+   * batch.
+   */
   @Override
   public void complete() {
     if (entityHandler != null) {
@@ -80,25 +117,44 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation creates an entity handler for the specified entity type.
+   */
   @Override
   public void setEntityType(EntityType<ELEMENT> entityType) {
     entityHandler = new EntityHandler(entityType);
   }
 
+  /** {@inheritDoc} */
   @Override
   public boolean isBatchSupported() {
     return true;
   }
 
+  /** A handler for entity lifecycle callbacks. */
   protected class EntityHandler {
 
+    /** The entity type. */
     protected final EntityType<ELEMENT> entityType;
 
+    /**
+     * Constructs a new instance with the specified entity type.
+     *
+     * @param entityType the entity type
+     * @throws NullPointerException if the entity type is null
+     */
     protected EntityHandler(EntityType<ELEMENT> entityType) {
       assertNotNull(entityType);
       this.entityType = entityType;
     }
 
+    /**
+     * Executes pre-insert entity lifecycle callbacks.
+     *
+     * <p>This method creates a pre-insert context and calls the entity type's preInsert method.
+     */
     protected void preInsert() {
       SqlFileBatchPreInsertContext<ELEMENT> context =
           new SqlFileBatchPreInsertContext<>(entityType, method, config);
@@ -108,6 +164,11 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
       }
     }
 
+    /**
+     * Executes post-insert entity lifecycle callbacks.
+     *
+     * <p>This method creates a post-insert context and calls the entity type's postInsert method.
+     */
     protected void postInsert() {
       SqlFileBatchPostInsertContext<ELEMENT> context =
           new SqlFileBatchPostInsertContext<>(entityType, method, config);
@@ -118,15 +179,39 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
     }
   }
 
+  /**
+   * A context for pre-insert entity lifecycle callbacks.
+   *
+   * @param <E> the entity type
+   */
   protected static class SqlFileBatchPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    /**
+     * Constructs a new instance with the specified entity information.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     */
     public SqlFileBatchPreInsertContext(EntityType<E> entityType, Method method, Config config) {
       super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
   }
 
+  /**
+   * A context for post-insert entity lifecycle callbacks.
+   *
+   * @param <E> the entity type
+   */
   protected static class SqlFileBatchPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    /**
+     * Constructs a new instance with the specified entity information.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     */
     public SqlFileBatchPostInsertContext(EntityType<E> entityType, Method method, Config config) {
       super(entityType, method, config, DuplicateKeyType.EXCEPTION);
     }
