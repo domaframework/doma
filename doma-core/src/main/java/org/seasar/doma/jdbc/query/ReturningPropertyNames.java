@@ -24,14 +24,14 @@ import org.seasar.doma.jdbc.entity.EntityType;
  * A class that resolves property names to entity property types for returning clauses.
  *
  * <p>This class implements {@link ReturningProperties} to provide a way to specify which entity
- * properties should be returned from database operations using property names. It supports including
- * specific properties and excluding others.
+ * properties should be returned from database operations using property names. It supports
+ * including specific properties and excluding others.
  */
 public class ReturningPropertyNames implements ReturningProperties {
 
   /** The names of properties to include in the returning clause. */
   private final List<String> includedNames;
-  
+
   /** The names of properties to exclude from the returning clause. */
   private final List<String> excludedNames;
 
