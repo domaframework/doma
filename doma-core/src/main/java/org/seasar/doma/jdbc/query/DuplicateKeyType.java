@@ -15,10 +15,35 @@
  */
 package org.seasar.doma.jdbc.query;
 
-/** Retrieves the type of the duplicate key when inserting a new entity. */
+/**
+ * Specifies how to handle duplicate key violations during insert operations.
+ *
+ * <p>This enum defines the behavior when an insert operation would violate a unique constraint in
+ * the database.
+ */
 public enum DuplicateKeyType {
+  /**
+   * Updates the existing row when a duplicate key is encountered.
+   *
+   * <p>This option causes the database to perform an update on the existing row instead of inserting
+   * a new row when a duplicate key is detected.
+   */
   UPDATE,
+
+  /**
+   * Ignores the insert operation when a duplicate key is encountered.
+   *
+   * <p>This option causes the database to silently ignore the insert operation without raising an
+   * error when a duplicate key is detected.
+   */
   IGNORE,
+
+  /**
+   * Throws an exception when a duplicate key is encountered.
+   *
+   * <p>This option causes the database to raise an error when a duplicate key is detected, which is
+   * the default behavior for most databases.
+   */
   EXCEPTION,
   ;
 }
