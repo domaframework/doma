@@ -21,7 +21,13 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/** A query for creating a SQL array. */
+/**
+ * A query implementation for creating a SQL array.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating SQL arrays
+ * in a database. It handles the creation of JDBC {@link Array} objects by specifying the SQL type
+ * name and array elements.
+ */
 public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
   /** The SQL type name of the array. */
