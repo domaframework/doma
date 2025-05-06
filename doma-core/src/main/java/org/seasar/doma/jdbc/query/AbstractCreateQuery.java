@@ -17,19 +17,30 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.jdbc.Sql;
 
+/**
+ * An abstract base class for queries that create database resources.
+ *
+ * <p>This class provides a skeletal implementation of the {@link CreateQuery} interface, reducing
+ * the effort required to implement resource creation queries.
+ *
+ * @param <RESULT> the type of the resource to be created
+ */
 public abstract class AbstractCreateQuery<RESULT> extends AbstractQuery
     implements CreateQuery<RESULT> {
 
+  /** {@inheritDoc} */
   @Override
   public int getQueryTimeout() {
     return -1;
   }
 
+  /** {@inheritDoc} */
   @Override
   public Sql<?> getSql() {
     return null;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void complete() {}
 }

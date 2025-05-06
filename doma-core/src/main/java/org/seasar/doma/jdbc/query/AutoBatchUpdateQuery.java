@@ -32,13 +32,25 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
+/**
+ * An auto batch update query that is executed against an entity class.
+ *
+ * <p>This class implements {@link BatchUpdateQuery} to provide batch UPDATE operations for
+ * entities. It handles version checking for optimistic locking and supports tenant ID-based
+ * isolation.
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     implements BatchUpdateQuery {
 
+  /** Whether to ignore the version property for optimistic locking. */
   protected boolean versionIgnored;
 
+  /** Whether to suppress optimistic lock exceptions. */
   protected boolean optimisticLockExceptionSuppressed;
 
+  /** Helper for batch update queries. */
   protected BatchUpdateQueryHelper<ENTITY> helper;
 
   public AutoBatchUpdateQuery(EntityType<ENTITY> entityType) {

@@ -44,19 +44,34 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
+/**
+ * An auto batch insert query that is executed against an entity class.
+ *
+ * <p>This class implements {@link BatchInsertQuery} to provide batch INSERT operations for
+ * entities. It handles ID generation, version initialization, and supports various duplicate key
+ * handling strategies.
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     implements BatchInsertQuery {
 
+  /** The property type for the generated ID. */
   protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
+  /** The configuration for ID generation. */
   protected IdGenerationConfig idGenerationConfig;
 
+  /** Whether batch operations are supported. */
   protected boolean batchSupported = true;
 
+  /** Whether to ignore auto-generated keys. */
   protected boolean generatedKeysIgnored = false;
 
+  /** The strategy for handling duplicate keys. */
   protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
+  /** The names of columns that may cause duplicate key violations. */
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
   public AutoBatchInsertQuery(EntityType<ENTITY> entityType) {

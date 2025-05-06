@@ -27,10 +27,20 @@ import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * An auto delete query that is executed against an entity class.
+ *
+ * <p>This class implements {@link DeleteQuery} to provide DELETE operations for entities. It
+ * handles version checking for optimistic locking and supports tenant ID-based isolation.
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements DeleteQuery {
 
+  /** Whether to ignore the version property for optimistic locking. */
   protected boolean versionIgnored;
 
+  /** Whether to suppress optimistic lock exceptions. */
   protected boolean optimisticLockExceptionSuppressed;
 
   public AutoDeleteQuery(EntityType<ENTITY> entityType) {

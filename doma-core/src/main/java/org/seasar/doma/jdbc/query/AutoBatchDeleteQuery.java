@@ -32,11 +32,22 @@ import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
 
+/**
+ * An auto batch delete query that is executed against an entity class.
+ *
+ * <p>This class implements {@link BatchDeleteQuery} to provide batch DELETE operations for
+ * entities. It handles version checking for optimistic locking and supports tenant ID-based
+ * isolation.
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     implements BatchDeleteQuery {
 
+  /** Whether to ignore the version property for optimistic locking. */
   protected boolean versionIgnored;
 
+  /** Whether to suppress optimistic lock exceptions. */
   protected boolean optimisticLockExceptionSuppressed;
 
   public AutoBatchDeleteQuery(EntityType<ENTITY> entityType) {
