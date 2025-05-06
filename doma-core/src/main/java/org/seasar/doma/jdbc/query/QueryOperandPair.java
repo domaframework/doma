@@ -27,7 +27,7 @@ import java.util.Objects;
 public class QueryOperandPair {
   /** The left operand in the pair. */
   private final QueryOperand left;
-  
+
   /** The right operand in the pair. */
   private final QueryOperand right;
 
