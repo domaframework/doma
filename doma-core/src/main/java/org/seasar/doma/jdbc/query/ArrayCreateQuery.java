@@ -24,9 +24,9 @@ import java.sql.SQLException;
 /**
  * A query implementation for creating a SQL array.
  *
- * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating SQL arrays
- * in a database. It handles the creation of JDBC {@link Array} objects by specifying the SQL type
- * name and array elements.
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating SQL
+ * arrays in a database. It handles the creation of JDBC {@link Array} objects by specifying the SQL
+ * type name and array elements.
  */
 public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
