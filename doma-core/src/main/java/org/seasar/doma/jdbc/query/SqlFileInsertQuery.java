@@ -53,8 +53,8 @@ public class SqlFileInsertQuery extends SqlFileModifyQuery implements InsertQuer
   /**
    * {@inheritDoc}
    *
-   * <p>This implementation prepares the SQL statement by processing the SQL file and handling entity
-   * lifecycle callbacks.
+   * <p>This implementation prepares the SQL statement by processing the SQL file and handling
+   * entity lifecycle callbacks.
    */
   @Override
   public void prepare() {
