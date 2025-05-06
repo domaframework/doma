@@ -19,8 +19,24 @@ import java.util.Arrays;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 
+/**
+ * Utility class for query operations.
+ *
+ * <p>This class provides utility methods for query processing and validation.
+ */
 final class QueryUtil {
 
+  /**
+   * Determines if an identity key is included in the duplicate keys.
+   *
+   * <p>This method checks whether a generated identity property is part of the specified duplicate
+   * key names. If no duplicate key names are specified, it assumes the identity key is included.
+   *
+   * @param generatedIdPropertyType the generated ID property type
+   * @param duplicateKeyNames the names of columns that may cause duplicate key violations
+   * @return {@code true} if the identity key is included in the duplicate keys, {@code false}
+   *     otherwise
+   */
   static boolean isIdentityKeyIncludedInDuplicateKeys(
       GeneratedIdPropertyType<?, ?, ?> generatedIdPropertyType, String[] duplicateKeyNames) {
     if (generatedIdPropertyType == null) {
