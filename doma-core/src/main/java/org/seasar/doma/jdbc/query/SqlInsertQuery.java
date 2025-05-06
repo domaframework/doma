@@ -22,8 +22,8 @@ import org.seasar.doma.jdbc.SqlKind;
  * A query that executes a SQL INSERT statement.
  *
  * <p>This class extends {@link SqlModifyQuery} to provide functionality for executing INSERT
- * statements. It sets the SQL kind to {@link SqlKind#INSERT} to indicate that this query performs an
- * INSERT operation.
+ * statements. It sets the SQL kind to {@link SqlKind#INSERT} to indicate that this query performs
+ * an INSERT operation.
  */
 public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
 
