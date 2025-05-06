@@ -131,9 +131,7 @@ public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuer
     parameters.put(name, new Value(type, value));
   }
 
-  /**
-   * Clears all parameters from this query.
-   */
+  /** Clears all parameters from this query. */
   public void clearParameters() {
     parameters.clear();
   }
