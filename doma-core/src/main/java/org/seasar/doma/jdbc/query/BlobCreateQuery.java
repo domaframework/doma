@@ -19,8 +19,15 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A query that creates a BLOB (Binary Large Object) in the database.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating BLOB
+ * objects. It uses the JDBC connection's createBlob method to create a new empty BLOB instance.
+ */
 public class BlobCreateQuery extends AbstractCreateQuery<Blob> {
 
+  /** {@inheritDoc} */
   @Override
   public Blob create(Connection connection) throws SQLException {
     return connection.createBlob();

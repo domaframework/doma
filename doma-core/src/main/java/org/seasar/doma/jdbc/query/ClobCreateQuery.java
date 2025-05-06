@@ -19,8 +19,15 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A query that creates a CLOB (Character Large Object) in the database.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating CLOB
+ * objects. It uses the JDBC connection's createClob method to create a new empty CLOB instance.
+ */
 public class ClobCreateQuery extends AbstractCreateQuery<Clob> {
 
+  /** {@inheritDoc} */
   @Override
   public Clob create(Connection connection) throws SQLException {
     return connection.createClob();
