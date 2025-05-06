@@ -56,8 +56,8 @@ public class SqlFileDeleteQuery extends SqlFileModifyQuery implements DeleteQuer
   /**
    * {@inheritDoc}
    *
-   * <p>This implementation prepares the SQL statement by processing the SQL file and handling entity
-   * lifecycle callbacks and optimistic locking.
+   * <p>This implementation prepares the SQL statement by processing the SQL file and handling
+   * entity lifecycle callbacks and optimistic locking.
    */
   @Override
   public void prepare() {
