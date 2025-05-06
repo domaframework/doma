@@ -99,7 +99,8 @@ public abstract class SqlFileModifyQuery extends AbstractQuery implements Modify
   /**
    * Prepares the SQL statement.
    *
-   * <p>This method loads the SQL file, evaluates expressions, and builds the prepared SQL statement.
+   * <p>This method loads the SQL file, evaluates expressions, and builds the prepared SQL
+   * statement.
    */
   protected void prepareSql() {
     SqlFile sqlFile =
