@@ -19,13 +19,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a row to be inserted in an INSERT statement.
+ *
+ * <p>This class holds a list of values for a single row in a batch or multi-row insert operation.
+ * It implements {@link Iterable} to allow iteration over the values in the row.
+ */
 public class InsertRow implements Iterable<QueryOperand> {
+  /** The values for this insert row. */
   private final List<QueryOperand> values;
 
+  /**
+   * Constructs a new {@code InsertRow} with the specified values.
+   *
+   * @param values the values for this insert row
+   */
   public InsertRow(List<QueryOperand> values) {
     this.values = Objects.requireNonNull(values);
   }
 
+  /** {@inheritDoc} */
   @Override
   public Iterator<QueryOperand> iterator() {
     return values.iterator();
