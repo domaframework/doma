@@ -18,10 +18,22 @@ package org.seasar.doma.jdbc.query;
 import org.seasar.doma.jdbc.SqlKind;
 
 /**
+ * A query that performs batch delete operations using SQL statements.
+ *
+ * <p>This class extends {@link SqlBatchModifyQuery} to provide functionality for executing batch
+ * DELETE statements. It initializes the SQL kind to {@link SqlKind#DELETE} to indicate that this
+ * query performs DELETE operations.
+ *
  * @author bakenezumi
  */
 public class SqlBatchDeleteQuery extends SqlBatchModifyQuery implements BatchDeleteQuery {
 
+  /**
+   * Constructs a new instance.
+   *
+   * <p>This constructor initializes the query with {@link SqlKind#DELETE} to indicate that it
+   * performs DELETE operations.
+   */
   public SqlBatchDeleteQuery() {
     super(SqlKind.DELETE);
   }
