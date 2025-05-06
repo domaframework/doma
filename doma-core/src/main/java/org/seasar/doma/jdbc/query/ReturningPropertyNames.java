@@ -20,16 +20,33 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
+/**
+ * A class that resolves property names to entity property types for returning clauses.
+ *
+ * <p>This class implements {@link ReturningProperties} to provide a way to specify which entity
+ * properties should be returned from database operations using property names. It supports including
+ * specific properties and excluding others.
+ */
 public class ReturningPropertyNames implements ReturningProperties {
 
+  /** The names of properties to include in the returning clause. */
   private final List<String> includedNames;
+  
+  /** The names of properties to exclude from the returning clause. */
   private final List<String> excludedNames;
 
+  /**
+   * Constructs a new {@code ReturningPropertyNames} with the specified included and excluded names.
+   *
+   * @param includedNames the names of properties to include
+   * @param excludedNames the names of properties to exclude
+   */
   private ReturningPropertyNames(List<String> includedNames, List<String> excludedNames) {
     this.includedNames = Objects.requireNonNull(includedNames);
     this.excludedNames = Objects.requireNonNull(excludedNames);
   }
 
+  /** {@inheritDoc} */
   @Override
   public List<? extends EntityPropertyType<?, ?>> resolve(EntityType<?> entityType) {
     Objects.requireNonNull(entityType);
@@ -40,17 +57,37 @@ public class ReturningPropertyNames implements ReturningProperties {
         .toList();
   }
 
+  /**
+   * Extracts the included property types from the entity type.
+   *
+   * @param entityType the entity type
+   * @return the list of included property types
+   */
   private List<? extends EntityPropertyType<?, ?>> extractIncludedPropertyTypes(
       EntityType<?> entityType) {
     var list = includedNames.stream().map(entityType::getEntityPropertyType).toList();
     return list.isEmpty() ? entityType.getEntityPropertyTypes() : list;
   }
 
+  /**
+   * Extracts the excluded property types from the entity type.
+   *
+   * @param entityType the entity type
+   * @return the list of excluded property types
+   */
   private List<? extends EntityPropertyType<?, ?>> extractExcludedPropertyTypes(
       EntityType<?> entityType) {
     return excludedNames.stream().map(entityType::getEntityPropertyType).toList();
   }
 
+  /**
+   * Creates a new {@code ReturningProperties} instance with the specified included and excluded
+   * names.
+   *
+   * @param includedNames the names of properties to include
+   * @param excludedNames the names of properties to exclude
+   * @return a new {@code ReturningProperties} instance
+   */
   public static ReturningProperties of(List<String> includedNames, List<String> excludedNames) {
     if (includedNames.isEmpty() && excludedNames.isEmpty()) {
       return ALL;
