@@ -15,7 +15,25 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for UPDATE queries.
+ *
+ * <p>This interface represents a query that performs UPDATE operations. It extends {@link
+ * ModifyQuery} to inherit common data modification functionality while specializing for UPDATE
+ * operations.
+ *
+ * <p>Implementations of this interface handle the execution of UPDATE statements, including the
+ * construction of the SET clause, WHERE clause, and handling of optimistic concurrency control
+ * through version numbers.
+ */
 public interface UpdateQuery extends ModifyQuery {
 
+  /**
+   * Increments the version number for the entity being updated.
+   *
+   * <p>This method is called after executing the UPDATE statement to update the version number in
+   * the entity object, ensuring it matches the value in the database after the update. This is
+   * important for optimistic concurrency control.
+   */
   void incrementVersion();
 }

@@ -51,34 +51,57 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.message.Message;
 import org.seasar.doma.wrapper.PrimitiveLongWrapper;
 
+/**
+ * The base abstract class for all select query implementations.
+ *
+ * <p>This class provides common functionality for queries that select data from a database.
+ */
 public abstract class AbstractSelectQuery extends AbstractQuery implements SelectQuery {
 
+  /** The parameters for the query. */
   protected final Map<String, Value> parameters = new HashMap<>();
 
+  /** The select options. */
   protected SelectOptions options = SelectOptions.get();
 
+  /** Whether the query is expected to return at least one result. */
   protected boolean resultEnsured;
 
+  /** Whether the result mapping is ensured. */
   protected boolean resultMappingEnsured;
 
+  /** The fetch type for this query. */
   protected FetchType fetchType;
 
+  /** The fetch size for this query. */
   protected int fetchSize;
 
+  /** The maximum number of rows to be returned. */
   protected int maxRows;
 
+  /** The entity type for this query. */
   protected EntityType<?> entityType;
 
+  /** The prepared SQL for this query. */
   protected PreparedSql sql;
 
+  /** The SQL log type for this query. */
   protected SqlLogType sqlLogType;
 
+  /** Whether the result should be processed as a stream. */
   protected boolean resultStream;
 
+  /** The aggregate strategy type for this query. */
   protected AggregateStrategyType aggregateStrategyType;
 
+  /** Creates a new instance. */
   protected AbstractSelectQuery() {}
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation prepares options and SQL.
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -87,6 +110,12 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     assertNotNull(sql);
   }
 
+  /**
+   * Prepares the options for this query.
+   *
+   * <p>This method sets default values for fetch size, max rows, and query timeout if they are not
+   * already set.
+   */
   protected void prepareOptions() {
     if (fetchSize <= 0) {
       fetchSize = config.getFetchSize();
@@ -99,6 +128,11 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     }
   }
 
+  /**
+   * Prepares the SQL for this query.
+   *
+   * <p>This method must be implemented by subclasses to build the SQL statement.
+   */
   protected abstract void prepareSql();
 
   @Deprecated(forRemoval = true)
@@ -202,97 +236,171 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     SelectOptionsAccessor.setCountSize(options, count);
   }
 
+  /** {@inheritDoc} */
   @Override
   public SelectOptions getOptions() {
     return options;
   }
 
+  /**
+   * Sets the select options.
+   *
+   * @param options the select options
+   */
   public void setOptions(SelectOptions options) {
     this.options = options;
   }
 
+  /**
+   * Adds a parameter to this query.
+   *
+   * @param name the parameter name
+   * @param type the parameter type
+   * @param value the parameter value
+   */
   public void addParameter(String name, Class<?> type, Object value) {
     assertNotNull(name, type);
     parameters.put(name, new Value(type, value));
   }
 
+  /**
+   * Adds multiple parameters to this query.
+   *
+   * @param parameters the parameters to add
+   */
   public void addParameters(Map<String, Value> parameters) {
     this.parameters.putAll(parameters);
   }
 
+  /** Clears all parameters from this query. */
   public void clearParameters() {
     this.parameters.clear();
   }
 
+  /** {@inheritDoc} */
   @Override
   public boolean isResultEnsured() {
     return resultEnsured;
   }
 
+  /**
+   * Sets whether the query is expected to return at least one result.
+   *
+   * @param resultEnsured {@code true} if the query is expected to return at least one result
+   */
   public void setResultEnsured(boolean resultEnsured) {
     this.resultEnsured = resultEnsured;
   }
 
+  /** {@inheritDoc} */
   @Override
   public boolean isResultMappingEnsured() {
     return resultMappingEnsured;
   }
 
+  /**
+   * Sets whether the result mapping is ensured.
+   *
+   * @param resultMappingEnsured {@code true} if the result mapping is ensured
+   */
   public void setResultMappingEnsured(boolean resultMappingEnsured) {
     this.resultMappingEnsured = resultMappingEnsured;
   }
 
+  /** {@inheritDoc} */
   @Override
   public FetchType getFetchType() {
     return fetchType;
   }
 
+  /**
+   * Sets the fetch type for this query.
+   *
+   * @param fetchType the fetch type
+   */
   public void setFetchType(FetchType fetchType) {
     this.fetchType = fetchType;
   }
 
+  /** {@inheritDoc} */
   @Override
   public int getFetchSize() {
     return fetchSize;
   }
 
+  /**
+   * Sets the fetch size for this query.
+   *
+   * @param fetchSize the fetch size
+   */
   public void setFetchSize(int fetchSize) {
     this.fetchSize = fetchSize;
   }
 
+  /** {@inheritDoc} */
   @Override
   public int getMaxRows() {
     return maxRows;
   }
 
+  /**
+   * Sets the maximum number of rows to be returned.
+   *
+   * @param maxRows the maximum number of rows
+   */
   public void setMaxRows(int maxRows) {
     this.maxRows = maxRows;
   }
 
+  /** {@inheritDoc} */
+  @Override
   public SqlLogType getSqlLogType() {
     return sqlLogType;
   }
 
+  /**
+   * Sets the SQL log type for this query.
+   *
+   * @param sqlLogType the SQL log type
+   */
   public void setSqlLogType(SqlLogType sqlLogType) {
     this.sqlLogType = sqlLogType;
   }
 
+  /** {@inheritDoc} */
+  @Override
   public boolean isResultStream() {
     return resultStream;
   }
 
+  /**
+   * Sets whether the result should be processed as a stream.
+   *
+   * @param resultStream {@code true} if the result should be processed as a stream
+   */
   public void setResultStream(boolean resultStream) {
     this.resultStream = resultStream;
   }
 
+  /**
+   * Sets the aggregate strategy type for this query.
+   *
+   * @param aggregateStrategyType the aggregate strategy type
+   */
   public void setAggregateStrategyType(AggregateStrategyType aggregateStrategyType) {
     this.aggregateStrategyType = aggregateStrategyType;
   }
 
+  /**
+   * Sets the entity type for this query.
+   *
+   * @param entityType the entity type
+   */
   public void setEntityType(EntityType<?> entityType) {
     this.entityType = entityType;
   }
 
+  /** {@inheritDoc} */
   @Override
   public PreparedSql getSql() {
     return sql;

@@ -15,4 +15,14 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for batch DELETE queries.
+ *
+ * <p>This interface represents a query that performs batch DELETE operations. It extends {@link
+ * BatchModifyQuery} to inherit common batch data modification functionality while specializing for
+ * DELETE operations.
+ *
+ * <p>Implementations of this interface handle the execution of multiple DELETE statements as a
+ * single batch operation for improved performance.
+ */
 public interface BatchDeleteQuery extends BatchModifyQuery {}

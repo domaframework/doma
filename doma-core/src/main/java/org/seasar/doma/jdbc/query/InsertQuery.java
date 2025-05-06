@@ -17,7 +17,27 @@ package org.seasar.doma.jdbc.query;
 
 import java.sql.Statement;
 
+/**
+ * An interface for INSERT queries.
+ *
+ * <p>This interface represents a query that performs INSERT operations. It extends {@link
+ * ModifyQuery} to inherit common data modification functionality while specializing for INSERT
+ * operations.
+ *
+ * <p>Implementations of this interface handle the execution of INSERT statements, including the
+ * construction of the column list, values clause, and generation of auto-generated keys or sequence
+ * values.
+ */
 public interface InsertQuery extends ModifyQuery {
 
+  /**
+   * Generates an ID for the inserted row.
+   *
+   * <p>This method is called after executing the INSERT statement to retrieve and set
+   * auto-generated keys or sequence values for the entity. It's typically used for primary key
+   * generation strategies like identity columns or sequences.
+   *
+   * @param statement the statement used for the INSERT operation
+   */
   void generateId(Statement statement);
 }

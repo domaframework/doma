@@ -40,22 +40,79 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
+/**
+ * A query implementation for automatically inserting an entity into a database table.
+ *
+ * <p>This class provides functionality to generate and execute SQL INSERT statements based on
+ * entity definitions. It handles various insert scenarios including:
+ *
+ * <ul>
+ *   <li>Standard inserts with all entity properties
+ *   <li>Inserts with null property exclusion
+ *   <li>Inserts with generated ID values (identity or sequence-based)
+ *   <li>Inserts with version number initialization
+ *   <li>Handling of duplicate key scenarios (exception or update)
+ * </ul>
+ *
+ * <p>The query execution process includes:
+ *
+ * <ol>
+ *   <li>Pre-insert entity processing
+ *   <li>SQL statement preparation
+ *   <li>Statement execution
+ *   <li>Generated ID retrieval (if applicable)
+ *   <li>Post-insert entity processing
+ * </ol>
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements InsertQuery {
 
+  /** Indicates whether null properties should be excluded from the INSERT statement. */
   protected boolean nullExcluded;
 
+  /** The property type for the generated ID, if the entity has one. */
   protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
+  /** Configuration for ID generation, used when the entity has a generated ID property. */
   protected IdGenerationConfig idGenerationConfig;
 
+  /**
+   * The strategy for handling duplicate key violations. Default is {@link
+   * DuplicateKeyType#EXCEPTION}, which throws an exception on duplicate key.
+   */
   protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
+  /**
+   * The names of properties that form the unique key for duplicate key handling. Used when {@link
+   * #duplicateKeyType} is not {@link DuplicateKeyType#EXCEPTION}.
+   */
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
+  /**
+   * Constructs an instance.
+   *
+   * @param entityType the entity type
+   */
   public AutoInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
 
+  /**
+   * Prepares this query for execution.
+   *
+   * <p>This method performs the following operations:
+   *
+   * <ol>
+   *   <li>Validates that required components are not null
+   *   <li>Executes pre-insert entity processing
+   *   <li>Prepares special property types (ID, version, etc.)
+   *   <li>Prepares query options
+   *   <li>Determines target properties for the INSERT statement
+   *   <li>Prepares ID and version values
+   *   <li>Builds the SQL statement
+   * </ol>
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -71,6 +128,12 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     assertNotNull(sql);
   }
 
+  /**
+   * Executes pre-insert entity processing.
+   *
+   * <p>This method creates a pre-insert context and calls the entity's preInsert method, allowing
+   * entity listeners to modify the entity before insertion.
+   */
   protected void preInsert() {
     AutoPreInsertContext<ENTITY> context =
         new AutoPreInsertContext<>(entityType, method, config, duplicateKeyType, returning);
@@ -80,6 +143,12 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
+  /**
+   * Prepares special property types for this query.
+   *
+   * <p>This method initializes the generated ID property type and its configuration, and determines
+   * if auto-generated keys are supported for this query.
+   */
   @Override
   protected void prepareSpecialPropertyTypes() {
     super.prepareSpecialPropertyTypes();
@@ -92,6 +161,22 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
+  /**
+   * Prepares the target property types for the INSERT statement.
+   *
+   * <p>This method determines which entity properties should be included in the INSERT statement
+   * based on the following rules:
+   *
+   * <ul>
+   *   <li>Properties must be insertable
+   *   <li>ID properties are included if they are not auto-generated or if they have a value
+   *   <li>Version properties are always included
+   *   <li>If nullExcluded is true, null-valued properties are excluded
+   *   <li>Properties must match the include/exclude name filters if specified
+   * </ul>
+   *
+   * <p>This method throws a JdbcException if a non-generated ID property has a null value.
+   */
   protected void prepareTargetPropertyType() {
     targetPropertyTypes = new ArrayList<>(entityType.getEntityPropertyTypes().size());
     for (EntityPropertyType<ENTITY, ?> propertyType : entityType.getEntityPropertyTypes()) {
@@ -127,18 +212,41 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
+  /**
+   * Prepares the ID value for the entity before insertion.
+   *
+   * <p>If the entity has a generated ID property, this method calls its preInsert method to
+   * generate or prepare the ID value before the INSERT operation.
+   */
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
       entity = generatedIdPropertyType.preInsert(entityType, entity, idGenerationConfig);
     }
   }
 
+  /**
+   * Prepares the version value for the entity before insertion.
+   *
+   * <p>If the entity has a version property, this method initializes it to 1 for optimistic
+   * locking.
+   */
   protected void prepareVersionValue() {
     if (versionPropertyType != null) {
       entity = versionPropertyType.setIfNecessary(entityType, entity, 1);
     }
   }
 
+  /**
+   * Prepares the SQL statement for this query.
+   *
+   * <p>This method builds either a standard INSERT statement or an UPSERT statement based on the
+   * duplicate key handling strategy. It uses the dialect-specific SQL assemblers to generate the
+   * appropriate SQL syntax.
+   *
+   * <p>If the duplicate key type is EXCEPTION, a standard INSERT statement is generated. Otherwise,
+   * an UPSERT statement is generated, unless the dialect supports MERGE statements and an identity
+   * key is included in the duplicate keys, in which case it falls back to a standard INSERT.
+   */
   protected void prepareSql() {
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
@@ -158,6 +266,16 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     sql = builder.build(this::comment);
   }
 
+  /**
+   * Assembles a standard INSERT SQL statement.
+   *
+   * <p>This method creates an INSERT assembler context and uses the dialect-specific INSERT
+   * assembler to generate the SQL statement.
+   *
+   * @param builder the SQL builder
+   * @param naming the naming convention
+   * @param dialect the database dialect
+   */
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     InsertAssemblerContext<ENTITY> context =
         InsertAssemblerContextBuilder.build(
@@ -166,6 +284,17 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     insertAssembler.assemble();
   }
 
+  /**
+   * Assembles an UPSERT SQL statement.
+   *
+   * <p>This method creates an UPSERT assembler context and uses the dialect-specific UPSERT
+   * assembler to generate the SQL statement. The UPSERT statement handles duplicate key scenarios
+   * according to the specified duplicate key type.
+   *
+   * @param builder the SQL builder
+   * @param naming the naming convention
+   * @param dialect the database dialect
+   */
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     List<EntityPropertyType<ENTITY, ?>> duplicateKeys =
         Arrays.stream(this.duplicateKeyNames)
@@ -189,6 +318,15 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     upsertAssembler.assemble();
   }
 
+  /**
+   * Generates an ID for the inserted entity.
+   *
+   * <p>This method is called after executing the INSERT statement to retrieve and set
+   * auto-generated keys for the entity. It's only executed if auto-generated keys are supported for
+   * this query.
+   *
+   * @param statement the statement used for the INSERT operation
+   */
   @Override
   public void generateId(Statement statement) {
     if (isAutoGeneratedKeysSupported()) {
@@ -202,11 +340,23 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
+  /**
+   * Completes this query by executing post-insert processing.
+   *
+   * <p>This method is called after the INSERT statement has been executed and any generated IDs
+   * have been retrieved.
+   */
   @Override
   public void complete() {
     postInsert();
   }
 
+  /**
+   * Executes post-insert entity processing.
+   *
+   * <p>This method creates a post-insert context and calls the entity's postInsert method, allowing
+   * entity listeners to modify the entity after insertion.
+   */
   protected void postInsert() {
     AutoPostInsertContext<ENTITY> context =
         new AutoPostInsertContext<>(entityType, method, config, duplicateKeyType, returning);
@@ -216,22 +366,55 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
     }
   }
 
+  /**
+   * Sets whether null properties should be excluded from the INSERT statement.
+   *
+   * @param nullExcluded true to exclude null properties, false otherwise
+   */
   public void setNullExcluded(boolean nullExcluded) {
     this.nullExcluded = nullExcluded;
   }
 
+  /**
+   * Sets the strategy for handling duplicate key violations.
+   *
+   * @param duplicateKeyType the duplicate key handling strategy
+   */
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
   }
 
+  /**
+   * Sets the names of properties that form the unique key for duplicate key handling.
+   *
+   * @param duplicateKeyNames the property names that form the unique key
+   */
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
   }
 
+  /**
+   * A context class for pre-insert entity processing.
+   *
+   * <p>This class extends AbstractPreInsertContext to add support for returning properties. It's
+   * used to pass information to entity listeners during the pre-insert phase.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    /** The properties to be returned from the INSERT statement. */
     private final ReturningProperties returningProperties;
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method that triggered this context
+     * @param config the configuration
+     * @param duplicateKeyType the duplicate key handling strategy
+     * @param returningProperties the properties to be returned
+     */
     public AutoPreInsertContext(
         EntityType<E> entityType,
         Method method,
@@ -242,16 +425,39 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       this.returningProperties = Objects.requireNonNull(returningProperties);
     }
 
+    /**
+     * Returns the properties to be returned from the INSERT statement.
+     *
+     * @return the returning properties
+     */
     @Override
     public ReturningProperties getReturningProperties() {
       return returningProperties;
     }
   }
 
+  /**
+   * A context class for post-insert entity processing.
+   *
+   * <p>This class extends AbstractPostInsertContext to add support for returning properties. It's
+   * used to pass information to entity listeners during the post-insert phase.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    /** The properties to be returned from the INSERT statement. */
     private final ReturningProperties returningProperties;
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method that triggered this context
+     * @param config the configuration
+     * @param duplicateKeyType the duplicate key handling strategy
+     * @param returningProperties the properties to be returned
+     */
     public AutoPostInsertContext(
         EntityType<E> entityType,
         Method method,
@@ -262,6 +468,11 @@ public class AutoInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
       this.returningProperties = Objects.requireNonNull(returningProperties);
     }
 
+    /**
+     * Returns the properties to be returned from the INSERT statement.
+     *
+     * @return the returning properties
+     */
     @Override
     public ReturningProperties getReturningProperties() {
       return returningProperties;

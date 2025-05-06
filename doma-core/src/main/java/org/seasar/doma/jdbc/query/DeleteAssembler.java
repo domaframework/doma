@@ -15,6 +15,19 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for assembling DELETE queries.
+ *
+ * <p>This interface is responsible for generating the SQL for DELETE operations. Implementations of
+ * this interface handle the construction of DELETE statements, including the WHERE clause and any
+ * other necessary SQL components.
+ */
 public interface DeleteAssembler {
+  /**
+   * Assembles the DELETE query.
+   *
+   * <p>This method generates the SQL for the DELETE operation, including the table name, WHERE
+   * clause, and any other required SQL components.
+   */
   void assemble();
 }

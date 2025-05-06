@@ -15,4 +15,16 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for database stored procedure queries.
+ *
+ * <p>This interface represents a query that calls a database stored procedure. It extends {@link
+ * ModuleQuery} to inherit common database module functionality while specializing for procedure
+ * calls that don't return a result.
+ *
+ * <p>Implementations of this interface handle the execution of database procedure calls, including
+ * parameter binding and handling of OUT and INOUT parameters. Unlike {@link FunctionQuery},
+ * procedures typically don't return a value directly, but may modify OUT parameters or perform
+ * database operations.
+ */
 public interface ProcedureQuery extends ModuleQuery {}

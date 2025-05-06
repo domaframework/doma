@@ -21,7 +21,23 @@ import java.util.Objects;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 
-/** Represents returning properties. */
+/**
+ * An interface that represents properties to be returned from database operations.
+ *
+ * <p>This interface is used to specify which entity properties should be returned from database
+ * operations that support returning clauses, such as INSERT, UPDATE, or DELETE with RETURNING. It
+ * provides a way to select specific properties or all properties to be included in the returning
+ * clause.
+ *
+ * <p>The interface includes predefined instances for common cases:
+ *
+ * <ul>
+ *   <li>{@link #NONE} - represents no properties to be returned
+ *   <li>{@link #ALL} - represents all properties to be returned
+ * </ul>
+ *
+ * <p>Custom implementations can be created to return specific subsets of properties.
+ */
 public interface ReturningProperties {
 
   /** A predefined instance of {@link ReturningProperties} that represents no properties. */

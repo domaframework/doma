@@ -42,21 +42,80 @@ import org.seasar.doma.jdbc.entity.Property;
 import org.seasar.doma.jdbc.id.IdGenerationConfig;
 import org.seasar.doma.message.Message;
 
+/**
+ * A query implementation for automatically inserting multiple entities into a database table.
+ *
+ * <p>This class provides functionality to generate and execute SQL multi-row INSERT statements
+ * based on entity definitions. It handles various insert scenarios including:
+ *
+ * <ul>
+ *   <li>Batch inserts with multiple entities in a single statement
+ *   <li>Inserts with generated ID values (sequence-based only for multiple rows)
+ *   <li>Inserts with version number initialization
+ *   <li>Handling of duplicate key scenarios (exception or update)
+ * </ul>
+ *
+ * <p>The query execution process includes:
+ *
+ * <ol>
+ *   <li>Pre-insert entity processing for each entity
+ *   <li>SQL statement preparation for multiple rows
+ *   <li>Statement execution
+ *   <li>Generated ID retrieval (if applicable)
+ *   <li>Post-insert entity processing for each entity
+ * </ol>
+ *
+ * @param <ENTITY> the entity type
+ */
 public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements InsertQuery {
 
+  /** The list of entities to be inserted. */
   protected List<ENTITY> entities;
+
+  /** The property type for the generated ID, if the entity has one. */
   protected GeneratedIdPropertyType<ENTITY, ?, ?> generatedIdPropertyType;
 
+  /** Configuration for ID generation, used when the entity has a generated ID property. */
   protected IdGenerationConfig idGenerationConfig;
 
+  /**
+   * The strategy for handling duplicate key violations. Default is {@link
+   * DuplicateKeyType#EXCEPTION}, which throws an exception on duplicate key.
+   */
   protected DuplicateKeyType duplicateKeyType = DuplicateKeyType.EXCEPTION;
 
+  /**
+   * The names of properties that form the unique key for duplicate key handling. Used when {@link
+   * #duplicateKeyType} is not {@link DuplicateKeyType#EXCEPTION}.
+   */
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
+  /**
+   * Constructs an instance.
+   *
+   * @param entityType the entity type
+   */
   public AutoMultiInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
 
+  /**
+   * Prepares this query for execution.
+   *
+   * <p>This method performs the following operations:
+   *
+   * <ol>
+   *   <li>Validates that required components are not null
+   *   <li>Checks if the dialect supports multi-row INSERT statements
+   *   <li>Skips execution if the entity list is empty
+   *   <li>Executes pre-insert entity processing for each entity
+   *   <li>Prepares special property types (ID, version, etc.)
+   *   <li>Prepares query options
+   *   <li>Determines target properties for the INSERT statement
+   *   <li>Prepares ID and version values
+   *   <li>Builds the SQL statement
+   * </ol>
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -84,6 +143,12 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     assertNotNull(sql);
   }
 
+  /**
+   * Executes pre-insert entity processing for each entity.
+   *
+   * <p>This method creates a pre-insert context for each entity and calls the entity's preInsert
+   * method, allowing entity listeners to modify the entities before insertion.
+   */
   protected void preInsert() {
     ListIterator<ENTITY> iterator = entities.listIterator();
     while (iterator.hasNext()) {
@@ -98,6 +163,15 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Prepares special property types for this query.
+   *
+   * <p>This method initializes the generated ID property type and its configuration, and determines
+   * if auto-generated keys are supported for this query.
+   *
+   * <p>It also checks if the dialect supports auto-increment when inserting multiple rows, and
+   * throws an exception if not supported with IDENTITY generation type.
+   */
   @Override
   protected void prepareSpecialPropertyTypes() {
     super.prepareSpecialPropertyTypes();
@@ -116,6 +190,21 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Prepares the target property types for the INSERT statement.
+   *
+   * <p>This method determines which entity properties should be included in the INSERT statement
+   * based on the following rules:
+   *
+   * <ul>
+   *   <li>Properties must be insertable
+   *   <li>ID properties are included if they are not auto-generated or if they have a value
+   *   <li>Version properties are always included
+   *   <li>Properties must match the include/exclude name filters if specified
+   * </ul>
+   *
+   * <p>This method throws a JdbcException if a non-generated ID property has a null value.
+   */
   protected void prepareTargetPropertyType() {
     targetPropertyTypes = new ArrayList<>(entityType.getEntityPropertyTypes().size());
     for (EntityPropertyType<ENTITY, ?> propertyType : entityType.getEntityPropertyTypes()) {
@@ -146,6 +235,12 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Prepares the ID values for the entities before insertion.
+   *
+   * <p>If the entities have a generated ID property, this method calls its preInsert method to
+   * generate or prepare the ID values before the INSERT operation.
+   */
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
       List<ENTITY> newEntities =
@@ -156,6 +251,12 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Prepares the version values for the entities before insertion.
+   *
+   * <p>If the entities have a version property, this method initializes it to 1 for optimistic
+   * locking.
+   */
   protected void prepareVersionValue() {
     if (versionPropertyType != null) {
       ListIterator<ENTITY> iterator = entities.listIterator();
@@ -167,6 +268,17 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Prepares the SQL statement for this query.
+   *
+   * <p>This method builds either a standard multi-row INSERT statement or an UPSERT statement based
+   * on the duplicate key handling strategy. It uses the dialect-specific SQL assemblers to generate
+   * the appropriate SQL syntax.
+   *
+   * <p>If the duplicate key type is EXCEPTION, a standard INSERT statement is generated. Otherwise,
+   * an UPSERT statement is generated, unless the dialect supports MERGE statements and an identity
+   * key is included in the duplicate keys, in which case it falls back to a standard INSERT.
+   */
   protected void prepareSql() {
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
@@ -186,6 +298,16 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     sql = builder.build(this::comment);
   }
 
+  /**
+   * Assembles a standard multi-row INSERT SQL statement.
+   *
+   * <p>This method creates a multi-insert assembler context and uses the dialect-specific
+   * multi-insert assembler to generate the SQL statement.
+   *
+   * @param builder the SQL builder
+   * @param naming the naming convention
+   * @param dialect the database dialect
+   */
   private void assembleInsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     MultiInsertAssemblerContext<ENTITY> context =
         MultiInsertAssemblerContextBuilder.buildFromEntityList(
@@ -194,6 +316,17 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     assembler.assemble();
   }
 
+  /**
+   * Assembles an UPSERT SQL statement for multiple entities.
+   *
+   * <p>This method creates an UPSERT assembler context and uses the dialect-specific UPSERT
+   * assembler to generate the SQL statement. The UPSERT statement handles duplicate key scenarios
+   * according to the specified duplicate key type.
+   *
+   * @param builder the SQL builder
+   * @param naming the naming convention
+   * @param dialect the database dialect
+   */
   private void assembleUpsertSql(PreparedSqlBuilder builder, Naming naming, Dialect dialect) {
     List<EntityPropertyType<ENTITY, ?>> duplicateKeys =
         Arrays.stream(this.duplicateKeyNames)
@@ -217,6 +350,15 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     assembler.assemble();
   }
 
+  /**
+   * Generates IDs for the inserted entities.
+   *
+   * <p>This method is called after executing the INSERT statement to retrieve and set
+   * auto-generated keys for the entities. It's only executed if auto-generated keys are supported
+   * for this query.
+   *
+   * @param statement the statement used for the INSERT operation
+   */
   @Override
   public void generateId(Statement statement) {
     if (isAutoGeneratedKeysSupported()) {
@@ -228,11 +370,23 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Completes this query by executing post-insert processing.
+   *
+   * <p>This method is called after the INSERT statement has been executed and any generated IDs
+   * have been retrieved.
+   */
   @Override
   public void complete() {
     postInsert();
   }
 
+  /**
+   * Executes post-insert entity processing for each entity.
+   *
+   * <p>This method creates a post-insert context for each entity and calls the entity's postInsert
+   * method, allowing entity listeners to modify the entities after insertion.
+   */
   protected void postInsert() {
     ListIterator<ENTITY> iterator = entities.listIterator();
     while (iterator.hasNext()) {
@@ -247,18 +401,46 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /**
+   * Sets the strategy for handling duplicate key violations.
+   *
+   * @param duplicateKeyType the duplicate key handling strategy
+   */
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
   }
 
+  /**
+   * Sets the names of properties that form the unique key for duplicate key handling.
+   *
+   * @param duplicateKeyNames the property names that form the unique key
+   */
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
   }
 
+  /**
+   * A context class for pre-insert entity processing.
+   *
+   * <p>This class extends AbstractPreInsertContext to add support for returning properties. It's
+   * used to pass information to entity listeners during the pre-insert phase.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    /** The properties to be returned from the INSERT statement. */
     private final ReturningProperties returningProperties;
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method that triggered this context
+     * @param config the configuration
+     * @param duplicateKeyType the duplicate key handling strategy
+     * @param returningProperties the properties to be returned
+     */
     public AutoPreInsertContext(
         EntityType<E> entityType,
         Method method,
@@ -269,16 +451,39 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
       this.returningProperties = Objects.requireNonNull(returningProperties);
     }
 
+    /**
+     * Returns the properties to be returned from the INSERT statement.
+     *
+     * @return the returning properties
+     */
     @Override
     public ReturningProperties getReturningProperties() {
       return returningProperties;
     }
   }
 
+  /**
+   * A context class for post-insert entity processing.
+   *
+   * <p>This class extends AbstractPostInsertContext to add support for returning properties. It's
+   * used to pass information to entity listeners during the post-insert phase.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    /** The properties to be returned from the INSERT statement. */
     private final ReturningProperties returningProperties;
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method that triggered this context
+     * @param config the configuration
+     * @param duplicateKeyType the duplicate key handling strategy
+     * @param returningProperties the properties to be returned
+     */
     public AutoPostInsertContext(
         EntityType<E> entityType,
         Method method,
@@ -289,27 +494,54 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
       this.returningProperties = Objects.requireNonNull(returningProperties);
     }
 
+    /**
+     * Returns the properties to be returned from the INSERT statement.
+     *
+     * @return the returning properties
+     */
     @Override
     public ReturningProperties getReturningProperties() {
       return returningProperties;
     }
   }
 
+  /**
+   * Sets the list of entities to be inserted.
+   *
+   * @param entities the list of entities
+   */
   public void setEntities(List<ENTITY> entities) {
     if (entities != null) {
       this.entities = new ArrayList<>(entities);
     }
   }
 
+  /**
+   * Returns the list of entities to be inserted.
+   *
+   * @return the list of entities
+   */
   public List<ENTITY> getEntities() {
     return this.entities;
   }
 
+  /**
+   * This method is not supported for multi-insert queries. Use {@link #setEntities(List)} instead.
+   *
+   * @param entity the entity
+   * @throws UnsupportedOperationException always thrown
+   */
   @Override
   public void setEntity(ENTITY entity) {
     throw new UnsupportedOperationException("Use the setEntities method instead.");
   }
 
+  /**
+   * This method is not supported for multi-insert queries. Use {@link #getEntities()} instead.
+   *
+   * @return never returns
+   * @throws UnsupportedOperationException always thrown
+   */
   @Override
   public ENTITY getEntity() {
     throw new UnsupportedOperationException("Use the getEntities method instead.");
