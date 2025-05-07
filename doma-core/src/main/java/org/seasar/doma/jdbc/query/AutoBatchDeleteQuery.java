@@ -50,10 +50,21 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /** Whether to suppress optimistic lock exceptions. */
   protected boolean optimisticLockExceptionSuppressed;
 
+  /**
+   * Constructs an instance.
+   *
+   * @param entityType the entity type
+   */
   public AutoBatchDeleteQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
 
+  /**
+   * Prepares this query for execution.
+   *
+   * <p>This method validates the state of this instance, prepares SQL statements for all entities,
+   * and ensures that the number of SQL statements matches the number of entities.
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -81,6 +92,12 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     assertEquals(size, sqls.size());
   }
 
+  /**
+   * Executes pre-delete processing for the current entity.
+   *
+   * <p>This method creates a context for pre-delete operations and calls the entity type's
+   * preDelete method. If a new entity is returned by the context, it replaces the current entity.
+   */
   protected void preDelete() {
     AutoBatchPreDeleteContext<ENTITY> context =
         new AutoBatchPreDeleteContext<>(entityType, method, config);
@@ -90,6 +107,12 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares optimistic locking settings for this query.
+   *
+   * <p>This method sets the optimistic lock check flag based on the version property type
+   * and the configuration settings for version handling and exception suppression.
+   */
   protected void prepareOptimisticLock() {
     if (versionPropertyType != null && !versionIgnored) {
       if (!optimisticLockExceptionSuppressed) {
@@ -98,6 +121,13 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares the SQL statement for the current entity.
+   *
+   * <p>This method builds a DELETE SQL statement with appropriate WHERE clauses for ID properties,
+   * version property (for optimistic locking), and tenant ID property (for multi-tenancy).
+   * The completed SQL statement is added to the list of SQL statements to be executed.
+   */
   protected void prepareSql() {
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
@@ -150,6 +180,12 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     sqls.add(sql);
   }
 
+  /**
+   * Completes this query after execution.
+   *
+   * <p>This method performs post-processing for all entities after the batch delete operation
+   * has been executed. It calls the postDelete method for each entity.
+   */
   @Override
   public void complete() {
     for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext(); ) {
@@ -159,6 +195,12 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Executes post-delete processing for the current entity.
+   *
+   * <p>This method creates a context for post-delete operations and calls the entity type's
+   * postDelete method. If a new entity is returned by the context, it replaces the current entity.
+   */
   protected void postDelete() {
     AutoBatchPostDeleteContext<ENTITY> context =
         new AutoBatchPostDeleteContext<>(entityType, method, config);
@@ -168,23 +210,57 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Sets whether to ignore the version property for optimistic locking.
+   *
+   * @param versionIgnored true to ignore the version property, false otherwise
+   */
   public void setVersionIgnored(boolean versionIgnored) {
     this.versionIgnored = versionIgnored;
   }
 
+  /**
+   * Sets whether to suppress optimistic lock exceptions.
+   *
+   * @param optimisticLockExceptionSuppressed true to suppress optimistic lock exceptions, false otherwise
+   */
   public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
     this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;
   }
 
+  /**
+   * The context class for pre-delete processing in batch operations.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoBatchPreDeleteContext<E> extends AbstractPreDeleteContext<E> {
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     */
     public AutoBatchPreDeleteContext(EntityType<E> entityType, Method method, Config config) {
       super(entityType, method, config);
     }
   }
 
+  /**
+   * The context class for post-delete processing in batch operations.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoBatchPostDeleteContext<E> extends AbstractPostDeleteContext<E> {
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     */
     public AutoBatchPostDeleteContext(EntityType<E> entityType, Method method, Config config) {
       super(entityType, method, config);
     }

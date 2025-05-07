@@ -135,6 +135,12 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
    */
   protected abstract void prepareSql();
 
+  /**
+   * Builds the SQL for this query using the provided SQL builder.
+   *
+   * @param sqlBuilder the function to build the SQL
+   * @deprecated This method is scheduled for removal in a future version
+   */
   @Deprecated(forRemoval = true)
   protected void buildSql(
       BiFunction<ExpressionEvaluator, Function<ExpandNode, List<String>>, PreparedSql> sqlBuilder) {
@@ -142,11 +148,23 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     sql = sqlBuilder.apply(evaluator, this::expandColumns);
   }
 
+  /**
+   * Creates an expression evaluator for evaluating SQL expressions.
+   *
+   * @return the expression evaluator
+   */
   protected ExpressionEvaluator createExpressionEvaluator() {
     return new ExpressionEvaluator(
         parameters, config.getDialect().getExpressionFunctions(), config.getClassHelper());
   }
 
+  /**
+   * Expands the columns for the entity type.
+   *
+   * @param node the expand node
+   * @return the list of expanded column names
+   * @throws JdbcException if the entity type is null
+   */
   protected List<String> expandColumns(ExpandNode node) {
     if (entityType == null) {
       SqlLocation location = node.getLocation();
@@ -164,6 +182,15 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         .collect(Collectors.toList());
   }
 
+  /**
+   * Expands the columns for the aggregate strategy type with the specified aliases.
+   *
+   * @param node the expand node
+   * @param aliasCsv the comma-separated list of aliases
+   * @return the list of expanded column names with aliases
+   * @throws JdbcException if the entity type is null
+   * @throws DomaException if an alias is not defined in the aggregate strategy type
+   */
   protected List<String> expandAggregateColumns(ExpandNode node, String aliasCsv) {
     if (entityType == null) {
       SqlLocation location = node.getLocation();
@@ -210,10 +237,23 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
         .toList();
   }
 
+  /**
+   * Populates values for the specified node in the SQL context.
+   *
+   * @param node the populate node
+   * @param context the SQL context
+   * @throws UnsupportedOperationException always thrown as this method is not supported in this class
+   */
   protected void populateValues(PopulateNode node, SqlContext context) {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Executes a count query using the specified SQL node.
+   * The result is set to the select options.
+   *
+   * @param sqlNode the SQL node for the count query
+   */
   protected void executeCount(SqlNode sqlNode) {
     CountQuery query = new CountQuery();
     query.setCallerClassName(callerClassName);
@@ -406,6 +446,11 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
     return sql;
   }
 
+  /**
+   * Returns a string representation of this query.
+   *
+   * @return the string representation of the SQL, or null if the SQL is not prepared
+   */
   @Override
   public String toString() {
     return sql != null ? sql.toString() : null;

@@ -74,22 +74,48 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /** The names of columns that may cause duplicate key violations. */
   protected String[] duplicateKeyNames = EMPTY_STRINGS;
 
+  /**
+   * Constructs an instance.
+   *
+   * @param entityType the entity type
+   */
   public AutoBatchInsertQuery(EntityType<ENTITY> entityType) {
     super(entityType);
   }
 
+  /**
+   * Sets whether to ignore auto-generated keys.
+   *
+   * @param generatedKeysIgnored whether to ignore auto-generated keys
+   */
   public void setGeneratedKeysIgnored(boolean generatedKeysIgnored) {
     this.generatedKeysIgnored = generatedKeysIgnored;
   }
 
+  /**
+   * Sets the strategy for handling duplicate keys.
+   *
+   * @param duplicateKeyType the strategy for handling duplicate keys
+   */
   public void setDuplicateKeyType(DuplicateKeyType duplicateKeyType) {
     this.duplicateKeyType = duplicateKeyType;
   }
 
+  /**
+   * Sets the names of columns that may cause duplicate key violations.
+   *
+   * @param duplicateKeyNames the names of columns that may cause duplicate key violations
+   */
   public void setDuplicateKeyNames(String... duplicateKeyNames) {
     this.duplicateKeyNames = duplicateKeyNames;
   }
 
+  /**
+   * Prepares this query for execution.
+   * 
+   * <p>This method processes all entities in the batch, applying pre-insert hooks,
+   * preparing ID and version values, and generating SQL statements for each entity.
+   */
   @Override
   public void prepare() {
     super.prepare();
@@ -121,6 +147,12 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     assertEquals(entities.size(), sqls.size());
   }
 
+  /**
+   * Executes pre-insert hooks on the current entity.
+   * 
+   * <p>This method creates a context for pre-insert processing and applies
+   * entity-specific pre-insert logic to the current entity.
+   */
   protected void preInsert() {
     AutoBatchPreInsertContext<ENTITY> context =
         new AutoBatchPreInsertContext<>(entityType, method, config, duplicateKeyType);
@@ -130,6 +162,13 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares ID and version property types for this query.
+   * 
+   * <p>This method initializes the generated ID property type and configures
+   * ID generation settings, including whether batch operations and auto-generated
+   * keys are supported.
+   */
   @Override
   protected void prepareIdAndVersionPropertyTypes() {
     super.prepareIdAndVersionPropertyTypes();
@@ -147,6 +186,13 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares the target property types for this query.
+   * 
+   * <p>This method determines which entity properties should be included in the INSERT
+   * statement based on their insertability, ID status, and other criteria. It also
+   * validates that non-generated ID properties have non-null values.
+   */
   protected void prepareTargetPropertyTypes() {
     targetPropertyTypes = new ArrayList<>(entityType.getEntityPropertyTypes().size());
     for (EntityPropertyType<ENTITY, ?> propertyType : entityType.getEntityPropertyTypes()) {
@@ -175,6 +221,12 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares the ID value for the current entity.
+   * 
+   * <p>If a generated ID property type is configured, this method applies
+   * pre-insert ID generation logic to the current entity.
+   */
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
       currentEntity =
@@ -182,12 +234,24 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Prepares the version value for the current entity.
+   * 
+   * <p>If a version property type is configured, this method initializes
+   * the version value to 1 for the current entity.
+   */
   protected void prepareVersionValue() {
     if (versionPropertyType != null) {
       currentEntity = versionPropertyType.setIfNecessary(entityType, currentEntity, 1);
     }
   }
 
+  /**
+   * Prepares the SQL statement for the current entity.
+   * 
+   * <p>This method builds the appropriate SQL statement (INSERT or UPSERT)
+   * based on the duplicate key handling strategy and dialect capabilities.
+   */
   protected void prepareSql() {
     Naming naming = config.getNaming();
     Dialect dialect = config.getDialect();
@@ -250,11 +314,25 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     upsertAssembler.assemble();
   }
 
+  /**
+   * Determines whether batch operations are supported for this query.
+   * 
+   * @return true if batch operations are supported, false otherwise
+   */
   @Override
   public boolean isBatchSupported() {
     return batchSupported;
   }
 
+  /**
+   * Generates an ID for the entity at the specified index using auto-generated keys.
+   * 
+   * <p>This method retrieves the auto-generated key from the statement and
+   * updates the entity with the generated ID value.
+   * 
+   * @param statement the statement that executed the insert
+   * @param index the index of the entity in the batch
+   */
   @Override
   public void generateId(Statement statement, int index) {
     if (isAutoGeneratedKeysSupported()) {
@@ -270,6 +348,17 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Generates IDs for a range of entities using auto-generated keys.
+   * 
+   * <p>This method retrieves auto-generated keys from the statement and
+   * updates the specified range of entities with the generated ID values.
+   * 
+   * @param statement the statement that executed the batch insert
+   * @param position the starting position in the entities list
+   * @param size the number of entities to process
+   * @throws DomaIllegalArgumentException if the position and size parameters are invalid
+   */
   @Override
   public void generateIds(Statement statement, int position, int size) {
     if (isAutoGeneratedKeysSupported() && isBatchSupported()) {
@@ -296,6 +385,12 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Completes the batch insert operation.
+   * 
+   * <p>This method applies post-insert hooks to all entities in the batch
+   * after the database operation has been executed.
+   */
   @Override
   public void complete() {
     for (ListIterator<ENTITY> it = entities.listIterator(); it.hasNext(); ) {
@@ -305,6 +400,12 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * Executes post-insert hooks on the current entity.
+   * 
+   * <p>This method creates a context for post-insert processing and applies
+   * entity-specific post-insert logic to the current entity.
+   */
   protected void postInsert() {
     AutoBatchPostInsertContext<ENTITY> context =
         new AutoBatchPostInsertContext<>(entityType, method, config, duplicateKeyType);
@@ -314,16 +415,48 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     }
   }
 
+  /**
+   * The context class for pre-insert batch processing.
+   *
+   * <p>This context is used during the pre-insert phase of batch insert operations
+   * to provide entity-specific processing.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoBatchPreInsertContext<E> extends AbstractPreInsertContext<E> {
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     * @param duplicateKeyType the strategy for handling duplicate keys
+     */
     public AutoBatchPreInsertContext(
         EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
       super(entityType, method, config, duplicateKeyType);
     }
   }
 
+  /**
+   * The context class for post-insert batch processing.
+   *
+   * <p>This context is used during the post-insert phase of batch insert operations
+   * to provide entity-specific processing after database operations have been executed.
+   *
+   * @param <E> the entity type
+   */
   protected static class AutoBatchPostInsertContext<E> extends AbstractPostInsertContext<E> {
 
+    /**
+     * Constructs an instance.
+     *
+     * @param entityType the entity type
+     * @param method the method
+     * @param config the configuration
+     * @param duplicateKeyType the strategy for handling duplicate keys
+     */
     public AutoBatchPostInsertContext(
         EntityType<E> entityType, Method method, Config config, DuplicateKeyType duplicateKeyType) {
       super(entityType, method, config, duplicateKeyType);
