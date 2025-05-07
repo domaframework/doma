@@ -31,17 +31,50 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
  * @param <ENTITY> the entity type
  */
 public class DeleteAssemblerContext<ENTITY> {
+  /** The SQL builder used to construct the DELETE statement. */
   public final PreparedSqlBuilder buf;
+
+  /** The entity type that represents the table to delete from. */
   public final EntityType<ENTITY> entityType;
+
+  /** The naming convention used for converting Java names to database names. */
   public final Naming naming;
+
+  /** The dialect that defines database-specific behaviors. */
   public final Dialect dialect;
+
+  /** The list of property types that represent the primary key. */
   public final List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
+
+  /** The property type that represents the version column for optimistic locking. */
   public final VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
+
+  /** The property type that represents the tenant ID column for multi-tenancy. */
   public final TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType;
+
+  /** Whether to ignore the version property for optimistic locking. */
   public boolean versionIgnored;
+
+  /** The entity instance to be deleted. */
   public final ENTITY entity;
+
+  /** The properties to be returned from the DELETE operation. */
   public ReturningProperties returning;
 
+  /**
+   * Creates a new context for assembling DELETE statements.
+   *
+   * @param buf the SQL builder
+   * @param entityType the entity type
+   * @param naming the naming convention
+   * @param dialect the SQL dialect
+   * @param idPropertyTypes the list of ID property types
+   * @param versionPropertyType the version property type
+   * @param tenantIdPropertyType the tenant ID property type
+   * @param versionIgnored whether to ignore the version property
+   * @param entity the entity instance
+   * @param returning the properties to be returned
+   */
   DeleteAssemblerContext(
       PreparedSqlBuilder buf,
       EntityType<ENTITY> entityType,

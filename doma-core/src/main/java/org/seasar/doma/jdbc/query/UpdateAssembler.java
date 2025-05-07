@@ -15,6 +15,19 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for assembling UPDATE queries.
+ *
+ * <p>This interface is responsible for generating the SQL for UPDATE operations. Implementations of
+ * this interface handle the construction of UPDATE statements, including the SET clause, WHERE
+ * clause, and any other necessary SQL components.
+ */
 public interface UpdateAssembler {
+  /**
+   * Assembles the UPDATE query.
+   *
+   * <p>This method generates the SQL for the UPDATE operation, including the table name, SET
+   * clause, WHERE clause, and any other required SQL components.
+   */
   void assemble();
 }

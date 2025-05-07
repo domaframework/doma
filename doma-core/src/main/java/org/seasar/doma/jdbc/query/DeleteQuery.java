@@ -15,4 +15,14 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for DELETE queries.
+ *
+ * <p>This interface represents a query that performs DELETE operations. It extends {@link
+ * ModifyQuery} to inherit common data modification functionality while specializing for DELETE
+ * operations.
+ *
+ * <p>Implementations of this interface handle the execution of DELETE statements, including the
+ * construction of the WHERE clause and handling of optimistic concurrency control.
+ */
 public interface DeleteQuery extends ModifyQuery {}

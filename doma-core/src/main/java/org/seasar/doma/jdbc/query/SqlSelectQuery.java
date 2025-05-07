@@ -23,16 +23,35 @@ import org.seasar.doma.jdbc.SelectOptionsAccessor;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
+/**
+ * A query that executes a SQL SELECT statement.
+ *
+ * <p>This class extends {@link AbstractSelectQuery} to provide functionality for executing SELECT
+ * statements. It handles SQL node transformation, expression evaluation, and SQL statement
+ * preparation.
+ */
 public class SqlSelectQuery extends AbstractSelectQuery {
 
+  /** The SQL node representing the query. */
   protected SqlNode sqlNode;
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation validates that the SQL node is not null.
+   */
   @Override
   public void prepare() {
     super.prepare();
     assertNotNull(sqlNode);
   }
 
+  /**
+   * Prepares the SQL statement.
+   *
+   * <p>This method transforms the SQL node using the dialect, evaluates expressions, and builds the
+   * prepared SQL statement.
+   */
   protected void prepareSql() {
     SqlNode transformedSqlNode = config.getDialect().transformSelectSqlNode(sqlNode, options);
     ExpressionEvaluator evaluator = createExpressionEvaluator();
@@ -49,6 +68,11 @@ public class SqlSelectQuery extends AbstractSelectQuery {
     sql = sqlBuilder.build(transformedSqlNode, this::comment);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation executes a count query if the select options indicate a count operation.
+   */
   @Override
   public void complete() {
     if (SelectOptionsAccessor.isCount(options)) {
@@ -56,6 +80,11 @@ public class SqlSelectQuery extends AbstractSelectQuery {
     }
   }
 
+  /**
+   * Sets the SQL node for this query.
+   *
+   * @param sqlNode the SQL node
+   */
   public void setSqlNode(SqlNode sqlNode) {
     this.sqlNode = sqlNode;
   }

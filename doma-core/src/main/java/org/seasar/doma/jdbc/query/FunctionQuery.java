@@ -15,7 +15,27 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for database function queries.
+ *
+ * <p>This interface represents a query that calls a database function. It extends {@link
+ * ModuleQuery} to inherit common database module functionality while specializing for function
+ * calls that return a result.
+ *
+ * <p>Implementations of this interface handle the execution of database function calls, including
+ * parameter binding and result retrieval.
+ *
+ * @param <RESULT> the type of the function result
+ */
 public interface FunctionQuery<RESULT> extends ModuleQuery {
 
+  /**
+   * Returns the result of the function call.
+   *
+   * <p>This method is called after executing the function to retrieve the result value. The result
+   * type depends on the function's return type and the Java type mapping.
+   *
+   * @return the function result
+   */
   RESULT getResult();
 }

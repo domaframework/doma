@@ -17,19 +17,46 @@ package org.seasar.doma.jdbc.query;
 
 import java.util.Objects;
 
+/**
+ * Represents a pair of query operands.
+ *
+ * <p>This class is used to associate two operands together, typically for operations that require
+ * comparing or mapping values between them, such as in UPDATE statements where columns are set to
+ * new values.
+ */
 public class QueryOperandPair {
+  /** The left operand in the pair. */
   private final QueryOperand left;
+
+  /** The right operand in the pair. */
   private final QueryOperand right;
 
+  /**
+   * Constructs a new {@code QueryOperandPair} with the specified operands.
+   *
+   * @param left the left operand
+   * @param right the right operand
+   * @throws NullPointerException if either operand is null
+   */
   public QueryOperandPair(QueryOperand left, QueryOperand right) {
     this.left = Objects.requireNonNull(left);
     this.right = Objects.requireNonNull(right);
   }
 
+  /**
+   * Returns the left operand.
+   *
+   * @return the left operand
+   */
   public QueryOperand getLeft() {
     return left;
   }
 
+  /**
+   * Returns the right operand.
+   *
+   * @return the right operand
+   */
   public QueryOperand getRight() {
     return right;
   }

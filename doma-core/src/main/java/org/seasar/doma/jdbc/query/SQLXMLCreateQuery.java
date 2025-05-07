@@ -19,8 +19,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 
+/**
+ * A query that creates a SQLXML object in the database.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating SQLXML
+ * objects. It uses the JDBC connection's createSQLXML method to create a new empty SQLXML instance
+ * that can store XML data.
+ */
 public class SQLXMLCreateQuery extends AbstractCreateQuery<SQLXML> {
 
+  /** {@inheritDoc} */
   @Override
   public SQLXML create(Connection connection) throws SQLException {
     return connection.createSQLXML();

@@ -47,6 +47,7 @@ public class MultiInsertAssemblerContext<ENTITY> {
    * @param dialect the SQL dialect
    * @param insertPropertyTypes the property types that are targets for the insert
    * @param entities the entities
+   * @param returning the properties to be returned after insert execution
    */
   MultiInsertAssemblerContext(
       PreparedSqlBuilder buf,

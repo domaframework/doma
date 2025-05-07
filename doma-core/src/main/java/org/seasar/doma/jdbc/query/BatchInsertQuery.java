@@ -17,10 +17,38 @@ package org.seasar.doma.jdbc.query;
 
 import java.sql.Statement;
 
+/**
+ * An interface for batch INSERT queries.
+ *
+ * <p>This interface represents a query that performs batch INSERT operations. It extends {@link
+ * BatchModifyQuery} to inherit common batch data modification functionality while specializing for
+ * INSERT operations.
+ *
+ * <p>Implementations of this interface handle the execution of multiple INSERT statements as a
+ * single batch operation for improved performance, and provide methods for generating IDs for
+ * inserted rows.
+ */
 public interface BatchInsertQuery extends BatchModifyQuery {
 
+  /**
+   * Determines if batch operations are supported for this query.
+   *
+   * <p>Some database operations or configurations may not support batch processing. This method
+   * allows implementations to indicate whether batch operations can be used.
+   *
+   * @return true if batch operations are supported, false otherwise
+   */
   boolean isBatchSupported();
 
+  /**
+   * Generates an ID for a single inserted row in the batch.
+   *
+   * <p>This method is called after executing the batch to generate IDs for rows that use
+   * auto-generated keys or sequences.
+   *
+   * @param statement the statement used for the batch operation
+   * @param index the index of the element in the batch
+   */
   void generateId(Statement statement, int index);
 
   /**

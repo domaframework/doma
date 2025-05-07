@@ -17,12 +17,30 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.jdbc.SqlKind;
 
+/**
+ * A query that executes a SQL UPDATE statement.
+ *
+ * <p>This class extends {@link SqlModifyQuery} to provide functionality for executing UPDATE
+ * statements. It sets the SQL kind to {@link SqlKind#UPDATE} to indicate that this query performs
+ * an UPDATE operation.
+ */
 public class SqlUpdateQuery extends SqlModifyQuery implements UpdateQuery {
 
+  /**
+   * Constructs a new instance.
+   *
+   * <p>This constructor initializes the query with {@link SqlKind#UPDATE} to indicate that it
+   * performs an UPDATE operation.
+   */
   public SqlUpdateQuery() {
     super(SqlKind.UPDATE);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation does nothing because this query does not support version incrementation.
+   */
   @Override
   public void incrementVersion() {}
 }

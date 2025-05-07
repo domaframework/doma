@@ -18,12 +18,30 @@ package org.seasar.doma.jdbc.query;
 import java.sql.Statement;
 import org.seasar.doma.jdbc.SqlKind;
 
+/**
+ * A query that executes a SQL INSERT statement.
+ *
+ * <p>This class extends {@link SqlModifyQuery} to provide functionality for executing INSERT
+ * statements. It sets the SQL kind to {@link SqlKind#INSERT} to indicate that this query performs
+ * an INSERT operation.
+ */
 public class SqlInsertQuery extends SqlModifyQuery implements InsertQuery {
 
+  /**
+   * Constructs a new instance.
+   *
+   * <p>This constructor initializes the query with {@link SqlKind#INSERT} to indicate that it
+   * performs an INSERT operation.
+   */
   public SqlInsertQuery() {
     super(SqlKind.INSERT);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This implementation does nothing because this query does not support auto-generated keys.
+   */
   @Override
   public void generateId(Statement statement) {}
 }

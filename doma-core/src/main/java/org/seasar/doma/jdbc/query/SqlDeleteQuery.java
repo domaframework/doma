@@ -17,8 +17,21 @@ package org.seasar.doma.jdbc.query;
 
 import org.seasar.doma.jdbc.SqlKind;
 
+/**
+ * A query that executes a SQL DELETE statement.
+ *
+ * <p>This class extends {@link SqlModifyQuery} to provide functionality for executing DELETE
+ * statements. It sets the SQL kind to {@link SqlKind#DELETE} to indicate that this query performs a
+ * DELETE operation.
+ */
 public class SqlDeleteQuery extends SqlModifyQuery implements DeleteQuery {
 
+  /**
+   * Constructs a new instance.
+   *
+   * <p>This constructor initializes the query with {@link SqlKind#DELETE} to indicate that it
+   * performs a DELETE operation.
+   */
   public SqlDeleteQuery() {
     super(SqlKind.DELETE);
   }

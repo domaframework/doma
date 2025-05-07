@@ -21,34 +21,74 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A query implementation for creating a SQL array.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating SQL
+ * arrays in a database. It handles the creation of JDBC {@link Array} objects by specifying the SQL
+ * type name and array elements.
+ */
 public class ArrayCreateQuery extends AbstractCreateQuery<Array> {
 
+  /** The SQL type name of the array. */
   protected String typeName;
 
+  /** The array elements. */
   protected Object[] elements;
 
+  /**
+   * Prepares this query for execution. This method must be called before {@link
+   * #create(Connection)}.
+   */
   @Override
   public void prepare() {
     super.prepare();
     assertNotNull(typeName, elements);
   }
 
+  /**
+   * Returns the SQL type name of the array.
+   *
+   * @return the SQL type name
+   */
   public String getTypeName() {
     return typeName;
   }
 
+  /**
+   * Sets the SQL type name of the array.
+   *
+   * @param typeName the SQL type name
+   */
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
 
+  /**
+   * Returns the array elements.
+   *
+   * @return the array elements
+   */
   public Object[] getElements() {
     return elements;
   }
 
+  /**
+   * Sets the array elements.
+   *
+   * @param elements the array elements
+   */
   public void setElements(Object[] elements) {
     this.elements = elements;
   }
 
+  /**
+   * Creates a SQL array.
+   *
+   * @param connection the JDBC connection
+   * @return the created SQL array
+   * @throws SQLException if a database access error occurs
+   */
   @Override
   public Array create(Connection connection) throws SQLException {
     return connection.createArrayOf(typeName, elements);

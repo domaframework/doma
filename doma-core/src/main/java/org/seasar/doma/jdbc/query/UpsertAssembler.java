@@ -15,7 +15,22 @@
  */
 package org.seasar.doma.jdbc.query;
 
-/** Assemble the upsert query interface. Implement this interface for each dialect. */
+/**
+ * An interface for assembling upsert queries.
+ *
+ * <p>Upsert is a database operation that inserts a row if it doesn't exist, or updates it if it
+ * does. This interface is implemented for each database dialect to handle dialect-specific upsert
+ * syntax.
+ *
+ * <p>Implementations of this interface are responsible for generating the SQL for upsert
+ * operations, including handling the specific syntax required by different database systems.
+ */
 public interface UpsertAssembler {
+  /**
+   * Assembles the upsert query.
+   *
+   * <p>This method generates the SQL for the upsert operation according to the specific database
+   * dialect's syntax requirements.
+   */
   void assemble();
 }

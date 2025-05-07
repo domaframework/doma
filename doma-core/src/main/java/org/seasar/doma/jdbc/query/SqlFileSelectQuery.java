@@ -24,18 +24,34 @@ import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlNode;
 
+/**
+ * A query that selects data from a database using an external SQL file.
+ *
+ * <p>This class extends {@link AbstractSelectQuery} to provide functionality for executing SELECT
+ * statements defined in external SQL files. It handles SQL file loading, transformation, and
+ * execution.
+ */
 public class SqlFileSelectQuery extends AbstractSelectQuery {
 
+  /** The path to the SQL file. */
   protected String sqlFilePath;
 
+  /** The SQL file containing the SELECT statement. */
   protected SqlFile sqlFile;
 
+  /** {@inheritDoc} */
   @Override
   public void prepare() {
     super.prepare();
     assertNotNull(sqlFilePath);
   }
 
+  /**
+   * Prepares the SQL for this query.
+   *
+   * <p>This method loads the SQL file, transforms the SQL node using the dialect, and builds the
+   * prepared SQL statement.
+   */
   protected void prepareSql() {
     sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
     SqlNode transformedSqlNode =
@@ -54,6 +70,7 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
     sql = sqlBuilder.build(transformedSqlNode, this::comment);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void complete() {
     if (SelectOptionsAccessor.isCount(options)) {
@@ -61,6 +78,11 @@ public class SqlFileSelectQuery extends AbstractSelectQuery {
     }
   }
 
+  /**
+   * Sets the path to the SQL file.
+   *
+   * @param sqlFilePath the SQL file path
+   */
   public void setSqlFilePath(String sqlFilePath) {
     this.sqlFilePath = sqlFilePath;
   }

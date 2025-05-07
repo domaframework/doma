@@ -71,7 +71,7 @@ public class UpsertAssemblerContext {
    * @param insertRows the insert rows
    * @param setValues the set clause property-value pair list(optional).Required in case of
    *     duplicateKeyType.UPDATE
-   * @param returning whether returning values is required
+   * @param returning the properties to be returned after update execution
    */
   UpsertAssemblerContext(
       PreparedSqlBuilder buf,

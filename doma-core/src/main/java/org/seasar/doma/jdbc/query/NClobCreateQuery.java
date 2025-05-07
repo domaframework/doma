@@ -19,8 +19,16 @@ import java.sql.Connection;
 import java.sql.NClob;
 import java.sql.SQLException;
 
+/**
+ * A query that creates an NCLOB (National Character Large Object) in the database.
+ *
+ * <p>This class extends {@link AbstractCreateQuery} to provide functionality for creating NCLOB
+ * objects. It uses the JDBC connection's createNClob method to create a new empty NCLOB instance
+ * that can store Unicode character data.
+ */
 public class NClobCreateQuery extends AbstractCreateQuery<NClob> {
 
+  /** {@inheritDoc} */
   @Override
   public NClob create(Connection connection) throws SQLException {
     return connection.createNClob();

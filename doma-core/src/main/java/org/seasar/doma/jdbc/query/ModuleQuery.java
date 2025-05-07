@@ -18,12 +18,32 @@ package org.seasar.doma.jdbc.query;
 import org.seasar.doma.jdbc.CallableSql;
 import org.seasar.doma.jdbc.SqlLogType;
 
+/**
+ * A query that calls a database module such as a stored procedure or function.
+ *
+ * <p>This interface defines operations specific to database module calls.
+ */
 public interface ModuleQuery extends Query {
 
+  /**
+   * Returns the callable SQL for this module query.
+   *
+   * @return the callable SQL
+   */
   @Override
   CallableSql getSql();
 
+  /**
+   * Returns the qualified name of the database module.
+   *
+   * @return the qualified name
+   */
   String getQualifiedName();
 
+  /**
+   * Returns the SQL log type for this module query.
+   *
+   * @return the SQL log type
+   */
   SqlLogType getSqlLogType();
 }

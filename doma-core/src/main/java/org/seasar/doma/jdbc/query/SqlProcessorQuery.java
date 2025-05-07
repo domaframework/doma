@@ -27,25 +27,46 @@ import org.seasar.doma.jdbc.SqlFile;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 
+/**
+ * A query that processes SQL files. This class is responsible for loading SQL files and building
+ * prepared SQL statements with parameter binding.
+ */
 public class SqlProcessorQuery extends AbstractQuery {
 
+  /** The parameters to be bound to the SQL. */
   protected final Map<String, Value> parameters = new HashMap<>();
 
+  /** The path to the SQL file. */
   protected String sqlFilePath;
 
+  /** The SQL file. */
   protected SqlFile sqlFile;
 
+  /** The prepared SQL statement. */
   protected PreparedSql sql;
 
+  /**
+   * Sets the path to the SQL file.
+   *
+   * @param sqlFilePath the SQL file path
+   */
   public void setSqlFilePath(String sqlFilePath) {
     this.sqlFilePath = sqlFilePath;
   }
 
+  /**
+   * Adds a parameter to be bound to the SQL.
+   *
+   * @param name the parameter name
+   * @param type the parameter type
+   * @param value the parameter value
+   */
   public void addParameter(String name, Class<?> type, Object value) {
     assertNotNull(name, type);
     parameters.put(name, new Value(type, value));
   }
 
+  /** Prepares this query for execution. This method must be called before {@link #getSql()}. */
   @Override
   public void prepare() {
     super.prepare();
@@ -53,6 +74,7 @@ public class SqlProcessorQuery extends AbstractQuery {
     prepareSql();
   }
 
+  /** Prepares the SQL statement by loading the SQL file and building the prepared SQL. */
   protected void prepareSql() {
     sqlFile = config.getSqlFileRepository().getSqlFile(method, sqlFilePath, config.getDialect());
     ExpressionEvaluator evaluator =
@@ -64,11 +86,17 @@ public class SqlProcessorQuery extends AbstractQuery {
     sql = sqlBuilder.build(sqlFile.getSqlNode(), this::comment);
   }
 
+  /**
+   * Returns the prepared SQL statement.
+   *
+   * @return the prepared SQL statement
+   */
   @Override
   public PreparedSql getSql() {
     return sql;
   }
 
+  /** Completes this query. This method is called after the query execution. */
   @Override
   public void complete() {}
 }

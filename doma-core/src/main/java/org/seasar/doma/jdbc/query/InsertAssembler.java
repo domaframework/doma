@@ -15,6 +15,19 @@
  */
 package org.seasar.doma.jdbc.query;
 
+/**
+ * An interface for assembling INSERT queries.
+ *
+ * <p>This interface is responsible for generating the SQL for INSERT operations. Implementations of
+ * this interface handle the construction of INSERT statements, including the column list, values
+ * clause, and any other necessary SQL components.
+ */
 public interface InsertAssembler {
+  /**
+   * Assembles the INSERT query.
+   *
+   * <p>This method generates the SQL for the INSERT operation, including the table name, column
+   * list, values clause, and any other required SQL components.
+   */
   void assemble();
 }

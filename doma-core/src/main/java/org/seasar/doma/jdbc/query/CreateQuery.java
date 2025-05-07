@@ -18,7 +18,21 @@ package org.seasar.doma.jdbc.query;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A query that creates a database resource.
+ *
+ * <p>This interface is used to create JDBC resources such as BLOB, CLOB, Array, etc.
+ *
+ * @param <RESULT> the type of the resource to be created
+ */
 public interface CreateQuery<RESULT> extends Query {
 
+  /**
+   * Creates a database resource using the given connection.
+   *
+   * @param connection the JDBC connection
+   * @return the created resource
+   * @throws SQLException if a database access error occurs
+   */
   RESULT create(Connection connection) throws SQLException;
 }
