@@ -112,9 +112,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares this query for execution.
-   * 
-   * <p>This method processes all entities in the batch, applying pre-insert hooks,
-   * preparing ID and version values, and generating SQL statements for each entity.
+   *
+   * <p>This method processes all entities in the batch, applying pre-insert hooks, preparing ID and
+   * version values, and generating SQL statements for each entity.
    */
   @Override
   public void prepare() {
@@ -149,9 +149,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Executes pre-insert hooks on the current entity.
-   * 
-   * <p>This method creates a context for pre-insert processing and applies
-   * entity-specific pre-insert logic to the current entity.
+   *
+   * <p>This method creates a context for pre-insert processing and applies entity-specific
+   * pre-insert logic to the current entity.
    */
   protected void preInsert() {
     AutoBatchPreInsertContext<ENTITY> context =
@@ -164,10 +164,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares ID and version property types for this query.
-   * 
-   * <p>This method initializes the generated ID property type and configures
-   * ID generation settings, including whether batch operations and auto-generated
-   * keys are supported.
+   *
+   * <p>This method initializes the generated ID property type and configures ID generation
+   * settings, including whether batch operations and auto-generated keys are supported.
    */
   @Override
   protected void prepareIdAndVersionPropertyTypes() {
@@ -188,10 +187,10 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the target property types for this query.
-   * 
-   * <p>This method determines which entity properties should be included in the INSERT
-   * statement based on their insertability, ID status, and other criteria. It also
-   * validates that non-generated ID properties have non-null values.
+   *
+   * <p>This method determines which entity properties should be included in the INSERT statement
+   * based on their insertability, ID status, and other criteria. It also validates that
+   * non-generated ID properties have non-null values.
    */
   protected void prepareTargetPropertyTypes() {
     targetPropertyTypes = new ArrayList<>(entityType.getEntityPropertyTypes().size());
@@ -223,9 +222,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the ID value for the current entity.
-   * 
-   * <p>If a generated ID property type is configured, this method applies
-   * pre-insert ID generation logic to the current entity.
+   *
+   * <p>If a generated ID property type is configured, this method applies pre-insert ID generation
+   * logic to the current entity.
    */
   protected void prepareIdValue() {
     if (generatedIdPropertyType != null && idGenerationConfig != null) {
@@ -236,9 +235,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the version value for the current entity.
-   * 
-   * <p>If a version property type is configured, this method initializes
-   * the version value to 1 for the current entity.
+   *
+   * <p>If a version property type is configured, this method initializes the version value to 1 for
+   * the current entity.
    */
   protected void prepareVersionValue() {
     if (versionPropertyType != null) {
@@ -248,9 +247,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the SQL statement for the current entity.
-   * 
-   * <p>This method builds the appropriate SQL statement (INSERT or UPSERT)
-   * based on the duplicate key handling strategy and dialect capabilities.
+   *
+   * <p>This method builds the appropriate SQL statement (INSERT or UPSERT) based on the duplicate
+   * key handling strategy and dialect capabilities.
    */
   protected void prepareSql() {
     Naming naming = config.getNaming();
@@ -316,7 +315,7 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Determines whether batch operations are supported for this query.
-   * 
+   *
    * @return true if batch operations are supported, false otherwise
    */
   @Override
@@ -326,10 +325,10 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Generates an ID for the entity at the specified index using auto-generated keys.
-   * 
-   * <p>This method retrieves the auto-generated key from the statement and
-   * updates the entity with the generated ID value.
-   * 
+   *
+   * <p>This method retrieves the auto-generated key from the statement and updates the entity with
+   * the generated ID value.
+   *
    * @param statement the statement that executed the insert
    * @param index the index of the entity in the batch
    */
@@ -350,10 +349,10 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Generates IDs for a range of entities using auto-generated keys.
-   * 
-   * <p>This method retrieves auto-generated keys from the statement and
-   * updates the specified range of entities with the generated ID values.
-   * 
+   *
+   * <p>This method retrieves auto-generated keys from the statement and updates the specified range
+   * of entities with the generated ID values.
+   *
    * @param statement the statement that executed the batch insert
    * @param position the starting position in the entities list
    * @param size the number of entities to process
@@ -387,9 +386,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Completes the batch insert operation.
-   * 
-   * <p>This method applies post-insert hooks to all entities in the batch
-   * after the database operation has been executed.
+   *
+   * <p>This method applies post-insert hooks to all entities in the batch after the database
+   * operation has been executed.
    */
   @Override
   public void complete() {
@@ -402,9 +401,9 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Executes post-insert hooks on the current entity.
-   * 
-   * <p>This method creates a context for post-insert processing and applies
-   * entity-specific post-insert logic to the current entity.
+   *
+   * <p>This method creates a context for post-insert processing and applies entity-specific
+   * post-insert logic to the current entity.
    */
   protected void postInsert() {
     AutoBatchPostInsertContext<ENTITY> context =
@@ -418,8 +417,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /**
    * The context class for pre-insert batch processing.
    *
-   * <p>This context is used during the pre-insert phase of batch insert operations
-   * to provide entity-specific processing.
+   * <p>This context is used during the pre-insert phase of batch insert operations to provide
+   * entity-specific processing.
    *
    * @param <E> the entity type
    */
@@ -442,8 +441,8 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /**
    * The context class for post-insert batch processing.
    *
-   * <p>This context is used during the post-insert phase of batch insert operations
-   * to provide entity-specific processing after database operations have been executed.
+   * <p>This context is used during the post-insert phase of batch insert operations to provide
+   * entity-specific processing after database operations have been executed.
    *
    * @param <E> the entity type
    */

@@ -54,10 +54,10 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * <p>This implementation prepares the query for execution by performing pre-delete operations,
-   * preparing special property types, validating ID existence, preparing options and optimistic locking,
-   * and building the SQL statement.
+   * preparing special property types, validating ID existence, preparing options and optimistic
+   * locking, and building the SQL statement.
    */
   @Override
   public void prepare() {
@@ -74,8 +74,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   /**
-   * Performs pre-delete operations on the entity.
-   * This method is called before the entity is deleted from the database.
+   * Performs pre-delete operations on the entity. This method is called before the entity is
+   * deleted from the database.
    */
   protected void preDelete() {
     AutoPreDeleteContext<ENTITY> context =
@@ -87,9 +87,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   /**
-   * Prepares optimistic locking for this query.
-   * If a version property exists and is not ignored, optimistic lock checking will be enabled
-   * unless it is explicitly suppressed.
+   * Prepares optimistic locking for this query. If a version property exists and is not ignored,
+   * optimistic lock checking will be enabled unless it is explicitly suppressed.
    */
   protected void prepareOptimisticLock() {
     if (versionPropertyType != null && !versionIgnored) {
@@ -100,8 +99,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   /**
-   * Prepares the SQL statement for this query.
-   * This method builds a DELETE statement using the entity type and its properties.
+   * Prepares the SQL statement for this query. This method builds a DELETE statement using the
+   * entity type and its properties.
    */
   protected void prepareSql() {
     Dialect dialect = config.getDialect();
@@ -125,7 +124,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * <p>This implementation performs post-delete operations on the entity.
    */
   @Override
@@ -134,8 +133,8 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
   }
 
   /**
-   * Performs post-delete operations on the entity.
-   * This method is called after the entity is deleted from the database.
+   * Performs post-delete operations on the entity. This method is called after the entity is
+   * deleted from the database.
    */
   protected void postDelete() {
     AutoPostDeleteContext<ENTITY> context =
@@ -193,7 +192,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return the properties to be returned from the DELETE operation
      */
     @Override
@@ -231,7 +230,7 @@ public class AutoDeleteQuery<ENTITY> extends AutoModifyQuery<ENTITY> implements 
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @return the properties to be returned from the DELETE operation
      */
     @Override

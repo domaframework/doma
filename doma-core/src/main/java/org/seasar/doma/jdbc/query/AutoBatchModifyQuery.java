@@ -101,9 +101,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Prepares the ID, version, and tenant ID property types from the entity type.
-   * 
-   * <p>This method initializes the property types that are used for identifying entities
-   * and handling optimistic locking and multi-tenancy.
+   *
+   * <p>This method initializes the property types that are used for identifying entities and
+   * handling optimistic locking and multi-tenancy.
    */
   protected void prepareIdAndVersionPropertyTypes() {
     idPropertyTypes = entityType.getIdPropertyTypes();
@@ -113,10 +113,10 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Validates that the entity has at least one ID property.
-   * 
-   * <p>This method throws a {@link JdbcException} if the entity doesn't have any ID properties,
-   * as batch operations require entities to be identifiable.
-   * 
+   *
+   * <p>This method throws a {@link JdbcException} if the entity doesn't have any ID properties, as
+   * batch operations require entities to be identifiable.
+   *
    * @throws JdbcException if the entity doesn't have any ID properties
    */
   protected void validateIdExistent() {
@@ -127,9 +127,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Prepares the query options.
-   * 
-   * <p>This method initializes the query timeout and batch size from the configuration
-   * if they haven't been explicitly set or if they have invalid values.
+   *
+   * <p>This method initializes the query timeout and batch size from the configuration if they
+   * haven't been explicitly set or if they have invalid values.
    */
   protected void prepareOptions() {
     if (queryTimeout <= 0) {
@@ -142,11 +142,11 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Determines if a property should be included in the query based on its name.
-   * 
-   * <p>This method checks if the property name is in the included properties list
-   * and not in the excluded properties list. If no included properties are specified,
-   * all properties except those explicitly excluded are considered targets.
-   * 
+   *
+   * <p>This method checks if the property name is in the included properties list and not in the
+   * excluded properties list. If no included properties are specified, all properties except those
+   * explicitly excluded are considered targets.
+   *
    * @param name the property name to check
    * @return {@code true} if the property should be included, {@code false} otherwise
    */
@@ -177,10 +177,10 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Sets the entities to be processed by this batch query.
-   * 
-   * <p>This method initializes the internal list of entities and prepares
-   * the SQL statements list with the same size as the entities list.
-   * 
+   *
+   * <p>This method initializes the internal list of entities and prepares the SQL statements list
+   * with the same size as the entities list.
+   *
    * @param entities the entities to be processed
    * @throws NullPointerException if {@code entities} is {@code null}
    */
@@ -199,7 +199,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns the list of entities to be processed by this batch query.
-   * 
+   *
    * @return the list of entities
    */
   public List<ENTITY> getEntities() {
@@ -208,9 +208,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Sets the batch size for this query.
-   * 
+   *
    * <p>The batch size determines how many entities are processed in a single batch operation.
-   * 
+   *
    * @param batchSize the batch size
    */
   public void setBatchSize(int batchSize) {
@@ -219,10 +219,10 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Sets the names of properties to be included in the query.
-   * 
-   * <p>If this is set, only the specified properties will be included in the query,
-   * unless they are also in the excluded properties list.
-   * 
+   *
+   * <p>If this is set, only the specified properties will be included in the query, unless they are
+   * also in the excluded properties list.
+   *
    * @param includedPropertyNames the names of properties to include
    */
   public void setIncludedPropertyNames(String... includedPropertyNames) {
@@ -231,10 +231,10 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Sets the names of properties to be excluded from the query.
-   * 
-   * <p>If this is set, the specified properties will be excluded from the query,
-   * even if they are in the included properties list.
-   * 
+   *
+   * <p>If this is set, the specified properties will be excluded from the query, even if they are
+   * in the included properties list.
+   *
    * @param excludedPropertyNames the names of properties to exclude
    */
   public void setExcludedPropertyNames(String... excludedPropertyNames) {
@@ -243,9 +243,9 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Sets the SQL log type for this query.
-   * 
+   *
    * <p>The SQL log type determines how SQL statements are logged.
-   * 
+   *
    * @param sqlLogType the SQL log type
    */
   public void setSqlLogType(SqlLogType sqlLogType) {
@@ -254,7 +254,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns the first SQL statement in the batch.
-   * 
+   *
    * @return the first SQL statement
    */
   @Override
@@ -264,7 +264,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns all SQL statements in the batch.
-   * 
+   *
    * @return the list of SQL statements
    */
   @Override
@@ -274,7 +274,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Indicates whether optimistic lock checking is required.
-   * 
+   *
    * @return {@code true} if optimistic lock checking is required, {@code false} otherwise
    */
   @Override
@@ -284,7 +284,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Indicates whether auto-generated keys are supported.
-   * 
+   *
    * @return {@code true} if auto-generated keys are supported, {@code false} otherwise
    */
   @Override
@@ -294,7 +294,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Indicates whether this query is executable.
-   * 
+   *
    * @return {@code true} if this query is executable, {@code false} otherwise
    */
   @Override
@@ -304,7 +304,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns the cause of SQL execution skip if the query is not executable.
-   * 
+   *
    * @return the cause of SQL execution skip, or {@code null} if the query is executable
    */
   @Override
@@ -314,7 +314,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns the batch size for this query.
-   * 
+   *
    * @return the batch size
    */
   @Override
@@ -324,7 +324,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns the SQL log type for this query.
-   * 
+   *
    * @return the SQL log type
    */
   @Override
@@ -334,7 +334,7 @@ public abstract class AutoBatchModifyQuery<ENTITY> extends AbstractQuery
 
   /**
    * Returns a string representation of this query.
-   * 
+   *
    * @return a string representation of this query
    */
   @Override

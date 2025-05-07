@@ -242,15 +242,15 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
    *
    * @param node the populate node
    * @param context the SQL context
-   * @throws UnsupportedOperationException always thrown as this method is not supported in this class
+   * @throws UnsupportedOperationException always thrown as this method is not supported in this
+   *     class
    */
   protected void populateValues(PopulateNode node, SqlContext context) {
     throw new UnsupportedOperationException();
   }
 
   /**
-   * Executes a count query using the specified SQL node.
-   * The result is set to the select options.
+   * Executes a count query using the specified SQL node. The result is set to the select options.
    *
    * @param sqlNode the SQL node for the count query
    */

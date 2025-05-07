@@ -110,8 +110,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /**
    * Prepares optimistic locking settings for this query.
    *
-   * <p>This method sets the optimistic lock check flag based on the version property type
-   * and the configuration settings for version handling and exception suppression.
+   * <p>This method sets the optimistic lock check flag based on the version property type and the
+   * configuration settings for version handling and exception suppression.
    */
   protected void prepareOptimisticLock() {
     if (versionPropertyType != null && !versionIgnored) {
@@ -125,8 +125,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
    * Prepares the SQL statement for the current entity.
    *
    * <p>This method builds a DELETE SQL statement with appropriate WHERE clauses for ID properties,
-   * version property (for optimistic locking), and tenant ID property (for multi-tenancy).
-   * The completed SQL statement is added to the list of SQL statements to be executed.
+   * version property (for optimistic locking), and tenant ID property (for multi-tenancy). The
+   * completed SQL statement is added to the list of SQL statements to be executed.
    */
   protected void prepareSql() {
     Naming naming = config.getNaming();
@@ -183,8 +183,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /**
    * Completes this query after execution.
    *
-   * <p>This method performs post-processing for all entities after the batch delete operation
-   * has been executed. It calls the postDelete method for each entity.
+   * <p>This method performs post-processing for all entities after the batch delete operation has
+   * been executed. It calls the postDelete method for each entity.
    */
   @Override
   public void complete() {
@@ -222,7 +222,8 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
   /**
    * Sets whether to suppress optimistic lock exceptions.
    *
-   * @param optimisticLockExceptionSuppressed true to suppress optimistic lock exceptions, false otherwise
+   * @param optimisticLockExceptionSuppressed true to suppress optimistic lock exceptions, false
+   *     otherwise
    */
   public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
     this.optimisticLockExceptionSuppressed = optimisticLockExceptionSuppressed;

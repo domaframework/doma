@@ -59,9 +59,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares this query for execution.
-   * 
-   * <p>This method initializes the query by setting up the helper, preparing the entities,
-   * and generating SQL statements for each entity in the batch.
+   *
+   * <p>This method initializes the query by setting up the helper, preparing the entities, and
+   * generating SQL statements for each entity in the batch.
    */
   @Override
   public void prepare() {
@@ -92,9 +92,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Sets up the batch update query helper.
-   * 
-   * <p>This method initializes the helper with the configuration, entity type,
-   * included and excluded property names, and optimistic locking settings.
+   *
+   * <p>This method initializes the helper with the configuration, entity type, included and
+   * excluded property names, and optimistic locking settings.
    */
   protected void setupHelper() {
     helper =
@@ -109,9 +109,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Executes pre-update processing for the current entity.
-   * 
-   * <p>This method calls the entity type's preUpdate method with the current entity
-   * and updates the current entity if a new entity is returned from the context.
+   *
+   * <p>This method calls the entity type's preUpdate method with the current entity and updates the
+   * current entity if a new entity is returned from the context.
    */
   protected void preUpdate() {
     AutoBatchPreUpdateContext<ENTITY> context =
@@ -124,9 +124,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares optimistic locking settings for this query.
-   * 
-   * <p>This method sets the optimistic lock check flag based on the version property type
-   * and the version ignored and optimistic lock exception suppressed flags.
+   *
+   * <p>This method sets the optimistic lock check flag based on the version property type and the
+   * version ignored and optimistic lock exception suppressed flags.
    */
   protected void prepareOptimisticLock() {
     if (versionPropertyType != null && !versionIgnored) {
@@ -138,9 +138,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the target property types for this query.
-   * 
-   * <p>This method gets the target property types from the helper and sets the executable flag
-   * to true if there are any target properties to update.
+   *
+   * <p>This method gets the target property types from the helper and sets the executable flag to
+   * true if there are any target properties to update.
    */
   protected void prepareTargetPropertyTypes() {
     targetPropertyTypes = helper.getTargetPropertyTypes();
@@ -152,10 +152,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Prepares the SQL statement for the current entity.
-   * 
-   * <p>This method builds an UPDATE SQL statement with the appropriate SET clause
-   * for the target properties and WHERE clause for the ID properties, version property,
-   * and tenant ID property as needed.
+   *
+   * <p>This method builds an UPDATE SQL statement with the appropriate SET clause for the target
+   * properties and WHERE clause for the ID properties, version property, and tenant ID property as
+   * needed.
    */
   protected void prepareSql() {
     Naming naming = config.getNaming();
@@ -213,9 +213,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Increments the version property values of all entities.
-   * 
-   * <p>This method is called after successful execution of the batch update
-   * to increment the version values for optimistic locking.
+   *
+   * <p>This method is called after successful execution of the batch update to increment the
+   * version values for optimistic locking.
    */
   @Override
   public void incrementVersions() {
@@ -229,9 +229,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Completes this query by performing post-update processing for all entities.
-   * 
-   * <p>This method is called after the batch update has been executed
-   * to perform any necessary post-processing on the entities.
+   *
+   * <p>This method is called after the batch update has been executed to perform any necessary
+   * post-processing on the entities.
    */
   @Override
   public void complete() {
@@ -244,10 +244,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Executes post-update processing for the current entity.
-   * 
-   * <p>This method calls the entity type's postUpdate method with the current entity,
-   * updates the current entity if a new entity is returned from the context,
-   * and saves the current states of the entity.
+   *
+   * <p>This method calls the entity type's postUpdate method with the current entity, updates the
+   * current entity if a new entity is returned from the context, and saves the current states of
+   * the entity.
    */
   protected void postUpdate() {
     AutoBatchPostUpdateContext<ENTITY> context =
@@ -261,10 +261,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Sets whether to ignore the version property for optimistic locking.
-   * 
-   * <p>If set to {@code true}, the version property will not be used for optimistic locking
-   * in the WHERE clause of the UPDATE statement, and the version will not be incremented.
-   * 
+   *
+   * <p>If set to {@code true}, the version property will not be used for optimistic locking in the
+   * WHERE clause of the UPDATE statement, and the version will not be incremented.
+   *
    * @param versionIgnored whether to ignore the version property
    */
   public void setVersionIgnored(boolean versionIgnored) {
@@ -273,10 +273,10 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * Sets whether to suppress optimistic lock exceptions.
-   * 
-   * <p>If set to {@code true}, optimistic lock exceptions will not be thrown
-   * even if the version check fails during the update operation.
-   * 
+   *
+   * <p>If set to {@code true}, optimistic lock exceptions will not be thrown even if the version
+   * check fails during the update operation.
+   *
    * @param optimisticLockExceptionSuppressed whether to suppress optimistic lock exceptions
    */
   public void setOptimisticLockExceptionSuppressed(boolean optimisticLockExceptionSuppressed) {
@@ -285,17 +285,16 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * A context class for pre-update processing in batch update operations.
-   * 
-   * <p>This class provides context information for the pre-update phase
-   * of batch update operations.
-   * 
+   *
+   * <p>This class provides context information for the pre-update phase of batch update operations.
+   *
    * @param <E> the entity type
    */
   protected static class AutoBatchPreUpdateContext<E> extends AbstractPreUpdateContext<E> {
 
     /**
      * Constructs a new instance.
-     * 
+     *
      * @param entityType the entity type
      * @param method the method
      * @param config the configuration
@@ -306,9 +305,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     /**
      * Indicates whether the entity has been changed.
-     * 
+     *
      * <p>This method always returns {@code true} for batch update operations.
-     * 
+     *
      * @return {@code true}
      */
     @Override
@@ -318,9 +317,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     /**
      * Indicates whether the specified property has been changed.
-     * 
+     *
      * <p>This method always returns {@code true} for batch update operations.
-     * 
+     *
      * @param propertyName the property name
      * @return {@code true}
      * @throws IllegalArgumentException if the property is not defined in the entity
@@ -334,17 +333,17 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
   /**
    * A context class for post-update processing in batch update operations.
-   * 
-   * <p>This class provides context information for the post-update phase
-   * of batch update operations.
-   * 
+   *
+   * <p>This class provides context information for the post-update phase of batch update
+   * operations.
+   *
    * @param <E> the entity type
    */
   protected static class AutoBatchPostUpdateContext<E> extends AbstractPostUpdateContext<E> {
 
     /**
      * Constructs a new instance.
-     * 
+     *
      * @param entityType the entity type
      * @param method the method
      * @param config the configuration
@@ -355,9 +354,9 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
 
     /**
      * Indicates whether the specified property has been changed.
-     * 
+     *
      * <p>This method always returns {@code true} for batch update operations.
-     * 
+     *
      * @param propertyName the property name
      * @return {@code true}
      * @throws IllegalArgumentException if the property is not defined in the entity

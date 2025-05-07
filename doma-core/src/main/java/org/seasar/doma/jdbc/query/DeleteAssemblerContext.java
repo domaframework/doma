@@ -33,22 +33,31 @@ import org.seasar.doma.jdbc.entity.VersionPropertyType;
 public class DeleteAssemblerContext<ENTITY> {
   /** The SQL builder used to construct the DELETE statement. */
   public final PreparedSqlBuilder buf;
+
   /** The entity type that represents the table to delete from. */
   public final EntityType<ENTITY> entityType;
+
   /** The naming convention used for converting Java names to database names. */
   public final Naming naming;
+
   /** The dialect that defines database-specific behaviors. */
   public final Dialect dialect;
+
   /** The list of property types that represent the primary key. */
   public final List<EntityPropertyType<ENTITY, ?>> idPropertyTypes;
+
   /** The property type that represents the version column for optimistic locking. */
   public final VersionPropertyType<ENTITY, ?, ?> versionPropertyType;
+
   /** The property type that represents the tenant ID column for multi-tenancy. */
   public final TenantIdPropertyType<ENTITY, ?, ?> tenantIdPropertyType;
+
   /** Whether to ignore the version property for optimistic locking. */
   public boolean versionIgnored;
+
   /** The entity instance to be deleted. */
   public final ENTITY entity;
+
   /** The properties to be returned from the DELETE operation. */
   public ReturningProperties returning;
 
