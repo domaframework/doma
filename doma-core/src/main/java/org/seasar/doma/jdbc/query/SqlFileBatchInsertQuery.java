@@ -143,7 +143,6 @@ public class SqlFileBatchInsertQuery<ELEMENT> extends SqlFileBatchModifyQuery<EL
      * Constructs a new instance with the specified entity type.
      *
      * @param entityType the entity type
-     * @throws NullPointerException if the entity type is null
      */
     protected EntityHandler(EntityType<ELEMENT> entityType) {
       assertNotNull(entityType);

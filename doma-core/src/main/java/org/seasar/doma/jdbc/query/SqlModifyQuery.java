@@ -58,7 +58,6 @@ public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuer
    * Constructs a new instance with the specified SQL kind.
    *
    * @param kind the SQL kind
-   * @throws NullPointerException if the kind is null
    */
   protected SqlModifyQuery(SqlKind kind) {
     assertNotNull(kind);
@@ -124,7 +123,6 @@ public abstract class SqlModifyQuery extends AbstractQuery implements ModifyQuer
    * @param name the parameter name
    * @param type the parameter type
    * @param value the parameter value
-   * @throws NullPointerException if the name or type is null
    */
   public void addParameter(String name, Class<?> type, Object value) {
     assertNotNull(name, type);

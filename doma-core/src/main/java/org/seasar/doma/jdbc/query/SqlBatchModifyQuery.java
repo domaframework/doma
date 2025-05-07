@@ -71,7 +71,6 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements Batch
    * Constructs a new instance with the specified SQL kind.
    *
    * @param kind the SQL kind
-   * @throws NullPointerException if kind is null
    */
   protected SqlBatchModifyQuery(SqlKind kind) {
     assertNotNull(kind);
@@ -160,8 +159,6 @@ public abstract class SqlBatchModifyQuery extends AbstractQuery implements Batch
    * @param name the parameter name
    * @param type the parameter type
    * @param values the parameter values
-   * @throws NullPointerException if any of the arguments are null
-   * @throws IllegalArgumentException if the size of the values list doesn't match other parameters
    */
   public void addParameter(String name, Class<?> type, List<?> values) {
     assertNotNull(name, type);

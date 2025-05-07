@@ -100,7 +100,6 @@ public abstract class AutoModifyQuery<ENTITY> extends AbstractQuery implements M
    * Constructs an instance.
    *
    * @param entityType the entity type metadata
-   * @throws NullPointerException if the entityType is null
    */
   protected AutoModifyQuery(EntityType<ENTITY> entityType) {
     AssertionUtil.assertNotNull(entityType);

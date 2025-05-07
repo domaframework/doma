@@ -271,7 +271,6 @@ public class SqlFileUpdateQuery extends SqlFileModifyQuery implements UpdateQuer
      * @param name the parameter name for the entity
      * @param entity the entity being updated
      * @param entityType the entity type
-     * @throws NullPointerException if any parameter is null
      */
     protected EntityHandler(String name, E entity, EntityType<E> entityType) {
       assertNotNull(name, entity, entityType);

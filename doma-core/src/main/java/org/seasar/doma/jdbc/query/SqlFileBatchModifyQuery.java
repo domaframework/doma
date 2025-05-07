@@ -101,7 +101,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
    *
    * @param elementClass the class of elements in the batch
    * @param kind the SQL kind
-   * @throws NullPointerException if any parameter is null
    */
   protected SqlFileBatchModifyQuery(Class<ELEMENT> elementClass, SqlKind kind) {
     assertNotNull(elementClass, kind);
@@ -220,7 +219,6 @@ public abstract class SqlFileBatchModifyQuery<ELEMENT> extends AbstractQuery
    * Sets the elements to be processed in the batch.
    *
    * @param elements the elements
-   * @throws NullPointerException if elements is null
    */
   public void setElements(Iterable<ELEMENT> elements) {
     assertNotNull(elements);
