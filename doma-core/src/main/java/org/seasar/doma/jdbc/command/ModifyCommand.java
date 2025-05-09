@@ -31,10 +31,31 @@ import org.seasar.doma.jdbc.UniqueConstraintException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.ModifyQuery;
 
+/**
+ * An abstract base class for commands that modify database data (INSERT, UPDATE, DELETE).
+ *
+ * <p>This class provides common functionality for executing SQL statements that modify data,
+ * including connection management, statement preparation, parameter binding, and execution. It also
+ * handles error conditions such as SQL exceptions, unique constraint violations, and optimistic
+ * lock failures.
+ *
+ * <p>Subclasses must implement the {@link #executeInternal(PreparedStatement)} method to define the
+ * specific execution behavior.
+ *
+ * @param <QUERY> the type of query this command executes
+ */
 public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Command<Integer> {
 
+  /**
+   * The query object that contains the SQL to be executed and related configuration. This member is
+   * initialized in the constructor and remains unchanged throughout the command's lifecycle.
+   */
   protected final QUERY query;
 
+  /**
+   * The prepared SQL statement that will be executed. This is extracted from the query object and
+   * contains both the SQL string and its parameters.
+   */
   protected final PreparedSql sql;
 
   protected ModifyCommand(QUERY query) {
@@ -48,6 +69,25 @@ public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Comman
     return query;
   }
 
+  /**
+   * Executes the SQL command and returns the number of rows affected.
+   *
+   * <p>This method handles the entire execution process including:
+   *
+   * <ul>
+   *   <li>Checking if the query is executable
+   *   <li>Obtaining a database connection
+   *   <li>Preparing the statement
+   *   <li>Setting up statement options
+   *   <li>Binding parameters
+   *   <li>Executing the statement
+   *   <li>Handling exceptions
+   *   <li>Ensuring proper resource cleanup
+   * </ul>
+   *
+   * @return the number of rows affected by the execution, or 0 if the query is not executable
+   * @throws SqlExecutionException if a database access error occurs
+   */
   @Override
   public Integer execute() {
     if (!query.isExecutable()) {
@@ -90,6 +130,17 @@ public abstract class ModifyCommand<QUERY extends ModifyQuery> implements Comman
     return JdbcUtil.prepareStatement(connection, sql);
   }
 
+  /**
+   * Executes the internal implementation of the SQL command.
+   *
+   * <p>This abstract method must be implemented by subclasses to define the specific behavior for
+   * executing the SQL statement. It is called by the {@link #execute()} method after the connection
+   * is established and the statement is prepared.
+   *
+   * @param preparedStatement the prepared statement to execute
+   * @return the number of rows affected by the execution
+   * @throws SQLException if a database access error occurs
+   */
   protected abstract int executeInternal(PreparedStatement preparedStatement) throws SQLException;
 
   protected void log() {

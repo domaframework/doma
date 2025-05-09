@@ -15,8 +15,21 @@
  */
 package org.seasar.doma.jdbc.command;
 
+/**
+ * A functional interface that consumes row index information from a ResultSet. This interface is
+ * used to track the current row position and state during ResultSet processing.
+ *
+ * <p>Implementations of this interface are used by various ResultSet handlers to provide
+ * information about the current row being processed and whether there are more rows available.
+ */
 @FunctionalInterface
 public interface ResultSetRowIndexConsumer {
 
+  /**
+   * Accepts the current row index and information about whether there are more rows.
+   *
+   * @param index the current row index (position) in the ResultSet, can be null
+   * @param next indicates whether there are more rows available in the ResultSet, can be null
+   */
   void accept(Long index, Boolean next);
 }

@@ -20,8 +20,31 @@ import java.sql.SQLException;
 import java.util.function.Supplier;
 import org.seasar.doma.jdbc.query.SelectQuery;
 
+/**
+ * An interface for handling JDBC ResultSet objects and converting them into application-specific
+ * result types.
+ *
+ * <p>This interface is responsible for processing database query results and transforming the raw
+ * ResultSet data into the desired Java objects. It's a key component in the data access layer that
+ * bridges the gap between database records and domain objects.
+ *
+ * @param <RESULT> the type of result that this handler produces
+ */
 public interface ResultSetHandler<RESULT> {
 
+  /**
+   * Processes a ResultSet and converts it into the specified result type.
+   *
+   * <p>This method is called after executing a database query to process the returned ResultSet. It
+   * should iterate through the ResultSet and transform the data according to the implementation's
+   * logic. The consumer parameter can be used to track the current row position during processing.
+   *
+   * @param resultSet the JDBC ResultSet to process
+   * @param query the query that produced this ResultSet
+   * @param consumer a consumer that receives information about the current row being processed
+   * @return a supplier that provides the result of processing the ResultSet
+   * @throws SQLException if a database access error occurs during ResultSet processing
+   */
   Supplier<RESULT> handle(
       ResultSet resultSet, SelectQuery query, ResultSetRowIndexConsumer consumer)
       throws SQLException;

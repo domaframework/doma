@@ -21,12 +21,30 @@ import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
 
+/**
+ * A command to execute a batch delete.
+ *
+ * <p>This command executes SQL DELETE statements in batch mode.
+ */
 public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
 
+  /**
+   * Creates a new instance.
+   *
+   * @param query the batch delete query
+   */
   public BatchDeleteCommand(BatchDeleteQuery query) {
     super(query);
   }
 
+  /**
+   * Executes the batch delete.
+   *
+   * @param preparedStatement the prepared statement
+   * @param sqls the SQL statements
+   * @return the array of deleted rows count
+   * @throws SQLException if a database access error occurs
+   */
   @Override
   protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {

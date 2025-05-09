@@ -19,12 +19,32 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.FunctionQuery;
 
+/**
+ * A command that executes a database function.
+ *
+ * <p>This command returns the result of the function execution. The result is obtained from the
+ * query object after executing the function and fetching output parameters.
+ *
+ * @param <RESULT> the result type
+ */
 public class FunctionCommand<RESULT> extends ModuleCommand<FunctionQuery<RESULT>, RESULT> {
 
+  /**
+   * Creates a new instance.
+   *
+   * @param query the query to execute
+   */
   public FunctionCommand(FunctionQuery<RESULT> query) {
     super(query);
   }
 
+  /**
+   * Executes the database function.
+   *
+   * @param callableStatement the statement to execute
+   * @return the result of the function execution
+   * @throws SQLException if a database access error occurs
+   */
   @Override
   protected RESULT executeInternal(CallableStatement callableStatement) throws SQLException {
     callableStatement.execute();
