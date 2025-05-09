@@ -17,14 +17,26 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.jdbc.query.Query;
 
-/** A handler for the column that is duplicated in a result set. */
+/**
+ * A handler for columns that are duplicated in a result set.
+ *
+ * <p>This interface defines how to handle situations where the same column name appears multiple
+ * times in a result set. Implementations can choose to ignore duplicates, throw exceptions, or
+ * handle them in custom ways.
+ *
+ * <p>The default implementation does nothing, effectively ignoring duplicate columns.
+ *
+ * @see ThrowingDuplicateColumnHandler
+ * @see DuplicateColumnException
+ */
 public interface DuplicateColumnHandler {
 
   /**
-   * Handles the duplicate column.
+   * Handles a duplicate column found in a result set.
    *
-   * @param query the query
-   * @param duplicateColumnName the name of the unknown column
+   * @param query the query being executed
+   * @param duplicateColumnName the name of the duplicate column
+   * @throws DuplicateColumnException if the implementation chooses to reject duplicate columns
    */
   default void handle(Query query, String duplicateColumnName) {}
 }

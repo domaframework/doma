@@ -18,15 +18,40 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.message.MessageResource;
 
-/** Thrown to indicate a JDBC related error. */
+/**
+ * Thrown to indicate a JDBC related error during database operations.
+ *
+ * <p>This is the base exception class for all JDBC-related exceptions in Doma. It provides common
+ * functionality for handling SQL-related errors and formatting SQL statements for error messages.
+ *
+ * <p>Specific subclasses provide more detailed information about particular types of JDBC errors,
+ * such as SQL syntax errors, constraint violations, or mapping problems.
+ *
+ * @see SqlExecutionException
+ * @see UniqueConstraintException
+ * @see OptimisticLockException
+ */
 public class JdbcException extends DomaException {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Constructs a new JdbcException with the specified message code and arguments.
+   *
+   * @param messageCode the message code that identifies the error message
+   * @param args the arguments to format the error message
+   */
   public JdbcException(MessageResource messageCode, Object... args) {
     super(messageCode, args);
   }
 
+  /**
+   * Constructs a new JdbcException with the specified message code, cause, and arguments.
+   *
+   * @param messageCode the message code that identifies the error message
+   * @param cause the cause of this exception
+   * @param args the arguments to format the error message
+   */
   public JdbcException(MessageResource messageCode, Throwable cause, Object... args) {
     super(messageCode, cause, args);
   }

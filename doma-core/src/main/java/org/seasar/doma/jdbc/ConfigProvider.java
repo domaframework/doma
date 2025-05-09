@@ -15,13 +15,27 @@
  */
 package org.seasar.doma.jdbc;
 
-/** A provider for a {@link Config} object. */
+/**
+ * A provider for a {@link Config} object.
+ *
+ * <p>This interface defines a contract for objects that can provide access to a {@link Config}
+ * instance, which contains all the configuration settings needed for database operations in Doma.
+ *
+ * <p>The {@link Config#get(Object)} method can be used to extract a {@link Config} instance from
+ * any object that implements this interface.
+ *
+ * <p>Typically, applications don't need to implement this interface directly, as Doma automatically
+ * generates implementations for DAO interfaces annotated with {@code @Dao}.
+ *
+ * @see Config
+ * @see Config#get(Object)
+ */
 public interface ConfigProvider {
 
   /**
    * Returns the configuration.
    *
-   * @return the configuration
+   * @return the configuration instance containing database operation settings
    */
   Config getConfig();
 }

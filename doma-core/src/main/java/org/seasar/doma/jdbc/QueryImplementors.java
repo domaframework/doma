@@ -46,7 +46,22 @@ import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.SqlSelectQuery;
 import org.seasar.doma.jdbc.query.SqlUpdateQuery;
 
-/** A factory for the {@link Query} implementation classes. */
+/**
+ * A factory interface for creating {@link Query} implementation objects.
+ *
+ * <p>This interface provides factory methods for instantiating various types of database queries
+ * used in the Doma framework. Each method creates a specific type of query object that encapsulates
+ * the details of a database operation.
+ *
+ * <p>Implementations of this interface are responsible for creating the appropriate query objects
+ * based on the DAO method being executed. These query objects define how SQL is generated and
+ * executed for different database operations (select, insert, update, delete, batch operations,
+ * etc.).
+ *
+ * <p>The default implementations of these methods create standard query objects, but custom
+ * implementations can override these methods to provide specialized behavior or extended
+ * functionality for specific query types.
+ */
 public interface QueryImplementors {
 
   /**
@@ -79,26 +94,64 @@ public interface QueryImplementors {
     return new SqlFileScriptQuery();
   }
 
+  /**
+   * Creates an {@link AutoDeleteQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoDeleteQuery<ENTITY> createAutoDeleteQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoDeleteQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link AutoInsertQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoInsertQuery<ENTITY> createAutoInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoInsertQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link AutoMultiInsertQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoMultiInsertQuery<ENTITY> createAutoMultiInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoMultiInsertQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link AutoUpdateQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoUpdateQuery<ENTITY> createAutoUpdateQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoUpdateQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link SqlFileDeleteQuery} object.
+   *
+   * @param method the DAO method
+   * @return the query
+   */
   default SqlFileDeleteQuery createSqlFileDeleteQuery(Method method) {
     return new SqlFileDeleteQuery();
   }
@@ -153,21 +206,53 @@ public interface QueryImplementors {
     return new SqlUpdateQuery();
   }
 
+  /**
+   * Creates an {@link AutoBatchDeleteQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoBatchDeleteQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link AutoBatchInsertQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoBatchInsertQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link AutoBatchUpdateQuery} object.
+   *
+   * @param <ENTITY> the entity type
+   * @param method the DAO method
+   * @param entityType the entity type
+   * @return the query
+   */
   default <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
       Method method, EntityType<ENTITY> entityType) {
     return new AutoBatchUpdateQuery<>(entityType);
   }
 
+  /**
+   * Creates an {@link SqlFileBatchDeleteQuery} object.
+   *
+   * @param <ELEMENT> the element type of the batch list
+   * @param method the DAO method
+   * @param clazz the element class of the batch list
+   * @return the query
+   */
   default <ELEMENT> SqlFileBatchDeleteQuery<ELEMENT> createSqlFileBatchDeleteQuery(
       Method method, Class<ELEMENT> clazz) {
     return new SqlFileBatchDeleteQuery<>(clazz);
