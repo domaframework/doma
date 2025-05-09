@@ -22,12 +22,27 @@ import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 
+/**
+ * A command to process SQL with a custom handler.
+ *
+ * <p>This command allows custom processing of SQL statements using a provided handler function.
+ *
+ * @param <RESULT> the result type
+ */
 public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
 
+  /** the query */
   protected final SqlProcessorQuery query;
 
+  /** the handler function that processes the SQL */
   protected final BiFunction<Config, PreparedSql, RESULT> handler;
 
+  /**
+   * Creates a new instance.
+   *
+   * @param query the SQL processor query
+   * @param handler the handler function that processes the SQL
+   */
   public SqlProcessorCommand(
       SqlProcessorQuery query, BiFunction<Config, PreparedSql, RESULT> handler) {
     assertNotNull(query, handler);
@@ -35,11 +50,21 @@ public class SqlProcessorCommand<RESULT> implements Command<RESULT> {
     this.handler = handler;
   }
 
+  /**
+   * Returns the query.
+   *
+   * @return the query
+   */
   @Override
   public SqlProcessorQuery getQuery() {
     return query;
   }
 
+  /**
+   * Executes the SQL processing.
+   *
+   * @return the result of the SQL processing
+   */
   @Override
   public RESULT execute() {
     return handler.apply(query.getConfig(), query.getSql());

@@ -19,12 +19,30 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import org.seasar.doma.jdbc.query.ProcedureQuery;
 
+/**
+ * A command that executes a stored procedure.
+ *
+ * <p>This command doesn't return any result as procedures typically perform operations without
+ * returning values directly. Output parameters can be accessed through the query object.
+ */
 public class ProcedureCommand extends ModuleCommand<ProcedureQuery, Void> {
 
+  /**
+   * Creates a new instance.
+   *
+   * @param query the query to execute
+   */
   public ProcedureCommand(ProcedureQuery query) {
     super(query);
   }
 
+  /**
+   * Executes the stored procedure.
+   *
+   * @param callableStatement the statement to execute
+   * @return always null as procedures don't return values directly
+   * @throws SQLException if a database access error occurs
+   */
   @Override
   protected Void executeInternal(CallableStatement callableStatement) throws SQLException {
     callableStatement.execute();
