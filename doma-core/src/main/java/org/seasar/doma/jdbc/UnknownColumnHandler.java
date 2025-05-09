@@ -20,16 +20,35 @@ import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.NamingType;
 import org.seasar.doma.jdbc.query.Query;
 
-/** A handler for the column that is unknown to an entity. */
+/**
+ * A handler for columns in a result set that are not mapped to any property in an entity.
+ *
+ * <p>This interface defines how to handle situations where a column in a database result set
+ * doesn't correspond to any property in the entity class being used for mapping. Implementations
+ * can choose to ignore unknown columns, throw exceptions, or handle them in custom ways.
+ *
+ * <p>The default implementation throws an {@link UnknownColumnException} when an unknown column is
+ * encountered, providing detailed information about the mismatch.
+ *
+ * @see UnknownColumnException
+ * @see UnknownColumnAdditionalInfoException
+ */
 public interface UnknownColumnHandler {
 
   /**
    * Handles the unknown column.
    *
-   * @param query the query
-   * @param entityType the entity description
+   * <p>This method is called when a column in a result set doesn't match any property in the entity
+   * being mapped. The default implementation throws an {@link UnknownColumnException} with detailed
+   * information about the mismatch.
+   *
+   * @param query the query being executed
+   * @param entityType the entity type containing metadata about the entity
    * @param unknownColumnName the name of the unknown column
    * @throws UnknownColumnException if this handler does not allow the unknown column
+   * @deprecated This method has been deprecated in favor of {@link #handle(Query, EntityType,
+   *     String, Supplier)} which provides additional context information about the unknown column.
+   *     Will be removed in a future version.
    */
   @Deprecated(forRemoval = true)
   default void handle(Query query, EntityType<?> entityType, String unknownColumnName) {

@@ -52,7 +52,22 @@ import org.seasar.doma.jdbc.query.SelectQuery;
 import org.seasar.doma.jdbc.query.SqlProcessorQuery;
 import org.seasar.doma.jdbc.query.UpdateQuery;
 
-/** A factory for the {@link Command} implementation classes. */
+/**
+ * A factory interface for creating {@link Command} implementation objects.
+ *
+ * <p>This interface provides factory methods for instantiating various types of database commands
+ * used in the Doma framework. Each method creates a specific type of command object that is
+ * responsible for executing a corresponding {@link org.seasar.doma.jdbc.query.Query} object.
+ *
+ * <p>Implementations of this interface are responsible for creating the appropriate command objects
+ * based on the DAO method being executed. These command objects handle the execution of database
+ * operations (select, insert, update, delete, batch operations, etc.) and process the results.
+ *
+ * <p>The default implementations of these methods create standard command objects, but custom
+ * implementations can override these methods to provide specialized behavior or extended
+ * functionality for specific command types, such as custom transaction handling, logging, or
+ * performance monitoring.
+ */
 public interface CommandImplementors {
 
   /**
