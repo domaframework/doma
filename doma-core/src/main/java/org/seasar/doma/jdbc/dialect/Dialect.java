@@ -47,9 +47,14 @@ import org.seasar.doma.wrapper.Wrapper;
 /**
  * A database dialect interface that abstracts differences between various RDBMS implementations.
  *
- * <p>This interface provides methods to handle database-specific behaviors such as SQL syntax,
- * identifier quoting, sequence support, and other vendor-specific features. Each supported database
- * system has its own implementation of this interface.
+ * <p>This interface is a core component of Doma's database abstraction layer, allowing applications
+ * to work with different database systems without changing application code. It provides methods to
+ * handle database-specific behaviors such as SQL syntax, identifier quoting, data type mappings,
+ * pagination, sequence generation, and other vendor-specific features.
+ *
+ * <p>Custom dialects can be created by implementing this interface or extending existing
+ * implementations to support additional database systems or to customize behavior for specific
+ * needs.
  *
  * <p>The implementation instance must be thread safe.
  *
@@ -58,45 +63,71 @@ import org.seasar.doma.wrapper.Wrapper;
 public interface Dialect {
 
   /**
-   * The dialect name.
+   * Returns the name of this dialect.
    *
-   * @return the name
+   * <p>The dialect name typically identifies the database system that this dialect supports. This
+   * name can be used for logging, debugging, or to make decisions based on the specific database
+   * being used.
+   *
+   * <p>Each dialect implementation should return a unique and descriptive name.
+   *
+   * @return the name of this dialect
    */
   String getName();
 
   /**
-   * Transforms the SQL node.
+   * Transforms the SQL node for a SELECT statement according to the specified options.
    *
-   * @param sqlNode the SQL node
-   * @param options the options
-   * @return the transformed node
+   * <p>This method is responsible for applying database-specific transformations to SELECT
+   * statements, such as adding pagination (LIMIT/OFFSET), FOR UPDATE clauses, or other
+   * dialect-specific syntax.
+   *
+   * @param sqlNode the SQL node representing the SELECT statement to transform
+   * @param options the options that specify how to transform the SQL, including pagination and
+   *     locking settings
+   * @return the transformed SQL node with dialect-specific modifications applied
    * @throws DomaNullPointerException if any argument is {@code null}
    * @throws JdbcException if unsupported options are specified
    */
   SqlNode transformSelectSqlNode(SqlNode sqlNode, SelectOptions options);
 
   /**
-   * Transforms the SQL node to get a row count.
+   * Transforms the SQL node to create a query that returns the total count of rows.
    *
-   * @param sqlNode the SQL node
-   * @return the transformed node
-   * @throws DomaNullPointerException if any argument is {@code null}
+   * <p>This method is typically used for pagination scenarios where the total number of results
+   * needs to be known. It transforms a regular SELECT statement into a COUNT query that returns the
+   * total number of rows that would be returned by the original query without pagination.
+   *
+   * <p>The implementation should handle removing ORDER BY clauses and other elements that are not
+   * necessary for counting rows, while preserving the WHERE conditions and JOIN clauses.
+   *
+   * @param sqlNode the SQL node representing the original SELECT statement
+   * @return the transformed SQL node that will return the total row count
+   * @throws DomaNullPointerException if {@code sqlNode} is {@code null}
    */
   SqlNode transformSelectSqlNodeForGettingCount(SqlNode sqlNode);
 
   /**
-   * Whether the {@code sqlException} represents an unique violation.
+   * Determines whether the given SQLException represents a unique constraint violation.
    *
-   * @param sqlException the SQL exception
-   * @return {@code true}, if the {@code sqlException} represents an unique violation
+   * <p>Different database systems use different error codes and states to indicate unique
+   * constraint violations. This method abstracts these differences.
+   *
+   * @param sqlException the SQL exception to analyze
+   * @return {@code true} if the exception represents a unique constraint violation, {@code false}
+   *     otherwise
    * @throws DomaNullPointerException if {@code sqlException} is {@code null}
    */
   boolean isUniqueConstraintViolated(SQLException sqlException);
 
   /**
-   * Whether this object includes the IDENTITY column in SQL INSERT statements.
+   * Determines whether this dialect includes IDENTITY columns in SQL INSERT statements.
    *
-   * @return {@code true}, if this object includes it
+   * <p>Some database systems require that IDENTITY columns be excluded from INSERT statements,
+   * while others allow or require them to be included.
+   *
+   * @return {@code true} if this dialect includes IDENTITY columns in INSERT statements, {@code
+   *     false} otherwise
    */
   boolean includesIdentityColumn();
 
@@ -114,64 +145,103 @@ public interface Dialect {
   }
 
   /**
-   * Whether this object supports the IDENTITY column.
+   * Determines whether this dialect supports the IDENTITY column.
    *
-   * @return {@code true}, if this object supports it
+   * <p>An IDENTITY column is a column that automatically generates a unique value for each row when
+   * data is inserted. The exact implementation varies by database system.
+   *
+   * @return {@code true} if this dialect supports IDENTITY columns, {@code false} otherwise
    */
   boolean supportsIdentity();
 
   /**
-   * Whether this object supports the SEQUENCE.
+   * Determines whether this dialect supports database sequences.
    *
-   * @return {@code true}, if this object supports it
+   * <p>A sequence is a database object that generates a sequence of unique numbers. Sequences are
+   * commonly used to generate primary key values.
+   *
+   * @return {@code true} if this dialect supports sequences, {@code false} otherwise
    */
   boolean supportsSequence();
 
   /**
-   * Whether this object supports {@link Statement#getGeneratedKeys()}.
+   * Determines whether this dialect supports retrieving auto-generated keys via {@link
+   * Statement#getGeneratedKeys()}.
    *
-   * @return {@code true}, if this object supports it
+   * <p>This feature allows retrieving values that were automatically generated during an insert
+   * operation, such as identity column values, without executing a separate query.
+   *
+   * @return {@code true} if this dialect supports retrieving auto-generated keys, {@code false}
+   *     otherwise
    */
   boolean supportsAutoGeneratedKeys();
 
   /**
-   * Whether this object supports the result of {@link Statement#executeBatch()}.
+   * Determines whether this dialect supports reliable results from {@link
+   * Statement#executeBatch()}.
    *
-   * @return {@code true}, if this object supports it
+   * <p>Some database systems do not correctly report the number of affected rows for each statement
+   * in a batch operation. This method indicates whether the dialect can rely on these results.
+   *
+   * @return {@code true} if this dialect supports reliable batch update results, {@code false}
+   *     otherwise
    */
   boolean supportsBatchUpdateResults();
 
+  /**
+   * Determines whether this dialect supports retrieving generated values from batch executions.
+   *
+   * <p>Some database systems can return auto-generated values (like identity columns) even when
+   * executing statements in batch mode, while others cannot.
+   *
+   * <p>The default implementation returns {@code false}.
+   *
+   * @return {@code true} if this dialect supports retrieving generated values from batch
+   *     executions, {@code false} otherwise
+   */
   default boolean supportsBatchExecutionReturningGeneratedValues() {
     return false;
   }
 
   /**
-   * Whether this object supports pessimistic locking.
+   * Determines whether this dialect supports pessimistic locking with the specified options.
    *
-   * @param type a kind of pessimistic locking
-   * @param withTargets {@code true} if a lock target is specified
-   * @return {@code true}, if this object supports it
+   * <p>Pessimistic locking (SELECT FOR UPDATE) prevents other transactions from modifying selected
+   * rows. Different database systems support different variations of this feature.
+   *
+   * @param type the type of pessimistic locking (e.g., standard FOR UPDATE, NOWAIT, WAIT)
+   * @param withTargets {@code true} if specific columns are targeted for locking, {@code false} for
+   *     row-level locking
+   * @return {@code true} if this dialect supports the specified locking options, {@code false}
+   *     otherwise
    */
   boolean supportsSelectForUpdate(SelectForUpdateType type, boolean withTargets);
 
   /**
-   * Whether this object supports an out parameter that is mapped to a result set in stored
-   * functions or stored procedures .
+   * Determines whether this dialect supports result sets as OUT parameters in stored procedures.
    *
-   * @return {@code true}, if this object supports it
+   * <p>Some database systems allow stored procedures to return result sets through OUT parameters,
+   * while others use different mechanisms (like returning result sets directly).
+   *
+   * @return {@code true} if this dialect supports result sets as OUT parameters, {@code false}
+   *     otherwise
    */
   boolean supportsResultSetReturningAsOutParameter();
 
   /**
-   * Whether this object supports a reservation of identity.
+   * Determines whether this dialect supports reserving identity values in advance.
    *
-   * @return {@code true}, if this object supports it
+   * <p>Some database systems allow pre-allocating a range of identity values, which can improve
+   * performance in certain scenarios.
+   *
+   * @return {@code true} if this dialect supports identity reservation, {@code false} otherwise
+   * @deprecated This feature is deprecated and may be removed in a future version
    */
   @Deprecated
   boolean supportsIdentityReservation();
 
   /**
-   * Whether this object supports alias reference in DELETE clause as follows:
+   * Determines whether this object supports alias reference in DELETE clause as follows:
    *
    * <pre>
    * DELETE t FROM employee t
@@ -197,7 +267,7 @@ public interface Dialect {
   }
 
   /**
-   * Whether this object supports alias reference in UPDATE clause as follows:
+   * Determines whether this object supports alias reference in UPDATE clause as follows:
    *
    * <pre>
    * UPDATE t SET t.age = 30 FROM employee t
@@ -223,7 +293,7 @@ public interface Dialect {
   }
 
   /**
-   * Whether this object supports mod operator {@code %}.
+   * Determines whether this object supports mod operator {@code %}.
    *
    * @return {@code true}, if this object supports it
    */
@@ -231,34 +301,84 @@ public interface Dialect {
     return true;
   }
 
+  /**
+   * Determines whether this dialect supports multi-row insert statements (bulk inserts).
+   *
+   * <p>Multi-row insert statements allow inserting multiple rows in a single SQL statement, which
+   * can significantly improve performance when inserting large amounts of data.
+   *
+   * <p>The default implementation returns {@code true}.
+   *
+   * @return {@code true} if this dialect supports multi-row insert statements, {@code false}
+   *     otherwise
+   */
   default boolean supportsMultiRowInsertStatement() {
     return true;
   }
 
+  /**
+   * Determines whether this dialect supports auto-increment columns when inserting multiple rows.
+   *
+   * <p>Some databases do not properly handle auto-increment columns in multi-row insert statements,
+   * or have limitations on how generated values can be retrieved.
+   *
+   * <p>The default implementation returns {@code true}.
+   *
+   * @return {@code true} if this dialect supports auto-increment columns in multi-row inserts,
+   *     {@code false} otherwise
+   */
   default boolean supportsAutoIncrementWhenInsertingMultipleRows() {
     return true;
   }
 
+  /**
+   * Determines whether this dialect supports upsert emulation using MERGE statements.
+   *
+   * <p>An upsert operation (update or insert) can be emulated using MERGE statements in some
+   * database systems. This method indicates whether the dialect supports this approach.
+   *
+   * <p>The default implementation returns {@code false}.
+   *
+   * @return {@code true} if this dialect supports upsert emulation with MERGE statements, {@code
+   *     false} otherwise
+   */
   default boolean supportsUpsertEmulationWithMergeStatement() {
     return false;
   }
 
+  /**
+   * Determines whether this dialect requires parentheses around set operation operands.
+   *
+   * <p>Set operations include UNION, INTERSECT, and EXCEPT. Some databases require parentheses
+   * around the operands of these operations, especially when they include ORDER BY or LIMIT
+   * clauses.
+   *
+   * <p>The default implementation returns {@code true}.
+   *
+   * @return {@code true} if this dialect requires parentheses for set operands, {@code false}
+   *     otherwise
+   */
   default boolean supportsParenthesesForSetOperands() {
     return true;
   }
 
   /**
-   * Returns an SQL object to get IDENTITY values that are generated in the database.
+   * Returns an SQL object to retrieve IDENTITY values that were generated during an insert
+   * operation.
    *
-   * <p>This method is available, only if {@link #supportsIdentity()} returns {@code true}.
+   * <p>This method is used to create the SQL statement that retrieves the last generated identity
+   * value for a specific table and column.
    *
-   * @param catalogName the catalog name
-   * @param schemaName the schema name
-   * @param tableName the table name
-   * @param columnName the IDENTITY column name
-   * @param isQuoteRequired whether the quotation marks are required
-   * @param isIdColumnQuoteRequired whether the quotation marks are required for the IDENTITY column
-   * @return the SQL object
+   * <p>This method is available only if {@link #supportsIdentity()} returns {@code true}.
+   *
+   * @param catalogName the catalog name of the table (may be {@code null} if not applicable)
+   * @param schemaName the schema name of the table (may be {@code null} if not applicable)
+   * @param tableName the name of the table containing the identity column
+   * @param columnName the name of the identity column
+   * @param isQuoteRequired whether the table name should be quoted in the SQL statement
+   * @param isIdColumnQuoteRequired whether the identity column name should be quoted in the SQL
+   *     statement
+   * @return the SQL object that can be executed to retrieve the generated identity value
    * @throws DomaNullPointerException if either the {@code tableName} or the {@code columnName} is
    *     {@code null}
    */
@@ -298,13 +418,20 @@ public interface Dialect {
       int reservationSize);
 
   /**
-   * Returns an SQL object to get next sequence values.
+   * Returns an SQL object to retrieve the next value from a database sequence.
    *
-   * <p>This method is available, only if {@link #supportsSequence()} returns {@code true}.
+   * <p>This method creates the SQL statement needed to get the next value from a sequence.
    *
-   * @param qualifiedSequenceName the qualified sequence name
-   * @param allocationSize the allocation size of the sequence
-   * @return the SQL object
+   * <p>The allocation size parameter can be used to optimize sequence access by retrieving multiple
+   * values at once in database systems that support this feature.
+   *
+   * <p>This method is available only if {@link #supportsSequence()} returns {@code true}.
+   *
+   * @param qualifiedSequenceName the fully qualified name of the sequence, which may include
+   *     catalog and schema information depending on the database system
+   * @param allocationSize the number of sequence values to allocate at once for optimization; a
+   *     value greater than 1 may improve performance by reducing database calls
+   * @return the SQL object that can be executed to retrieve the next sequence value(s)
    * @throws DomaNullPointerException if {@code qualifiedSequenceName} is {@code null}
    */
   Sql<?> getSequenceNextValSql(String qualifiedSequenceName, long allocationSize);
@@ -320,7 +447,7 @@ public interface Dialect {
   JdbcType<ResultSet> getResultSetType();
 
   /**
-   * Enclose the name with quotation marks.
+   * Encloses the name with quotation marks.
    *
    * @param name the name of a database object such as a table, a column, and so on
    * @return the name that is enclosed with quotation marks
@@ -328,7 +455,7 @@ public interface Dialect {
   String applyQuote(String name);
 
   /**
-   * Remove quotation marks from the name
+   * Removes quotation marks from the name
    *
    * @param name the name of a database object such as a table, a column, and so on
    * @return the name that has no enclosing quotation marks
@@ -352,7 +479,7 @@ public interface Dialect {
   JdbcMappingVisitor getJdbcMappingVisitor();
 
   /**
-   * Return the visitor that maps {@link Wrapper} to {@link SqlLogFormatter}.
+   * Returns the visitor that maps {@link Wrapper} to {@link SqlLogFormatter}.
    *
    * @return the visitor
    */
@@ -373,7 +500,7 @@ public interface Dialect {
   ScriptBlockContext createScriptBlockContext();
 
   /**
-   * Return the delimiter that is used as the end of an SQL block in a script.
+   * Returns the delimiter that is used as the end of an SQL block in a script.
    *
    * @return the delimiter
    */
@@ -386,6 +513,15 @@ public interface Dialect {
    */
   AutoGeneratedKeysType getAutoGeneratedKeysType();
 
+  /**
+   * Returns the criteria builder for this dialect.
+   *
+   * <p>The criteria builder is used to construct SQL queries using the criteria API, which provides
+   * a type-safe way to build queries programmatically. The returned builder will generate SQL that
+   * is compatible with the specific database dialect.
+   *
+   * @return the criteria builder for this dialect
+   */
   CriteriaBuilder getCriteriaBuilder();
 
   /**
@@ -444,9 +580,18 @@ public interface Dialect {
   }
 
   /**
-   * Determines if the current implementation supports the RETURNING feature in database operations.
+   * Determines if this dialect supports the SQL RETURNING clause in database operations.
    *
-   * @return true if the RETURNING feature is supported, false otherwise
+   * <p>The RETURNING clause allows a DML statement (INSERT, UPDATE, DELETE) to return data from
+   * rows that were affected by the operation. This feature is particularly useful for retrieving
+   * auto-generated values or updated columns in a single database operation, without requiring a
+   * separate SELECT statement.
+   *
+   * <p>The default implementation returns {@code true}, but dialect implementations for databases
+   * that don't support this feature should override this method to return {@code false}.
+   *
+   * @return {@code true} if the RETURNING clause is supported by this dialect, {@code false}
+   *     otherwise
    */
   default boolean supportsReturning() {
     return true;
