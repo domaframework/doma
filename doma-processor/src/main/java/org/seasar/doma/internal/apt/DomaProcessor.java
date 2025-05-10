@@ -28,20 +28,20 @@ import static org.seasar.doma.internal.apt.AnnotationTypes.SCOPE;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.function.Function;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.processor.AggregateStrategyProcessor;
 import org.seasar.doma.internal.apt.processor.DaoProcessor;
 import org.seasar.doma.internal.apt.processor.DataTypeProcessor;
 import org.seasar.doma.internal.apt.processor.DomainConvertersProcessor;
 import org.seasar.doma.internal.apt.processor.DomainProcessor;
+import org.seasar.doma.internal.apt.processor.ElementProcessor;
 import org.seasar.doma.internal.apt.processor.EmbeddableProcessor;
 import org.seasar.doma.internal.apt.processor.EntityProcessor;
 import org.seasar.doma.internal.apt.processor.ExternalDomainProcessor;
@@ -80,22 +80,19 @@ import org.seasar.doma.internal.apt.processor.ScopeProcessor;
 })
 public class DomaProcessor extends AbstractProcessor {
 
-  private final List<Operator> operators;
-  private ProcessingContext processingContext;
+  private static final List<Operator> operators =
+      List.of(
+          new Operator(EXTERNAL_DOMAIN, ExternalDomainProcessor::new),
+          new Operator(DATA_TYPE, DataTypeProcessor::new),
+          new Operator(DOMAIN, DomainProcessor::new),
+          new Operator(DOMAIN_CONVERTERS, DomainConvertersProcessor::new),
+          new Operator(EMBEDDABLE, EmbeddableProcessor::new),
+          new Operator(ENTITY, EntityProcessor::new),
+          new Operator(AGGREGATE_STRATEGY, AggregateStrategyProcessor::new),
+          new Operator(DAO, DaoProcessor::new),
+          new Operator(SCOPE, ScopeProcessor::new));
 
-  public DomaProcessor() {
-    operators =
-        List.of(
-            new Operator(EXTERNAL_DOMAIN, DomaProcessor::processExternalDomain),
-            new Operator(DATA_TYPE, DomaProcessor::processDataType),
-            new Operator(DOMAIN, DomaProcessor::processDomain),
-            new Operator(DOMAIN_CONVERTERS, DomaProcessor::processDomainConverters),
-            new Operator(EMBEDDABLE, DomaProcessor::processEmbeddable),
-            new Operator(ENTITY, DomaProcessor::processEntity),
-            new Operator(AGGREGATE_STRATEGY, DomaProcessor::processAggregateStrategy),
-            new Operator(DAO, DomaProcessor::processDao),
-            new Operator(SCOPE, DomaProcessor::processScope));
-  }
+  private ProcessingContext processingContext;
 
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -120,67 +117,19 @@ public class DomaProcessor extends AbstractProcessor {
     for (var operator : operators) {
       var elements = roundContext.getElementsAnnotatedWith(operator.annotationName);
       if (!elements.isEmpty()) {
-        operator.consumer.accept(roundContext, elements);
+        var processor = operator.function.apply(roundContext);
+        processor.process(elements);
       }
     }
 
     return true;
   }
 
-  private static void processAggregateStrategy(
-      RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new AggregateStrategyProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processDao(RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new DaoProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processDataType(RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new DataTypeProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processDomainConverters(
-      RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new DomainConvertersProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processDomain(RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new DomainProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processEmbeddable(
-      RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new EmbeddableProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processEntity(RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new EntityProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processExternalDomain(
-      RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new ExternalDomainProcessor(roundContext);
-    processor.process(elements);
-  }
-
-  private static void processScope(RoundContext roundContext, Set<? extends Element> elements) {
-    var processor = new ScopeProcessor(roundContext);
-    processor.process(elements);
-  }
-
   private record Operator(
-      String annotationName, BiConsumer<RoundContext, Set<? extends Element>> consumer) {
+      String annotationName, Function<RoundContext, ElementProcessor> function) {
     Operator {
       Objects.requireNonNull(annotationName);
-      Objects.requireNonNull(consumer);
+      Objects.requireNonNull(function);
     }
   }
 }
