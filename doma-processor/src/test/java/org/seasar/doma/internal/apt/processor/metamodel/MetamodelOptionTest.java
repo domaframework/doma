@@ -41,7 +41,6 @@ class MetamodelOptionTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
     addOption("-Adoma.metamodel.prefix=" + PREFIX);
     addOption("-Adoma.metamodel.suffix=" + SUFFIX);

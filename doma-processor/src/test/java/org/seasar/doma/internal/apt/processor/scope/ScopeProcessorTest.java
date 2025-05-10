@@ -41,7 +41,6 @@ public class ScopeProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addProcessor(
         new DomaProcessor() {
           @Override

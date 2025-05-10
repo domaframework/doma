@@ -41,7 +41,6 @@ public class ScopeTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addOption("-Adoma.metamodel.enabled=true");
     addProcessor(new DomaProcessor());
   }

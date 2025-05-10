@@ -32,12 +32,26 @@ public class Resources {
 
   private final Filer filer;
 
+  private final Reporter reporter;
+
   private final String resourcesDir;
 
-  Resources(Filer filer, String resourcesDir) {
-    assertNotNull(filer);
+  private final boolean isRunningOnEclipse;
+
+  private final boolean isDebug;
+
+  Resources(
+      Filer filer,
+      Reporter reporter,
+      String resourcesDir,
+      boolean isRunningOnEclipse,
+      boolean isDebug) {
+    assertNotNull(filer, reporter);
     this.filer = filer;
+    this.reporter = reporter;
     this.resourcesDir = resourcesDir;
+    this.isRunningOnEclipse = isRunningOnEclipse;
+    this.isDebug = isDebug;
   }
 
   public JavaFileObject createSourceFile(CharSequence name, Element... originatingElements)
@@ -47,11 +61,30 @@ public class Resources {
 
   public FileObject getResource(String relativePath) throws IOException {
     assertNotNull(relativePath);
+
+    // Prefer the directory specified by the annotation processor option.
     if (resourcesDir != null) {
       Path path = Paths.get(resourcesDir, relativePath);
       return new FileObjectImpl(path);
     }
-    return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
+
+    // Since Eclipse doesn’t support SOURCE_PATH, use CLASS_OUTPUT.
+    if (isRunningOnEclipse) {
+      return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
+    }
+
+    // To leverage Gradle’s incremental annotation processing, we recommend using the --source-path
+    // option of javac.
+    try {
+      return filer.getResource(StandardLocation.SOURCE_PATH, "", relativePath);
+    } catch (Exception e) {
+      if (isDebug) {
+        reporter.debug(
+            "Fall back from SOURCE_PATH to CLASS_OUTPUT: " + relativePath + ", exception: " + e);
+      }
+      // If a file cannot be found in SOURCE_PATH, fall back to CLASS_OUTPUT.
+      return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
+    }
   }
 
   protected static class FileObjectImpl implements FileObject {

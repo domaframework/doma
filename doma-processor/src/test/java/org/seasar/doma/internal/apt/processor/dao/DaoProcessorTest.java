@@ -48,8 +48,6 @@ class DaoProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
-
     addProcessor(new DomaProcessor());
 
     // Add the dependent entities

@@ -111,8 +111,9 @@ class AptinaTestCase
 
   @Override
   public void beforeEach(ExtensionContext context) {
+    addOption("-Adoma.test.unit=true");
     addSourcePath("src/test/java");
-    addOption("-Adoma.resources.dir=src/test/resources");
+    addSourcePath("src/test/resources");
     charset = StandardCharsets.UTF_8;
     locale = Locale.ENGLISH;
     TimeZone.setDefault(TimeZone.getTimeZone("GMT+9"));

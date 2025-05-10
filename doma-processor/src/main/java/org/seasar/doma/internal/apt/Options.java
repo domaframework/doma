@@ -32,7 +32,9 @@ import org.seasar.doma.internal.Artifact;
 
 public final class Options {
 
-  public static final String TEST = "doma.test";
+  public static final String TEST_UNIT = "doma.test.unit";
+
+  public static final String TEST_INTEGRATION = "doma.test.integration";
 
   public static final String METAMODEL_ENABLED = "doma.metamodel.enabled";
 
@@ -106,7 +108,7 @@ public final class Options {
   }
 
   public boolean isTestEnabled() {
-    String test = getOption(TEST);
+    String test = getOption(TEST_UNIT);
     return Boolean.parseBoolean(test);
   }
 
