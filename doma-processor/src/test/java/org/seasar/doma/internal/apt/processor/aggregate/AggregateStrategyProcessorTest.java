@@ -40,8 +40,6 @@ class AggregateStrategyProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
-
     addProcessor(new DomaProcessor());
     addCompilationUnit(Emp.class);
     addCompilationUnit(Dept.class);

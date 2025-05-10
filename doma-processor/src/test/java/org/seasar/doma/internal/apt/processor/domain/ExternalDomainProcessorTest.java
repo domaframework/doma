@@ -43,7 +43,6 @@ class ExternalDomainProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addProcessor(new DomaProcessor());
   }
 

@@ -43,9 +43,29 @@ public class ProcessingContext {
     moreElements = new MoreElements(this, env.getElementUtils());
     moreTypes = new MoreTypes(this, env.getTypeUtils());
     reporter = new Reporter(env.getMessager());
-    resources = new Resources(env.getFiler(), env.getOptions().get(Options.RESOURCES_DIR));
+    resources =
+        new Resources(
+            env.getFiler(),
+            reporter,
+            env.getOptions().get(Options.RESOURCES_DIR),
+            isRunningOnEclipse(env),
+            isDebug(env));
     options = new Options(env.getOptions(), resources);
     initialized = true;
+  }
+
+  private boolean isRunningOnEclipse(ProcessingEnvironment env) {
+    var envClassName = env.getClass().getName();
+    var unitTest = env.getOptions().get(Options.TEST_UNIT);
+    var integrationTest = env.getOptions().get(Options.TEST_INTEGRATION);
+    return envClassName.startsWith("org.eclipse.")
+        && !Boolean.parseBoolean(unitTest)
+        && !Boolean.parseBoolean(integrationTest);
+  }
+
+  private boolean isDebug(ProcessingEnvironment env) {
+    var debug = env.getOptions().get(Options.DEBUG);
+    return Boolean.parseBoolean(debug);
   }
 
   public RoundContext createRoundContext(

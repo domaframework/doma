@@ -43,7 +43,6 @@ class EntityProcessorTest extends AbstractCompilerTest {
   @BeforeEach
   void beforeEach() {
     addOption(
-        "-Adoma.test=true",
         "-Adoma.domain.converters=org.seasar.doma.internal.apt.processor.entity.DomainConvertersProvider");
     addProcessor(new DomaProcessor());
 

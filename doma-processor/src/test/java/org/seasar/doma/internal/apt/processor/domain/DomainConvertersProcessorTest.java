@@ -28,7 +28,6 @@ class DomainConvertersProcessorTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addProcessor(new DomaProcessor());
   }
 

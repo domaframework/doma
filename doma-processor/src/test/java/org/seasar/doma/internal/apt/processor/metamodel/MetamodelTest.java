@@ -40,7 +40,6 @@ class MetamodelTest extends AbstractCompilerTest {
 
   @BeforeEach
   void beforeEach() {
-    addOption("-Adoma.test=true");
     addProcessor(new DomaProcessor());
 
     // Add the dependent domains

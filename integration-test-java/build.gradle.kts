@@ -17,7 +17,7 @@ dependencies {
     }
 }
 
-val commonArgs = listOf<String>()
+val commonArgs = listOf("-Adoma.test.integration=true")
 
 // The processors are not automatically detected, so it must be explicitly specified.
 val ecjArgs = listOf(
