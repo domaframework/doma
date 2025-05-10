@@ -33,7 +33,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -119,6 +118,33 @@ import org.seasar.doma.wrapper.TimestampWrapper;
 import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class CtTypes {
+
+  // Apply newDomainCtType, newEmbeddableCtType and newEntityCtType functions first.
+  private final List<Function<TypeMirror, CtType>> functions =
+      List.of(
+          this::newDomainCtType,
+          this::newEmbeddableCtType,
+          this::newEntityCtType,
+          this::newIterableCtType,
+          this::newStreamCtType,
+          this::newOptionalCtType,
+          this::newOptionalIntCtType,
+          this::newOptionalLongCtType,
+          this::newOptionalDoubleCtType,
+          this::newBasicCtType,
+          this::newMapCtType,
+          this::newSelectOptionsCtType,
+          this::newFunctionCtType,
+          this::newCollectorCtType,
+          this::newReferenceCtType,
+          this::newBiFunctionCtType,
+          this::newBiConsumerCtType,
+          this::newPreparedSqlCtType,
+          this::newConfigCtType,
+          this::newResultCtType,
+          this::newBatchResultCtType,
+          this::newMultiResultCtType,
+          this::newArrayCtType);
 
   private final RoundContext ctx;
 
@@ -663,32 +689,6 @@ public class CtTypes {
 
   private CtType newCtTypeInternal(
       TypeMirror type, CtTypeVisitor<Void, Void, AptException> validator) {
-    // Apply newDomainCtType, newEmbeddableCtType and newEntityCtType functions first.
-    List<Function<TypeMirror, CtType>> functions =
-        Arrays.asList(
-            this::newDomainCtType,
-            this::newEmbeddableCtType,
-            this::newEntityCtType,
-            this::newIterableCtType,
-            this::newStreamCtType,
-            this::newOptionalCtType,
-            this::newOptionalIntCtType,
-            this::newOptionalLongCtType,
-            this::newOptionalDoubleCtType,
-            this::newBasicCtType,
-            this::newMapCtType,
-            this::newSelectOptionsCtType,
-            this::newFunctionCtType,
-            this::newCollectorCtType,
-            this::newReferenceCtType,
-            this::newBiFunctionCtType,
-            this::newBiConsumerCtType,
-            this::newPreparedSqlCtType,
-            this::newConfigCtType,
-            this::newResultCtType,
-            this::newBatchResultCtType,
-            this::newMultiResultCtType,
-            this::newArrayCtType);
     CtType ctType =
         functions.stream()
             .map(f -> f.apply(type))

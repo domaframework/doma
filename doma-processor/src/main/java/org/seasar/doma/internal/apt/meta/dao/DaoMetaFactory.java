@@ -21,14 +21,12 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -92,30 +90,30 @@ import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
-  private final RoundContext ctx;
+  private static final List<QueryMetaFactorySupplier> suppliers =
+      List.of(
+          SqlFileSelectQueryMetaFactory::new,
+          AutoModifyQueryMetaFactory::new,
+          AutoMultiInsertQueryMetaFactory::new,
+          AutoBatchModifyQueryMetaFactory::new,
+          AutoFunctionQueryMetaFactory::new,
+          AutoProcedureQueryMetaFactory::new,
+          SqlFileModifyQueryMetaFactory::new,
+          SqlFileBatchModifyQueryMetaFactory::new,
+          SqlFileScriptQueryMetaFactory::new,
+          DefaultQueryMetaFactory::new,
+          ArrayCreateQueryMetaFactory::new,
+          BlobCreateQueryMetaFactory::new,
+          ClobCreateQueryMetaFactory::new,
+          NClobCreateQueryMetaFactory::new,
+          SQLXMLCreateQueryMetaFactory::new,
+          SqlProcessorQueryMetaFactory::new);
 
-  private final List<BiFunction<TypeElement, ExecutableElement, QueryMetaFactory>> providers =
-      new ArrayList<>(15);
+  private final RoundContext ctx;
 
   public DaoMetaFactory(RoundContext ctx) {
     assertNotNull(ctx);
     this.ctx = ctx;
-    providers.add((dao, method) -> new SqlFileSelectQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new AutoModifyQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new AutoMultiInsertQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new AutoBatchModifyQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new AutoFunctionQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new AutoProcedureQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new SqlFileModifyQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new SqlFileBatchModifyQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new SqlFileScriptQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new DefaultQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new ArrayCreateQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new BlobCreateQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new ClobCreateQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new NClobCreateQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new SQLXMLCreateQueryMetaFactory(ctx, dao, method));
-    providers.add((dao, method) -> new SqlProcessorQueryMetaFactory(ctx, dao, method));
   }
 
   @Override
@@ -282,8 +280,8 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private QueryMeta createQueryMeta(DaoMeta daoMeta, ExecutableElement methodElement) {
-    for (BiFunction<TypeElement, ExecutableElement, QueryMetaFactory> provider : providers) {
-      QueryMetaFactory factory = provider.apply(daoMeta.getTypeElement(), methodElement);
+    for (QueryMetaFactorySupplier supplier : suppliers) {
+      QueryMetaFactory factory = supplier.get(ctx, daoMeta.getTypeElement(), methodElement);
       QueryMeta queryMeta = factory.createQueryMeta();
       if (queryMeta != null) {
         return queryMeta;
@@ -498,5 +496,9 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       assertUnreachable("visitAutoBatchModifyQueryMeta");
       return null;
     }
+  }
+
+  interface QueryMetaFactorySupplier {
+    QueryMetaFactory get(RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement);
   }
 }
