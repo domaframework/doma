@@ -99,8 +99,7 @@ public class DomaProcessor extends AbstractProcessor {
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
-    processingContext = new ProcessingContext(processingEnv);
-    processingContext.init();
+    processingContext = ProcessingContext.of(processingEnv);
   }
 
   @Override

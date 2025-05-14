@@ -38,8 +38,7 @@ public class MyAnnotationProcessor extends AbstractProcessor {
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
-    this.ctx = new ProcessingContext(processingEnv);
-    ctx.init();
+    this.ctx = ProcessingContext.of(processingEnv);
   }
 
   @Override

@@ -41,8 +41,7 @@ public abstract class TestProcessor extends AbstractProcessor {
   @Override
   public synchronized void init(ProcessingEnvironment env) {
     super.init(env);
-    ctx = new ProcessingContext(env);
-    ctx.init();
+    ctx = ProcessingContext.of(env);
   }
 
   @Override
