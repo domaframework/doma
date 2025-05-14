@@ -25,10 +25,11 @@ import static org.seasar.doma.internal.apt.AnnotationTypes.ENTITY;
 import static org.seasar.doma.internal.apt.AnnotationTypes.EXTERNAL_DOMAIN;
 import static org.seasar.doma.internal.apt.AnnotationTypes.SCOPE;
 
-import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -81,25 +82,24 @@ import org.seasar.doma.internal.apt.processor.ScopeProcessor;
 })
 public class DomaProcessor extends AbstractProcessor {
 
-  private static final Map<String, Function<RoundContext, ElementProcessor>> functionMap =
-      Map.of(
-          EXTERNAL_DOMAIN, ExternalDomainProcessor::new,
-          DATA_TYPE, DataTypeProcessor::new,
-          DOMAIN, DomainProcessor::new,
-          DOMAIN_CONVERTERS, DomainConvertersProcessor::new,
-          EMBEDDABLE, EmbeddableProcessor::new,
-          ENTITY, EntityProcessor::new,
-          AGGREGATE_STRATEGY, AggregateStrategyProcessor::new,
-          DAO, DaoProcessor::new,
-          SCOPE, ScopeProcessor::new);
+  private static final List<Operation> operations =
+      List.of(
+          new Operation(EXTERNAL_DOMAIN, ExternalDomainProcessor::new),
+          new Operation(DATA_TYPE, DataTypeProcessor::new),
+          new Operation(DOMAIN, DomainProcessor::new),
+          new Operation(DOMAIN_CONVERTERS, DomainConvertersProcessor::new),
+          new Operation(EMBEDDABLE, EmbeddableProcessor::new),
+          new Operation(ENTITY, EntityProcessor::new),
+          new Operation(AGGREGATE_STRATEGY, AggregateStrategyProcessor::new),
+          new Operation(DAO, DaoProcessor::new),
+          new Operation(SCOPE, ScopeProcessor::new));
 
   private ProcessingContext processingContext;
 
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
-    processingContext = new ProcessingContext(processingEnv);
-    processingContext.init();
+    processingContext = ProcessingContext.of(processingEnv);
   }
 
   @Override
@@ -115,37 +115,32 @@ public class DomaProcessor extends AbstractProcessor {
 
     var roundContext = processingContext.createRoundContext(roundEnv);
 
-    var externalDomainAnnotation = new HashSet<TypeElement>(1);
-    var otherAnnotations = new HashSet<TypeElement>(functionMap.size() - 1);
+    var annotationMap =
+        annotations.stream()
+            .collect(
+                Collectors.toUnmodifiableMap(
+                    it -> it.getQualifiedName().toString(), Function.identity()));
 
-    for (var annotation : annotations) {
-      if (annotation.getQualifiedName().contentEquals(EXTERNAL_DOMAIN)) {
-        externalDomainAnnotation.add(annotation);
-      } else {
-        otherAnnotations.add(annotation);
+    for (var operation : operations) {
+      var annotation = annotationMap.get(operation.name);
+      if (annotation == null) {
+        continue;
       }
+      var elements = roundContext.getElementsAnnotatedWith(annotation);
+      if (elements.isEmpty()) {
+        continue;
+      }
+      var processor = operation.function.apply(roundContext);
+      processor.process(elements);
     }
-
-    // process ExternalDomain annotation first
-    processWithRoundContext(externalDomainAnnotation, roundContext);
-
-    // process other annotations
-    processWithRoundContext(otherAnnotations, roundContext);
 
     return true;
   }
 
-  private void processWithRoundContext(Set<TypeElement> annotations, RoundContext roundContext) {
-    for (var annotation : annotations) {
-      String annotationName = annotation.getQualifiedName().toString();
-      var function = functionMap.get(annotationName);
-      if (function != null) {
-        var elements = roundContext.getElementsAnnotatedWith(annotation);
-        if (!elements.isEmpty()) {
-          var processor = function.apply(roundContext);
-          processor.process(elements);
-        }
-      }
+  private record Operation(String name, Function<RoundContext, ElementProcessor> function) {
+    Operation {
+      Objects.requireNonNull(name);
+      Objects.requireNonNull(function);
     }
   }
 }

@@ -30,11 +30,11 @@ public class ProcessingContext {
   private Reporter reporter;
   private Resources resources;
 
-  public ProcessingContext(ProcessingEnvironment env) {
+  private ProcessingContext(ProcessingEnvironment env) {
     this.env = Objects.requireNonNull(env);
   }
 
-  public void init() {
+  private void init() {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
@@ -102,5 +102,12 @@ public class ProcessingContext {
     if (!initialized) {
       throw new AptIllegalStateException("not yet initialized");
     }
+  }
+
+  public static ProcessingContext of(ProcessingEnvironment env) {
+    Objects.requireNonNull(env);
+    var processingContext = new ProcessingContext(env);
+    processingContext.init();
+    return processingContext;
   }
 }
