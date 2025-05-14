@@ -31,7 +31,6 @@ public class RoundContext {
 
   private final ProcessingContext processingContext;
   private final RoundEnvironment roundEnvironment;
-  private final Set<? extends TypeElement> annotationElements;
   private final List<ExternalDomainMeta> externalDomainMetaList = new ArrayList<>();
   private boolean initialized;
   private Annotations annotations;
@@ -39,13 +38,9 @@ public class RoundContext {
   private CtTypes ctTypes;
   private Names names;
 
-  RoundContext(
-      ProcessingContext processingContext,
-      RoundEnvironment roundEnvironment,
-      Set<? extends TypeElement> annotationElements) {
+  RoundContext(ProcessingContext processingContext, RoundEnvironment roundEnvironment) {
     this.processingContext = Objects.requireNonNull(processingContext);
     this.roundEnvironment = Objects.requireNonNull(roundEnvironment);
-    this.annotationElements = Objects.requireNonNull(annotationElements);
   }
 
   void init() {
@@ -114,14 +109,10 @@ public class RoundContext {
     return externalDomainMetaList;
   }
 
-  public Set<? extends Element> getElementsAnnotatedWith(String annotationName) {
+  public Set<? extends Element> getElementsAnnotatedWith(TypeElement annotation) {
     assertInitialized();
-    Objects.requireNonNull(annotationName);
-    return annotationElements.stream()
-        .filter(a -> a.getQualifiedName().contentEquals(annotationName))
-        .findFirst()
-        .map(roundEnvironment::getElementsAnnotatedWith)
-        .orElse(Set.of());
+    Objects.requireNonNull(annotation);
+    return roundEnvironment.getElementsAnnotatedWith(annotation);
   }
 
   private void assertInitialized() {
