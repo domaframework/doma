@@ -40,8 +40,10 @@ jobs:
       - name: Build
         run: >
           ./gradlew
+          --no-daemon
+          --no-build-cache
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
-          assemble check -x :doma-processor:check
+          clean assemble check -x :doma-processor:check
 
       - name: Upload reports
         if: failure()
