@@ -66,7 +66,7 @@ public abstract class TestProcessor extends AbstractProcessor {
     if (roundEnv.processingOver() || handled) {
       return true;
     }
-    RoundContext roundContext = ctx.createRoundContext(annotations, roundEnv);
+    RoundContext roundContext = ctx.createRoundContext(roundEnv);
     run(roundContext);
     handled = true;
     return false;
