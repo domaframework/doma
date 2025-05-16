@@ -28,17 +28,21 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.ModuleElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.Parameterizable;
+import javax.lang.model.element.RecordComponentElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
@@ -165,6 +169,84 @@ public class MoreElements implements Elements {
   @Override
   public boolean isFunctionalInterface(TypeElement type) {
     return elementUtils.isFunctionalInterface(type);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public PackageElement getPackageElement(ModuleElement module, CharSequence name) {
+    return elementUtils.getPackageElement(module, name);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Set<? extends PackageElement> getAllPackageElements(CharSequence name) {
+    return elementUtils.getAllPackageElements(name);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public TypeElement getTypeElement(ModuleElement module, CharSequence name) {
+    return elementUtils.getTypeElement(module, name);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Set<? extends TypeElement> getAllTypeElements(CharSequence name) {
+    return elementUtils.getAllTypeElements(name);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public ModuleElement getModuleElement(CharSequence name) {
+    return elementUtils.getModuleElement(name);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Set<? extends ModuleElement> getAllModuleElements() {
+    return elementUtils.getAllModuleElements();
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Origin getOrigin(Element e) {
+    return elementUtils.getOrigin(e);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Origin getOrigin(AnnotatedConstruct c, AnnotationMirror a) {
+    return elementUtils.getOrigin(c, a);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public Origin getOrigin(ModuleElement m, ModuleElement.Directive directive) {
+    return elementUtils.getOrigin(m, directive);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public boolean isBridge(ExecutableElement e) {
+    return elementUtils.isBridge(e);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public ModuleElement getModuleOf(Element e) {
+    return elementUtils.getModuleOf(e);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public boolean isAutomaticModule(ModuleElement module) {
+    return elementUtils.isAutomaticModule(module);
+  }
+
+  // delegate to elementUtils
+  @Override
+  public RecordComponentElement recordComponentFor(ExecutableElement accessor) {
+    return elementUtils.recordComponentFor(accessor);
   }
 
   public String getParameterName(VariableElement variableElement) {
