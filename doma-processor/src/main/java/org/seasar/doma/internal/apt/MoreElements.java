@@ -58,11 +58,13 @@ import org.seasar.doma.internal.util.Zip;
 
 public class MoreElements implements Elements {
 
-  private final ProcessingContext ctx;
+  private static final Object NOT_FOUND = new Object();
+
+  private final RoundContext ctx;
 
   private final Elements elementUtils;
 
-  private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
+  private final Map<String, Object> typeElementCache = new HashMap<>(256);
 
   public MoreElements(RoundContext ctx, Elements elementUtils) {
     assertNotNull(ctx, elementUtils);
@@ -88,7 +90,14 @@ public class MoreElements implements Elements {
   }
 
   private TypeElement getTypeElementInternal(String canonicalName) {
-    return typeElementCache.computeIfAbsent(canonicalName, elementUtils::getTypeElement);
+    var typeElement =
+        typeElementCache.computeIfAbsent(
+            canonicalName,
+            it -> {
+              var result = elementUtils.getTypeElement(it);
+              return result == null ? NOT_FOUND : result;
+            });
+    return typeElement == NOT_FOUND ? null : (TypeElement) typeElement;
   }
 
   // delegate to elementUtils
