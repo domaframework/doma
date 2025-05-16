@@ -56,7 +56,7 @@ public abstract class TestProcessor extends AbstractProcessor {
 
   @Override
   public Set<String> getSupportedOptions() {
-    return Set.of(Options.RESOURCES_DIR);
+    return Set.of(Options.RESOURCES_DIR, Options.TEST_UNIT);
   }
 
   @Override
