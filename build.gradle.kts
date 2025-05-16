@@ -213,10 +213,6 @@ configure(modularProjects) {
             useJUnitPlatform()
         }
 
-        build {
-            dependsOn("publishToMavenLocal")
-        }
-
         withType<Sign>().configureEach {
             onlyIf { isReleaseVersion }
         }
