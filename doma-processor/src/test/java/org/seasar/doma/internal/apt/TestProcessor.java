@@ -74,7 +74,7 @@ public abstract class TestProcessor extends AbstractProcessor {
   protected abstract void run(RoundContext roundContext);
 
   protected ExecutableElement createMethodElement(
-      Class<?> clazz, String methodName, Class<?>... parameterClasses) {
+      RoundContext ctx, Class<?> clazz, String methodName, Class<?>... parameterClasses) {
     TypeElement typeElement = ctx.getMoreElements().getTypeElement(clazz);
     for (TypeElement t = typeElement;
         t != null && t.asType().getKind() != TypeKind.NONE;

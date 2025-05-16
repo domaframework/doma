@@ -60,7 +60,7 @@ public class MoreElements implements Elements {
 
   private final Map<String, TypeElement> typeElementCache = new HashMap<>(64);
 
-  public MoreElements(ProcessingContext ctx, Elements elementUtils) {
+  public MoreElements(RoundContext ctx, Elements elementUtils) {
     assertNotNull(ctx, elementUtils);
     this.ctx = ctx;
     this.elementUtils = elementUtils;
@@ -72,7 +72,6 @@ public class MoreElements implements Elements {
     return elementUtils.getPackageElement(name);
   }
 
-  // delegate to elementUtils
   @Override
   public TypeElement getTypeElement(CharSequence canonicalName) {
     assertNotNull(canonicalName);
