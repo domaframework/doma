@@ -903,6 +903,18 @@ public abstract class ComparisonDeclaration {
     runBlock(block, Criterion.Or::new);
   }
 
+  public <EXTENSION> void extension(
+      Function<UserDefinedCriteriaContext, EXTENSION> construct,
+      Consumer<EXTENSION> extensionDeclaration) {
+    Objects.requireNonNull(construct);
+    Objects.requireNonNull(extensionDeclaration);
+
+    var extension =
+        construct.apply(
+            contextDeclaration -> this.add(new Criterion.UserDefined(contextDeclaration)));
+    extensionDeclaration.accept(extension);
+  }
+
   /**
    * Add a {@code NOT} operator.
    *
