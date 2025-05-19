@@ -688,6 +688,26 @@ internal class KQueryDslSqlSelectTest {
     }
 
     @Test
+    fun where_extension() {
+        val e = Emp_()
+        val stmt = dsl
+            .from(e)
+            .where {
+                eq(e.id, 1)
+                extension(::MyExtension) {
+                    likeMultiple(e.name, "A", "B", "C")
+                    eq(e.id, 1)
+                }
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ where t0_.ID = 1 and t0_.NAME like '%A%' escape '\\' and t0_.NAME like '%B%' escape '\\' and t0_.NAME like '%C%' escape '\\' and t0_.ID = 1",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
     fun innerJoin() {
         val e = Emp_()
         val d = Dept_()
