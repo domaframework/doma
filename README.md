@@ -13,6 +13,7 @@ Doma is a database access framework for Java with several notable strengths:
 [![javadoc](https://javadoc.io/badge2/org.seasar.doma/doma-core/javadoc.svg)](https://javadoc.io/doc/org.seasar.doma/doma-core)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-green.svg)](https://domaframework.zulipchat.com)
 [![Twitter](https://img.shields.io/badge/twitter-@domaframework-blue.svg?style=flat)](https://twitter.com/domaframework)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/domaframework/doma)
 
 ### Backers
 If you use Doma in your project or enterprise and
