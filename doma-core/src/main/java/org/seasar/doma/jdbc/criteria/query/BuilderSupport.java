@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.seasar.doma.DomaException;
 import org.seasar.doma.expr.ExpressionFunctions;
@@ -36,6 +37,7 @@ import org.seasar.doma.jdbc.criteria.context.Projection;
 import org.seasar.doma.jdbc.criteria.context.SelectContext;
 import org.seasar.doma.jdbc.criteria.context.SetOperationContext;
 import org.seasar.doma.jdbc.criteria.context.WithContext;
+import org.seasar.doma.jdbc.criteria.declaration.UserDefinedCriteriaContext;
 import org.seasar.doma.jdbc.criteria.expression.AggregateFunction;
 import org.seasar.doma.jdbc.criteria.expression.AliasExpression;
 import org.seasar.doma.jdbc.criteria.expression.ArithmeticExpression;
@@ -49,6 +51,7 @@ import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
+import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.entity.EntityPropertyType;
 import org.seasar.doma.jdbc.entity.EntityType;
 import org.seasar.doma.jdbc.entity.Property;
@@ -65,6 +68,7 @@ public class BuilderSupport {
   private final PropertyMetamodelVisitor propertyMetamodelVisitor;
   private final UserDefinedExpressionDeclarationItemVisitor
       userDefinedExpressionDeclarationItemVisitor;
+  private final UserDefinedCriteriaContextBuilder userDefinedCriteriaContextBuilder;
 
   public BuilderSupport(
       Config config,
@@ -79,6 +83,7 @@ public class BuilderSupport {
     this.propertyMetamodelVisitor = new PropertyMetamodelVisitor();
     this.userDefinedExpressionDeclarationItemVisitor =
         new UserDefinedExpressionDeclarationItemVisitor();
+    this.userDefinedCriteriaContextBuilder = new UserDefinedCriteriaContextBuilder();
   }
 
   public void with(List<WithContext> withContexts) {
@@ -424,6 +429,11 @@ public class BuilderSupport {
       not(criterion.criterionList);
     }
 
+    @Override
+    public void visit(Criterion.UserDefined criterion) {
+      extension(criterion.contextDeclaration);
+    }
+
     private void comparison(Operand.Prop left, Operand right, String op) {
       column(left);
       buf.appendSql(" " + op + " ");
@@ -690,6 +700,10 @@ public class BuilderSupport {
         buf.appendSql(")");
       }
     }
+
+    private void extension(Consumer<UserDefinedCriteriaContext.Builder> contextDeclaration) {
+      contextDeclaration.accept(userDefinedCriteriaContextBuilder);
+    }
   }
 
   class PropertyMetamodelVisitor
@@ -922,6 +936,30 @@ public class BuilderSupport {
     @Override
     public void visit(UserDefinedExpression.DeclarationItem.CutbackSql cutbackSql) {
       buf.cutBackSql(cutbackSql.get());
+    }
+  }
+
+  class UserDefinedCriteriaContextBuilder implements UserDefinedCriteriaContext.Builder {
+    @Override
+    public void appendSql(String sql) {
+      Objects.requireNonNull(sql);
+      buf.appendSql(sql);
+    }
+
+    @Override
+    public void cutBackSql(int length) {
+      buf.cutBackSql(length);
+    }
+
+    @Override
+    public void appendExpression(PropertyMetamodel<?> propertyMetamodel) {
+      Objects.requireNonNull(propertyMetamodel);
+      propertyMetamodel.accept(propertyMetamodelVisitor);
+    }
+
+    @Override
+    public Dialect getDialect() {
+      return config.getDialect();
     }
   }
 }
