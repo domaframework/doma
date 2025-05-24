@@ -246,6 +246,13 @@ configure(integrationTestProjects) {
             options.encoding = encoding
         }
 
+        compileJava {
+            val ap: String by project
+            ap.split(",").map { it.trim() }.filter { it.isNotEmpty() }.map { "-A$it" }.forEach {
+                options.compilerArgs.add(it)
+            }
+        }
+
         compileTestJava {
             options.compilerArgs.addAll(listOf("-proc:none"))
         }
