@@ -255,7 +255,7 @@ public class CtTypes {
     return new ConfigCtType(ctx, type);
   }
 
-  public DomainCtType newDomainCtType(TypeMirror type) {
+  private DomainCtType newDomainCtType(TypeMirror type) {
     assertNotNull(type);
 
     if (type.getKind() == TypeKind.ARRAY) {
@@ -524,7 +524,7 @@ public class CtTypes {
     return new FunctionCtType(ctx, type, targetCtType, returnCtType);
   }
 
-  public IterableCtType newIterableCtType(TypeMirror type) {
+  private IterableCtType newIterableCtType(TypeMirror type) {
     assertNotNull(type);
     DeclaredType declaredType = getSuperDeclaredType(type, Iterable.class);
     if (declaredType == null) {
@@ -535,7 +535,7 @@ public class CtTypes {
     return new IterableCtType(ctx, type, elementCtType);
   }
 
-  public ArrayCtType newArrayCtType(TypeMirror type) {
+  private ArrayCtType newArrayCtType(TypeMirror type) {
     assertNotNull(type);
     if (type.getKind() != TypeKind.ARRAY) {
       return null;
