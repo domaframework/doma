@@ -15,7 +15,6 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
@@ -32,7 +31,7 @@ import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.message.Message;
 
-public class ExternalDomainCtTypeFactory {
+class ExternalDomainCtTypeFactory {
   private final RoundContext ctx;
 
   public ExternalDomainCtTypeFactory(RoundContext ctx) {
@@ -48,13 +47,19 @@ public class ExternalDomainCtTypeFactory {
     if (basicCtType == null) {
       return null;
     }
+
     if (type.getKind() == TypeKind.ARRAY) {
       return newDomainCtType(type, basicCtType, Collections.emptyList());
     } else {
-      var typeArgCtTypes = getTypeArgCtTypes(type);
-      if (typeArgCtTypes == null) {
+      var typeElement = ctx.getMoreTypes().toTypeElement(type);
+      if (typeElement == null) {
         return null;
       }
+      var declaredType = ctx.getMoreTypes().toDeclaredType(type);
+      if (declaredType == null) {
+        return null;
+      }
+      var typeArgCtTypes = ctx.getCtTypes().getAllTypeArguments(typeElement, declaredType);
       return newDomainCtType(type, basicCtType, typeArgCtTypes);
     }
   }
@@ -183,25 +188,6 @@ public class ExternalDomainCtTypeFactory {
       }
     }
     return null;
-  }
-
-  private List<CtType> getTypeArgCtTypes(TypeMirror type) {
-    var typeElement = ctx.getMoreTypes().toTypeElement(type);
-    if (typeElement == null) {
-      return null;
-    }
-    var declaredType = ctx.getMoreTypes().toDeclaredType(type);
-    if (declaredType == null) {
-      return null;
-    }
-    var typeArgs = declaredType.getTypeArguments().iterator();
-    return typeElement.getTypeParameters().stream()
-        .map(
-            __ ->
-                typeArgs.hasNext()
-                    ? ctx.getCtTypes().newCtType(typeArgs.next())
-                    : ctx.getCtTypes().newNoneCtType())
-        .collect(toList());
   }
 
   private DomainCtType newDomainCtType(

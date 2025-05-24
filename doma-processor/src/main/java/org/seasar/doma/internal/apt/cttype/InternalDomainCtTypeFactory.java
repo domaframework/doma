@@ -15,8 +15,6 @@
  */
 package org.seasar.doma.internal.apt.cttype;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.Objects;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -87,15 +85,7 @@ class InternalDomainCtTypeFactory {
     if (declaredType == null) {
       return null;
     }
-    var typeArgs = declaredType.getTypeArguments().iterator();
-    var typeArgCtTypes =
-        typeElement.getTypeParameters().stream()
-            .map(
-                __ ->
-                    typeArgs.hasNext()
-                        ? ctx.getCtTypes().newCtType(typeArgs.next())
-                        : ctx.getCtTypes().newNoneCtType())
-            .collect(toList());
+    var typeArgCtTypes = ctx.getCtTypes().getAllTypeArguments(typeElement, declaredType);
     var binaryName = ctx.getMoreElements().getBinaryName(typeElement);
     var typeClassName = ClassNames.newDomainTypeClassName(binaryName);
     return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, typeClassName);
