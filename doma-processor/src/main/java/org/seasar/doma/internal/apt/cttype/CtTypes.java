@@ -18,7 +18,6 @@ package org.seasar.doma.internal.apt.cttype;
 import static java.util.stream.Collectors.toList;
 import static org.seasar.doma.internal.util.AssertionUtil.assertEquals;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -60,7 +59,6 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.SimpleTypeVisitor14;
 import org.seasar.doma.DataType;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
@@ -83,123 +81,89 @@ import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.domain.DomainConverter;
 import org.seasar.doma.jdbc.domain.DomainType;
 import org.seasar.doma.message.Message;
-import org.seasar.doma.wrapper.ArrayWrapper;
-import org.seasar.doma.wrapper.BigDecimalWrapper;
-import org.seasar.doma.wrapper.BigIntegerWrapper;
-import org.seasar.doma.wrapper.BlobWrapper;
-import org.seasar.doma.wrapper.BooleanWrapper;
-import org.seasar.doma.wrapper.ByteWrapper;
-import org.seasar.doma.wrapper.BytesWrapper;
-import org.seasar.doma.wrapper.ClobWrapper;
-import org.seasar.doma.wrapper.DateWrapper;
-import org.seasar.doma.wrapper.DoubleWrapper;
-import org.seasar.doma.wrapper.EnumWrapper;
-import org.seasar.doma.wrapper.FloatWrapper;
-import org.seasar.doma.wrapper.IntegerWrapper;
-import org.seasar.doma.wrapper.LocalDateTimeWrapper;
-import org.seasar.doma.wrapper.LocalDateWrapper;
-import org.seasar.doma.wrapper.LocalTimeWrapper;
-import org.seasar.doma.wrapper.LongWrapper;
-import org.seasar.doma.wrapper.NClobWrapper;
-import org.seasar.doma.wrapper.ObjectWrapper;
-import org.seasar.doma.wrapper.PrimitiveBooleanWrapper;
-import org.seasar.doma.wrapper.PrimitiveByteWrapper;
-import org.seasar.doma.wrapper.PrimitiveDoubleWrapper;
-import org.seasar.doma.wrapper.PrimitiveFloatWrapper;
-import org.seasar.doma.wrapper.PrimitiveIntWrapper;
-import org.seasar.doma.wrapper.PrimitiveLongWrapper;
-import org.seasar.doma.wrapper.PrimitiveShortWrapper;
-import org.seasar.doma.wrapper.SQLXMLWrapper;
-import org.seasar.doma.wrapper.ShortWrapper;
-import org.seasar.doma.wrapper.StringWrapper;
-import org.seasar.doma.wrapper.TimeWrapper;
-import org.seasar.doma.wrapper.TimestampWrapper;
-import org.seasar.doma.wrapper.UtilDateWrapper;
 
 public class CtTypes {
 
-  private final Map<String, Function<TypeMirror, CtType>> nameToTypeHandlers =
-      Map.ofEntries(
-          // Basic types (except enum types)
-          Map.entry(Array.class.getName(), this::newBasicCtType),
-          Map.entry(BigDecimal.class.getName(), this::newBasicCtType),
-          Map.entry(BigInteger.class.getName(), this::newBasicCtType),
-          Map.entry(Blob.class.getName(), this::newBasicCtType),
-          Map.entry(Boolean.class.getName(), this::newBasicCtType),
-          Map.entry(Byte.class.getName(), this::newBasicCtType),
-          Map.entry(Clob.class.getName(), this::newBasicCtType),
-          Map.entry(Date.class.getName(), this::newBasicCtType),
-          Map.entry(java.util.Date.class.getName(), this::newBasicCtType),
-          Map.entry(Double.class.getName(), this::newBasicCtType),
-          Map.entry(Float.class.getName(), this::newBasicCtType),
-          Map.entry(Integer.class.getName(), this::newBasicCtType),
-          Map.entry(LocalDate.class.getName(), this::newBasicCtType),
-          Map.entry(LocalDateTime.class.getName(), this::newBasicCtType),
-          Map.entry(LocalTime.class.getName(), this::newBasicCtType),
-          Map.entry(Long.class.getName(), this::newBasicCtType),
-          Map.entry(NClob.class.getName(), this::newBasicCtType),
-          Map.entry(Object.class.getName(), this::newBasicCtType),
-          Map.entry(String.class.getName(), this::newBasicCtType),
-          Map.entry(Short.class.getName(), this::newBasicCtType),
-          Map.entry(SQLXML.class.getName(), this::newBasicCtType),
-          Map.entry(Time.class.getName(), this::newBasicCtType),
-          Map.entry(Timestamp.class.getName(), this::newBasicCtType),
-          // Iterable types
-          Map.entry(Iterable.class.getName(), this::newIterableCtType),
-          Map.entry(Collection.class.getName(), this::newIterableCtType),
-          Map.entry(List.class.getName(), this::newIterableCtType),
-          Map.entry(Set.class.getName(), this::newIterableCtType),
-          // Others
-          Map.entry(Optional.class.getName(), this::newOptionalCtType),
-          Map.entry(OptionalDouble.class.getName(), this::newOptionalDoubleCtType),
-          Map.entry(OptionalInt.class.getName(), this::newOptionalIntCtType),
-          Map.entry(OptionalLong.class.getName(), this::newOptionalLongCtType),
-          Map.entry(Map.class.getName(), this::newMapCtType),
-          Map.entry(Stream.class.getName(), this::newStreamCtType),
-          Map.entry(Collector.class.getName(), this::newCollectorCtType),
-          Map.entry(SelectOptions.class.getName(), this::newSelectOptionsCtType),
-          Map.entry(Function.class.getName(), this::newFunctionCtType),
-          Map.entry(BiFunction.class.getName(), this::newBiFunctionCtType),
-          Map.entry(Reference.class.getName(), this::newReferenceCtType),
-          Map.entry(PreparedSql.class.getName(), this::newPreparedSqlCtType),
-          Map.entry(Config.class.getName(), this::newConfigCtType),
-          Map.entry(Result.class.getName(), this::newResultCtType),
-          Map.entry(BatchResult.class.getName(), this::newBatchResultCtType),
-          Map.entry(MultiResult.class.getName(), this::newMultiResultCtType));
-
-  private final Map<TypeKind, Function<TypeMirror, CtType>> primitiveKindToTypeHandlers =
-      Map.ofEntries(
-          Map.entry(TypeKind.BOOLEAN, this::newBasicCtType),
-          Map.entry(TypeKind.BYTE, this::newBasicCtType),
-          Map.entry(TypeKind.DOUBLE, this::newBasicCtType),
-          Map.entry(TypeKind.FLOAT, this::newBasicCtType),
-          Map.entry(TypeKind.INT, this::newBasicCtType),
-          Map.entry(TypeKind.LONG, this::newBasicCtType),
-          Map.entry(TypeKind.SHORT, this::newBasicCtType));
-
-  private final List<Function<TypeMirror, CtType>> typeHandlers =
-      List.of(
-          // Check external domain types first
-          this::newExternalDomainCtType,
-          // types that implement Iterable
-          this::newIterableCtType,
-          // enum types, byte array type or types that implement Array/Blob/Clob/NClob/SQLXml
-          this::newBasicCtType,
-          // types that implement Function
-          this::newFunctionCtType,
-          // types that implement Collector
-          this::newCollectorCtType,
-          // types that extend Reference
-          this::newReferenceCtType,
-          // types that implement BiFunction
-          this::newBiFunctionCtType,
-          // Array types (except byte array types)
-          this::newArrayCtType);
-
   private final RoundContext ctx;
+  private final BasicCtTypeFactory basicCtTypeFactory;
+  private final Map<String, Function<TypeMirror, CtType>> nameToTypeHandlers;
+  private final List<Function<TypeMirror, CtType>> typeHandlers;
 
   public CtTypes(RoundContext ctx) {
     this.ctx = Objects.requireNonNull(ctx);
+    this.basicCtTypeFactory = new BasicCtTypeFactory(ctx);
+    this.nameToTypeHandlers = createNameToTypeHandlers();
+    this.typeHandlers = createTypeHandlers();
+  }
+
+  private Map<String, Function<TypeMirror, CtType>> createNameToTypeHandlers() {
+    return Map.ofEntries(
+        // Basic types (except enum types)
+        Map.entry(Array.class.getName(), basicCtTypeFactory::newArrayCtType),
+        Map.entry(BigDecimal.class.getName(), basicCtTypeFactory::newBigDecimalCtType),
+        Map.entry(BigInteger.class.getName(), basicCtTypeFactory::newBigIntegerCtType),
+        Map.entry(Blob.class.getName(), basicCtTypeFactory::newBlobCtType),
+        Map.entry(Boolean.class.getName(), basicCtTypeFactory::newBooleanCtType),
+        Map.entry(Byte.class.getName(), basicCtTypeFactory::newByteCtType),
+        Map.entry(Clob.class.getName(), basicCtTypeFactory::newClobCtType),
+        Map.entry(Date.class.getName(), basicCtTypeFactory::newDateCtType),
+        Map.entry(Double.class.getName(), basicCtTypeFactory::newDoubleCtType),
+        Map.entry(Float.class.getName(), basicCtTypeFactory::newFloatCtType),
+        Map.entry(Integer.class.getName(), basicCtTypeFactory::newIntegerCtType),
+        Map.entry(LocalDate.class.getName(), basicCtTypeFactory::newLocalDateCtType),
+        Map.entry(LocalDateTime.class.getName(), basicCtTypeFactory::newLocalDateTimeCtType),
+        Map.entry(LocalTime.class.getName(), basicCtTypeFactory::newLocalTimeCtType),
+        Map.entry(Long.class.getName(), basicCtTypeFactory::newLongCtType),
+        Map.entry(NClob.class.getName(), basicCtTypeFactory::newNClobCtType),
+        Map.entry(Object.class.getName(), basicCtTypeFactory::newObjectCtType),
+        Map.entry(String.class.getName(), basicCtTypeFactory::newStringCtType),
+        Map.entry(Short.class.getName(), basicCtTypeFactory::newShortCtType),
+        Map.entry(SQLXML.class.getName(), basicCtTypeFactory::newSQLXMLCtType),
+        Map.entry(Time.class.getName(), basicCtTypeFactory::newTimeCtType),
+        Map.entry(Timestamp.class.getName(), basicCtTypeFactory::newTimestampCtType),
+        Map.entry(java.util.Date.class.getName(), basicCtTypeFactory::newUtilDateCtType),
+        // Iterable types
+        Map.entry(Iterable.class.getName(), this::newIterableCtType),
+        Map.entry(Collection.class.getName(), this::newIterableCtType),
+        Map.entry(List.class.getName(), this::newIterableCtType),
+        Map.entry(Set.class.getName(), this::newIterableCtType),
+        // Others
+        Map.entry(Optional.class.getName(), this::newOptionalCtType),
+        Map.entry(OptionalDouble.class.getName(), this::newOptionalDoubleCtType),
+        Map.entry(OptionalInt.class.getName(), this::newOptionalIntCtType),
+        Map.entry(OptionalLong.class.getName(), this::newOptionalLongCtType),
+        Map.entry(Map.class.getName(), this::newMapCtType),
+        Map.entry(Stream.class.getName(), this::newStreamCtType),
+        Map.entry(Collector.class.getName(), this::newCollectorCtType),
+        Map.entry(SelectOptions.class.getName(), this::newSelectOptionsCtType),
+        Map.entry(Function.class.getName(), this::newFunctionCtType),
+        Map.entry(BiFunction.class.getName(), this::newBiFunctionCtType),
+        Map.entry(Reference.class.getName(), this::newReferenceCtType),
+        Map.entry(PreparedSql.class.getName(), this::newPreparedSqlCtType),
+        Map.entry(Config.class.getName(), this::newConfigCtType),
+        Map.entry(Result.class.getName(), this::newResultCtType),
+        Map.entry(BatchResult.class.getName(), this::newBatchResultCtType),
+        Map.entry(MultiResult.class.getName(), this::newMultiResultCtType));
+  }
+
+  private List<Function<TypeMirror, CtType>> createTypeHandlers() {
+    // Check external domain types first
+    return List.of(
+        this::newExternalDomainCtType,
+        // types that implement Iterable
+        this::newIterableCtType,
+        // enum types, byte array type or types that implement Array/Blob/Clob/NClob/SQLXml
+        this::newBasicCtType,
+        // types that implement Function
+        this::newFunctionCtType,
+        // types that implement Collector
+        this::newCollectorCtType,
+        // types that extend Reference
+        this::newReferenceCtType,
+        // types that implement BiFunction
+        this::newBiFunctionCtType,
+        // Array types (except byte array types)
+        this::newArrayCtType);
   }
 
   public AggregateStrategyCtType newAggregateStrategyCtType(TypeMirror type) {
@@ -239,15 +203,7 @@ public class CtTypes {
 
   public BasicCtType newBasicCtType(TypeMirror type) {
     assertNotNull(type);
-    var wrapperClass = type.accept(new WrapperClassResolver(), null);
-    if (wrapperClass == null) {
-      return null;
-    }
-    var wrapperTypeElement = ctx.getMoreElements().getTypeElement(wrapperClass);
-    if (wrapperTypeElement == null) {
-      return null;
-    }
-    return new BasicCtType(ctx, type, wrapperTypeElement);
+    return basicCtTypeFactory.newCtType(type);
   }
 
   public BiFunctionCtType newBiFunctionCtType(TypeMirror type) {
@@ -750,7 +706,7 @@ public class CtTypes {
     // handle primitive types first
     if (kind.isPrimitive()) {
       // find by primitive type kind
-      var result = findCtTypeByPrimitiveTypeKind(type);
+      var result = findCtTypeByPrimitiveTypeKind(type, kind);
       if (result != null) {
         return result;
       }
@@ -824,13 +780,17 @@ public class CtTypes {
     return null;
   }
 
-  private CtType findCtTypeByPrimitiveTypeKind(TypeMirror type) {
-    var handler = primitiveKindToTypeHandlers.get(type.getKind());
-    if (handler != null) {
-      return handler.apply(type);
-    }
-    // not found
-    return null;
+  private CtType findCtTypeByPrimitiveTypeKind(TypeMirror type, TypeKind kind) {
+    return switch (kind) {
+      case BOOLEAN -> basicCtTypeFactory.newPrimitiveBooleanCtType(type);
+      case BYTE -> basicCtTypeFactory.newPrimitiveByteCtType(type);
+      case DOUBLE -> basicCtTypeFactory.newPrimitiveDoubleCtType(type);
+      case FLOAT -> basicCtTypeFactory.newPrimitiveFloatCtType(type);
+      case INT -> basicCtTypeFactory.newPrimitiveIntCtType(type);
+      case LONG -> basicCtTypeFactory.newPrimitiveLongCtType(type);
+      case SHORT -> basicCtTypeFactory.newPrimitiveShortCtType(type);
+      default -> null;
+    };
   }
 
   private DeclaredType getSuperDeclaredType(TypeMirror type, Class<?> superclass) {
@@ -847,113 +807,5 @@ public class CtTypes {
       }
     }
     return null;
-  }
-
-  private class WrapperClassResolver extends SimpleTypeVisitor14<Class<?>, Void> {
-
-    @Override
-    public Class<?> visitArray(ArrayType t, Void p) {
-      if (t.getComponentType().getKind() == TypeKind.BYTE) {
-        return BytesWrapper.class;
-      }
-      return null;
-    }
-
-    @Override
-    public Class<?> visitDeclared(DeclaredType t, Void p) {
-      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(t);
-      if (typeElement == null) {
-        return null;
-      }
-      if (typeElement.getKind() == ElementKind.ENUM) {
-        return EnumWrapper.class;
-      }
-      String name = typeElement.getQualifiedName().toString();
-      if (String.class.getName().equals(name)) {
-        return StringWrapper.class;
-      }
-      if (Boolean.class.getName().equals(name)) {
-        return BooleanWrapper.class;
-      }
-      if (Byte.class.getName().equals(name)) {
-        return ByteWrapper.class;
-      }
-      if (Short.class.getName().equals(name)) {
-        return ShortWrapper.class;
-      }
-      if (Integer.class.getName().equals(name)) {
-        return IntegerWrapper.class;
-      }
-      if (Long.class.getName().equals(name)) {
-        return LongWrapper.class;
-      }
-      if (Float.class.getName().equals(name)) {
-        return FloatWrapper.class;
-      }
-      if (Double.class.getName().equals(name)) {
-        return DoubleWrapper.class;
-      }
-      if (Object.class.getName().equals(name)) {
-        return ObjectWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, BigDecimal.class)) {
-        return BigDecimalWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, BigInteger.class)) {
-        return BigIntegerWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Time.class)) {
-        return TimeWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Timestamp.class)) {
-        return TimestampWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Date.class)) {
-        return DateWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, java.util.Date.class)) {
-        return UtilDateWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalTime.class)) {
-        return LocalTimeWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalDateTime.class)) {
-        return LocalDateTimeWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, LocalDate.class)) {
-        return LocalDateWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Array.class)) {
-        return ArrayWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Blob.class)) {
-        return BlobWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, NClob.class)) {
-        return NClobWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, Clob.class)) {
-        return ClobWrapper.class;
-      }
-      if (ctx.getMoreTypes().isAssignableWithErasure(t, SQLXML.class)) {
-        return SQLXMLWrapper.class;
-      }
-      return null;
-    }
-
-    @Override
-    public Class<?> visitPrimitive(PrimitiveType t, Void p) {
-      return switch (t.getKind()) {
-        case BOOLEAN -> PrimitiveBooleanWrapper.class;
-        case BYTE -> PrimitiveByteWrapper.class;
-        case SHORT -> PrimitiveShortWrapper.class;
-        case INT -> PrimitiveIntWrapper.class;
-        case LONG -> PrimitiveLongWrapper.class;
-        case FLOAT -> PrimitiveFloatWrapper.class;
-        case DOUBLE -> PrimitiveDoubleWrapper.class;
-        case CHAR -> null;
-        default -> assertUnreachable();
-      };
-    }
   }
 }
