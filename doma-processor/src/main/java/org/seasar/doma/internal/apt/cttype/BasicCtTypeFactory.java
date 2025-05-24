@@ -225,7 +225,7 @@ class BasicCtTypeFactory {
     return new BasicCtType(ctx, type, wrapperTypeElement);
   }
 
-  BasicCtType newCtType(TypeMirror type) {
+  BasicCtType newBasicCtType(TypeMirror type) {
     return type.accept(new BasicCtTypeResolver(), null);
   }
 
