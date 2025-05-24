@@ -300,7 +300,7 @@ configure(integrationTestProjects) {
         }
 
         register("testAll") {
-            dependsOn(h2, mysql, oracle, postgresql, sqlserver)
+            dependsOn(h2, mysql, oracle, postgresql, sqlite, sqlserver)
         }
     }
 }
