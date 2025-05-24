@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.sql.Blob;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.RoundContext;
@@ -30,11 +31,8 @@ public class BlobCreateQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    BlobFactoryAnnot blobFactoryAnnot = ctx.getAnnotations().newBlobFactoryAnnot(methodElement);
-    if (blobFactoryAnnot == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    BlobFactoryAnnot blobFactoryAnnot = ctx.getAnnotations().newBlobFactoryAnnot(annotation);
     BlobCreateQueryMeta queryMeta = new BlobCreateQueryMeta(daoElement, methodElement);
     queryMeta.setBlobFactoryAnnot(blobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.BLOB_FACTORY);

@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -28,7 +29,7 @@ public class DefaultQueryMetaFactory extends AbstractQueryMetaFactory<DefaultQue
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
     boolean isVirtualDefaultMethod =
         ctx.getMoreElements().isVirtualDefaultMethod(daoElement, methodElement);
     if (!isVirtualDefaultMethod && !methodElement.isDefault()) {

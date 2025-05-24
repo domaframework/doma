@@ -17,6 +17,7 @@ package org.seasar.doma.internal.apt.meta.query;
 
 import java.sql.Array;
 import java.util.List;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -35,11 +36,8 @@ public class ArrayCreateQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    ArrayFactoryAnnot arrayFactoryAnnot = ctx.getAnnotations().newArrayFactoryAnnot(methodElement);
-    if (arrayFactoryAnnot == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    ArrayFactoryAnnot arrayFactoryAnnot = ctx.getAnnotations().newArrayFactoryAnnot(annotation);
     ArrayCreateQueryMeta queryMeta = new ArrayCreateQueryMeta(daoElement, methodElement);
     queryMeta.setArrayFactoryAnnot(arrayFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.ARRAY_FACTORY);

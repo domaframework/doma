@@ -16,13 +16,14 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.List;
+import java.util.Objects;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ModifyAnnot;
-import org.seasar.doma.internal.apt.annot.SqlAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EntityCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
@@ -30,17 +31,23 @@ import org.seasar.doma.message.Message;
 
 public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoModifyQueryMeta> {
 
+  private final ModifyAnnot modifyAnnot;
+  private final QueryKind queryKind;
+
   public AutoModifyQueryMetaFactory(
-      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx,
+      TypeElement daoElement,
+      ExecutableElement methodElement,
+      ModifyAnnot modifyAnnot,
+      QueryKind queryKind) {
     super(ctx, daoElement, methodElement);
+    this.modifyAnnot = Objects.requireNonNull(modifyAnnot);
+    this.queryKind = Objects.requireNonNull(queryKind);
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    AutoModifyQueryMeta queryMeta = createAutoModifyQueryMeta();
-    if (queryMeta == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    AutoModifyQueryMeta queryMeta = createAutoModifyQueryMeta(annotation);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
     doReturnType(queryMeta);
@@ -48,31 +55,11 @@ public class AutoModifyQueryMetaFactory extends AbstractQueryMetaFactory<AutoMod
     return queryMeta;
   }
 
-  private AutoModifyQueryMeta createAutoModifyQueryMeta() {
-    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
-    if (sqlAnnot != null) {
-      return null;
-    }
-    AutoModifyQueryMeta queryMeta = new AutoModifyQueryMeta(daoElement, methodElement);
-    ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.AUTO_INSERT);
-      return queryMeta;
-    }
-    modifyAnnot = ctx.getAnnotations().newUpdateAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.AUTO_UPDATE);
-      return queryMeta;
-    }
-    modifyAnnot = ctx.getAnnotations().newDeleteAnnot(methodElement);
-    if (modifyAnnot != null && !modifyAnnot.getSqlFileValue()) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.AUTO_DELETE);
-      return queryMeta;
-    }
-    return null;
+  private AutoModifyQueryMeta createAutoModifyQueryMeta(AnnotationMirror annotation) {
+    var queryMeta = new AutoModifyQueryMeta(daoElement, methodElement);
+    queryMeta.setModifyAnnot(modifyAnnot);
+    queryMeta.setQueryKind(queryKind);
+    return queryMeta;
   }
 
   @Override

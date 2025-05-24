@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.io.File;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptException;
@@ -34,8 +35,8 @@ public class SqlFileScriptQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    SqlFileScriptQueryMeta queryMeta = createSqlFileScriptQueryMeta();
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    SqlFileScriptQueryMeta queryMeta = createSqlFileScriptQueryMeta(annotation);
     if (queryMeta == null) {
       return null;
     }
@@ -47,9 +48,9 @@ public class SqlFileScriptQueryMetaFactory
     return queryMeta;
   }
 
-  private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta() {
+  private SqlFileScriptQueryMeta createSqlFileScriptQueryMeta(AnnotationMirror annotation) {
     SqlFileScriptQueryMeta queryMeta = new SqlFileScriptQueryMeta(daoElement, methodElement);
-    ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(methodElement);
+    ScriptAnnot scriptAnnot = ctx.getAnnotations().newScriptAnnot(annotation);
     if (scriptAnnot == null) {
       return null;
     }

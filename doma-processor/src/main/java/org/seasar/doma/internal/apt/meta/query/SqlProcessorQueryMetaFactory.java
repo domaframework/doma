@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -39,8 +40,8 @@ public class SqlProcessorQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    SqlProcessorQueryMeta queryMeta = createSqlContentQueryMeta();
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    SqlProcessorQueryMeta queryMeta = createSqlContentQueryMeta(annotation);
     if (queryMeta == null) {
       return null;
     }
@@ -52,8 +53,8 @@ public class SqlProcessorQueryMetaFactory
     return queryMeta;
   }
 
-  private SqlProcessorQueryMeta createSqlContentQueryMeta() {
-    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(methodElement);
+  private SqlProcessorQueryMeta createSqlContentQueryMeta(AnnotationMirror annotation) {
+    SqlProcessorAnnot sqlProcessorAnnot = ctx.getAnnotations().newSqlProcessorAnnot(annotation);
     if (sqlProcessorAnnot == null) {
       return null;
     }

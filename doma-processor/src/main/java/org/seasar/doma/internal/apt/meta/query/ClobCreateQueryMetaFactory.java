@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.sql.Clob;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.RoundContext;
@@ -30,11 +31,8 @@ public class ClobCreateQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    ClobFactoryAnnot clobFactoryAnnot = ctx.getAnnotations().newClobFactoryAnnot(methodElement);
-    if (clobFactoryAnnot == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    ClobFactoryAnnot clobFactoryAnnot = ctx.getAnnotations().newClobFactoryAnnot(annotation);
     ClobCreateQueryMeta queryMeta = new ClobCreateQueryMeta(daoElement, methodElement);
     queryMeta.setClobFactoryAnnot(clobFactoryAnnot);
     queryMeta.setQueryKind(QueryKind.CLOB_FACTORY);

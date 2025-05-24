@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.apt.meta.query;
 
 import java.util.List;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -38,11 +39,8 @@ public class AutoMultiInsertQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    AutoMultiInsertQueryMeta queryMeta = createAutoMultiInsertQueryMeta();
-    if (queryMeta == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    AutoMultiInsertQueryMeta queryMeta = createAutoMultiInsertQueryMeta(annotation);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
     doReturnType(queryMeta);
@@ -50,15 +48,12 @@ public class AutoMultiInsertQueryMetaFactory
     return queryMeta;
   }
 
-  private AutoMultiInsertQueryMeta createAutoMultiInsertQueryMeta() {
+  private AutoMultiInsertQueryMeta createAutoMultiInsertQueryMeta(AnnotationMirror annotation) {
     AutoMultiInsertQueryMeta queryMeta = new AutoMultiInsertQueryMeta(daoElement, methodElement);
-    MultiInsertAnnot insertAnnot = ctx.getAnnotations().newMultiInsertAnnot(methodElement);
-    if (insertAnnot != null) {
-      queryMeta.setMultiInsertAnnot(insertAnnot);
-      queryMeta.setQueryKind(QueryKind.AUTO_MULTI_INSERT);
-      return queryMeta;
-    }
-    return null;
+    MultiInsertAnnot insertAnnot = ctx.getAnnotations().newMultiInsertAnnot(annotation);
+    queryMeta.setMultiInsertAnnot(insertAnnot);
+    queryMeta.setQueryKind(QueryKind.AUTO_MULTI_INSERT);
+    return queryMeta;
   }
 
   @Override

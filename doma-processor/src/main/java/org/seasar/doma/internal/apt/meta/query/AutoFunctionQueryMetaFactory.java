@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptException;
@@ -43,11 +44,9 @@ public class AutoFunctionQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    FunctionAnnot functionAnnot = ctx.getAnnotations().newFunctionAnnot(methodElement);
-    if (functionAnnot == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    FunctionAnnot functionAnnot =
+        ctx.getAnnotations().newFunctionAnnot(annotation, methodElement.getSimpleName().toString());
     AutoFunctionQueryMeta queryMeta = new AutoFunctionQueryMeta(daoElement, methodElement);
     queryMeta.setFunctionAnnot(functionAnnot);
     queryMeta.setQueryKind(QueryKind.AUTO_FUNCTION);
