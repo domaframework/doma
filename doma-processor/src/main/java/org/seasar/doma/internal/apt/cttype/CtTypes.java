@@ -49,16 +49,13 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.DataType;
 import org.seasar.doma.Domain;
 import org.seasar.doma.Embeddable;
@@ -67,7 +64,6 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalOptionException;
-import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.meta.domain.ExternalDomainMeta;
@@ -86,12 +82,14 @@ public class CtTypes {
 
   private final RoundContext ctx;
   private final BasicCtTypeFactory basicCtTypeFactory;
+  private final InternalDomainCtTypeFactory internalDomainCtTypeFactory;
   private final Map<String, Function<TypeMirror, CtType>> nameToTypeHandlers;
   private final List<Function<TypeMirror, CtType>> typeHandlers;
 
   public CtTypes(RoundContext ctx) {
     this.ctx = Objects.requireNonNull(ctx);
     this.basicCtTypeFactory = new BasicCtTypeFactory(ctx);
+    this.internalDomainCtTypeFactory = new InternalDomainCtTypeFactory(ctx);
     this.nameToTypeHandlers = createNameToTypeHandlers();
     this.typeHandlers = createTypeHandlers();
   }
@@ -247,82 +245,6 @@ public class CtTypes {
       return null;
     }
     return new ConfigCtType(ctx, type);
-  }
-
-  private DomainCtType newInternalDomainCtType(
-      TypeMirror type, TypeElement typeElement, Domain domain) {
-    var valueType = getInternalDomainValueType(domain);
-    if (valueType == null) {
-      return null;
-    }
-    var basicCtType = newBasicCtType(valueType);
-    if (basicCtType == null) {
-      return null;
-    }
-    var declaredType = ctx.getMoreTypes().toDeclaredType(type);
-    if (declaredType == null) {
-      return null;
-    }
-    var typeArgs = declaredType.getTypeArguments().iterator();
-    var typeArgCtTypes =
-        typeElement.getTypeParameters().stream()
-            .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
-            .collect(toList());
-    var binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    var typeClassName = ClassNames.newDomainTypeClassName(binaryName);
-    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, typeClassName);
-  }
-
-  private DomainCtType newInternalDomainCtType(
-      TypeMirror type, TypeElement typeElement, DataType dataType) {
-    var valueType = getInternalDomainValueType(typeElement, dataType);
-    if (valueType == null) {
-      return null;
-    }
-    var basicCtType = newBasicCtType(valueType);
-    if (basicCtType == null) {
-      return null;
-    }
-    var declaredType = ctx.getMoreTypes().toDeclaredType(type);
-    if (declaredType == null) {
-      return null;
-    }
-    var typeArgs = declaredType.getTypeArguments().iterator();
-    var typeArgCtTypes =
-        typeElement.getTypeParameters().stream()
-            .map(__ -> typeArgs.hasNext() ? newCtType(typeArgs.next()) : newNoneCtType())
-            .collect(toList());
-    var binaryName = ctx.getMoreElements().getBinaryName(typeElement);
-    var typeClassName = ClassNames.newDomainTypeClassName(binaryName);
-    return new DomainCtType(ctx, type, basicCtType, typeArgCtTypes, typeClassName);
-  }
-
-  private TypeMirror getInternalDomainValueType(Domain domain) {
-    try {
-      //noinspection ResultOfMethodCallIgnored
-      domain.valueType();
-    } catch (MirroredTypeException e) {
-      return e.getTypeMirror();
-    }
-    throw new AptIllegalStateException("unreachable.");
-  }
-
-  private TypeMirror getInternalDomainValueType(TypeElement typeElement, DataType dataType) {
-    var constructors =
-        ElementFilter.constructorsIn(typeElement.getEnclosedElements()).stream()
-            .filter(c -> !c.getModifiers().contains(Modifier.PRIVATE))
-            .filter(c -> c.getParameters().size() == 1)
-            .toList();
-    if (constructors.size() != 1) {
-      throw new AptIllegalStateException(
-          String.format("%s : %d", typeElement.getQualifiedName(), constructors.size()));
-    }
-    var constructor = constructors.iterator().next();
-    var param = constructor.getParameters().iterator().next();
-    if (param == null) {
-      throw new AptIllegalStateException("param is null");
-    }
-    return param.asType();
   }
 
   private DomainCtType newExternalDomainCtType(TypeMirror type) {
@@ -588,7 +510,7 @@ public class CtTypes {
     return new MapCtType(ctx, type);
   }
 
-  private NoneCtType newNoneCtType() {
+  NoneCtType newNoneCtType() {
     TypeMirror type = ctx.getMoreTypes().getNoType(TypeKind.NONE);
     return new NoneCtType(ctx, type);
   }
@@ -743,29 +665,33 @@ public class CtTypes {
     // find by the Domain annotation
     var domain = typeElement.getAnnotation(Domain.class);
     if (domain != null) {
-      var result = newInternalDomainCtType(type, typeElement, domain);
+      var result = internalDomainCtTypeFactory.newDomainCtType(type, typeElement, domain);
       if (result != null) {
         return result;
       }
     }
+
     // find by the DataType annotation
     var dataType = typeElement.getAnnotation(DataType.class);
     if (dataType != null) {
-      var result = newInternalDomainCtType(type, typeElement, dataType);
+      var result = internalDomainCtTypeFactory.newDataTypeCtType(type, typeElement, dataType);
       if (result != null) {
         return result;
       }
     }
+
     // find by the Embeddable annotation
     var embeddable = typeElement.getAnnotation(Embeddable.class);
     if (embeddable != null) {
       return newEmbeddableCtType(type, typeElement, embeddable);
     }
+
     // find by the Entity annotation
     var entity = typeElement.getAnnotation(Entity.class);
     if (entity != null) {
       return newEntityCtType(type, typeElement, entity);
     }
+
     // not found
     return null;
   }
