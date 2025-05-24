@@ -44,7 +44,8 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testTypeParameterResolution", CriteriaHolder.class);
+                createMethodElement(
+                    ctx, target, "testTypeParameterResolution", CriteriaHolder.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
 
@@ -71,7 +72,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable", String.class);
+                createMethodElement(ctx, target, "testBindVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -95,7 +96,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable_list", List.class);
+                createMethodElement(ctx, target, "testBindVariable_list", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -119,7 +120,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable_array", String[].class);
+                createMethodElement(ctx, target, "testBindVariable_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -143,7 +144,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable", String.class);
+                createMethodElement(ctx, target, "testBindVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -167,7 +168,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable_list", List.class);
+                createMethodElement(ctx, target, "testBindVariable_list", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -191,7 +192,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testBindVariable_array", String[].class);
+                createMethodElement(ctx, target, "testBindVariable_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -215,7 +216,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testEmbeddedVariable", String.class);
+                createMethodElement(ctx, target, "testEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -238,7 +239,8 @@ class SqlValidatorTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
+            ExecutableElement methodElement =
+                createMethodElement(ctx, target, "testFor", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -264,7 +266,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testFor_array", String[].class);
+                createMethodElement(ctx, target, "testFor_array", String[].class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -289,7 +291,8 @@ class SqlValidatorTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement methodElement = createMethodElement(target, "testFor", List.class);
+            ExecutableElement methodElement =
+                createMethodElement(ctx, target, "testFor", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -321,7 +324,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testFor_notIterable", Iterator.class);
+                createMethodElement(ctx, target, "testFor_notIterable", Iterator.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -353,7 +356,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testFor_noTypeArgument", List.class);
+                createMethodElement(ctx, target, "testFor_noTypeArgument", List.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -385,7 +388,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testExpand", String.class);
+                createMethodElement(ctx, target, "testExpand", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -410,7 +413,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testExpand", String.class);
+                createMethodElement(ctx, target, "testExpand", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -441,7 +444,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testPopulate", String.class);
+                createMethodElement(ctx, target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =
@@ -465,7 +468,7 @@ class SqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testPopulate", String.class);
+                createMethodElement(ctx, target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             SqlValidator validator =

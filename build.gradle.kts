@@ -213,10 +213,6 @@ configure(modularProjects) {
             useJUnitPlatform()
         }
 
-        build {
-            dependsOn("publishToMavenLocal")
-        }
-
         withType<Sign>().configureEach {
             onlyIf { isReleaseVersion }
         }
@@ -248,6 +244,13 @@ configure(integrationTestProjects) {
     tasks {
         withType<JavaCompile> {
             options.encoding = encoding
+        }
+
+        compileJava {
+            val ap: String by project
+            ap.split(",").map { it.trim() }.filter { it.isNotEmpty() }.map { "-A$it" }.forEach {
+                options.compilerArgs.add(it)
+            }
         }
 
         compileTestJava {
@@ -297,7 +300,7 @@ configure(integrationTestProjects) {
         }
 
         register("testAll") {
-            dependsOn(h2, mysql, oracle, postgresql, sqlserver)
+            dependsOn(h2, mysql, oracle, postgresql, sqlite, sqlserver)
         }
     }
 }

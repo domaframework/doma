@@ -23,6 +23,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.ProcessingContext;
 import org.seasar.doma.internal.apt.meta.NullElementMeta;
 
@@ -49,6 +50,11 @@ public class MyAnnotationProcessor extends AbstractProcessor {
   @Override
   public SourceVersion getSupportedSourceVersion() {
     return SourceVersion.latest();
+  }
+
+  @Override
+  public Set<String> getSupportedOptions() {
+    return Set.of(Options.TEST_UNIT);
   }
 
   @Override

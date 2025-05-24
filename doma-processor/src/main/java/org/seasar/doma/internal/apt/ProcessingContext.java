@@ -18,14 +18,14 @@ package org.seasar.doma.internal.apt;
 import java.util.Objects;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class ProcessingContext {
 
   private final ProcessingEnvironment env;
 
   private boolean initialized;
-  private MoreElements moreElements;
-  private MoreTypes moreTypes;
   private Options options;
   private Reporter reporter;
   private Resources resources;
@@ -38,8 +38,6 @@ public class ProcessingContext {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
-    moreElements = new MoreElements(this, env.getElementUtils());
-    moreTypes = new MoreTypes(this, env.getTypeUtils());
     reporter = new Reporter(env.getMessager());
     resources =
         new Resources(
@@ -73,16 +71,6 @@ public class ProcessingContext {
     return roundContext;
   }
 
-  public MoreElements getMoreElements() {
-    assertInitialized();
-    return moreElements;
-  }
-
-  public MoreTypes getMoreTypes() {
-    assertInitialized();
-    return moreTypes;
-  }
-
   public Options getOptions() {
     assertInitialized();
     return options;
@@ -96,6 +84,16 @@ public class ProcessingContext {
   public Resources getResources() {
     assertInitialized();
     return resources;
+  }
+
+  public Elements getElements() {
+    assertInitialized();
+    return env.getElementUtils();
+  }
+
+  public Types getTypes() {
+    assertInitialized();
+    return env.getTypeUtils();
   }
 
   private void assertInitialized() {

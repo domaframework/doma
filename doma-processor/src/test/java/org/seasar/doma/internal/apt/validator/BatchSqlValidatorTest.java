@@ -42,7 +42,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testEmbeddedVariable", String.class);
+                createMethodElement(ctx, target, "testEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -67,7 +67,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testEmbeddedVariableSuppressed", String.class);
+                createMethodElement(ctx, target, "testEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -91,7 +91,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement methodElement = createMethodElement(target, "testIf");
+            ExecutableElement methodElement = createMethodElement(ctx, target, "testIf");
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -116,7 +116,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement methodElement = createMethodElement(target, "testIfSuppressed");
+            ExecutableElement methodElement = createMethodElement(ctx, target, "testIfSuppressed");
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -142,7 +142,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testIfAndEmbeddedVariable", String.class);
+                createMethodElement(ctx, target, "testIfAndEmbeddedVariable", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -171,7 +171,8 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testIfAndEmbeddedVariableSuppressed", String.class);
+                createMethodElement(
+                    ctx, target, "testIfAndEmbeddedVariableSuppressed", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -198,7 +199,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testPopulate", String.class);
+                createMethodElement(ctx, target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =
@@ -223,7 +224,7 @@ class BatchSqlValidatorTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement methodElement =
-                createMethodElement(target, "testPopulate", String.class);
+                createMethodElement(ctx, target, "testPopulate", String.class);
             LinkedHashMap<String, TypeMirror> parameterTypeMap =
                 createParameterTypeMap(methodElement);
             BatchSqlValidator validator =

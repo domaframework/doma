@@ -23,7 +23,6 @@ import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalarSuppliers;
-import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.wrapper.WrapperSuppliers;
 
 public class BasicCtType extends AbstractCtType {
@@ -32,12 +31,11 @@ public class BasicCtType extends AbstractCtType {
 
   private final TypeElement wrapperTypeElement;
 
-  BasicCtType(
-      RoundContext ctx, TypeMirror type, Pair<TypeElement, TypeMirror> wrapperElementAndType) {
+  BasicCtType(RoundContext ctx, TypeMirror type, TypeElement wrapperTypeElement) {
     super(ctx, type);
-    assertNotNull(wrapperElementAndType);
+    assertNotNull(wrapperTypeElement);
     this.boxedType = ctx.getMoreTypes().boxIfPrimitive(type);
-    this.wrapperTypeElement = wrapperElementAndType.fst;
+    this.wrapperTypeElement = wrapperTypeElement;
   }
 
   public TypeMirror getBoxedType() {

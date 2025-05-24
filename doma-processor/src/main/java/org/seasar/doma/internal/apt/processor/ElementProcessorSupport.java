@@ -83,7 +83,9 @@ class ElementProcessorSupport<M extends ElementMeta> {
     }
     if (ctx.getOptions().isDebugEnabled()) {
       ctx.getReporter()
-          .debug(Message.DOMA4090, new Object[] {getClass().getName(), elementNameSupplier.get()});
+          .debug(
+              Message.DOMA4090,
+              new Object[] {supportedAnnotationType.getName(), elementNameSupplier.get()});
     }
     M result = null;
     try {
@@ -117,7 +119,9 @@ class ElementProcessorSupport<M extends ElementMeta> {
     }
     if (ctx.getOptions().isDebugEnabled()) {
       ctx.getReporter()
-          .debug(Message.DOMA4091, new Object[] {getClass().getName(), elementNameSupplier.get()});
+          .debug(
+              Message.DOMA4091,
+              new Object[] {supportedAnnotationType.getName(), elementNameSupplier.get()});
     }
     return result;
   }

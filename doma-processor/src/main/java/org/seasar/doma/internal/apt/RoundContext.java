@@ -33,6 +33,8 @@ public class RoundContext {
   private final RoundEnvironment roundEnvironment;
   private final List<ExternalDomainMeta> externalDomainMetaList = new ArrayList<>();
   private boolean initialized;
+  private MoreElements moreElements;
+  private MoreTypes moreTypes;
   private Annotations annotations;
   private Declarations declarations;
   private CtTypes ctTypes;
@@ -47,6 +49,8 @@ public class RoundContext {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
+    moreElements = new MoreElements(this, processingContext.getElements());
+    moreTypes = new MoreTypes(this, processingContext.getTypes());
     annotations = new Annotations(this);
     declarations = new Declarations(this);
     ctTypes = new CtTypes(this);
@@ -61,12 +65,12 @@ public class RoundContext {
 
   public MoreElements getMoreElements() {
     assertInitialized();
-    return processingContext.getMoreElements();
+    return moreElements;
   }
 
   public MoreTypes getMoreTypes() {
     assertInitialized();
-    return processingContext.getMoreTypes();
+    return moreTypes;
   }
 
   public Options getOptions() {

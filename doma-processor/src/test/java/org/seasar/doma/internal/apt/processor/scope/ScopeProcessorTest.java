@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.AbstractCompilerTest;
 import org.seasar.doma.internal.apt.AnnotationTypes;
 import org.seasar.doma.internal.apt.CompilationUnitsParameterResolver;
 import org.seasar.doma.internal.apt.DomaProcessor;
+import org.seasar.doma.internal.apt.Options;
 import org.seasar.doma.internal.apt.SimpleParameterResolver;
 import org.seasar.doma.message.Message;
 
@@ -46,6 +47,11 @@ public class ScopeProcessorTest extends AbstractCompilerTest {
           @Override
           public Set<String> getSupportedAnnotationTypes() {
             return Set.of(AnnotationTypes.SCOPE);
+          }
+
+          @Override
+          public Set<String> getSupportedOptions() {
+            return Set.of(Options.TEST_UNIT);
           }
         });
   }

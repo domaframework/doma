@@ -103,7 +103,7 @@ class MoreElementsTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             ExecutableElement method =
-                createMethodElement(testClass, "test", String.class, String.class);
+                createMethodElement(ctx, testClass, "test", String.class, String.class);
             Iterator<? extends VariableElement> parameters = method.getParameters().iterator();
             VariableElement p1 = parameters.next();
             VariableElement p2 = parameters.next();
@@ -162,7 +162,7 @@ class MoreElementsTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement method = createMethodElement(testClass, "beforeEach");
+            ExecutableElement method = createMethodElement(ctx, testClass, "beforeEach");
             AnnotationMirror annotationMirror =
                 ctx.getMoreElements().getAnnotationMirror(method, BeforeEach.class);
             assertNotNull(annotationMirror);
@@ -174,7 +174,7 @@ class MoreElementsTest extends AbstractCompilerTest {
         new TestProcessor() {
           @Override
           protected void run(RoundContext ctx) {
-            ExecutableElement method = createMethodElement(testClass, "beforeEach");
+            ExecutableElement method = createMethodElement(ctx, testClass, "beforeEach");
             AnnotationMirror annotationMirror =
                 ctx.getMoreElements()
                     .getAnnotationMirror(method, "org.junit.jupiter.api.BeforeEach");
@@ -294,11 +294,12 @@ class MoreElementsTest extends AbstractCompilerTest {
           @Override
           protected void run(RoundContext ctx) {
             TypeElement typeElement = ctx.getMoreElements().getTypeElement(MyDao.class);
-            ExecutableElement doIt = createMethodElement(MyDao.class, "doIt");
+            ExecutableElement doIt = createMethodElement(ctx, MyDao.class, "doIt");
             assertTrue(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, doIt));
-            ExecutableElement execute = createMethodElement(MyDao.class, "execute", String.class);
+            ExecutableElement execute =
+                createMethodElement(ctx, MyDao.class, "execute", String.class);
             assertTrue(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, execute));
-            ExecutableElement run = createMethodElement(MyDao.class, "run", String.class);
+            ExecutableElement run = createMethodElement(ctx, MyDao.class, "run", String.class);
             assertFalse(ctx.getMoreElements().isVirtualDefaultMethod(typeElement, run));
           }
         });
