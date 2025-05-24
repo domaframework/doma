@@ -138,7 +138,6 @@ public class CtTypes {
           this::newCollectorCtType,
           this::newReferenceCtType,
           this::newBiFunctionCtType,
-          this::newBiConsumerCtType,
           this::newPreparedSqlCtType,
           this::newConfigCtType,
           this::newResultCtType,
