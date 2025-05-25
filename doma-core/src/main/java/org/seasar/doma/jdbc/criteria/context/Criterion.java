@@ -451,11 +451,11 @@ public interface Criterion {
   }
 
   class UserDefined implements Criterion {
-    public final Consumer<UserDefinedCriteriaContext.Builder> contextDeclaration;
+    public final Consumer<UserDefinedCriteriaContext.Builder> builderBlock;
 
-    public UserDefined(Consumer<UserDefinedCriteriaContext.Builder> contextDeclaration) {
-      Objects.requireNonNull(contextDeclaration);
-      this.contextDeclaration = contextDeclaration;
+    public UserDefined(Consumer<UserDefinedCriteriaContext.Builder> builderBlock) {
+      Objects.requireNonNull(builderBlock);
+      this.builderBlock = builderBlock;
     }
 
     @Override

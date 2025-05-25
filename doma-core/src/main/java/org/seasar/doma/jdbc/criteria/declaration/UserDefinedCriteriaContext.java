@@ -22,7 +22,14 @@ import org.seasar.doma.jdbc.dialect.Dialect;
 /** Represents a user-defined comparison criteria declaration. */
 @FunctionalInterface
 public interface UserDefinedCriteriaContext {
-  void add(Consumer<Builder> builder);
+  /**
+   * Adds a user-defined operation to the criteria declaration by accepting a function that
+   * configures the provided {@code Builder}.
+   *
+   * @param builderBlock a {@link Consumer} used to configure the {@code Builder} for appending SQL
+   *     code, expressions, or other operations
+   */
+  void add(Consumer<Builder> builderBlock);
 
   interface Builder {
     /**

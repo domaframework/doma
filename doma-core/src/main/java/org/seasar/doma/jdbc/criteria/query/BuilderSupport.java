@@ -431,7 +431,7 @@ public class BuilderSupport {
 
     @Override
     public void visit(Criterion.UserDefined criterion) {
-      extension(criterion.contextDeclaration);
+      extension(criterion.builderBlock);
     }
 
     private void comparison(Operand.Prop left, Operand right, String op) {
@@ -701,8 +701,8 @@ public class BuilderSupport {
       }
     }
 
-    private void extension(Consumer<UserDefinedCriteriaContext.Builder> contextDeclaration) {
-      contextDeclaration.accept(userDefinedCriteriaContextBuilder);
+    private void extension(Consumer<UserDefinedCriteriaContext.Builder> builderBlock) {
+      builderBlock.accept(userDefinedCriteriaContextBuilder);
     }
   }
 
