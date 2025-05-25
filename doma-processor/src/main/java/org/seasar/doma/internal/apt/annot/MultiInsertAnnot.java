@@ -35,6 +35,7 @@ public class MultiInsertAnnot extends AbstractAnnot {
   private static final String SQL_LOG = "sqlLog";
   private static final String DUPLICATE_KEY_TYPE = "duplicateKeyType";
   private static final String DUPLICATE_KEYS = "duplicateKeys";
+  static final String RETURNING = "returning";
 
   private final AnnotationValue queryTimeout;
   private final AnnotationValue include;

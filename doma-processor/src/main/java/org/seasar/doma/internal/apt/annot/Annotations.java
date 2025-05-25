@@ -329,7 +329,7 @@ public class Annotations {
    */
   public MultiInsertAnnot newMultiInsertAnnot(AnnotationMirror annotation) {
     assertNotNull(annotation);
-    ReturningAnnot returningAnnot = newReturningAnnot(annotation, ModifyAnnot.RETURNING);
+    ReturningAnnot returningAnnot = newReturningAnnot(annotation, MultiInsertAnnot.RETURNING);
     Map<String, AnnotationValue> valuesWithDefaults =
         ctx.getMoreElements().getValuesWithDefaults(annotation);
     return new MultiInsertAnnot(annotation, returningAnnot, valuesWithDefaults);
