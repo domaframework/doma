@@ -1775,6 +1775,126 @@ class QueryDslSqlSelectTest {
         sql.getFormattedSql());
   }
 
+  @Test
+  void extension() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.likeMultiple(e.name, "SA");
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.NAME like '%SA%'", sql.getFormattedSql());
+  }
+
+  @Test
+  void extension_multiple_condition() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.likeMultiple(e.name, "SA");
+                        ext.likeMultiple(e.name, "LE");
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%SA%' and t0_.NAME like '%LE%'",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void extension_and() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.likeMultiple(e.name, "SA");
+                        c.and(
+                            () -> {
+                              ext.likeMultiple(e.name, "LE");
+                            });
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%SA%' and (t0_.NAME like '%LE%')",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void extension_or() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.likeMultiple(e.name, "CC");
+                        c.or(
+                            () -> {
+                              ext.likeMultiple(e.name, "SA");
+                            });
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%CC%' or (t0_.NAME like '%SA%')",
+        sql.getFormattedSql());
+  }
+
+  @Test
+  void extension_or_and() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.likeMultiple(e.name, "CC");
+                        c.or(
+                            () -> {
+                              ext.likeMultiple(e.name, "SA");
+                              c.and(
+                                  () -> {
+                                    ext.likeMultiple(e.name, "LE");
+                                  });
+                            });
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals(
+        "select t0_.ID from EMP t0_ where t0_.NAME like '%CC%' or (t0_.NAME like '%SA%' and (t0_.NAME like '%LE%'))",
+        sql.getFormattedSql());
+  }
+
   private static UserDefinedExpression<Long> countDistinctMultiple(
       PropertyMetamodel<?>... propertyMetamodels) {
     return userDefined(
