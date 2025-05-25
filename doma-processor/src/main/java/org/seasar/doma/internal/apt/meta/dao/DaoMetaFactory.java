@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.lang.model.element.AnnotationMirror;
@@ -37,8 +38,25 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
+import org.seasar.doma.ArrayFactory;
+import org.seasar.doma.BatchDelete;
+import org.seasar.doma.BatchInsert;
+import org.seasar.doma.BatchUpdate;
+import org.seasar.doma.BlobFactory;
+import org.seasar.doma.ClobFactory;
 import org.seasar.doma.DaoMethod;
+import org.seasar.doma.Delete;
+import org.seasar.doma.Function;
+import org.seasar.doma.Insert;
+import org.seasar.doma.MultiInsert;
+import org.seasar.doma.NClobFactory;
+import org.seasar.doma.Procedure;
+import org.seasar.doma.SQLXMLFactory;
+import org.seasar.doma.Script;
+import org.seasar.doma.Select;
+import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Suppress;
+import org.seasar.doma.Update;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
@@ -70,6 +88,7 @@ import org.seasar.doma.internal.apt.meta.query.DefaultQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.DefaultQueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMeta;
 import org.seasar.doma.internal.apt.meta.query.NClobCreateQueryMetaFactory;
+import org.seasar.doma.internal.apt.meta.query.QueryKind;
 import org.seasar.doma.internal.apt.meta.query.QueryMeta;
 import org.seasar.doma.internal.apt.meta.query.QueryMetaFactory;
 import org.seasar.doma.internal.apt.meta.query.QueryMetaVisitor;
@@ -90,24 +109,25 @@ import org.seasar.doma.message.Message;
 
 public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
-  private static final List<QueryMetaFactorySupplier> suppliers =
-      List.of(
-          SqlFileSelectQueryMetaFactory::new,
-          AutoModifyQueryMetaFactory::new,
-          AutoMultiInsertQueryMetaFactory::new,
-          AutoBatchModifyQueryMetaFactory::new,
-          AutoFunctionQueryMetaFactory::new,
-          AutoProcedureQueryMetaFactory::new,
-          SqlFileModifyQueryMetaFactory::new,
-          SqlFileBatchModifyQueryMetaFactory::new,
-          SqlFileScriptQueryMetaFactory::new,
-          DefaultQueryMetaFactory::new,
-          ArrayCreateQueryMetaFactory::new,
-          BlobCreateQueryMetaFactory::new,
-          ClobCreateQueryMetaFactory::new,
-          NClobCreateQueryMetaFactory::new,
-          SQLXMLCreateQueryMetaFactory::new,
-          SqlProcessorQueryMetaFactory::new);
+  private static final Map<String, QueryMetaFactorySupplier> nameToFactorySupplier =
+      Map.ofEntries(
+          Map.entry(Select.class.getName(), SqlFileSelectQueryMetaFactory::new),
+          Map.entry(Delete.class.getName(), DaoMetaFactory::newDeleteQueryMetaFactory),
+          Map.entry(Insert.class.getName(), DaoMetaFactory::newInsertQueryMetaFactory),
+          Map.entry(Update.class.getName(), DaoMetaFactory::newUpdateQueryMetaFactory),
+          Map.entry(BatchDelete.class.getName(), DaoMetaFactory::newBatchDeleteQueryMetaFactory),
+          Map.entry(BatchInsert.class.getName(), DaoMetaFactory::newBatchInsertQueryMetaFactory),
+          Map.entry(BatchUpdate.class.getName(), DaoMetaFactory::newBatchUpdateQueryMetaFactory),
+          Map.entry(MultiInsert.class.getName(), AutoMultiInsertQueryMetaFactory::new),
+          Map.entry(Function.class.getName(), AutoFunctionQueryMetaFactory::new),
+          Map.entry(Procedure.class.getName(), AutoProcedureQueryMetaFactory::new),
+          Map.entry(Script.class.getName(), SqlFileScriptQueryMetaFactory::new),
+          Map.entry(ArrayFactory.class.getName(), ArrayCreateQueryMetaFactory::new),
+          Map.entry(BlobFactory.class.getName(), BlobCreateQueryMetaFactory::new),
+          Map.entry(ClobFactory.class.getName(), ClobCreateQueryMetaFactory::new),
+          Map.entry(NClobFactory.class.getName(), NClobCreateQueryMetaFactory::new),
+          Map.entry(SQLXMLFactory.class.getName(), SQLXMLCreateQueryMetaFactory::new),
+          Map.entry(SqlProcessor.class.getName(), SqlProcessorQueryMetaFactory::new));
 
   private final RoundContext ctx;
 
@@ -280,12 +300,27 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
   }
 
   private QueryMeta createQueryMeta(DaoMeta daoMeta, ExecutableElement methodElement) {
-    for (QueryMetaFactorySupplier supplier : suppliers) {
+    for (AnnotationMirror annotation : methodElement.getAnnotationMirrors()) {
+      DeclaredType declaredType = annotation.getAnnotationType();
+      TypeElement typeElement = ctx.getMoreTypes().toTypeElement(declaredType);
+      if (typeElement.getAnnotation(DaoMethod.class) == null) {
+        continue;
+      }
+      var name = typeElement.getQualifiedName().toString();
+      QueryMetaFactorySupplier supplier = nameToFactorySupplier.get(name);
+      if (supplier == null) {
+        continue;
+      }
       QueryMetaFactory factory = supplier.get(ctx, daoMeta.getTypeElement(), methodElement);
-      QueryMeta queryMeta = factory.createQueryMeta();
+      QueryMeta queryMeta = factory.createQueryMeta(annotation);
       if (queryMeta != null) {
         return queryMeta;
       }
+    }
+    var factory = new DefaultQueryMetaFactory(ctx, daoMeta.getTypeElement(), methodElement);
+    var queryMeta = factory.createQueryMeta(null);
+    if (queryMeta != null) {
+      return queryMeta;
     }
     throw new AptException(Message.DOMA4005, methodElement, new Object[] {});
   }
@@ -500,5 +535,134 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
 
   interface QueryMetaFactorySupplier {
     QueryMetaFactory get(RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement);
+  }
+
+  private static QueryMetaFactory newDeleteQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var deleteAnnot = ctx.getAnnotations().newDeleteAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || deleteAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, deleteAnnot, QueryKind.SQLFILE_DELETE, sqlAnnot);
+      } else {
+        factory =
+            new AutoModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, deleteAnnot, QueryKind.AUTO_DELETE);
+      }
+      return factory.createQueryMeta(annotation);
+    };
+  }
+
+  private static QueryMetaFactory newInsertQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var insertAnnot = ctx.getAnnotations().newInsertAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || insertAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, insertAnnot, QueryKind.SQLFILE_INSERT, sqlAnnot);
+      } else {
+        factory =
+            new AutoModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, insertAnnot, QueryKind.AUTO_INSERT);
+      }
+      return factory.createQueryMeta(annotation);
+    };
+  }
+
+  private static QueryMetaFactory newUpdateQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var updateAnnot = ctx.getAnnotations().newUpdateAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || updateAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, updateAnnot, QueryKind.SQLFILE_UPDATE, sqlAnnot);
+      } else {
+        factory =
+            new AutoModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, updateAnnot, QueryKind.AUTO_UPDATE);
+      }
+      return factory.createQueryMeta(annotation);
+    };
+  }
+
+  private static QueryMetaFactory newBatchDeleteQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var batchDeleteAnnot = ctx.getAnnotations().newBatchDeleteAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || batchDeleteAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileBatchModifyQueryMetaFactory(
+                ctx,
+                daoElement,
+                methodElement,
+                batchDeleteAnnot,
+                QueryKind.SQLFILE_BATCH_DELETE,
+                sqlAnnot);
+      } else {
+        factory =
+            new AutoBatchModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, batchDeleteAnnot, QueryKind.AUTO_BATCH_DELETE);
+      }
+      return factory.createQueryMeta(annotation);
+    };
+  }
+
+  private static QueryMetaFactory newBatchInsertQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var batchInsertAnnot = ctx.getAnnotations().newBatchInsertAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || batchInsertAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileBatchModifyQueryMetaFactory(
+                ctx,
+                daoElement,
+                methodElement,
+                batchInsertAnnot,
+                QueryKind.SQLFILE_BATCH_INSERT,
+                sqlAnnot);
+      } else {
+        factory =
+            new AutoBatchModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, batchInsertAnnot, QueryKind.AUTO_BATCH_INSERT);
+      }
+      return factory.createQueryMeta(annotation);
+    };
+  }
+
+  private static QueryMetaFactory newBatchUpdateQueryMetaFactory(
+      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+    return annotation -> {
+      var sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+      var batchUpdateAnnot = ctx.getAnnotations().newBatchUpdateAnnot(annotation);
+      QueryMetaFactory factory;
+      if (sqlAnnot != null || batchUpdateAnnot.getSqlFileValue()) {
+        factory =
+            new SqlFileBatchModifyQueryMetaFactory(
+                ctx,
+                daoElement,
+                methodElement,
+                batchUpdateAnnot,
+                QueryKind.SQLFILE_BATCH_UPDATE,
+                sqlAnnot);
+      } else {
+        factory =
+            new AutoBatchModifyQueryMetaFactory(
+                ctx, daoElement, methodElement, batchUpdateAnnot, QueryKind.AUTO_BATCH_UPDATE);
+      }
+      return factory.createQueryMeta(annotation);
+    };
   }
 }

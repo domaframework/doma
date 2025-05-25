@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
+
 public interface QueryMetaFactory {
 
-  QueryMeta createQueryMeta();
+  QueryMeta createQueryMeta(AnnotationMirror annotation);
 }

@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import java.util.Objects;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -29,17 +31,26 @@ import org.seasar.doma.message.Message;
 public class SqlFileModifyQueryMetaFactory
     extends AbstractSqlFileQueryMetaFactory<SqlFileModifyQueryMeta> {
 
+  private final ModifyAnnot modifyAnnot;
+  private final QueryKind queryKind;
+  private final SqlAnnot sqlAnnot;
+
   public SqlFileModifyQueryMetaFactory(
-      RoundContext ctx, TypeElement daoElement, ExecutableElement methodElement) {
+      RoundContext ctx,
+      TypeElement daoElement,
+      ExecutableElement methodElement,
+      ModifyAnnot modifyAnnot,
+      QueryKind queryKind,
+      SqlAnnot sqlAnnot) {
     super(ctx, daoElement, methodElement);
+    this.modifyAnnot = Objects.requireNonNull(modifyAnnot);
+    this.queryKind = Objects.requireNonNull(queryKind);
+    this.sqlAnnot = sqlAnnot; // nullable
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    SqlFileModifyQueryMeta queryMeta = createSqlFileModifyQueryMeta();
-    if (queryMeta == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    SqlFileModifyQueryMeta queryMeta = createSqlFileModifyQueryMeta(annotation);
     doAnnotation(queryMeta);
     doTypeParameters(queryMeta);
     doParameters(queryMeta);
@@ -49,33 +60,12 @@ public class SqlFileModifyQueryMetaFactory
     return queryMeta;
   }
 
-  private SqlFileModifyQueryMeta createSqlFileModifyQueryMeta() {
-    SqlFileModifyQueryMeta queryMeta = new SqlFileModifyQueryMeta(daoElement, methodElement);
-    SqlAnnot sqlAnnot = ctx.getAnnotations().newSqlAnnot(methodElement);
+  private SqlFileModifyQueryMeta createSqlFileModifyQueryMeta(AnnotationMirror annotation) {
+    var queryMeta = new SqlFileModifyQueryMeta(daoElement, methodElement);
+    queryMeta.setModifyAnnot(modifyAnnot);
+    queryMeta.setQueryKind(queryKind);
     queryMeta.setSqlAnnot(sqlAnnot);
-    ModifyAnnot modifyAnnot = ctx.getAnnotations().newInsertAnnot(methodElement);
-    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.SQLFILE_INSERT);
-      return queryMeta;
-    }
-    modifyAnnot = ctx.getAnnotations().newUpdateAnnot(methodElement);
-    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.SQLFILE_UPDATE);
-      return queryMeta;
-    }
-    modifyAnnot = ctx.getAnnotations().newDeleteAnnot(methodElement);
-    if (modifyAnnot != null && usesSqlTemplate(sqlAnnot, modifyAnnot)) {
-      queryMeta.setModifyAnnot(modifyAnnot);
-      queryMeta.setQueryKind(QueryKind.SQLFILE_DELETE);
-      return queryMeta;
-    }
-    return null;
-  }
-
-  private boolean usesSqlTemplate(SqlAnnot sqlAnnot, ModifyAnnot modifyAnnot) {
-    return sqlAnnot != null || modifyAnnot.getSqlFileValue();
+    return queryMeta;
   }
 
   private void doAnnotation(SqlFileModifyQueryMeta queryMeta) {

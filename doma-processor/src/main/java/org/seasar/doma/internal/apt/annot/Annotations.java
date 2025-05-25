@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -32,38 +31,27 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.AggregateStrategy;
 import org.seasar.doma.AnnotateWith;
-import org.seasar.doma.ArrayFactory;
 import org.seasar.doma.AssociationLinker;
-import org.seasar.doma.BatchDelete;
-import org.seasar.doma.BatchInsert;
-import org.seasar.doma.BatchUpdate;
-import org.seasar.doma.BlobFactory;
-import org.seasar.doma.ClobFactory;
 import org.seasar.doma.Column;
 import org.seasar.doma.Dao;
 import org.seasar.doma.DataType;
-import org.seasar.doma.Delete;
 import org.seasar.doma.Domain;
 import org.seasar.doma.DomainConverters;
 import org.seasar.doma.Embeddable;
 import org.seasar.doma.Entity;
-import org.seasar.doma.Insert;
-import org.seasar.doma.MultiInsert;
-import org.seasar.doma.NClobFactory;
-import org.seasar.doma.Procedure;
 import org.seasar.doma.ResultSet;
-import org.seasar.doma.SQLXMLFactory;
-import org.seasar.doma.Script;
-import org.seasar.doma.Select;
 import org.seasar.doma.SequenceGenerator;
 import org.seasar.doma.Sql;
-import org.seasar.doma.SqlProcessor;
 import org.seasar.doma.Table;
 import org.seasar.doma.TableGenerator;
-import org.seasar.doma.Update;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.util.AnnotationValueUtil;
 
+/**
+ * The Annotations class provides methods to manage annotations as {@link Annot} instances. This
+ * class is used for processing and creating various types of annotations associated with elements
+ * during annotation processing in Java.
+ */
 public class Annotations {
 
   private final RoundContext ctx;
@@ -72,17 +60,29 @@ public class Annotations {
     this.ctx = Objects.requireNonNull(ctx);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public AggregateStrategyAnnot newAggregateStrategyAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, AggregateStrategy.class, AggregateStrategyAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public AllArgsConstructorAnnot newAllArgsConstructorAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(
         typeElement, ctx.getOptions().getLombokAllArgsConstructor(), AllArgsConstructorAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return non-null
+   */
   public List<AnnotateWithAnnot> newAnnotateWithAnnots(TypeElement typeElement) {
     assertNotNull(typeElement);
     List<AnnotationMirror> annotateWiths = new ArrayList<>();
@@ -121,83 +121,139 @@ public class Annotations {
         .collect(Collectors.toList());
   }
 
-  private AnnotationAnnot newAnnotationAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    return newInstance(annotationMirror, AnnotationAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  private AnnotationAnnot newAnnotationAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, AnnotationAnnot::new);
   }
 
+  /**
+   * @param field non-null
+   * @return nullable
+   */
   public AssociationLinkerAnnot newAssociationLinkerAnnot(VariableElement field) {
     assertNotNull(field);
     return newInstance(field, AssociationLinker.class, AssociationLinkerAnnot::new);
   }
 
-  public ArrayFactoryAnnot newArrayFactoryAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, ArrayFactory.class, ArrayFactoryAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public ArrayFactoryAnnot newArrayFactoryAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, ArrayFactoryAnnot::new);
   }
 
-  public BatchDeleteAnnot newBatchDeleteAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, BatchDelete.class, BatchDeleteAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public BatchDeleteAnnot newBatchDeleteAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, BatchDeleteAnnot::new);
   }
 
-  public BatchInsertAnnot newBatchInsertAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, BatchInsert.class, BatchInsertAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public BatchInsertAnnot newBatchInsertAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, BatchInsertAnnot::new);
   }
 
-  public BatchUpdateAnnot newBatchUpdateAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, BatchUpdate.class, BatchUpdateAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public BatchUpdateAnnot newBatchUpdateAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, BatchUpdateAnnot::new);
   }
 
-  public BlobFactoryAnnot newBlobFactoryAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, BlobFactory.class, BlobFactoryAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public BlobFactoryAnnot newBlobFactoryAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return new BlobFactoryAnnot(annotation);
   }
 
-  public ClobFactoryAnnot newClobFactoryAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, ClobFactory.class, ClobFactoryAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public ClobFactoryAnnot newClobFactoryAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return new ClobFactoryAnnot(annotation);
   }
 
+  /**
+   * @param field non-null
+   * @return nullable
+   */
   public ColumnAnnot newColumnAnnot(VariableElement field) {
     assertNotNull(field);
     return newInstance(field, Column.class, ColumnAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public DaoAnnot newDaoAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, Dao.class, DaoAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public DataTypeAnnot newDataTypeAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, DataType.class, DataTypeAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public DomainAnnot newDomainAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, Domain.class, DomainAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public DomainConvertersAnnot newDomainConvertersAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, DomainConverters.class, DomainConvertersAnnot::new);
   }
 
-  public DeleteAnnot newDeleteAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    AnnotationMirror deleteMirror = ctx.getMoreElements().getAnnotationMirror(method, Delete.class);
-    if (deleteMirror == null) {
-      return null;
-    }
-    ReturningAnnot returningAnnot = newReturningAnnot(deleteMirror, ModifyAnnot.RETURNING);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public DeleteAnnot newDeleteAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    ReturningAnnot returningAnnot = newReturningAnnot(annotation, ModifyAnnot.RETURNING);
     Map<String, AnnotationValue> valuesWithDefaults =
-        ctx.getMoreElements().getValuesWithDefaults(deleteMirror);
-    return new DeleteAnnot(deleteMirror, returningAnnot, valuesWithDefaults);
+        ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new DeleteAnnot(annotation, returningAnnot, valuesWithDefaults);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public EmbeddableAnnot newEmbeddableAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     AnnotationMirror embeddableMirror =
@@ -218,10 +274,17 @@ public class Annotations {
     return new EmbeddableAnnot(embeddableMirror, metamodelAnnot);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public EntityAnnot newEntityAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     AnnotationMirror entityMirror =
         ctx.getMoreElements().getAnnotationMirror(typeElement, Entity.class);
+    if (entityMirror == null) {
+      return null;
+    }
     Map<String, AnnotationValue> valuesWithoutDefaults =
         ctx.getMoreElements().getValuesWithoutDefaults(entityMirror);
     AnnotationValue metamodel = valuesWithoutDefaults.get(EntityAnnot.METAMODEL);
@@ -237,74 +300,99 @@ public class Annotations {
     return new EntityAnnot(entityMirror, metamodelAnnot, valuesWithDefaults);
   }
 
-  public FunctionAnnot newFunctionAnnot(final ExecutableElement method) {
-    assertNotNull(method);
+  /**
+   * @param annotation non-null
+   * @param name non-null
+   * @return non-null
+   */
+  public FunctionAnnot newFunctionAnnot(final AnnotationMirror annotation, String name) {
+    assertNotNull(annotation);
     return newInstance(
-        method,
-        org.seasar.doma.Function.class,
-        (annotationMirror, values) ->
-            new FunctionAnnot(annotationMirror, values, method.getSimpleName().toString()));
+        annotation,
+        (annotationMirror, values) -> new FunctionAnnot(annotationMirror, values, name));
   }
 
-  public InsertAnnot newInsertAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    AnnotationMirror insertMirror = ctx.getMoreElements().getAnnotationMirror(method, Insert.class);
-    if (insertMirror == null) {
-      return null;
-    }
-    ReturningAnnot returningAnnot = newReturningAnnot(insertMirror, ModifyAnnot.RETURNING);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public InsertAnnot newInsertAnnot(AnnotationMirror annotation) {
+    ReturningAnnot returningAnnot = newReturningAnnot(annotation, ModifyAnnot.RETURNING);
     Map<String, AnnotationValue> valuesWithDefaults =
-        ctx.getMoreElements().getValuesWithDefaults(insertMirror);
-    return new InsertAnnot(insertMirror, returningAnnot, valuesWithDefaults);
+        ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new InsertAnnot(annotation, returningAnnot, valuesWithDefaults);
   }
 
-  public MultiInsertAnnot newMultiInsertAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    AnnotationMirror multiInsertMirror =
-        ctx.getMoreElements().getAnnotationMirror(method, MultiInsert.class);
-    if (multiInsertMirror == null) {
-      return null;
-    }
-    ReturningAnnot returningAnnot = newReturningAnnot(multiInsertMirror, ModifyAnnot.RETURNING);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public MultiInsertAnnot newMultiInsertAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    ReturningAnnot returningAnnot = newReturningAnnot(annotation, MultiInsertAnnot.RETURNING);
     Map<String, AnnotationValue> valuesWithDefaults =
-        ctx.getMoreElements().getValuesWithDefaults(multiInsertMirror);
-    return new MultiInsertAnnot(multiInsertMirror, returningAnnot, valuesWithDefaults);
+        ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new MultiInsertAnnot(annotation, returningAnnot, valuesWithDefaults);
   }
 
-  public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    return newInstance(annotationMirror, MetamodelAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public MetamodelAnnot newMetamodelAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, MetamodelAnnot::new);
   }
 
-  public NClobFactoryAnnot newNClobFactoryAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, NClobFactory.class, NClobFactoryAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public NClobFactoryAnnot newNClobFactoryAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return new NClobFactoryAnnot(annotation);
   }
 
-  public ProcedureAnnot newProcedureAnnot(ExecutableElement method) {
-    assertNotNull(method);
+  /**
+   * @param annotation non-null
+   * @param name non-null
+   * @return non-null
+   */
+  public ProcedureAnnot newProcedureAnnot(AnnotationMirror annotation, String name) {
+    assertNotNull(annotation);
     return newInstance(
-        method,
-        Procedure.class,
-        (annotationMirror, values) ->
-            new ProcedureAnnot(annotationMirror, values, method.getSimpleName().toString()));
+        annotation,
+        (annotationMirror, values) -> new ProcedureAnnot(annotationMirror, values, name));
   }
 
+  /**
+   * @param param non-null
+   * @return nullable
+   */
   public ResultSetAnnot newResultSetAnnot(VariableElement param) {
     assertNotNull(param);
     return newInstance(param, ResultSet.class, ResultSetAnnot::new);
   }
 
-  private ReturningAnnot newReturningAnnot(AnnotationMirror annotationMirror) {
-    assertNotNull(annotationMirror);
-    return newInstance(annotationMirror, ReturningAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  private ReturningAnnot newReturningAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, ReturningAnnot::new);
   }
 
+  /**
+   * @param ownerAnnotation non-null
+   * @param returningElementName non-null
+   * @return nullable
+   */
   private ReturningAnnot newReturningAnnot(
-      AnnotationMirror ownerAnnotationMirror, String returningElementName) {
-    assertNotNull(ownerAnnotationMirror, returningElementName);
+      AnnotationMirror ownerAnnotation, String returningElementName) {
+    assertNotNull(ownerAnnotation, returningElementName);
     Map<String, AnnotationValue> valuesWithoutDefaults =
-        ctx.getMoreElements().getValuesWithoutDefaults(ownerAnnotationMirror);
+        ctx.getMoreElements().getValuesWithoutDefaults(ownerAnnotation);
     AnnotationValue returning = valuesWithoutDefaults.get(returningElementName);
     if (returning == null) {
       return null;
@@ -316,97 +404,145 @@ public class Annotations {
     return newReturningAnnot(returningMirror);
   }
 
-  public ScriptAnnot newScriptAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, Script.class, ScriptAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public ScriptAnnot newScriptAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, ScriptAnnot::new);
   }
 
-  public SelectAnnot newSelectAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, Select.class, SelectAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public SelectAnnot newSelectAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return newInstance(annotation, SelectAnnot::new);
   }
 
+  /**
+   * @param field non-null
+   * @return nullable
+   */
   public SequenceGeneratorAnnot newSequenceGeneratorAnnot(VariableElement field) {
     assertNotNull(field);
     return newInstance(field, SequenceGenerator.class, SequenceGeneratorAnnot::new);
   }
 
+  /**
+   * @param method non-null
+   * @return nullable
+   */
   public SqlAnnot newSqlAnnot(ExecutableElement method) {
     assertNotNull(method);
     return newInstance(method, Sql.class, SqlAnnot::new);
   }
 
-  public SqlProcessorAnnot newSqlProcessorAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, SqlProcessor.class, SqlProcessorAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public SqlProcessorAnnot newSqlProcessorAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return new SqlProcessorAnnot(annotation);
   }
 
-  public SQLXMLFactoryAnnot newSQLXMLFactoryAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    return newInstance(method, SQLXMLFactory.class, SQLXMLFactoryAnnot::new);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public SQLXMLFactoryAnnot newSQLXMLFactoryAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    return new SQLXMLFactoryAnnot(annotation);
   }
 
+  /**
+   * @param field non-null
+   * @return nullable
+   */
   public TableGeneratorAnnot newTableGeneratorAnnot(VariableElement field) {
     assertNotNull(field);
     return newInstance(field, TableGenerator.class, TableGeneratorAnnot::new);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public TableAnnot newTableAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, Table.class, TableAnnot::new);
   }
 
-  public UpdateAnnot newUpdateAnnot(ExecutableElement method) {
-    assertNotNull(method);
-    AnnotationMirror updateMirror = ctx.getMoreElements().getAnnotationMirror(method, Update.class);
-    if (updateMirror == null) {
-      return null;
-    }
-    ReturningAnnot returningAnnot = newReturningAnnot(updateMirror, ModifyAnnot.RETURNING);
+  /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public UpdateAnnot newUpdateAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    ReturningAnnot returningAnnot = newReturningAnnot(annotation, ModifyAnnot.RETURNING);
     Map<String, AnnotationValue> valuesWithDefaults =
-        ctx.getMoreElements().getValuesWithDefaults(updateMirror);
-    return new UpdateAnnot(updateMirror, returningAnnot, valuesWithDefaults);
+        ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new UpdateAnnot(annotation, returningAnnot, valuesWithDefaults);
   }
 
+  /**
+   * @param typeElement non-null
+   * @return nullable
+   */
   public ValueAnnot newValueAnnot(TypeElement typeElement) {
     assertNotNull(typeElement);
     return newInstance(typeElement, ctx.getOptions().getLombokValue(), ValueAnnot::new);
   }
 
-  private <ANNOT> ANNOT newInstance(
-      Element element,
-      Class<? extends java.lang.annotation.Annotation> annotationClass,
-      Function<AnnotationMirror, ANNOT> function) {
-    return newInstance(
-        element, annotationClass, (annotationMirror, __) -> function.apply(annotationMirror));
-  }
-
+  /**
+   * @param element non-null
+   * @param annotationClass non-null
+   * @param biFunction non-null
+   * @return nullable
+   */
   private <ANNOT> ANNOT newInstance(
       Element element,
       Class<? extends java.lang.annotation.Annotation> annotationClass,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
-    AnnotationMirror annotationMirror =
+    AnnotationMirror annotation =
         ctx.getMoreElements().getAnnotationMirror(element, annotationClass);
-    return newInstance(annotationMirror, biFunction);
+    if (annotation == null) {
+      return null;
+    }
+    return newInstance(annotation, biFunction);
   }
 
+  /**
+   * @param element non-null
+   * @param annotationClassName non-null
+   * @param biFunction non-null
+   * @return nullable
+   */
   private <ANNOT> ANNOT newInstance(
       Element element,
       String annotationClassName,
       BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
-    AnnotationMirror annotationMirror =
+    AnnotationMirror annotation =
         ctx.getMoreElements().getAnnotationMirror(element, annotationClassName);
-    return newInstance(annotationMirror, biFunction);
-  }
-
-  private <ANNOT> ANNOT newInstance(
-      AnnotationMirror annotationMirror,
-      BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
-    if (annotationMirror == null) {
+    if (annotation == null) {
       return null;
     }
-    Map<String, AnnotationValue> values =
-        ctx.getMoreElements().getValuesWithDefaults(annotationMirror);
-    return biFunction.apply(annotationMirror, values);
+    return newInstance(annotation, biFunction);
+  }
+
+  /**
+   * @param annotation non-null
+   * @param biFunction non-null
+   * @return non-null
+   */
+  private <ANNOT> ANNOT newInstance(
+      AnnotationMirror annotation,
+      BiFunction<AnnotationMirror, Map<String, AnnotationValue>, ANNOT> biFunction) {
+    assertNotNull(annotation);
+    Map<String, AnnotationValue> values = ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return biFunction.apply(annotation, values);
   }
 }

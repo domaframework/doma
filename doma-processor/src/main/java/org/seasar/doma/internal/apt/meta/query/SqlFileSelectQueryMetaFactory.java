@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -53,8 +54,8 @@ public class SqlFileSelectQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    SqlFileSelectQueryMeta queryMeta = createSqlFileSelectQueryMeta();
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    SqlFileSelectQueryMeta queryMeta = createSqlFileSelectQueryMeta(annotation);
     if (queryMeta == null) {
       return null;
     }
@@ -67,8 +68,8 @@ public class SqlFileSelectQueryMetaFactory
     return queryMeta;
   }
 
-  private SqlFileSelectQueryMeta createSqlFileSelectQueryMeta() {
-    SelectAnnot selectAnnot = ctx.getAnnotations().newSelectAnnot(methodElement);
+  private SqlFileSelectQueryMeta createSqlFileSelectQueryMeta(AnnotationMirror annotation) {
+    SelectAnnot selectAnnot = ctx.getAnnotations().newSelectAnnot(annotation);
     if (selectAnnot == null) {
       return null;
     }

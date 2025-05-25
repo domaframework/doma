@@ -48,4 +48,5 @@ import org.seasar.doma.jdbc.JdbcException;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@DaoMethod
 public @interface NClobFactory {}

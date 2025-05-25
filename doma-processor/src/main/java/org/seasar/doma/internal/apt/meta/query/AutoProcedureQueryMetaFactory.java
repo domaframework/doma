@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt.meta.query;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import org.seasar.doma.internal.apt.AptException;
@@ -31,11 +32,10 @@ public class AutoProcedureQueryMetaFactory
   }
 
   @Override
-  public QueryMeta createQueryMeta() {
-    ProcedureAnnot procedureAnnot = ctx.getAnnotations().newProcedureAnnot(methodElement);
-    if (procedureAnnot == null) {
-      return null;
-    }
+  public QueryMeta createQueryMeta(AnnotationMirror annotation) {
+    ProcedureAnnot procedureAnnot =
+        ctx.getAnnotations()
+            .newProcedureAnnot(annotation, methodElement.getSimpleName().toString());
     AutoProcedureQueryMeta queryMeta = new AutoProcedureQueryMeta(daoElement, methodElement);
     queryMeta.setQueryKind(QueryKind.AUTO_PROCEDURE);
     queryMeta.setProcedureAnnot(procedureAnnot);
