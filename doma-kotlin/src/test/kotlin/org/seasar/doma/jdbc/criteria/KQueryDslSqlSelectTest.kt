@@ -708,6 +708,24 @@ internal class KQueryDslSqlSelectTest {
     }
 
     @Test
+    fun where_null() {
+        val e = Emp_()
+        val stmt = dsl
+            .from(e)
+            .where {
+                extension(::MyExtension) {
+                    eq2(e.name, null)
+                }
+            }
+            .select(e.id)
+        val sql = stmt.asSql()
+        assertEquals(
+            "select t0_.ID from EMP t0_ where t0_.NAME = null",
+            sql.formattedSql,
+        )
+    }
+
+    @Test
     fun innerJoin() {
         val e = Emp_()
         val d = Dept_()

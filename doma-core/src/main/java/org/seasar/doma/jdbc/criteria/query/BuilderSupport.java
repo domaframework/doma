@@ -958,6 +958,13 @@ public class BuilderSupport {
     }
 
     @Override
+    public <PROPERTY> void appendParameter(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
+      var param = new Operand.Param(left, right);
+      var parameter = param.createInParameter(config);
+      param(parameter);
+    }
+
+    @Override
     public Dialect getDialect() {
       return config.getDialect();
     }

@@ -28,6 +28,8 @@ fun interface KUserDefinedCriteriaContext {
 
         fun appendExpression(propertyMetamodel: PropertyMetamodel<*>)
 
+        fun <PROPERTY> appendParameter(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?)
+
         val dialect: Dialect
     }
 }

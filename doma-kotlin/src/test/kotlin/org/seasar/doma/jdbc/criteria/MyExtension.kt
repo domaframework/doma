@@ -17,19 +17,26 @@ package org.seasar.doma.jdbc.criteria
 
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
 import org.seasar.doma.kotlin.jdbc.criteria.declaration.KUserDefinedCriteriaContext
-import org.seasar.doma.kotlin.jdbc.criteria.expression.KExpressions
 
 data class MyExtension(val context: KUserDefinedCriteriaContext) {
-    fun likeMultiple(entityMetamodel: PropertyMetamodel<*>, vararg patterns: String) {
+    fun likeMultiple(propertyMetamodel: PropertyMetamodel<String>, vararg patterns: String) {
         context.add {
             patterns.forEach { pattern ->
-                appendExpression(entityMetamodel)
+                appendExpression(propertyMetamodel)
                 appendSql(" like ")
-                appendExpression(KExpressions.literal("%" + pattern + "%"))
+                appendParameter(propertyMetamodel, "%$pattern%")
                 appendSql(" escape '\\'")
                 appendSql(" and ")
             }
             cutBackSql(5)
+        }
+    }
+
+    fun eq2(entityMetamodel: PropertyMetamodel<String?>, pattern: String?) {
+        context.add {
+            appendExpression(entityMetamodel)
+            appendSql(" = ")
+            appendParameter(entityMetamodel, pattern)
         }
     }
 }

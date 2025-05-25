@@ -16,33 +16,41 @@
 package org.seasar.doma.it.criteria;
 
 import org.seasar.doma.jdbc.criteria.declaration.UserDefinedCriteriaContext;
-import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 record MyExtension(UserDefinedCriteriaContext context) {
-  public void regexp(PropertyMetamodel<?> entityMetamodel, String regexp) {
+  public void regexp(PropertyMetamodel<String> entityMetamodel, String regexp) {
     context.add(
         (b) -> {
           var dialectName = b.getDialect().getName();
           if (dialectName.startsWith("mysql")) {
             b.appendExpression(entityMetamodel);
             b.appendSql(" regexp ");
-            b.appendExpression(Expressions.literal(regexp));
+            b.appendParameter(entityMetamodel, regexp);
           } else if (dialectName.equals("postgres")) {
             b.appendExpression(entityMetamodel);
             b.appendSql(" ~ ");
-            b.appendExpression(Expressions.literal(regexp));
+            b.appendParameter(entityMetamodel, regexp);
           } else if (dialectName.equals("oracle")) {
             b.appendSql("regexp_like(");
             b.appendExpression(entityMetamodel);
             b.appendSql(",");
-            b.appendExpression(Expressions.literal(regexp));
+            b.appendParameter(entityMetamodel, regexp);
             b.appendSql(")");
           } else {
             b.appendExpression(entityMetamodel);
             b.appendSql(" like ");
-            b.appendExpression(Expressions.literal("%" + regexp + "%"));
+            b.appendParameter(entityMetamodel, "%" + regexp + "%");
           }
+        });
+  }
+
+  public void eq2(PropertyMetamodel<String> entityMetamodel, String pattern) {
+    context.add(
+        (b) -> {
+          b.appendExpression(entityMetamodel);
+          b.appendSql(" = ");
+          b.appendParameter(entityMetamodel, pattern);
         });
   }
 }

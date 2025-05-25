@@ -1218,4 +1218,24 @@ public class QueryDslSqlSelectTest {
     assertEquals("ACCOUNTING", list.get(0).getDepartmentName());
     assertEquals("SALES", list.get(1).getDepartmentName());
   }
+
+  @Test
+  void extension_null() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.eq2(d.departmentName, null);
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(0, list.size());
+  }
 }

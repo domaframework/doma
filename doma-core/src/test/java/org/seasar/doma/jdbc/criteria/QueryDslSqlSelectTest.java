@@ -1895,6 +1895,25 @@ class QueryDslSqlSelectTest {
         sql.getFormattedSql());
   }
 
+  @Test
+  void extension_null() {
+    var e = new Emp_();
+    var stmt =
+        dsl.from(e)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.eq2(e.name, null);
+                      });
+                })
+            .select(e.id);
+
+    var sql = stmt.asSql();
+    assertEquals("select t0_.ID from EMP t0_ where t0_.NAME = null", sql.getFormattedSql());
+  }
+
   private static UserDefinedExpression<Long> countDistinctMultiple(
       PropertyMetamodel<?>... propertyMetamodels) {
     return userDefined(

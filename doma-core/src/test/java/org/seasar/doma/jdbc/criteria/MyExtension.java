@@ -16,20 +16,28 @@
 package org.seasar.doma.jdbc.criteria;
 
 import org.seasar.doma.jdbc.criteria.declaration.UserDefinedCriteriaContext;
-import org.seasar.doma.jdbc.criteria.expression.Expressions;
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel;
 
 record MyExtension(UserDefinedCriteriaContext context) {
-  public void likeMultiple(PropertyMetamodel<?> entityMetamodel, String... patterns) {
+  public void likeMultiple(PropertyMetamodel<String> entityMetamodel, String... patterns) {
     context.add(
         (b) -> {
           for (String pattern : patterns) {
             b.appendExpression(entityMetamodel);
             b.appendSql(" like ");
-            b.appendExpression(Expressions.literal("%" + pattern + "%"));
+            b.appendParameter(entityMetamodel, "%" + pattern + "%");
             b.appendSql(" or ");
           }
           b.cutBackSql(4);
+        });
+  }
+
+  public void eq2(PropertyMetamodel<String> entityMetamodel, String pattern) {
+    context.add(
+        (b) -> {
+          b.appendExpression(entityMetamodel);
+          b.appendSql(" = ");
+          b.appendParameter(entityMetamodel, pattern);
         });
   }
 }
