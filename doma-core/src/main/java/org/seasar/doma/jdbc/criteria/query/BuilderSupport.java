@@ -958,8 +958,10 @@ public class BuilderSupport {
     }
 
     @Override
-    public <PROPERTY> void appendParameter(PropertyMetamodel<PROPERTY> left, PROPERTY right) {
-      var param = new Operand.Param(left, right);
+    public <PROPERTY> void appendParameter(
+        PropertyMetamodel<PROPERTY> propertyMetamodel, PROPERTY value) {
+      Objects.requireNonNull(propertyMetamodel);
+      var param = new Operand.Param(propertyMetamodel, value);
       var parameter = param.createInParameter(config);
       param(parameter);
     }

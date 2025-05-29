@@ -115,8 +115,8 @@ abstract class KComparisonDeclaration<DECLARATION : org.seasar.doma.jdbc.criteri
                     override fun cutBackSql(length: Int) = builder.cutBackSql(length)
                     override fun appendExpression(propertyMetamodel: PropertyMetamodel<*>) =
                         builder.appendExpression(propertyMetamodel)
-                    override fun <PROPERTY> appendParameter(left: PropertyMetamodel<PROPERTY>, right: PROPERTY?) =
-                        builder.appendParameter(left, right)
+                    override fun <PROPERTY> appendParameter(propertyMetamodel: PropertyMetamodel<PROPERTY>, value: PROPERTY?) =
+                        builder.appendParameter(propertyMetamodel, value)
                     override val dialect: Dialect
                         get() = builder.dialect
                 })

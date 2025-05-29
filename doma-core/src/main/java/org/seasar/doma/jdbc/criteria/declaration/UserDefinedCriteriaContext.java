@@ -57,11 +57,12 @@ public interface UserDefinedCriteriaContext {
     /**
      * Appends a parameter.
      *
-     * @param left the property metamodel representing the left operand
-     * @param right the value to be paired with the left operand
+     * @param propertyMetamodel the {@link PropertyMetamodel} to be added as a expression in the
+     *     declaration
+     * @param value the value of the property
      * @param <PROPERTY> the type of the property
      */
-    <PROPERTY> void appendParameter(PropertyMetamodel<PROPERTY> left, PROPERTY right);
+    <PROPERTY> void appendParameter(PropertyMetamodel<PROPERTY> propertyMetamodel, PROPERTY value);
 
     /**
      * Represents the specific database dialect. This is utilized to modify user-defined expressions

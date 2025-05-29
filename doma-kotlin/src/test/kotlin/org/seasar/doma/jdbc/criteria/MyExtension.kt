@@ -32,11 +32,11 @@ data class MyExtension(val context: KUserDefinedCriteriaContext) {
         }
     }
 
-    fun eq2(entityMetamodel: PropertyMetamodel<String?>, pattern: String?) {
+    fun eq2(propertyMetamodel: PropertyMetamodel<String?>, pattern: String?) {
         context.add {
-            appendExpression(entityMetamodel)
+            appendExpression(propertyMetamodel)
             appendSql(" = ")
-            appendParameter(entityMetamodel, pattern)
+            appendParameter(propertyMetamodel, pattern)
         }
     }
 }
