@@ -1091,4 +1091,151 @@ public class QueryDslSqlSelectTest {
     assertTrue(result.isPresent());
     assertEquals(13, result.get());
   }
+
+  @Test
+  void extension() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.regexp(d.departmentName, "A");
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(4, list.size());
+    assertEquals("ACCOUNTING", list.get(0).getDepartmentName());
+    assertEquals("RESEARCH", list.get(1).getDepartmentName());
+    assertEquals("SALES", list.get(2).getDepartmentName());
+    assertEquals("OPERATIONS", list.get(3).getDepartmentName());
+  }
+
+  @Test
+  void extension_multiple_condition() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.regexp(d.departmentName, "SA");
+                        ext.regexp(d.departmentName, "LE");
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals("SALES", list.get(0).getDepartmentName());
+  }
+
+  @Test
+  void extension_and() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.regexp(d.departmentName, "SA");
+                        c.and(
+                            () -> {
+                              ext.regexp(d.departmentName, "LE");
+                            });
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(1, list.size());
+    assertEquals("SALES", list.get(0).getDepartmentName());
+  }
+
+  @Test
+  void extension_or() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.regexp(d.departmentName, "CC");
+                        c.or(
+                            () -> {
+                              ext.regexp(d.departmentName, "SA");
+                            });
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(2, list.size());
+    assertEquals("ACCOUNTING", list.get(0).getDepartmentName());
+    assertEquals("SALES", list.get(1).getDepartmentName());
+  }
+
+  @Test
+  void extension_or_and() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.regexp(d.departmentName, "CC");
+                        c.or(
+                            () -> {
+                              ext.regexp(d.departmentName, "SA");
+                              c.and(
+                                  () -> {
+                                    ext.regexp(d.departmentName, "LE");
+                                  });
+                            });
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(2, list.size());
+    assertEquals("ACCOUNTING", list.get(0).getDepartmentName());
+    assertEquals("SALES", list.get(1).getDepartmentName());
+  }
+
+  @Test
+  void extension_null() {
+    var d = new Department_();
+    var list =
+        dsl.from(d)
+            .where(
+                c -> {
+                  c.extension(
+                      MyExtension::new,
+                      (ext) -> {
+                        ext.eq2(d.departmentName, null);
+                      });
+                })
+            .orderBy(c -> c.asc(d.departmentId))
+            .select()
+            .fetch();
+
+    assertEquals(0, list.size());
+  }
 }

@@ -904,6 +904,25 @@ public abstract class ComparisonDeclaration {
   }
 
   /**
+   * Add a declaring a user-defined extension.
+   *
+   * @param <EXTENSION> the type of the user-defined extension
+   * @param construct function that generates user-defined extension.
+   * @param extensionBlock block that can use user-defined extension.
+   * @throws NullPointerException if {@code construct} or {@code extensionBlock} is null
+   */
+  public <EXTENSION> void extension(
+      Function<UserDefinedCriteriaContext, EXTENSION> construct,
+      Consumer<EXTENSION> extensionBlock) {
+    Objects.requireNonNull(construct);
+    Objects.requireNonNull(extensionBlock);
+
+    var extension =
+        construct.apply(builderBlock -> this.add(new Criterion.UserDefined(builderBlock)));
+    extensionBlock.accept(extension);
+  }
+
+  /**
    * Add a {@code NOT} operator.
    *
    * @param block the right hand operand

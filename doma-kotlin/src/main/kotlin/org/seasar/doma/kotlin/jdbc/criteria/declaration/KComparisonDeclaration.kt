@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.kotlin.jdbc.criteria.declaration
 
+import org.seasar.doma.jdbc.criteria.declaration.UserDefinedCriteriaContext
 import org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel
+import org.seasar.doma.jdbc.dialect.Dialect
 
 abstract class KComparisonDeclaration<DECLARATION : org.seasar.doma.jdbc.criteria.declaration.ComparisonDeclaration>(protected val declaration: DECLARATION) {
 
@@ -93,5 +95,32 @@ abstract class KComparisonDeclaration<DECLARATION : org.seasar.doma.jdbc.criteri
 
     fun not(block: () -> Unit) {
         declaration.not(block)
+    }
+
+    fun <EXTENSION> extension(
+        construct: (KUserDefinedCriteriaContext) -> EXTENSION,
+        extensionDeclaration: EXTENSION.() -> Unit,
+    ) {
+        declaration.extension(
+            { context -> construct(context.toKotlin()) },
+            extensionDeclaration
+        )
+    }
+
+    private fun UserDefinedCriteriaContext.toKotlin(): KUserDefinedCriteriaContext {
+        return KUserDefinedCriteriaContext { builderBlock ->
+            this.add { builder ->
+                builderBlock(object : KUserDefinedCriteriaContext.Builder {
+                    override fun appendSql(sql: String) = builder.appendSql(sql)
+                    override fun cutBackSql(length: Int) = builder.cutBackSql(length)
+                    override fun appendExpression(propertyMetamodel: PropertyMetamodel<*>) =
+                        builder.appendExpression(propertyMetamodel)
+                    override fun <PROPERTY> appendParameter(propertyMetamodel: PropertyMetamodel<PROPERTY>, value: PROPERTY?) =
+                        builder.appendParameter(propertyMetamodel, value)
+                    override val dialect: Dialect
+                        get() = builder.dialect
+                })
+            }
+        }
     }
 }

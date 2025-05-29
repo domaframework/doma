@@ -18,6 +18,8 @@ package org.seasar.doma.jdbc.criteria.context;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import org.seasar.doma.jdbc.criteria.declaration.UserDefinedCriteriaContext;
 import org.seasar.doma.jdbc.criteria.option.LikeOption;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple2;
 import org.seasar.doma.jdbc.criteria.tuple.Tuple3;
@@ -448,6 +450,20 @@ public interface Criterion {
     }
   }
 
+  class UserDefined implements Criterion {
+    public final Consumer<UserDefinedCriteriaContext.Builder> builderBlock;
+
+    public UserDefined(Consumer<UserDefinedCriteriaContext.Builder> builderBlock) {
+      Objects.requireNonNull(builderBlock);
+      this.builderBlock = builderBlock;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
   interface Visitor {
     void visit(Eq criterion);
 
@@ -504,5 +520,7 @@ public interface Criterion {
     void visit(Or criterion);
 
     void visit(Not criterion);
+
+    void visit(UserDefined criterion);
   }
 }
