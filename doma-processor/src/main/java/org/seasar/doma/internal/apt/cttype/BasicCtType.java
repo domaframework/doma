@@ -25,7 +25,7 @@ import org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers;
 import org.seasar.doma.internal.jdbc.scalar.OptionalBasicScalarSuppliers;
 import org.seasar.doma.internal.wrapper.WrapperSuppliers;
 
-public class BasicCtType extends AbstractCtType {
+public final class BasicCtType extends AbstractCtType {
 
   private final TypeMirror boxedType;
 

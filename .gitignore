@@ -10,3 +10,4 @@
 .kotlin
 out
 .factorypath
+/.claude/settings.local.json

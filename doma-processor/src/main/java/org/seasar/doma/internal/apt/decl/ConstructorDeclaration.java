@@ -15,20 +15,12 @@
  */
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
+import java.util.Objects;
 import javax.lang.model.element.ExecutableElement;
 
-public class ConstructorDeclaration {
+public record ConstructorDeclaration(ExecutableElement element) {
 
-  private final ExecutableElement element;
-
-  ConstructorDeclaration(ExecutableElement element) {
-    assertNotNull(element);
-    this.element = element;
-  }
-
-  public ExecutableElement getElement() {
-    return element;
+  public ConstructorDeclaration {
+    Objects.requireNonNull(element);
   }
 }

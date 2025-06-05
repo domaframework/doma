@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class CollectorCtType extends AbstractCtType {
+public final class CollectorCtType extends AbstractCtType {
 
   private final CtType targetCtType;
 

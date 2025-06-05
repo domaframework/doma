@@ -21,7 +21,7 @@ import java.util.List;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class IterableCtType extends AbstractCtType {
+public final class IterableCtType extends AbstractCtType {
 
   private final CtType elementCtType;
 

@@ -15,27 +15,13 @@
  */
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
+import java.util.Objects;
 import javax.lang.model.type.TypeMirror;
 
-public class TypeParameterDeclaration {
+public record TypeParameterDeclaration(TypeMirror formalType, TypeMirror actualType) {
 
-  private final TypeMirror formalType;
-
-  private final TypeMirror actualType;
-
-  TypeParameterDeclaration(TypeMirror formalType, TypeMirror actualType) {
-    assertNotNull(formalType, actualType);
-    this.formalType = formalType;
-    this.actualType = actualType;
-  }
-
-  public TypeMirror getFormalType() {
-    return formalType;
-  }
-
-  public TypeMirror getActualType() {
-    return actualType;
+  public TypeParameterDeclaration {
+    Objects.requireNonNull(formalType);
+    Objects.requireNonNull(actualType);
   }
 }

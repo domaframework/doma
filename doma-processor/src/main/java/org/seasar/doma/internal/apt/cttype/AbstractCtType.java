@@ -23,7 +23,33 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public abstract class AbstractCtType implements CtType {
+public abstract sealed class AbstractCtType implements CtType
+    permits AggregateStrategyCtType,
+        AnyCtType,
+        ArrayCtType,
+        BasicCtType,
+        BatchResultCtType,
+        BiConsumerCtType,
+        BiFunctionCtType,
+        CollectorCtType,
+        ConfigCtType,
+        DomainCtType,
+        EmbeddableCtType,
+        EntityCtType,
+        FunctionCtType,
+        IterableCtType,
+        MapCtType,
+        MultiResultCtType,
+        NoneCtType,
+        OptionalCtType,
+        OptionalDoubleCtType,
+        OptionalIntCtType,
+        OptionalLongCtType,
+        PreparedSqlCtType,
+        ReferenceCtType,
+        ResultCtType,
+        SelectOptionsCtType,
+        StreamCtType {
 
   protected final RoundContext ctx;
 

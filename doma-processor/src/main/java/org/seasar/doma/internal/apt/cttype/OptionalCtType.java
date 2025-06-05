@@ -20,7 +20,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.*;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class OptionalCtType extends AbstractCtType {
+public final class OptionalCtType extends AbstractCtType {
 
   private final CtType elementCtType;
 

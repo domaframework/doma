@@ -15,29 +15,15 @@
  */
 package org.seasar.doma.internal.apt.decl;
 
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
-
+import java.util.Objects;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 
-public class MethodDeclaration {
+public record MethodDeclaration(ExecutableElement element, TypeDeclaration returnTypeDeclaration) {
 
-  private final ExecutableElement element;
-
-  private final TypeDeclaration returnTypeDeclaration;
-
-  MethodDeclaration(ExecutableElement element, TypeDeclaration returnTypeDeclaration) {
-    assertNotNull(element, returnTypeDeclaration);
-    this.element = element;
-    this.returnTypeDeclaration = returnTypeDeclaration;
-  }
-
-  public ExecutableElement getElement() {
-    return element;
-  }
-
-  public TypeDeclaration getReturnTypeDeclaration() {
-    return returnTypeDeclaration;
+  public MethodDeclaration {
+    Objects.requireNonNull(element);
+    Objects.requireNonNull(returnTypeDeclaration);
   }
 
   public boolean isStatic() {

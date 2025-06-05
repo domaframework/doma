@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class PreparedSqlCtType extends AbstractCtType {
+public final class PreparedSqlCtType extends AbstractCtType {
 
   PreparedSqlCtType(RoundContext ctx, TypeMirror type) {
     super(ctx, type);

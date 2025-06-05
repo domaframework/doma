@@ -279,23 +279,20 @@ class TypeDeclarationTest extends AbstractCompilerTest {
             assertTrue(field.isPresent());
 
             List<TypeParameterDeclaration> typeParams =
-                field.get().getTypeDeclaration().getTypeParameterDeclarations();
+                field.get().typeDeclaration().getTypeParameterDeclarations();
             assertEquals(2, typeParams.size());
 
             TypeParameterDeclaration typeParam1 = typeParams.get(0);
-            TypeVariable typeVariable1 =
-                ctx.getMoreTypes().toTypeVariable(typeParam1.getFormalType());
+            TypeVariable typeVariable1 = ctx.getMoreTypes().toTypeVariable(typeParam1.formalType());
             assertEquals("T", typeVariable1.asElement().getSimpleName().toString());
             assertTrue(
-                ctx.getMoreTypes().isSameTypeWithErasure(typeParam1.getActualType(), String.class));
+                ctx.getMoreTypes().isSameTypeWithErasure(typeParam1.actualType(), String.class));
 
             TypeParameterDeclaration typeParam2 = typeParams.get(1);
-            TypeVariable typeVariable2 =
-                ctx.getMoreTypes().toTypeVariable(typeParam2.getFormalType());
+            TypeVariable typeVariable2 = ctx.getMoreTypes().toTypeVariable(typeParam2.formalType());
             assertEquals("R", typeVariable2.asElement().getSimpleName().toString());
             assertTrue(
-                ctx.getMoreTypes()
-                    .isSameTypeWithErasure(typeParam2.getActualType(), Integer.class));
+                ctx.getMoreTypes().isSameTypeWithErasure(typeParam2.actualType(), Integer.class));
           }
         });
   }
@@ -323,8 +320,8 @@ class TypeDeclarationTest extends AbstractCompilerTest {
 
             assertEquals(1, typeParams.size());
             TypeParameterDeclaration parameterDeclaration = typeParams.get(0);
-            TypeMirror actualType = parameterDeclaration.getActualType();
-            TypeMirror formalType = parameterDeclaration.getFormalType();
+            TypeMirror actualType = parameterDeclaration.actualType();
+            TypeMirror formalType = parameterDeclaration.formalType();
             TypeVariable typeVariable = ctx.getMoreTypes().toTypeVariable(formalType);
             assertTrue(ctx.getMoreTypes().isSameTypeWithErasure(actualType, String.class));
             assertEquals("T", typeVariable.asElement().getSimpleName().toString());
@@ -370,8 +367,8 @@ class TypeDeclarationTest extends AbstractCompilerTest {
                 typeDeclaration.getFieldDeclaration("myField");
             assertTrue(fieldDeclaration.isPresent());
             FieldDeclaration f = fieldDeclaration.get();
-            assertEquals("myField", f.getElement().getSimpleName().toString());
-            assertEquals("java.lang.String", f.getTypeDeclaration().getBinaryName());
+            assertEquals("myField", f.element().getSimpleName().toString());
+            assertEquals("java.lang.String", f.typeDeclaration().getBinaryName());
           }
         },
         new TestProcessor() {
@@ -397,8 +394,8 @@ class TypeDeclarationTest extends AbstractCompilerTest {
                 typeDeclaration.getStaticFieldDeclaration("myStaticField");
             assertTrue(fieldDeclaration.isPresent());
             FieldDeclaration f = fieldDeclaration.get();
-            assertEquals("myStaticField", f.getElement().getSimpleName().toString());
-            assertEquals("java.lang.String", f.getTypeDeclaration().getBinaryName());
+            assertEquals("myStaticField", f.element().getSimpleName().toString());
+            assertEquals("java.lang.String", f.typeDeclaration().getBinaryName());
           }
         },
         new TestProcessor() {
@@ -427,8 +424,8 @@ class TypeDeclarationTest extends AbstractCompilerTest {
                     "myMethod", Collections.singletonList(parameterDeclaration));
             assertTrue(methodDeclaration.isPresent());
             MethodDeclaration m = methodDeclaration.get();
-            assertEquals("myMethod", m.getElement().getSimpleName().toString());
-            TypeDeclaration returnTypeDeclaration = m.getReturnTypeDeclaration();
+            assertEquals("myMethod", m.element().getSimpleName().toString());
+            TypeDeclaration returnTypeDeclaration = m.returnTypeDeclaration();
             assertTrue(returnTypeDeclaration.is(String.class));
           }
         },
@@ -461,8 +458,8 @@ class TypeDeclarationTest extends AbstractCompilerTest {
                     "myStaticMethod", Collections.singletonList(parameterDeclaration));
             assertTrue(methodDeclaration.isPresent());
             MethodDeclaration m = methodDeclaration.get();
-            assertEquals("myStaticMethod", m.getElement().getSimpleName().toString());
-            TypeDeclaration returnTypeDeclaration = m.getReturnTypeDeclaration();
+            assertEquals("myStaticMethod", m.element().getSimpleName().toString());
+            TypeDeclaration returnTypeDeclaration = m.returnTypeDeclaration();
             assertTrue(returnTypeDeclaration.is(String.class));
           }
         },

@@ -432,7 +432,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     Optional<MethodDeclaration> methodDeclaration =
         typeDeclaration.getMethodDeclaration(methodName, parameterTypeDeclarations);
     if (methodDeclaration.isPresent()) {
-      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().getReturnTypeDeclaration();
+      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().returnTypeDeclaration();
       if (returnTypeDeclaration != null) {
         return convertIfOptional(returnTypeDeclaration);
       }
@@ -470,7 +470,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     Optional<MethodDeclaration> methodDeclaration =
         typeDeclaration.getStaticMethodDeclaration(methodName, parameterTypeDeclarations);
     if (methodDeclaration.isPresent()) {
-      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().getReturnTypeDeclaration();
+      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().returnTypeDeclaration();
       if (returnTypeDeclaration != null) {
         return convertIfOptional(returnTypeDeclaration);
       }
@@ -494,7 +494,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     Optional<MethodDeclaration> methodDeclaration =
         typeDeclaration.getMethodDeclaration(methodName, parameterTypeDeclarations);
     if (methodDeclaration.isPresent()) {
-      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().getReturnTypeDeclaration();
+      TypeDeclaration returnTypeDeclaration = methodDeclaration.get().returnTypeDeclaration();
       if (returnTypeDeclaration != null) {
         return returnTypeDeclaration;
       }
@@ -563,7 +563,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     String fieldName = node.getFieldName();
     Optional<FieldDeclaration> fieldDeclaration = typeDeclaration.getFieldDeclaration(fieldName);
     if (fieldDeclaration.isPresent()) {
-      TypeDeclaration fieldTypeDeclaration = fieldDeclaration.get().getTypeDeclaration();
+      TypeDeclaration fieldTypeDeclaration = fieldDeclaration.get().typeDeclaration();
       if (fieldTypeDeclaration != null) {
         return convertIfOptional(fieldTypeDeclaration);
       }
@@ -598,7 +598,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
     Optional<FieldDeclaration> fieldDeclaration =
         typeDeclaration.getStaticFieldDeclaration(fieldName);
     if (fieldDeclaration.isPresent()) {
-      TypeDeclaration fieldTypeDeclaration = fieldDeclaration.get().getTypeDeclaration();
+      TypeDeclaration fieldTypeDeclaration = fieldDeclaration.get().typeDeclaration();
       if (fieldTypeDeclaration != null) {
         return convertIfOptional(fieldTypeDeclaration);
       }
@@ -616,7 +616,7 @@ public class ExpressionValidator implements ExpressionNodeVisitor<TypeDeclaratio
           typeDeclaration.getTypeParameterDeclarations().stream()
               .findFirst()
               .orElseThrow(() -> new AptIllegalStateException(typeDeclaration.toString()));
-      return ctx.getDeclarations().newTypeDeclaration(typeParameterDeclaration.getActualType());
+      return ctx.getDeclarations().newTypeDeclaration(typeParameterDeclaration.actualType());
     } else if (typeDeclaration.is(OptionalInt.class)) {
       return ctx.getDeclarations().newTypeDeclaration(Integer.class);
     } else if (typeDeclaration.is(OptionalLong.class)) {

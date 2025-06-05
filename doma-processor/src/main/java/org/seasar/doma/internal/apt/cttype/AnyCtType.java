@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class AnyCtType extends AbstractCtType {
+public final class AnyCtType extends AbstractCtType {
 
   AnyCtType(RoundContext ctx, TypeMirror type) {
     super(ctx, type);

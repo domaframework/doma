@@ -22,7 +22,7 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
-public class EmbeddableCtType extends AbstractCtType {
+public final class EmbeddableCtType extends AbstractCtType {
 
   private final ClassName typeClassName;
 

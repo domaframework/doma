@@ -17,7 +17,7 @@ package org.seasar.doma.internal.apt.cttype;
 
 import javax.lang.model.type.TypeMirror;
 
-public interface CtType {
+public sealed interface CtType permits AbstractCtType {
 
   TypeMirror getType();
 
