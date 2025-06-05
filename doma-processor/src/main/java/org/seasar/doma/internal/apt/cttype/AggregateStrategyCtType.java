@@ -23,7 +23,7 @@ import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.AggregateStrategyAnnot;
 import org.seasar.doma.internal.apt.generator.Code;
 
-public class AggregateStrategyCtType extends AbstractCtType {
+public final class AggregateStrategyCtType extends AbstractCtType {
 
   private final ClassName typeClassName;
   private final AggregateStrategyAnnot aggregateStrategyAnnot;

@@ -16,8 +16,9 @@
 package org.seasar.doma.internal.apt.decl;
 
 import static java.util.stream.Collectors.toList;
-import static javax.lang.model.util.ElementFilter.*;
-import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
+import static javax.lang.model.util.ElementFilter.constructorsIn;
+import static javax.lang.model.util.ElementFilter.fieldsIn;
+import static javax.lang.model.util.ElementFilter.methodsIn;
 import static org.seasar.doma.internal.util.AssertionUtil.assertTrue;
 
 import java.math.BigDecimal;
@@ -25,7 +26,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,36 +34,59 @@ import java.util.Optional;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import org.seasar.doma.internal.apt.MoreTypes;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.ArrayCtType;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.DomainCtType;
 import org.seasar.doma.internal.apt.cttype.IterableCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.util.Pair;
 import org.seasar.doma.internal.util.Zip;
 
 public class TypeDeclaration {
 
-  private static final Map<String, Integer> NUMBER_PRIORITY_MAP = new HashMap<>();
+  private enum NumberTypePriority {
+    BIG_DECIMAL(80),
+    BIG_INTEGER(70),
+    DOUBLE(60),
+    FLOAT(50),
+    LONG(40),
+    INT(30),
+    SHORT(20),
+    BYTE(10),
+    DEFAULT(0);
 
-  static {
-    NUMBER_PRIORITY_MAP.put(BigDecimal.class.getName(), 80);
-    NUMBER_PRIORITY_MAP.put(BigInteger.class.getName(), 70);
-    NUMBER_PRIORITY_MAP.put(double.class.getName(), 60);
-    NUMBER_PRIORITY_MAP.put(Double.class.getName(), 60);
-    NUMBER_PRIORITY_MAP.put(float.class.getName(), 50);
-    NUMBER_PRIORITY_MAP.put(Float.class.getName(), 50);
-    NUMBER_PRIORITY_MAP.put(long.class.getName(), 40);
-    NUMBER_PRIORITY_MAP.put(Long.class.getName(), 40);
-    NUMBER_PRIORITY_MAP.put(int.class.getName(), 30);
-    NUMBER_PRIORITY_MAP.put(Integer.class.getName(), 30);
-    NUMBER_PRIORITY_MAP.put(short.class.getName(), 20);
-    NUMBER_PRIORITY_MAP.put(Short.class.getName(), 20);
-    NUMBER_PRIORITY_MAP.put(byte.class.getName(), 10);
-    NUMBER_PRIORITY_MAP.put(Byte.class.getName(), 10);
+    private final int value;
+
+    NumberTypePriority(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  }
+
+  private static final Map<String, NumberTypePriority> NUMBER_PRIORITY_MAP =
+      createNumberPriorityMap();
+
+  private static Map<String, NumberTypePriority> createNumberPriorityMap() {
+    var map = new HashMap<String, NumberTypePriority>();
+    map.put(BigDecimal.class.getName(), NumberTypePriority.BIG_DECIMAL);
+    map.put(BigInteger.class.getName(), NumberTypePriority.BIG_INTEGER);
+    map.put(double.class.getName(), NumberTypePriority.DOUBLE);
+    map.put(Double.class.getName(), NumberTypePriority.DOUBLE);
+    map.put(float.class.getName(), NumberTypePriority.FLOAT);
+    map.put(Float.class.getName(), NumberTypePriority.FLOAT);
+    map.put(long.class.getName(), NumberTypePriority.LONG);
+    map.put(Long.class.getName(), NumberTypePriority.LONG);
+    map.put(int.class.getName(), NumberTypePriority.INT);
+    map.put(Integer.class.getName(), NumberTypePriority.INT);
+    map.put(short.class.getName(), NumberTypePriority.SHORT);
+    map.put(Short.class.getName(), NumberTypePriority.SHORT);
+    map.put(byte.class.getName(), NumberTypePriority.BYTE);
+    map.put(Byte.class.getName(), NumberTypePriority.BYTE);
+    return map;
   }
 
   private final RoundContext ctx;
@@ -76,7 +99,7 @@ public class TypeDeclaration {
 
   private final Map<Name, List<TypeParameterDeclaration>> typeParameterDeclarationsMap;
 
-  private final int numberPriority;
+  private final NumberTypePriority numberPriority;
 
   protected TypeDeclaration(
       RoundContext ctx,
@@ -84,12 +107,11 @@ public class TypeDeclaration {
       CtType ctType,
       TypeElement typeElement,
       Map<Name, List<TypeParameterDeclaration>> typeParameterDeclarationsMap) {
-    assertNotNull(ctx, type, ctType, typeParameterDeclarationsMap);
-    this.ctx = ctx;
-    this.type = type;
-    this.ctType = ctType;
+    this.ctx = Objects.requireNonNull(ctx);
+    this.type = Objects.requireNonNull(type);
+    this.ctType = Objects.requireNonNull(ctType);
     this.typeElement = typeElement; // nullable
-    this.typeParameterDeclarationsMap = typeParameterDeclarationsMap;
+    this.typeParameterDeclarationsMap = Objects.requireNonNull(typeParameterDeclarationsMap);
     this.numberPriority = determineNumberPriority(typeElement, type);
   }
 
@@ -113,32 +135,40 @@ public class TypeDeclaration {
   }
 
   public boolean isBooleanType() {
-    return type.getKind() == TypeKind.BOOLEAN
-        || ctx.getMoreTypes().isSameTypeWithErasure(type, Boolean.class);
+    return isPrimitiveTypeKind(TypeKind.BOOLEAN) || isBoxedType(Boolean.class);
   }
 
   public boolean isTextType() {
-    return type.getKind() == TypeKind.CHAR
-        || ctx.getMoreTypes().isSameTypeWithErasure(type, String.class)
-        || ctx.getMoreTypes().isSameTypeWithErasure(type, Character.class);
+    return isPrimitiveTypeKind(TypeKind.CHAR)
+        || isBoxedType(String.class)
+        || isBoxedType(Character.class);
   }
 
   public boolean isNumberType() {
-    switch (type.getKind()) {
-      case BYTE:
-      case SHORT:
-      case INT:
-      case LONG:
-      case FLOAT:
-      case DOUBLE:
-        return true;
-      default:
-        if (typeElement == null) {
-          return false;
-        }
-        String canonicalName = typeElement.getQualifiedName().toString();
-        return NUMBER_PRIORITY_MAP.containsKey(canonicalName);
+    return isPrimitiveNumberType() || isBoxedNumberType();
+  }
+
+  private boolean isPrimitiveTypeKind(TypeKind kind) {
+    return type.getKind() == kind;
+  }
+
+  private boolean isBoxedType(Class<?> clazz) {
+    return ctx.getMoreTypes().isSameTypeWithErasure(type, clazz);
+  }
+
+  private boolean isPrimitiveNumberType() {
+    return switch (type.getKind()) {
+      case BYTE, SHORT, INT, LONG, FLOAT, DOUBLE -> true;
+      default -> false;
+    };
+  }
+
+  private boolean isBoxedNumberType() {
+    if (typeElement == null) {
+      return false;
     }
+    var canonicalName = typeElement.getQualifiedName().toString();
+    return NUMBER_PRIORITY_MAP.containsKey(canonicalName);
   }
 
   public boolean is(Class<?> clazz) {
@@ -146,45 +176,29 @@ public class TypeDeclaration {
   }
 
   public boolean isScalarType() {
-    return ctType.accept(new ScalarDetector(), null);
+    return isScalarCtType(ctType);
   }
 
   public boolean isScalarIterableType() {
-    return ctType.accept(
-        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
-
-          @Override
-          protected Boolean defaultAction(CtType ctType, Void aVoid) {
-            return false;
-          }
-
-          @Override
-          public Boolean visitIterableCtType(IterableCtType ctType, Void aVoid) {
-            return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
-          }
-        },
-        null);
+    if (ctType instanceof IterableCtType iterableCtType) {
+      return isScalarCtType(iterableCtType.getElementCtType());
+    }
+    return false;
   }
 
   public boolean isScalarArrayType() {
-    return ctType.accept(
-        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>() {
-          @Override
-          protected Boolean defaultAction(CtType ctType, Void aVoid) {
-            return false;
-          }
+    if (ctType instanceof ArrayCtType arrayCtType) {
+      return isScalarCtType(arrayCtType.getElementCtType());
+    }
+    return false;
+  }
 
-          @Override
-          public Boolean visitArrayCtType(ArrayCtType ctType, Void aVoid) {
-            return ctType.getElementCtType().accept(new ScalarDetector(), aVoid);
-          }
-        },
-        null);
+  private boolean isScalarCtType(CtType ctType) {
+    return ctType instanceof BasicCtType || ctType instanceof DomainCtType;
   }
 
   public List<TypeParameterDeclaration> getTypeParameterDeclarations() {
-    Optional<List<TypeParameterDeclaration>> typeParameterDeclarations =
-        typeParameterDeclarationsMap.values().stream().findFirst();
+    var typeParameterDeclarations = typeParameterDeclarationsMap.values().stream().findFirst();
     return typeParameterDeclarations.orElse(Collections.emptyList());
   }
 
@@ -216,36 +230,61 @@ public class TypeDeclaration {
   }
 
   private Optional<FieldDeclaration> getFieldDeclarationInternal(String name, boolean statik) {
-    List<FieldDeclaration> candidates = getCandidateFieldDeclarations(name, statik);
+    var candidates = getCandidateFieldDeclarations(name, statik);
     removeHiddenFieldDeclarations(candidates);
     return candidates.stream().findFirst();
   }
 
   private List<FieldDeclaration> getCandidateFieldDeclarations(String name, boolean statik) {
+    return processTypeParameterDeclarations(
+        (typeElement, typeParams) ->
+            fieldsIn(typeElement.getEnclosedElements()).stream()
+                .filter(f -> matchesFieldCriteria(f, name, statik))
+                .map(f -> ctx.getDeclarations().newFieldDeclaration(f, typeParams)));
+  }
+
+  private boolean matchesFieldCriteria(VariableElement field, String name, boolean statik) {
+    return (!statik || field.getModifiers().contains(Modifier.STATIC))
+        && field.getSimpleName().contentEquals(name);
+  }
+
+  private <T> List<T> processTypeParameterDeclarations(TypeElementProcessor<T> processor) {
     return typeParameterDeclarationsMap.entrySet().stream()
         .map(e -> new Pair<>(e.getKey(), e.getValue()))
         .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
         .filter(p -> Objects.nonNull(p.fst))
-        .flatMap(
-            p ->
-                fieldsIn(p.fst.getEnclosedElements()).stream()
-                    .filter(f -> !statik || f.getModifiers().contains(Modifier.STATIC))
-                    .filter(f -> f.getSimpleName().contentEquals(name))
-                    .map(f -> ctx.getDeclarations().newFieldDeclaration(f, p.snd)))
+        .flatMap(p -> processor.process(p.fst, p.snd))
         .collect(toList());
   }
 
+  @FunctionalInterface
+  private interface TypeElementProcessor<T> {
+    java.util.stream.Stream<T> process(
+        TypeElement typeElement, List<TypeParameterDeclaration> typeParams);
+  }
+
   private void removeHiddenFieldDeclarations(List<FieldDeclaration> candidates) {
-    List<FieldDeclaration> hiders = new LinkedList<>(candidates);
-    for (Iterator<FieldDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      FieldDeclaration hidden = it.next();
-      for (FieldDeclaration hider : hiders) {
-        if (ctx.getMoreElements().hides(hider.getElement(), hidden.getElement())) {
+    removeHiddenDeclarations(
+        candidates,
+        (hider, hidden) -> ctx.getMoreElements().hides(hider.element(), hidden.element()));
+  }
+
+  private <T> void removeHiddenDeclarations(List<T> candidates, HidingPredicate<T> hidesPredicate) {
+    var hiders = new LinkedList<>(candidates);
+    for (var it = candidates.iterator(); it.hasNext(); ) {
+      var hidden = it.next();
+      for (var hider : hiders) {
+        if (hidesPredicate.hides(hider, hidden)) {
           it.remove();
           break;
         }
       }
     }
+  }
+
+  @FunctionalInterface
+  private interface HidingPredicate<T> {
+    boolean hides(T hider, T hidden);
   }
 
   public Optional<MethodDeclaration> getMethodDeclaration(
@@ -260,8 +299,7 @@ public class TypeDeclaration {
 
   private Optional<MethodDeclaration> getMethodDeclarationInternal(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
-    List<MethodDeclaration> candidates =
-        getCandidateMethodDeclarations(name, parameterTypeDeclarations, statik);
+    var candidates = getCandidateMethodDeclarations(name, parameterTypeDeclarations, statik);
     removeOverriddenMethodDeclarations(candidates);
     removeHiddenMethodDeclarations(candidates);
     return candidates.stream().findFirst();
@@ -269,72 +307,65 @@ public class TypeDeclaration {
 
   private List<MethodDeclaration> getCandidateMethodDeclarations(
       String name, List<TypeDeclaration> parameterTypeDeclarations, boolean statik) {
-    return typeParameterDeclarationsMap.entrySet().stream()
-        .map(e -> new Pair<>(e.getKey(), e.getValue()))
-        .map(p -> new Pair<>(ctx.getMoreElements().getTypeElement(p.fst), p.snd))
-        .filter(p -> Objects.nonNull(p.fst))
-        .flatMap(
-            p ->
-                methodsIn(p.fst.getEnclosedElements()).stream()
-                    .filter(m -> !statik || m.getModifiers().contains(Modifier.STATIC))
-                    .filter(m -> m.getModifiers().contains(Modifier.PUBLIC))
-                    .filter(m -> m.getSimpleName().contentEquals(name))
-                    .filter(m -> m.getReturnType().getKind() != TypeKind.VOID)
-                    .filter(m -> m.getParameters().size() == parameterTypeDeclarations.size())
-                    .filter(m -> isAssignable(parameterTypeDeclarations, m.getParameters()))
-                    .map(m -> ctx.getDeclarations().newMethodDeclaration(m, p.snd)))
-        .collect(toList());
+    return processTypeParameterDeclarations(
+        (typeElement, typeParams) ->
+            methodsIn(typeElement.getEnclosedElements()).stream()
+                .filter(m -> matchesMethodCriteria(m, name, parameterTypeDeclarations, statik))
+                .map(m -> ctx.getDeclarations().newMethodDeclaration(m, typeParams)));
+  }
+
+  private boolean matchesMethodCriteria(
+      ExecutableElement method,
+      String name,
+      List<TypeDeclaration> parameterTypeDeclarations,
+      boolean statik) {
+    return (!statik || method.getModifiers().contains(Modifier.STATIC))
+        && method.getModifiers().contains(Modifier.PUBLIC)
+        && method.getSimpleName().contentEquals(name)
+        && method.getReturnType().getKind() != TypeKind.VOID
+        && method.getParameters().size() == parameterTypeDeclarations.size()
+        && isAssignable(parameterTypeDeclarations, method.getParameters());
   }
 
   private void removeOverriddenMethodDeclarations(List<MethodDeclaration> candidates) {
-    List<MethodDeclaration> overriders = new LinkedList<>(candidates);
-    for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      MethodDeclaration overridden = it.next();
-      for (MethodDeclaration overrider : overriders) {
-        TypeElement overriderTypeElement =
-            ctx.getMoreElements().toTypeElement(overrider.getElement().getEnclosingElement());
-        if (overriderTypeElement == null) {
-          continue;
-        }
-        if (ctx.getMoreElements()
-            .overrides(overrider.getElement(), overridden.getElement(), overriderTypeElement)) {
-          it.remove();
-          break;
-        }
-      }
+    removeHiddenDeclarations(candidates, this::methodOverrides);
+  }
+
+  private boolean methodOverrides(MethodDeclaration overrider, MethodDeclaration overridden) {
+    var overriderTypeElement =
+        ctx.getMoreElements().toTypeElement(overrider.element().getEnclosingElement());
+    if (overriderTypeElement == null) {
+      return false;
     }
+    return ctx.getMoreElements()
+        .overrides(overrider.element(), overridden.element(), overriderTypeElement);
   }
 
   private void removeHiddenMethodDeclarations(List<MethodDeclaration> candidates) {
-    List<MethodDeclaration> hiders = new LinkedList<>(candidates);
-    for (Iterator<MethodDeclaration> it = candidates.iterator(); it.hasNext(); ) {
-      MethodDeclaration hidden = it.next();
-      for (MethodDeclaration hider : hiders) {
-        TypeMirror subtype = hider.getElement().getEnclosingElement().asType();
-        TypeMirror supertype = hidden.getElement().getEnclosingElement().asType();
-        if (ctx.getMoreTypes().isAssignableWithErasure(subtype, supertype)) {
-          if (ctx.getMoreElements().hides(hider.getElement(), hidden.getElement())) {
-            it.remove();
-            break;
-          }
-        }
-      }
-    }
+    removeHiddenDeclarations(candidates, this::methodHides);
+  }
+
+  private boolean methodHides(MethodDeclaration hider, MethodDeclaration hidden) {
+    var subtype = hider.element().getEnclosingElement().asType();
+    var supertype = hidden.element().getEnclosingElement().asType();
+    return ctx.getMoreTypes().isAssignableWithErasure(subtype, supertype)
+        && ctx.getMoreElements().hides(hider.element(), hidden.element());
   }
 
   public TypeDeclaration emulateConcatOperation(TypeDeclaration other) {
-    assertNotNull(other);
+    Objects.requireNonNull(other);
     assertTrue(isTextType());
     assertTrue(other.isTextType());
-    TypeMirror type = ctx.getMoreTypes().getTypeMirror(String.class);
+    var type = ctx.getMoreTypes().getTypeMirror(String.class);
     return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
   public TypeDeclaration emulateArithmeticOperation(TypeDeclaration other) {
-    assertNotNull(other);
+    Objects.requireNonNull(other);
     assertTrue(isNumberType());
     assertTrue(other.isNumberType());
-    TypeMirror type = this.numberPriority >= other.numberPriority ? this.type : other.type;
+    var type =
+        this.numberPriority.getValue() >= other.numberPriority.getValue() ? this.type : other.type;
     return ctx.getDeclarations().newTypeDeclaration(type);
   }
 
@@ -344,7 +375,7 @@ public class TypeDeclaration {
     }
     if (this.isNumberType()) {
       if (other.isNumberType()) {
-        return this.numberPriority == other.numberPriority;
+        return this.numberPriority.getValue() == other.numberPriority.getValue();
       }
     }
     return false;
@@ -355,44 +386,24 @@ public class TypeDeclaration {
     return type.toString();
   }
 
-  private static int determineNumberPriority(TypeElement typeElement, TypeMirror type) {
-    if (typeElement != null) {
-      String canonicalName = typeElement.getQualifiedName().toString();
-      Integer result = NUMBER_PRIORITY_MAP.get(canonicalName);
-      if (result != null) {
-        return result;
-      }
-    }
-    Integer result = NUMBER_PRIORITY_MAP.get(type.getKind().name().toLowerCase());
-    if (result != null) {
-      return result;
-    }
-    return 0;
+  private static NumberTypePriority determineNumberPriority(
+      TypeElement typeElement, TypeMirror type) {
+    return Optional.ofNullable(typeElement)
+        .map(TypeElement::getQualifiedName)
+        .map(Object::toString)
+        .map(NUMBER_PRIORITY_MAP::get)
+        .orElseGet(
+            () ->
+                NUMBER_PRIORITY_MAP.getOrDefault(
+                    type.getKind().name().toLowerCase(), NumberTypePriority.DEFAULT));
   }
 
   private boolean isAssignable(
       List<TypeDeclaration> parameterTypeDeclarations, List<? extends VariableElement> parameters) {
-    MoreTypes types = ctx.getMoreTypes();
+    var types = ctx.getMoreTypes();
     return Zip.stream(parameterTypeDeclarations, parameters)
         .map(p -> p.map(TypeDeclaration::getType, Element::asType))
         .map(p -> p.map(types::boxIfPrimitive, types::boxIfPrimitive))
         .allMatch(p -> types.isAssignableWithErasure(p.fst, p.snd));
-  }
-
-  private static class ScalarDetector extends SimpleCtTypeVisitor<Boolean, Void, RuntimeException> {
-
-    private ScalarDetector() {
-      super(false);
-    }
-
-    @Override
-    public Boolean visitBasicCtType(BasicCtType ctType, Void p) {
-      return true;
-    }
-
-    @Override
-    public Boolean visitDomainCtType(DomainCtType ctType, Void p) {
-      return true;
-    }
   }
 }

@@ -23,7 +23,7 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
-public class EntityCtType extends AbstractCtType {
+public final class EntityCtType extends AbstractCtType {
 
   private final boolean immutable;
 

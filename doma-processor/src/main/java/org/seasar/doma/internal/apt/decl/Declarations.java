@@ -150,8 +150,8 @@ public class Declarations {
   private TypeMirror resolveTypeParameter(
       TypeMirror formalType, List<TypeParameterDeclaration> typeParameterDeclarations) {
     for (TypeParameterDeclaration typeParameterDecl : typeParameterDeclarations) {
-      if (formalType.equals(typeParameterDecl.getFormalType())) {
-        return typeParameterDecl.getActualType();
+      if (formalType.equals(typeParameterDecl.formalType())) {
+        return typeParameterDecl.actualType();
       }
       DeclaredType declaredType = ctx.getMoreTypes().toDeclaredType(formalType);
       if (declaredType == null) {
@@ -165,8 +165,8 @@ public class Declarations {
               .map(
                   arg ->
                       typeParameterDeclarations.stream()
-                          .filter(declaration -> arg.equals(declaration.getFormalType()))
-                          .map(TypeParameterDeclaration::getActualType)
+                          .filter(declaration -> arg.equals(declaration.formalType()))
+                          .map(TypeParameterDeclaration::actualType)
                           .findFirst())
               .toList();
       if (optTypeArgs.stream().allMatch(Optional::isPresent)) {

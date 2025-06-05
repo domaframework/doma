@@ -81,6 +81,6 @@ public class ScopeClassMetaFactory {
     TypeParameterDeclaration typeParameterDeclaration =
         ctx.getDeclarations()
             .newTypeParameterDeclarationUsingTypeParams(formalType, allTypeParameterDeclarations);
-    return typeParameterDeclaration.getActualType();
+    return typeParameterDeclaration.actualType();
   }
 }

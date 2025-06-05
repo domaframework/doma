@@ -24,7 +24,7 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.generator.Code;
 
-public class DomainCtType extends AbstractCtType {
+public final class DomainCtType extends AbstractCtType {
 
   private final BasicCtType basicCtType;
 

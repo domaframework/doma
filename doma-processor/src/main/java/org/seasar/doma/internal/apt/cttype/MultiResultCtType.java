@@ -18,7 +18,7 @@ package org.seasar.doma.internal.apt.cttype;
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.RoundContext;
 
-public class MultiResultCtType extends AbstractCtType {
+public final class MultiResultCtType extends AbstractCtType {
   private final CtType elementCtType;
 
   MultiResultCtType(RoundContext ctx, TypeMirror type, CtType elementCtType) {
