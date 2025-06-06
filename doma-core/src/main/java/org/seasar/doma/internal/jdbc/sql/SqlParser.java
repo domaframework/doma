@@ -524,6 +524,10 @@ public class SqlParser {
     appendNode(ifBlockNode);
     push(ifBlockNode);
     String expression = tokenType.extract(token);
+    if (expression.isEmpty()) {
+      throw new JdbcException(
+          Message.DOMA2241, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
+    }
     IfNode ifNode = new IfNode(getLocation(), expression, token);
     ifBlockNode.setIfNode(ifNode);
     push(ifNode);
@@ -541,6 +545,10 @@ public class SqlParser {
           Message.DOMA2139, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
     }
     String expression = tokenType.extract(token);
+    if (expression.isEmpty()) {
+      throw new JdbcException(
+          Message.DOMA2242, sql, tokenizer.getLineNumber(), tokenizer.getPosition());
+    }
     ElseifNode node = new ElseifNode(getLocation(), expression, token);
     ifBlockNode.addElseifNode(node);
     push(node);

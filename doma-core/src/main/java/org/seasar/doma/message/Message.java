@@ -287,6 +287,10 @@ public enum Message implements MessageResource {
   DOMA2239(
       "The table alias \"{0}\" passed to the expansion directive is not defined in the aggregate strategy \"{1}\"."),
   DOMA2240("The dialect \"{0}\" does not support the RETURNING clause or an equivalent feature."),
+  DOMA2241(
+      "Failed to parse the SQL on line {1} at column {2}. The expression is not found in \"/*%if ...*/\". SQL=[{0}]"),
+  DOMA2242(
+      "Failed to parse the SQL on line {1} at column {2}. The expression is not found in \"/*%elseif ...*/\". SQL=[{0}]"),
 
   // expression
   DOMA3001(
