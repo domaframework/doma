@@ -129,57 +129,67 @@ public class SqlTokenizer {
   }
 
   protected void peek() {
-    if (buf.hasRemaining()) {
-      char c = buf.get();
-      if (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (buf.hasRemaining()) {
-            char c4 = buf.get();
-            if (buf.hasRemaining()) {
-              char c5 = buf.get();
-              if (buf.hasRemaining()) {
-                char c6 = buf.get();
-                if (buf.hasRemaining()) {
-                  char c7 = buf.get();
-                  if (buf.hasRemaining()) {
-                    char c8 = buf.get();
-                    if (buf.hasRemaining()) {
-                      char c9 = buf.get();
-                      if (buf.hasRemaining()) {
-                        char c10 = buf.get();
-                        peekTenChars(c, c2, c3, c4, c5, c6, c7, c8, c9, c10);
-                      } else {
-                        peekNineChars(c, c2, c3, c4, c5, c6, c7, c8, c9);
-                      }
-                    } else {
-                      peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
-                    }
-                  } else {
-                    peekSevenChars(c, c2, c3, c4, c5, c6, c7);
-                  }
-                } else {
-                  peekSixChars(c, c2, c3, c4, c5, c6);
-                }
-              } else {
-                peekFiveChars(c, c2, c3, c4, c5);
-              }
-            } else {
-              peekFourChars(c, c2, c3, c4);
-            }
-          } else {
-            peekThreeChars(c, c2, c3);
-          }
-        } else {
-          peekTwoChars(c, c2);
-        }
-      } else {
-        peekOneChar(c);
-      }
-    } else {
+    if (!buf.hasRemaining()) {
       type = EOF;
+      return;
     }
+
+    char c = buf.get();
+    if (!buf.hasRemaining()) {
+      peekOneChar(c);
+      return;
+    }
+
+    char c2 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekTwoChars(c, c2);
+      return;
+    }
+
+    char c3 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekThreeChars(c, c2, c3);
+      return;
+    }
+
+    char c4 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekFourChars(c, c2, c3, c4);
+      return;
+    }
+
+    char c5 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekFiveChars(c, c2, c3, c4, c5);
+      return;
+    }
+
+    char c6 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekSixChars(c, c2, c3, c4, c5, c6);
+      return;
+    }
+
+    char c7 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekSevenChars(c, c2, c3, c4, c5, c6, c7);
+      return;
+    }
+
+    char c8 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekEightChars(c, c2, c3, c4, c5, c6, c7, c8);
+      return;
+    }
+
+    char c9 = buf.get();
+    if (!buf.hasRemaining()) {
+      peekNineChars(c, c2, c3, c4, c5, c6, c7, c8, c9);
+      return;
+    }
+
+    char c10 = buf.get();
+    peekTenChars(c, c2, c3, c4, c5, c6, c7, c8, c9, c10);
   }
 
   protected void peekTenChars(
