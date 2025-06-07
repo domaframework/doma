@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.1.21"
-junit = "5.13.0"
+junit = "5.13.1"
 
 [libraries]
 jdbc-h2 = { module = "com.h2database:h2", version = "2.3.232" }
