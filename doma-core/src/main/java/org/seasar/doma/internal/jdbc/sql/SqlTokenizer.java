@@ -140,16 +140,16 @@ public class SqlTokenizer {
     buf.get(lookahead, 0, charsRead);
 
     switch (charsRead) {
-      case 1 -> peekOneChar();
-      case 2 -> peekTwoChars();
-      case 3 -> peekThreeChars();
-      case 4 -> peekFourChars();
-      case 5 -> peekFiveChars();
-      case 6 -> peekSixChars();
-      case 7 -> peekSevenChars();
-      case 8 -> peekEightChars();
-      case 9 -> peekNineChars();
       case 10 -> peekTenChars();
+      case 9 -> peekNineChars();
+      case 8 -> peekEightChars();
+      case 7 -> peekSevenChars();
+      case 6 -> peekSixChars();
+      case 5 -> peekFiveChars();
+      case 4 -> peekFourChars();
+      case 3 -> peekThreeChars();
+      case 2 -> peekTwoChars();
+      case 1 -> peekOneChar();
       default -> throw new RuntimeException(); // TODO
     }
   }
@@ -420,156 +420,206 @@ public class SqlTokenizer {
     } else if (isInWord()) {
       type = IN_WORD;
       return;
-    } else if (lookahead[0] == '/' && lookahead[1] == '*') {
-      type = BLOCK_COMMENT;
-      if (buf.hasRemaining()) {
-        char c3 = buf.get();
-        if (ExpressionUtil.isExpressionIdentifierStart(c3)) {
-          type = BIND_VARIABLE_BLOCK_COMMENT;
-        } else if (c3 == '^') {
-          type = LITERAL_VARIABLE_BLOCK_COMMENT;
-        } else if (c3 == '#') {
-          type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
-        } else if (c3 == '%') {
-          if (buf.hasRemaining()) {
-            char c4 = buf.get();
-            if (c4 == '!') {
-              type = PARSER_LEVEL_BLOCK_COMMENT;
-            } else if (buf.hasRemaining()) {
-              char c5 = buf.get();
-              if (c4 == 'i' && c5 == 'f') {
-                if (isBlockCommentDirectiveTerminated()) {
-                  type = IF_BLOCK_COMMENT;
-                }
-              } else if (buf.hasRemaining()) {
-                char c6 = buf.get();
-                if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
-                  if (isBlockCommentDirectiveTerminated()) {
-                    type = FOR_BLOCK_COMMENT;
-                  }
-                } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
-                  if (isBlockCommentDirectiveTerminated()) {
-                    type = END_BLOCK_COMMENT;
-                  }
-                } else if (buf.hasRemaining()) {
-                  char c7 = buf.get();
-                  if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
-                    if (isBlockCommentDirectiveTerminated()) {
-                      type = ELSE_BLOCK_COMMENT;
-                    } else {
-                      if (buf.hasRemaining()) {
-                        char c8 = buf.get();
-                        if (buf.hasRemaining()) {
-                          char c9 = buf.get();
-                          if (c8 == 'i' && c9 == 'f') {
-                            if (isBlockCommentDirectiveTerminated()) {
-                              type = ELSEIF_BLOCK_COMMENT;
-                            }
-                          } else {
-                            buf.position(buf.position() - 6);
-                          }
-                        } else {
-                          buf.position(buf.position() - 5);
-                        }
-                      }
-                    }
-                  } else if (buf.hasRemaining()) {
-                    char c8 = buf.get();
-                    if (buf.hasRemaining()) {
-                      char c9 = buf.get();
-                      if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a' && c8 == 'n'
-                          && c9 == 'd') {
-                        if (isBlockCommentDirectiveTerminated()) {
-                          type = EXPAND_BLOCK_COMMENT;
-                        }
-                      } else if (buf.hasRemaining()) {
-                        char c10 = buf.get();
-                        if (buf.hasRemaining()) {
-                          char c11 = buf.get();
-                          if (c4 == 'p'
-                              && c5 == 'o'
-                              && c6 == 'p'
-                              && c7 == 'u'
-                              && c8 == 'l'
-                              && c9 == 'a'
-                              && c10 == 't'
-                              && c11 == 'e') {
-                            if (isBlockCommentDirectiveTerminated()) {
-                              type = POPULATE_BLOCK_COMMENT;
-                            }
-                          } else {
-                            buf.position(buf.position() - 8);
-                          }
-                        } else {
-                          buf.position(buf.position() - 7);
-                        }
-                      } else {
-                        buf.position(buf.position() - 6);
-                      }
-                    } else {
-                      buf.position(buf.position() - 5);
-                    }
-                  } else {
-                    buf.position(buf.position() - 4);
-                  }
-                } else {
-                  buf.position(buf.position() - 3);
-                }
-              } else {
-                buf.position(buf.position() - 2);
-              }
-            } else {
-              buf.position(buf.position() - 1);
-            }
-          }
-          if (type != PARSER_LEVEL_BLOCK_COMMENT
-              && type != IF_BLOCK_COMMENT
-              && type != FOR_BLOCK_COMMENT
-              && type != END_BLOCK_COMMENT
-              && type != ELSE_BLOCK_COMMENT
-              && type != ELSEIF_BLOCK_COMMENT
-              && type != EXPAND_BLOCK_COMMENT
-              && type != POPULATE_BLOCK_COMMENT) {
-            int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
-          }
-        }
-        buf.position(buf.position() - 1);
-      }
-      while (buf.hasRemaining()) {
-        char c3 = buf.get();
-        if (buf.hasRemaining()) {
-          buf.mark();
-          char c4 = buf.get();
-          if (c3 == '*' && c4 == '/') {
-            return;
-          }
-          if ((c3 == '\r' || c3 == '\n')) {
-            currentLineNumber++;
-          }
-          buf.reset();
-        }
-      }
-      int pos = buf.position() - lineStartPosition;
-      throw new JdbcException(Message.DOMA2102, sql, lineNumber, pos);
-    } else if (lookahead[0] == '-' && lookahead[1] == '-') {
-      type = LINE_COMMENT;
-      while (buf.hasRemaining()) {
-        buf.mark();
-        char c3 = buf.get();
-        if (c3 == '\r' || c3 == '\n') {
-          buf.reset();
-          return;
-        }
-      }
+    } else if (isBlockCommentStart()) {
+      handleBlockComment();
       return;
-    } else if (lookahead[0] == '\r' && lookahead[1] == '\n') {
+    } else if (isLineCommentStart()) {
+      handleLineComment();
+      return;
+    } else if (isEol()) {
       type = EOL;
       currentLineNumber++;
       return;
     }
     buf.position(buf.position() - 1);
     peekOneChar();
+  }
+
+  private boolean isEol() {
+    return lookahead[0] == '\r' && lookahead[1] == '\n';
+  }
+
+  private boolean isLineCommentStart() {
+    return lookahead[0] == '-' && lookahead[1] == '-';
+  }
+
+  private boolean isBlockCommentStart() {
+    return lookahead[0] == '/' && lookahead[1] == '*';
+  }
+
+  private void handleBlockComment() {
+    type = BLOCK_COMMENT;
+    if (buf.hasRemaining()) {
+      char c3 = buf.get();
+      if (ExpressionUtil.isExpressionIdentifierStart(c3)) {
+        type = BIND_VARIABLE_BLOCK_COMMENT;
+      } else if (c3 == '^') {
+        type = LITERAL_VARIABLE_BLOCK_COMMENT;
+      } else if (c3 == '#') {
+        type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
+      } else if (c3 == '%') {
+        parseBlockCommentDirective();
+      }
+      buf.position(buf.position() - 1);
+    }
+    consumeBlockCommentContent();
+  }
+
+  private void parseBlockCommentDirective() {
+    if (buf.hasRemaining()) {
+      char c4 = buf.get();
+      if (c4 == '!') {
+        type = PARSER_LEVEL_BLOCK_COMMENT;
+      } else if (buf.hasRemaining()) {
+        char c5 = buf.get();
+        if (c4 == 'i' && c5 == 'f') {
+          if (isBlockCommentDirectiveTerminated()) {
+            type = IF_BLOCK_COMMENT;
+          }
+        } else if (buf.hasRemaining()) {
+          char c6 = buf.get();
+          if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
+            if (isBlockCommentDirectiveTerminated()) {
+              type = FOR_BLOCK_COMMENT;
+            }
+          } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
+            if (isBlockCommentDirectiveTerminated()) {
+              type = END_BLOCK_COMMENT;
+            }
+          } else {
+            parseElseOrElseIfDirective(c4, c5, c6);
+          }
+        } else {
+          buf.position(buf.position() - 2);
+        }
+      } else {
+        buf.position(buf.position() - 1);
+      }
+    }
+    validateBlockCommentDirective();
+  }
+
+  private void parseElseOrElseIfDirective(char c4, char c5, char c6) {
+    if (buf.hasRemaining()) {
+      char c7 = buf.get();
+      if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
+        if (isBlockCommentDirectiveTerminated()) {
+          type = ELSE_BLOCK_COMMENT;
+        } else {
+          parseElseIfDirective();
+        }
+      } else if (buf.hasRemaining()) {
+        parseExtendedDirectives(c4, c5, c6, c7);
+      } else {
+        buf.position(buf.position() - 4);
+      }
+    } else {
+      buf.position(buf.position() - 3);
+    }
+  }
+
+  private void parseElseIfDirective() {
+    if (buf.hasRemaining()) {
+      char c8 = buf.get();
+      if (buf.hasRemaining()) {
+        char c9 = buf.get();
+        if (c8 == 'i' && c9 == 'f') {
+          if (isBlockCommentDirectiveTerminated()) {
+            type = ELSEIF_BLOCK_COMMENT;
+          }
+        } else {
+          buf.position(buf.position() - 6);
+        }
+      } else {
+        buf.position(buf.position() - 5);
+      }
+    }
+  }
+
+  private void parseExtendedDirectives(char c4, char c5, char c6, char c7) {
+    char c8 = buf.get();
+    if (buf.hasRemaining()) {
+      char c9 = buf.get();
+      if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a' && c8 == 'n' && c9 == 'd') {
+        if (isBlockCommentDirectiveTerminated()) {
+          type = EXPAND_BLOCK_COMMENT;
+        }
+      } else if (buf.hasRemaining()) {
+        parsePopulateDirective(c4, c5, c6, c7, c8, c9);
+      } else {
+        buf.position(buf.position() - 6);
+      }
+    } else {
+      buf.position(buf.position() - 5);
+    }
+  }
+
+  private void parsePopulateDirective(char c4, char c5, char c6, char c7, char c8, char c9) {
+    char c10 = buf.get();
+    if (buf.hasRemaining()) {
+      char c11 = buf.get();
+      if (c4 == 'p'
+          && c5 == 'o'
+          && c6 == 'p'
+          && c7 == 'u'
+          && c8 == 'l'
+          && c9 == 'a'
+          && c10 == 't'
+          && c11 == 'e') {
+        if (isBlockCommentDirectiveTerminated()) {
+          type = POPULATE_BLOCK_COMMENT;
+        }
+      } else {
+        buf.position(buf.position() - 8);
+      }
+    } else {
+      buf.position(buf.position() - 7);
+    }
+  }
+
+  private void validateBlockCommentDirective() {
+    if (type != PARSER_LEVEL_BLOCK_COMMENT
+        && type != IF_BLOCK_COMMENT
+        && type != FOR_BLOCK_COMMENT
+        && type != END_BLOCK_COMMENT
+        && type != ELSE_BLOCK_COMMENT
+        && type != ELSEIF_BLOCK_COMMENT
+        && type != EXPAND_BLOCK_COMMENT
+        && type != POPULATE_BLOCK_COMMENT) {
+      int pos = buf.position() - lineStartPosition;
+      throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
+    }
+  }
+
+  private void consumeBlockCommentContent() {
+    while (buf.hasRemaining()) {
+      char c3 = buf.get();
+      if (buf.hasRemaining()) {
+        buf.mark();
+        char c4 = buf.get();
+        if (c3 == '*' && c4 == '/') {
+          return;
+        }
+        if ((c3 == '\r' || c3 == '\n')) {
+          currentLineNumber++;
+        }
+        buf.reset();
+      }
+    }
+    int pos = buf.position() - lineStartPosition;
+    throw new JdbcException(Message.DOMA2102, sql, lineNumber, pos);
+  }
+
+  private void handleLineComment() {
+    type = LINE_COMMENT;
+    while (buf.hasRemaining()) {
+      buf.mark();
+      char c3 = buf.get();
+      if (c3 == '\r' || c3 == '\n') {
+        buf.reset();
+        return;
+      }
+    }
   }
 
   private boolean isInWord() {
