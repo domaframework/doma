@@ -994,8 +994,8 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
           Message.DOMA3014,
           e,
           location.getExpression(),
-          operatorNode.getExpression(),
           location.getPosition(),
+          operatorNode.getExpression(),
           e);
     }
 
