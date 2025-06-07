@@ -20,7 +20,6 @@ import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -104,7 +103,7 @@ public class SqlTokenizerPerformanceTest {
     for (int round = 0; round < 3; round++) {
       // Warmup before each round
       warmup(sql);
-      
+
       if (round % 2 == 0) {
         // Round 1, 3: Refactored first
         refactoredResults.add(runStatisticalBenchmark("Refactored SqlTokenizer", sql, false));
@@ -120,7 +119,8 @@ public class SqlTokenizerPerformanceTest {
     }
 
     // Aggregate results from multiple rounds
-    PerformanceResult refactoredResult = aggregateResults("Refactored SqlTokenizer", refactoredResults);
+    PerformanceResult refactoredResult =
+        aggregateResults("Refactored SqlTokenizer", refactoredResults);
     PerformanceResult classicResult = aggregateResults("Classic SqlTokenizer", classicResults);
 
     // Print results
@@ -184,7 +184,8 @@ public class SqlTokenizerPerformanceTest {
     // Remove outliers (top and bottom 10%)
     Collections.sort(executionTimes);
     int removeCount = Math.max(1, STATISTICAL_RUNS / 10);
-    List<Long> filteredTimes = executionTimes.subList(removeCount, executionTimes.size() - removeCount);
+    List<Long> filteredTimes =
+        executionTimes.subList(removeCount, executionTimes.size() - removeCount);
 
     return new PerformanceResult(implementationName, filteredTimes, BENCHMARK_ITERATIONS);
   }
@@ -241,16 +242,17 @@ public class SqlTokenizerPerformanceTest {
     System.out.printf("Throughput difference: %+.1f%%%n", throughputDiff);
   }
 
-  private PerformanceResult aggregateResults(String implementationName, List<PerformanceResult> results) {
+  private PerformanceResult aggregateResults(
+      String implementationName, List<PerformanceResult> results) {
     List<Long> allExecutionTimes = new ArrayList<>();
-    
+
     // Collect average times from each round
     for (PerformanceResult result : results) {
       allExecutionTimes.add(result.averageTimeNanos);
       allExecutionTimes.add(result.minTimeNanos);
       allExecutionTimes.add(result.maxTimeNanos);
     }
-    
+
     return new PerformanceResult(implementationName, allExecutionTimes, BENCHMARK_ITERATIONS);
   }
 
