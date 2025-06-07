@@ -136,7 +136,7 @@ public class SqlTokenizer {
       return;
     }
 
-    int charsRead = Math.min(10, buf.remaining());
+    int charsRead = Math.min(lookahead.length, buf.remaining());
     buf.get(lookahead, 0, charsRead);
 
     switch (charsRead) {
@@ -435,172 +435,170 @@ public class SqlTokenizer {
     peekOneChar();
   }
 
-  private boolean isEol() {
-    return lookahead[0] == '\r' && lookahead[1] == '\n';
+  private boolean isOrWord() {
+    return ((lookahead[0] | 0x20) == 'o') && ((lookahead[1] | 0x20) == 'r') && isWordTerminated();
   }
 
-  private boolean isLineCommentStart() {
-    return lookahead[0] == '-' && lookahead[1] == '-';
+  private boolean isInWord() {
+    return ((lookahead[0] | 0x20) == 'i') && ((lookahead[1] | 0x20) == 'n') && isWordTerminated();
   }
 
   private boolean isBlockCommentStart() {
     return lookahead[0] == '/' && lookahead[1] == '*';
   }
 
+  private boolean isLineCommentStart() {
+    return lookahead[0] == '-' && lookahead[1] == '-';
+  }
+
+  private boolean isEol() {
+    return lookahead[0] == '\r' && lookahead[1] == '\n';
+  }
+
   private void handleBlockComment() {
     type = BLOCK_COMMENT;
     if (buf.hasRemaining()) {
-      char c3 = buf.get();
-      if (ExpressionUtil.isExpressionIdentifierStart(c3)) {
+      char c1 = buf.get();
+      if (ExpressionUtil.isExpressionIdentifierStart(c1)) {
         type = BIND_VARIABLE_BLOCK_COMMENT;
-      } else if (c3 == '^') {
+      } else if (c1 == '^') {
         type = LITERAL_VARIABLE_BLOCK_COMMENT;
-      } else if (c3 == '#') {
+      } else if (c1 == '#') {
         type = EMBEDDED_VARIABLE_BLOCK_COMMENT;
-      } else if (c3 == '%') {
-        parseBlockCommentDirective();
-      }
-      buf.position(buf.position() - 1);
-    }
-    consumeBlockCommentContent();
-  }
-
-  private void parseBlockCommentDirective() {
-    if (buf.hasRemaining()) {
-      char c4 = buf.get();
-      if (c4 == '!') {
-        type = PARSER_LEVEL_BLOCK_COMMENT;
-      } else if (buf.hasRemaining()) {
-        char c5 = buf.get();
-        if (c4 == 'i' && c5 == 'f') {
-          if (isBlockCommentDirectiveTerminated()) {
-            type = IF_BLOCK_COMMENT;
-          }
-        } else if (buf.hasRemaining()) {
-          char c6 = buf.get();
-          if (c4 == 'f' && c5 == 'o' && c6 == 'r') {
-            if (isBlockCommentDirectiveTerminated()) {
-              type = FOR_BLOCK_COMMENT;
-            }
-          } else if (c4 == 'e' && c5 == 'n' && c6 == 'd') {
-            if (isBlockCommentDirectiveTerminated()) {
-              type = END_BLOCK_COMMENT;
-            }
-          } else {
-            parseElseOrElseIfDirective(c4, c5, c6);
-          }
-        } else {
-          buf.position(buf.position() - 2);
-        }
+      } else if (c1 == '%') {
+        parsePercentageDirective();
       } else {
         buf.position(buf.position() - 1);
       }
     }
-    validateBlockCommentDirective();
+    consumeBlockCommentContent();
   }
 
-  private void parseElseOrElseIfDirective(char c4, char c5, char c6) {
-    if (buf.hasRemaining()) {
-      char c7 = buf.get();
-      if (c4 == 'e' && c5 == 'l' && c6 == 's' && c7 == 'e') {
-        if (isBlockCommentDirectiveTerminated()) {
-          type = ELSE_BLOCK_COMMENT;
-        } else {
-          parseElseIfDirective();
-        }
-      } else if (buf.hasRemaining()) {
-        parseExtendedDirectives(c4, c5, c6, c7);
-      } else {
-        buf.position(buf.position() - 4);
-      }
-    } else {
-      buf.position(buf.position() - 3);
-    }
-  }
+  private void parsePercentageDirective() {
+    int charsRead = Math.min(8, buf.remaining());
+    buf.get(lookahead, 0, charsRead);
 
-  private void parseElseIfDirective() {
-    if (buf.hasRemaining()) {
-      char c8 = buf.get();
-      if (buf.hasRemaining()) {
-        char c9 = buf.get();
-        if (c8 == 'i' && c9 == 'f') {
-          if (isBlockCommentDirectiveTerminated()) {
-            type = ELSEIF_BLOCK_COMMENT;
+    while (charsRead > 0) {
+      switch (charsRead) {
+        case 8:
+          if (isPopulateWord()) {
+            type = POPULATE_BLOCK_COMMENT;
+            return;
           }
-        } else {
-          buf.position(buf.position() - 6);
-        }
-      } else {
-        buf.position(buf.position() - 5);
+          break;
+        case 6:
+          if (isExpandWord()) {
+            type = EXPAND_BLOCK_COMMENT;
+            return;
+          }
+          if (isElseifWord()) {
+            type = ELSEIF_BLOCK_COMMENT;
+            return;
+          }
+          break;
+        case 4:
+          if (isElseWord()) {
+            type = ELSE_BLOCK_COMMENT;
+            return;
+          }
+          break;
+        case 3:
+          if (isForWord()) {
+            type = FOR_BLOCK_COMMENT;
+            return;
+          }
+          if (isEndWord()) {
+            type = END_BLOCK_COMMENT;
+            return;
+          }
+          break;
+        case 2:
+          if (isIfWord()) {
+            type = IF_BLOCK_COMMENT;
+            return;
+          }
+          break;
+        case 1:
+          if (isExclamationMark()) {
+            type = PARSER_LEVEL_BLOCK_COMMENT;
+            return;
+          }
+          break;
       }
+      buf.position(buf.position() - 1);
+      charsRead--;
     }
+
+    int pos = buf.position() - lineStartPosition;
+    throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
   }
 
-  private void parseExtendedDirectives(char c4, char c5, char c6, char c7) {
-    char c8 = buf.get();
-    if (buf.hasRemaining()) {
-      char c9 = buf.get();
-      if (c4 == 'e' && c5 == 'x' && c6 == 'p' && c7 == 'a' && c8 == 'n' && c9 == 'd') {
-        if (isBlockCommentDirectiveTerminated()) {
-          type = EXPAND_BLOCK_COMMENT;
-        }
-      } else if (buf.hasRemaining()) {
-        parsePopulateDirective(c4, c5, c6, c7, c8, c9);
-      } else {
-        buf.position(buf.position() - 6);
-      }
-    } else {
-      buf.position(buf.position() - 5);
-    }
+  private boolean isPopulateWord() {
+    return lookahead[0] == 'p'
+        && lookahead[1] == 'o'
+        && lookahead[2] == 'p'
+        && lookahead[3] == 'u'
+        && lookahead[4] == 'l'
+        && lookahead[5] == 'a'
+        && lookahead[6] == 't'
+        && lookahead[7] == 'e'
+        && isWordTerminated();
   }
 
-  private void parsePopulateDirective(char c4, char c5, char c6, char c7, char c8, char c9) {
-    char c10 = buf.get();
-    if (buf.hasRemaining()) {
-      char c11 = buf.get();
-      if (c4 == 'p'
-          && c5 == 'o'
-          && c6 == 'p'
-          && c7 == 'u'
-          && c8 == 'l'
-          && c9 == 'a'
-          && c10 == 't'
-          && c11 == 'e') {
-        if (isBlockCommentDirectiveTerminated()) {
-          type = POPULATE_BLOCK_COMMENT;
-        }
-      } else {
-        buf.position(buf.position() - 8);
-      }
-    } else {
-      buf.position(buf.position() - 7);
-    }
+  private boolean isExpandWord() {
+    return lookahead[0] == 'e'
+        && lookahead[1] == 'x'
+        && lookahead[2] == 'p'
+        && lookahead[3] == 'a'
+        && lookahead[4] == 'n'
+        && lookahead[5] == 'd'
+        && isWordTerminated();
   }
 
-  private void validateBlockCommentDirective() {
-    if (type != PARSER_LEVEL_BLOCK_COMMENT
-        && type != IF_BLOCK_COMMENT
-        && type != FOR_BLOCK_COMMENT
-        && type != END_BLOCK_COMMENT
-        && type != ELSE_BLOCK_COMMENT
-        && type != ELSEIF_BLOCK_COMMENT
-        && type != EXPAND_BLOCK_COMMENT
-        && type != POPULATE_BLOCK_COMMENT) {
-      int pos = buf.position() - lineStartPosition;
-      throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
-    }
+  private boolean isElseifWord() {
+    return lookahead[0] == 'e'
+        && lookahead[1] == 'l'
+        && lookahead[2] == 's'
+        && lookahead[3] == 'e'
+        && lookahead[4] == 'i'
+        && lookahead[5] == 'f'
+        && isWordTerminated();
+  }
+
+  private boolean isElseWord() {
+    return lookahead[0] == 'e'
+        && lookahead[1] == 'l'
+        && lookahead[2] == 's'
+        && lookahead[3] == 'e'
+        && isWordTerminated();
+  }
+
+  private boolean isForWord() {
+    return lookahead[0] == 'f' && lookahead[1] == 'o' && lookahead[2] == 'r' && isWordTerminated();
+  }
+
+  private boolean isEndWord() {
+    return lookahead[0] == 'e' && lookahead[1] == 'n' && lookahead[2] == 'd' && isWordTerminated();
+  }
+
+  private boolean isIfWord() {
+    return lookahead[0] == 'i' && lookahead[1] == 'f' && isWordTerminated();
+  }
+
+  private boolean isExclamationMark() {
+    return lookahead[0] == '!';
   }
 
   private void consumeBlockCommentContent() {
     while (buf.hasRemaining()) {
-      char c3 = buf.get();
+      char c1 = buf.get();
       if (buf.hasRemaining()) {
         buf.mark();
-        char c4 = buf.get();
-        if (c3 == '*' && c4 == '/') {
+        char c2 = buf.get();
+        if (c1 == '*' && c2 == '/') {
           return;
         }
-        if ((c3 == '\r' || c3 == '\n')) {
+        if ((c1 == '\r' || c1 == '\n')) {
           currentLineNumber++;
         }
         buf.reset();
@@ -614,20 +612,12 @@ public class SqlTokenizer {
     type = LINE_COMMENT;
     while (buf.hasRemaining()) {
       buf.mark();
-      char c3 = buf.get();
-      if (c3 == '\r' || c3 == '\n') {
+      char c1 = buf.get();
+      if (c1 == '\r' || c1 == '\n') {
         buf.reset();
         return;
       }
     }
-  }
-
-  private boolean isInWord() {
-    return ((lookahead[0] | 0x20) == 'i') && ((lookahead[1] | 0x20) == 'n') && isWordTerminated();
-  }
-
-  private boolean isOrWord() {
-    return ((lookahead[0] | 0x20) == 'o') && ((lookahead[1] | 0x20) == 'r') && isWordTerminated();
   }
 
   protected void peekOneChar() {
@@ -662,12 +652,12 @@ public class SqlTokenizer {
 
   private boolean consumeQuotedContent() {
     while (buf.hasRemaining()) {
-      char c2 = buf.get();
-      if (c2 == '\'') {
+      char c1 = buf.get();
+      if (c1 == '\'') {
         if (buf.hasRemaining()) {
           buf.mark();
-          char c3 = buf.get();
-          if (c3 != '\'') {
+          char c2 = buf.get();
+          if (c2 != '\'') {
             buf.reset();
             return true; // Found closing quote
           }
@@ -702,12 +692,12 @@ public class SqlTokenizer {
 
   private boolean consumeEmbeddedQuote() {
     while (buf.hasRemaining()) {
-      char c3 = buf.get();
-      if (c3 == '\'') {
+      char c1 = buf.get();
+      if (c1 == '\'') {
         if (buf.hasRemaining()) {
           buf.mark();
-          char c4 = buf.get();
-          if (c4 != '\'') {
+          char c2 = buf.get();
+          if (c2 != '\'') {
             buf.reset();
             return true; // Found closing quote
           }
@@ -750,6 +740,7 @@ public class SqlTokenizer {
     }
   }
 
+  @Deprecated
   protected boolean isBlockCommentDirectiveTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
