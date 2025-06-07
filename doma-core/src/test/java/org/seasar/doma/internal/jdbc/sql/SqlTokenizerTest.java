@@ -21,7 +21,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.AND_WORD;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BIND_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.CLOSED_PARENS;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DELIMITER;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.DISTINCT_WORD;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSEIF_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.ELSE_BLOCK_COMMENT;
+import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EMBEDDED_VARIABLE_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.END_BLOCK_COMMENT;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOF;
 import static org.seasar.doma.internal.jdbc.sql.SqlTokenType.EOL;
@@ -690,5 +695,406 @@ public class SqlTokenizerTest {
       System.out.println(expected.getMessage());
       assertEquals(Message.DOMA2119, expected.getMessageResource());
     }
+  }
+
+  @Test
+  public void testDoubleQuoteAsWord() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where \"column\"");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("\"column\"", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNumbers() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where id = 123");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("123", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testDecimalNumbers() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where price = 123.45");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("price", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("123.45", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeNumbers() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where amount = -100");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("amount", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("-100", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testPositiveNumbers() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where amount = +100");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("amount", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("+100", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testClosedParens() {
+    SqlTokenizer tokenizer = new SqlTokenizer("(select count(*) from table)");
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("count", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("*", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(FROM_WORD, tokenizer.next());
+    assertEquals("from", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("table", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testDistinct() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select distinct");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(DISTINCT_WORD, tokenizer.next());
+    assertEquals("distinct", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testBlockComment_multiline() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select /*+ this is\na multiline\ncomment */ from");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*+ this is\na multiline\ncomment */", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(FROM_WORD, tokenizer.next());
+    assertEquals("from", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testBlockComment_notClosed() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select /* unclosed comment");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    try {
+      tokenizer.next();
+      fail();
+    } catch (JdbcException expected) {
+      assertEquals(Message.DOMA2102, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testEmbeddedBlockComment() {
+    SqlTokenizer tokenizer = new SqlTokenizer("where /*#orderBy*/order by id");
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(EMBEDDED_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*#orderBy*/", tokenizer.getToken());
+    assertEquals(ORDER_BY_WORD, tokenizer.next());
+    assertEquals("order by", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testElseBlockComment() {
+    SqlTokenizer tokenizer =
+        new SqlTokenizer("/*%if true*/where id = 1/*%else*/where id = 2/*%end*/");
+    assertEquals(IF_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%if true*/", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(ELSE_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%else*/", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("2", tokenizer.getToken());
+    assertEquals(END_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%end*/", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testElseIfBlockComment() {
+    SqlTokenizer tokenizer =
+        new SqlTokenizer("/*%if true*/where id = 1/*%elseif false*/where id = 2/*%end*/");
+    assertEquals(IF_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%if true*/", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(ELSEIF_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%elseif false*/", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("2", tokenizer.getToken());
+    assertEquals(END_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*%end*/", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testComplexSQL() {
+    SqlTokenizer tokenizer =
+        new SqlTokenizer(
+            "select e.id, e.name from employee e where e.dept_id = /*deptId*/1 and e.salary > /*minSalary*/50000");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("e.id", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("e.name", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(FROM_WORD, tokenizer.next());
+    assertEquals("from", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("employee", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("e", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("where", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("e.dept_id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*deptId*/", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(AND_WORD, tokenizer.next());
+    assertEquals("and", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("e.salary", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals(">", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(BIND_VARIABLE_BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/*minSalary*/", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("50000", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testTabWhitespace() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select\tid\tfrom\ttable");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("select", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(FROM_WORD, tokenizer.next());
+    assertEquals("from", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("table", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testMixedCaseKeywords() {
+    SqlTokenizer tokenizer = new SqlTokenizer("SeLeCt * FrOm TaBlE wHeRe Id = 1");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals("SeLeCt", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("*", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(FROM_WORD, tokenizer.next());
+    assertEquals("FrOm", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("TaBlE", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHERE_WORD, tokenizer.next());
+    assertEquals("wHeRe", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("Id", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OTHER, tokenizer.next());
+    assertEquals("=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(EOF, tokenizer.next());
+    assertNull(tokenizer.getToken());
   }
 }

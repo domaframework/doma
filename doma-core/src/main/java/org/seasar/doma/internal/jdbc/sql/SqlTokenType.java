@@ -72,7 +72,8 @@ public enum SqlTokenType {
     public String extract(String token) {
       assertNotNull(token);
       assertTrue(token.length() >= 7);
-      return token.substring(5, token.length() - 2);
+      String s = token.substring(5, token.length() - 2);
+      return StringUtil.trimWhitespace(s);
     }
   },
 
@@ -82,7 +83,8 @@ public enum SqlTokenType {
     public String extract(String token) {
       assertNotNull(token);
       assertTrue(token.length() >= 11);
-      return token.substring(9, token.length() - 2);
+      String s = token.substring(9, token.length() - 2);
+      return StringUtil.trimWhitespace(s);
     }
   },
 
