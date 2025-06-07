@@ -130,14 +130,24 @@ public class SqlTokenizer {
     return position;
   }
 
+  private void decrementPosition() {
+    buf.position(buf.position() - 1);
+  }
+
   protected void peek() {
-    if (!buf.hasRemaining()) {
+    int charsRead = Math.min(lookahead.length, buf.remaining());
+    if (charsRead == 0) {
       type = EOF;
       return;
     }
 
-    int charsRead = Math.min(lookahead.length, buf.remaining());
     buf.get(lookahead, 0, charsRead);
+
+    boolean isWordStart = isWordStart(lookahead[0]);
+    if (!isWordStart && charsRead > 2) {
+      buf.position(buf.position() - (charsRead - 2));
+      charsRead = 2;
+    }
 
     // This switch statement takes advantage of fall-through behavior.
     switch (charsRead) {
@@ -146,112 +156,137 @@ public class SqlTokenizer {
           type = FOR_UPDATE_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 9:
         if (isIntersectWord()) {
           type = INTERSECT_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 8:
         if (isGroupByWord()) {
           type = GROUP_BY_WORD;
           return;
-        } else if (isOrderByWord()) {
+        }
+        if (isOrderByWord()) {
           type = ORDER_BY_WORD;
           return;
-        } else if (isOptionWord()) {
+        }
+        if (isOptionWord()) {
           type = OPTION_WORD;
           buf.position(buf.position() - 2);
           return;
-        } else if (isDistinctWord()) {
+        }
+        if (isDistinctWord()) {
           type = DISTINCT_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 7:
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 6:
         if (isSelectWord()) {
           type = SELECT_WORD;
           return;
-        } else if (isHavingWord()) {
+        }
+        if (isHavingWord()) {
           type = HAVING_WORD;
           return;
-        } else if (isExceptWord()) {
+        }
+        if (isExceptWord()) {
           type = EXCEPT_WORD;
           return;
-        } else if (isUpdateWord()) {
+        }
+        if (isUpdateWord()) {
           type = UPDATE_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 5:
         if (isWhereWord()) {
           type = WHERE_WORD;
           return;
-        } else if (isUnionWord()) {
+        }
+        if (isUnionWord()) {
           type = UNION_WORD;
           return;
-        } else if (isMinusWord()) {
+        }
+        if (isMinusWord()) {
           type = MINUS_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 4:
         if (isFromWord()) {
           type = FROM_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 3:
         if (isAndWord()) {
           type = AND_WORD;
           return;
-        } else if (isSetWord()) {
+        }
+        if (isSetWord()) {
           type = SET_WORD;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 2:
-        if (isOrWord()) {
+        if (isWordStart && isOrWord()) {
           type = OR_WORD;
           return;
-        } else if (isInWord()) {
+        }
+        if (isWordStart && isInWord()) {
           type = IN_WORD;
           return;
-        } else if (isBlockCommentStart()) {
+        }
+        if (isBlockCommentStart()) {
           handleBlockComment();
           return;
-        } else if (isLineCommentStart()) {
+        }
+        if (isLineCommentStart()) {
           handleLineComment();
           return;
-        } else if (isEol()) {
+        }
+        if (isEol()) {
           type = EOL;
           currentLineNumber++;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 1:
         char c = lookahead[0];
         if (isWhitespace(c)) {
           type = WHITESPACE;
-        } else if (c == '(') {
+          return;
+        }
+        if (c == '(') {
           type = OPENED_PARENS;
-        } else if (c == ')') {
+          return;
+        }
+        if (c == ')') {
           type = CLOSED_PARENS;
-        } else if (c == ';') {
+          return;
+        }
+        if (c == ';') {
           type = DELIMITER;
-        } else if (c == '\'') {
+          return;
+        }
+        if (c == '\'') {
           handleQuotedString();
-        } else if (isWordStart(c)) {
+          return;
+        }
+        if (isWordStart(c)) {
           handleWord();
-        } else if (c == '\r' || c == '\n') {
+          return;
+        }
+        if (c == '\r' || c == '\n') {
           type = EOL;
           currentLineNumber++;
-        } else {
-          type = OTHER;
+          return;
         }
+        type = OTHER;
     }
   }
 
@@ -451,7 +486,7 @@ public class SqlTokenizer {
       } else if (c1 == '%') {
         parsePercentageDirective();
       } else {
-        buf.position(buf.position() - 1);
+        decrementPosition();
       }
     }
     consumeBlockCommentContent();
@@ -468,47 +503,49 @@ public class SqlTokenizer {
           type = POPULATE_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 7:
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 6:
         if (isExpandWord()) {
           type = EXPAND_BLOCK_COMMENT;
           return;
-        } else if (isElseifWord()) {
+        }
+        if (isElseifWord()) {
           type = ELSEIF_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 5:
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 4:
         if (isElseWord()) {
           type = ELSE_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 3:
         if (isForWord()) {
           type = FOR_BLOCK_COMMENT;
           return;
-        } else if (isEndWord()) {
+        }
+        if (isEndWord()) {
           type = END_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 2:
         if (isIfWord()) {
           type = IF_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
       case 1:
         if (isExclamationMark()) {
           type = PARSER_LEVEL_BLOCK_COMMENT;
           return;
         }
-        buf.position(buf.position() - 1);
+        decrementPosition();
     }
 
     int pos = buf.position() - lineStartPosition;
