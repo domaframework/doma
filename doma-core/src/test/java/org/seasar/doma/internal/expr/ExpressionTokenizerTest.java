@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.message.Message;
 
@@ -309,5 +310,483 @@ public class ExpressionTokenizerTest {
         new ExpressionTokenizer("@java.lang.String@CASE_INSENSITIVE_ORDER ");
     assertEquals(STATIC_FIELD_OPERATOR, tokenizer.next());
     assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER", tokenizer.getToken());
+  }
+
+  @Test
+  public void testCharLiteral() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("'a'");
+    assertEquals(CHAR_LITERAL, tokenizer.next());
+    assertEquals("'a'", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Disabled
+  @Test
+  // escape char is not supported
+  public void testCharLiteral_escape() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("'\\n'");
+    assertEquals(CHAR_LITERAL, tokenizer.next());
+    assertEquals("'\\n'", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testOperators() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("!x && y || z");
+    assertEquals(NOT_OPERATOR, tokenizer.next());
+    assertEquals("!", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("x", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(AND_OPERATOR, tokenizer.next());
+    assertEquals("&&", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("y", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OR_OPERATOR, tokenizer.next());
+    assertEquals("||", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("z", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testArithmeticOperators() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a + b - c * d / e % f");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(ADD_OPERATOR, tokenizer.next());
+    assertEquals("+", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("b", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(SUBTRACT_OPERATOR, tokenizer.next());
+    assertEquals("-", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("c", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(MULTIPLY_OPERATOR, tokenizer.next());
+    assertEquals("*", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("d", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(DIVIDE_OPERATOR, tokenizer.next());
+    assertEquals("/", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("e", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(MOD_OPERATOR, tokenizer.next());
+    assertEquals("%", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("f", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testComparisonOperators() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a == b != c > d < e >= f <= g");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(EQ_OPERATOR, tokenizer.next());
+    assertEquals("==", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("b", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(NE_OPERATOR, tokenizer.next());
+    assertEquals("!=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("c", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(GT_OPERATOR, tokenizer.next());
+    assertEquals(">", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("d", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(LT_OPERATOR, tokenizer.next());
+    assertEquals("<", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("e", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(GE_OPERATOR, tokenizer.next());
+    assertEquals(">=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("f", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(LE_OPERATOR, tokenizer.next());
+    assertEquals("<=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("g", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNewOperator() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("new java.util.Date()");
+    assertEquals(NEW_OPERATOR, tokenizer.next());
+    assertEquals("new", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("java", tokenizer.getToken());
+    assertEquals(FIELD_OPERATOR, tokenizer.next());
+    assertEquals(".util", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".Date", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeNumbers() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123");
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("-123", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeFloat() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45F");
+    assertEquals(FLOAT_LITERAL, tokenizer.next());
+    assertEquals("-123.45F", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeDouble() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45D");
+    assertEquals(DOUBLE_LITERAL, tokenizer.next());
+    assertEquals("-123.45D", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeLong() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123L");
+    assertEquals(LONG_LITERAL, tokenizer.next());
+    assertEquals("-123L", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNegativeBigDecimal() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45B");
+    assertEquals(BIGDECIMAL_LITERAL, tokenizer.next());
+    assertEquals("-123.45B", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testMultipleWhitespace() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a    b\t\tc\n\nd");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("b", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("c", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\n", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\n", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("d", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testStringWithEscapes() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("\"Hello\\nWorld\\t\"");
+    assertEquals(STRING_LITERAL, tokenizer.next());
+    assertEquals("\"Hello\\nWorld\\t\"", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testEmptyString() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("\"\"");
+    assertEquals(STRING_LITERAL, tokenizer.next());
+    assertEquals("\"\"", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testEmptyExpression() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("");
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testWhitespaceOnly() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("   \t\n  ");
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\t", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals("\n", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testNestedParentheses() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("((a))");
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testMethodChaining() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a.b().c().d");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".b", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".c", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(FIELD_OPERATOR, tokenizer.next());
+    assertEquals(".d", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testComplexNestedExpression() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("(a.eq(1) && b.ne(null)) || (c > 0)");
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".eq", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(AND_OPERATOR, tokenizer.next());
+    assertEquals("&&", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("b", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".ne", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(NULL_LITERAL, tokenizer.next());
+    assertEquals("null", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OR_OPERATOR, tokenizer.next());
+    assertEquals("||", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("c", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(GT_OPERATOR, tokenizer.next());
+    assertEquals(">", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("0", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testZeroValues() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("0 0L 0F 0D 0B");
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("0", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(LONG_LITERAL, tokenizer.next());
+    assertEquals("0L", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(FLOAT_LITERAL, tokenizer.next());
+    assertEquals("0F", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(DOUBLE_LITERAL, tokenizer.next());
+    assertEquals("0D", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(BIGDECIMAL_LITERAL, tokenizer.next());
+    assertEquals("0B", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testJavaIdentifierVariations() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("_var $var var123 _123 $123");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("_var", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("$var", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("var123", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("_123", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("$123", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
+
+  @Test
+  public void testFunctionWithComplexArguments() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("@func(a.b, 123, \"test\", true)");
+    assertEquals(FUNCTION_OPERATOR, tokenizer.next());
+    assertEquals("@func", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("a", tokenizer.getToken());
+    assertEquals(FIELD_OPERATOR, tokenizer.next());
+    assertEquals(".b", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("123", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(STRING_LITERAL, tokenizer.next());
+    assertEquals("\"test\"", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(TRUE_LITERAL, tokenizer.next());
+    assertEquals("true", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
   }
 }

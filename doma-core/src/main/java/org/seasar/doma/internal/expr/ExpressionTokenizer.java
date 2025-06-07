@@ -436,6 +436,9 @@ public class ExpressionTokenizer {
     if (!isWordTerminated()) {
       type = ILLEGAL_NUMBER_LITERAL;
     }
+    if ((type == INT_LITERAL || type == LONG_LITERAL) && decimal) {
+      type = ILLEGAL_NUMBER_LITERAL;
+    }
     binaryOpAvailable = true;
   }
 

@@ -28,4 +28,10 @@ public class MethodUtilTest {
             "hoge", new Class<?>[] {String.class, int.class, Integer[].class});
     assertEquals("hoge(java.lang.String, int, java.lang.Integer[])", signature);
   }
+
+  @Test
+  public void testCreateSignatureWithoutParameters() {
+    String signature = MethodUtil.createSignature("hoge", new Class<?>[] {});
+    assertEquals("hoge()", signature);
+  }
 }

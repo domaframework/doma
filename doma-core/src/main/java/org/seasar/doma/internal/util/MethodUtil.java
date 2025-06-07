@@ -47,7 +47,7 @@ public final class MethodUtil {
       }
       buf.append(", ");
     }
-    if (buf.length() > 2) {
+    if (paramTypes.length > 0 && buf.length() > 2) {
       buf.setLength(buf.length() - 2);
     }
     buf.append(")");

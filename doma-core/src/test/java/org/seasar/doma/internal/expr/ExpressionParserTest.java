@@ -17,10 +17,14 @@ package org.seasar.doma.internal.expr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.expr.node.ExpressionNode;
 import org.seasar.doma.message.Message;
@@ -877,6 +881,479 @@ public class ExpressionParserTest {
     assertEquals("abcde", result.getValue());
   }
 
+  @Test
+  public void testString() {
+    ExpressionParser parser = new ExpressionParser("\"hello world\"");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("hello world", result.getValue());
+    assertEquals(String.class, result.getValueClass());
+  }
+
+  @Test
+  public void testEmptyString() {
+    ExpressionParser parser = new ExpressionParser("\"\"");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("", result.getValue());
+    assertEquals(String.class, result.getValueClass());
+  }
+
+  @Test
+  public void testStringWithEscapes() {
+    ExpressionParser parser = new ExpressionParser("\"Hello\\nWorld\"");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("Hello\\nWorld", result.getValue());
+  }
+
+  @Test
+  public void testVariable() {
+    ExpressionParser parser = new ExpressionParser("name");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("name", new Value(String.class, "test"));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("test", result.getValue());
+    assertEquals(String.class, result.getValueClass());
+  }
+
+  @Test
+  public void testVariableNotFound() {
+    ExpressionParser parser = new ExpressionParser("unknownVar");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3003, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testNullLiteral() {
+    ExpressionParser parser = new ExpressionParser("null");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertNull(result.getValue());
+  }
+
+  @Test
+  public void testComplexBooleanExpression() {
+    ExpressionParser parser = new ExpressionParser("(true && false) || (!false && true)");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertTrue(result.getBooleanValue());
+  }
+
+  @Test
+  public void testOperatorPrecedence() {
+    ExpressionParser parser = new ExpressionParser("2 + 3 * 4 == 14 && 5 > 3");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertTrue(result.getBooleanValue());
+  }
+
+  @Test
+  public void testParenthesesPrecedence() {
+    ExpressionParser parser = new ExpressionParser("(2 + 3) * 4");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(20, result.getValue());
+  }
+
+  @Test
+  public void testMethodWithMultipleParameters() {
+    ExpressionParser parser = new ExpressionParser("obj.method(\"param1\", 123, true)");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    MultiParamClass obj = new MultiParamClass();
+    evaluator.add("obj", new Value(MultiParamClass.class, obj));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("param1-123-true", result.getValue());
+  }
+
+  @Test
+  public void testFieldAccess() {
+    ExpressionParser parser = new ExpressionParser("obj.publicField");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    FieldTestClass obj = new FieldTestClass();
+    obj.publicField = "fieldValue";
+    evaluator.add("obj", new Value(FieldTestClass.class, obj));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("fieldValue", result.getValue());
+  }
+
+  @Test
+  public void testFieldAccess_fieldNotFound() {
+    ExpressionParser parser = new ExpressionParser("obj.nonexistentField");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    FieldTestClass obj = new FieldTestClass();
+    evaluator.add("obj", new Value(FieldTestClass.class, obj));
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3018, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testMethodChaining() {
+    ExpressionParser parser = new ExpressionParser("str.toUpperCase().length()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("str", new Value(String.class, "hello"));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(5, result.getValue());
+  }
+
+  @Test
+  public void testNestedMethodCalls() {
+    ExpressionParser parser =
+        new ExpressionParser("str.substring(str.indexOf(\"e\"), str.length())");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("str", new Value(String.class, "hello"));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("ello", result.getValue());
+  }
+
+  @Test
+  public void testStringComparison() {
+    ExpressionParser parser = new ExpressionParser("\"abc\" == \"abc\" && \"abc\" != \"def\"");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertTrue(result.getBooleanValue());
+  }
+
+  @Test
+  public void testMixedTypesComparison() {
+    ExpressionParser parser = new ExpressionParser("\"123\" != 123");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var ex =
+        assertThrows(
+            ExpressionException.class,
+            () -> {
+              evaluator.evaluate(node);
+            });
+    System.out.println(ex.getMessage());
+    assertEquals(Message.DOMA3008, ex.getMessageResource());
+  }
+
+  @Test
+  public void testDoubleWithoutSuffix() {
+    ExpressionParser parser = new ExpressionParser("3.14");
+    var ex = assertThrows(ExpressionException.class, parser::parse);
+    System.out.println(ex.getMessage());
+    assertEquals(Message.DOMA3012, ex.getMessageResource());
+  }
+
+  @Test
+  public void testZeroValues() {
+    ExpressionParser parser = new ExpressionParser("0 + 0L + 0F + 0D + 0B");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(new BigDecimal(0), result.getValue());
+  }
+
+  @Test
+  public void testNewWithNoParameters() {
+    ExpressionParser parser = new ExpressionParser("new java.util.ArrayList()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertInstanceOf(ArrayList.class, result.getValue());
+  }
+
+  @Test
+  public void testNewWithParameters() {
+    ExpressionParser parser = new ExpressionParser("new java.lang.StringBuilder(\"initial\")");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals("initial", result.getValue().toString());
+  }
+
+  @Test
+  public void testNew_classNotFound() {
+    ExpressionParser parser = new ExpressionParser("new com.nonexistent.Class()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3005, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testNew_constructorNotFound() {
+    ExpressionParser parser = new ExpressionParser("new java.lang.String(123, 456, 789)");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3006, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testArithmeticWithMixedTypes() {
+    ExpressionParser parser = new ExpressionParser("1 + 2L + 3F + 4D + 5B");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(new BigDecimal(15), result.getValue());
+  }
+
+  @Test
+  public void testDivisionByZero() {
+    ExpressionParser parser = new ExpressionParser("10 / 0");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3014, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testModuloByZero() {
+    ExpressionParser parser = new ExpressionParser("10 % 0");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3014, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testNegativeArithmetic() {
+    ExpressionParser parser = new ExpressionParser("-5 + -3 * -2");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(1, result.getValue());
+  }
+
+  @Test
+  public void testUnaryPlus() {
+    ExpressionParser parser = new ExpressionParser("+5");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(5, result.getValue());
+  }
+
+  @Test
+  public void testNestedParentheses() {
+    ExpressionParser parser = new ExpressionParser("((2 + 3) * (4 - 1))");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(15, result.getValue());
+  }
+
+  @Test
+  public void testComplexExpression() {
+    ExpressionParser parser =
+        new ExpressionParser("(a > 0 && b.startsWith(\"test\")) || (c == null && d != 5)");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("a", new Value(Integer.class, 10));
+    evaluator.add("b", new Value(String.class, "testing"));
+    evaluator.add("c", new Value(String.class, null));
+    evaluator.add("d", new Value(Integer.class, 3));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertTrue(result.getBooleanValue());
+  }
+
+  @Test
+  public void testShortCircuitAnd() {
+    ExpressionParser parser = new ExpressionParser("false && obj.throwException()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    ShortCircuitTestClass obj = new ShortCircuitTestClass();
+    evaluator.add("obj", new Value(ShortCircuitTestClass.class, obj));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertFalse(result.getBooleanValue());
+    assertFalse(obj.wasMethodCalled);
+  }
+
+  @Test
+  public void testShortCircuitOr() {
+    ExpressionParser parser = new ExpressionParser("true || obj.throwException()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    ShortCircuitTestClass obj = new ShortCircuitTestClass();
+    evaluator.add("obj", new Value(ShortCircuitTestClass.class, obj));
+    EvaluationResult result = evaluator.evaluate(node);
+    assertTrue(result.getBooleanValue());
+    assertFalse(obj.wasMethodCalled);
+  }
+
+  @Test
+  public void testStaticMethodWithSimpleClassName() {
+    ExpressionParser parser = new ExpressionParser("@Integer@valueOf(\"123\")");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var ex =
+        assertThrows(
+            ExpressionException.class,
+            () -> {
+              evaluator.evaluate(node);
+            });
+    System.out.println(ex.getMessage());
+    assertEquals(Message.DOMA3005, ex.getMessageResource());
+  }
+
+  @Test
+  public void testFunctionWithNoParameters() {
+    ExpressionParser parser = new ExpressionParser("@escape()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var ex =
+        assertThrows(
+            ExpressionException.class,
+            () -> {
+              EvaluationResult result = evaluator.evaluate(node);
+            });
+    System.out.println(ex.getMessage());
+    assertEquals(Message.DOMA3028, ex.getMessageResource());
+  }
+
+  @Test
+  public void testFunctionWithMultipleParameters() {
+    ExpressionParser parser = new ExpressionParser("@prefix(\"hello\", \"world\")");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    var ex =
+        assertThrows(
+            ExpressionException.class,
+            () -> {
+              EvaluationResult result = evaluator.evaluate(node);
+            });
+    System.out.println(ex.getMessage());
+    assertEquals(Message.DOMA3028, ex.getMessageResource());
+  }
+
+  @Test
+  public void testWhitespaceHandling() {
+    ExpressionParser parser = new ExpressionParser("  5   +   3   *   2  ");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(11, result.getValue());
+  }
+
+  @Test
+  public void testEmptyExpression() {
+    ExpressionParser parser = new ExpressionParser("");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertNull(result.getValue());
+  }
+
+  @Test
+  public void testExpressionWithOnlyWhitespace() {
+    ExpressionParser parser = new ExpressionParser("   ");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertNull(result.getValue());
+  }
+
+  @Test
+  public void testIncompatibleTypesComparison() {
+    ExpressionParser parser = new ExpressionParser("\"hello\" > 5");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3008, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testMethodNotFound() {
+    ExpressionParser parser = new ExpressionParser("obj.nonExistentMethod()");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("obj", new Value(String.class, "test"));
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3002, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testMethodWithWrongParameterTypes() {
+    ExpressionParser parser = new ExpressionParser("str.substring(\"notAnInt\")");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("str", new Value(String.class, "hello"));
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3002, expected.getMessageResource());
+    }
+  }
+
+  @Test
+  public void testLargeNumbers() {
+    ExpressionParser parser = new ExpressionParser("999999999999999L + 1L");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(1000000000000000L, result.getValue());
+  }
+
+  @Test
+  public void testDecimalPrecision() {
+    ExpressionParser parser = new ExpressionParser("0.1B + 0.2B");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult result = evaluator.evaluate(node);
+    assertEquals(new BigDecimal("0.3"), result.getValue());
+  }
+
   public static class Hoge {
 
     private final String foo = "abcdef";
@@ -899,4 +1376,23 @@ public class ExpressionParserTest {
   }
 
   public static class Bbb extends Aaa<String> {}
+
+  public static class MultiParamClass {
+    public String method(String s, int i, boolean b) {
+      return s + "-" + i + "-" + b;
+    }
+  }
+
+  public static class FieldTestClass {
+    public String publicField;
+  }
+
+  public static class ShortCircuitTestClass {
+    public boolean wasMethodCalled = false;
+
+    public boolean throwException() {
+      wasMethodCalled = true;
+      throw new RuntimeException("Should not be called due to short-circuit evaluation");
+    }
+  }
 }
