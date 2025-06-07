@@ -631,78 +631,98 @@ public class SqlTokenizer {
   }
 
   protected void peekOneChar() {
-    if (isWhitespace(lookahead[0])) {
+    char c = lookahead[0];
+
+    if (isWhitespace(c)) {
       type = WHITESPACE;
-    } else if (lookahead[0] == '(') {
+    } else if (c == '(') {
       type = OPENED_PARENS;
-    } else if (lookahead[0] == ')') {
+    } else if (c == ')') {
       type = CLOSED_PARENS;
-    } else if (lookahead[0] == ';') {
+    } else if (c == ';') {
       type = DELIMITER;
-    } else if (lookahead[0] == '\'') {
-      type = QUOTE;
-      boolean closed = false;
-      while (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (c2 == '\'') {
-          if (buf.hasRemaining()) {
-            buf.mark();
-            char c3 = buf.get();
-            if (c3 != '\'') {
-              buf.reset();
-              closed = true;
-              break;
-            }
-          } else {
-            closed = true;
-          }
-        }
-      }
-      if (closed) {
-        return;
-      }
-      int pos = buf.position() - lineStartPosition;
-      throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
-    } else if (isWordStart(lookahead[0])) {
-      type = WORD;
-      while (buf.hasRemaining()) {
-        buf.mark();
-        char c2 = buf.get();
-        if (c2 == '\'') {
-          boolean closed = false;
-          while (buf.hasRemaining()) {
-            char c3 = buf.get();
-            if (c3 == '\'') {
-              if (buf.hasRemaining()) {
-                buf.mark();
-                char c4 = buf.get();
-                if (c4 != '\'') {
-                  buf.reset();
-                  closed = true;
-                  break;
-                }
-              } else {
-                closed = true;
-              }
-            }
-          }
-          if (closed) {
-            return;
-          }
-          int pos = buf.position() - lineStartPosition;
-          throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
-        }
-        if (!isWordPart(c2)) {
-          buf.reset();
-          return;
-        }
-      }
-    } else if (lookahead[0] == '\r' || lookahead[0] == '\n') {
+    } else if (c == '\'') {
+      handleQuotedString();
+    } else if (isWordStart(c)) {
+      handleWord();
+    } else if (c == '\r' || c == '\n') {
       type = EOL;
       currentLineNumber++;
     } else {
       type = OTHER;
     }
+  }
+
+  private void handleQuotedString() {
+    type = QUOTE;
+    if (!consumeQuotedContent()) {
+      throwUnterminatedQuoteException();
+    }
+  }
+
+  private boolean consumeQuotedContent() {
+    while (buf.hasRemaining()) {
+      char c2 = buf.get();
+      if (c2 == '\'') {
+        if (buf.hasRemaining()) {
+          buf.mark();
+          char c3 = buf.get();
+          if (c3 != '\'') {
+            buf.reset();
+            return true; // Found closing quote
+          }
+          // Double quote encountered, continue
+        } else {
+          return true; // End of input with closing quote
+        }
+      }
+    }
+    return false; // Unterminated quote
+  }
+
+  private void handleWord() {
+    type = WORD;
+    while (buf.hasRemaining()) {
+      buf.mark();
+      char c2 = buf.get();
+
+      if (c2 == '\'') {
+        if (!consumeEmbeddedQuote()) {
+          throwUnterminatedQuoteException();
+        }
+        return;
+      }
+
+      if (!isWordPart(c2)) {
+        buf.reset();
+        return;
+      }
+    }
+  }
+
+  private boolean consumeEmbeddedQuote() {
+    while (buf.hasRemaining()) {
+      char c3 = buf.get();
+      if (c3 == '\'') {
+        if (buf.hasRemaining()) {
+          buf.mark();
+          char c4 = buf.get();
+          if (c4 != '\'') {
+            buf.reset();
+            return true; // Found closing quote
+          }
+          // Double quote encountered, continue
+        } else {
+          return true; // End of input with closing quote
+        }
+      }
+    }
+    return false; // Unterminated quote
+  }
+
+  private void throwUnterminatedQuoteException() {
+    int pos = buf.position() - lineStartPosition;
+    throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
   }
 
   protected boolean isWordStart(char c) {
