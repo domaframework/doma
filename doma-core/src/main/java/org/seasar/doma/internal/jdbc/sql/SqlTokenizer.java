@@ -139,28 +139,120 @@ public class SqlTokenizer {
     int charsRead = Math.min(lookahead.length, buf.remaining());
     buf.get(lookahead, 0, charsRead);
 
+    // This switch statement takes advantage of fall-through behavior.
     switch (charsRead) {
-      case 10 -> peekTenChars();
-      case 9 -> peekNineChars();
-      case 8 -> peekEightChars();
-      case 7 -> peekSevenChars();
-      case 6 -> peekSixChars();
-      case 5 -> peekFiveChars();
-      case 4 -> peekFourChars();
-      case 3 -> peekThreeChars();
-      case 2 -> peekTwoChars();
-      case 1 -> peekOneChar();
-      default -> throw new RuntimeException(); // TODO
+      case 10:
+        if (isForUpdateWord()) {
+          type = FOR_UPDATE_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 9:
+        if (isIntersectWord()) {
+          type = INTERSECT_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 8:
+        if (isGroupByWord()) {
+          type = GROUP_BY_WORD;
+          return;
+        } else if (isOrderByWord()) {
+          type = ORDER_BY_WORD;
+          return;
+        } else if (isOptionWord()) {
+          type = OPTION_WORD;
+          buf.position(buf.position() - 2);
+          return;
+        } else if (isDistinctWord()) {
+          type = DISTINCT_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 7:
+        buf.position(buf.position() - 1);
+      case 6:
+        if (isSelectWord()) {
+          type = SELECT_WORD;
+          return;
+        } else if (isHavingWord()) {
+          type = HAVING_WORD;
+          return;
+        } else if (isExceptWord()) {
+          type = EXCEPT_WORD;
+          return;
+        } else if (isUpdateWord()) {
+          type = UPDATE_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 5:
+        if (isWhereWord()) {
+          type = WHERE_WORD;
+          return;
+        } else if (isUnionWord()) {
+          type = UNION_WORD;
+          return;
+        } else if (isMinusWord()) {
+          type = MINUS_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 4:
+        if (isFromWord()) {
+          type = FROM_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 3:
+        if (isAndWord()) {
+          type = AND_WORD;
+          return;
+        } else if (isSetWord()) {
+          type = SET_WORD;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 2:
+        if (isOrWord()) {
+          type = OR_WORD;
+          return;
+        } else if (isInWord()) {
+          type = IN_WORD;
+          return;
+        } else if (isBlockCommentStart()) {
+          handleBlockComment();
+          return;
+        } else if (isLineCommentStart()) {
+          handleLineComment();
+          return;
+        } else if (isEol()) {
+          type = EOL;
+          currentLineNumber++;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 1:
+        char c = lookahead[0];
+        if (isWhitespace(c)) {
+          type = WHITESPACE;
+        } else if (c == '(') {
+          type = OPENED_PARENS;
+        } else if (c == ')') {
+          type = CLOSED_PARENS;
+        } else if (c == ';') {
+          type = DELIMITER;
+        } else if (c == '\'') {
+          handleQuotedString();
+        } else if (isWordStart(c)) {
+          handleWord();
+        } else if (c == '\r' || c == '\n') {
+          type = EOL;
+          currentLineNumber++;
+        } else {
+          type = OTHER;
+        }
     }
-  }
-
-  protected void peekTenChars() {
-    if (isForUpdateWord()) {
-      type = FOR_UPDATE_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekNineChars();
   }
 
   private boolean isForUpdateWord() {
@@ -177,15 +269,6 @@ public class SqlTokenizer {
         && isWordTerminated();
   }
 
-  protected void peekNineChars() {
-    if (isIntersectWord()) {
-      type = INTERSECT_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekEightChars();
-  }
-
   private boolean isIntersectWord() {
     return ((lookahead[0] | 0x20) == 'i')
         && ((lookahead[1] | 0x20) == 'n')
@@ -197,25 +280,6 @@ public class SqlTokenizer {
         && ((lookahead[7] | 0x20) == 'c')
         && ((lookahead[8] | 0x20) == 't')
         && isWordTerminated();
-  }
-
-  protected void peekEightChars() {
-    if (isGroupByWord()) {
-      type = GROUP_BY_WORD;
-      return;
-    } else if (isOrderByWord()) {
-      type = ORDER_BY_WORD;
-      return;
-    } else if (isOptionWord()) {
-      type = OPTION_WORD;
-      buf.position(buf.position() - 2);
-      return;
-    } else if (isDistinctWord()) {
-      type = DISTINCT_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekSevenChars();
   }
 
   private boolean isGroupByWord() {
@@ -265,29 +329,6 @@ public class SqlTokenizer {
         && isWordTerminated();
   }
 
-  protected void peekSevenChars() {
-    buf.position(buf.position() - 1);
-    peekSixChars();
-  }
-
-  protected void peekSixChars() {
-    if (isSelectWord()) {
-      type = SELECT_WORD;
-      return;
-    } else if (isHavingWord()) {
-      type = HAVING_WORD;
-      return;
-    } else if (isExceptWord()) {
-      type = EXCEPT_WORD;
-      return;
-    } else if (isUpdateWord()) {
-      type = UPDATE_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekFiveChars();
-  }
-
   private boolean isSelectWord() {
     return ((lookahead[0] | 0x20) == 's')
         && ((lookahead[1] | 0x20) == 'e')
@@ -328,21 +369,6 @@ public class SqlTokenizer {
         && isWordTerminated();
   }
 
-  protected void peekFiveChars() {
-    if (isWhereWord()) {
-      type = WHERE_WORD;
-      return;
-    } else if (isUnionWord()) {
-      type = UNION_WORD;
-      return;
-    } else if (isMinusWord()) {
-      type = MINUS_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekFourChars();
-  }
-
   private boolean isWhereWord() {
     return ((lookahead[0] | 0x20) == 'w')
         && ((lookahead[1] | 0x20) == 'h')
@@ -370,33 +396,12 @@ public class SqlTokenizer {
         && isWordTerminated();
   }
 
-  protected void peekFourChars() {
-    if (isFromWord()) {
-      type = FROM_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekThreeChars();
-  }
-
   private boolean isFromWord() {
     return ((lookahead[0] | 0x20) == 'f')
         && ((lookahead[1] | 0x20) == 'r')
         && ((lookahead[2] | 0x20) == 'o')
         && ((lookahead[3] | 0x20) == 'm')
         && isWordTerminated();
-  }
-
-  protected void peekThreeChars() {
-    if (isAndWord()) {
-      type = AND_WORD;
-      return;
-    } else if (isSetWord()) {
-      type = SET_WORD;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekTwoChars();
   }
 
   private boolean isAndWord() {
@@ -411,28 +416,6 @@ public class SqlTokenizer {
         && ((lookahead[1] | 0x20) == 'e')
         && ((lookahead[2] | 0x20) == 't')
         && isWordTerminated();
-  }
-
-  protected void peekTwoChars() {
-    if (isOrWord()) {
-      type = OR_WORD;
-      return;
-    } else if (isInWord()) {
-      type = IN_WORD;
-      return;
-    } else if (isBlockCommentStart()) {
-      handleBlockComment();
-      return;
-    } else if (isLineCommentStart()) {
-      handleLineComment();
-      return;
-    } else if (isEol()) {
-      type = EOL;
-      currentLineNumber++;
-      return;
-    }
-    buf.position(buf.position() - 1);
-    peekOneChar();
   }
 
   private boolean isOrWord() {
@@ -478,55 +461,54 @@ public class SqlTokenizer {
     int charsRead = Math.min(8, buf.remaining());
     buf.get(lookahead, 0, charsRead);
 
-    while (charsRead > 0) {
-      switch (charsRead) {
-        case 8:
-          if (isPopulateWord()) {
-            type = POPULATE_BLOCK_COMMENT;
-            return;
-          }
-          break;
-        case 6:
-          if (isExpandWord()) {
-            type = EXPAND_BLOCK_COMMENT;
-            return;
-          }
-          if (isElseifWord()) {
-            type = ELSEIF_BLOCK_COMMENT;
-            return;
-          }
-          break;
-        case 4:
-          if (isElseWord()) {
-            type = ELSE_BLOCK_COMMENT;
-            return;
-          }
-          break;
-        case 3:
-          if (isForWord()) {
-            type = FOR_BLOCK_COMMENT;
-            return;
-          }
-          if (isEndWord()) {
-            type = END_BLOCK_COMMENT;
-            return;
-          }
-          break;
-        case 2:
-          if (isIfWord()) {
-            type = IF_BLOCK_COMMENT;
-            return;
-          }
-          break;
-        case 1:
-          if (isExclamationMark()) {
-            type = PARSER_LEVEL_BLOCK_COMMENT;
-            return;
-          }
-          break;
-      }
-      buf.position(buf.position() - 1);
-      charsRead--;
+    // This switch statement takes advantage of fall-through behavior.
+    switch (charsRead) {
+      case 8:
+        if (isPopulateWord()) {
+          type = POPULATE_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 7:
+        buf.position(buf.position() - 1);
+      case 6:
+        if (isExpandWord()) {
+          type = EXPAND_BLOCK_COMMENT;
+          return;
+        } else if (isElseifWord()) {
+          type = ELSEIF_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 5:
+        buf.position(buf.position() - 1);
+      case 4:
+        if (isElseWord()) {
+          type = ELSE_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 3:
+        if (isForWord()) {
+          type = FOR_BLOCK_COMMENT;
+          return;
+        } else if (isEndWord()) {
+          type = END_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 2:
+        if (isIfWord()) {
+          type = IF_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
+      case 1:
+        if (isExclamationMark()) {
+          type = PARSER_LEVEL_BLOCK_COMMENT;
+          return;
+        }
+        buf.position(buf.position() - 1);
     }
 
     int pos = buf.position() - lineStartPosition;
@@ -620,29 +602,6 @@ public class SqlTokenizer {
     }
   }
 
-  protected void peekOneChar() {
-    char c = lookahead[0];
-
-    if (isWhitespace(c)) {
-      type = WHITESPACE;
-    } else if (c == '(') {
-      type = OPENED_PARENS;
-    } else if (c == ')') {
-      type = CLOSED_PARENS;
-    } else if (c == ';') {
-      type = DELIMITER;
-    } else if (c == '\'') {
-      handleQuotedString();
-    } else if (isWordStart(c)) {
-      handleWord();
-    } else if (c == '\r' || c == '\n') {
-      type = EOL;
-      currentLineNumber++;
-    } else {
-      type = OTHER;
-    }
-  }
-
   private void handleQuotedString() {
     type = QUOTE;
     if (!consumeQuotedContent()) {
@@ -730,18 +689,6 @@ public class SqlTokenizer {
   }
 
   protected boolean isWordTerminated() {
-    buf.mark();
-    if (buf.hasRemaining()) {
-      char c = buf.get();
-      buf.reset();
-      return !isWordPart(c);
-    } else {
-      return true;
-    }
-  }
-
-  @Deprecated
-  protected boolean isBlockCommentDirectiveTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
       char c = buf.get();
