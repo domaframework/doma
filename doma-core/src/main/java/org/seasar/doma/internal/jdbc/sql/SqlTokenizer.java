@@ -155,95 +155,114 @@ public class SqlTokenizer {
   }
 
   protected void peekTenChars() {
-    if ((lookahead[0] == 'f' || lookahead[0] == 'F')
-        && (lookahead[1] == 'o' || lookahead[1] == 'O')
-        && (lookahead[2] == 'r' || lookahead[2] == 'R')
-        && (isWhitespace(lookahead[3]))
-        && (lookahead[4] == 'u' || lookahead[4] == 'U')
-        && (lookahead[5] == 'p' || lookahead[5] == 'P')
-        && (lookahead[6] == 'd' || lookahead[6] == 'D')
-        && (lookahead[7] == 'a' || lookahead[7] == 'A')
-        && (lookahead[8] == 't' || lookahead[8] == 'T')
-        && (lookahead[9] == 'e' || lookahead[9] == 'E')) {
+    if (isForUpdateWord()) {
       type = FOR_UPDATE_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekNineChars();
   }
 
+  private boolean isForUpdateWord() {
+    return ((lookahead[0] | 0x20) == 'f')
+        && ((lookahead[1] | 0x20) == 'o')
+        && ((lookahead[2] | 0x20) == 'r')
+        && (isWhitespace(lookahead[3]))
+        && ((lookahead[4] | 0x20) == 'u')
+        && ((lookahead[5] | 0x20) == 'p')
+        && ((lookahead[6] | 0x20) == 'd')
+        && ((lookahead[7] | 0x20) == 'a')
+        && ((lookahead[8] | 0x20) == 't')
+        && ((lookahead[9] | 0x20) == 'e')
+        && isWordTerminated();
+  }
+
   protected void peekNineChars() {
-    if ((lookahead[0] == 'i' || lookahead[0] == 'I')
-        && (lookahead[1] == 'n' || lookahead[1] == 'N')
-        && (lookahead[2] == 't' || lookahead[2] == 'T')
-        && ((lookahead[3] == 'e' || lookahead[3] == 'E'))
-        && (lookahead[4] == 'r' || lookahead[4] == 'R')
-        && (lookahead[5] == 's' || lookahead[5] == 'S')
-        && (lookahead[6] == 'e' || lookahead[6] == 'E')
-        && (lookahead[7] == 'c' || lookahead[7] == 'C')
-        && (lookahead[8] == 't' || lookahead[8] == 'T')) {
+    if (isIntersectWord()) {
       type = INTERSECT_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekEightChars();
   }
 
+  private boolean isIntersectWord() {
+    return ((lookahead[0] | 0x20) == 'i')
+        && ((lookahead[1] | 0x20) == 'n')
+        && ((lookahead[2] | 0x20) == 't')
+        && ((lookahead[3] | 0x20) == 'e')
+        && ((lookahead[4] | 0x20) == 'r')
+        && ((lookahead[5] | 0x20) == 's')
+        && ((lookahead[6] | 0x20) == 'e')
+        && ((lookahead[7] | 0x20) == 'c')
+        && ((lookahead[8] | 0x20) == 't')
+        && isWordTerminated();
+  }
+
   protected void peekEightChars() {
-    if ((lookahead[0] == 'g' || lookahead[0] == 'G')
-        && (lookahead[1] == 'r' || lookahead[1] == 'R')
-        && (lookahead[2] == 'o' || lookahead[2] == 'O')
-        && (lookahead[3] == 'u' || lookahead[3] == 'U')
-        && (lookahead[4] == 'p' || lookahead[4] == 'P')
-        && (isWhitespace(lookahead[5]))
-        && (lookahead[6] == 'b' || lookahead[6] == 'B')
-        && (lookahead[7] == 'y' || lookahead[7] == 'Y')) {
+    if (isGroupByWord()) {
       type = GROUP_BY_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'o' || lookahead[0] == 'O')
-        && (lookahead[1] == 'r' || lookahead[1] == 'R')
-        && (lookahead[2] == 'd' || lookahead[2] == 'D')
-        && (lookahead[3] == 'e' || lookahead[3] == 'E')
-        && (lookahead[4] == 'r' || lookahead[4] == 'R')
-        && (Character.isWhitespace(lookahead[5]))
-        && (lookahead[6] == 'b' || lookahead[6] == 'B')
-        && (lookahead[7] == 'y' || lookahead[7] == 'Y')) {
+      return;
+    } else if (isOrderByWord()) {
       type = ORDER_BY_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'o' || lookahead[0] == 'O')
-        && (lookahead[1] == 'p' || lookahead[1] == 'P')
-        && (lookahead[2] == 't' || lookahead[2] == 'T')
-        && (lookahead[3] == 'i' || lookahead[3] == 'I')
-        && (lookahead[4] == 'o' || lookahead[4] == 'O')
-        && (lookahead[5] == 'n' || lookahead[5] == 'N')
-        && (isWhitespace(lookahead[6]))
-        && (lookahead[7] == '(')) {
+      return;
+    } else if (isOptionWord()) {
       type = OPTION_WORD;
       buf.position(buf.position() - 2);
       return;
-    } else if ((lookahead[0] == 'd' || lookahead[0] == 'D')
-        && (lookahead[1] == 'i' || lookahead[1] == 'I')
-        && (lookahead[2] == 's' || lookahead[2] == 'S')
-        && (lookahead[3] == 't' || lookahead[3] == 'T')
-        && (lookahead[4] == 'i' || lookahead[4] == 'I')
-        && (lookahead[5] == 'n' || lookahead[5] == 'N')
-        && (lookahead[6] == 'c' || lookahead[6] == 'C')
-        && (lookahead[7] == 't' || lookahead[7] == 'T')) {
+    } else if (isDistinctWord()) {
       type = DISTINCT_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekSevenChars();
+  }
+
+  private boolean isGroupByWord() {
+    return ((lookahead[0] | 0x20) == 'g')
+        && ((lookahead[1] | 0x20) == 'r')
+        && ((lookahead[2] | 0x20) == 'o')
+        && ((lookahead[3] | 0x20) == 'u')
+        && ((lookahead[4] | 0x20) == 'p')
+        && (isWhitespace(lookahead[5]))
+        && ((lookahead[6] | 0x20) == 'b')
+        && ((lookahead[7] | 0x20) == 'y')
+        && isWordTerminated();
+  }
+
+  private boolean isOrderByWord() {
+    return ((lookahead[0] | 0x20) == 'o')
+        && ((lookahead[1] | 0x20) == 'r')
+        && ((lookahead[2] | 0x20) == 'd')
+        && ((lookahead[3] | 0x20) == 'e')
+        && ((lookahead[4] | 0x20) == 'r')
+        && (Character.isWhitespace(lookahead[5]))
+        && ((lookahead[6] | 0x20) == 'b')
+        && ((lookahead[7] | 0x20) == 'y')
+        && isWordTerminated();
+  }
+
+  private boolean isOptionWord() {
+    return ((lookahead[0] | 0x20) == 'o')
+        && ((lookahead[1] | 0x20) == 'p')
+        && ((lookahead[2] | 0x20) == 't')
+        && ((lookahead[3] | 0x20) == 'i')
+        && ((lookahead[4] | 0x20) == 'o')
+        && ((lookahead[5] | 0x20) == 'n')
+        && (isWhitespace(lookahead[6]))
+        && (lookahead[7] == '(');
+  }
+
+  private boolean isDistinctWord() {
+    return ((lookahead[0] | 0x20) == 'd')
+        && ((lookahead[1] | 0x20) == 'i')
+        && ((lookahead[2] | 0x20) == 's')
+        && ((lookahead[3] | 0x20) == 't')
+        && ((lookahead[4] | 0x20) == 'i')
+        && ((lookahead[5] | 0x20) == 'n')
+        && ((lookahead[6] | 0x20) == 'c')
+        && ((lookahead[7] | 0x20) == 't')
+        && isWordTerminated();
   }
 
   protected void peekSevenChars() {
@@ -252,131 +271,155 @@ public class SqlTokenizer {
   }
 
   protected void peekSixChars() {
-    if ((lookahead[0] == 's' || lookahead[0] == 'S')
-        && (lookahead[1] == 'e' || lookahead[1] == 'E')
-        && (lookahead[2] == 'l' || lookahead[2] == 'L')
-        && (lookahead[3] == 'e' || lookahead[3] == 'E')
-        && (lookahead[4] == 'c' || lookahead[4] == 'C')
-        && (lookahead[5] == 't' || lookahead[5] == 'T')) {
+    if (isSelectWord()) {
       type = SELECT_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'h' || lookahead[0] == 'H')
-        && (lookahead[1] == 'a' || lookahead[1] == 'A')
-        && (lookahead[2] == 'v' || lookahead[2] == 'V')
-        && (lookahead[3] == 'i' || lookahead[3] == 'I')
-        && (lookahead[4] == 'n' || lookahead[4] == 'N')
-        && (lookahead[5] == 'g' || lookahead[5] == 'G')) {
+      return;
+    } else if (isHavingWord()) {
       type = HAVING_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'e' || lookahead[0] == 'E')
-        && (lookahead[1] == 'x' || lookahead[1] == 'X')
-        && (lookahead[2] == 'c' || lookahead[2] == 'C')
-        && (lookahead[3] == 'e' || lookahead[3] == 'E')
-        && (lookahead[4] == 'p' || lookahead[4] == 'P')
-        && (lookahead[5] == 't' || lookahead[5] == 'T')) {
+      return;
+    } else if (isExceptWord()) {
       type = EXCEPT_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'u' || lookahead[0] == 'U')
-        && (lookahead[1] == 'p' || lookahead[1] == 'P')
-        && (lookahead[2] == 'd' || lookahead[2] == 'D')
-        && (lookahead[3] == 'a' || lookahead[3] == 'A')
-        && (lookahead[4] == 't' || lookahead[4] == 'T')
-        && (lookahead[5] == 'e' || lookahead[5] == 'E')) {
+      return;
+    } else if (isUpdateWord()) {
       type = UPDATE_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekFiveChars();
   }
 
+  private boolean isSelectWord() {
+    return ((lookahead[0] | 0x20) == 's')
+        && ((lookahead[1] | 0x20) == 'e')
+        && ((lookahead[2] | 0x20) == 'l')
+        && ((lookahead[3] | 0x20) == 'e')
+        && ((lookahead[4] | 0x20) == 'c')
+        && ((lookahead[5] | 0x20) == 't')
+        && isWordTerminated();
+  }
+
+  private boolean isHavingWord() {
+    return ((lookahead[0] | 0x20) == 'h')
+        && ((lookahead[1] | 0x20) == 'a')
+        && ((lookahead[2] | 0x20) == 'v')
+        && ((lookahead[3] | 0x20) == 'i')
+        && ((lookahead[4] | 0x20) == 'n')
+        && ((lookahead[5] | 0x20) == 'g')
+        && isWordTerminated();
+  }
+
+  private boolean isExceptWord() {
+    return ((lookahead[0] | 0x20) == 'e')
+        && ((lookahead[1] | 0x20) == 'x')
+        && ((lookahead[2] | 0x20) == 'c')
+        && ((lookahead[3] | 0x20) == 'e')
+        && ((lookahead[4] | 0x20) == 'p')
+        && ((lookahead[5] | 0x20) == 't')
+        && isWordTerminated();
+  }
+
+  private boolean isUpdateWord() {
+    return ((lookahead[0] | 0x20) == 'u')
+        && ((lookahead[1] | 0x20) == 'p')
+        && ((lookahead[2] | 0x20) == 'd')
+        && ((lookahead[3] | 0x20) == 'a')
+        && ((lookahead[4] | 0x20) == 't')
+        && ((lookahead[5] | 0x20) == 'e')
+        && isWordTerminated();
+  }
+
   protected void peekFiveChars() {
-    if ((lookahead[0] == 'w' || lookahead[0] == 'W')
-        && (lookahead[1] == 'h' || lookahead[1] == 'H')
-        && (lookahead[2] == 'e' || lookahead[2] == 'E')
-        && (lookahead[3] == 'r' || lookahead[3] == 'R')
-        && (lookahead[4] == 'e' || lookahead[4] == 'E')) {
+    if (isWhereWord()) {
       type = WHERE_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'u' || lookahead[0] == 'U')
-        && (lookahead[1] == 'n' || lookahead[1] == 'N')
-        && (lookahead[2] == 'i' || lookahead[2] == 'I')
-        && (lookahead[3] == 'o' || lookahead[3] == 'O')
-        && (lookahead[4] == 'n' || lookahead[4] == 'N')) {
+      return;
+    } else if (isUnionWord()) {
       type = UNION_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'm' || lookahead[0] == 'M')
-        && (lookahead[1] == 'i' || lookahead[1] == 'I')
-        && (lookahead[2] == 'n' || lookahead[2] == 'N')
-        && (lookahead[3] == 'u' || lookahead[3] == 'U')
-        && (lookahead[4] == 's' || lookahead[4] == 'S')) {
+      return;
+    } else if (isMinusWord()) {
       type = MINUS_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekFourChars();
   }
 
+  private boolean isWhereWord() {
+    return ((lookahead[0] | 0x20) == 'w')
+        && ((lookahead[1] | 0x20) == 'h')
+        && ((lookahead[2] | 0x20) == 'e')
+        && ((lookahead[3] | 0x20) == 'r')
+        && ((lookahead[4] | 0x20) == 'e')
+        && isWordTerminated();
+  }
+
+  private boolean isUnionWord() {
+    return ((lookahead[0] | 0x20) == 'u')
+        && ((lookahead[1] | 0x20) == 'n')
+        && ((lookahead[2] | 0x20) == 'i')
+        && ((lookahead[3] | 0x20) == 'o')
+        && ((lookahead[4] | 0x20) == 'n')
+        && isWordTerminated();
+  }
+
+  private boolean isMinusWord() {
+    return ((lookahead[0] | 0x20) == 'm')
+        && ((lookahead[1] | 0x20) == 'i')
+        && ((lookahead[2] | 0x20) == 'n')
+        && ((lookahead[3] | 0x20) == 'u')
+        && ((lookahead[4] | 0x20) == 's')
+        && isWordTerminated();
+  }
+
   protected void peekFourChars() {
-    if ((lookahead[0] == 'f' || lookahead[0] == 'F')
-        && (lookahead[1] == 'r' || lookahead[1] == 'R')
-        && (lookahead[2] == 'o' || lookahead[2] == 'O')
-        && (lookahead[3] == 'm' || lookahead[3] == 'M')) {
+    if (isFromWord()) {
       type = FROM_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekThreeChars();
   }
 
+  private boolean isFromWord() {
+    return ((lookahead[0] | 0x20) == 'f')
+        && ((lookahead[1] | 0x20) == 'r')
+        && ((lookahead[2] | 0x20) == 'o')
+        && ((lookahead[3] | 0x20) == 'm')
+        && isWordTerminated();
+  }
+
   protected void peekThreeChars() {
-    if ((lookahead[0] == 'a' || lookahead[0] == 'A')
-        && (lookahead[1] == 'n' || lookahead[1] == 'N')
-        && (lookahead[2] == 'd' || lookahead[2] == 'D')) {
+    if (isAndWord()) {
       type = AND_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 's' || lookahead[0] == 'S')
-        && (lookahead[1] == 'e' || lookahead[1] == 'E')
-        && (lookahead[2] == 't' || lookahead[2] == 'T')) {
+      return;
+    } else if (isSetWord()) {
       type = SET_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     }
     buf.position(buf.position() - 1);
     peekTwoChars();
   }
 
+  private boolean isAndWord() {
+    return ((lookahead[0] | 0x20) == 'a')
+        && ((lookahead[1] | 0x20) == 'n')
+        && ((lookahead[2] | 0x20) == 'd')
+        && isWordTerminated();
+  }
+
+  private boolean isSetWord() {
+    return ((lookahead[0] | 0x20) == 's')
+        && ((lookahead[1] | 0x20) == 'e')
+        && ((lookahead[2] | 0x20) == 't')
+        && isWordTerminated();
+  }
+
   protected void peekTwoChars() {
-    if ((lookahead[0] == 'o' || lookahead[0] == 'O')
-        && (lookahead[1] == 'r' || lookahead[1] == 'R')) {
+    if (isOrWord()) {
       type = OR_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
-    } else if ((lookahead[0] == 'i' || lookahead[0] == 'I')
-        && (lookahead[1] == 'n' || lookahead[1] == 'N')) {
+      return;
+    } else if (isInWord()) {
       type = IN_WORD;
-      if (isWordTerminated()) {
-        return;
-      }
+      return;
     } else if (lookahead[0] == '/' && lookahead[1] == '*') {
       type = BLOCK_COMMENT;
       if (buf.hasRemaining()) {
@@ -527,6 +570,14 @@ public class SqlTokenizer {
     }
     buf.position(buf.position() - 1);
     peekOneChar();
+  }
+
+  private boolean isInWord() {
+    return ((lookahead[0] | 0x20) == 'i') && ((lookahead[1] | 0x20) == 'n') && isWordTerminated();
+  }
+
+  private boolean isOrWord() {
+    return ((lookahead[0] | 0x20) == 'o') && ((lookahead[1] | 0x20) == 'r') && isWordTerminated();
   }
 
   protected void peekOneChar() {
