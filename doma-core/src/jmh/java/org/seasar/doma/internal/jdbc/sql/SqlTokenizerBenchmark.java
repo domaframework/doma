@@ -27,9 +27,6 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
-@Fork(value = 2, jvmArgs = {"-Xms2G", "-Xmx2G"})
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
 public class SqlTokenizerBenchmark {
 
   // Test SQL samples representing different complexity levels

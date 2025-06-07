@@ -8,24 +8,35 @@ with their classic counterparts:
 
 ## Benchmark Locations
 
-- `src/test/java/org/seasar/doma/internal/util/SqlTokenUtilBenchmark.java`
-- `src/test/java/org/seasar/doma/internal/jdbc/sql/SqlTokenizerBenchmark.java`
+- `src/jmh/java/org/seasar/doma/internal/util/SqlTokenUtilBenchmark.java`
+- `src/jmh/java/org/seasar/doma/internal/jdbc/sql/SqlTokenizerBenchmark.java`
 
 ## Running the Benchmarks
 
 From the project root directory:
 
+### Quick Development Testing (Default)
 ```bash
-./gradlew :doma-core:jmh
+./gradlew :doma-core:jmh                        # Fast ~30 seconds
+```
+
+### Balanced Testing
+```bash
+./gradlew :doma-core:jmh -Pjmh.profile=ci      # Moderate ~3-5 minutes
+```
+
+### Production Quality Benchmarks
+```bash
+./gradlew :doma-core:jmh -Pjmh.profile=production  # Accurate ~20-30 minutes
 ```
 
 ## Benchmark Parameters
 
-The actual benchmark parameters used are defined in the benchmark classes (annotations override Gradle task settings):
+The benchmark parameters are configured using the JMH Gradle plugin:
 
 - **Forks**: 2 (number of JVM instances)
-- **Warmup**: 5 iterations, 1 second each
-- **Measurement**: 10 iterations, 1 second each
+- **Warmup**: 3 iterations, 10 seconds each (JMH default)
+- **Measurement**: 5 iterations, 10 seconds each (JMH default)
 - **Time Unit**: Nanoseconds (average time per operation)
 - **JVM Args**: `-Xms2G -Xmx2G`
 

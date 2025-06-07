@@ -26,9 +26,6 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
-@Fork(value = 2, jvmArgs = {"-Xms2G", "-Xmx2G"})
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
 public class SqlTokenUtilBenchmark {
 
   private char[] testChars;
@@ -48,7 +45,7 @@ public class SqlTokenUtilBenchmark {
             + "UPDATE products SET price = price * 1.1 WHERE category = 'electronics';\n"
             + "/* Multi-line\n   comment */ INSERT INTO logs (message) VALUES ('Hello, World!');\n"
             + "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$#@";
-    
+
     // Repeat to create a larger dataset
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < 10; i++) {
