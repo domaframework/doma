@@ -69,8 +69,6 @@ public class SqlTokenizer {
 
   protected final CharBuffer buf;
 
-  protected final CharBuffer duplicatedBuf;
-
   protected char[] lookahead = new char[10];
 
   protected SqlTokenType type;
@@ -85,11 +83,12 @@ public class SqlTokenizer {
 
   protected int position;
 
+  private int tokenStartIndex;
+
   public SqlTokenizer(String sql) {
     assertNotNull(sql);
     this.sql = sql;
     this.buf = CharBuffer.wrap(sql);
-    duplicatedBuf = buf.duplicate();
     currentLineNumber = 1;
     lineNumber = 1;
     peek();
@@ -113,9 +112,8 @@ public class SqlTokenizer {
   protected void prepareToken() {
     lineNumber = currentLineNumber;
     position = buf.position() - lineStartPosition;
-    duplicatedBuf.limit(buf.position());
-    token = duplicatedBuf.toString();
-    duplicatedBuf.position(buf.position());
+    token = sql.substring(tokenStartIndex, buf.position());
+    tokenStartIndex = buf.position();
   }
 
   public String getToken() {
