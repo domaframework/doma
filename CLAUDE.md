@@ -86,6 +86,8 @@ When modifying annotation processors or entity/domain classes, the `ap` property
 ### Code Formatting
 All code must pass Spotless formatting checks. The build automatically applies formatting, but you can run `./gradlew spotlessCheck` to verify compliance before committing.
 
+**IMPORTANT**: Always run `./gradlew spotlessApply` before committing changes to ensure consistent code formatting across the project.
+
 ### Import Statement Guidelines
 - Do not use wildcard imports (e.g., `import java.util.*;`) in Java code
 - Always use explicit imports for each class (e.g., `import java.util.List;`, `import java.util.Map;`)

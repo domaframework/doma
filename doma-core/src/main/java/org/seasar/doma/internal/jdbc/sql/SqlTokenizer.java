@@ -754,7 +754,6 @@ public class SqlTokenizer {
       throwInvalidPercentageDirectiveException();
     }
 
-    int charsRead;
     int offset = buf.position();
     char c = buf.get();
     buf.position(offset);
@@ -766,97 +765,154 @@ public class SqlTokenizer {
         type = PARSER_LEVEL_BLOCK_COMMENT;
         return;
       case 'i':
-        // Check for "if"
-        charsRead = Math.min(2, buf.remaining());
-        if (charsRead == 2) {
-          buf.get(lookahead, 0, charsRead);
-          if (isIfWord()) {
-            type = IF_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
+        if (parseIfDirective(offset)) {
+          return;
         }
         break;
       case 'f':
-        // Check for "for"
-        charsRead = Math.min(3, buf.remaining());
-        if (charsRead == 3) {
-          buf.get(lookahead, 0, charsRead);
-          if (isForWord()) {
-            type = FOR_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
+        if (parseForDirective(offset)) {
+          return;
         }
         break;
       case 'e':
-        boolean read = false;
-        // Check "expand" and "elseif" (6 chars)
-        charsRead = Math.min(6, buf.remaining());
-        if (charsRead == 6) {
-          //noinspection ConstantValue
-          if (read) {
-            buf.position(offset + 6);
-          } else {
-            buf.get(lookahead, 0, charsRead);
-            read = true;
-          }
-          if (isExpandWord()) {
-            type = EXPAND_BLOCK_COMMENT;
-            return;
-          }
-          if (isElseifWord()) {
-            type = ELSEIF_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
-        }
-        // Check "else" (4 chars)
-        charsRead = Math.min(4, buf.remaining());
-        if (charsRead == 4) {
-          if (read) {
-            buf.position(offset + 4);
-          } else {
-            buf.get(lookahead, 0, charsRead);
-            read = true;
-          }
-          if (isElseWord()) {
-            type = ELSE_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
-        }
-        // Check "end" (3 chars)
-        charsRead = Math.min(3, buf.remaining());
-        if (charsRead == 3) {
-          if (read) {
-            buf.position(offset + 3);
-          } else {
-            buf.get(lookahead, 0, charsRead);
-            read = true;
-          }
-          if (isEndWord()) {
-            type = END_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
+        if (parseEDirectives(offset)) {
+          return;
         }
         break;
       case 'p':
-        // Check for "populate"
-        charsRead = Math.min(8, buf.remaining());
-        if (charsRead == 8) {
-          buf.get(lookahead, 0, charsRead);
-          if (isPopulateWord()) {
-            type = POPULATE_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
+        if (parsePopulateDirective(offset)) {
+          return;
         }
         break;
     }
 
     throwInvalidPercentageDirectiveException();
+  }
+
+  /**
+   * Parses the "if" directive.
+   *
+   * @param offset the starting buffer position
+   * @return true if the directive was successfully parsed, false otherwise
+   */
+  private boolean parseIfDirective(int offset) {
+    int charsRead = Math.min(2, buf.remaining());
+    if (charsRead == 2) {
+      buf.get(lookahead, 0, charsRead);
+      if (isIfWord()) {
+        type = IF_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+    return false;
+  }
+
+  /**
+   * Parses the "for" directive.
+   *
+   * @param offset the starting buffer position
+   * @return true if the directive was successfully parsed, false otherwise
+   */
+  private boolean parseForDirective(int offset) {
+    int charsRead = Math.min(3, buf.remaining());
+    if (charsRead == 3) {
+      buf.get(lookahead, 0, charsRead);
+      if (isForWord()) {
+        type = FOR_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+    return false;
+  }
+
+  /**
+   * Parses directives that start with 'e': end, else, elseif, expand.
+   *
+   * <p>Uses an optimized approach to minimize buffer reads by checking longer patterns first and
+   * reusing the lookahead buffer when possible.
+   *
+   * @param offset the starting buffer position
+   * @return true if a directive was successfully parsed, false otherwise
+   */
+  private boolean parseEDirectives(int offset) {
+    boolean read = false;
+    int charsRead;
+
+    // Check "expand" and "elseif" (6 chars)
+    charsRead = Math.min(6, buf.remaining());
+    if (charsRead == 6) {
+      //noinspection ConstantValue
+      if (read) {
+        buf.position(offset + 6);
+      } else {
+        buf.get(lookahead, 0, charsRead);
+        read = true;
+      }
+      if (isExpandWord()) {
+        type = EXPAND_BLOCK_COMMENT;
+        return true;
+      }
+      if (isElseifWord()) {
+        type = ELSEIF_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+
+    // Check "else" (4 chars)
+    charsRead = Math.min(4, buf.remaining());
+    if (charsRead == 4) {
+      if (read) {
+        buf.position(offset + 4);
+      } else {
+        buf.get(lookahead, 0, charsRead);
+        read = true;
+      }
+      if (isElseWord()) {
+        type = ELSE_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+
+    // Check "end" (3 chars)
+    charsRead = Math.min(3, buf.remaining());
+    if (charsRead == 3) {
+      if (read) {
+        buf.position(offset + 3);
+      } else {
+        buf.get(lookahead, 0, charsRead);
+        read = true;
+      }
+      if (isEndWord()) {
+        type = END_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+
+    return false;
+  }
+
+  /**
+   * Parses the "populate" directive.
+   *
+   * @param offset the starting buffer position
+   * @return true if the directive was successfully parsed, false otherwise
+   */
+  private boolean parsePopulateDirective(int offset) {
+    int charsRead = Math.min(8, buf.remaining());
+    if (charsRead == 8) {
+      buf.get(lookahead, 0, charsRead);
+      if (isPopulateWord()) {
+        type = POPULATE_BLOCK_COMMENT;
+        return true;
+      }
+      buf.position(offset);
+    }
+    return false;
   }
 
   private void throwInvalidPercentageDirectiveException() {
