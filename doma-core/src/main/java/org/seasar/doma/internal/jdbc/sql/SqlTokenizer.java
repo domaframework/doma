@@ -107,8 +107,8 @@ import org.seasar.doma.message.Message;
  *
  * <ol>
  *   <li><strong>Character Classification</strong>: Determines if first character starts a word
- *   <li><strong>Optimized Parsing</strong>: Uses fall-through switch statements for efficient
- *       keyword matching
+ *   <li><strong>Optimized Parsing</strong>: Uses character-based branching for efficient keyword
+ *       matching
  * </ol>
  *
  * <h2>Performance Optimizations</h2>
@@ -116,8 +116,10 @@ import org.seasar.doma.message.Message;
  * <ul>
  *   <li><strong>Bitwise Case Folding</strong>: {@code (ch | 0x20)} for fast case-insensitive
  *       comparison
- *   <li><strong>Fall-through Switch</strong>: Processes longer keywords first, falls through to
- *       shorter ones
+ *   <li><strong>Character-based Branching</strong>: Groups keywords by first character and checks
+ *       in frequency order for optimal performance
+ *   <li><strong>Direct Character Classification</strong>: Uses {@link SqlTokenUtil} for O(1)
+ *       character classification with pre-computed lookup tables
  *   <li><strong>Minimal Buffer Operations</strong>: Reduces CharBuffer position changes
  *   <li><strong>Specialized Handlers</strong>: Separate methods for quotes, comments, and words
  * </ul>
@@ -135,10 +137,10 @@ import org.seasar.doma.message.Message;
  * <h2>Maintenance Guidelines</h2>
  *
  * <ul>
- *   <li><strong>Keyword Changes</strong>: Update both {@code peekWord()} and corresponding {@code
- *       isXxxWord()} methods
+ *   <li><strong>Keyword Changes</strong>: Update both {@code peekWord()} character-based branching
+ *       and corresponding {@code isXxxWord()} methods
  *   <li><strong>Performance Testing</strong>: Run JMH benchmarks after modifications (see {@code
- *       SqlTokenizerBenchmark})
+ *       SqlTokenUtilBenchmark})
  *   <li><strong>Buffer Position</strong>: Always ensure buffer position is correctly managed in
  *       parsing methods
  *   <li><strong>Lookahead Consistency</strong>: Verify lookahead array size matches maximum keyword
@@ -303,11 +305,12 @@ public class SqlTokenizer {
   /**
    * Handles word-like tokens including SQL keywords, identifiers, and quoted strings.
    *
-   * <p>This method uses an optimized fall-through switch strategy:
+   * <p>Uses character-based branching for efficient keyword matching. Keywords are grouped by first
+   * character and checked in frequency order for optimal performance.
    *
    * <ul>
-   *   <li>Processes longer keywords first (FOR UPDATE = 10 chars)
-   *   <li>Falls through to shorter keywords to minimize comparisons
+   *   <li>Branch by first character to reduce comparisons
+   *   <li>Order keywords by usage frequency within each branch
    *   <li>Uses bitwise case folding for performance (ch | 0x20)
    * </ul>
    *
@@ -327,127 +330,165 @@ public class SqlTokenizer {
       return;
     }
 
-    // Early termination: skip keyword matching for non-keyword characters
-    if (!isLikelyKeywordStart(lookahead[0])) {
-      buf.position(offset + 1);
-      handleWord();
-      return;
+    // Branch by first character for efficient keyword matching
+    // Keywords are ordered by frequency within each branch
+    char firstChar = (char) (lookahead[0] | 0x20); // Convert to lowercase
+
+    // Try keywords by first character - most frequent cases first
+    switch (firstChar) {
+      case 's': // SELECT, SET
+        if (charsRead >= 6) {
+          buf.position(offset + 6);
+          if (isSelectWord()) {
+            type = SELECT_WORD;
+            return;
+          }
+        }
+        if (charsRead >= 3) {
+          buf.position(offset + 3);
+          if (isSetWord()) {
+            type = SET_WORD;
+            return;
+          }
+        }
+        break;
+      case 'w': // WHERE
+        if (charsRead >= 5) {
+          buf.position(offset + 5);
+          if (isWhereWord()) {
+            type = WHERE_WORD;
+            return;
+          }
+        }
+        break;
+      case 'f': // FROM, FOR UPDATE
+        if (charsRead >= 10) {
+          buf.position(offset + 10);
+          if (isForUpdateWord()) {
+            type = FOR_UPDATE_WORD;
+            return;
+          }
+        }
+        if (charsRead >= 4) {
+          buf.position(offset + 4);
+          if (isFromWord()) {
+            type = FROM_WORD;
+            return;
+          }
+        }
+        break;
+      case 'o': // ORDER BY, OR, OPTION
+        if (charsRead >= 8) {
+          buf.position(offset + 8);
+          if (isOrderByWord()) {
+            type = ORDER_BY_WORD;
+            return;
+          }
+          if (isOptionWord()) {
+            buf.position(buf.position() - 2); // OPTION( adjustment
+            type = OPTION_WORD;
+            return;
+          }
+        }
+        if (charsRead >= 2) {
+          buf.position(offset + 2);
+          if (isOrWord()) {
+            type = OR_WORD;
+            return;
+          }
+        }
+        break;
+      case 'u': // UPDATE, UNION
+        if (charsRead >= 6) {
+          buf.position(offset + 6);
+          if (isUpdateWord()) {
+            type = UPDATE_WORD;
+            return;
+          }
+        }
+        if (charsRead >= 5) {
+          buf.position(offset + 5);
+          if (isUnionWord()) {
+            type = UNION_WORD;
+            return;
+          }
+        }
+        break;
+      case 'i': // IN, INTERSECT
+        if (charsRead >= 9) {
+          buf.position(offset + 9);
+          if (isIntersectWord()) {
+            type = INTERSECT_WORD;
+            return;
+          }
+        }
+        if (charsRead >= 2) {
+          buf.position(offset + 2);
+          if (isInWord()) {
+            type = IN_WORD;
+            return;
+          }
+        }
+        break;
+      case 'a': // AND
+        if (charsRead >= 3) {
+          buf.position(offset + 3);
+          if (isAndWord()) {
+            type = AND_WORD;
+            return;
+          }
+        }
+        break;
+      case 'g': // GROUP BY
+        if (charsRead >= 8) {
+          buf.position(offset + 8);
+          if (isGroupByWord()) {
+            type = GROUP_BY_WORD;
+            return;
+          }
+        }
+        break;
+      case 'h': // HAVING
+        if (charsRead >= 6) {
+          buf.position(offset + 6);
+          if (isHavingWord()) {
+            type = HAVING_WORD;
+            return;
+          }
+        }
+        break;
+      case 'd': // DISTINCT
+        if (charsRead >= 8) {
+          buf.position(offset + 8);
+          if (isDistinctWord()) {
+            type = DISTINCT_WORD;
+            return;
+          }
+        }
+        break;
+      case 'e': // EXCEPT
+        if (charsRead >= 6) {
+          buf.position(offset + 6);
+          if (isExceptWord()) {
+            type = EXCEPT_WORD;
+            return;
+          }
+        }
+        break;
+      case 'm': // MINUS
+        if (charsRead >= 5) {
+          buf.position(offset + 5);
+          if (isMinusWord()) {
+            type = MINUS_WORD;
+            return;
+          }
+        }
+        break;
     }
 
-    // Fall-through switch for efficient keyword matching
-    // Process longer keywords first, fall through to shorter ones
-    switch (charsRead) {
-      case 10:
-        buf.position(offset + 10);
-        if (isForUpdateWord()) {
-          type = FOR_UPDATE_WORD;
-          return;
-        }
-      // fall-through
-      case 9:
-        buf.position(offset + 9);
-        if (isIntersectWord()) {
-          type = INTERSECT_WORD;
-          return;
-        }
-      // fall-through
-      case 8:
-        buf.position(offset + 8);
-        if (isGroupByWord()) {
-          type = GROUP_BY_WORD;
-          return;
-        }
-        if (isOrderByWord()) {
-          type = ORDER_BY_WORD;
-          return;
-        }
-        if (isOptionWord()) {
-          type = OPTION_WORD;
-          buf.position(buf.position() - 2);
-          return;
-        }
-        if (isDistinctWord()) {
-          type = DISTINCT_WORD;
-          return;
-        }
-      // fall-through
-      case 7:
-        buf.position(offset + 7);
-      // fall-through
-      case 6:
-        buf.position(offset + 6);
-        if (isSelectWord()) {
-          type = SELECT_WORD;
-          return;
-        }
-        if (isHavingWord()) {
-          type = HAVING_WORD;
-          return;
-        }
-        if (isExceptWord()) {
-          type = EXCEPT_WORD;
-          return;
-        }
-        if (isUpdateWord()) {
-          type = UPDATE_WORD;
-          return;
-        }
-      // fall-through
-      case 5:
-        buf.position(offset + 5);
-        if (isWhereWord()) {
-          type = WHERE_WORD;
-          return;
-        }
-        if (isUnionWord()) {
-          type = UNION_WORD;
-          return;
-        }
-        if (isMinusWord()) {
-          type = MINUS_WORD;
-          return;
-        }
-      // fall-through
-      case 4:
-        buf.position(offset + 4);
-        if (isFromWord()) {
-          type = FROM_WORD;
-          return;
-        }
-      // fall-through
-      case 3:
-        buf.position(offset + 3);
-        if (isAndWord()) {
-          type = AND_WORD;
-          return;
-        }
-        if (isSetWord()) {
-          type = SET_WORD;
-          return;
-        }
-      // fall-through
-      case 2:
-        buf.position(offset + 2);
-        if (isOrWord()) {
-          type = OR_WORD;
-          return;
-        }
-        if (isInWord()) {
-          type = IN_WORD;
-          return;
-        }
-      // fall-through
-      case 1:
-        buf.position(offset + 1);
-        if (isWordStart(lookahead[0])) {
-          handleWord();
-          return;
-        }
-        type = OTHER;
-        break;
-      default:
-        AssertionUtil.assertUnreachable();
-    }
+    // No keyword matched, treat as regular word
+    buf.position(offset + 1);
+    handleWord();
   }
 
   /**
@@ -470,15 +511,15 @@ public class SqlTokenizer {
     switch (charsRead) {
       case 2:
         buf.position(offset + 2);
-        if (isBlockCommentStart()) {
+        if (lookahead[0] == '/' && lookahead[1] == '*') {
           handleBlockComment();
           return;
         }
-        if (isLineCommentStart()) {
+        if (lookahead[0] == '-' && lookahead[1] == '-') {
           handleLineComment();
           return;
         }
-        if (isEol()) {
+        if (lookahead[0] == '\r' && lookahead[1] == '\n') {
           type = EOL;
           currentLineNumber++;
           return;
@@ -684,18 +725,6 @@ public class SqlTokenizer {
 
   private boolean isInWord() {
     return ((lookahead[0] | 0x20) == 'i') && ((lookahead[1] | 0x20) == 'n') && isWordTerminated();
-  }
-
-  private boolean isBlockCommentStart() {
-    return lookahead[0] == '/' && lookahead[1] == '*';
-  }
-
-  private boolean isLineCommentStart() {
-    return lookahead[0] == '-' && lookahead[1] == '-';
-  }
-
-  private boolean isEol() {
-    return lookahead[0] == '\r' && lookahead[1] == '\n';
   }
 
   /**
@@ -1089,24 +1118,6 @@ public class SqlTokenizer {
 
   private boolean isWordPart(char c) {
     return SqlTokenUtil.isWordPart(c);
-  }
-
-  /**
-   * Checks if a character is likely to be the start of an SQL keyword.
-   *
-   * <p>This method performs a quick check to determine if the given character could be the first
-   * character of any SQL keyword that this tokenizer recognizes. This allows for early termination
-   * of keyword matching when processing regular identifiers.
-   *
-   * <p>Recognized keyword starting characters: a, d, e, f, g, h, i, m, o, s, u, w
-   *
-   * @param c the character to check
-   * @return true if the character could start an SQL keyword, false otherwise
-   */
-  private boolean isLikelyKeywordStart(char c) {
-    char lc = (char) (c | 0x20); // Convert to lowercase using bitwise OR
-    return lc == 'a' || lc == 'd' || lc == 'e' || lc == 'f' || lc == 'g' || lc == 'h' || lc == 'i'
-        || lc == 'm' || lc == 'o' || lc == 's' || lc == 'u' || lc == 'w';
   }
 
   private boolean isWhitespace(char c) {
