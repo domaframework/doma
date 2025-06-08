@@ -59,6 +59,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
+import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
@@ -133,35 +134,46 @@ public class SqlTokenizer {
   }
 
   protected void peek() {
-    int charsRead = Math.min(lookahead.length, buf.remaining());
-    if (charsRead == 0) {
+    if (!buf.hasRemaining()) {
       type = EOF;
       return;
     }
 
-    buf.get(lookahead, 0, charsRead);
+    int offset = buf.position();
+    char c = buf.get();
+    boolean isWordStart = isWordStart(c);
+    buf.position(offset);
 
-    boolean isWordStart = isWordStart(lookahead[0]);
-    if (!isWordStart && charsRead > 2) {
-      buf.position(buf.position() - (charsRead - 2));
-      charsRead = 2;
+    if (isWordStart) {
+      int charsRead = Math.min(lookahead.length, buf.remaining());
+      buf.get(lookahead, 0, charsRead);
+      peekWord(offset, charsRead);
+    } else {
+      int charsRead = Math.min(2, buf.remaining());
+      buf.get(lookahead, 0, charsRead);
+      peekNonWord(offset, charsRead);
     }
+  }
 
+  private void peekWord(int offset, int charsRead) {
     // This switch statement takes advantage of fall-through behavior.
     switch (charsRead) {
       case 10:
+        buf.position(offset + 10);
         if (isForUpdateWord()) {
           type = FOR_UPDATE_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 9:
+        buf.position(offset + 9);
         if (isIntersectWord()) {
           type = INTERSECT_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 8:
+        buf.position(offset + 8);
         if (isGroupByWord()) {
           type = GROUP_BY_WORD;
           return;
@@ -179,10 +191,12 @@ public class SqlTokenizer {
           type = DISTINCT_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 7:
-        decrementPosition();
+        buf.position(offset + 7);
+      // fall-through
       case 6:
+        buf.position(offset + 6);
         if (isSelectWord()) {
           type = SELECT_WORD;
           return;
@@ -199,8 +213,9 @@ public class SqlTokenizer {
           type = UPDATE_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 5:
+        buf.position(offset + 5);
         if (isWhereWord()) {
           type = WHERE_WORD;
           return;
@@ -213,14 +228,16 @@ public class SqlTokenizer {
           type = MINUS_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 4:
+        buf.position(offset + 4);
         if (isFromWord()) {
           type = FROM_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 3:
+        buf.position(offset + 3);
         if (isAndWord()) {
           type = AND_WORD;
           return;
@@ -229,16 +246,41 @@ public class SqlTokenizer {
           type = SET_WORD;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 2:
-        if (isWordStart && isOrWord()) {
+        buf.position(offset + 2);
+        if (isOrWord()) {
           type = OR_WORD;
           return;
         }
-        if (isWordStart && isInWord()) {
+        if (isInWord()) {
           type = IN_WORD;
           return;
         }
+      // fall-through
+      case 1:
+        buf.position(offset + 1);
+        char c = lookahead[0];
+        if (c == '\'') {
+          handleQuotedString();
+          return;
+        }
+        if (isWordStart(c)) {
+          handleWord();
+          return;
+        }
+        type = OTHER;
+        break;
+      default:
+        AssertionUtil.assertUnreachable();
+    }
+  }
+
+  private void peekNonWord(int offset, int charsRead) {
+    // This switch statement takes advantage of fall-through behavior.
+    switch (charsRead) {
+      case 2:
+        buf.position(offset + 2);
         if (isBlockCommentStart()) {
           handleBlockComment();
           return;
@@ -252,8 +294,9 @@ public class SqlTokenizer {
           currentLineNumber++;
           return;
         }
-        decrementPosition();
+      // fall-through
       case 1:
+        buf.position(offset + 1);
         char c = lookahead[0];
         if (isWhitespace(c)) {
           type = WHITESPACE;
@@ -271,20 +314,15 @@ public class SqlTokenizer {
           type = DELIMITER;
           return;
         }
-        if (c == '\'') {
-          handleQuotedString();
-          return;
-        }
-        if (isWordStart(c)) {
-          handleWord();
-          return;
-        }
         if (c == '\r' || c == '\n') {
           type = EOL;
           currentLineNumber++;
           return;
         }
         type = OTHER;
+        break;
+      default:
+        AssertionUtil.assertUnreachable();
     }
   }
 
@@ -491,43 +529,46 @@ public class SqlTokenizer {
   }
 
   private void parsePercentageDirective() {
-    int charsRead = Math.min(8, buf.remaining());
-    if (charsRead == 0) {
+    if (!buf.hasRemaining()) {
       throwInvalidPercentageDirectiveException();
     }
 
-    int preservedPosition = buf.position();
-    buf.get(lookahead, 0, charsRead);
+    int charsRead;
+    int offset = buf.position();
+    char c = buf.get();
+    buf.position(offset);
 
-    switch (lookahead[0]) {
+    switch (c) {
       case '!':
-        if (charsRead >= 1) {
-          buf.position(preservedPosition + 1);
-          type = PARSER_LEVEL_BLOCK_COMMENT;
-          return;
-        }
-        break;
+        buf.position(offset + 1);
+        type = PARSER_LEVEL_BLOCK_COMMENT;
+        return;
       case 'i':
-        if (charsRead >= 2) {
-          buf.position(preservedPosition + 2);
+        charsRead = Math.min(2, buf.remaining());
+        if (charsRead == 2) {
+          buf.get(lookahead, 0, charsRead);
           if (isIfWord()) {
             type = IF_BLOCK_COMMENT;
             return;
           }
+          buf.get(lookahead, 0, charsRead);
         }
         break;
       case 'f':
-        if (charsRead >= 3) {
-          buf.position(preservedPosition + 3);
+        charsRead = Math.min(3, buf.remaining());
+        if (charsRead == 3) {
+          buf.get(lookahead, 0, charsRead);
           if (isForWord()) {
             type = FOR_BLOCK_COMMENT;
             return;
           }
+          buf.get(lookahead, 0, charsRead);
         }
         break;
       case 'e':
-        if (charsRead >= 6) {
-          buf.position(preservedPosition + 6);
+        charsRead = Math.min(6, buf.remaining());
+        if (charsRead == 6) {
+          buf.get(lookahead, 0, charsRead);
           if (isExpandWord()) {
             type = EXPAND_BLOCK_COMMENT;
             return;
@@ -536,33 +577,40 @@ public class SqlTokenizer {
             type = ELSEIF_BLOCK_COMMENT;
             return;
           }
+          buf.position(offset);
         }
-        if (charsRead >= 4) {
-          buf.position(preservedPosition + 4);
+        charsRead = Math.min(4, buf.remaining());
+        if (charsRead == 4) {
+          buf.get(lookahead, 0, charsRead);
           if (isElseWord()) {
             type = ELSE_BLOCK_COMMENT;
             return;
           }
+          buf.position(offset);
         }
-        if (charsRead >= 3) {
-          buf.position(preservedPosition + 3);
+        charsRead = Math.min(3, buf.remaining());
+        if (charsRead == 3) {
+          buf.get(lookahead, 0, charsRead);
           if (isEndWord()) {
             type = END_BLOCK_COMMENT;
             return;
           }
+          buf.position(offset);
         }
         break;
       case 'p':
+        charsRead = Math.min(8, buf.remaining());
         if (charsRead == 8) {
+          buf.get(lookahead, 0, charsRead);
           if (isPopulateWord()) {
             type = POPULATE_BLOCK_COMMENT;
             return;
           }
+          buf.position(offset);
         }
         break;
     }
 
-    buf.position(preservedPosition);
     throwInvalidPercentageDirectiveException();
   }
 
