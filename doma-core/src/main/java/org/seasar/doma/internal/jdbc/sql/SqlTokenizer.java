@@ -778,13 +778,23 @@ public class SqlTokenizer {
         }
         break;
       case 'e':
-        // Complex case: could be "end", "else", "elseif", or "expand"
-        // Check shortest match first: "end" (3 chars)
-        charsRead = Math.min(3, buf.remaining());
-        if (charsRead == 3) {
-          buf.get(lookahead, 0, charsRead);
-          if (isEndWord()) {
-            type = END_BLOCK_COMMENT;
+        boolean read = false;
+        // Check "expand" and "elseif" (6 chars)
+        charsRead = Math.min(6, buf.remaining());
+        if (charsRead == 6) {
+          //noinspection ConstantValue
+          if (read) {
+            buf.position(offset + 6);
+          } else {
+            buf.get(lookahead, 0, charsRead);
+            read = true;
+          }
+          if (isExpandWord()) {
+            type = EXPAND_BLOCK_COMMENT;
+            return;
+          }
+          if (isElseifWord()) {
+            type = ELSEIF_BLOCK_COMMENT;
             return;
           }
           buf.position(offset);
@@ -792,23 +802,29 @@ public class SqlTokenizer {
         // Check "else" (4 chars)
         charsRead = Math.min(4, buf.remaining());
         if (charsRead == 4) {
-          buf.get(lookahead, 0, charsRead);
+          if (read) {
+            buf.position(offset + 4);
+          } else {
+            buf.get(lookahead, 0, charsRead);
+            read = true;
+          }
           if (isElseWord()) {
             type = ELSE_BLOCK_COMMENT;
             return;
           }
           buf.position(offset);
         }
-        // Check "expand" and "elseif" (6 chars)
-        charsRead = Math.min(6, buf.remaining());
-        if (charsRead == 6) {
-          buf.get(lookahead, 0, charsRead);
-          if (isExpandWord()) {
-            type = EXPAND_BLOCK_COMMENT;
-            return;
+        // Check "end" (3 chars)
+        charsRead = Math.min(3, buf.remaining());
+        if (charsRead == 3) {
+          if (read) {
+            buf.position(offset + 3);
+          } else {
+            buf.get(lookahead, 0, charsRead);
+            read = true;
           }
-          if (isElseifWord()) {
-            type = ELSEIF_BLOCK_COMMENT;
+          if (isEndWord()) {
+            type = END_BLOCK_COMMENT;
             return;
           }
           buf.position(offset);
