@@ -541,7 +541,7 @@ public class SqlTokenizer {
         && ((lookahead[2] | 0x20) == 'd')
         && ((lookahead[3] | 0x20) == 'e')
         && ((lookahead[4] | 0x20) == 'r')
-        && (Character.isWhitespace(lookahead[5]))
+        && (isWhitespace(lookahead[5]))
         && ((lookahead[6] | 0x20) == 'b')
         && ((lookahead[7] | 0x20) == 'y')
         && isWordTerminated();
