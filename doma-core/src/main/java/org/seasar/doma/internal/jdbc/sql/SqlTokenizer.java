@@ -155,6 +155,18 @@ import org.seasar.doma.message.Message;
  */
 public class SqlTokenizer {
 
+  /**
+   * Size of the lookahead buffer. This accommodates the longest SQL keyword ("FOR UPDATE" = 10
+   * chars including space).
+   */
+  private static final int LOOKAHEAD_BUFFER_SIZE = 10;
+
+  /**
+   * Number of characters needed for non-word token detection (comments, operators). Two characters
+   * are sufficient to detect "/&#42;", "--", "\\r\\n" patterns.
+   */
+  private static final int NON_WORD_LOOKAHEAD_SIZE = 2;
+
   /** Original SQL string being tokenized. Used for substring extraction in token preparation. */
   private final String sql;
 
@@ -165,11 +177,10 @@ public class SqlTokenizer {
   private final CharBuffer buf;
 
   /**
-   * Fixed-size lookahead buffer for efficient keyword matching. Size of 10 accommodates the longest
-   * keyword ("FOR UPDATE" = 10 chars including space). This buffer minimizes CharBuffer position
-   * manipulations during parsing.
+   * Fixed-size lookahead buffer for efficient keyword matching. This buffer minimizes CharBuffer
+   * position manipulations during parsing.
    */
-  private final char[] lookahead = new char[10];
+  private final char[] lookahead = new char[LOOKAHEAD_BUFFER_SIZE];
 
   /** Current token type determined by the most recent peek() operation. */
   private SqlTokenType type;
@@ -281,8 +292,8 @@ public class SqlTokenizer {
       buf.get(lookahead, 0, charsRead);
       peekWord(offset, charsRead);
     } else {
-      // For non-words, 2 chars is sufficient for comment detection and other syntax
-      int charsRead = Math.min(2, buf.remaining());
+      // For non-words, NON_WORD_LOOKAHEAD_SIZE chars is sufficient for comment detection and other syntax
+      int charsRead = Math.min(NON_WORD_LOOKAHEAD_SIZE, buf.remaining());
       buf.get(lookahead, 0, charsRead);
       peekNonWord(offset, charsRead);
     }
