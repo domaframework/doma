@@ -59,7 +59,6 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
-import org.seasar.doma.internal.util.AssertionUtil;
 import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
@@ -494,7 +493,7 @@ public class SqlTokenizer {
   /**
    * Handles non-word tokens including comments, operators, and punctuation.
    *
-   * <p>This method processes:
+   * <p>This method uses optimized character-based branching for maximum performance:
    *
    * <ul>
    *   <li>Block comments (/&#42; &#42;/) and their special variants (directives, bind variables)
@@ -507,52 +506,75 @@ public class SqlTokenizer {
    * @param charsRead number of characters read into lookahead buffer (max 2)
    */
   private void peekNonWord(int offset, int charsRead) {
-    // Fall-through switch for efficient multi-character token detection
-    switch (charsRead) {
-      case 2:
-        buf.position(offset + 2);
-        if (lookahead[0] == '/' && lookahead[1] == '*') {
-          handleBlockComment();
-          return;
-        }
-        if (lookahead[0] == '-' && lookahead[1] == '-') {
-          handleLineComment();
-          return;
-        }
-        if (lookahead[0] == '\r' && lookahead[1] == '\n') {
-          type = EOL;
-          currentLineNumber++;
-          return;
-        }
-      // fall-through
-      case 1:
-        buf.position(offset + 1);
-        char c = lookahead[0];
-        if (isWhitespace(c)) {
+    char c1 = lookahead[0];
+
+    // Handle two-character tokens first (when available)
+    if (charsRead >= 2) {
+      char c2 = lookahead[1];
+
+      // Use first character to branch efficiently
+      switch (c1) {
+        case '/':
+          if (c2 == '*') {
+            buf.position(offset + 2);
+            handleBlockComment();
+            return;
+          }
+          break;
+        case '-':
+          if (c2 == '-') {
+            buf.position(offset + 2);
+            handleLineComment();
+            return;
+          }
+          break;
+        case '\r':
+          if (c2 == '\n') {
+            buf.position(offset + 2);
+            type = EOL;
+            currentLineNumber++;
+            return;
+          }
+          break;
+      }
+    }
+
+    // Handle single character tokens
+    buf.position(offset + 1);
+
+    // Use switch for efficient single character classification
+    switch (c1) {
+      case ' ':
+      case '\t':
+      case '\u000B': // Vertical TAB
+      case '\u000C': // Form Feed
+      case '\u001C': // File Separator
+      case '\u001D': // Group Separator
+      case '\u001E': // Record Separator
+      case '\u001F': // Unit Separator
+        type = WHITESPACE;
+        return;
+      case '(':
+        type = OPENED_PARENS;
+        return;
+      case ')':
+        type = CLOSED_PARENS;
+        return;
+      case ';':
+        type = DELIMITER;
+        return;
+      case '\r':
+      case '\n':
+        type = EOL;
+        currentLineNumber++;
+        return;
+      default:
+        // Check remaining whitespace characters that are less common
+        if (isWhitespace(c1)) {
           type = WHITESPACE;
           return;
         }
-        if (c == '(') {
-          type = OPENED_PARENS;
-          return;
-        }
-        if (c == ')') {
-          type = CLOSED_PARENS;
-          return;
-        }
-        if (c == ';') {
-          type = DELIMITER;
-          return;
-        }
-        if (c == '\r' || c == '\n') {
-          type = EOL;
-          currentLineNumber++;
-          return;
-        }
         type = OTHER;
-        break;
-      default:
-        AssertionUtil.assertUnreachable();
     }
   }
 
