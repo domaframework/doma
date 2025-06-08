@@ -327,6 +327,13 @@ public class SqlTokenizer {
       return;
     }
 
+    // Early termination: skip keyword matching for non-keyword characters
+    if (!isLikelyKeywordStart(lookahead[0])) {
+      buf.position(offset + 1);
+      handleWord();
+      return;
+    }
+
     // Fall-through switch for efficient keyword matching
     // Process longer keywords first, fall through to shorter ones
     switch (charsRead) {
@@ -1082,6 +1089,24 @@ public class SqlTokenizer {
 
   private boolean isWordPart(char c) {
     return SqlTokenUtil.isWordPart(c);
+  }
+
+  /**
+   * Checks if a character is likely to be the start of an SQL keyword.
+   *
+   * <p>This method performs a quick check to determine if the given character could be the first
+   * character of any SQL keyword that this tokenizer recognizes. This allows for early termination
+   * of keyword matching when processing regular identifiers.
+   *
+   * <p>Recognized keyword starting characters: a, d, e, f, g, h, i, m, o, s, u, w
+   *
+   * @param c the character to check
+   * @return true if the character could start an SQL keyword, false otherwise
+   */
+  private boolean isLikelyKeywordStart(char c) {
+    char lc = (char) (c | 0x20); // Convert to lowercase using bitwise OR
+    return lc == 'a' || lc == 'd' || lc == 'e' || lc == 'f' || lc == 'g' || lc == 'h' || lc == 'i'
+        || lc == 'm' || lc == 'o' || lc == 's' || lc == 'u' || lc == 'w';
   }
 
   private boolean isWhitespace(char c) {
