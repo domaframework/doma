@@ -64,26 +64,135 @@ import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.message.Message;
 
+/**
+ * High-performance SQL tokenizer for Doma's two-way SQL processing.
+ *
+ * <h2>Architecture Overview</h2>
+ *
+ * This tokenizer processes SQL strings character by character, identifying tokens such as:
+ *
+ * <ul>
+ *   <li>SQL keywords (SELECT, FROM, WHERE, etc.)
+ *   <li>Block comments (/&#42; &#42;/), including Doma directives (/&#42;%if&#42;/,
+ *       /&#42;%expand&#42;/, etc.)
+ *   <li>Line comments (--)
+ *   <li>Quoted strings ('text')
+ *   <li>Bind variables (/&#42;param&#42;/value)
+ *   <li>Parentheses, delimiters, and other SQL syntax elements
+ * </ul>
+ *
+ * <h2>Key Design Principles</h2>
+ *
+ * <ul>
+ *   <li><strong>Performance-Critical</strong>: Used extensively in SQL parsing pipelines
+ *   <li><strong>Memory-Efficient</strong>: Uses CharBuffer for zero-copy string operations
+ *   <li><strong>Lookahead Optimization</strong>: 10-character lookahead buffer minimizes buffer
+ *       operations
+ * </ul>
+ *
+ * <h2>Internal State Management</h2>
+ *
+ * The tokenizer maintains several critical state variables:
+ *
+ * <ul>
+ *   <li>{@code buf}: CharBuffer positioned at current parsing location
+ *   <li>{@code lookahead}: Fixed 10-char array for efficient keyword matching
+ *   <li>{@code tokenStartIndex}: Start position of current token for substring extraction
+ *   <li>{@code currentLineNumber}: Line tracking for error reporting
+ * </ul>
+ *
+ * <h2>Parsing Strategy</h2>
+ *
+ * The core parsing logic in {@code peek()} uses a two-phase approach:
+ *
+ * <ol>
+ *   <li><strong>Character Classification</strong>: Determines if first character starts a word
+ *   <li><strong>Optimized Parsing</strong>: Uses fall-through switch statements for efficient
+ *       keyword matching
+ * </ol>
+ *
+ * <h2>Performance Optimizations</h2>
+ *
+ * <ul>
+ *   <li><strong>Bitwise Case Folding</strong>: {@code (ch | 0x20)} for fast case-insensitive
+ *       comparison
+ *   <li><strong>Fall-through Switch</strong>: Processes longer keywords first, falls through to
+ *       shorter ones
+ *   <li><strong>Minimal Buffer Operations</strong>: Reduces CharBuffer position changes
+ *   <li><strong>Specialized Handlers</strong>: Separate methods for quotes, comments, and words
+ * </ul>
+ *
+ * <h2>Error Handling</h2>
+ *
+ * Provides precise error reporting with line/column information for:
+ *
+ * <ul>
+ *   <li>Unterminated quoted strings (DOMA2101)
+ *   <li>Unterminated block comments (DOMA2102)
+ *   <li>Invalid directive syntax (DOMA2119)
+ * </ul>
+ *
+ * <h2>Maintenance Guidelines</h2>
+ *
+ * <ul>
+ *   <li><strong>Keyword Changes</strong>: Update both {@code peekWord()} and corresponding {@code
+ *       isXxxWord()} methods
+ *   <li><strong>Performance Testing</strong>: Run JMH benchmarks after modifications (see {@code
+ *       SqlTokenizerBenchmark})
+ *   <li><strong>Buffer Position</strong>: Always ensure buffer position is correctly managed in
+ *       parsing methods
+ *   <li><strong>Lookahead Consistency</strong>: Verify lookahead array size matches maximum keyword
+ *       length
+ * </ul>
+ *
+ * <h2>Thread Safety</h2>
+ *
+ * This class is <strong>NOT thread-safe</strong>. Each parsing operation requires a separate
+ * instance.
+ *
+ * @see SqlTokenType for token type definitions
+ * @see SqlTokenUtil for character classification utilities
+ */
 public class SqlTokenizer {
 
-  protected final String sql;
+  /** Original SQL string being tokenized. Used for substring extraction in token preparation. */
+  private final String sql;
 
-  protected final CharBuffer buf;
+  /**
+   * CharBuffer wrapper around SQL string. Maintains current parsing position and provides efficient
+   * character access.
+   */
+  private final CharBuffer buf;
 
-  protected char[] lookahead = new char[10];
+  /**
+   * Fixed-size lookahead buffer for efficient keyword matching. Size of 10 accommodates the longest
+   * keyword ("FOR UPDATE" = 10 chars including space). This buffer minimizes CharBuffer position
+   * manipulations during parsing.
+   */
+  private final char[] lookahead = new char[10];
 
-  protected SqlTokenType type;
+  /** Current token type determined by the most recent peek() operation. */
+  private SqlTokenType type;
 
-  protected String token;
+  /** Current token string extracted during prepareToken(). Null until first next() call. */
+  private String token;
 
-  protected int currentLineNumber;
+  /** Line number tracking during parsing for error reporting. Incremented on EOL detection. */
+  private int currentLineNumber;
 
-  protected int lineNumber;
+  /** Line number of the current token, captured during prepareToken(). */
+  private int lineNumber;
 
-  protected int lineStartPosition;
+  /** Buffer position at the start of the current line. Used for calculating column positions. */
+  private int lineStartPosition;
 
-  protected int position;
+  /** Column position of the current token within its line. */
+  private int position;
 
+  /**
+   * Start index of the current token in the original SQL string. Updated after each token
+   * extraction.
+   */
   private int tokenStartIndex;
 
   public SqlTokenizer(String sql) {
@@ -95,6 +204,19 @@ public class SqlTokenizer {
     peek();
   }
 
+  /**
+   * Advances to the next token and returns its type.
+   *
+   * <p>This method coordinates the tokenization process:
+   *
+   * <ol>
+   *   <li>Handles EOF and EOL special cases
+   *   <li>Prepares the current token (extracts substring and position info)
+   *   <li>Advances parsing position and determines next token type
+   * </ol>
+   *
+   * @return the type of the current token (before advancing)
+   */
   public SqlTokenType next() {
     switch (type) {
       case EOF:
@@ -110,7 +232,7 @@ public class SqlTokenizer {
     }
   }
 
-  protected void prepareToken() {
+  private void prepareToken() {
     lineNumber = currentLineNumber;
     position = buf.position() - lineStartPosition;
     token = sql.substring(tokenStartIndex, buf.position());
@@ -133,7 +255,20 @@ public class SqlTokenizer {
     buf.position(buf.position() - 1);
   }
 
-  protected void peek() {
+  /**
+   * Core tokenization method that determines the type of the next token.
+   *
+   * <p>This method implements a two-phase parsing strategy:
+   *
+   * <ol>
+   *   <li>Character classification: Determines if the next character starts a word
+   *   <li>Specialized parsing: Delegates to peekWord() or peekNonWord() accordingly
+   * </ol>
+   *
+   * <p>The method fills the lookahead buffer with the appropriate number of characters to minimize
+   * buffer operations during keyword matching.
+   */
+  private void peek() {
     if (!buf.hasRemaining()) {
       type = EOF;
       return;
@@ -145,18 +280,47 @@ public class SqlTokenizer {
     buf.position(offset);
 
     if (isWordStart) {
+      // For words, read up to lookahead.length chars for keyword matching
       int charsRead = Math.min(lookahead.length, buf.remaining());
       buf.get(lookahead, 0, charsRead);
       peekWord(offset, charsRead);
     } else {
+      // For non-words, 2 chars is sufficient for comment detection and other syntax
       int charsRead = Math.min(2, buf.remaining());
       buf.get(lookahead, 0, charsRead);
       peekNonWord(offset, charsRead);
     }
   }
 
+  /**
+   * Handles word-like tokens including SQL keywords, identifiers, and quoted strings.
+   *
+   * <p>This method uses an optimized fall-through switch strategy:
+   *
+   * <ul>
+   *   <li>Processes longer keywords first (FOR UPDATE = 10 chars)
+   *   <li>Falls through to shorter keywords to minimize comparisons
+   *   <li>Uses bitwise case folding for performance (ch | 0x20)
+   * </ul>
+   *
+   * @param offset the starting position in the buffer
+   * @param charsRead number of characters read into lookahead buffer
+   */
   private void peekWord(int offset, int charsRead) {
-    // This switch statement takes advantage of fall-through behavior.
+    // Handle special word-starting characters
+    if (lookahead[0] == '\'') {
+      buf.position(offset + 1);
+      handleQuotedString();
+      return;
+    }
+    if (lookahead[0] == '+' || lookahead[0] == '-') {
+      buf.position(offset + 1);
+      handleWord();
+      return;
+    }
+
+    // Fall-through switch for efficient keyword matching
+    // Process longer keywords first, fall through to shorter ones
     switch (charsRead) {
       case 10:
         buf.position(offset + 10);
@@ -260,12 +424,7 @@ public class SqlTokenizer {
       // fall-through
       case 1:
         buf.position(offset + 1);
-        char c = lookahead[0];
-        if (c == '\'') {
-          handleQuotedString();
-          return;
-        }
-        if (isWordStart(c)) {
+        if (isWordStart(lookahead[0])) {
           handleWord();
           return;
         }
@@ -276,8 +435,23 @@ public class SqlTokenizer {
     }
   }
 
+  /**
+   * Handles non-word tokens including comments, operators, and punctuation.
+   *
+   * <p>This method processes:
+   *
+   * <ul>
+   *   <li>Block comments (/&#42; &#42;/) and their special variants (directives, bind variables)
+   *   <li>Line comments (--)
+   *   <li>End-of-line sequences (\r\n)
+   *   <li>Single character tokens (parentheses, semicolons, whitespace)
+   * </ul>
+   *
+   * @param offset the starting position in the buffer
+   * @param charsRead number of characters read into lookahead buffer (max 2)
+   */
   private void peekNonWord(int offset, int charsRead) {
-    // This switch statement takes advantage of fall-through behavior.
+    // Fall-through switch for efficient multi-character token detection
     switch (charsRead) {
       case 2:
         buf.position(offset + 2);
@@ -509,6 +683,21 @@ public class SqlTokenizer {
     return lookahead[0] == '\r' && lookahead[1] == '\n';
   }
 
+  /**
+   * Processes block comments and determines their specific type.
+   *
+   * <p>Block comments in Doma SQL have several variants:
+   *
+   * <ul>
+   *   <li>Standard comments: /&#42;&#42; comment &#42;/
+   *   <li>Bind variables: /&#42;paramName&#42;/defaultValue
+   *   <li>Literal variables: /&#42;^paramName&#42;/'defaultValue'
+   *   <li>Embedded variables: /&#42;#paramName&#42;/
+   *   <li>Directives: /&#42;%if&#42;/, /&#42;%expand&#42;/, etc.
+   * </ul>
+   *
+   * <p>The method examines the first character after /&#42; to determine the variant.
+   */
   private void handleBlockComment() {
     type = BLOCK_COMMENT;
     if (buf.hasRemaining()) {
@@ -528,6 +717,30 @@ public class SqlTokenizer {
     consumeBlockCommentContent();
   }
 
+  /**
+   * Parses directive tokens that begin with /&#42;%.
+   *
+   * <p>Doma SQL supports several directives for conditional logic and dynamic SQL:
+   *
+   * <ul>
+   *   <li>/&#42;%if expression&#42;/: Conditional inclusion
+   *   <li>/&#42;%elseif expression&#42;/: Alternative conditional
+   *   <li>/&#42;%else&#42;/: Default branch
+   *   <li>/&#42;%end&#42;/: Closes conditional block
+   *   <li>/&#42;%for item : items&#42;/: Iteration over collections
+   *   <li>/&#42;%expand alias&#42;/: Column expansion
+   *   <li>/&#42;%populate&#42;/: Batch insert value expansion
+   *   <li>/&#42;%!metadata&#42;/: Parser-level metadata (internal use)
+   * </ul>
+   *
+   * <p>This method uses a switch on the first character after % for efficient directive
+   * identification, then performs exact matching for validation. Invalid directives result in
+   * DOMA2119 exception.
+   *
+   * <p>Implementation note: The method carefully manages buffer position to enable proper
+   * backtracking when partial matches fail (e.g., "e" could be "end", "else", "elseif", or
+   * "expand").
+   */
   private void parsePercentageDirective() {
     if (!buf.hasRemaining()) {
       throwInvalidPercentageDirectiveException();
@@ -540,10 +753,12 @@ public class SqlTokenizer {
 
     switch (c) {
       case '!':
+        // Parser-level directive: /*%!
         buf.position(offset + 1);
         type = PARSER_LEVEL_BLOCK_COMMENT;
         return;
       case 'i':
+        // Check for "if"
         charsRead = Math.min(2, buf.remaining());
         if (charsRead == 2) {
           buf.get(lookahead, 0, charsRead);
@@ -551,10 +766,11 @@ public class SqlTokenizer {
             type = IF_BLOCK_COMMENT;
             return;
           }
-          buf.get(lookahead, 0, charsRead);
+          buf.position(offset);
         }
         break;
       case 'f':
+        // Check for "for"
         charsRead = Math.min(3, buf.remaining());
         if (charsRead == 3) {
           buf.get(lookahead, 0, charsRead);
@@ -562,10 +778,32 @@ public class SqlTokenizer {
             type = FOR_BLOCK_COMMENT;
             return;
           }
-          buf.get(lookahead, 0, charsRead);
+          buf.position(offset);
         }
         break;
       case 'e':
+        // Complex case: could be "end", "else", "elseif", or "expand"
+        // Check shortest match first: "end" (3 chars)
+        charsRead = Math.min(3, buf.remaining());
+        if (charsRead == 3) {
+          buf.get(lookahead, 0, charsRead);
+          if (isEndWord()) {
+            type = END_BLOCK_COMMENT;
+            return;
+          }
+          buf.position(offset);
+        }
+        // Check "else" (4 chars)
+        charsRead = Math.min(4, buf.remaining());
+        if (charsRead == 4) {
+          buf.get(lookahead, 0, charsRead);
+          if (isElseWord()) {
+            type = ELSE_BLOCK_COMMENT;
+            return;
+          }
+          buf.position(offset);
+        }
+        // Check "expand" and "elseif" (6 chars)
         charsRead = Math.min(6, buf.remaining());
         if (charsRead == 6) {
           buf.get(lookahead, 0, charsRead);
@@ -579,26 +817,9 @@ public class SqlTokenizer {
           }
           buf.position(offset);
         }
-        charsRead = Math.min(4, buf.remaining());
-        if (charsRead == 4) {
-          buf.get(lookahead, 0, charsRead);
-          if (isElseWord()) {
-            type = ELSE_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
-        }
-        charsRead = Math.min(3, buf.remaining());
-        if (charsRead == 3) {
-          buf.get(lookahead, 0, charsRead);
-          if (isEndWord()) {
-            type = END_BLOCK_COMMENT;
-            return;
-          }
-          buf.position(offset);
-        }
         break;
       case 'p':
+        // Check for "populate"
         charsRead = Math.min(8, buf.remaining());
         if (charsRead == 8) {
           buf.get(lookahead, 0, charsRead);
@@ -774,7 +995,7 @@ public class SqlTokenizer {
     throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
   }
 
-  protected boolean isWordStart(char c) {
+  private boolean isWordStart(char c) {
     if (c == '+' || c == '-') {
       buf.mark();
       if (buf.hasRemaining()) {
@@ -788,7 +1009,7 @@ public class SqlTokenizer {
     return isWordPart(c);
   }
 
-  protected boolean isWordTerminated() {
+  private boolean isWordTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
       char c = buf.get();
@@ -799,11 +1020,11 @@ public class SqlTokenizer {
     }
   }
 
-  protected boolean isWordPart(char c) {
+  private boolean isWordPart(char c) {
     return SqlTokenUtil.isWordPart(c);
   }
 
-  protected boolean isWhitespace(char c) {
+  private boolean isWhitespace(char c) {
     return SqlTokenUtil.isWhitespace(c);
   }
 }
