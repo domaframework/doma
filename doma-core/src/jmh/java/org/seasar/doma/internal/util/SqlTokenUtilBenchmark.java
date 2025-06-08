@@ -26,8 +26,8 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 
 /**
- * JMH benchmark for comparing performance between the optimized SqlTokenUtil and the original
- * ClassicSqlTokenUtil.
+ * JMH benchmark for comparing performance between FastCharClassifier, the optimized SqlTokenUtil,
+ * and the original ClassicSqlTokenUtil.
  */
 @SuppressWarnings("deprecation")
 @BenchmarkMode(Mode.AverageTime)
@@ -62,6 +62,13 @@ public class SqlTokenUtilBenchmark {
   }
 
   @Benchmark
+  public void fastCharClassifierIsWordPart(Blackhole bh) {
+    for (char c : testChars) {
+      bh.consume(FastCharClassifier.isWordPart(c));
+    }
+  }
+
+  @Benchmark
   public void optimizedIsWordPart(Blackhole bh) {
     for (char c : testChars) {
       bh.consume(SqlTokenUtil.isWordPart(c));
@@ -76,6 +83,13 @@ public class SqlTokenUtilBenchmark {
   }
 
   @Benchmark
+  public void fastCharClassifierIsWhitespace(Blackhole bh) {
+    for (char c : testChars) {
+      bh.consume(FastCharClassifier.isWhitespace(c));
+    }
+  }
+
+  @Benchmark
   public void optimizedIsWhitespace(Blackhole bh) {
     for (char c : testChars) {
       bh.consume(SqlTokenUtil.isWhitespace(c));
@@ -86,6 +100,17 @@ public class SqlTokenUtilBenchmark {
   public void classicIsWhitespace(Blackhole bh) {
     for (char c : testChars) {
       bh.consume(ClassicSqlTokenUtil.isWhitespace(c));
+    }
+  }
+
+  @Benchmark
+  public void fastCharClassifierCombined(Blackhole bh) {
+    // Test combined usage pattern with FastCharClassifier direct calls
+    for (char c : testChars) {
+      boolean isWord = FastCharClassifier.isWordPart(c);
+      boolean isSpace = FastCharClassifier.isWhitespace(c);
+      bh.consume(isWord);
+      bh.consume(isSpace);
     }
   }
 
