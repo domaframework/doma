@@ -292,7 +292,8 @@ public class SqlTokenizer {
       buf.get(lookahead, 0, charsRead);
       peekWord(offset, charsRead);
     } else {
-      // For non-words, NON_WORD_LOOKAHEAD_SIZE chars is sufficient for comment detection and other syntax
+      // For non-words, NON_WORD_LOOKAHEAD_SIZE chars is sufficient for comment detection and other
+      // syntax
       int charsRead = Math.min(NON_WORD_LOOKAHEAD_SIZE, buf.remaining());
       buf.get(lookahead, 0, charsRead);
       peekNonWord(offset, charsRead);
