@@ -251,10 +251,6 @@ public class SqlTokenizer {
     return position;
   }
 
-  private void decrementPosition() {
-    buf.position(buf.position() - 1);
-  }
-
   /**
    * Core tokenization method that determines the type of the next token.
    *
@@ -711,7 +707,7 @@ public class SqlTokenizer {
       } else if (c1 == '%') {
         parsePercentageDirective();
       } else {
-        decrementPosition();
+        buf.position(buf.position() - 1);
       }
     }
     consumeBlockCommentContent();
