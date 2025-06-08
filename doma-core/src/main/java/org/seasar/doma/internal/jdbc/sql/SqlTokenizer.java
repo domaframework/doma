@@ -492,60 +492,81 @@ public class SqlTokenizer {
 
   private void parsePercentageDirective() {
     int charsRead = Math.min(8, buf.remaining());
+    if (charsRead == 0) {
+      throwInvalidPercentageDirectiveException();
+    }
+
+    int preservedPosition = buf.position();
     buf.get(lookahead, 0, charsRead);
 
-    // This switch statement takes advantage of fall-through behavior.
-    switch (charsRead) {
-      case 8:
-        if (isPopulateWord()) {
-          type = POPULATE_BLOCK_COMMENT;
-          return;
-        }
-        decrementPosition();
-      case 7:
-        decrementPosition();
-      case 6:
-        if (isExpandWord()) {
-          type = EXPAND_BLOCK_COMMENT;
-          return;
-        }
-        if (isElseifWord()) {
-          type = ELSEIF_BLOCK_COMMENT;
-          return;
-        }
-        decrementPosition();
-      case 5:
-        decrementPosition();
-      case 4:
-        if (isElseWord()) {
-          type = ELSE_BLOCK_COMMENT;
-          return;
-        }
-        decrementPosition();
-      case 3:
-        if (isForWord()) {
-          type = FOR_BLOCK_COMMENT;
-          return;
-        }
-        if (isEndWord()) {
-          type = END_BLOCK_COMMENT;
-          return;
-        }
-        decrementPosition();
-      case 2:
-        if (isIfWord()) {
-          type = IF_BLOCK_COMMENT;
-          return;
-        }
-        decrementPosition();
-      case 1:
-        if (isExclamationMark()) {
+    switch (lookahead[0]) {
+      case '!':
+        if (charsRead >= 1) {
+          buf.position(preservedPosition + 1);
           type = PARSER_LEVEL_BLOCK_COMMENT;
           return;
         }
-        decrementPosition();
+        break;
+      case 'i':
+        if (charsRead >= 2) {
+          buf.position(preservedPosition + 2);
+          if (isIfWord()) {
+            type = IF_BLOCK_COMMENT;
+            return;
+          }
+        }
+        break;
+      case 'f':
+        if (charsRead >= 3) {
+          buf.position(preservedPosition + 3);
+          if (isForWord()) {
+            type = FOR_BLOCK_COMMENT;
+            return;
+          }
+        }
+        break;
+      case 'e':
+        if (charsRead >= 6) {
+          buf.position(preservedPosition + 6);
+          if (isExpandWord()) {
+            type = EXPAND_BLOCK_COMMENT;
+            return;
+          }
+          if (isElseifWord()) {
+            type = ELSEIF_BLOCK_COMMENT;
+            return;
+          }
+        }
+        if (charsRead >= 4) {
+          buf.position(preservedPosition + 4);
+          if (isElseWord()) {
+            type = ELSE_BLOCK_COMMENT;
+            return;
+          }
+        }
+        if (charsRead >= 3) {
+          buf.position(preservedPosition + 3);
+          if (isEndWord()) {
+            type = END_BLOCK_COMMENT;
+            return;
+          }
+        }
+        break;
+      case 'p':
+        if (charsRead == 8) {
+          if (isPopulateWord()) {
+            type = POPULATE_BLOCK_COMMENT;
+            return;
+          }
+        }
+        break;
     }
 
+    buf.position(preservedPosition);
+    throwInvalidPercentageDirectiveException();
+  }
+
+  private void throwInvalidPercentageDirectiveException() {
     int pos = buf.position() - lineStartPosition;
     throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
   }
@@ -600,10 +621,6 @@ public class SqlTokenizer {
 
   private boolean isIfWord() {
     return lookahead[0] == 'i' && lookahead[1] == 'f' && isWordTerminated();
-  }
-
-  private boolean isExclamationMark() {
-    return lookahead[0] == '!';
   }
 
   private void consumeBlockCommentContent() {
