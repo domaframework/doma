@@ -69,6 +69,7 @@ import org.seasar.doma.message.Message;
  * Test class for ClassicSqlTokenizer to verify that the original implementation works correctly.
  * This preserves the behavior verification for the classic implementation before refactoring.
  */
+@SuppressWarnings("deprecation")
 public class ClassicSqlTokenizerTest {
 
   private String lineSeparator;

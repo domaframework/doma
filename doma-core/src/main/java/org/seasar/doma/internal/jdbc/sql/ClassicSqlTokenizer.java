@@ -69,6 +69,7 @@ import org.seasar.doma.message.Message;
  *
  * @deprecated Use the optimized {@link SqlTokenizer} instead.
  */
+@SuppressWarnings("DeprecatedIsStillUsed")
 @Deprecated
 public class ClassicSqlTokenizer {
 

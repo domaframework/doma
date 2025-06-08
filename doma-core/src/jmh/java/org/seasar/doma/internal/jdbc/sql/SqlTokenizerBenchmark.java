@@ -107,6 +107,7 @@ public class SqlTokenizerBenchmark {
 
   @Benchmark
   public void classicTokenizer(Blackhole bh) {
+    @SuppressWarnings("deprecation")
     ClassicSqlTokenizer tokenizer = new ClassicSqlTokenizer(sql);
     while (tokenizer.next() != EOF) {
       bh.consume(tokenizer.getToken());

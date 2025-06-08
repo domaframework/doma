@@ -21,6 +21,7 @@ package org.seasar.doma.internal.util;
  *
  * @deprecated Use the optimized {@link SqlTokenUtil} instead.
  */
+@SuppressWarnings("DeprecatedIsStillUsed")
 @Deprecated
 public final class ClassicSqlTokenUtil {
 

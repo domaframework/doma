@@ -23,6 +23,7 @@ import org.openjdk.jmh.infra.Blackhole;
  * JMH benchmark for comparing performance between the optimized SqlTokenUtil and the original
  * ClassicSqlTokenUtil.
  */
+@SuppressWarnings("deprecation")
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
