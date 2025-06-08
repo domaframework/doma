@@ -969,7 +969,7 @@ public class SqlTokenizer {
       char c2 = buf.get();
 
       if (c2 == '\'') {
-        if (!consumeEmbeddedQuote()) {
+        if (!consumeQuotedContent()) {
           throwUnterminatedQuoteException();
         }
         return;
@@ -980,26 +980,6 @@ public class SqlTokenizer {
         return;
       }
     }
-  }
-
-  private boolean consumeEmbeddedQuote() {
-    while (buf.hasRemaining()) {
-      char c1 = buf.get();
-      if (c1 == '\'') {
-        if (buf.hasRemaining()) {
-          buf.mark();
-          char c2 = buf.get();
-          if (c2 != '\'') {
-            buf.reset();
-            return true; // Found closing quote
-          }
-          // Double quote encountered, continue
-        } else {
-          return true; // End of input with closing quote
-        }
-      }
-    }
-    return false; // Unterminated quote
   }
 
   private void throwUnterminatedQuoteException() {
