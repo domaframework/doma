@@ -81,70 +81,63 @@ public class ExpressionTokenizer {
   }
 
   protected void peek() {
+    if (!buf.hasRemaining()) {
+      type = EOE;
+      return;
+    }
+
+    char c = buf.get();
     if (buf.hasRemaining()) {
-      char c = buf.get();
+      char c2 = buf.get();
       if (buf.hasRemaining()) {
-        char c2 = buf.get();
+        char c3 = buf.get();
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
+          char c4 = buf.get();
           if (buf.hasRemaining()) {
-            char c4 = buf.get();
-            if (buf.hasRemaining()) {
-              char c5 = buf.get();
-              peekFiveChars(c, c2, c3, c4, c5);
-            } else {
-              peekFourChars(c, c2, c3, c4);
-            }
+            char c5 = buf.get();
+            peekFiveChars(c, c2, c3, c4, c5);
           } else {
-            peekThreeChars(c, c2, c3);
+            peekFourChars(c, c2, c3, c4);
           }
         } else {
-          peekTwoChars(c, c2);
+          peekThreeChars(c, c2, c3);
         }
       } else {
-        peekOneChar(c);
+        peekTwoChars(c, c2);
       }
     } else {
-      type = EOE;
+      peekOneChar(c);
     }
   }
 
   protected void peekFiveChars(char c, char c2, char c3, char c4, char c5) {
-    if (c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e') {
-      if (isWordTerminated()) {
-        type = FALSE_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
+    if (c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated()) {
+      type = FALSE_LITERAL;
+      binaryOpAvailable = true;
+      return;
     }
     buf.position(buf.position() - 1);
     peekFourChars(c, c2, c3, c4);
   }
 
   protected void peekFourChars(char c, char c2, char c3, char c4) {
-    if (c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l') {
-      if (isWordTerminated()) {
-        type = NULL_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
-    } else if (c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e') {
-      if (isWordTerminated()) {
-        type = TRUE_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
+    if (c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated()) {
+      type = NULL_LITERAL;
+      binaryOpAvailable = true;
+      return;
+    } else if (c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated()) {
+      type = TRUE_LITERAL;
+      binaryOpAvailable = true;
+      return;
     }
     buf.position(buf.position() - 1);
     peekThreeChars(c, c2, c3);
   }
 
   protected void peekThreeChars(char c, char c2, char c3) {
-    if (c == 'n' && c2 == 'e' && c3 == 'w') {
-      if (isWordTerminated()) {
-        type = NEW_OPERATOR;
-        return;
-      }
+    if (c == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated()) {
+      type = NEW_OPERATOR;
+      return;
     }
     buf.position(buf.position() - 1);
     peekTwoChars(c, c2);
