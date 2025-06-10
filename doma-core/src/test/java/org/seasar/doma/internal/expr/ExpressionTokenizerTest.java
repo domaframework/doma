@@ -789,4 +789,56 @@ public class ExpressionTokenizerTest {
     assertEquals(EOE, tokenizer.next());
     assertNull(tokenizer.getToken());
   }
+
+  @Test
+  public void testComplexMixedExpression() {
+    ExpressionTokenizer tokenizer =
+        new ExpressionTokenizer("user.getName().length() > 0 && user.getAge() >= 18");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("user", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".getName", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".length", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(GT_OPERATOR, tokenizer.next());
+    assertEquals(">", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("0", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(AND_OPERATOR, tokenizer.next());
+    assertEquals("&&", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("user", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".getAge", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(GE_OPERATOR, tokenizer.next());
+    assertEquals(">=", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("18", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+    assertNull(tokenizer.getToken());
+  }
 }
