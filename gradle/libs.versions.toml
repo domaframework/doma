@@ -1,6 +1,7 @@
 [versions]
 kotlin = "2.1.21"
 junit = "5.13.1"
+jmh = "1.37"
 
 [libraries]
 jdbc-h2 = { module = "com.h2database:h2", version = "2.3.232" }
@@ -27,6 +28,8 @@ testcontainers-sqlserver = { module = "org.testcontainers:mssqlserver" }
 
 ecj = { module = "org.eclipse.jdt:ecj", version = "3.42.0" }
 
+jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
+
 google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.27.0" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.6.0" }
 
@@ -39,3 +42,4 @@ release = { id = "net.researchgate.release", version = "3.1.0" }
 doma-compile = { id = "org.domaframework.doma.compile", version = "4.0.0" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 themrmilchmann-ecj = { id = "io.github.themrmilchmann.ecj", version = "0.2.0" }
+jmh = { id = "me.champeau.jmh", version = "0.7.3" }
