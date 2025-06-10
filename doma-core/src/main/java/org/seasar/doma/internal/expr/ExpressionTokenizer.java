@@ -183,185 +183,229 @@ public class ExpressionTokenizer {
   }
 
   protected void peekOneChar(char c) {
+    // Handle binary operators first when available
     if (binaryOpAvailable) {
-      if (c == '>') {
-        type = GT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '<') {
-        type = LT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '+') {
-        type = ADD_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '-') {
-        type = SUBTRACT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '*') {
-        type = MULTIPLY_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '/') {
-        type = DIVIDE_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '%') {
-        type = MOD_OPERATOR;
-        binaryOpAvailable = false;
-        return;
+      switch (c) {
+        case '>':
+          type = GT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '<':
+          type = LT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '+':
+          type = ADD_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '-':
+          type = SUBTRACT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '*':
+          type = MULTIPLY_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '/':
+          type = DIVIDE_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '%':
+          type = MOD_OPERATOR;
+          binaryOpAvailable = false;
+          return;
       }
     }
-    if (Character.isWhitespace(c)) {
-      type = WHITESPACE;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == ',') {
-      type = COMMA_OPERATOR;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '(') {
-      type = OPENED_PARENS;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == ')') {
-      type = CLOSED_PARENS;
-      binaryOpAvailable = true;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '!') {
-      type = NOT_OPERATOR;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '\'') {
-      type = CHAR_LITERAL;
-      if (buf.hasRemaining()) {
-        buf.get();
-        if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (c3 == '\'') {
-            binaryOpAvailable = true;
-            return;
-          }
-        }
-      }
-      throw new ExpressionException(Message.DOMA3016, expression, buf.position());
-    } else if (c == '"') {
-      type = STRING_LITERAL;
-      boolean closed = false;
-      while (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (c2 == '"') {
-          if (buf.hasRemaining()) {
-            buf.mark();
-            char c3 = buf.get();
-            if (c3 != '"') {
-              buf.reset();
-              closed = true;
-              break;
-            }
-          } else {
-            closed = true;
-          }
-        }
-      }
-      if (!closed) {
-        throw new ExpressionException(Message.DOMA3004, expression, buf.position());
-      }
-      binaryOpAvailable = true;
-    } else if ((c == '+' || c == '-')) {
-      buf.mark();
-      if (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (Character.isDigit(c2)) {
+
+    // Handle single character tokens with switch for efficiency
+    switch (c) {
+      case ' ':
+      case '\t':
+      case '\n':
+      case '\r':
+      case '\u000B': // Vertical TAB
+      case '\u000C': // Form Feed
+      case '\u001C': // File Separator
+      case '\u001D': // Group Separator
+      case '\u001E': // Record Separator
+      case '\u001F': // Unit Separator
+        type = WHITESPACE;
+        return;
+      case ',':
+        type = COMMA_OPERATOR;
+        return;
+      case '(':
+        type = OPENED_PARENS;
+        return;
+      case ')':
+        type = CLOSED_PARENS;
+        binaryOpAvailable = true;
+        return;
+      case '!':
+        type = NOT_OPERATOR;
+        return;
+      case '\'':
+        handleCharLiteral();
+        return;
+      case '"':
+        handleStringLiteral();
+        return;
+      case '+':
+      case '-':
+        handleSignedNumber();
+        return;
+      case '.':
+        handleFieldOrMethodOperator();
+        return;
+      case '@':
+        handleFunctionOperator();
+        return;
+      default:
+        // Check remaining character types
+        if (Character.isWhitespace(c)) {
+          type = WHITESPACE;
+        } else if (Character.isDigit(c)) {
           peekNumber();
+        } else if (Character.isJavaIdentifierStart(c)) {
+          handleVariable();
+        } else {
+          type = OTHER;
+        }
+    }
+  }
+
+  private void handleCharLiteral() {
+    type = CHAR_LITERAL;
+    if (buf.hasRemaining()) {
+      buf.get();
+      if (buf.hasRemaining()) {
+        char c3 = buf.get();
+        if (c3 == '\'') {
+          binaryOpAvailable = true;
           return;
         }
-        buf.reset();
       }
-      type = ILLEGAL_NUMBER_LITERAL;
-    } else if (Character.isDigit(c)) {
-      peekNumber();
-    } else if (Character.isJavaIdentifierStart(c)) {
-      type = VARIABLE;
-      binaryOpAvailable = true;
+    }
+    throw new ExpressionException(Message.DOMA3016, expression, buf.position());
+  }
+
+  private void handleStringLiteral() {
+    type = STRING_LITERAL;
+    boolean closed = false;
+    while (buf.hasRemaining()) {
+      char c2 = buf.get();
+      if (c2 == '"') {
+        if (buf.hasRemaining()) {
+          buf.mark();
+          char c3 = buf.get();
+          if (c3 != '"') {
+            buf.reset();
+            closed = true;
+            break;
+          }
+        } else {
+          closed = true;
+        }
+      }
+    }
+    if (!closed) {
+      throw new ExpressionException(Message.DOMA3004, expression, buf.position());
+    }
+    binaryOpAvailable = true;
+  }
+
+  private void handleSignedNumber() {
+    buf.mark();
+    if (buf.hasRemaining()) {
+      char c2 = buf.get();
+      if (Character.isDigit(c2)) {
+        peekNumber();
+        return;
+      }
+      buf.reset();
+    }
+    type = ILLEGAL_NUMBER_LITERAL;
+  }
+
+  private void handleVariable() {
+    type = VARIABLE;
+    binaryOpAvailable = true;
+    while (buf.hasRemaining()) {
+      buf.mark();
+      char c2 = buf.get();
+      if (!Character.isJavaIdentifierPart(c2)) {
+        buf.reset();
+        break;
+      }
+    }
+  }
+
+  private void handleFieldOrMethodOperator() {
+    type = FIELD_OPERATOR;
+    binaryOpAvailable = true;
+    if (!buf.hasRemaining()) {
+      throw new ExpressionException(Message.DOMA3021, expression, buf.position());
+    }
+    buf.mark();
+    char c2 = buf.get();
+    if (Character.isJavaIdentifierStart(c2)) {
       while (buf.hasRemaining()) {
         buf.mark();
-        char c2 = buf.get();
-        if (!Character.isJavaIdentifierPart(c2)) {
+        char c3 = buf.get();
+        if (!Character.isJavaIdentifierPart(c3)) {
+          if (c3 == '(') {
+            type = METHOD_OPERATOR;
+            binaryOpAvailable = false;
+          }
           buf.reset();
-          break;
+          return;
         }
-      }
-    } else if (c == '.') {
-      type = FIELD_OPERATOR;
-      binaryOpAvailable = true;
-      if (!buf.hasRemaining()) {
-        throw new ExpressionException(Message.DOMA3021, expression, buf.position());
-      }
-      buf.mark();
-      char c2 = buf.get();
-      if (Character.isJavaIdentifierStart(c2)) {
-        while (buf.hasRemaining()) {
-          buf.mark();
-          char c3 = buf.get();
-          if (!Character.isJavaIdentifierPart(c3)) {
-            if (c3 == '(') {
-              type = METHOD_OPERATOR;
-              binaryOpAvailable = false;
-            }
-            buf.reset();
-            return;
-          }
-        }
-      } else {
-        throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c2);
-      }
-    } else if (c == '@') {
-      if (!buf.hasRemaining()) {
-        throw new ExpressionException(Message.DOMA3023, expression, buf.position());
-      }
-      buf.mark();
-      char c2 = buf.get();
-      if (Character.isJavaIdentifierStart(c2)) {
-        while (buf.hasRemaining()) {
-          buf.mark();
-          char c3 = buf.get();
-          if (!Character.isJavaIdentifierPart(c3)) {
-            if (c3 == '(') {
-              type = FUNCTION_OPERATOR;
-              binaryOpAvailable = false;
-              buf.reset();
-              return;
-            } else if (c3 == '@') {
-              peekStaticMember();
-              return;
-            } else if (c3 == '.') {
-              while (buf.hasRemaining()) {
-                buf.mark();
-                char c4 = buf.get();
-                if (!Character.isJavaIdentifierPart(c4)) {
-                  if (c4 == '.') {
-                    continue;
-                  } else if (c4 == '@') {
-                    peekStaticMember();
-                    return;
-                  }
-                  throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c4);
-                }
-              }
-              throw new ExpressionException(Message.DOMA3032, expression, buf.position());
-            }
-            throw new ExpressionException(Message.DOMA3025, expression, buf.position());
-          }
-        }
-      } else {
-        throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c2);
       }
     } else {
-      type = OTHER;
+      throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c2);
+    }
+  }
+
+  private void handleFunctionOperator() {
+    if (!buf.hasRemaining()) {
+      throw new ExpressionException(Message.DOMA3023, expression, buf.position());
+    }
+    buf.mark();
+    char c2 = buf.get();
+    if (Character.isJavaIdentifierStart(c2)) {
+      while (buf.hasRemaining()) {
+        buf.mark();
+        char c3 = buf.get();
+        if (!Character.isJavaIdentifierPart(c3)) {
+          if (c3 == '(') {
+            type = FUNCTION_OPERATOR;
+            binaryOpAvailable = false;
+            buf.reset();
+            return;
+          } else if (c3 == '@') {
+            peekStaticMember();
+            return;
+          } else if (c3 == '.') {
+            while (buf.hasRemaining()) {
+              buf.mark();
+              char c4 = buf.get();
+              if (!Character.isJavaIdentifierPart(c4)) {
+                if (c4 == '.') {
+                  continue;
+                } else if (c4 == '@') {
+                  peekStaticMember();
+                  return;
+                }
+                throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c4);
+              }
+            }
+            throw new ExpressionException(Message.DOMA3032, expression, buf.position());
+          }
+          throw new ExpressionException(Message.DOMA3025, expression, buf.position());
+        }
+      }
+    } else {
+      throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c2);
     }
   }
 
