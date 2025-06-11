@@ -27,13 +27,13 @@ public class ExpressionTokenizer {
 
   protected final CharBuffer buf;
 
-  protected final CharBuffer duplicatedBuf;
-
   protected ExpressionTokenType type;
 
   protected String token;
 
   protected int position;
+
+  protected int tokenStartIndex;
 
   protected boolean binaryOpAvailable;
 
@@ -41,7 +41,6 @@ public class ExpressionTokenizer {
     assertNotNull(expression);
     this.expression = expression;
     buf = CharBuffer.wrap(expression);
-    duplicatedBuf = buf.duplicate();
     peek();
   }
 
@@ -58,9 +57,8 @@ public class ExpressionTokenizer {
 
   protected void prepareToken() {
     position = buf.position();
-    duplicatedBuf.limit(position);
-    token = duplicatedBuf.toString();
-    duplicatedBuf.position(position);
+    token = expression.substring(tokenStartIndex, position);
+    tokenStartIndex = position;
   }
 
   public String getToken() {
@@ -74,9 +72,8 @@ public class ExpressionTokenizer {
   public void setPosition(int position, boolean binaryOpAvailable) {
     this.position = position;
     this.binaryOpAvailable = binaryOpAvailable;
-    duplicatedBuf.limit(position);
-    duplicatedBuf.position(position);
     buf.position(position);
+    tokenStartIndex = position;
     peek();
   }
 
