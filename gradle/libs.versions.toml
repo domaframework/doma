@@ -7,7 +7,7 @@ jmh = "1.37"
 jdbc-h2 = { module = "com.h2database:h2", version = "2.3.232" }
 jdbc-mysql = { module = "mysql:mysql-connector-java", version = "8.0.33" }
 jdbc-oracle = { module = "com.oracle.database.jdbc:ojdbc11", version = "23.8.0.25.04" }
-jdbc-postgresql = { module = "org.postgresql:postgresql", version = "42.7.6" }
+jdbc-postgresql = { module = "org.postgresql:postgresql", version = "42.7.7" }
 jdbc-sqlite = { module = "org.xerial:sqlite-jdbc", version = "3.50.1.0" }
 jdbc-sqlserver = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "12.10.0.jre11" }
 
