@@ -162,52 +162,52 @@ public class ExpressionTokenizer {
     handleVariable();
   }
 
-  private boolean isNewOperator(char c, char c2, char c3) {
-    return c == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated();
+  private boolean isNewOperator(char c1, char c2, char c3) {
+    return c1 == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated();
   }
 
-  private boolean isNullLiteral(char c, char c2, char c3, char c4) {
-    return c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated();
+  private boolean isNullLiteral(char c1, char c2, char c3, char c4) {
+    return c1 == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated();
   }
 
-  private boolean isTrueLiteral(char c, char c2, char c3, char c4) {
-    return c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated();
+  private boolean isTrueLiteral(char c1, char c2, char c3, char c4) {
+    return c1 == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated();
   }
 
-  private boolean isFalseLiteral(char c, char c2, char c3, char c4, char c5) {
-    return c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated();
+  private boolean isFalseLiteral(char c1, char c2, char c3, char c4, char c5) {
+    return c1 == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated();
   }
 
-  private void peekTwoChars(char c, char c2) {
+  private void peekTwoChars(char c1, char c2) {
     if (binaryOpAvailable) {
-      if (c == '&' && c2 == '&') {
+      if (c1 == '&' && c2 == '&') {
         type = AND_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '|' && c2 == '|') {
+      } else if (c1 == '|' && c2 == '|') {
         type = OR_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '=' && c2 == '=') {
+      } else if (c1 == '=' && c2 == '=') {
         type = EQ_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '!' && c2 == '=') {
+      } else if (c1 == '!' && c2 == '=') {
         type = NE_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '>' && c2 == '=') {
+      } else if (c1 == '>' && c2 == '=') {
         type = GE_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '<' && c2 == '=') {
+      } else if (c1 == '<' && c2 == '=') {
         type = LE_OPERATOR;
         binaryOpAvailable = false;
         return;
       }
     }
     buf.position(buf.position() - 1);
-    peekOneChar(c);
+    peekOneChar(c1);
   }
 
   private void peekOneChar(char c) {
@@ -307,8 +307,8 @@ public class ExpressionTokenizer {
     if (buf.hasRemaining()) {
       buf.get();
       if (buf.hasRemaining()) {
-        char c3 = buf.get();
-        if (c3 == '\'') {
+        char c = buf.get();
+        if (c == '\'') {
           binaryOpAvailable = true;
           return;
         }
@@ -321,12 +321,12 @@ public class ExpressionTokenizer {
     type = STRING_LITERAL;
     boolean closed = false;
     while (buf.hasRemaining()) {
-      char c2 = buf.get();
-      if (c2 == '"') {
+      char c1 = buf.get();
+      if (c1 == '"') {
         if (buf.hasRemaining()) {
           buf.mark();
-          char c3 = buf.get();
-          if (c3 != '"') {
+          char c2 = buf.get();
+          if (c2 != '"') {
             buf.reset();
             closed = true;
             break;
@@ -345,8 +345,8 @@ public class ExpressionTokenizer {
   private void handleSignedNumber() {
     buf.mark();
     if (buf.hasRemaining()) {
-      char c2 = buf.get();
-      if (Character.isDigit(c2)) {
+      char c = buf.get();
+      if (Character.isDigit(c)) {
         peekNumber();
         return;
       }
@@ -360,8 +360,8 @@ public class ExpressionTokenizer {
     binaryOpAvailable = true;
     while (buf.hasRemaining()) {
       buf.mark();
-      char c2 = buf.get();
-      if (!Character.isJavaIdentifierPart(c2)) {
+      char c = buf.get();
+      if (!Character.isJavaIdentifierPart(c)) {
         buf.reset();
         break;
       }
@@ -375,13 +375,13 @@ public class ExpressionTokenizer {
       throw new ExpressionException(Message.DOMA3021, expression, buf.position());
     }
     buf.mark();
-    char c2 = buf.get();
-    if (Character.isJavaIdentifierStart(c2)) {
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
       while (buf.hasRemaining()) {
         buf.mark();
-        char c3 = buf.get();
-        if (!Character.isJavaIdentifierPart(c3)) {
-          if (c3 == '(') {
+        char c2 = buf.get();
+        if (!Character.isJavaIdentifierPart(c2)) {
+          if (c2 == '(') {
             type = METHOD_OPERATOR;
             binaryOpAvailable = false;
           }
@@ -390,7 +390,7 @@ public class ExpressionTokenizer {
         }
       }
     } else {
-      throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c2);
+      throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c1);
     }
   }
 
@@ -399,32 +399,32 @@ public class ExpressionTokenizer {
       throw new ExpressionException(Message.DOMA3023, expression, buf.position());
     }
     buf.mark();
-    char c2 = buf.get();
-    if (Character.isJavaIdentifierStart(c2)) {
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
       while (buf.hasRemaining()) {
         buf.mark();
-        char c3 = buf.get();
-        if (!Character.isJavaIdentifierPart(c3)) {
-          if (c3 == '(') {
+        char c2 = buf.get();
+        if (!Character.isJavaIdentifierPart(c2)) {
+          if (c2 == '(') {
             type = FUNCTION_OPERATOR;
             binaryOpAvailable = false;
             buf.reset();
             return;
-          } else if (c3 == '@') {
+          } else if (c2 == '@') {
             peekStaticMember();
             return;
-          } else if (c3 == '.') {
+          } else if (c2 == '.') {
             while (buf.hasRemaining()) {
               buf.mark();
-              char c4 = buf.get();
-              if (!Character.isJavaIdentifierPart(c4)) {
-                if (c4 == '.') {
+              char c3 = buf.get();
+              if (!Character.isJavaIdentifierPart(c3)) {
+                if (c3 == '.') {
                   continue;
-                } else if (c4 == '@') {
+                } else if (c3 == '@') {
                   peekStaticMember();
                   return;
                 }
-                throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c4);
+                throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c3);
               }
             }
             throw new ExpressionException(Message.DOMA3032, expression, buf.position());
@@ -433,7 +433,7 @@ public class ExpressionTokenizer {
         }
       }
     } else {
-      throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c2);
+      throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c1);
     }
   }
 
@@ -444,8 +444,8 @@ public class ExpressionTokenizer {
       throw new ExpressionException(Message.DOMA3029, expression, buf.position());
     }
     buf.mark();
-    char c = buf.get();
-    if (Character.isJavaIdentifierStart(c)) {
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
       while (buf.hasRemaining()) {
         buf.mark();
         char c2 = buf.get();
@@ -459,7 +459,7 @@ public class ExpressionTokenizer {
         }
       }
     } else {
-      throw new ExpressionException(Message.DOMA3030, expression, buf.position(), c);
+      throw new ExpressionException(Message.DOMA3030, expression, buf.position(), c1);
     }
   }
 
@@ -468,19 +468,19 @@ public class ExpressionTokenizer {
     boolean decimal = false;
     while (buf.hasRemaining()) {
       buf.mark();
-      char c2 = buf.get();
-      if (Character.isDigit(c2)) {
+      char c1 = buf.get();
+      if (Character.isDigit(c1)) {
         continue;
       }
-      if (c2 == '.') {
+      if (c1 == '.') {
         if (decimal) {
           type = ILLEGAL_NUMBER_LITERAL;
           return;
         }
         decimal = true;
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (!Character.isDigit(c3)) {
+          char c2 = buf.get();
+          if (!Character.isDigit(c2)) {
             type = ILLEGAL_NUMBER_LITERAL;
             return;
           }
@@ -488,16 +488,16 @@ public class ExpressionTokenizer {
           type = ILLEGAL_NUMBER_LITERAL;
           return;
         }
-      } else if (c2 == 'F') {
+      } else if (c1 == 'F') {
         type = FLOAT_LITERAL;
         break;
-      } else if (c2 == 'D') {
+      } else if (c1 == 'D') {
         type = DOUBLE_LITERAL;
         break;
-      } else if (c2 == 'L') {
+      } else if (c1 == 'L') {
         type = LONG_LITERAL;
         break;
-      } else if (c2 == 'B') {
+      } else if (c1 == 'B') {
         type = BIGDECIMAL_LITERAL;
         break;
       } else {
