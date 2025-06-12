@@ -15,8 +15,45 @@
  */
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ADD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.AND_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.BIGDECIMAL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CHAR_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CLOSED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.COMMA_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DIVIDE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DOUBLE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EOE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EQ_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FALSE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FLOAT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FUNCTION_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ILLEGAL_NUMBER_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.INT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LONG_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MULTIPLY_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NEW_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NOT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NULL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OR_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OTHER;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STRING_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.SUBTRACT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.TRUE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.VARIABLE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.WHITESPACE;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
 import org.seasar.doma.message.Message;
