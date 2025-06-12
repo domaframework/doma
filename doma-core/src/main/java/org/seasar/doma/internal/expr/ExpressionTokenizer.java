@@ -23,19 +23,19 @@ import org.seasar.doma.message.Message;
 
 public class ExpressionTokenizer {
 
-  protected final String expression;
+  private final String expression;
 
-  protected final CharBuffer buf;
+  private final CharBuffer buf;
 
-  protected ExpressionTokenType type;
+  private ExpressionTokenType type;
 
-  protected String token;
+  private String token;
 
-  protected int position;
+  private int position;
 
-  protected int tokenStartIndex;
+  private int tokenStartIndex;
 
-  protected boolean binaryOpAvailable;
+  private boolean binaryOpAvailable;
 
   public ExpressionTokenizer(String expression) {
     assertNotNull(expression);
@@ -55,7 +55,7 @@ public class ExpressionTokenizer {
     return currentType;
   }
 
-  protected void prepareToken() {
+  private void prepareToken() {
     position = buf.position();
     token = expression.substring(tokenStartIndex, position);
     tokenStartIndex = position;
@@ -77,7 +77,7 @@ public class ExpressionTokenizer {
     peek();
   }
 
-  protected void peek() {
+  private void peek() {
     // Check if we've reached the end of the expression
     if (!buf.hasRemaining()) {
       type = EOE;
@@ -178,7 +178,7 @@ public class ExpressionTokenizer {
     return c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated();
   }
 
-  protected void peekTwoChars(char c, char c2) {
+  private void peekTwoChars(char c, char c2) {
     if (binaryOpAvailable) {
       if (c == '&' && c2 == '&') {
         type = AND_OPERATOR;
@@ -210,7 +210,7 @@ public class ExpressionTokenizer {
     peekOneChar(c);
   }
 
-  protected void peekOneChar(char c) {
+  private void peekOneChar(char c) {
     // Handle binary operators first when available
     if (binaryOpAvailable) {
       switch (c) {
@@ -437,7 +437,7 @@ public class ExpressionTokenizer {
     }
   }
 
-  protected void peekStaticMember() {
+  private void peekStaticMember() {
     type = STATIC_FIELD_OPERATOR;
     binaryOpAvailable = true;
     if (!buf.hasRemaining()) {
@@ -463,7 +463,7 @@ public class ExpressionTokenizer {
     }
   }
 
-  protected void peekNumber() {
+  private void peekNumber() {
     type = INT_LITERAL;
     boolean decimal = false;
     while (buf.hasRemaining()) {
@@ -514,7 +514,7 @@ public class ExpressionTokenizer {
     binaryOpAvailable = true;
   }
 
-  protected boolean isWordTerminated() {
+  private boolean isWordTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
       char c = buf.get();
