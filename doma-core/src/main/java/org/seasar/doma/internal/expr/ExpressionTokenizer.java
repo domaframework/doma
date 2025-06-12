@@ -78,66 +78,104 @@ public class ExpressionTokenizer {
   }
 
   protected void peek() {
+    // Check if we've reached the end of the expression
     if (!buf.hasRemaining()) {
       type = EOE;
       return;
     }
 
-    char c = buf.get();
-    if (buf.hasRemaining()) {
-      char c2 = buf.get();
-      if (buf.hasRemaining()) {
-        char c3 = buf.get();
-        if (buf.hasRemaining()) {
-          char c4 = buf.get();
-          if (buf.hasRemaining()) {
-            char c5 = buf.get();
-            peekFiveChars(c, c2, c3, c4, c5);
-          } else {
-            peekFourChars(c, c2, c3, c4);
-          }
-        } else {
-          peekThreeChars(c, c2, c3);
-        }
-      } else {
-        peekTwoChars(c, c2);
-      }
-    } else {
-      peekOneChar(c);
-    }
-  }
-
-  protected void peekFiveChars(char c, char c2, char c3, char c4, char c5) {
-    if (c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated()) {
-      type = FALSE_LITERAL;
-      binaryOpAvailable = true;
+    // Read the first character
+    char c1 = buf.get();
+    if (!buf.hasRemaining()) {
+      // Only one character left, process it as a single character token
+      peekOneChar(c1);
       return;
     }
-    buf.position(buf.position() - 1);
-    peekFourChars(c, c2, c3, c4);
-  }
+    // Optimization: Most identifiers don't start with 'f', 't', or 'n' (keywords false, true, null,
+    // new)
+    // Skip reading more characters for regular identifiers
+    if (Character.isJavaIdentifierStart(c1) && c1 != 'f' && c1 != 't' && c1 != 'n') {
+      handleVariable();
+      return;
+    }
 
-  protected void peekFourChars(char c, char c2, char c3, char c4) {
-    if (c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated()) {
+    // Read the second character for two-character operators (&&, ||, ==, etc.)
+    char c2 = buf.get();
+    if (!buf.hasRemaining()) {
+      // Only two characters available, check for two-character operators
+      peekTwoChars(c1, c2);
+      return;
+    }
+    // Optimization: If the first character is not an identifier start, it can be a two-character
+    // operator
+    if (!Character.isJavaIdentifierStart(c1)) {
+      if (!Character.isJavaIdentifierStart(c1)) {
+        peekTwoChars(c1, c2);
+      } else {
+        buf.position(buf.position() - 1);
+        peekOneChar(c1);
+      }
+      return;
+    }
+
+    // Read the third character to check for 'new' keyword
+    char c3 = buf.get();
+    if (isNewOperator(c1, c2, c3)) {
+      type = NEW_OPERATOR;
+      return;
+    }
+    if (!buf.hasRemaining()) {
+      // No more characters, rewind and process as regular identifier
+      buf.position(buf.position() - 2);
+      handleVariable();
+      return;
+    }
+
+    // Read the fourth character to check for 'null' or 'true' keywords
+    char c4 = buf.get();
+    if (isNullLiteral(c1, c2, c3, c4)) {
       type = NULL_LITERAL;
       binaryOpAvailable = true;
       return;
-    } else if (c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated()) {
+    }
+    if (isTrueLiteral(c1, c2, c3, c4)) {
       type = TRUE_LITERAL;
       binaryOpAvailable = true;
       return;
     }
-    buf.position(buf.position() - 1);
-    peekThreeChars(c, c2, c3);
-  }
-
-  protected void peekThreeChars(char c, char c2, char c3) {
-    if (c == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated()) {
-      type = NEW_OPERATOR;
+    if (!buf.hasRemaining()) {
+      // No more characters, rewind and process as regular identifier
+      buf.position(buf.position() - 3);
+      handleVariable();
       return;
     }
-    buf.position(buf.position() - 1);
-    peekTwoChars(c, c2);
+
+    // Read the fifth character to check for 'false' keyword
+    char c5 = buf.get();
+    if (isFalseLiteral(c1, c2, c3, c4, c5)) {
+      type = FALSE_LITERAL;
+      binaryOpAvailable = true;
+      return;
+    }
+    // Not a keyword, rewind and process as regular identifier
+    buf.position(buf.position() - 4);
+    handleVariable();
+  }
+
+  private boolean isNewOperator(char c, char c2, char c3) {
+    return c == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated();
+  }
+
+  private boolean isNullLiteral(char c, char c2, char c3, char c4) {
+    return c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated();
+  }
+
+  private boolean isTrueLiteral(char c, char c2, char c3, char c4) {
+    return c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated();
+  }
+
+  private boolean isFalseLiteral(char c, char c2, char c3, char c4, char c5) {
+    return c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated();
   }
 
   protected void peekTwoChars(char c, char c2) {
