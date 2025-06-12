@@ -24,11 +24,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.message.Message;
 
-public class ExpressionTokenizerTest {
+public class ClassicExpressionTokenizerTest {
 
   @Test
   public void testVariableOperand() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("name");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("name");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("name", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -37,7 +37,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testStringLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("\"aaa bbb\"");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("\"aaa bbb\"");
     assertEquals(STRING_LITERAL, tokenizer.next());
     assertEquals("\"aaa bbb\"", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -46,7 +46,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testIntLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("+13");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("+13");
     assertEquals(INT_LITERAL, tokenizer.next());
     assertEquals("+13", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -55,7 +55,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testLongLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("+13L");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("+13L");
     assertEquals(LONG_LITERAL, tokenizer.next());
     assertEquals("+13L", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -64,7 +64,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFloatLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("+13F");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("+13F");
     assertEquals(FLOAT_LITERAL, tokenizer.next());
     assertEquals("+13F", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -73,7 +73,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testDoubleLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("+13D");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("+13D");
     assertEquals(DOUBLE_LITERAL, tokenizer.next());
     assertEquals("+13D", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -82,7 +82,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testBigDecimalLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("+13B");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("+13B");
     assertEquals(BIGDECIMAL_LITERAL, tokenizer.next());
     assertEquals("+13B", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -91,7 +91,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNullLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("null");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("null");
     assertEquals(NULL_LITERAL, tokenizer.next());
     assertEquals("null", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -100,7 +100,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testTrueLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("true");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("true");
     assertEquals(TRUE_LITERAL, tokenizer.next());
     assertEquals("true", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -109,7 +109,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFalseLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("false");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("false");
     assertEquals(FALSE_LITERAL, tokenizer.next());
     assertEquals("false", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -118,7 +118,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testExpression() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("manager.eq(true) && name.eq(\"aaa\")");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("manager.eq(true) && name.eq(\"aaa\")");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("manager", tokenizer.getToken());
     assertEquals(METHOD_OPERATOR, tokenizer.next());
@@ -151,7 +152,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testGetPosition() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa bbb ccc");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa bbb ccc");
     assertEquals(0, tokenizer.getPosition());
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("aaa", tokenizer.getToken());
@@ -172,7 +173,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFieldOperator() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.bbb");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("aaa", tokenizer.getToken());
     assertEquals(FIELD_OPERATOR, tokenizer.next());
@@ -183,7 +184,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFieldOperator_identifierNotFound() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.");
     try {
       tokenizer.next();
       fail();
@@ -195,7 +196,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFieldOperator_illegalJavaIdentifierStart() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.!");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.!");
     try {
       tokenizer.next();
       fail();
@@ -207,7 +208,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testMethodOperator() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb(\"ccc\")");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.bbb(\"ccc\")");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("aaa", tokenizer.getToken());
     assertEquals(METHOD_OPERATOR, tokenizer.next());
@@ -224,7 +225,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testParens() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb(2, 3)");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.bbb(2, 3)");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("aaa", tokenizer.getToken());
     assertEquals(METHOD_OPERATOR, tokenizer.next());
@@ -245,7 +246,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFunctionOperator() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("@startWith(aaa)");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("@startWith(aaa)");
     assertEquals(FUNCTION_OPERATOR, tokenizer.next());
     assertEquals("@startWith", tokenizer.getToken());
     assertEquals(OPENED_PARENS, tokenizer.next());
@@ -259,7 +260,7 @@ public class ExpressionTokenizerTest {
   @Test
   public void testBuiltinFunctionOperator_nameNotFound() {
     try {
-      new ExpressionTokenizer("@");
+      new ClassicExpressionTokenizer("@");
       fail();
     } catch (ExpressionException expected) {
       System.out.println(expected.getMessage());
@@ -270,7 +271,7 @@ public class ExpressionTokenizerTest {
   @Test
   public void testBuiltinFunctionOperator_illegalJavaIdentifierStart() {
     try {
-      new ExpressionTokenizer("@!");
+      new ClassicExpressionTokenizer("@!");
       fail();
     } catch (ExpressionException expected) {
       System.out.println(expected.getMessage());
@@ -280,7 +281,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testStaticMethodOperator() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("@java.lang.String@valueOf(aaa)");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("@java.lang.String@valueOf(aaa)");
     assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
     assertEquals("@java.lang.String@valueOf", tokenizer.getToken());
     assertEquals(OPENED_PARENS, tokenizer.next());
@@ -293,7 +295,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testStaticMethodOperator_simpleClassName() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("@Aaa@valueOf(aaa)");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("@Aaa@valueOf(aaa)");
     assertEquals(STATIC_METHOD_OPERATOR, tokenizer.next());
     assertEquals("@Aaa@valueOf", tokenizer.getToken());
     assertEquals(OPENED_PARENS, tokenizer.next());
@@ -306,15 +308,15 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testStaticFieldOperator() {
-    ExpressionTokenizer tokenizer =
-        new ExpressionTokenizer("@java.lang.String@CASE_INSENSITIVE_ORDER ");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("@java.lang.String@CASE_INSENSITIVE_ORDER ");
     assertEquals(STATIC_FIELD_OPERATOR, tokenizer.next());
     assertEquals("@java.lang.String@CASE_INSENSITIVE_ORDER", tokenizer.getToken());
   }
 
   @Test
   public void testCharLiteral() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("'a'");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("'a'");
     assertEquals(CHAR_LITERAL, tokenizer.next());
     assertEquals("'a'", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -325,7 +327,7 @@ public class ExpressionTokenizerTest {
   @Test
   // escape char is not supported
   public void testCharLiteral_escape() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("'\\n'");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("'\\n'");
     assertEquals(CHAR_LITERAL, tokenizer.next());
     assertEquals("'\\n'", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -334,7 +336,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testOperators() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("!x && y || z");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("!x && y || z");
     assertEquals(NOT_OPERATOR, tokenizer.next());
     assertEquals("!", tokenizer.getToken());
     assertEquals(VARIABLE, tokenizer.next());
@@ -361,7 +363,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testArithmeticOperators() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a + b - c * d / e % f");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("a + b - c * d / e % f");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("a", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -410,7 +412,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testComparisonOperators() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a == b != c > d < e >= f <= g");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("a == b != c > d < e >= f <= g");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("a", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -467,7 +470,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNewOperator() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("new java.util.Date()");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("new java.util.Date()");
     assertEquals(NEW_OPERATOR, tokenizer.next());
     assertEquals("new", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -488,7 +491,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNegativeNumbers() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("-123");
     assertEquals(INT_LITERAL, tokenizer.next());
     assertEquals("-123", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -497,7 +500,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNegativeFloat() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45F");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("-123.45F");
     assertEquals(FLOAT_LITERAL, tokenizer.next());
     assertEquals("-123.45F", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -506,7 +509,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNegativeDouble() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45D");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("-123.45D");
     assertEquals(DOUBLE_LITERAL, tokenizer.next());
     assertEquals("-123.45D", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -515,7 +518,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNegativeLong() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123L");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("-123L");
     assertEquals(LONG_LITERAL, tokenizer.next());
     assertEquals("-123L", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -524,7 +527,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNegativeBigDecimal() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("-123.45B");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("-123.45B");
     assertEquals(BIGDECIMAL_LITERAL, tokenizer.next());
     assertEquals("-123.45B", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -533,7 +536,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testMultipleWhitespace() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a    b\t\tc\n\nd");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("a    b\t\tc\n\nd");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("a", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -564,7 +567,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testStringWithEscapes() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("\"Hello\\nWorld\\t\"");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("\"Hello\\nWorld\\t\"");
     assertEquals(STRING_LITERAL, tokenizer.next());
     assertEquals("\"Hello\\nWorld\\t\"", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -573,7 +576,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testEmptyString() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("\"\"");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("\"\"");
     assertEquals(STRING_LITERAL, tokenizer.next());
     assertEquals("\"\"", tokenizer.getToken());
     assertEquals(EOE, tokenizer.next());
@@ -582,14 +585,14 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testEmptyExpression() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("");
     assertEquals(EOE, tokenizer.next());
     assertNull(tokenizer.getToken());
   }
 
   @Test
   public void testWhitespaceOnly() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("   \t\n  ");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("   \t\n  ");
     assertEquals(WHITESPACE, tokenizer.next());
     assertEquals(" ", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -610,7 +613,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testNestedParentheses() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("((a))");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("((a))");
     assertEquals(OPENED_PARENS, tokenizer.next());
     assertEquals("(", tokenizer.getToken());
     assertEquals(OPENED_PARENS, tokenizer.next());
@@ -627,7 +630,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testMethodChaining() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("a.b().c().d");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("a.b().c().d");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("a", tokenizer.getToken());
     assertEquals(METHOD_OPERATOR, tokenizer.next());
@@ -650,7 +653,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testComplexNestedExpression() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("(a.eq(1) && b.ne(null)) || (c > 0)");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("(a.eq(1) && b.ne(null)) || (c > 0)");
     assertEquals(OPENED_PARENS, tokenizer.next());
     assertEquals("(", tokenizer.getToken());
     assertEquals(VARIABLE, tokenizer.next());
@@ -707,7 +711,7 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testZeroValues() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("0 0L 0F 0D 0B");
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("0 0L 0F 0D 0B");
     assertEquals(INT_LITERAL, tokenizer.next());
     assertEquals("0", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -732,7 +736,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testJavaIdentifierVariations() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("_var $var var123 _123 $123");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("_var $var var123 _123 $123");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("_var", tokenizer.getToken());
     assertEquals(WHITESPACE, tokenizer.next());
@@ -757,7 +762,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testFunctionWithComplexArguments() {
-    ExpressionTokenizer tokenizer = new ExpressionTokenizer("@func(a.b, 123, \"test\", true)");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("@func(a.b, 123, \"test\", true)");
     assertEquals(FUNCTION_OPERATOR, tokenizer.next());
     assertEquals("@func", tokenizer.getToken());
     assertEquals(OPENED_PARENS, tokenizer.next());
@@ -792,8 +798,8 @@ public class ExpressionTokenizerTest {
 
   @Test
   public void testComplexMixedExpression() {
-    ExpressionTokenizer tokenizer =
-        new ExpressionTokenizer("user.getName().length() > 0 && user.getAge() >= 18");
+    ClassicExpressionTokenizer tokenizer =
+        new ClassicExpressionTokenizer("user.getName().length() > 0 && user.getAge() >= 18");
     assertEquals(VARIABLE, tokenizer.next());
     assertEquals("user", tokenizer.getToken());
     assertEquals(METHOD_OPERATOR, tokenizer.next());

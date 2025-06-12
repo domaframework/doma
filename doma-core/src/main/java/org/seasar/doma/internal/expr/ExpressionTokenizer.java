@@ -15,33 +15,69 @@
  */
 package org.seasar.doma.internal.expr;
 
-import static org.seasar.doma.internal.expr.ExpressionTokenType.*;
-import static org.seasar.doma.internal.util.AssertionUtil.*;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ADD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.AND_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.BIGDECIMAL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CHAR_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.CLOSED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.COMMA_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DIVIDE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.DOUBLE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EOE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.EQ_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FALSE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FLOAT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.FUNCTION_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.GT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.ILLEGAL_NUMBER_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.INT_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LONG_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.LT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.MULTIPLY_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NEW_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NE_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NOT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.NULL_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OPENED_PARENS;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OR_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.OTHER;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_FIELD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STATIC_METHOD_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.STRING_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.SUBTRACT_OPERATOR;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.TRUE_LITERAL;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.VARIABLE;
+import static org.seasar.doma.internal.expr.ExpressionTokenType.WHITESPACE;
+import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import java.nio.CharBuffer;
 import org.seasar.doma.message.Message;
 
 public class ExpressionTokenizer {
 
-  protected final String expression;
+  private final String expression;
 
-  protected final CharBuffer buf;
+  private final CharBuffer buf;
 
-  protected final CharBuffer duplicatedBuf;
+  private ExpressionTokenType type;
 
-  protected ExpressionTokenType type;
+  private String token;
 
-  protected String token;
+  private int position;
 
-  protected int position;
+  private int tokenStartIndex;
 
-  protected boolean binaryOpAvailable;
+  private boolean binaryOpAvailable;
 
   public ExpressionTokenizer(String expression) {
     assertNotNull(expression);
     this.expression = expression;
     buf = CharBuffer.wrap(expression);
-    duplicatedBuf = buf.duplicate();
     peek();
   }
 
@@ -56,11 +92,10 @@ public class ExpressionTokenizer {
     return currentType;
   }
 
-  protected void prepareToken() {
+  private void prepareToken() {
     position = buf.position();
-    duplicatedBuf.limit(position);
-    token = duplicatedBuf.toString();
-    duplicatedBuf.position(position);
+    token = expression.substring(tokenStartIndex, position);
+    tokenStartIndex = position;
   }
 
   public String getToken() {
@@ -74,306 +109,380 @@ public class ExpressionTokenizer {
   public void setPosition(int position, boolean binaryOpAvailable) {
     this.position = position;
     this.binaryOpAvailable = binaryOpAvailable;
-    duplicatedBuf.limit(position);
-    duplicatedBuf.position(position);
     buf.position(position);
+    tokenStartIndex = position;
     peek();
   }
 
-  protected void peek() {
-    if (buf.hasRemaining()) {
-      char c = buf.get();
-      if (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (buf.hasRemaining()) {
-            char c4 = buf.get();
-            if (buf.hasRemaining()) {
-              char c5 = buf.get();
-              peekFiveChars(c, c2, c3, c4, c5);
-            } else {
-              peekFourChars(c, c2, c3, c4);
-            }
-          } else {
-            peekThreeChars(c, c2, c3);
-          }
-        } else {
-          peekTwoChars(c, c2);
-        }
-      } else {
-        peekOneChar(c);
-      }
-    } else {
+  private void peek() {
+    // Check if we've reached the end of the expression
+    if (!buf.hasRemaining()) {
       type = EOE;
+      return;
     }
+
+    // Read the first character
+    char c1 = buf.get();
+    if (!buf.hasRemaining()) {
+      // Only one character left, process it as a single character token
+      peekOneChar(c1);
+      return;
+    }
+    // Optimization: Most identifiers don't start with 'f', 't', or 'n' (keywords false, true, null,
+    // new)
+    // Skip reading more characters for regular identifiers
+    if (Character.isJavaIdentifierStart(c1) && c1 != 'f' && c1 != 't' && c1 != 'n') {
+      handleVariable();
+      return;
+    }
+
+    // Read the second character for two-character operators (&&, ||, ==, etc.)
+    char c2 = buf.get();
+    if (!buf.hasRemaining()) {
+      // Only two characters available, check for two-character operators
+      peekTwoChars(c1, c2);
+      return;
+    }
+    // Optimization: If the first character is not an identifier start, it can be a two-character
+    // operator
+    if (!Character.isJavaIdentifierStart(c1)) {
+      if (!Character.isJavaIdentifierStart(c1)) {
+        peekTwoChars(c1, c2);
+      } else {
+        buf.position(buf.position() - 1);
+        peekOneChar(c1);
+      }
+      return;
+    }
+
+    // Read the third character to check for 'new' keyword
+    char c3 = buf.get();
+    if (isNewOperator(c1, c2, c3)) {
+      type = NEW_OPERATOR;
+      return;
+    }
+    if (!buf.hasRemaining()) {
+      // No more characters, rewind and process as regular identifier
+      buf.position(buf.position() - 2);
+      handleVariable();
+      return;
+    }
+
+    // Read the fourth character to check for 'null' or 'true' keywords
+    char c4 = buf.get();
+    if (isNullLiteral(c1, c2, c3, c4)) {
+      type = NULL_LITERAL;
+      binaryOpAvailable = true;
+      return;
+    }
+    if (isTrueLiteral(c1, c2, c3, c4)) {
+      type = TRUE_LITERAL;
+      binaryOpAvailable = true;
+      return;
+    }
+    if (!buf.hasRemaining()) {
+      // No more characters, rewind and process as regular identifier
+      buf.position(buf.position() - 3);
+      handleVariable();
+      return;
+    }
+
+    // Read the fifth character to check for 'false' keyword
+    char c5 = buf.get();
+    if (isFalseLiteral(c1, c2, c3, c4, c5)) {
+      type = FALSE_LITERAL;
+      binaryOpAvailable = true;
+      return;
+    }
+    // Not a keyword, rewind and process as regular identifier
+    buf.position(buf.position() - 4);
+    handleVariable();
   }
 
-  protected void peekFiveChars(char c, char c2, char c3, char c4, char c5) {
-    if (c == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e') {
-      if (isWordTerminated()) {
-        type = FALSE_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
-    }
-    buf.position(buf.position() - 1);
-    peekFourChars(c, c2, c3, c4);
+  private boolean isNewOperator(char c1, char c2, char c3) {
+    return c1 == 'n' && c2 == 'e' && c3 == 'w' && isWordTerminated();
   }
 
-  protected void peekFourChars(char c, char c2, char c3, char c4) {
-    if (c == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l') {
-      if (isWordTerminated()) {
-        type = NULL_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
-    } else if (c == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e') {
-      if (isWordTerminated()) {
-        type = TRUE_LITERAL;
-        binaryOpAvailable = true;
-        return;
-      }
-    }
-    buf.position(buf.position() - 1);
-    peekThreeChars(c, c2, c3);
+  private boolean isNullLiteral(char c1, char c2, char c3, char c4) {
+    return c1 == 'n' && c2 == 'u' && c3 == 'l' && c4 == 'l' && isWordTerminated();
   }
 
-  protected void peekThreeChars(char c, char c2, char c3) {
-    if (c == 'n' && c2 == 'e' && c3 == 'w') {
-      if (isWordTerminated()) {
-        type = NEW_OPERATOR;
-        return;
-      }
-    }
-    buf.position(buf.position() - 1);
-    peekTwoChars(c, c2);
+  private boolean isTrueLiteral(char c1, char c2, char c3, char c4) {
+    return c1 == 't' && c2 == 'r' && c3 == 'u' && c4 == 'e' && isWordTerminated();
   }
 
-  protected void peekTwoChars(char c, char c2) {
+  private boolean isFalseLiteral(char c1, char c2, char c3, char c4, char c5) {
+    return c1 == 'f' && c2 == 'a' && c3 == 'l' && c4 == 's' && c5 == 'e' && isWordTerminated();
+  }
+
+  private void peekTwoChars(char c1, char c2) {
     if (binaryOpAvailable) {
-      if (c == '&' && c2 == '&') {
+      if (c1 == '&' && c2 == '&') {
         type = AND_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '|' && c2 == '|') {
+      } else if (c1 == '|' && c2 == '|') {
         type = OR_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '=' && c2 == '=') {
+      } else if (c1 == '=' && c2 == '=') {
         type = EQ_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '!' && c2 == '=') {
+      } else if (c1 == '!' && c2 == '=') {
         type = NE_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '>' && c2 == '=') {
+      } else if (c1 == '>' && c2 == '=') {
         type = GE_OPERATOR;
         binaryOpAvailable = false;
         return;
-      } else if (c == '<' && c2 == '=') {
+      } else if (c1 == '<' && c2 == '=') {
         type = LE_OPERATOR;
         binaryOpAvailable = false;
         return;
       }
     }
     buf.position(buf.position() - 1);
-    peekOneChar(c);
+    peekOneChar(c1);
   }
 
-  protected void peekOneChar(char c) {
+  private void peekOneChar(char c) {
+    // Handle binary operators first when available
     if (binaryOpAvailable) {
-      if (c == '>') {
-        type = GT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '<') {
-        type = LT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '+') {
-        type = ADD_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '-') {
-        type = SUBTRACT_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '*') {
-        type = MULTIPLY_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '/') {
-        type = DIVIDE_OPERATOR;
-        binaryOpAvailable = false;
-        return;
-      } else if (c == '%') {
-        type = MOD_OPERATOR;
-        binaryOpAvailable = false;
-        return;
+      switch (c) {
+        case '>':
+          type = GT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '<':
+          type = LT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '+':
+          type = ADD_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '-':
+          type = SUBTRACT_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '*':
+          type = MULTIPLY_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '/':
+          type = DIVIDE_OPERATOR;
+          binaryOpAvailable = false;
+          return;
+        case '%':
+          type = MOD_OPERATOR;
+          binaryOpAvailable = false;
+          return;
       }
     }
-    if (Character.isWhitespace(c)) {
-      type = WHITESPACE;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == ',') {
-      type = COMMA_OPERATOR;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '(') {
-      type = OPENED_PARENS;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == ')') {
-      type = CLOSED_PARENS;
-      binaryOpAvailable = true;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '!') {
-      type = NOT_OPERATOR;
-      //noinspection UnnecessaryReturnStatement
-      return;
-    } else if (c == '\'') {
-      type = CHAR_LITERAL;
-      if (buf.hasRemaining()) {
-        buf.get();
-        if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (c3 == '\'') {
-            binaryOpAvailable = true;
-            return;
-          }
-        }
-      }
-      throw new ExpressionException(Message.DOMA3016, expression, buf.position());
-    } else if (c == '"') {
-      type = STRING_LITERAL;
-      boolean closed = false;
-      while (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (c2 == '"') {
-          if (buf.hasRemaining()) {
-            buf.mark();
-            char c3 = buf.get();
-            if (c3 != '"') {
-              buf.reset();
-              closed = true;
-              break;
-            }
-          } else {
-            closed = true;
-          }
-        }
-      }
-      if (!closed) {
-        throw new ExpressionException(Message.DOMA3004, expression, buf.position());
-      }
-      binaryOpAvailable = true;
-    } else if ((c == '+' || c == '-')) {
-      buf.mark();
-      if (buf.hasRemaining()) {
-        char c2 = buf.get();
-        if (Character.isDigit(c2)) {
+
+    // Handle single character tokens with switch for efficiency
+    switch (c) {
+      case ' ':
+      case '\t':
+      case '\n':
+      case '\r':
+      case '\u000B': // Vertical TAB
+      case '\u000C': // Form Feed
+      case '\u001C': // File Separator
+      case '\u001D': // Group Separator
+      case '\u001E': // Record Separator
+      case '\u001F': // Unit Separator
+        type = WHITESPACE;
+        return;
+      case ',':
+        type = COMMA_OPERATOR;
+        return;
+      case '(':
+        type = OPENED_PARENS;
+        return;
+      case ')':
+        type = CLOSED_PARENS;
+        binaryOpAvailable = true;
+        return;
+      case '!':
+        type = NOT_OPERATOR;
+        return;
+      case '\'':
+        handleCharLiteral();
+        return;
+      case '"':
+        handleStringLiteral();
+        return;
+      case '+':
+      case '-':
+        handleSignedNumber();
+        return;
+      case '.':
+        handleFieldOrMethodOperator();
+        return;
+      case '@':
+        handleFunctionOperator();
+        return;
+      default:
+        // Check remaining character types
+        if (Character.isWhitespace(c)) {
+          type = WHITESPACE;
+        } else if (Character.isDigit(c)) {
           peekNumber();
+        } else if (Character.isJavaIdentifierStart(c)) {
+          handleVariable();
+        } else {
+          type = OTHER;
+        }
+    }
+  }
+
+  private void handleCharLiteral() {
+    type = CHAR_LITERAL;
+    if (buf.hasRemaining()) {
+      buf.get();
+      if (buf.hasRemaining()) {
+        char c = buf.get();
+        if (c == '\'') {
+          binaryOpAvailable = true;
           return;
         }
-        buf.reset();
       }
-      type = ILLEGAL_NUMBER_LITERAL;
-    } else if (Character.isDigit(c)) {
-      peekNumber();
-    } else if (Character.isJavaIdentifierStart(c)) {
-      type = VARIABLE;
-      binaryOpAvailable = true;
+    }
+    throw new ExpressionException(Message.DOMA3016, expression, buf.position());
+  }
+
+  private void handleStringLiteral() {
+    type = STRING_LITERAL;
+    boolean closed = false;
+    while (buf.hasRemaining()) {
+      char c1 = buf.get();
+      if (c1 == '"') {
+        if (buf.hasRemaining()) {
+          buf.mark();
+          char c2 = buf.get();
+          if (c2 != '"') {
+            buf.reset();
+            closed = true;
+            break;
+          }
+        } else {
+          closed = true;
+        }
+      }
+    }
+    if (!closed) {
+      throw new ExpressionException(Message.DOMA3004, expression, buf.position());
+    }
+    binaryOpAvailable = true;
+  }
+
+  private void handleSignedNumber() {
+    buf.mark();
+    if (buf.hasRemaining()) {
+      char c = buf.get();
+      if (Character.isDigit(c)) {
+        peekNumber();
+        return;
+      }
+      buf.reset();
+    }
+    type = ILLEGAL_NUMBER_LITERAL;
+  }
+
+  private void handleVariable() {
+    type = VARIABLE;
+    binaryOpAvailable = true;
+    while (buf.hasRemaining()) {
+      buf.mark();
+      char c = buf.get();
+      if (!Character.isJavaIdentifierPart(c)) {
+        buf.reset();
+        break;
+      }
+    }
+  }
+
+  private void handleFieldOrMethodOperator() {
+    type = FIELD_OPERATOR;
+    binaryOpAvailable = true;
+    if (!buf.hasRemaining()) {
+      throw new ExpressionException(Message.DOMA3021, expression, buf.position());
+    }
+    buf.mark();
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
       while (buf.hasRemaining()) {
         buf.mark();
         char c2 = buf.get();
         if (!Character.isJavaIdentifierPart(c2)) {
+          if (c2 == '(') {
+            type = METHOD_OPERATOR;
+            binaryOpAvailable = false;
+          }
           buf.reset();
-          break;
+          return;
         }
-      }
-    } else if (c == '.') {
-      type = FIELD_OPERATOR;
-      binaryOpAvailable = true;
-      if (!buf.hasRemaining()) {
-        throw new ExpressionException(Message.DOMA3021, expression, buf.position());
-      }
-      buf.mark();
-      char c2 = buf.get();
-      if (Character.isJavaIdentifierStart(c2)) {
-        while (buf.hasRemaining()) {
-          buf.mark();
-          char c3 = buf.get();
-          if (!Character.isJavaIdentifierPart(c3)) {
-            if (c3 == '(') {
-              type = METHOD_OPERATOR;
-              binaryOpAvailable = false;
-            }
-            buf.reset();
-            return;
-          }
-        }
-      } else {
-        throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c2);
-      }
-    } else if (c == '@') {
-      if (!buf.hasRemaining()) {
-        throw new ExpressionException(Message.DOMA3023, expression, buf.position());
-      }
-      buf.mark();
-      char c2 = buf.get();
-      if (Character.isJavaIdentifierStart(c2)) {
-        while (buf.hasRemaining()) {
-          buf.mark();
-          char c3 = buf.get();
-          if (!Character.isJavaIdentifierPart(c3)) {
-            if (c3 == '(') {
-              type = FUNCTION_OPERATOR;
-              binaryOpAvailable = false;
-              buf.reset();
-              return;
-            } else if (c3 == '@') {
-              peekStaticMember();
-              return;
-            } else if (c3 == '.') {
-              while (buf.hasRemaining()) {
-                buf.mark();
-                char c4 = buf.get();
-                if (!Character.isJavaIdentifierPart(c4)) {
-                  if (c4 == '.') {
-                    continue;
-                  } else if (c4 == '@') {
-                    peekStaticMember();
-                    return;
-                  }
-                  throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c4);
-                }
-              }
-              throw new ExpressionException(Message.DOMA3032, expression, buf.position());
-            }
-            throw new ExpressionException(Message.DOMA3025, expression, buf.position());
-          }
-        }
-      } else {
-        throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c2);
       }
     } else {
-      type = OTHER;
+      throw new ExpressionException(Message.DOMA3022, expression, buf.position(), c1);
     }
   }
 
-  protected void peekStaticMember() {
+  private void handleFunctionOperator() {
+    if (!buf.hasRemaining()) {
+      throw new ExpressionException(Message.DOMA3023, expression, buf.position());
+    }
+    buf.mark();
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
+      while (buf.hasRemaining()) {
+        buf.mark();
+        char c2 = buf.get();
+        if (!Character.isJavaIdentifierPart(c2)) {
+          if (c2 == '(') {
+            type = FUNCTION_OPERATOR;
+            binaryOpAvailable = false;
+            buf.reset();
+            return;
+          } else if (c2 == '@') {
+            peekStaticMember();
+            return;
+          } else if (c2 == '.') {
+            while (buf.hasRemaining()) {
+              buf.mark();
+              char c3 = buf.get();
+              if (!Character.isJavaIdentifierPart(c3)) {
+                if (c3 == '.') {
+                  continue;
+                } else if (c3 == '@') {
+                  peekStaticMember();
+                  return;
+                }
+                throw new ExpressionException(Message.DOMA3031, expression, buf.position(), c3);
+              }
+            }
+            throw new ExpressionException(Message.DOMA3032, expression, buf.position());
+          }
+          throw new ExpressionException(Message.DOMA3025, expression, buf.position());
+        }
+      }
+    } else {
+      throw new ExpressionException(Message.DOMA3024, expression, buf.position(), c1);
+    }
+  }
+
+  private void peekStaticMember() {
     type = STATIC_FIELD_OPERATOR;
     binaryOpAvailable = true;
     if (!buf.hasRemaining()) {
       throw new ExpressionException(Message.DOMA3029, expression, buf.position());
     }
     buf.mark();
-    char c = buf.get();
-    if (Character.isJavaIdentifierStart(c)) {
+    char c1 = buf.get();
+    if (Character.isJavaIdentifierStart(c1)) {
       while (buf.hasRemaining()) {
         buf.mark();
         char c2 = buf.get();
@@ -387,28 +496,28 @@ public class ExpressionTokenizer {
         }
       }
     } else {
-      throw new ExpressionException(Message.DOMA3030, expression, buf.position(), c);
+      throw new ExpressionException(Message.DOMA3030, expression, buf.position(), c1);
     }
   }
 
-  protected void peekNumber() {
+  private void peekNumber() {
     type = INT_LITERAL;
     boolean decimal = false;
     while (buf.hasRemaining()) {
       buf.mark();
-      char c2 = buf.get();
-      if (Character.isDigit(c2)) {
+      char c1 = buf.get();
+      if (Character.isDigit(c1)) {
         continue;
       }
-      if (c2 == '.') {
+      if (c1 == '.') {
         if (decimal) {
           type = ILLEGAL_NUMBER_LITERAL;
           return;
         }
         decimal = true;
         if (buf.hasRemaining()) {
-          char c3 = buf.get();
-          if (!Character.isDigit(c3)) {
+          char c2 = buf.get();
+          if (!Character.isDigit(c2)) {
             type = ILLEGAL_NUMBER_LITERAL;
             return;
           }
@@ -416,16 +525,16 @@ public class ExpressionTokenizer {
           type = ILLEGAL_NUMBER_LITERAL;
           return;
         }
-      } else if (c2 == 'F') {
+      } else if (c1 == 'F') {
         type = FLOAT_LITERAL;
         break;
-      } else if (c2 == 'D') {
+      } else if (c1 == 'D') {
         type = DOUBLE_LITERAL;
         break;
-      } else if (c2 == 'L') {
+      } else if (c1 == 'L') {
         type = LONG_LITERAL;
         break;
-      } else if (c2 == 'B') {
+      } else if (c1 == 'B') {
         type = BIGDECIMAL_LITERAL;
         break;
       } else {
@@ -442,7 +551,7 @@ public class ExpressionTokenizer {
     binaryOpAvailable = true;
   }
 
-  protected boolean isWordTerminated() {
+  private boolean isWordTerminated() {
     buf.mark();
     if (buf.hasRemaining()) {
       char c = buf.get();
