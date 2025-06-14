@@ -342,6 +342,10 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
       return;
     }
 
+    if (!ctx.getResources().canAcceptDirectoryPath()) {
+      return;
+    }
+
     var queryFileNames =
         daoMeta.getQueryMetas().stream()
             .flatMap(it -> it.getFileNames().stream())
