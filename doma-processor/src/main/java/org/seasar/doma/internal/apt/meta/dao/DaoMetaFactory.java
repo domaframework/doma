@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.ExecutableElement;
@@ -336,16 +337,30 @@ public class DaoMetaFactory implements TypeElementMetaFactory<DaoMeta> {
     if (daoMeta.isError()) {
       return;
     }
+
     if (!ctx.getOptions().getSqlValidation()) {
       return;
     }
+
+    if (!ctx.getResources().canAcceptDirectoryPath()) {
+      return;
+    }
+
+    var queryFileNames =
+        daoMeta.getQueryMetas().stream()
+            .flatMap(it -> it.getFileNames().stream())
+            .collect(Collectors.toSet());
+    if (queryFileNames.isEmpty()) {
+      return;
+    }
+
     String dirPath = SqlFileUtil.buildPath(interfaceElement.getQualifiedName().toString());
     Set<String> fileNames = getFileNames(dirPath);
-    for (QueryMeta queryMeta : daoMeta.getQueryMetas()) {
-      for (String fileName : queryMeta.getFileNames()) {
-        fileNames.remove(fileName);
-      }
+    fileNames.removeAll(queryFileNames);
+    if (fileNames.isEmpty()) {
+      return;
     }
+
     Suppress suppress = interfaceElement.getAnnotation(Suppress.class);
     Message message = Message.DOMA4220;
     if (!isSuppressed(suppress, message)) {

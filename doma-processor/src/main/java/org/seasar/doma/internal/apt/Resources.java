@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
 import javax.tools.FileObject;
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
@@ -36,7 +37,11 @@ public class Resources {
 
   private final String resourcesDir;
 
-  private final boolean isRunningOnEclipse;
+  private final boolean canAcceptDirectoryPath;
+
+  private final JavaFileManager.Location location;
+
+  private final JavaFileManager.Location fallbackLocation = StandardLocation.CLASS_OUTPUT;
 
   private final boolean isDebug;
 
@@ -44,13 +49,15 @@ public class Resources {
       Filer filer,
       Reporter reporter,
       String resourcesDir,
-      boolean isRunningOnEclipse,
+      boolean canAcceptDirectoryPath,
+      JavaFileManager.Location location,
       boolean isDebug) {
     assertNotNull(filer, reporter);
     this.filer = filer;
     this.reporter = reporter;
     this.resourcesDir = resourcesDir;
-    this.isRunningOnEclipse = isRunningOnEclipse;
+    this.canAcceptDirectoryPath = canAcceptDirectoryPath;
+    this.location = location;
     this.isDebug = isDebug;
   }
 
@@ -59,6 +66,23 @@ public class Resources {
     return filer.createSourceFile(name, originatingElements);
   }
 
+  /**
+   * Indicates whether directory paths can be accepted in the {@code #getResource} method.
+   *
+   * @return {@code true} if directory paths can be accepted; {@code false} otherwise
+   */
+  public boolean canAcceptDirectoryPath() {
+    return canAcceptDirectoryPath;
+  }
+
+  /**
+   * Attempts to retrieve a resource file based on the specified relative path.
+   *
+   * @param relativePath the relative path to the desired resource; must not be null
+   * @return a {@code FileObject} representing the resource located at the given relative path
+   * @throws IOException if an I/O error occurs during resource retrieval
+   * @throws AssertionError if the {@code relativePath} parameter is null
+   */
   public FileObject getResource(String relativePath) throws IOException {
     assertNotNull(relativePath);
 
@@ -68,22 +92,21 @@ public class Resources {
       return new FileObjectImpl(path);
     }
 
-    // Since Eclipse doesn’t support SOURCE_PATH, use CLASS_OUTPUT.
-    if (isRunningOnEclipse) {
-      return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
-    }
-
-    // To leverage Gradle’s incremental annotation processing, we recommend using the --source-path
-    // option of javac.
     try {
-      return filer.getResource(StandardLocation.SOURCE_PATH, "", relativePath);
+      return filer.getResource(location, "", relativePath);
     } catch (Exception e) {
-      if (isDebug) {
-        reporter.debug(
-            "Fall back from SOURCE_PATH to CLASS_OUTPUT: " + relativePath + ", exception: " + e);
+      if (location != fallbackLocation) {
+        if (isDebug) {
+          var message =
+              String.format(
+                  "Fall back from %s to %s: %s, exception: %s",
+                  location, fallbackLocation, relativePath, e);
+          reporter.debug(message);
+        }
+        // If a file cannot be found in the default location, use the fallbackLocation.
+        return filer.getResource(fallbackLocation, "", relativePath);
       }
-      // If a file cannot be found in SOURCE_PATH, fall back to CLASS_OUTPUT.
-      return filer.getResource(StandardLocation.CLASS_OUTPUT, "", relativePath);
+      throw e;
     }
   }
 

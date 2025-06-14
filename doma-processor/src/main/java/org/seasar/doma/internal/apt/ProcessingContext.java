@@ -20,6 +20,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.JavaFileManager;
+import javax.tools.StandardLocation;
 
 public class ProcessingContext {
 
@@ -38,25 +40,32 @@ public class ProcessingContext {
     if (initialized) {
       throw new AptIllegalStateException("already initialized");
     }
+    var envClassName = env.getClass().getName();
+    var isRunningOnEcj = envClassName.startsWith("org.eclipse.");
+    var resourceDir = env.getOptions().get(Options.RESOURCES_DIR);
+    var canAcceptDirectoryPath = isRunningOnEcj || resourceDir != null;
+    var location = determineLocation(isRunningOnEcj);
+
     reporter = new Reporter(env.getMessager());
     resources =
         new Resources(
-            env.getFiler(),
-            reporter,
-            env.getOptions().get(Options.RESOURCES_DIR),
-            isRunningOnEclipse(env),
-            isDebug(env));
+            env.getFiler(), reporter, resourceDir, canAcceptDirectoryPath, location, isDebug(env));
     options = new Options(env.getOptions(), resources);
     initialized = true;
   }
 
-  private boolean isRunningOnEclipse(ProcessingEnvironment env) {
-    var envClassName = env.getClass().getName();
+  private JavaFileManager.Location determineLocation(boolean isRunningOnEcj) {
     var unitTest = env.getOptions().get(Options.TEST_UNIT);
     var integrationTest = env.getOptions().get(Options.TEST_INTEGRATION);
-    return envClassName.startsWith("org.eclipse.")
+    if (isRunningOnEcj
         && !Boolean.parseBoolean(unitTest)
-        && !Boolean.parseBoolean(integrationTest);
+        && !Boolean.parseBoolean(integrationTest)) {
+      // Eclipse doesn’t support SOURCE_PATH, use CLASS_OUTPUT.
+      return StandardLocation.CLASS_OUTPUT;
+    }
+    // To leverage Gradle’s incremental annotation processing, we recommend using the --source-path
+    // option of javac.
+    return StandardLocation.SOURCE_PATH;
   }
 
   private boolean isDebug(ProcessingEnvironment env) {
