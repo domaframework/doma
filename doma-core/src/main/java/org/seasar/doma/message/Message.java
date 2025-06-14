@@ -697,7 +697,7 @@ public enum Message implements MessageResource {
   DOMA4220(
       "The SQL template \"{0}\" that is not mapped to any methods was found. "
           + "Check the method names or the sqlFile elements of annotations. "
-          + "To suppress this warning, annotate the DAO method with @Suppress(messages = '{ Message.DOMA4220 }')."),
+          + "To suppress this warning, annotate the DAO interface with @Suppress(messages = '{ Message.DOMA4220 }')."),
   DOMA4221("A non-private constructor is required for the immutable entity class."),
   DOMA4222(
       "When the immutable entity class is a parameter type for the method annotated with @Insert, @Update, or @Delete, "
