@@ -48,7 +48,6 @@ fun replaceVersionInDocs(ver: String) {
         ) {
             "fileset"("dir" to ".") {
                 "include"("name" to "README.md")
-                "include"("name" to "docs/**/*.rst")
             }
         }
     }
@@ -95,8 +94,7 @@ allprojects {
             ktlint(catalog.ktlint.get().version)
         }
         format("misc") {
-            target("**/*.gitignore", "docs/**/*.rst", "**/*.md")
-            targetExclude("**/bin/**", "**/build/**")
+            target("*.md", "doma-core/.md")
             leadingTabsToSpaces()
             trimTrailingWhitespace()
             endWithNewline()
@@ -177,9 +175,7 @@ configure(modularProjects) {
 
     tasks {
         val replaceVersionInJava by registering {
-            doLast {
-                replaceVersionInArtifact(version.toString())
-            }
+            replaceVersionInArtifact(version.toString())
         }
 
         compileJava {
