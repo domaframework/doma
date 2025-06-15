@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.TimeZone;
 import javax.annotation.processing.Processor;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
@@ -116,12 +115,10 @@ class AptinaTestCase
     addSourcePath("src/test/resources");
     charset = StandardCharsets.UTF_8;
     locale = Locale.ENGLISH;
-    TimeZone.setDefault(TimeZone.getTimeZone("GMT+9"));
   }
 
   @Override
   public void afterEach(ExtensionContext context) {
-    TimeZone.setDefault(null);
     locale = null;
     charset = null;
     out = null;
