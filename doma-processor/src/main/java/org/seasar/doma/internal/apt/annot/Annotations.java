@@ -38,6 +38,7 @@ import org.seasar.doma.DataType;
 import org.seasar.doma.Domain;
 import org.seasar.doma.DomainConverters;
 import org.seasar.doma.Embeddable;
+import org.seasar.doma.Embedded;
 import org.seasar.doma.Entity;
 import org.seasar.doma.ResultSet;
 import org.seasar.doma.SequenceGenerator;
@@ -272,6 +273,15 @@ public class Annotations {
       }
     }
     return new EmbeddableAnnot(embeddableMirror, metamodelAnnot);
+  }
+
+  /**
+   * @param field non-null
+   * @return nullable
+   */
+  public EmbeddedAnnot newEmbeddedAnnot(VariableElement field) {
+    assertNotNull(field);
+    return newInstance(field, Embedded.class, EmbeddedAnnot::new);
   }
 
   /**

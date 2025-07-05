@@ -971,4 +971,26 @@ public class QueryDslEntitySelectTest {
     Employee king = employees.get(1);
     assertSame(king, blake.getManager());
   }
+
+  @Test
+  void embeddable() {
+    Customer_ c = new Customer_();
+
+    QueryDsl queryDsl = new QueryDsl(config);
+    Customer customer = queryDsl.from(c).where(w -> w.eq(c.customerId, 1)).fetchOne();
+
+    assertEquals(1, customer.getCustomerId());
+
+    CustomerAddress billingAddress = customer.getBillingAddress();
+    assertNotNull(billingAddress);
+    assertEquals("123 MAIN ST", billingAddress.street());
+    assertEquals("TOKYO", billingAddress.city());
+    assertEquals("100-0001", billingAddress.zipCode());
+
+    CustomerAddress shippingAddress = customer.getShippingAddress();
+    assertNotNull(shippingAddress);
+    assertEquals("456 OAK AVE", shippingAddress.street());
+    assertEquals("YOKOHAMA", shippingAddress.city());
+    assertEquals("220-0012", shippingAddress.zipCode());
+  }
 }

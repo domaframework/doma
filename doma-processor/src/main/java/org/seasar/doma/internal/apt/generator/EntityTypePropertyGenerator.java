@@ -79,13 +79,14 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
 
   private void printEmbeddedPropertyTypeField(EmbeddableCtType embeddableCtType) {
     print(
-        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType))",
+        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType, \"%7$s\"))",
         /* 1 */ EmbeddedPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ propertyMeta.getType(),
         /* 4 */ null,
         /* 5 */ propertyMeta.getName(),
-        /* 6 */ embeddableCtType.getTypeCode());
+        /* 6 */ embeddableCtType.getTypeCode(),
+        /* 7 */ propertyMeta.getColumnNamePrefix());
   }
 
   private void printGeneratedIdPropertyTypeField(ScalarMeta scalarMeta) {

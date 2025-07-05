@@ -1017,6 +1017,8 @@ public enum Message implements MessageResource {
   DOMA4496(
       "When \"returning = @Returning\" is specified, the return type must be a List of the entity class \"{0}\"."),
   DOMA4497("The {0} type parameter of BiConsumer must be an entity class."),
+  DOMA4498(
+      "You cannot annotate the field with @Embedded if the field type is not an embeddable class."),
 
   // other
   DOMA5001(

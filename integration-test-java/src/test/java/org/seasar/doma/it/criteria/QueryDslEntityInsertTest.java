@@ -513,4 +513,35 @@ public class QueryDslEntityInsertTest {
         "preInsert:departmentId,version. postInsert:departmentId,version. ",
         OfficeListener.buffer.toString());
   }
+
+  @Test
+  public void embeddable() {
+    Customer_ c = new Customer_();
+
+    Customer customer = new Customer();
+    customer.setCustomerId(10);
+    CustomerAddress billingAddress = new CustomerAddress("OSAKA", "530-0001", "789 RIVER RD");
+    customer.setBillingAddress(billingAddress);
+    CustomerAddress shippingAddress = new CustomerAddress("KYOTO", "600-8216", "321 HILL ST");
+    customer.setShippingAddress(shippingAddress);
+
+    dsl.insert(c).single(customer).execute();
+
+    Customer inserted =
+        dsl.from(c).where(w -> w.eq(c.customerId, customer.getCustomerId())).fetchOne();
+    assertNotNull(inserted);
+    assertEquals(10, inserted.getCustomerId());
+
+    CustomerAddress insertedBilling = inserted.getBillingAddress();
+    assertNotNull(insertedBilling);
+    assertEquals("789 RIVER RD", insertedBilling.street());
+    assertEquals("OSAKA", insertedBilling.city());
+    assertEquals("530-0001", insertedBilling.zipCode());
+
+    CustomerAddress insertedShipping = inserted.getShippingAddress();
+    assertNotNull(insertedShipping);
+    assertEquals("321 HILL ST", insertedShipping.street());
+    assertEquals("KYOTO", insertedShipping.city());
+    assertEquals("600-8216", insertedShipping.zipCode());
+  }
 }

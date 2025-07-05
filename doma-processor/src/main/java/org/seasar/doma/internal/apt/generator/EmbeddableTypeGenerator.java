@@ -97,7 +97,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     iprint("@Override%n");
     iprint(
         "public <ENTITY> %1$s<%2$s<ENTITY, ?>> getEmbeddablePropertyTypes"
-            + "(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType) {%n",
+            + "(String embeddedPropertyName, Class<ENTITY> entityClass, %3$s namingType, String columnNamePrefix) {%n",
         List.class, EntityPropertyType.class, NamingType.class);
     iprint("    return %1$s.asList(%n", Arrays.class);
     for (Iterator<EmbeddablePropertyMeta> it =
@@ -107,7 +107,7 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
       ScalarMeta scalarMeta = propertyMeta.getCtType().accept(new ScalarMetaFactory(), false);
       iprint(
           "        new %1$s<ENTITY, %2$s, %3$s>("
-              + "entityClass, %4$s, embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s)",
+              + "entityClass, %4$s, embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s, columnNamePrefix)",
           /* 1 */ DefaultPropertyType.class,
           /* 2 */ scalarMeta.getBasicType(),
           /* 3 */ scalarMeta.getContainerType(),

@@ -235,6 +235,135 @@ public class DefaultPropertyTypeTest {
     assertNull(property.get());
   }
 
+  @Test
+  public void testColumnNamePrefix_columnDefined() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "foo",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "prefix_");
+    assertEquals("prefix_foo", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnNamePrefix_columnNotDefined() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "prefix_");
+    assertEquals("prefix_HOGE", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnNamePrefix_emptyString() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "foo",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "");
+    assertEquals("foo", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnNamePrefix_quoteRequired() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "foo",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            true,
+            "prefix_");
+    assertEquals("[prefix_foo]", propertyType.getColumnName(text -> "[" + text + "]"));
+  }
+
+  @Test
+  public void testColumnNamePrefix_quoteNotRequired() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "foo",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "prefix_");
+    assertEquals("prefix_foo", propertyType.getColumnName(text -> "[" + text + "]"));
+  }
+
+  @Test
+  public void testColumnNamePrefix_embeddableProperty() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "prefix_");
+    assertEquals("prefix_HOGE", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnNamePrefix_namingFunction() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            "prefix_");
+    assertEquals("prefix_HOGE", propertyType.getColumnName(NamingType::apply));
+  }
+
+  @Test
+  public void testColumnNamePrefix_namingAndQuoteFunction() {
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "hoge",
+            "",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            true,
+            "prefix_");
+    assertEquals(
+        "[prefix_HOGE]", propertyType.getColumnName(NamingType::apply, text -> "[" + text + "]"));
+  }
+
   public static class Foo {
     String hoge;
   }
