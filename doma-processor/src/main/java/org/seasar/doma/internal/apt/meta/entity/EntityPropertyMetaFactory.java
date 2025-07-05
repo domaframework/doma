@@ -34,6 +34,7 @@ import org.seasar.doma.internal.apt.AptException;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
+import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.annot.SequenceGeneratorAnnot;
 import org.seasar.doma.internal.apt.annot.TableGeneratorAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
@@ -81,6 +82,7 @@ class EntityPropertyMetaFactory {
     doVersion(propertyMeta);
     doTenantId(propertyMeta);
     doColumn(propertyMeta);
+    doEmbedded(propertyMeta);
     return propertyMeta;
   }
 
@@ -288,6 +290,19 @@ class EntityPropertyMetaFactory {
       }
     }
     propertyMeta.setColumnAnnot(columnAnnot);
+  }
+
+  private void doEmbedded(EntityPropertyMeta propertyMeta) {
+    EmbeddedAnnot embeddedAnnot = ctx.getAnnotations().newEmbeddedAnnot(fieldElement);
+    if (embeddedAnnot == null) {
+      return;
+    }
+    if (!propertyMeta.isEmbedded()) {
+      throw new AptException(
+          Message.DOMA4498, fieldElement, embeddedAnnot.getAnnotationMirror(), new Object[] {});
+    }
+    String prefix = embeddedAnnot.getPrefixValue();
+    propertyMeta.setColumnNamePrefix(prefix.trim());
   }
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")

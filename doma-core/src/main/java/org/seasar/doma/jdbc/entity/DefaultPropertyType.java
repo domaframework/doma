@@ -62,6 +62,8 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
 
   protected final PropertyField<ENTITY> field;
 
+  protected final String columnNamePrefix;
+
   public DefaultPropertyType(
       Class<ENTITY> entityClass,
       Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
@@ -71,6 +73,28 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       boolean insertable,
       boolean updatable,
       boolean quoteRequired) {
+    this(
+        entityClass,
+        scalarSupplier,
+        name,
+        columnName,
+        namingType,
+        insertable,
+        updatable,
+        quoteRequired,
+        "");
+  }
+
+  public DefaultPropertyType(
+      Class<ENTITY> entityClass,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
+      String name,
+      String columnName,
+      NamingType namingType,
+      boolean insertable,
+      boolean updatable,
+      boolean quoteRequired,
+      String columnNamePrefix) {
     if (entityClass == null) {
       throw new DomaNullPointerException("entityClass");
     }
@@ -83,6 +107,9 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
+    if (columnNamePrefix == null) {
+      throw new DomaNullPointerException("columnNamePrefix");
+    }
     this.entityClass = entityClass;
     this.scalarSupplier = scalarSupplier;
     this.name = name;
@@ -94,6 +121,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     this.updatable = updatable;
     this.quoteRequired = quoteRequired;
     this.field = new PropertyField<>(name, entityClass);
+    this.columnNamePrefix = columnNamePrefix;
   }
 
   @Override
@@ -134,9 +162,11 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
   public String getColumnName(
       BiFunction<NamingType, String, String> namingFunction,
       Function<String, String> quoteFunction) {
-    String columnName = this.columnName;
-    if (columnName.isEmpty()) {
-      columnName = namingFunction.apply(namingType, simpleName);
+    String columnName;
+    if (this.columnName.isEmpty()) {
+      columnName = columnNamePrefix + namingFunction.apply(namingType, simpleName);
+    } else {
+      columnName = columnNamePrefix + this.columnName;
     }
     return quoteRequired ? quoteFunction.apply(columnName) : columnName;
   }

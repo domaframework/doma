@@ -43,6 +43,8 @@ public class EntityPropertyMeta {
 
   private IdGeneratorMeta idGeneratorMeta;
 
+  private String columnNamePrefix;
+
   public EntityPropertyMeta(CtType ctType, String fieldPrefix) {
     assertNotNull(ctType, fieldPrefix);
     this.ctType = ctType;
@@ -91,6 +93,14 @@ public class EntityPropertyMeta {
 
   public void setIdGeneratorMeta(IdGeneratorMeta idGeneratorMeta) {
     this.idGeneratorMeta = idGeneratorMeta;
+  }
+
+  public String getColumnNamePrefix() {
+    return columnNamePrefix != null ? columnNamePrefix : "";
+  }
+
+  public void setColumnNamePrefix(String columnNamePrefix) {
+    this.columnNamePrefix = columnNamePrefix;
   }
 
   public TypeMirror getType() {

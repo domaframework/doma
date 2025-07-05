@@ -47,8 +47,34 @@ public interface EmbeddableType<EMBEDDABLE> {
    * @param namingType the naming convention used for column names
    * @return a list of entity property types for the embeddable properties
    */
+  @Deprecated
+  default <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
+      String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType) {
+    return getEmbeddablePropertyTypes(embeddedPropertyName, entityClass, namingType, "");
+  }
+
+  /**
+   * Returns a list of entity property types for the embeddable properties with a column name
+   * prefix.
+   *
+   * <p>This method is used to obtain metadata about the properties within an embeddable object when
+   * it is embedded in an entity. The property types are used for mapping between the embeddable
+   * object's properties and database columns. The column name prefix is applied to all column names
+   * of the embeddable properties, which is useful when the same embeddable type is used multiple
+   * times within an entity.
+   *
+   * @param <ENTITY> the entity type that contains the embeddable
+   * @param embeddedPropertyName the name of the property in the entity that holds the embeddable
+   * @param entityClass the entity class
+   * @param namingType the naming convention used for column names
+   * @param columNamePrefix the prefix to be prepended to column names of all embeddable properties
+   * @return a list of entity property types for the embeddable properties
+   */
   <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
-      String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType);
+      String embeddedPropertyName,
+      Class<ENTITY> entityClass,
+      NamingType namingType,
+      String columNamePrefix);
 
   /**
    * Creates a new instance of the embeddable object.

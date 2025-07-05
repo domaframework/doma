@@ -61,6 +61,7 @@ class EntityProcessorTest extends AbstractCompilerTest {
 
     // Add the dependent embeddables
     addCompilationUnit(UserAddress.class);
+    addCompilationUnit(CustomerAddress.class);
   }
 
   @TestTemplate
@@ -126,7 +127,8 @@ class EntityProcessorTest extends AbstractCompilerTest {
           invocationContext(LombokValue.class, "-Adoma.lombok.Value=" + Value.class.getName()),
           invocationContext(
               LombokAllArgsConstructor.class,
-              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()));
+              "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
+          invocationContext(Customer.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -252,7 +254,8 @@ class EntityProcessorTest extends AbstractCompilerTest {
               LombokAllArgsConstructorAccess_none.class,
               Message.DOMA4426,
               "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
-          invocationContext(WildcardOptionalEntity.class, Message.DOMA4233));
+          invocationContext(WildcardOptionalEntity.class, Message.DOMA4233),
+          invocationContext(IllegalEmbeddedPropertyEntity.class, Message.DOMA4498));
     }
 
     private TestTemplateInvocationContext invocationContext(

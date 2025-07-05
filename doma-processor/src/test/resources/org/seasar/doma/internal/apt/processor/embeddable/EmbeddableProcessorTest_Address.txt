@@ -12,10 +12,10 @@ public final class _Address implements org.seasar.doma.jdbc.entity.EmbeddableTyp
     private static final _Address __singleton = new _Address();
 
     @Override
-    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType) {
+    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType, String columnNamePrefix) {
         return java.util.Arrays.asList(
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".city", "", namingType, true, true, false),
-            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".street", "STREET", namingType, false, true, false));
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".city", "", namingType, true, true, false, columnNamePrefix),
+            new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".street", "STREET", namingType, false, true, false, columnNamePrefix));
     }
 
     @Override
