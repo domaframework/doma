@@ -1,0 +1,229 @@
+package org.seasar.doma.internal.apt.processor.entity;
+
+/** */
+@javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
+@org.seasar.doma.EntityTypeImplementation
+public final class _Order extends org.seasar.doma.jdbc.entity.AbstractEntityType<org.seasar.doma.internal.apt.processor.entity.Order> {
+
+    static {
+        org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
+    }
+
+    private static final _Order __singleton = new _Order();
+
+    private final org.seasar.doma.jdbc.entity.NamingType __namingType = null;
+
+    private final java.util.function.Supplier<org.seasar.doma.jdbc.entity.NullEntityListener<org.seasar.doma.internal.apt.processor.entity.Order>> __listenerSupplier;
+
+    private final boolean __immutable;
+
+    private final String __catalogName;
+
+    private final String __schemaName;
+
+    private final String __tableName;
+
+    private final boolean __isQuoteRequired;
+
+    private final String __name;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __idPropertyTypes;
+
+    private final java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __entityPropertyTypes;
+
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __entityPropertyTypeMap;
+
+    private final java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __embeddedPropertyTypeMap;
+
+    private _Order() {
+        __listenerSupplier = org.seasar.doma.internal.jdbc.entity.NullEntityListenerSuppliers.of();
+        __immutable = false;
+        __name = "Order";
+        __catalogName = "";
+        __schemaName = "";
+        __tableName = "";
+        __isQuoteRequired = false;
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __idList = new java.util.ArrayList<>();
+        java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __list = new java.util.ArrayList<>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __map = new java.util.LinkedHashMap<>(3);
+        java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __embeddedMap = new java.util.LinkedHashMap<>(3);
+        initializeMaps(__map, __embeddedMap);
+        initializeIdList(__map, __idList);
+        initializeList(__map, __list);
+        __idPropertyTypes = java.util.Collections.unmodifiableList(__idList);
+        __entityPropertyTypes = java.util.Collections.unmodifiableList(__list);
+        __entityPropertyTypeMap = java.util.Collections.unmodifiableMap(__map);
+        __embeddedPropertyTypeMap = java.util.Collections.unmodifiableMap(__embeddedMap);
+    }
+
+    private void initializeMaps(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __map, java.util.Map<String, org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __embeddedMap) {
+        __map.put("id", new org.seasar.doma.jdbc.entity.AssignedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, java.lang.Integer, java.lang.Integer>(org.seasar.doma.internal.apt.processor.entity.Order.class, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofInteger(), "id", "", __namingType, false));
+        __embeddedMap.put("address1", new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>("address1", org.seasar.doma.internal.apt.processor.entity.Order.class, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().getEmbeddablePropertyTypes("address1", org.seasar.doma.internal.apt.processor.entity.Order.class, __namingType, new org.seasar.doma.jdbc.entity.EmbeddedType("", java.util.Map.ofEntries(java.util.Map.entry("city", new org.seasar.doma.jdbc.entity.ColumnType("billing_city", null, null, null)), java.util.Map.entry("street", new org.seasar.doma.jdbc.entity.ColumnType("billing_street", null, null, null)))))));
+        __map.putAll(__embeddedMap.get("address1").getEmbeddablePropertyTypeMap());
+        __embeddedMap.put("address2", new org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>("address2", org.seasar.doma.internal.apt.processor.entity.Order.class, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().getEmbeddablePropertyTypes("address2", org.seasar.doma.internal.apt.processor.entity.Order.class, __namingType, new org.seasar.doma.jdbc.entity.EmbeddedType("abc_", java.util.Map.ofEntries(java.util.Map.entry("city", new org.seasar.doma.jdbc.entity.ColumnType("shipping_city", true, true, true)), java.util.Map.entry("street", new org.seasar.doma.jdbc.entity.ColumnType("shipping_street", false, false, false)))))));
+        __map.putAll(__embeddedMap.get("address2").getEmbeddablePropertyTypeMap());
+    }
+
+    private void initializeIdList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __idList) {
+        __idList.add(__map.get("id"));
+    }
+
+    private void initializeList(java.util.Map<String, org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __map, java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __list) {
+        __list.addAll(__map.values());
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.NamingType getNamingType() {
+        return __namingType;
+    }
+
+    @Override
+    public boolean isImmutable() {
+        return __immutable;
+    }
+
+    @Override
+    public String getName() {
+        return __name;
+    }
+
+    @Override
+    public String getCatalogName() {
+        return __catalogName;
+    }
+
+    @Override
+    public String getSchemaName() {
+        return __schemaName;
+    }
+
+    @Override
+    public String getTableName(java.util.function.BiFunction<org.seasar.doma.jdbc.entity.NamingType, String, String> namingFunction) {
+        if (__tableName.isEmpty()) {
+            return namingFunction.apply(__namingType, __name);
+        }
+        return __tableName;
+    }
+
+    @Override
+    public boolean isQuoteRequired() {
+        return __isQuoteRequired;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preInsert(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PreInsertContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preInsert(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preUpdate(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PreUpdateContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preUpdate(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void preDelete(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PreDeleteContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.preDelete(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postInsert(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PostInsertContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postInsert(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postUpdate(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PostUpdateContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postUpdate(entity, context);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void postDelete(org.seasar.doma.internal.apt.processor.entity.Order entity, org.seasar.doma.jdbc.entity.PostDeleteContext<org.seasar.doma.internal.apt.processor.entity.Order> context) {
+        Class __listenerClass = org.seasar.doma.jdbc.entity.NullEntityListener.class;
+        org.seasar.doma.jdbc.entity.NullEntityListener __listener = context.getConfig().getEntityListenerProvider().get(__listenerClass, __listenerSupplier);
+        __listener.postDelete(entity, context);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> getEntityPropertyTypes() {
+        return __entityPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?> getEntityPropertyType(String __name) {
+        return __entityPropertyTypeMap.get(__name);
+    }
+
+    @Override
+    public java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?>> getIdPropertyTypes() {
+        return __idPropertyTypes;
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?> getGeneratedIdPropertyType() {
+        return (org.seasar.doma.jdbc.entity.GeneratedIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?>)__entityPropertyTypeMap.get("null");
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?> getVersionPropertyType() {
+        return (org.seasar.doma.jdbc.entity.VersionPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?>)__entityPropertyTypeMap.get("null");
+    }
+
+    @Override
+    public org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?> getTenantIdPropertyType() {
+        return (org.seasar.doma.jdbc.entity.TenantIdPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, ?, ?>)__entityPropertyTypeMap.get("null");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public org.seasar.doma.internal.apt.processor.entity.Order newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __args) {
+        org.seasar.doma.internal.apt.processor.entity.Order entity = new org.seasar.doma.internal.apt.processor.entity.Order();
+        if (__args.get("id") != null) __args.get("id").save(entity);
+        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address1")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address1", __args));
+        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address2")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address2", __args));
+        return entity;
+    }
+
+    @Override
+    public Class<org.seasar.doma.internal.apt.processor.entity.Order> getEntityClass() {
+        return org.seasar.doma.internal.apt.processor.entity.Order.class;
+    }
+
+    @Override
+    public org.seasar.doma.internal.apt.processor.entity.Order getOriginalStates(org.seasar.doma.internal.apt.processor.entity.Order __entity) {
+        return null;
+    }
+
+    @Override
+    public void saveCurrentStates(org.seasar.doma.internal.apt.processor.entity.Order __entity) {
+    }
+
+    /**
+     * @return the singleton
+     */
+    public static _Order getSingletonInternal() {
+        return __singleton;
+    }
+
+    /**
+     * @return the new instance
+     */
+    public static _Order newInstance() {
+        return new _Order();
+    }
+
+}

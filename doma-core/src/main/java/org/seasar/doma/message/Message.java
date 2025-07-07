@@ -1019,6 +1019,7 @@ public enum Message implements MessageResource {
   DOMA4497("The {0} type parameter of BiConsumer must be an entity class."),
   DOMA4498(
       "You cannot annotate the field with @Embedded if the field type is not an embeddable class."),
+  DOMA4499("The property \"{0}\" is not found in the embeddable class \"{1}\"."),
 
   // other
   DOMA5001(

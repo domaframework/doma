@@ -18,11 +18,13 @@ package org.seasar.doma.internal.apt.meta.entity;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
+import java.util.stream.Collectors;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.Id;
 import org.seasar.doma.SequenceGenerator;
@@ -301,8 +303,27 @@ class EntityPropertyMetaFactory {
       throw new AptException(
           Message.DOMA4498, fieldElement, embeddedAnnot.getAnnotationMirror(), new Object[] {});
     }
-    String prefix = embeddedAnnot.getPrefixValue();
-    propertyMeta.setColumnNamePrefix(prefix.trim());
+    var typeElement = ctx.getMoreTypes().toTypeElement(fieldElement.asType());
+    if (typeElement == null) {
+      throw new AptIllegalStateException(
+          "failed to convert to TypeElement: " + fieldElement.getSimpleName());
+    }
+    var fieldNames =
+        ElementFilter.fieldsIn(typeElement.getEnclosedElements()).stream()
+            .map(it -> it.getSimpleName().toString())
+            .collect(Collectors.toSet());
+    for (var columnOverride : embeddedAnnot.getColumnOverridesValue()) {
+      var name = columnOverride.getNameValue();
+      if (!fieldNames.contains(name)) {
+        throw new AptException(
+            Message.DOMA4499,
+            fieldElement,
+            embeddedAnnot.getAnnotationMirror(),
+            columnOverride.getName(),
+            new Object[] {name, typeElement.getQualifiedName()});
+      }
+    }
+    propertyMeta.setEmbeddedAnnot(embeddedAnnot);
   }
 
   @SuppressWarnings("BooleanMethodIsAlwaysInverted")

@@ -16,8 +16,12 @@
 package org.seasar.doma.jdbc.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collections;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.seasar.doma.internal.jdbc.scalar.BasicScalar;
 import org.seasar.doma.wrapper.IntegerWrapper;
@@ -247,7 +251,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("prefix_foo", propertyType.getColumnName());
   }
 
@@ -263,7 +267,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("prefix_HOGE", propertyType.getColumnName());
   }
 
@@ -279,7 +283,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "");
+            new EmbeddedType("", Collections.emptyMap()));
     assertEquals("foo", propertyType.getColumnName());
   }
 
@@ -295,7 +299,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             true,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("[prefix_foo]", propertyType.getColumnName(text -> "[" + text + "]"));
   }
 
@@ -311,7 +315,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("prefix_foo", propertyType.getColumnName(text -> "[" + text + "]"));
   }
 
@@ -327,7 +331,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("prefix_HOGE", propertyType.getColumnName());
   }
 
@@ -343,7 +347,7 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             false,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals("prefix_HOGE", propertyType.getColumnName(NamingType::apply));
   }
 
@@ -359,9 +363,140 @@ public class DefaultPropertyTypeTest {
             true,
             true,
             true,
-            "prefix_");
+            new EmbeddedType("prefix_", Collections.emptyMap()));
     assertEquals(
         "[prefix_HOGE]", propertyType.getColumnName(NamingType::apply, text -> "[" + text + "]"));
+  }
+
+  @Test
+  public void testColumnTypeMap_overridesColumnName() {
+    ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, null);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("prefix_", columnTypeMap));
+    assertEquals("CUSTOM_COLUMN", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnTypeMap_overridesInsertable() {
+    ColumnType columnType = new ColumnType("CUSTOM_COLUMN", false, null, null);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("", columnTypeMap));
+    assertFalse(propertyType.isInsertable());
+  }
+
+  @Test
+  public void testColumnTypeMap_overridesUpdatable() {
+    ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, false, null);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("", columnTypeMap));
+    assertFalse(propertyType.isUpdatable());
+  }
+
+  @Test
+  public void testColumnTypeMap_overridesQuote() {
+    ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, true);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("", columnTypeMap));
+    assertEquals("[CUSTOM_COLUMN]", propertyType.getColumnName(text -> "[" + text + "]"));
+  }
+
+  @Test
+  public void testColumnTypeMap_ignoresPrefixWhenOverridden() {
+    ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, null);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("prefix_", columnTypeMap));
+    // Column override takes precedence over prefix
+    assertEquals("CUSTOM_COLUMN", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnTypeMap_noOverrideForProperty() {
+    Map<String, ColumnType> columnTypeMap =
+        Map.of("other", new ColumnType("OTHER_COLUMN", null, null, null));
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("prefix_", columnTypeMap));
+    // No override for "hoge", so prefix should be applied
+    assertEquals("prefix_original_column", propertyType.getColumnName());
+  }
+
+  @Test
+  public void testColumnTypeMap_multipleOverrides() {
+    ColumnType columnType = new ColumnType("OVERRIDDEN_NAME", false, true, true);
+    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
+        new DefaultPropertyType<>(
+            DefaultPropertyTypeTest.class,
+            () -> new BasicScalar<>(StringWrapper::new),
+            "foo.hoge",
+            "original_column",
+            NamingType.UPPER_CASE,
+            true,
+            true,
+            false,
+            new EmbeddedType("prefix_", columnTypeMap));
+    assertEquals("OVERRIDDEN_NAME", propertyType.getColumnName());
+    assertFalse(propertyType.isInsertable());
+    assertTrue(propertyType.isUpdatable());
+    assertEquals("[OVERRIDDEN_NAME]", propertyType.getColumnName(text -> "[" + text + "]"));
   }
 
   public static class Foo {

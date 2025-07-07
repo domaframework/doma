@@ -62,7 +62,9 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
 
   protected final PropertyField<ENTITY> field;
 
-  protected final String columnNamePrefix;
+  protected final String prefix;
+
+  protected final ColumnType columnType;
 
   public DefaultPropertyType(
       Class<ENTITY> entityClass,
@@ -82,7 +84,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
         insertable,
         updatable,
         quoteRequired,
-        "");
+        null);
   }
 
   public DefaultPropertyType(
@@ -94,7 +96,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       boolean insertable,
       boolean updatable,
       boolean quoteRequired,
-      String columnNamePrefix) {
+      EmbeddedType embeddedType) {
     if (entityClass == null) {
       throw new DomaNullPointerException("entityClass");
     }
@@ -107,21 +109,31 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
-    if (columnNamePrefix == null) {
-      throw new DomaNullPointerException("columnNamePrefix");
-    }
     this.entityClass = entityClass;
     this.scalarSupplier = scalarSupplier;
     this.name = name;
     int pos = name.lastIndexOf('.');
     this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
-    this.columnName = columnName;
     this.namingType = namingType;
-    this.insertable = insertable;
-    this.updatable = updatable;
-    this.quoteRequired = quoteRequired;
+    if (embeddedType == null) {
+      this.prefix = "";
+      columnType = null;
+    } else {
+      this.prefix = embeddedType.prefix();
+      columnType = embeddedType.columnTypeMap().get(simpleName);
+    }
+    if (columnType == null) {
+      this.columnName = columnName;
+      this.insertable = insertable;
+      this.updatable = updatable;
+      this.quoteRequired = quoteRequired;
+    } else {
+      this.columnName = columnType.name() != null ? columnType.name() : columnName;
+      this.insertable = columnType.insertable() != null ? columnType.insertable() : insertable;
+      this.updatable = columnType.updatable() != null ? columnType.updatable() : updatable;
+      this.quoteRequired = columnType.quote() != null ? columnType.quote() : quoteRequired;
+    }
     this.field = new PropertyField<>(name, entityClass);
-    this.columnNamePrefix = columnNamePrefix;
   }
 
   @Override
@@ -164,9 +176,14 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       Function<String, String> quoteFunction) {
     String columnName;
     if (this.columnName.isEmpty()) {
-      columnName = columnNamePrefix + namingFunction.apply(namingType, simpleName);
+      columnName = prefix + namingFunction.apply(namingType, simpleName);
     } else {
-      columnName = columnNamePrefix + this.columnName;
+      if (columnType != null) {
+        // column overrides take precedence over the prefix attribute
+        columnName = this.columnName;
+      } else {
+        columnName = prefix + this.columnName;
+      }
     }
     return quoteRequired ? quoteFunction.apply(columnName) : columnName;
   }
