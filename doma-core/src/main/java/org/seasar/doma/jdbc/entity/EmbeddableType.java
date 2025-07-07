@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,11 @@ public interface EmbeddableType<EMBEDDABLE> {
   @Deprecated
   default <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
       String embeddedPropertyName, Class<ENTITY> entityClass, NamingType namingType) {
-    return getEmbeddablePropertyTypes(embeddedPropertyName, entityClass, namingType, "");
+    return getEmbeddablePropertyTypes(
+        embeddedPropertyName,
+        entityClass,
+        namingType,
+        new EmbeddedType("", Collections.emptyMap()));
   }
 
   /**
@@ -67,14 +72,14 @@ public interface EmbeddableType<EMBEDDABLE> {
    * @param embeddedPropertyName the name of the property in the entity that holds the embeddable
    * @param entityClass the entity class
    * @param namingType the naming convention used for column names
-   * @param columNamePrefix the prefix to be prepended to column names of all embeddable properties
+   * @param embeddedType the embedded type metadata containing column prefix and column overrides
    * @return a list of entity property types for the embeddable properties
    */
   <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
       String embeddedPropertyName,
       Class<ENTITY> entityClass,
       NamingType namingType,
-      String columNamePrefix);
+      EmbeddedType embeddedType);
 
   /**
    * Creates a new instance of the embeddable object.

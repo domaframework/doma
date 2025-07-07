@@ -17,16 +17,21 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
+import java.util.List;
 import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.RoundContext;
+import org.seasar.doma.internal.apt.annot.ColumnOverrideAnnot;
+import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
+import org.seasar.doma.jdbc.entity.ColumnType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EmbeddedPropertyType;
+import org.seasar.doma.jdbc.entity.EmbeddedType;
 import org.seasar.doma.jdbc.entity.GeneratedIdPropertyType;
 import org.seasar.doma.jdbc.entity.TenantIdPropertyType;
 import org.seasar.doma.jdbc.entity.VersionPropertyType;
@@ -79,14 +84,14 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
 
   private void printEmbeddedPropertyTypeField(EmbeddableCtType embeddableCtType) {
     print(
-        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType, \"%7$s\"))",
+        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType, %7$s))",
         /* 1 */ EmbeddedPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ propertyMeta.getType(),
         /* 4 */ null,
         /* 5 */ propertyMeta.getName(),
         /* 6 */ embeddableCtType.getTypeCode(),
-        /* 7 */ propertyMeta.getColumnNamePrefix());
+        /* 7 */ toEmbeddedTypeCode(propertyMeta.getEmbeddedAnnot()));
   }
 
   private void printGeneratedIdPropertyTypeField(ScalarMeta scalarMeta) {
@@ -164,6 +169,44 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 10 */ propertyMeta.isColumnInsertable(),
         /* 11 */ propertyMeta.isColumnUpdatable(),
         /* 12 */ propertyMeta.isColumnQuoteRequired());
+  }
+
+  private Code toEmbeddedTypeCode(EmbeddedAnnot embeddedAnnot) {
+    return new Code(
+        p -> {
+          if (embeddedAnnot == null) {
+            p.print("null");
+          } else {
+            p.print(
+                "new %1$s(\"%2$s\", java.util.Map.ofEntries(%3$s))",
+                /* 1 */ EmbeddedType.class,
+                /* 2 */ embeddedAnnot.getPrefixValue(),
+                /* 3 */ toMapEntryCode(embeddedAnnot.getColumnOverridesValue()));
+          }
+        });
+  }
+
+  private Code toMapEntryCode(List<ColumnOverrideAnnot> columnOverrideAnnotList) {
+    return new Code(
+        p -> {
+          var it = columnOverrideAnnotList.iterator();
+          while (it.hasNext()) {
+            var columnOverrideAnnot = it.next();
+            var name = columnOverrideAnnot.getNameValue();
+            var column = columnOverrideAnnot.getColumnValue();
+            p.print(
+                "java.util.Map.entry(\"%1$s\", new %2$s(%3$s, %4$s, %5$s, %6$s))",
+                /* 1 */ name,
+                /* 2 */ ColumnType.class,
+                /* 3 */ column.getNameValue() != null ? '"' + column.getNameValue() + '"' : null,
+                /* 4 */ column.getInsertableValue(),
+                /* 5 */ column.getUpdatableValue(),
+                /* 6 */ column.getQuoteValue());
+            if (it.hasNext()) {
+              p.print(", ");
+            }
+          }
+        });
   }
 
   private static class EmbeddableCtTypeVisitor

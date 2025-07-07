@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.it.criteria;
 
+import org.seasar.doma.Column;
+import org.seasar.doma.ColumnOverride;
 import org.seasar.doma.Embedded;
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
@@ -28,7 +30,13 @@ public class Customer {
   @Embedded(prefix = "BILLING_")
   CustomerAddress billingAddress;
 
-  @Embedded(prefix = "SHIPPING_")
+  @Embedded(
+      prefix = "UNUSED_",
+      columnOverrides = {
+        @ColumnOverride(name = "city", column = @Column(name = "SHIPPING_CITY")),
+        @ColumnOverride(name = "street", column = @Column(name = "SHIPPING_STREET")),
+        @ColumnOverride(name = "zipCode", column = @Column(name = "SHIPPING_ZIP_CODE")),
+      })
   CustomerAddress shippingAddress;
 
   public Integer getCustomerId() {

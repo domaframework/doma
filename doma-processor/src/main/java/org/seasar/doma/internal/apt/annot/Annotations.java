@@ -204,6 +204,17 @@ public class Annotations {
   }
 
   /**
+   * @param annotation non-null
+   * @return non-null
+   */
+  public ColumnOverrideAnnot newColumnOverrideAnnot(AnnotationMirror annotation) {
+    assertNotNull(annotation);
+    Map<String, AnnotationValue> values = ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new ColumnOverrideAnnot(
+        annotation, values, it -> ctx.getMoreElements().getValuesWithoutDefaults(it));
+  }
+
+  /**
    * @param typeElement non-null
    * @return nullable
    */
@@ -281,7 +292,12 @@ public class Annotations {
    */
   public EmbeddedAnnot newEmbeddedAnnot(VariableElement field) {
     assertNotNull(field);
-    return newInstance(field, Embedded.class, EmbeddedAnnot::new);
+    AnnotationMirror annotation = ctx.getMoreElements().getAnnotationMirror(field, Embedded.class);
+    if (annotation == null) {
+      return null;
+    }
+    Map<String, AnnotationValue> values = ctx.getMoreElements().getValuesWithDefaults(annotation);
+    return new EmbeddedAnnot(annotation, values, this::newColumnOverrideAnnot);
   }
 
   /**

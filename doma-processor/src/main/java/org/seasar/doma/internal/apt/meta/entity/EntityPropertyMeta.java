@@ -19,6 +19,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.type.TypeMirror;
 import org.seasar.doma.internal.apt.annot.ColumnAnnot;
+import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
@@ -44,6 +45,8 @@ public class EntityPropertyMeta {
   private IdGeneratorMeta idGeneratorMeta;
 
   private String columnNamePrefix;
+
+  private EmbeddedAnnot embeddedAnnot;
 
   public EntityPropertyMeta(CtType ctType, String fieldPrefix) {
     assertNotNull(ctType, fieldPrefix);
@@ -101,6 +104,14 @@ public class EntityPropertyMeta {
 
   public void setColumnNamePrefix(String columnNamePrefix) {
     this.columnNamePrefix = columnNamePrefix;
+  }
+
+  public EmbeddedAnnot getEmbeddedAnnot() {
+    return embeddedAnnot;
+  }
+
+  public void setEmbeddedAnnot(EmbeddedAnnot embeddedAnnot) {
+    this.embeddedAnnot = embeddedAnnot;
   }
 
   public TypeMirror getType() {
