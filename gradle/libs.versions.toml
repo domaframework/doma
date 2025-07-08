@@ -36,7 +36,7 @@ ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.6.0" }
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-spotless = { id = "com.diffplug.spotless", version = "7.0.4" }
+spotless = { id = "com.diffplug.spotless", version = "7.1.0" }
 publish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 release = { id = "net.researchgate.release", version = "3.1.0" }
 doma-compile = { id = "org.domaframework.doma.compile", version = "4.0.2" }
