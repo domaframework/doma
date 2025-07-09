@@ -179,9 +179,9 @@ gettext_uuid = False
 gettext_compact = False
 
 html_context = {
-    'doma_version': '3.9.1',
-    'doma_compile_version': '4.0.0',
-    'doma_codegen_version': '3.2.0',
+    'doma_version': '3.10.0',
+    'doma_compile_version': '4.0.2',
+    'doma_codegen_version': '3.2.1',
     'eclipse_apt_version': '4.3.0',
     'logback_classic_version': '1.5.18',
     'quarkus_doma_version': '1.0.4'
