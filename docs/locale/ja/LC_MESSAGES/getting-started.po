@@ -1,0 +1,213 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: doma-docs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"Last-Translator: \n"
+"Language-Team: Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: doma-docs\n"
+"X-Crowdin-Project-ID: 657384\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File-ID: 188\n"
+"Language: ja_JP\n"
+
+#: ../../getting-started.rst:3
+msgid "Getting started"
+msgstr "はじめよう"
+
+#: ../../getting-started.rst:6
+msgid "Contents"
+msgstr "コンテンツ"
+
+#: ../../getting-started.rst:9
+msgid "Summary"
+msgstr "このページについて"
+
+#: ../../getting-started.rst:11
+msgid "This guide explains how to set up your development environment and introduces the basic functionality of Doma."
+msgstr "このガイドでは、開発環境の設定方法を説明し、Domaの基本的な機能を紹介します。"
+
+#: ../../getting-started.rst:14
+msgid "Install JDK"
+msgstr "JDKのインストール"
+
+#: ../../getting-started.rst:16
+msgid "First, you need to install JDK 17 or later."
+msgstr "最初に JDK 17 以降をインストールする必要があります。"
+
+#: ../../getting-started.rst:19
+msgid "Get sample project"
+msgstr "サンプルプロジェクトの入手"
+
+#: ../../getting-started.rst:21
+msgid "To get the sample project, clone the `getting-started <https://github.com/domaframework/getting-started>`_ repository and navigate to the created directory using these commands:"
+msgstr "サンプルプロジェクトを入手するには、次のコマンドを使用して、`getting-started <https://github.com/domaframework/getting-started>`_ リポジトリのクローンを作成し、新しいディレクトリに移動します。"
+
+#: ../../getting-started.rst:29
+msgid "Ensure successful project setup with:"
+msgstr "次のコマンドが成功すれば、プロジェクトのセットアップは完了です。"
+
+#: ../../getting-started.rst:37
+msgid "For Windows users, execute ``gradlew build``."
+msgstr "Windowsユーザーは、``./gradlew build`` の代わりに ``gradlew build`` を実行してください。"
+
+#: ../../getting-started.rst:40
+msgid "Sample project structure"
+msgstr "サンプルプロジェクトの構造"
+
+#: ../../getting-started.rst:42
+msgid "The getting-started sample is a Gradle multi-project containing a java-17 subproject. In this guide, we'll focus on the java-17 subproject."
+msgstr "getting-start サンプルは、Java-17 サブプロジェクトを含む Gradle マルチプロジェクトです。このガイドでは、java-17 サブプロジェクトに焦点を当てます。"
+
+#: ../../getting-started.rst:46
+msgid "Import project to your IDE"
+msgstr "プロジェクトを IDE にインポートする"
+
+#: ../../getting-started.rst:49
+msgid "Eclipse"
+msgstr ""
+
+#: ../../getting-started.rst:51
+msgid "This guide has been tested with Eclipse 4.23.0. Import the getting-started project as a Gradle project."
+msgstr "Eclipse 4.23.0でテスト済みです。getting-started プロジェクトを Gradle プロジェクトとしてインポートしてください。"
+
+#: ../../getting-started.rst:56
+msgid "If you want to store SQL statements in files, `Doma Tools <https://github.com/domaframework/doma-tools>`_ can help you."
+msgstr "SQL文をファイルで管理する場合、`Doma Tools <https://github.com/domaframework/doma-tools>`_ が役立つかもしれません。"
+
+#: ../../getting-started.rst:60
+msgid "IntelliJ IDEA"
+msgstr ""
+
+#: ../../getting-started.rst:62
+msgid "Tested with IntelliJ IDEA Community 2023.3.4. Import the getting-started project as a Gradle project."
+msgstr "IntelliJ IDEA Community 2023.3.4 でテストされています。プロジェクトを Gradle プロジェクトとしてインポートしてください。"
+
+#: ../../getting-started.rst:67
+msgid "You can use the following IntelliJ IDEA plugins to support Doma. Since they have overlapping features, please choose one:"
+msgstr "次のIntelliJ IDEAプラグインを使用してDomaをサポートできます。機能が重複しているため、いずれか一方をお選びください。"
+
+#: ../../getting-started.rst:69
+msgid "`Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_"
+msgstr "`Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_"
+
+#: ../../getting-started.rst:70
+msgid "`Doma Tools for IntelliJ <https://plugins.jetbrains.com/plugin/26701-doma-tools/>`_"
+msgstr "`Doma Tools for IntelliJ <https://plugins.jetbrains.com/plugin/26701-doma-tools/>`_"
+
+#: ../../getting-started.rst:73
+msgid "Programming styles"
+msgstr "プログラミングスタイル"
+
+#: ../../getting-started.rst:75
+msgid "Doma supports two programming styles: DSL and DAO. We recommend using both styles together to maximize their benefits."
+msgstr "Domaは、DSLとDAOの2つのプログラミングスタイルをサポートしています。 両方のスタイルを一緒に使用することで、そのメリットを最大限に引き出すことをお勧めします。"
+
+#: ../../getting-started.rst:78
+msgid "The DSL style uses a type-safe Criteria API, which excels at automatically generating simple dynamic SQL. The DAO style maps SQL statements to Java interface methods and works well for both automatically generating standard SQL for insert, update, and delete operations and for writing complex SQL manually."
+msgstr "DSLスタイルは型安全なCriteria APIを使用しており、シンプルな動的SQLを自動生成する点で優れています。DAOスタイルはSQLステートメントをJavaのインターフェースメソッドにマップし、追加、更新、削除操作の標準的なSQLを自動生成することにも長けており、複雑なSQLを手動で書く場合にも役立ちます。"
+
+#: ../../getting-started.rst:83
+msgid "DSL style"
+msgstr "DSL スタイル"
+
+#: ../../getting-started.rst:85
+msgid "In the DSL style, you work with examples in the ``boilerplate.java17.repository.EmployeeRepository`` and the :doc:`query-dsl` for operations."
+msgstr "DSL スタイルでは、``boilerplate.java17.repository.EmployeeRepository`` と :doc:`query-dsl` を使った例を使用します。"
+
+#: ../../getting-started.rst:89
+msgid "SELECT"
+msgstr ""
+
+#: ../../getting-started.rst:91
+msgid "To execute a SELECT query and retrieve Java object results, follow this example:"
+msgstr "SELECT ステートメントを実行して Java オブジェクトの結果を取得するには、次の例に従います。"
+
+#: ../../getting-started.rst:100
+msgid "You'll use a metamodel class, like ``Employee_`` for ``Employee``, which is auto-generated through annotation processing."
+msgstr "クエリを組み立てるために ``Employee`` エンティティクラスのメタモデルクラスである ``Employee_`` を使用します。メタモデルクラスは、アノテーション処理を通じて自動生成されるクラスです。"
+
+#: ../../getting-started.rst:102
+msgid "The ``queryDsl`` instance from the ``QueryDsl`` class serves as the Criteria API's starting point."
+msgstr "``QueryDsl`` クラスの ``queryDsl`` インスタンスは、Criteria API の開始点として機能します。"
+
+#: ../../getting-started.rst:104
+#: ../../getting-started.rst:176
+msgid "The above code generates the following SQL statement:"
+msgstr "上記のコードは次の SQL ステートメントを生成します。"
+
+#: ../../getting-started.rst:111
+msgid "DELETE"
+msgstr ""
+
+#: ../../getting-started.rst:113
+#: ../../getting-started.rst:190
+msgid "To issue a DELETE statement, write as follows:"
+msgstr "DELETE ステートメントを発行するには、次のように記述します。"
+
+#: ../../getting-started.rst:123
+msgid "INSERT"
+msgstr ""
+
+#: ../../getting-started.rst:125
+#: ../../getting-started.rst:200
+msgid "To issue an INSERT statement, write as follows:"
+msgstr "INSERT ステートメントを発行するには、次のように記述します。"
+
+#: ../../getting-started.rst:135
+msgid "UPDATE"
+msgstr ""
+
+#: ../../getting-started.rst:137
+#: ../../getting-started.rst:210
+msgid "To issue an UPDATE statement, write as follows:"
+msgstr "UPDATE ステートメントを発行するには、次のように記述します。"
+
+#: ../../getting-started.rst:147
+msgid "DAO style"
+msgstr "DAO スタイル"
+
+#: ../../getting-started.rst:149
+msgid "You can find some examples in ``boilerplate.java17.dao.EmployeeDao``. See :doc:`dao` and :doc:`sql` for more information."
+msgstr "いくつかの例は ``boilerplate.java17.dao.EmployeeDao`` にあります。詳細については、:doc:`dao` および :doc:`sql` を参照してください。"
+
+#: ../../getting-started.rst:153
+msgid "SELECT (DAO)"
+msgstr ""
+
+#: ../../getting-started.rst:155
+msgid "In the DAO style, for issuing a SELECT statement to retrieve Java objects, use the ``@Sql`` annotation with Text Blocks for SQL templates:"
+msgstr "DAO スタイルで SELECT ステートメントを発行して Java オブジェクトを取得するには、SQL テンプレートのテキストブロックで ``@Sql`` アノテーションを使用します。"
+
+#: ../../getting-started.rst:171
+msgid "This SQL template contains two special expressions: ``/*%expand*/`` and ``/* id */``. When processing the SQL template, ``/*%expand*/`` and the following ``*`` are replaced with a complete column list. Similarly, ``/* id */`` and the following ``0`` are replaced with the bind variable ``?``. The value bound to this variable is the ``id`` parameter of the ``selectById`` method."
+msgstr "このSQLテンプレートには、``/*%expand*/`` と ``/* id */`` の二つの特別な式が含まれています。SQLテンプレートの処理中に、``/*%expand*/`` とその後の ``*`` は完全なカラムリストに置き換えられます。同様に、``/* id */`` とその後の ``0`` はバインド変数 ``?`` に置き換えられます。バインドされる値は ``selectById`` メソッドの ``id`` パラメータです。"
+
+#: ../../getting-started.rst:188
+msgid "DELETE (DAO)"
+msgstr ""
+
+#: ../../getting-started.rst:198
+msgid "INSERT (DAO)"
+msgstr ""
+
+#: ../../getting-started.rst:208
+msgid "UPDATE (DAO)"
+msgstr ""
+
+#: ../../getting-started.rst:218
+msgid "Next Step"
+msgstr "次のステップ"
+
+#: ../../getting-started.rst:220
+msgid "See other example projects:"
+msgstr "他のサンプルプロジェクトを参照してください。"
+
+#: ../../getting-started.rst:222
+msgid "`simple-examples <https://github.com/domaframework/simple-examples>`_"
+msgstr ""
+

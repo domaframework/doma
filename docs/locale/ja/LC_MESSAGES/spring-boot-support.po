@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: doma-docs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-05 10:05+0900\n"
+"Last-Translator: \n"
+"Language-Team: Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: doma-docs\n"
+"X-Crowdin-Project-ID: 657384\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File-ID: 244\n"
+"Language: ja_JP\n"
+
+#: ../../spring-boot-support.rst:3
+msgid "Spring Boot support"
+msgstr "Spring Boot サポート"
+
+#: ../../spring-boot-support.rst:6
+msgid "Contents"
+msgstr "目次"
+
+#: ../../spring-boot-support.rst:9
+msgid "Overview"
+msgstr "概要"
+
+#: ../../spring-boot-support.rst:11
+msgid "Doma supports `Spring Boot <https://spring.io/projects/spring-boot>`_. To combine Doma with Spring Boot, use the `spring-boot-doma <https://github.com/domaframework/doma-spring-boot>`_ integration library."
+msgstr "Domaは、`Spring Boot <https://spring.io/projects/spring-boot>`_ をサポートしています。DomaをSpring Bootと組み合わせるには、 `spring-boot-doma <https://github.com/domaframework/doma-spring-boot>`_ をご利用ください。"
+
+#: ../../spring-boot-support.rst:15
+msgid "Details"
+msgstr "詳細"
+
+#: ../../spring-boot-support.rst:17
+msgid "For more details, please refer to https://github.com/domaframework/doma-spring-boot/wiki ."
+msgstr "詳細は https://github.com/domaframework/doma-spring-boot/wiki をご参照ください。"
+
