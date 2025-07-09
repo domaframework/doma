@@ -80,6 +80,12 @@ SQL files use special comments for dynamic SQL that remain valid SQL when run di
 
 ## Development Guidelines
 
+### Setting Up Development Environment
+- Install JDK 21 (recommended via [SDKMAN](https://sdkman.io/jdks))
+- Clone repository: `git clone https://github.com/domaframework/doma.git`
+- Build project: `./gradlew build`
+- For IDE setup, import as a Gradle project (IntelliJ IDEA recommended)
+
 ### Annotation Processing Configuration
 When modifying annotation processors or entity/domain classes, the `ap` property in `gradle.properties` can be used to pass additional annotation processor options in CSV format.
 
@@ -93,8 +99,51 @@ All code must pass Spotless formatting checks. The build automatically applies f
 - Always use explicit imports for each class (e.g., `import java.util.List;`, `import java.util.Map;`)
 - This improves code readability and makes dependencies explicit
 
+### Contributing Guidelines
+- Submit contributions via GitHub Pull Requests from your own fork
+- Write issues and PRs in English for broader accessibility
+- All contributions are licensed under Apache License 2.0
+- Use snapshot versions from Sonatype repository for testing unreleased features
+
 ### Database Compatibility Testing
 When making changes that affect SQL generation or JDBC operations, run tests against multiple databases using `./gradlew testAll` to ensure compatibility.
 
 ### Integration Test Structure
 Integration tests use Testcontainers for database provisioning. Database URLs are configured in `gradle.properties` with the `TC_DAEMON=true` flag to improve test performance by reusing containers.
+
+## Documentation
+
+### Documentation System
+The project uses Sphinx for documentation generation, hosted on ReadTheDocs:
+- **Source**: Documentation source files are in the `docs/` directory
+- **Format**: Written in reStructuredText (`.rst`) format
+- **Languages**: English and Japanese (full translation support)
+- **URL**: https://doma.readthedocs.io/
+
+### Documentation Structure
+- **Getting Started**: Setup guide and quickstart (`getting-started.rst`)
+- **Core Concepts**: Entity, Domain, DAO, Embeddable documentation
+- **Query Operations**: Comprehensive guides for all database operations in `query/` subdirectory
+- **Query Building**: Criteria API, Query DSL, SQL templates documentation
+- **Framework Integration**: Spring Boot, Quarkus, Lombok, Kotlin support guides
+- **Development**: Build configuration, annotation processing, code generation
+
+### Building Documentation Locally
+```bash
+# Install dependencies
+cd docs
+pip install -r requirements.txt
+
+# Generate HTML documentation with auto-reload
+sphinx-autobuild . _build/html
+# Visit http://127.0.0.1:8000
+
+# Generate translation files
+sphinx-build -b gettext . _build/gettext
+```
+
+### Documentation Guidelines
+- Verify RST syntax and rendering before submitting PRs
+- Maintain consistency with existing documentation style
+- Update both English and Japanese translations when applicable
+- Test documentation builds locally using `sphinx-autobuild`

@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: doma-docs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"Last-Translator: \n"
+"Language-Team: Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: doma-docs\n"
+"X-Crowdin-Project-ID: 657384\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File-ID: 198\n"
+"Language: ja_JP\n"
+
+#: ../../jpms-support.rst:3
+msgid "JPMS support"
+msgstr "JPMS サポート"
+
+#: ../../jpms-support.rst:6
+msgid "Contents"
+msgstr "コンテンツ"
+
+#: ../../jpms-support.rst:9
+msgid "Overview"
+msgstr "概要"
+
+#: ../../jpms-support.rst:11
+msgid "Doma supports the Java Platform Module System (JPMS) introduced with Java 9."
+msgstr "Doma は、Java 9 で導入された Java Platform Module System (JPMS) をサポートしています。"
+
+#: ../../jpms-support.rst:14
+msgid "Modules"
+msgstr "モジュール"
+
+#: ../../jpms-support.rst:16
+msgid "Doma provides the following modules:"
+msgstr "Doma は次のモジュールを提供します。"
+
+#: ../../jpms-support.rst:19
+msgid "Artifact ID"
+msgstr "アーティファクトID"
+
+#: ../../jpms-support.rst:19
+msgid "Module Name"
+msgstr "モジュール名"
+
+#: ../../jpms-support.rst:21
+msgid "doma-core"
+msgstr ""
+
+#: ../../jpms-support.rst:21
+msgid "org.seasar.doma.core"
+msgstr ""
+
+#: ../../jpms-support.rst:23
+msgid "doma-kotlin"
+msgstr ""
+
+#: ../../jpms-support.rst:23
+msgid "org.seasar.doma.kotlin"
+msgstr ""
+
+#: ../../jpms-support.rst:25
+msgid "doma-processor"
+msgstr ""
+
+#: ../../jpms-support.rst:25
+msgid "org.seasar.doma.processor"
+msgstr ""
+
+#: ../../jpms-support.rst:27
+msgid "doma-slf4j"
+msgstr ""
+
+#: ../../jpms-support.rst:27
+msgid "org.seasar.doma.slf4j"
+msgstr ""
+
+#: ../../jpms-support.rst:29
+msgid "doma-template"
+msgstr ""
+
+#: ../../jpms-support.rst:29
+msgid "org.seasar.doma.template"
+msgstr ""
+
+#: ../../jpms-support.rst:33
+msgid "Usage"
+msgstr "使用法"
+
+#: ../../jpms-support.rst:35
+msgid "Doma uses reflection to access Entity properties. For this to work, you need to open packages containing Entity classes:"
+msgstr "Doma はリフレクションを使用してエンティティのフィールドにアクセスします。これを機能させるには、Entity クラスを含むパッケージをオープンする必要があります。"
+
+#: ../../jpms-support.rst:47
+msgid "Alternatively, you can open your entire module instead of specific packages:"
+msgstr "また、特定のパッケージではなく、モジュール全体をオープンにすることもできます："
+

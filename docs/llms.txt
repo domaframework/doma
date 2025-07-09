@@ -1,0 +1,84 @@
+# Doma
+
+> Doma is a database access framework for Java that provides compile-time code generation, type-safe query building, and SQL template support. It offers a unique approach to database programming with annotation processing for compile-time validation and zero runtime dependencies.
+
+**Key Features**
+
+- **Compile-time Code Generation**: Uses annotation processing to generate DAO implementations and validate SQL queries at compile time
+- **Type-safe Criteria API**: Build queries programmatically with full type safety and IDE support
+- **Two-way SQL**: Write SQL templates that work both as standalone SQL and within the framework
+- **Entity Associations**: Support for one-to-one, one-to-many, and many-to-one relationships
+- **Zero Dependencies**: Runs independently without requiring additional libraries
+- **Multi-language Support**: First-class support for Java and Kotlin
+- **Framework Integration**: Seamless integration with Spring Boot, Quarkus, and other frameworks
+
+**Architecture**
+
+Doma follows a code-first approach where:
+1. You define entities using annotations
+2. Annotation processors generate DAO implementations at compile time
+3. SQL queries are validated against entity definitions
+4. Runtime execution uses generated, optimized code
+
+**Use Cases**
+
+- Applications requiring complex SQL queries with type safety
+- Projects needing compile-time validation of database operations
+- Systems where performance and minimal dependencies are critical
+- Teams preferring SQL-centric development over ORM abstractions
+
+## Resources
+
+- [Main Repository](https://github.com/domaframework/doma): Doma's Git Repository
+- [Release Notes](https://github.com/domaframework/doma/releases): Doma Release Notes
+- [JavaDoc API Reference](https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/index): Javadoc for Doma's API functions.
+
+## Get Started
+
+- [Getting Started Guide](https://doma.readthedocs.io/en/stable/getting-started): Getting Started Guide for Doma
+
+## Documents
+
+- [Configuration](https://doma.readthedocs.io/en/stable/config): Configuration settings for accessing the database with Doma
+- [Basic Classes](https://doma.readthedocs.io/en/stable/basic): Java types that can be directly mapped to database columns in Doma
+- [Domain Types](https://doma.readthedocs.io/en/stable/domain): Domain classes allow you to treat database column values as user-defined Java objects for enhanced type safety.
+- [Embeddable Objects](https://doma.readthedocs.io/en/stable/embeddable): Embeddable classes, marked with `@Embeddable`, group reusable property sets for entity classes.
+- [Entity Mapping](https://doma.readthedocs.io/en/stable/entity): Entity classes represent tables or query result sets via the `@Entity` annotation. They support inheritance, custom naming `(NamingType)`, immutability `(immutable=true)`, and table mapping (`@Table`).
+- [Query Operations](https://doma.readthedocs.io/en/stable/query/): Overview of how to perform SQL operations using Doma’s query annotations and methods.
+- [Select Queries](https://doma.readthedocs.io/en/stable/query/select): Explains how to retrieve data from the database using `@Select`.
+- [Insert Operations](https://doma.readthedocs.io/en/stable/query/insert): Describes how to add new records to the database with `@Insert`.
+- [Update Operations](https://doma.readthedocs.io/en/stable/query/update): Shows how to update existing records using `@Update`.
+- [Delete Operations](https://doma.readthedocs.io/en/stable/query/delete): Demonstrates how to delete records from the database with `@Delete`.
+- [Batch Insert](https://doma.readthedocs.io/en/stable/query/batch-insert): Details how to insert multiple records at once with `@BatchInsert`.
+- [Batch Update](https://doma.readthedocs.io/en/stable/query/batch-update): Describes how to update multiple records in a single batch using `@BatchUpdate`.
+- [Batch Delete](https://doma.readthedocs.io/en/stable/query/batch-delete): Explains how to delete multiple records in batch via `@BatchDelete`.
+- [Multi-row Insert](https://doma.readthedocs.io/en/stable/query/multi-row-insert): Shows how to insert multiple rows using a single SQL statement.
+- [Stored Procedures](https://doma.readthedocs.io/en/stable/query/procedure): Explains how to call stored procedures and functions with `@Procedure`.
+- [Functions](https://doma.readthedocs.io/en/stable/query/function): Guides on invoking database functions through Doma.
+- [Script Execution](https://doma.readthedocs.io/en/stable/query/script): Describes how to execute SQL script files using `@Script`.
+- [Query Factory](https://doma.readthedocs.io/en/stable/query/factory): Explains how to dynamically build and execute queries using QueryFactory.
+- [SQL Processor](https://doma.readthedocs.io/en/stable/query/sql-processor): Provides advanced SQL execution via the `@SqlProcessor` interface.
+- [Query Builder](https://doma.readthedocs.io/en/stable/query-builder/): Demonstrates how to construct SQL queries programmatically in Java.
+- [Type-safe Criteria API](https://doma.readthedocs.io/en/stable/query-dsl): Shows how to write type-safe, dynamic queries using Criteria API.
+- [SQL Templates (Two-way SQL)](https://doma.readthedocs.io/en/stable/sql): Explains how to use external SQL files with embedded conditions and bindings.
+- [Lombok Support](https://doma.readthedocs.io/en/stable/lombok-support): Describes how Doma integrates with Lombok to reduce boilerplate code.
+- [Kotlin Support](https://doma.readthedocs.io/en/stable/kotlin-support): Explains Doma’s compatibility and usage with the Kotlin programming language.
+- [SLF4J Integration](https://doma.readthedocs.io/en/stable/slf4j-support): Describes how Doma logs SQL and messages via the SLF4J logging framework.
+- [Java Module System Support](https://doma.readthedocs.io/en/stable/jpms-support): Details how Doma supports Java Platform Module System (JPMS).
+- [Spring Boot Integration](https://doma.readthedocs.io/en/stable/spring-boot-support): Explains how to integrate Doma with Spring Boot applications.
+- [Data Access Objects (DAO)](https://doma.readthedocs.io/en/stable/dao): Introduces how to define and use DAO interfaces with annotations in Doma.
+- [Aggregate Strategy](https://doma.readthedocs.io/en/stable/aggregate-strategy): Explains strategies for managing aggregate entities and associations.
+- [Expression Language](https://doma.readthedocs.io/en/stable/expression): Shows how to use Doma’s expression language in SQL templates.
+- [Transaction Management](https://doma.readthedocs.io/en/stable/transaction): Covers how to manage database transactions using Doma’s APIs.
+- [Build Configuration](https://doma.readthedocs.io/en/stable/build): Provides guidance on setting up Doma in Maven or Gradle projects.
+- [Annotation Processing](https://doma.readthedocs.io/en/stable/annotation-processing): Describes Doma’s compile-time annotation processing mechanism.
+- [Compile Plugin](https://github.com/domaframework/doma-compile-plugin): A Gradle plugin to run Doma’s annotation processor during build time.
+- [Quarkus Support](https://doma.readthedocs.io/en/stable/quarkus-support): Explains how to use Doma in Quarkus-based applications.
+- [Code Generation](https://doma.readthedocs.io/en/stable/codegen): Shows how to generate entity classes and DAOs using Doma tools.
+- [Frequently Asked Questions](https://doma.readthedocs.io/en/stable/faq): Provides answers to common questions and issues about using Doma.
+
+## Optional
+
+- [Support Development](https://opencollective.com/doma): Donation page for financially supporting the Doma project.
+- [Code Examples](https://github.com/domaframework/simple-examples): Repository of sample projects demonstrating Doma usage.
+- [News and Announcements](https://x.com/domaframework): Doma project updates and announcements via official X account.

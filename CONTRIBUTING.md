@@ -26,7 +26,7 @@ To contribute, use GitHub Pull Requests, from your own fork.
 Clone the repository and navigate to the root directory.
 Then run the Gradle `build` task:
 
-```
+```bash
 $ git clone https://github.com/domaframework/doma.git
 $ cd doma
 $ ./gradlew build
@@ -35,18 +35,43 @@ $ ./gradlew build
 #### Using snapshots
 
 Instead of building Doma from the master branch, you may want to use snapshots.
-To use snapshots, define a Maven repository in your build.gradle as follows:
+Snapshots are automatically published when each pull request is merged into the master branch.
 
-```groovy
+##### Gradle configuration
+
+Add the Sonatype snapshot repository to your `build.gradle.kts`:
+
+```kotlin
 repositories {
-    maven {url 'https://oss.sonatype.org/content/repositories/snapshots/'}
+    mavenCentral()
+    maven("https://central.sonatype.com/repository/maven-snapshots/")
 }
 ```
 
-Snapshots are published when each pull request is merged into the master branch.
-You can check the last publication date here:
+Then use the snapshot version (e.g., `3.10.0-SNAPSHOT`):
 
-- https://oss.sonatype.org/content/repositories/snapshots/org/seasar/doma/
+```kotlin
+dependencies {
+    implementation("org.seasar.doma:doma-core:3.10.0-SNAPSHOT")
+    annotationProcessor("org.seasar.doma:doma-processor:3.10.0-SNAPSHOT")
+}
+```
+
+##### Maven configuration
+
+Add the repository to your `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>sonatype-snapshots</id>
+        <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+```
 
 ### IDE - IntelliJ IDEA
 
@@ -57,15 +82,101 @@ Import the root directory as a Gradle project.
 We use [spotless](https://github.com/diffplug/spotless) and
 [google-java-format](https://github.com/google/google-java-format) for code formatting.
 
-To format, just run the Gradle `build` task:
+#### Automatic formatting
 
-```
+Code formatting is automatically applied when running the build:
+
+```bash
 $ ./gradlew build
 ```
 
-To run google-java-format in your IDE,
-see https://github.com/google/google-java-format#using-the-formatter.
+To only check formatting without building:
+
+```bash
+$ ./gradlew spotlessCheck
+```
+
+To apply formatting without building:
+
+```bash
+$ ./gradlew spotlessApply
+```
+
+#### IDE integration
+
+To run google-java-format in your IDE:
+- IntelliJ IDEA: Install the [google-java-format plugin](https://plugins.jetbrains.com/plugin/8527-google-java-format)
+- Eclipse: Follow instructions at https://github.com/google/google-java-format#eclipse
+- VS Code: Install the [Language Support for Java extension](https://marketplace.visualstudio.com/items?itemName=redhat.java)
+
+**Important**: Do not use wildcard imports (e.g., `import java.util.*;`). Always use explicit imports.
 
 ### Documentation
 
-See https://github.com/domaframework/doma-docs
+We use [Sphinx](http://sphinx-doc.org) to generate documents.
+The generated documents are hosted on ReadTheDocs.
+
+- **Production**: https://doma.readthedocs.io/
+- **Latest (master branch)**: https://doma.readthedocs.io/en/latest/
+
+To contribute to documentation, you need Python 3.x.
+
+#### Install Sphinx
+
+Navigate to the docs directory and install dependencies:
+
+```bash
+$ cd docs
+$ pip install -r requirements.txt
+```
+
+#### Generate HTML files
+
+Use `sphinx-autobuild` for live-reloading development server:
+
+```bash
+$ cd docs
+$ sphinx-autobuild . _build/html
+```
+
+Visit http://127.0.0.1:8000 to preview your changes. The page automatically reloads when you modify RST files.
+
+#### Build documentation
+
+To build HTML documentation without auto-reload:
+
+```bash
+$ cd docs
+$ make html
+```
+
+The generated HTML files will be in `docs/_build/html/`.
+
+#### Translations
+
+Doma documentation supports Japanese translations. To work with translations:
+
+Generate POT files (translation templates):
+
+```bash
+$ cd docs
+$ sphinx-build -b gettext . _build/gettext
+```
+
+Update PO files (translation files):
+
+```bash
+$ cd docs
+$ sphinx-intl update -p _build/gettext -l ja
+```
+
+The Japanese translation files are located in `docs/locale/ja/LC_MESSAGES/`.
+
+#### Documentation guidelines
+
+- Write documentation in English first
+- Use clear, concise language
+- Include code examples where appropriate
+- Test all code examples to ensure they work
+- Verify RST syntax and rendering before submitting PRs
+- Update the table of contents (`index.rst`) when adding new pages
