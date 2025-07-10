@@ -51,7 +51,7 @@ We are testing against the following databases:
 
 | Database           |  version | status |
 |--------------------|---------:|:------:|
-| H2 Database        |    2.3.x | stable |
+| H2 Database        |  2.3.232 | stable |
 | MySQL v5           |      5.7 | stable |
 | MySQL v8           |   8.0.36 | stable |
 | Oracle Database XE |      21c | stable |

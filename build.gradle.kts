@@ -23,46 +23,109 @@ val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
 // See https://github.com/gradle/gradle/issues/16708
 val catalog = libs
 
-fun replaceVersionInArtifact(ver: String) {
-    ant.withGroovyBuilder {
-        "replaceregexp"(
-            "match" to """(private static final String VERSION = ")[^"]*(")""",
-            "replace" to "\\1${ver}\\2",
-            "encoding" to encoding,
-            "flags" to "g"
-        ) {
-            "fileset"("dir" to ".") {
-                "include"("name" to "**/Artifact.java")
+data class Replacement(
+    val match: String,
+    val replace: String,
+    val dir: String = ".",
+    val file: String,
+)
+
+fun replace(replacements: List<Replacement>) {
+    replacements.forEach { r ->
+        ant.withGroovyBuilder {
+            "replaceregexp"(
+                buildMap {
+                    put("match", r.match)
+                    put("replace", r.replace)
+                    put("encoding", encoding)
+                    put("flags", "g")
+                }
+            ) {
+                "fileset"("dir" to r.dir) {
+                    "include"("name" to r.file)
+                }
             }
         }
     }
 }
 
+fun replaceVersionInArtifact(ver: String) {
+    val replacement = Replacement(
+        """(private static final String VERSION = ")[^"]*(")""",
+        "\\1${ver}\\2",
+        file = "**/Artifact.java",
+    )
+    replace(listOf(replacement))
+}
+
 fun replaceVersionInDocs(ver: String) {
-    ant.withGroovyBuilder {
-        "replaceregexp"(
-            "match" to """("org.seasar.doma:doma-(core|kotlin|processor|slf4j|template)?:)[^"]*(")""",
-            "replace" to "\\1${ver}\\3",
-            "encoding" to encoding,
-            "flags" to "g"
-        ) {
-            "fileset"("dir" to ".") {
-                "include"("name" to "README.md")
-            }
-        }
-    }
-    ant.withGroovyBuilder {
-        "replaceregexp"(
-            "match" to """(<doma.version>)[^<]*(</doma.version>)""",
-            "replace" to "\\1${ver}\\2",
-            "encoding" to encoding,
-            "flags" to "g"
-        ) {
-            "fileset"("dir" to ".") {
-                "include"("name" to "README.md")
-            }
-        }
-    }
+    val replacements = listOf(
+        // README.md replacements
+        Replacement(
+            """("org.seasar.doma:doma-(core|kotlin|processor|slf4j|template)?:)[^"]*(")""",
+            "\\1${ver}\\3",
+            file = "README.md",
+        ),
+        Replacement(
+            """(<doma.version>)[^<]*(</doma.version>)""",
+            "\\1${ver}\\2",
+            file = "README.md",
+        ),
+        Replacement(
+            """(id\("org.domaframework.doma.compile"\) version ")[^"]*(")""",
+            "\\1${catalog.plugins.doma.compile.get().version}\\2",
+            file = "README.md",
+        ),
+        Replacement(
+            "(\\|\\s*H2 Database\\s*\\|\\s*)[^\\s]*(\\s*\\|)",
+            "\\1${catalog.jdbc.h2.get().version}\\2",
+            file = "README.md",
+        ),
+        Replacement(
+            "(\\|\\s*SQLite\\s*\\|\\s*)[^\\s]*(\\s*\\|)",
+            "\\1${catalog.jdbc.sqlite.get().version}\\2",
+            file = "README.md",
+        ),
+
+        // conf.py replacements
+        Replacement(
+            "('doma_version'\\s*:\\s*')[^']*(')",
+            "\\1${ver}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+        Replacement(
+            "('doma_compile_version'\\s*:\\s*')[^']*(')",
+            "\\1${catalog.plugins.doma.compile.get().version}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+        Replacement(
+            "('doma_codegen_version'\\s*:\\s*')[^']*(')",
+            "\\1${catalog.plugins.doma.codegen.get().version}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+        Replacement(
+            "('eclipse_apt_version'\\s*:\\s*')[^']*(')",
+            "\\1${catalog.plugins.eclipse.apt.get().version}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+        Replacement(
+            "('logback_classic_version'\\s*:\\s*')[^']*(')",
+            "\\1${catalog.logback.classic.get().version}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+        Replacement(
+            "('quarkus_doma_version'\\s*:\\s*')[^']*(')",
+            "\\1${catalog.quarkus.doma.get().version}\\2",
+            dir = "docs",
+            file = "conf.py",
+        ),
+    )
+    replace(replacements)
 }
 
 allprojects {

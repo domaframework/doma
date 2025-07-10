@@ -33,6 +33,8 @@ jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
 google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.28.0" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.6.0" }
 
+quarkus-doma = { module = "io.quarkiverse.doma:quarkus-doma", version = "1.0.4"}
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -40,6 +42,8 @@ spotless = { id = "com.diffplug.spotless", version = "7.1.0" }
 publish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
 release = { id = "net.researchgate.release", version = "3.1.0" }
 doma-compile = { id = "org.domaframework.doma.compile", version = "4.0.2" }
+doma-codegen = { id = "org.domaframework.doma.codegen", version = "3.2.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 themrmilchmann-ecj = { id = "io.github.themrmilchmann.ecj", version = "0.2.0" }
 jmh = { id = "me.champeau.jmh", version = "0.7.3" }
+eclipse-apt = { id = "com.diffplug.eclipse.apt", version = "4.3.0" }
