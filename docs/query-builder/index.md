@@ -6,7 +6,7 @@
 
 The package `org.seasar.doma.jdbc.builder` provides SQL builders.
 
-When it is difficult to build a SQL statement with {doc}`../query/index` or {doc}`../query-dsl`,
+When it is difficult to build a SQL statement with [](../query/index.md) or [](../query-dsl.md),
 consider to use the SQL builders in {ref}`dao-default-method`.
 
 ## Search

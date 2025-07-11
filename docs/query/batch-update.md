@@ -43,7 +43,7 @@ Each element in the array represents the number of rows affected by the correspo
 
 Optimistic concurrency control is executed if you satisfied below conditions.
 
-- {doc}`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version
+- [](../entity.md) within parameter java.lang.Iterable subtype has property that is annotated with @Version
 - The ignoreVersion element within @BatchUpdate annotation is false
 
 When optimistic concurrency control is enabled, the version number is included with the identifier in the update condition and is incremented by 1.
@@ -78,7 +78,7 @@ int[] update(List<Employee> employees);
 
 #### updatable
 
-The `updatable` property within `@Column` annotation that is specified `false` is excluded from updating target if {doc}`../entity` has property that is annotated with `@Column`.
+The `updatable` property within `@Column` annotation that is specified `false` is excluded from updating target if [](../entity.md) has property that is annotated with `@Column`.
 
 #### exclude
 
@@ -120,7 +120,7 @@ int[] update(List<Employee> employees);
 BatchResult<ImmutableEmployee> update(List<ImmutableEmployee> employees);
 ```
 
-Parameter type must be `java.lang.Iterable` subtype that has {doc}`../entity` as an element.
+Parameter type must be `java.lang.Iterable` subtype that has [](../entity.md) as an element.
 Specifiable parameter is only one.
 Parameter must not be `null`.
 Return value array element count become equal `Iterable` element count.
@@ -168,8 +168,8 @@ Also, `exclude` property and `include` property within `@BatchUpdate` annotation
 
 Optimistic concurrency control is performed when the following conditions are met:
 
-- java.lang.Iterable subtype element in parameter is {doc}`../entity`
-  and has property that is annotated @Version existing at {doc}`../entity`.
+- java.lang.Iterable subtype element in parameter is [](../entity.md)
+  and has property that is annotated @Version existing at [](../entity.md).
 - ignoreVersion property within @BatchUpdate annotation is false.
 
 However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility.
@@ -235,7 +235,7 @@ int[] update(List<Employee> employees);
 ```
 
 This specify is applied Regardless of using or not using SQL file.
-It you do not specify the value to `batchSize` property, batch size that is specified at {doc}`../config` class is applied.
+It you do not specify the value to `batchSize` property, batch size that is specified at [](../config.md) class is applied.
 
 ## SQL log output format
 

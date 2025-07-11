@@ -18,7 +18,7 @@ public interface EmployeeDao {
 By default, the DELETE statement is automatically generated.
 You can map to an arbitrary SQL file by setting the `sqlFile` property to `true` in the `@BatchDelete` annotation.
 
-The `preDelete` method of entity listener is called each entity when before executing delete if the entity listener is specified at {doc}`../entity` parameter.
+The `preDelete` method of entity listener is called each entity when before executing delete if the entity listener is specified at [](../entity.md) parameter.
 Also the `postDelete` method of entity listener method is called each entity when after executing delete.
 
 ## Return value
@@ -29,7 +29,7 @@ Return value must be `int[]` that is represented each deleting process's updated
 
 ## Batch delete by auto generated SQL
 
-Parameter type must be `java.lang.Iterable` subtype that has {doc}`../entity` as an element.
+Parameter type must be `java.lang.Iterable` subtype that has [](../entity.md) as an element.
 Specifiable parameter is only one.
 Parameter must not be `null`.
 Return value array element count become equal `Iterable` element count.
@@ -39,7 +39,7 @@ Delete count is returned to array each element.
 
 Optimistic concurrency control is executed if you satisfied below conditions.
 
-- {doc}`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version
+- [](../entity.md) within parameter java.lang.Iterable subtype has property that is annotated with @Version
 - The ignoreVersion element within @BatchDelete annotation is false
 
 If optimistic concurrency control is enable, version number is included with identifier in delete condition.
@@ -93,7 +93,7 @@ Parameter name indicate `java.lang.Iterable` subtype element in SQL file.
 
 Optimistic concurrency control is executed if you satisfied below conditions.
 
-- The parameter `java.lang.Iterable` subtype has {doc}`../entity` element, the {doc}`../entity` element is annotated with @Version
+- The parameter `java.lang.Iterable` subtype has [](../entity.md) element, the [](../entity.md) element is annotated with @Version
 - The ignoreVersion element within @BatchDelete annotation is false
 
 However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility.
@@ -147,7 +147,7 @@ int[] delete(List<Employee> employees);
 ```
 
 This setting applies regardless of whether you use a SQL file or not.
-If you do not specify a value for the `batchSize` property, the batch size configured in the {doc}`../config` class is used.
+If you do not specify a value for the `batchSize` property, the batch size configured in the [](../config.md) class is used.
 
 ## SQL log output format
 

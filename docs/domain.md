@@ -15,7 +15,7 @@ Every domain class is either an internal domain class or an external domain clas
 
 Internal domain classes must be annotated with `@Domain`.
 The `valueType` element of the `@Domain` annotation specifies the data type of the corresponding database column.
-You must specify a type from {doc}`basic` for the `valueType` element.
+You must specify a type from [](basic.md) for the `valueType` element.
 
 ### Instantiation with a constructor
 

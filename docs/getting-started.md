@@ -73,7 +73,7 @@ standard SQL for insert, update, and delete operations and for writing complex S
 ## DSL style
 
 In the DSL style, you work with examples in the `boilerplate.java17.repository.EmployeeRepository`
-and the {doc}`query-dsl` for operations.
+and the [](query-dsl.md) for operations.
 
 ### SELECT
 
@@ -132,7 +132,7 @@ public void update(Employee employee) {
 ## DAO style
 
 You can find some examples in `boilerplate.java17.dao.EmployeeDao`.
-See {doc}`dao` and {doc}`sql` for more information.
+See [](dao.md) and [](sql.md) for more information.
 
 ### SELECT (DAO)
 

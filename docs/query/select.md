@@ -15,7 +15,7 @@ public interface EmployeeDao {
 }
 ```
 
-The `@Select` annotation requires an {doc}`SQL template <../sql>`.
+The `@Select` annotation requires an [SQL template](../sql.md).
 You can define the SQL template either in an SQL file or in the `@Sql` annotation.
 
 ## Search condition
@@ -23,11 +23,11 @@ You can define the SQL template either in an SQL file or in the `@Sql` annotatio
 Search conditions are defined using method parameters.
 The following parameter types are supported:
 
-- {doc}`../basic`
-- {doc}`../domain`
+- [](../basic.md)
+- [](../domain.md)
 - Arbitrary type
-- java.util.Optional containing either {doc}`../basic`, {doc}`../domain`, or arbitrary type as its element.
-- java.util.Iterable containing either {doc}`../basic` or {doc}`../domain` as its element.
+- java.util.Optional containing either [](../basic.md), [](../domain.md), or arbitrary type as its element.
+- java.util.Iterable containing either [](../basic.md) or [](../domain.md) as its element.
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -37,7 +37,7 @@ For all other parameter types, the argument must not be `null`.
 
 ### Query using basic classes or domain classes
 
-Declare {doc}`../basic` or {doc}`../domain` as method parameters.
+Declare [](../basic.md) or [](../domain.md) as method parameters.
 
 ```java
 @Select
@@ -88,11 +88,11 @@ select * from employee where employee_name in /* names */('aaa','bbb','ccc')
 
 For single record searches, the return type of the method must be one of the following:
 
-- {doc}`../basic`
-- {doc}`../domain`
-- {doc}`../entity`
+- [](../basic.md)
+- [](../domain.md)
+- [](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional containing either {doc}`../basic`, {doc}`../domain`, {doc}`../entity`, or java.util.Map\<String, Object> as its element.
+- java.util.Optional containing either [](../basic.md), [](../domain.md), [](../entity.md), or java.util.Map\<String, Object> as its element.
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -111,11 +111,11 @@ If there are 2 or more search results, a `NonUniqueResultException` is thrown.
 When searching for multiple records, specify `java.util.List` as the return type of the method.
 The elements of the `List` can be of the following types:
 
-- {doc}`../basic`
-- {doc}`../domain`
-- {doc}`../entity`
+- [](../basic.md)
+- [](../domain.md)
+- [](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional containing either {doc}`../basic` or {doc}`../domain` as its element.
+- java.util.Optional containing either [](../basic.md) or [](../domain.md) as its element.
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -157,11 +157,11 @@ BigDecimal result = dao.selectByNameAndSalary(name, salary, stream -> {
 
 The type parameter `TARGET` of `Function<Stream<TARGET>, RESULT>` must be one of the following:
 
-- {doc}`../basic`
-- {doc}`../domain`
-- {doc}`../entity`
+- [](../basic.md)
+- [](../domain.md)
+- [](../entity.md)
 - java.util.Map\<String, Object>
-- Either {doc}`../basic` or {doc}`../domain` is within java.util.Optional
+- Either [](../basic.md) or [](../domain.md) is within java.util.Optional
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -173,11 +173,11 @@ The type parameter `RESULT` must match the return type of the DAO method.
 Define the method return type as `java.util.stream.Stream`.
 The Stream can contain elements of the following types:
 
-- {doc}`../basic`
-- {doc}`../domain`
-- {doc}`../entity`
+- [](../basic.md)
+- [](../domain.md)
+- [](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional containing either {doc}`../basic` or {doc}`../domain` as its element.
+- java.util.Optional containing either [](../basic.md) or [](../domain.md) as its element.
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -238,11 +238,11 @@ Map<Integer, List<Employee>> result =
 
 The type parameter `TARGET` of `Collector<TARGET, ACCUMULATION, RESULT>` must be one of the following:
 
-- {doc}`../basic`
-- {doc}`../domain`
-- {doc}`../entity`
+- [](../basic.md)
+- [](../domain.md)
+- [](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional containing either {doc}`../basic` or {doc}`../domain` as its element.
+- java.util.Optional containing either [](../basic.md) or [](../domain.md) as its element.
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -264,7 +264,7 @@ to hierarchical entity structures based on a predefined aggregate strategy.
 Employee selectByName(String name);
 ```
 
-For more details, see {doc}`../aggregate-strategy`.
+For more details, see [](../aggregate-strategy.md).
 
 :::{note}
 The aggregate strategy cannot be used in combination with {ref}`stream-search` or {ref}`collector-search`.
@@ -399,7 +399,7 @@ You can specify the query timeout in seconds using the `queryTimeout` property i
 List<Employee> selectAll();
 ```
 
-If the value of the `queryTimeout` property is not set, the query timeout specified in the {doc}`../config` will be used.
+If the value of the `queryTimeout` property is not set, the query timeout specified in the [](../config.md) will be used.
 
 ## Fetch size
 
@@ -410,7 +410,7 @@ You can specify the fetch size using the `fetchSize` property in the `@Select` a
 List<Employee> selectAll();
 ```
 
-If the value of the `fetchSize` property is not set, the fetch size specified in the {doc}`../config` will be used.
+If the value of the `fetchSize` property is not set, the fetch size specified in the [](../config.md) will be used.
 
 ## Max row count
 
@@ -421,7 +421,7 @@ You can specify the maximum number of rows using the `maxRows` property in the `
 List<Employee> selectAll();
 ```
 
-If the value of the `maxRows` property is not set, the maximum number of rows specified in the {doc}`../config` will be used.
+If the value of the `maxRows` property is not set, the maximum number of rows specified in the [](../config.md) will be used.
 
 ## The naming convention for the keys of the Map
 
@@ -436,8 +436,7 @@ List<Map<String, Object>> selectAll();
 `MapKeyNamingType.CAMEL_CASE` indicates that the column names will be converted to camel case.
 There are also conventions to convert column names to uppercase or lowercase.
 
-The final conversion result is determined by the value specified here and the implementation of `MapKeyNaming`
-specified in the {doc}`../config`.
+The final conversion result is determined by the value specified here and the implementation of `MapKeyNaming` specified in the [](../config.md).
 
 ## Output format of SQL logs
 

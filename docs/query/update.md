@@ -285,7 +285,7 @@ int update(Employee employee);
 ```
 
 This specification applies regardless of whether an SQL file is used or not.
-If the `queryTimeout` property is not set, the query timeout specified in {doc}`../config` is used.
+If the `queryTimeout` property is not set, the query timeout specified in [](../config.md) is used.
 
 ## SQL log output format
 

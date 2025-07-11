@@ -138,10 +138,10 @@ By default, all fields in an entity class are persistent and correspond to datab
 
 The field type must be one of the following:
 
-- {doc}`basic`
-- {doc}`domain`
-- {doc}`embeddable`
-- java.util.Optional, whose element is either {doc}`basic` or {doc}`domain`
+- [](basic.md)
+- [](domain.md)
+- [](embeddable.md)
+- java.util.Optional, whose element is either [](basic.md) or [](domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -176,7 +176,7 @@ String employeeName;
 If the `@Column` annotation is not specified, the column name is determined by the {ref}`naming-convention` .
 
 :::{note}
-When the field type is {doc}`embeddable`, you cannot apply the `@Column` annotation to the field.
+When the field type is [](embeddable.md), you cannot apply the `@Column` annotation to the field.
 :::
 
 ### Id
@@ -199,7 +199,7 @@ Integer id2;
 ```
 
 :::{note}
-When the field type is {doc}`embeddable`, you cannot apply the `@Id` annotation to the field.
+When the field type is [](embeddable.md), you cannot apply the `@Id` annotation to the field.
 :::
 
 (identity-auto-generation)=
@@ -211,7 +211,7 @@ You can instruct Doma to generate id values automatically using the `@GeneratedV
 The field type must be one of the following:
 
 - the subclass of java.lang.Number
-- {doc}`domain`, whose value type is the subclass of java.lang.Number
+- [](domain.md), whose value type is the subclass of java.lang.Number
 - java.util.Optional, whose element is either above types
 - OptionalInt
 - OptionalLong
@@ -291,7 +291,7 @@ The version fields for optimistic locking are represented with the `@Version` an
 The field type must be one of the following:
 
 - the subclass of java.lang.Number
-- {doc}`domain`, whose value type is the subclass of java.lang.Number
+- [](domain.md), whose value type is the subclass of java.lang.Number
 - java.util.Optional, whose element is either above types
 - OptionalInt
 - OptionalLong
@@ -304,7 +304,7 @@ Integer version;
 ```
 
 :::{note}
-When the field type is {doc}`embeddable`, you cannot apply the `@Version` annotation to the field.
+When the field type is [](embeddable.md), you cannot apply the `@Version` annotation to the field.
 :::
 
 ### Tenant Id
@@ -318,7 +318,7 @@ String tenantId;
 ```
 
 :::{note}
-When the field type is {doc}`embeddable`, you cannot apply the `@TenantId` annotation to the field.
+When the field type is [](embeddable.md), you cannot apply the `@TenantId` annotation to the field.
 :::
 
 ### Transient
@@ -349,7 +349,7 @@ Instead, this annotation is used to define entity relationships within an aggreg
 
 This annotation should be used in conjunction with the aggregate strategy,
 ensuring that related entities are treated as a single unit of consistency.
-For more details, see {doc}`aggregate-strategy`.
+For more details, see [](aggregate-strategy.md).
 
 ### OriginalStates
 

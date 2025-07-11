@@ -7,7 +7,7 @@
 ## Introduction
 
 :::{warning}
-Please use the Query DSL introduced on the {doc}`query-dsl` page instead of the Entityql and NativeSql
+Please use the Query DSL introduced on the [](query-dsl.md) page instead of the Entityql and NativeSql
 DSLs explained here.
 The Query DSL is a new, unified interface that combines both Entityql and NativeSql DSLs.
 :::
@@ -105,7 +105,7 @@ These metamodels allow you to make your query typesafe.
 You can customize the name of the metamodels by the Metamodel annotation elements.
 
 To customize all metamodels in bulk, you can use the annotation processor options.
-See {doc}`annotation-processing` and check the following options:
+See [](annotation-processing.md) and check the following options:
 
 - doma.metamodel.enabled
 - doma.metamodel.prefix

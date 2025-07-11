@@ -78,7 +78,7 @@ You may get the following message, though the file exists:
 
 You can avoid this error by configuring recommended settings for each build tool and IDE.
 
-See {doc}`build`.
+See [](build.md).
 
 ### Do you provide a tool to generate Java code from a database schema?
 
@@ -107,13 +107,13 @@ There are two ways:
 - SQL Templates.
 - The Criteria API.
 
-See {doc}`sql` and {doc}`query-dsl` for detailed information.
+See [](sql.md) and [](query-dsl.md) for detailed information.
 
 ### Does Doma support fetching relationships such as one-to-one or one-to-many?
 
 Yes, there are two ways to fetch relationships:
 
-- {doc}`aggregate-strategy` with SQL Templates.
+- [](aggregate-strategy.md) with SQL Templates.
 - {ref}`query-dsl-associate` with The Criteria API.
 
 ### Does Doma provide a JDBC connection pooling feature?

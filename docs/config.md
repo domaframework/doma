@@ -14,7 +14,7 @@ the `org.seasar.doma.jdbc.Config` interface.
 Return a JDBC `DataSource` from the `getDataSource` method.
 If you need to use local transactions provided by Doma, return a `LocalTransactionDataSource`.
 
-See also: {doc}`transaction`
+See also: [](transaction.md)
 
 :::{note}
 This is a required configuration item.
@@ -147,7 +147,7 @@ The default MapKeyNaming does nothing.
 Return a `LocalTransactionManager` from the `getTransactionManager` method.
 By default, the `getTransactionManager` method throws `UnsupportedOperationException`.
 
-See also: {doc}`transaction`
+See also: [](transaction.md)
 
 ### Adding SQL identifiers to SQLs as comments
 
@@ -172,23 +172,23 @@ For example, the QueryImplementors provides a hook to rewrite SQL statements.
 ### Query timeout
 
 Return the query timeout (in seconds) from the `getQueryTimeout` method.
-This value is used as the default in {doc}`query/index`.
+This value is used as the default in [](query/index.md).
 
 ### Max rows
 
 Return the max rows from the `getMaxRows` method.
-This value is used as the default in {doc}`query/select`.
+This value is used as the default in [](query/select.md).
 
 ### Fetch size
 
 Return the fetch size from the `getFetchSize` method.
-This value is used as the default in {doc}`query/select`.
+This value is used as the default in [](query/select.md).
 
 ### Batch size
 
 Return the batch size from the `getBatchSize` method.
-This value is used as the default in {doc}`query/batch-insert`,
-{doc}`query/batch-update` and {doc}`query/batch-delete`.
+This value is used as the default in [](query/batch-insert.md),
+[](query/batch-update.md) and [](query/batch-delete.md).
 
 ### Providing entity listeners
 

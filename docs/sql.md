@@ -159,7 +159,7 @@ Supported directives are as follows:
 - [Parser-level comment directive]
 
 :::{note}
-See also {doc}`expression` for information of the expression language available in directives.
+See also [](expression.md) for information of the expression language available in directives.
 :::
 
 (bind-variable-directive)=
@@ -173,7 +173,7 @@ The directive must be followed by test data, which is never used at runtime.
 
 #### Basic and domain parameters
 
-The parameter whose type is one of {doc}`basic` and {doc}`domain`
+The parameter whose type is one of [](basic.md) and [](domain.md)
 is recognised as a bind variable.
 
 The following example is the pair of a DAO method and an SQL template:
@@ -197,7 +197,7 @@ select * from employee where employee_id = ?
 Parameters that are either a subtype of `java.lang.Iterable` or an array type are
 recognized as bind variables in an IN clause.
 
-The type argument of `java.lang.Iterable` must be one of {doc}`basic` and {doc}`domain`.
+The type argument of `java.lang.Iterable` must be one of [](basic.md) and [](domain.md).
 The directives must be followed by test data enclosed between `(` and `)`.
 
 The following example is the pair of a DAO method and an SQL template:

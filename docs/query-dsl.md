@@ -7,7 +7,7 @@
 ## Introduction
 
 The Unified Criteria API provides a clear and intuitive interface
-by integrating the Entityql and NativeSql DSLs from the {doc}`criteria-api`.
+by integrating the Entityql and NativeSql DSLs from the [](criteria-api.md).
 
 The following entity classes are used in the examples below:
 
@@ -93,7 +93,7 @@ In our examples, the generated metamodel classes are `Employee_`, `Department_`,
 You can customize the metamodel names using the elements of the `Metamodel` annotation.
 
 To bulk customize all metamodels, you can use annotation processor options.
-See {doc}`annotation-processing` and refer to the following options:
+See [](annotation-processing.md) and refer to the following options:
 
 - doma.metamodel.enabled
 - doma.metamodel.prefix

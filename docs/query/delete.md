@@ -183,7 +183,7 @@ int delete(Employee employee);
 ```
 
 This specifying is applied regardless of with or without using sql file.
-Query timeout that is specified in {doc}`../config` is used if `queryTimeout` property is not set value.
+Query timeout that is specified in [](../config.md) is used if `queryTimeout` property is not set value.
 
 ## SQL log output format
 

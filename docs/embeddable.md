@@ -79,9 +79,9 @@ By default, all fields are persistent and correspond to database columns or resu
 
 The field type must be one of the following:
 
-- {doc}`basic`
-- {doc}`domain`
-- java.util.Optional, whose element is either {doc}`basic` or {doc}`domain`
+- [](basic.md)
+- [](domain.md)
+- java.util.Optional, whose element is either [](basic.md) or [](domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
