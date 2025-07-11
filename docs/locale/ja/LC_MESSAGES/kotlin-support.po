@@ -1,143 +1,188 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 182\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../kotlin-support.rst:3
+#: ../../kotlin-support.md:1
 msgid "Kotlin support"
 msgstr "Kotlin サポート"
 
-#: ../../kotlin-support.rst:6
+#: ../../kotlin-support.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../kotlin-support.rst:8
-msgid "Doma supports `Kotlin <https://kotlinlang.org/>`_ 1.4.0 or later."
+#: ../../kotlin-support.md:7
+#, fuzzy
+msgid "Doma supports [Kotlin](https://kotlinlang.org/) 1.4.0 or later."
 msgstr "Doma は、 `Kotlin <https://kotlinlang.org/>`_ 1.4.0 以降をサポートしています。"
 
-#: ../../kotlin-support.rst:11
+#: ../../kotlin-support.md:9
 msgid "Best practices"
 msgstr "ベストプラクティス"
 
-#: ../../kotlin-support.rst:13
-msgid "Here are some recommended approaches for defining classes and working with Kotlin in Doma."
+#: ../../kotlin-support.md:11
+msgid ""
+"Here are some recommended approaches for defining classes and working "
+"with Kotlin in Doma."
 msgstr "Kotlinでクラスを定義し、Domaで使用するためのおすすめのアプローチをいくつか紹介します。"
 
-#: ../../kotlin-support.rst:16
+#: ../../kotlin-support.md:13
 msgid "Entity classes"
 msgstr "エンティティクラス"
 
-#: ../../kotlin-support.rst:18
+#: ../../kotlin-support.md:15
 msgid "Define as a plain class"
 msgstr "プレーンクラスとして定義する"
 
-#: ../../kotlin-support.rst:19
-msgid "Specify a ``Metamodel`` annotation in the ``metamodel`` element of ``@Entity``"
+#: ../../kotlin-support.md:16
+#, fuzzy
+msgid "Specify a `Metamodel` annotation in the `metamodel` element of `@Entity`"
 msgstr "``@Entity`` の ``metamodel`` 要素に ``Metamodel`` annotation を指定する"
 
-#: ../../kotlin-support.rst:44
+#: ../../kotlin-support.md:40
 msgid "Domain classes"
 msgstr "ドメインクラス"
 
-#: ../../kotlin-support.rst:46
-#: ../../kotlin-support.rst:59
+#: ../../kotlin-support.md:42 ../../kotlin-support.md:54
 msgid "Define as a data class"
 msgstr "データクラスとして定義する"
 
-#: ../../kotlin-support.rst:47
-#: ../../kotlin-support.rst:60
+#: ../../kotlin-support.md:43 ../../kotlin-support.md:55
 msgid "Define only one constructor"
 msgstr "コンストラクターを 1 つだけ定義する"
 
-#: ../../kotlin-support.rst:48
-msgid "Define only one property named ``value`` in the constructor"
+#: ../../kotlin-support.md:44
+#, fuzzy
+msgid "Define only one property named `value` in the constructor"
 msgstr "コンストラクターでは、名前が ``value`` であるプロパティを 1 つだけ定義する"
 
-#: ../../kotlin-support.rst:49
+#: ../../kotlin-support.md:45
 msgid "Use `val` for the property definition"
 msgstr "プロパティ定義には `val` を使用する"
 
-#: ../../kotlin-support.rst:57
+#: ../../kotlin-support.md:52
 msgid "Embeddable classes"
 msgstr "埋め込み可能クラス"
 
-#: ../../kotlin-support.rst:61
+#: ../../kotlin-support.md:56
 msgid "Define properties only in the constructor"
 msgstr "コンストラクター内でのみプロパティを定義する"
 
-#: ../../kotlin-support.rst:62
+#: ../../kotlin-support.md:57
 msgid "Use `val` for the property definitions"
 msgstr "プロパティ定義には `val` を使用する"
 
-#: ../../kotlin-support.rst:70
+#: ../../kotlin-support.md:64
 msgid "Dao interfaces"
 msgstr "Dao インターフェース"
 
-#: ../../kotlin-support.rst:72
-msgid "Specify a SQL template with ``@org.seasar.doma.Sql``"
+#: ../../kotlin-support.md:66
+#, fuzzy
+msgid "Specify a SQL template with `@org.seasar.doma.Sql`"
 msgstr "SQLテンプレートを ``@org.seasar.doma.Sql`` で指定する"
 
-#: ../../kotlin-support.rst:97
+#: ../../kotlin-support.md:90
 msgid "Kotlin-specific Criteria API"
 msgstr "Kotlin 固有の Criteria API"
 
-#: ../../kotlin-support.rst:101
-msgid "It is recommended to use the Kotlin-specific Criteria API rather than DAO interfaces."
+#: ../../kotlin-support.md:93
+msgid ""
+"It is recommended to use the Kotlin-specific Criteria API rather than DAO"
+" interfaces."
 msgstr "DAO インターフェイスよりも Kotlin 固有の Criteria API を使ってください"
 
-#: ../../kotlin-support.rst:103
-msgid "Doma provides ``KQueryDsl``, a Criteria API specifically designed for Kotlin. It is very similar to the ``QueryDsl``, which is described in :doc:`query-dsl`. The main advantage of ``KQueryDsl`` is its simplicity."
-msgstr "Doma はKotlin 専用の Criteria APIである ``KQueryDsl`` を提供します。これは :doc:`query-dsl` で説明されている ``QueryDsl`` にとても似ています。``KQueryDsl`` の最大の特徴はシンプルさです。"
+#: ../../kotlin-support.md:96
+#, fuzzy, python-brace-format
+msgid ""
+"Doma provides `KQueryDsl`, a Criteria API specifically designed for "
+"Kotlin. It is very similar to the `QueryDsl`, which is described in {doc"
+"}`query-dsl`. The main advantage of `KQueryDsl` is its simplicity."
+msgstr ""
+"Doma はKotlin 専用の Criteria APIである ``KQueryDsl`` を提供します。これは :doc:`query-"
+"dsl` で説明されている ``QueryDsl`` にとても似ています。``KQueryDsl`` の最大の特徴はシンプルさです。"
 
-#: ../../kotlin-support.rst:124
-msgid "You can find more sample code `here <https://github.com/domaframework/kotlin-sample>`_."
-msgstr "`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル コードを参照できます。"
+#: ../../kotlin-support.md:117
+#, fuzzy
+msgid ""
+"You can find more sample code [here](https://github.com/domaframework"
+"/kotlin-sample)."
+msgstr ""
+"`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル "
+"コードを参照できます。"
 
-#: ../../kotlin-support.rst:126
-msgid "The ``KQueryDsl`` is included in the doma-kotlin module. Note that you should use doma-kotlin instead of doma-core in your build script. You can configure your build.gradle.kts as follows:"
-msgstr "``KQueryDsl`` はdoma-kotlinモジュールに含まれています。ビルドスクリプトでは doma-core の代わりに doma-kotlin を使用してください。build.gradle.kts は次のように構成できます:"
+#: ../../kotlin-support.md:119
+#, fuzzy
+msgid ""
+"The `KQueryDsl` is included in the doma-kotlin module. Note that you "
+"should use doma-kotlin instead of doma-core in your build script. You can"
+" configure your build.gradle.kts as follows:"
+msgstr ""
+"``KQueryDsl`` はdoma-kotlinモジュールに含まれています。ビルドスクリプトでは doma-core の代わりに doma-"
+"kotlin を使用してください。build.gradle.kts は次のように構成できます:"
 
-#: ../../kotlin-support.rst:137
+#: ../../kotlin-support.md:129
 msgid "Code Generation"
 msgstr "コード生成"
 
-#: ../../kotlin-support.rst:139
-msgid "Use :doc:`codegen`. This plugin supports Kotlin code generation."
+#: ../../kotlin-support.md:131
+#, fuzzy, python-brace-format
+msgid "Use {doc}`codegen`. This plugin supports Kotlin code generation."
 msgstr ":doc:`codegen` を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
 
-#: ../../kotlin-support.rst:143
+#: ../../kotlin-support.md:134
 msgid "Using kapt in Gradle"
 msgstr "Gradle での kapt の使用"
 
-#: ../../kotlin-support.rst:145
-msgid "Annotation processors are supported in Kotlin with the `kapt <https://kotlinlang.org/docs/reference/kapt.html>`_ compiler plugin."
-msgstr "アノテーション プロセッサは、Kotlin で `kapt <https://kotlinlang.org/docs/reference/kapt.html>`_ コンパイラ プラグインを使用してサポートされています。"
+#: ../../kotlin-support.md:136
+#, fuzzy
+msgid ""
+"Annotation processors are supported in Kotlin with the "
+"[kapt](https://kotlinlang.org/docs/reference/kapt.html) compiler plugin."
+msgstr ""
+"アノテーション プロセッサは、Kotlin で `kapt "
+"<https://kotlinlang.org/docs/reference/kapt.html>`_ コンパイラ "
+"プラグインを使用してサポートされています。"
 
-#: ../../kotlin-support.rst:148
-msgid "Add the dependencies using the `kapt` and `implementation` configurations in your dependencies block. For example, you can write build.gradle.kts as follows:"
-msgstr "依存関係ブロックの `kapt` および `implementation` を使用して依存関係を追加します。たとえば、次のように build.gradle.kts を記述できます。"
+#: ../../kotlin-support.md:139
+msgid ""
+"Add the dependencies using the `kapt` and `implementation` configurations"
+" in your dependencies block. For example, you can write build.gradle.kts "
+"as follows:"
+msgstr ""
+"依存関係ブロックの `kapt` および `implementation` を使用して依存関係を追加します。たとえば、次のように "
+"build.gradle.kts を記述できます。"
 
-#: ../../kotlin-support.rst:158
-msgid "To simplify your build script, we recommend using the `Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_."
-msgstr "ビルド スクリプトを簡略化するには、`Doma コンパイル プラグイン <https://github.com/domaframework/doma-compile-plugin>`_ を使用することをお勧めします。"
+#: ../../kotlin-support.md:149
+#, fuzzy
+msgid ""
+"To simplify your build script, we recommend using the [Doma Compile "
+"Plugin](https://github.com/domaframework/doma-compile-plugin)."
+msgstr ""
+"ビルド スクリプトを簡略化するには、`Doma コンパイル プラグイン <https://github.com/domaframework"
+"/doma-compile-plugin>`_ を使用することをお勧めします。"
 
-#: ../../kotlin-support.rst:162
+#: ../../kotlin-support.md:152
 msgid "Sample project"
 msgstr "サンプルプロジェクト"
 
-#: ../../kotlin-support.rst:164
-msgid "`kotlin-sample <https://github.com/domaframework/kotlin-sample>`_"
+#: ../../kotlin-support.md:154
+#, fuzzy
+msgid "[kotlin-sample](https://github.com/domaframework/kotlin-sample)"
 msgstr ""
+"`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル "
+"コードを参照できます。"
+
+#~ msgid "`kotlin-sample <https://github.com/domaframework/kotlin-sample>`_"
+#~ msgstr ""
 

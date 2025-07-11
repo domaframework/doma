@@ -1,1337 +1,1285 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-28 12:09+0900\n"
+"POT-Creation-Date: 2025-07-12 00:57+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: Japanese\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 234\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../codegen.rst:3
+#: ../../codegen.md:1
 msgid "Doma CodeGen Plugin"
 msgstr "Doma CodeGen プラグイン"
 
-#: ../../codegen.rst:6
+#: ../../codegen.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../codegen.rst:9
+#: ../../codegen.md:7
 msgid "Overview"
 msgstr "概要"
 
-#: ../../codegen.rst:11
+#: ../../codegen.md:9
+#, fuzzy
 msgid ""
-"The `Doma CodeGen Plugin <https://plugins.gradle.org/plugin/"
-"org.domaframework.doma.codegen>`_ is a Gradle plugin that generates Java, "
-"Kotlin, and SQL files from a database schema."
+"The [Doma CodeGen "
+"Plugin](https://plugins.gradle.org/plugin/org.domaframework.doma.codegen)"
+" is a Gradle plugin that generates Java, Kotlin, and SQL files from a "
+"database schema."
 msgstr ""
-"`Doma CodeGenプラグイン <https://plugins.gradle.org/plugin/"
-"org.domaframework.doma.codegen>`_ は Gradle プラグインです。データベースス"
-"キーマから Java、Kotlin、および SQL ファイルを生成します。"
+"`Doma CodeGenプラグイン "
+"<https://plugins.gradle.org/plugin/org.domaframework.doma.codegen>`_ は "
+"Gradle プラグインです。データベーススキーマから Java、Kotlin、および SQL ファイルを生成します。"
 
-#: ../../codegen.rst:15
+#: ../../codegen.md:12
 msgid "Key Benefits"
 msgstr "主な利点"
 
-#: ../../codegen.rst:17
+#: ../../codegen.md:14
 msgid ""
-"**Database-First Development**: Generate type-safe entity and DAO classes "
-"directly from your existing database schema"
-msgstr ""
-"**データベースファーストな開発**: 既存のデータベーススキーマから型安全なエン"
-"ティティクラスとDAOクラスを直接生成"
+"**Database-First Development**: Generate type-safe entity and DAO classes"
+" directly from your existing database schema"
+msgstr "**データベースファーストな開発**: 既存のデータベーススキーマから型安全なエンティティクラスとDAOクラスを直接生成"
 
-#: ../../codegen.rst:18
+#: ../../codegen.md:15
 msgid ""
-"**Multi-Language Support**: Generate both Java and Kotlin code with the same "
-"configuration"
+"**Multi-Language Support**: Generate both Java and Kotlin code with the "
+"same configuration"
 msgstr "**マルチ言語対応**: 同じ設定でJavaとKotlinの両方のコードを生成"
 
-#: ../../codegen.rst:19
+#: ../../codegen.md:16
 msgid ""
 "**SQL Template Generation**: Automatically create SQL template files for "
 "common READ operations"
-msgstr ""
-"**SQLテンプレート生成**: 一般的なREAD操作のSQLテンプレートファイルを自動作成"
+msgstr "**SQLテンプレート生成**: 一般的なREAD操作のSQLテンプレートファイルを自動作成"
 
-#: ../../codegen.rst:20
+#: ../../codegen.md:17
 msgid ""
 "**Testcontainers Integration**: Seamlessly work with Testcontainers for "
 "database testing and code generation"
-msgstr ""
-"**Testcontainers統合**: データベーステストとコード生成でTestcontainersとシー"
-"ムレスに連携"
+msgstr "**Testcontainers統合**: データベーステストとコード生成でTestcontainersとシームレスに連携"
 
-#: ../../codegen.rst:21
+#: ../../codegen.md:18
 msgid ""
 "**Customizable**: Use custom templates to control the generated code "
 "structure and style"
-msgstr ""
-"**カスタマイズ可能**: カスタムテンプレートを使用して生成コードの構造とスタイ"
-"ルを制御"
+msgstr "**カスタマイズ可能**: カスタムテンプレートを使用して生成コードの構造とスタイルを制御"
 
-#: ../../codegen.rst:22
+#: ../../codegen.md:19
 msgid ""
-"**Multiple Database Support**: Works with PostgreSQL, MySQL, Oracle, H2, and "
-"other JDBC-compatible databases"
-msgstr ""
-"**複数データベース対応**: PostgreSQL、MySQL、Oracle、H2、その他のJDBC互換デー"
-"タベースに対応"
+"**Multiple Database Support**: Works with PostgreSQL, MySQL, Oracle, H2, "
+"and other JDBC-compatible databases"
+msgstr "**複数データベース対応**: PostgreSQL、MySQL、Oracle、H2、その他のJDBC互換データベースに対応"
 
-#: ../../codegen.rst:25
+#: ../../codegen.md:21
 msgid "Use Cases"
 msgstr "使用例"
 
-#: ../../codegen.rst:27
+#: ../../codegen.md:23
 msgid ""
-"**Rapid Prototyping**: Quickly bootstrap data access layers from database "
-"designs"
-msgstr ""
-"**高速プロトタイピング**: データベース設計からデータアクセス層を素早く構築"
+"**Rapid Prototyping**: Quickly bootstrap data access layers from database"
+" designs"
+msgstr "**高速プロトタイピング**: データベース設計からデータアクセス層を素早く構築"
 
-#: ../../codegen.rst:28
-msgid ""
-"**Schema Evolution**: Keep your code in sync with database schema changes"
+#: ../../codegen.md:24
+msgid "**Schema Evolution**: Keep your code in sync with database schema changes"
 msgstr "**スキーマ進化**: データベーススキーマの変更にあわせてコードを同期"
 
-#: ../../codegen.rst:29
+#: ../../codegen.md:25
 msgid ""
 "**Team Development**: Ensure consistent entity and DAO implementations "
 "across team members"
-msgstr ""
-"**チーム開発**: チームメンバー間でエンティティとDAOの実装を一貫性のあるものに"
-"する"
+msgstr "**チーム開発**: チームメンバー間でエンティティとDAOの実装を一貫性のあるものにする"
 
-#: ../../codegen.rst:31
+#: ../../codegen.md:27
 msgid "Are you looking for documentation for Ant-based Doma-Gen?"
 msgstr "AntベースのDoma-Genのドキュメントをお探しですか?"
 
-#: ../../codegen.rst:34
+#: ../../codegen.md:30
+#, fuzzy
 msgid ""
-"Documentation for Ant-based Doma-Gen is available at `the Doma-Gen GitHub "
-"repository <https://github.com/domaframework/doma-gen/tree/master/docs>`_."
+"Documentation for Ant-based Doma-Gen is available at [the Doma-Gen GitHub"
+" repository](https://github.com/domaframework/doma-gen/tree/master/docs)."
 msgstr ""
-"AntベースのDoma-Genのドキュメントは、 `Doma-Gen GitHub リポジトリ <https://"
-"github.com/domaframework/doma-gen/tree/master/docs>`_ にあります。"
+"AntベースのDoma-Genのドキュメントは、 `Doma-Gen GitHub リポジトリ "
+"<https://github.com/domaframework/doma-gen/tree/master/docs>`_ にあります。"
 
-#: ../../codegen.rst:37
+#: ../../codegen.md:33
 msgid ""
-"Please note that Ant-based Doma-Gen is no longer maintained. We recommend "
-"using the Doma CodeGen Plugin described on this page instead."
+"Please note that Ant-based Doma-Gen is no longer maintained. We recommend"
+" using the Doma CodeGen Plugin described on this page instead."
 msgstr ""
-"AntベースのDoma-Genは現在メンテナンスされていません。代わりにこのページで説明"
-"されているDoma CodeGenプラグインを使用してください。"
+"AntベースのDoma-Genは現在メンテナンスされていません。代わりにこのページで説明されているDoma "
+"CodeGenプラグインを使用してください。"
 
-#: ../../codegen.rst:40
+#: ../../codegen.md:36
 msgid "Getting Started"
 msgstr "始め方"
 
-#: ../../codegen.rst:43
+#: ../../codegen.md:38
 msgid "Prerequisites"
 msgstr "前提条件"
 
-#: ../../codegen.rst:45
+#: ../../codegen.md:40
 #, fuzzy
 msgid "Gradle 8.0 or higher"
 msgstr "- Gradle 8.0 以上"
 
-#: ../../codegen.rst:46
+#: ../../codegen.md:41
 #, fuzzy
 msgid "Java 17 or higher"
 msgstr "- Java 17 以上"
 
-#: ../../codegen.rst:47
+#: ../../codegen.md:42
 #, fuzzy
 msgid "Access to a database (can be local, remote, or Testcontainers-based)"
-msgstr ""
-"- データベースへのアクセス（ローカル、リモート、またはTestcontainersベースが"
-"可能）"
+msgstr "- データベースへのアクセス（ローカル、リモート、またはTestcontainersベースが可能）"
 
-#: ../../codegen.rst:50
+#: ../../codegen.md:44
 msgid "Step-by-Step Setup"
 msgstr "ステップバイステップの設定"
 
-#: ../../codegen.rst:52
+#: ../../codegen.md:46
 #, fuzzy
 msgid "**Add the Plugin**"
 msgstr "1. **プラグインの追加**"
 
-#: ../../codegen.rst:54
+#: ../../codegen.md:48
 msgid "Add the Doma CodeGen plugin to your Gradle build file:"
 msgstr "Doma CodeGenプラグインをGradleビルドファイルに追加します："
 
-#: ../../codegen.rst:63
+#: ../../codegen.md:57
 #, fuzzy
 msgid "**Configure Dependencies**"
 msgstr "2. **依存関係の設定**"
 
-#: ../../codegen.rst:65
+#: ../../codegen.md:59
 msgid "Add the necessary JDBC driver dependency:"
 msgstr "必要なJDBCドライバーの依存関係を追加します："
 
-#: ../../codegen.rst:74
+#: ../../codegen.md:68
 #, fuzzy
 msgid "**Set up Local PostgreSQL Database**"
 msgstr "3. **ローカルPostgreSQLデータベースのセットアップ**"
 
-#: ../../codegen.rst:76
+#: ../../codegen.md:70
 msgid ""
 "Make sure you have PostgreSQL installed and running locally. Create a "
 "database and tables:"
-msgstr ""
-"PostgreSQLがローカルにインストールされ実行されていることを確認してください。"
-"データベースとテーブルを作成します："
+msgstr "PostgreSQLがローカルにインストールされ実行されていることを確認してください。データベースとテーブルを作成します："
 
-#: ../../codegen.rst:100
+#: ../../codegen.md:94
 #, fuzzy
 msgid "**Configure Code Generation**"
 msgstr "4. **コード生成の設定**"
 
-#: ../../codegen.rst:102
+#: ../../codegen.md:96
 msgid "Complete build.gradle.kts example:"
 msgstr "完全なbuild.gradle.ktsの例："
 
-#: ../../codegen.rst:140
+#: ../../codegen.md:134
 #, fuzzy
 msgid "**Generate Code**"
 msgstr "5. **コードの生成**"
 
-#: ../../codegen.rst:142
+#: ../../codegen.md:136
 msgid "Run the code generation task:"
 msgstr "コード生成タスクを実行します："
 
-#: ../../codegen.rst:148
+#: ../../codegen.md:142
 msgid "This will generate:"
 msgstr "これにより以下が生成されます："
 
-#: ../../codegen.rst:150
+#: ../../codegen.md:144
 #, fuzzy
-msgid "Entity classes in ``src/main/java/com/example/myapp/entity/``"
+msgid "Entity classes in `src/main/java/com/example/myapp/entity/`"
 msgstr "- ``src/main/java/com/example/myapp/entity/`` にエンティティクラス"
 
-#: ../../codegen.rst:151
+#: ../../codegen.md:145
 #, fuzzy
-msgid "DAO interfaces in ``src/main/java/com/example/myapp/dao/``"
+msgid "DAO interfaces in `src/main/java/com/example/myapp/dao/`"
 msgstr "- ``src/main/java/com/example/myapp/dao/`` にDAOインターフェース"
 
-#: ../../codegen.rst:152
+#: ../../codegen.md:146
 #, fuzzy
-msgid ""
-"SQL template files in ``src/main/resources/META-INF/com/example/myapp/dao/``"
+msgid "SQL template files in `src/main/resources/META-INF/com/example/myapp/dao/`"
 msgstr "- ``src/main/resources/META-INF/`` にSQLテンプレートファイル"
 
-#: ../../codegen.rst:153
+#: ../../codegen.md:147
 #, fuzzy
-msgid "Test classes in ``src/test/java/com/example/myapp/dao/``"
+msgid "Test classes in `src/test/java/com/example/myapp/dao/`"
 msgstr "- ``src/main/java/com/example/myapp/entity/`` にエンティティクラス"
 
-#: ../../codegen.rst:156
+#: ../../codegen.md:149
 msgid "What Gets Generated"
 msgstr "生成される内容"
 
-#: ../../codegen.rst:158
+#: ../../codegen.md:151
 msgid "After running the code generation, you'll find the following files:"
 msgstr "コード生成を実行すると、以下のファイルが見つかります："
 
-#: ../../codegen.rst:160
+#: ../../codegen.md:153
 msgid "**Entity Classes**"
 msgstr "**エンティティクラス**"
 
-#: ../../codegen.rst:182
+#: ../../codegen.md:175
 msgid "**DAO Interfaces**"
 msgstr "**DAOインターフェース**"
 
-#: ../../codegen.rst:201
+#: ../../codegen.md:194
 msgid "**SQL Templates**"
 msgstr "**SQLテンプレート**"
 
-#: ../../codegen.rst:209
+#: ../../codegen.md:200
 msgid "Database Examples"
 msgstr "データベースの例"
 
-#: ../../codegen.rst:211
+#: ../../codegen.md:202
 msgid "The following examples show how to configure different database types:"
 msgstr "以下の例では、異なるデータベースタイプの設定方法を示します："
 
-#: ../../codegen.rst:214
+#: ../../codegen.md:204
 msgid "PostgreSQL"
 msgstr ""
 
-#: ../../codegen.rst:237
+#: ../../codegen.md:226
 msgid "PostgreSQL with Testcontainers"
 msgstr "TestcontainersでのPostgreSQL"
 
-#: ../../codegen.rst:263
+#: ../../codegen.md:251
 msgid "MySQL with Testcontainers"
 msgstr "TestcontainersでのMySQL"
 
-#: ../../codegen.rst:289
+#: ../../codegen.md:276
 msgid "Gradle Tasks"
 msgstr "Gradle タスク"
 
-#: ../../codegen.rst:291
+#: ../../codegen.md:278
 msgid "The Doma CodeGen Plugin provides the following tasks:"
 msgstr "Doma CodeGen プラグインは以下のタスクを提供します。"
 
-#: ../../codegen.rst:293
+#: ../../codegen.md:280
 msgid "domaCodeGenXxxAll - Generates all."
 msgstr "domaCodeGenXxxAll - すべてを生成します。"
 
-#: ../../codegen.rst:294
+#: ../../codegen.md:281
 msgid "domaCodeGenXxxDao - Generates DAO source files."
 msgstr "domaCodeGenXxxDao - DAO ソースファイルを生成します。"
 
-#: ../../codegen.rst:295
+#: ../../codegen.md:282
 msgid ""
-"domaCodeGenXxxDto - Reads ResultSet metadata and generate a DTO source file."
-msgstr ""
-"domaCodeGenXxxDto - 結果セットのメタデータを読み、DTO ソースファイルを生成し"
-"ます。"
+"domaCodeGenXxxDto - Reads ResultSet metadata and generate a DTO source "
+"file."
+msgstr "domaCodeGenXxxDto - 結果セットのメタデータを読み、DTO ソースファイルを生成します。"
 
-#: ../../codegen.rst:296
+#: ../../codegen.md:283
 msgid "domaCodeGenXxxEntity - Generates Entity source files."
 msgstr "domaCodeGenXxxEntity - エンティティソースファイルを生成します。"
 
-#: ../../codegen.rst:297
+#: ../../codegen.md:284
 msgid "domaCodeGenXxxSql - Generates SQL files."
 msgstr "domaCodeGenXxxSql - SQLファイルを生成します。"
 
-#: ../../codegen.rst:298
+#: ../../codegen.md:285
 msgid "domaCodeGenXxxSqlTest - Generates SQL test source files."
 msgstr "domaCodeGenXxxSqlTest - SQL テストソースファイルを生成します。"
 
-#: ../../codegen.rst:300
+#: ../../codegen.md:287
 #, fuzzy
 msgid ""
-"Note that the *Xxx* part in each task name is replaced with the block name "
-"defined under the ``domaCodeGen`` block. In the usage example above, the "
-"*Postgresql* part corresponds to the ``postgresql`` block."
+"Note that the *Xxx* part in each task name is replaced with the block "
+"name defined under the `domaCodeGen` block. In the usage example above, "
+"the *Postgresql* part corresponds to the `postgresql` block."
 msgstr ""
-"上記のタスク名の *Xxx* 部分は、``domaCodeGen`` ブロックの下で定義されているブ"
-"ロック名に置き換えられます。上記の使用例では、*Dev* 部分は ``dev`` ブロックに"
-"対応しています。"
+"上記のタスク名の *Xxx* 部分は、``domaCodeGen`` "
+"ブロックの下で定義されているブロック名に置き換えられます。上記の使用例では、*Dev* 部分は ``dev`` ブロックに対応しています。"
 
-#: ../../codegen.rst:303
+#: ../../codegen.md:290
 msgid "To check all defined task names, run the `tasks` task:"
 msgstr "定義済みのタスク名をすべて確認するには、`tasks` タスクを実行します。"
 
-#: ../../codegen.rst:310
+#: ../../codegen.md:296
 msgid "Configuration Reference"
 msgstr "設定リファレンス"
 
-#: ../../codegen.rst:313
+#: ../../codegen.md:298
 msgid "Named Configuration"
 msgstr "名前付き設定"
 
-#: ../../codegen.rst:315
+#: ../../codegen.md:300
+#, fuzzy
 msgid ""
-"A named configuration must be defined under the ``domaCodeGen`` block. You "
-"can choose any name for your configuration. Multiple configurations can be "
-"defined to support different databases or environments."
+"A named configuration must be defined under the `domaCodeGen` block. You "
+"can choose any name for your configuration. Multiple configurations can "
+"be defined to support different databases or environments."
 msgstr ""
-"``domaCodeGen`` ブロックの下に名前付き設定を定義する必要があります。設定には"
-"任意の名前を選択できます。異なるデータベースや環境をサポートするために複数の"
-"設定を定義できます。"
+"``domaCodeGen`` "
+"ブロックの下に名前付き設定を定義する必要があります。設定には任意の名前を選択できます。異なるデータベースや環境をサポートするために複数の設定を定義できます。"
 
-#: ../../codegen.rst:319
+#: ../../codegen.md:304
 msgid "**Example: Multiple Database Configurations**"
 msgstr "**例：複数データベース設定**"
 
-#: ../../codegen.rst:349
+#: ../../codegen.md:334
 msgid "This generates separate task sets for each database:"
 msgstr "これによりデータベースごとに個別のタスクセットが生成されます："
 
-#: ../../codegen.rst:357
+#: ../../codegen.md:341
 msgid "Main Configuration Options"
 msgstr "メイン設定オプション"
 
-#: ../../codegen.rst:359
+#: ../../codegen.md:343
 msgid ""
-"These options are configured at the top level of each named configuration "
-"block:"
-msgstr ""
-"これらのオプションは、各名前付き設定ブロックのトップレベルで設定されます："
+"These options are configured at the top level of each named configuration"
+" block:"
+msgstr "これらのオプションは、各名前付き設定ブロックのトップレベルで設定されます："
 
-#: ../../codegen.rst:365 ../../codegen.rst:482 ../../codegen.rst:597
-#: ../../codegen.rst:637 ../../codegen.rst:692
+#: ../../codegen.md:350 ../../codegen.md:468 ../../codegen.md:584
+#: ../../codegen.md:626 ../../codegen.md:682
 msgid "Option"
 msgstr "オプション"
 
-#: ../../codegen.rst:366 ../../codegen.rst:483 ../../codegen.rst:598
-#: ../../codegen.rst:638 ../../codegen.rst:693
+#: ../../codegen.md:351 ../../codegen.md:469 ../../codegen.md:585
+#: ../../codegen.md:627 ../../codegen.md:683
 msgid "Description"
 msgstr "説明"
 
-#: ../../codegen.rst:367
+#: ../../codegen.md:352
 #, fuzzy
 msgid "Example Values"
 msgstr "値"
 
-#: ../../codegen.rst:368 ../../codegen.rst:485 ../../codegen.rst:600
-#: ../../codegen.rst:640 ../../codegen.rst:694
+#: ../../codegen.md:353 ../../codegen.md:471 ../../codegen.md:587
+#: ../../codegen.md:629 ../../codegen.md:684
 msgid "Default"
 msgstr "既定値"
 
-#: ../../codegen.rst:369
+#: ../../codegen.md:354
 msgid "**url**"
 msgstr ""
 
-#: ../../codegen.rst:370
+#: ../../codegen.md:355
 msgid "JDBC connection URL to your database"
 msgstr ""
 
-#: ../../codegen.rst:371
+#: ../../codegen.md:356
 msgid "``jdbc:postgresql://localhost:5432/mydb``"
 msgstr ""
 
-#: ../../codegen.rst:372 ../../codegen.rst:376 ../../codegen.rst:380
+#: ../../codegen.md:357 ../../codegen.md:361 ../../codegen.md:365
 msgid "*Required*"
 msgstr ""
 
-#: ../../codegen.rst:373
+#: ../../codegen.md:358
 #, fuzzy
 msgid "**user**"
 msgstr "user"
 
-#: ../../codegen.rst:374
+#: ../../codegen.md:359
 msgid "Database username for authentication"
 msgstr ""
 
-#: ../../codegen.rst:375
+#: ../../codegen.md:360
 msgid "``myuser``"
 msgstr ""
 
-#: ../../codegen.rst:377
+#: ../../codegen.md:362
 #, fuzzy
 msgid "**password**"
 msgstr "password"
 
-#: ../../codegen.rst:378
+#: ../../codegen.md:363
 msgid "Database password for authentication"
 msgstr ""
 
-#: ../../codegen.rst:379
+#: ../../codegen.md:364
 msgid "``mypass``"
 msgstr ""
 
-#: ../../codegen.rst:381
+#: ../../codegen.md:366
 msgid "dataSource"
 msgstr "dataSource"
 
-#: ../../codegen.rst:382
+#: ../../codegen.md:367
 msgid "Custom data source class (advanced)"
 msgstr ""
 
-#: ../../codegen.rst:384 ../../codegen.rst:388
+#: ../../codegen.md:369 ../../codegen.md:373
 msgid "inferred from URL"
 msgstr ""
 
-#: ../../codegen.rst:385
+#: ../../codegen.md:370
 msgid "codeGenDialect"
 msgstr "codeGenDialect"
 
-#: ../../codegen.rst:386
+#: ../../codegen.md:371
 msgid "Database dialect for SQL generation (advanced)"
 msgstr ""
 
-#: ../../codegen.rst:389
+#: ../../codegen.md:374
 msgid "catalogName"
 msgstr "catalogName"
 
-#: ../../codegen.rst:390
+#: ../../codegen.md:375
 #, fuzzy
 msgid "Database catalog name to filter tables"
 msgstr "データベースのカタログ名"
 
-#: ../../codegen.rst:391
+#: ../../codegen.md:376
 msgid "``sales_catalog``"
 msgstr ""
 
-#: ../../codegen.rst:393
+#: ../../codegen.md:378
 msgid "schemaName"
 msgstr "schemaName"
 
-#: ../../codegen.rst:394
+#: ../../codegen.md:379
 #, fuzzy
 msgid "Database schema name to filter tables"
 msgstr "データベースのスキーマ名"
 
-#: ../../codegen.rst:395
+#: ../../codegen.md:380
 msgid "``public``, ``dbo``, ``hr``"
 msgstr ""
 
-#: ../../codegen.rst:397
+#: ../../codegen.md:382
 msgid "tableNamePattern"
 msgstr "tableNamePattern"
 
-#: ../../codegen.rst:398
+#: ../../codegen.md:383
 msgid "Regex pattern to include specific tables"
 msgstr ""
 
-#: ../../codegen.rst:399
+#: ../../codegen.md:384
 msgid "``user_.*`` (tables starting with \"user\\_\")"
 msgstr ""
 
-#: ../../codegen.rst:400
+#: ../../codegen.md:385
 msgid "``.*`` (all tables)"
 msgstr ""
 
-#: ../../codegen.rst:401
+#: ../../codegen.md:386
 msgid "ignoredTableNamePattern"
 msgstr "ignoredTableNamePattern"
 
-#: ../../codegen.rst:402
+#: ../../codegen.md:387
 msgid "Regex pattern to exclude tables"
 msgstr ""
 
-#: ../../codegen.rst:403
+#: ../../codegen.md:388
 msgid "``temp_.*`` (ignore temp tables)"
 msgstr ""
 
-#: ../../codegen.rst:404
+#: ../../codegen.md:389
 msgid "``.*$.*`` (ignore system tables)"
 msgstr ""
 
-#: ../../codegen.rst:405
+#: ../../codegen.md:390
 msgid "tableTypes"
 msgstr "tableTypes"
 
-#: ../../codegen.rst:406
+#: ../../codegen.md:391
 msgid "Types of database objects to include"
 msgstr ""
 
-#: ../../codegen.rst:407
+#: ../../codegen.md:392
 msgid "``[\"TABLE\", \"VIEW\"]`` (include tables and views)"
 msgstr ""
 
-#: ../../codegen.rst:408
+#: ../../codegen.md:393
 #, fuzzy
 msgid "``[\"TABLE\"]``"
 msgstr "\"TABLE\""
 
-#: ../../codegen.rst:409
+#: ../../codegen.md:394
 msgid "versionColumnNamePattern"
 msgstr "versionColumnNamePattern"
 
-#: ../../codegen.rst:410
+#: ../../codegen.md:395
 msgid "Regex to identify version columns"
 msgstr ""
 
-#: ../../codegen.rst:411
+#: ../../codegen.md:396
 msgid "``VERSION([_]?NO)?`` or ``.*_version``"
 msgstr ""
 
-#: ../../codegen.rst:412
+#: ../../codegen.md:397
 #, fuzzy
 msgid "``VERSION([_]?NO)?``"
 msgstr "\"VERSION([_]?NO)?\""
 
-#: ../../codegen.rst:413
+#: ../../codegen.md:398
 msgid "languageType"
 msgstr "languageType"
 
-#: ../../codegen.rst:414
+#: ../../codegen.md:399
 msgid "Target programming language"
 msgstr ""
 
-#: ../../codegen.rst:415
+#: ../../codegen.md:400
 #, fuzzy
-msgid "``LanguageType.JAVA`` or ``LanguageType.KOTLIN`` [#]_"
+msgid "``LanguageType.JAVA`` or ``LanguageType.KOTLIN``"
 msgstr "[#]_ `LanguageType.JAVA`, `LanguageType.KOTLIN`"
 
-#: ../../codegen.rst:416
+#: ../../codegen.md:401
 #, fuzzy
 msgid "``LanguageType.JAVA``"
 msgstr "`LanguageType.JAVA`"
 
-#: ../../codegen.rst:417
+#: ../../codegen.md:402
 msgid "templateDir"
 msgstr "templateDir"
 
-#: ../../codegen.rst:418
+#: ../../codegen.md:403
 #, fuzzy
 msgid "Directory containing custom FreeMarker templates"
 msgstr "freeMarker テンプレートファイルのエンコーディング"
 
-#: ../../codegen.rst:419
+#: ../../codegen.md:404
 msgid "``file(\"$projectDir/custom-templates\")``"
 msgstr ""
 
-#: ../../codegen.rst:421
+#: ../../codegen.md:406
 msgid "encoding"
 msgstr "encoding"
 
-#: ../../codegen.rst:422
+#: ../../codegen.md:407
 #, fuzzy
 msgid "Text encoding for generated source files"
 msgstr "生成される Java ソースファイルのエンコーディング"
 
-#: ../../codegen.rst:423
+#: ../../codegen.md:408
 msgid "``UTF-8``, ``Shift_JIS``"
 msgstr ""
 
-#: ../../codegen.rst:424
+#: ../../codegen.md:409
 #, fuzzy
 msgid "``UTF-8``"
 msgstr "\"UTF-8\""
 
-#: ../../codegen.rst:425
+#: ../../codegen.md:410
 msgid "sourceDir"
 msgstr "sourceDir"
 
-#: ../../codegen.rst:426
+#: ../../codegen.md:411
 #, fuzzy
 msgid "Output directory for generated source files"
 msgstr "生成された Java ソースファイルが配置されるディレクトリ"
 
-#: ../../codegen.rst:427
+#: ../../codegen.md:412
 msgid "``src/main/java``, ``src/main/kotlin``"
 msgstr ""
 
-#: ../../codegen.rst:428
+#: ../../codegen.md:413
 #, fuzzy
 msgid "depends on language"
 msgstr "`languageType` に依存します"
 
-#: ../../codegen.rst:429
+#: ../../codegen.md:414
 msgid "resourceDir"
 msgstr "resourceDir"
 
-#: ../../codegen.rst:430
+#: ../../codegen.md:415
 #, fuzzy
 msgid "Output directory for generated SQL files"
 msgstr "生成された SQL ファイルが配置されるディレクトリ"
 
-#: ../../codegen.rst:431 ../../codegen.rst:432
+#: ../../codegen.md:416 ../../codegen.md:417
 #, fuzzy
 msgid "``src/main/resources``"
 msgstr "\"src/main/resources\""
 
-#: ../../codegen.rst:433
+#: ../../codegen.md:418
 msgid "globalFactory"
 msgstr "globalFactory"
 
-#: ../../codegen.rst:434
+#: ../../codegen.md:419
 msgid "entry point to customize plugin behavior"
 msgstr "プラグインの動作をカスタマイズするエントリポイント"
 
-#: ../../codegen.rst:436
-msgid "[#]_ The instance of `GlobalFactory`"
+#: ../../codegen.md:421
+#, fuzzy
+msgid "The instance of `GlobalFactory`"
 msgstr "[#]_ `GlobalFactory` のインスタンス"
 
-#: ../../codegen.rst:439
+#: ../../codegen.md:424
 msgid "Entity Configuration"
 msgstr "エンティティ設定"
 
-#: ../../codegen.rst:441
+#: ../../codegen.md:426
+#, fuzzy
 msgid ""
-"The ``entity`` block configures how entity classes are generated. This block "
-"must be defined within a named configuration."
-msgstr ""
-"``entity`` ブロックはエンティティクラスの生成方法を設定します。このブロックは"
-"名前付き設定内で定義する必要があります。"
+"The `entity` block configures how entity classes are generated. This "
+"block must be defined within a named configuration."
+msgstr "``entity`` ブロックはエンティティクラスの生成方法を設定します。このブロックは名前付き設定内で定義する必要があります。"
 
-#: ../../codegen.rst:443 ../../codegen.rst:580
+#: ../../codegen.md:428 ../../codegen.md:566
 msgid "**Basic Example**"
 msgstr "**基本例**"
 
-#: ../../codegen.rst:459
+#: ../../codegen.md:444
 msgid "**Advanced Example**"
 msgstr "**高度な例**"
 
-#: ../../codegen.rst:484 ../../codegen.rst:599 ../../codegen.rst:639
+#: ../../codegen.md:470 ../../codegen.md:586 ../../codegen.md:628
 msgid "Values"
 msgstr "値"
 
-#: ../../codegen.rst:486 ../../codegen.rst:601 ../../codegen.rst:641
+#: ../../codegen.md:472 ../../codegen.md:588 ../../codegen.md:630
 msgid "overwrite"
 msgstr "overwrite"
 
-#: ../../codegen.rst:487
+#: ../../codegen.md:473
 msgid "where to overwrite generated entity files or not"
 msgstr "生成されたエンティティファイルを上書きするかどうか"
 
-#: ../../codegen.rst:489 ../../codegen.rst:533 ../../codegen.rst:537
-#: ../../codegen.rst:541 ../../codegen.rst:545 ../../codegen.rst:549
-#: ../../codegen.rst:553 ../../codegen.rst:557
+#: ../../codegen.md:475 ../../codegen.md:519 ../../codegen.md:523
+#: ../../codegen.md:527 ../../codegen.md:531 ../../codegen.md:535
+#: ../../codegen.md:539 ../../codegen.md:543
 msgid "`true`"
 msgstr "`true`"
 
-#: ../../codegen.rst:490
+#: ../../codegen.md:476
 msgid "overwriteListener"
 msgstr "overwriteListener"
 
-#: ../../codegen.rst:491
+#: ../../codegen.md:477
 msgid "allow to overwrite listeners or not"
 msgstr "リスナーを上書きするかどうか"
 
-#: ../../codegen.rst:493 ../../codegen.rst:525 ../../codegen.rst:529
+#: ../../codegen.md:479 ../../codegen.md:511 ../../codegen.md:515
 msgid "`false`"
 msgstr "`false`"
 
-#: ../../codegen.rst:494
+#: ../../codegen.md:480
 msgid "superclassName"
 msgstr "superclassName"
 
-#: ../../codegen.rst:495
+#: ../../codegen.md:481
 msgid "common superclass for generated entity classes"
 msgstr "生成されたエンティティクラスに共通のスーパークラス"
 
-#: ../../codegen.rst:498
+#: ../../codegen.md:484
 msgid "listenerSuperclassName"
 msgstr "listenerSuperclassName"
 
-#: ../../codegen.rst:499
+#: ../../codegen.md:485
 msgid "common superclass for generated entity listener classes"
 msgstr "生成されたエンティティリスナークラスに共通のスーパークラス"
 
-#: ../../codegen.rst:502 ../../codegen.rst:605
+#: ../../codegen.md:488 ../../codegen.md:592
 msgid "packageName"
 msgstr "packageName"
 
-#: ../../codegen.rst:503
+#: ../../codegen.md:489
 msgid "package name for generated entity class"
 msgstr "生成されたエンティティクラスのパッケージ名"
 
-#: ../../codegen.rst:505
+#: ../../codegen.md:491
 msgid "\"example.entity\""
 msgstr "\"example.entity\""
 
-#: ../../codegen.rst:506
+#: ../../codegen.md:492
 msgid "generationType"
 msgstr "generationType"
 
-#: ../../codegen.rst:507
+#: ../../codegen.md:493
 msgid "generation type for entity identities"
 msgstr "エンティティのIDの生成タイプ"
 
-#: ../../codegen.rst:508
-msgid "[#]_ enum value of `GenerationType`"
+#: ../../codegen.md:494
+#, fuzzy
+msgid "enum value of `GenerationType`"
 msgstr "[#]_ `GenerationType` の列挙値"
 
-#: ../../codegen.rst:510
+#: ../../codegen.md:496
 msgid "namingType"
 msgstr "namingType"
 
-#: ../../codegen.rst:511
+#: ../../codegen.md:497
 msgid "naming convention"
 msgstr "命名規則"
 
-#: ../../codegen.rst:512
-msgid "[#]_ enum value of `NamingType`"
+#: ../../codegen.md:498
+#, fuzzy
+msgid "enum value of `NamingType`"
 msgstr "[#]_ `NamingType` の列挙値"
 
-#: ../../codegen.rst:514
+#: ../../codegen.md:500
 msgid "initialValue"
 msgstr "initialValue"
 
-#: ../../codegen.rst:515
+#: ../../codegen.md:501
 msgid "initial value for entity identities"
 msgstr "エンティティIDの初期値"
 
-#: ../../codegen.rst:518
+#: ../../codegen.md:504
 msgid "allocationSize"
 msgstr "allocationSize"
 
-#: ../../codegen.rst:519
+#: ../../codegen.md:505
 msgid "allocation size for entity identities"
 msgstr "エンティティIDの割り当てサイズ"
 
-#: ../../codegen.rst:522
+#: ../../codegen.md:508
 msgid "showCatalogName"
 msgstr "showCatalogName"
 
-#: ../../codegen.rst:523
+#: ../../codegen.md:509
 msgid "whether to show catalog names or not"
 msgstr "カタログ名を表示するかどうか"
 
-#: ../../codegen.rst:526
+#: ../../codegen.md:512
 msgid "showSchemaName"
 msgstr "showSchemaName"
 
-#: ../../codegen.rst:527
+#: ../../codegen.md:513
 msgid "whether to show schema names or not"
 msgstr "スキーマ名を表示するかどうか"
 
-#: ../../codegen.rst:530
+#: ../../codegen.md:516
 msgid "showTableName"
 msgstr "showTableName"
 
-#: ../../codegen.rst:531
+#: ../../codegen.md:517
 msgid "whether to show table names or not"
 msgstr "テーブル名を表示するかどうか"
 
-#: ../../codegen.rst:534
+#: ../../codegen.md:520
 msgid "showColumnName"
 msgstr "showColumnName"
 
-#: ../../codegen.rst:535
+#: ../../codegen.md:521
 msgid "whether to show column names or not"
 msgstr "カラム名を表示するかどうか"
 
-#: ../../codegen.rst:538
+#: ../../codegen.md:524
 msgid "showDbComment"
 msgstr "showDbComment"
 
-#: ../../codegen.rst:539
+#: ../../codegen.md:525
 msgid "whether to show database comments or not"
 msgstr "データベースのコメントを表示するかどうか"
 
-#: ../../codegen.rst:542
+#: ../../codegen.md:528
 msgid "useAccessor"
 msgstr "useAccessor"
 
-#: ../../codegen.rst:543
+#: ../../codegen.md:529
 msgid "whether to use accessors or not"
 msgstr "アクセッサーを使うかどうか"
 
-#: ../../codegen.rst:546
+#: ../../codegen.md:532
 msgid "useListener"
 msgstr "useListener"
 
-#: ../../codegen.rst:547
+#: ../../codegen.md:533
 msgid "whether to use listeners or not"
 msgstr "リスナーを使うかどうか"
 
-#: ../../codegen.rst:550
+#: ../../codegen.md:536
 msgid "useMetamodel"
 msgstr "useMetamodel"
 
-#: ../../codegen.rst:551
+#: ../../codegen.md:537
 msgid "whether to use metamodels or not"
 msgstr "メタモデルを使うかどうか"
 
-#: ../../codegen.rst:554
+#: ../../codegen.md:540
 msgid "useMappedSuperclass"
 msgstr "useMappedSuperclass"
 
-#: ../../codegen.rst:555
+#: ../../codegen.md:541
 msgid "whether to use mapped superclasses or not"
 msgstr "マップされたスーパークラスを使用するかどうか"
 
-#: ../../codegen.rst:558
+#: ../../codegen.md:544
 msgid "originalStatesPropertyName"
 msgstr "originalStatesPropertyName"
 
-#: ../../codegen.rst:559
+#: ../../codegen.md:545
 msgid "property to be annotated with `@OriginalStates`"
 msgstr "`@OriginalStates` アノテーションが付けられるプロパティ"
 
-#: ../../codegen.rst:562
+#: ../../codegen.md:548
 msgid "entityPropertyClassNamesFile"
 msgstr "entityPropertyClassNamesFile"
 
-#: ../../codegen.rst:563
+#: ../../codegen.md:549
 msgid "file used to resolve entity property classes"
 msgstr "エンティティプロパティのクラスの解決に使用されるファイル"
 
-#: ../../codegen.rst:566
+#: ../../codegen.md:552
 msgid "prefix"
 msgstr "prefix"
 
-#: ../../codegen.rst:567
+#: ../../codegen.md:553
 msgid "prefix for entity classes"
 msgstr "エンティティクラスの接頭辞"
 
-#: ../../codegen.rst:570 ../../codegen.rst:609
+#: ../../codegen.md:556 ../../codegen.md:596
 msgid "suffix"
 msgstr "suffix"
 
-#: ../../codegen.rst:571
+#: ../../codegen.md:557
 msgid "suffix for entity classes"
 msgstr "エンティティクラスの接尾辞"
 
-#: ../../codegen.rst:576
+#: ../../codegen.md:562
 msgid "DAO Configuration"
 msgstr "DAO設定"
 
-#: ../../codegen.rst:578
+#: ../../codegen.md:564
+#, fuzzy
 msgid ""
-"The ``dao`` block configures how DAO (Data Access Object) interfaces are "
+"The `dao` block configures how DAO (Data Access Object) interfaces are "
 "generated."
-msgstr ""
-"``dao`` ブロックはDAO（Data Access Object）インターフェースの生成方法を設定し"
-"ます。"
+msgstr "``dao`` ブロックはDAO（Data Access Object）インターフェースの生成方法を設定します。"
 
-#: ../../codegen.rst:602
+#: ../../codegen.md:589
 msgid "whether to overwrite generated DAO files or not"
 msgstr "生成されたDAOファイルを上書きするかどうか"
 
-#: ../../codegen.rst:604
+#: ../../codegen.md:591
 msgid "``false``"
 msgstr "``false``"
 
-#: ../../codegen.rst:606
+#: ../../codegen.md:593
 msgid "package name for generated DAO classes"
 msgstr "生成された DAO クラスのパッケージ名"
 
-#: ../../codegen.rst:608
+#: ../../codegen.md:595
 msgid "\"example.dao\""
 msgstr "\"example.dao\""
 
-#: ../../codegen.rst:610
+#: ../../codegen.md:597
 msgid "suffix for Dao classes"
 msgstr "Dao クラスの接尾辞"
 
-#: ../../codegen.rst:612
+#: ../../codegen.md:599
 msgid "\"Dao\""
 msgstr "\"Dao\""
 
-#: ../../codegen.rst:615
+#: ../../codegen.md:602
 msgid "SQL Configuration"
 msgstr "SQL設定"
 
-#: ../../codegen.rst:617
-msgid "The ``sql`` block configures how SQL template files are generated."
+#: ../../codegen.md:604
+#, fuzzy
+msgid "The `sql` block configures how SQL template files are generated."
 msgstr "``sql`` ブロックはSQLテンプレートファイルの生成方法を設定します。"
 
-#: ../../codegen.rst:630
+#: ../../codegen.md:617
 #, fuzzy
 msgid ""
-"SQL files are generated in ``src/main/resources/META-INF/<package>/dao/`` "
-"directory. These include basic READ operations like ``selectById.sql`` and "
-"``selectByIdAndVersion.sql``."
+"SQL files are generated in `src/main/resources/META-INF/<package>/dao/` "
+"directory. These include basic READ operations like `selectById.sql` and "
+"`selectByIdAndVersion.sql`."
 msgstr ""
-"これには ``selectById.sql`` や ``selectByIdAndVersion.sql`` のような基本的な"
-"READ操作が含まれます。"
+"これには ``selectById.sql`` や ``selectByIdAndVersion.sql`` "
+"のような基本的なREAD操作が含まれます。"
 
-#: ../../codegen.rst:642
+#: ../../codegen.md:631
 msgid "whether to overwrite generated sql files or not"
 msgstr "生成された SQL ファイルを上書きするかどうか"
 
-#: ../../codegen.rst:644
+#: ../../codegen.md:633
 msgid "``true``"
 msgstr ""
 
-#: ../../codegen.rst:647
+#: ../../codegen.md:636
 msgid "SQL Test Configuration"
 msgstr "SQLテスト設定"
 
-#: ../../codegen.rst:649
+#: ../../codegen.md:638
+#, fuzzy
 msgid ""
-"The ``sqlTest`` block configures generation of SQL test files and can use a "
-"different database for testing."
-msgstr ""
-"``sqlTest`` ブロックはSQLテストファイルの生成を設定し、テスト用に異なるデータ"
-"ベースを使用できます。"
+"The `sqlTest` block configures generation of SQL test files and can use a"
+" different database for testing."
+msgstr "``sqlTest`` ブロックはSQLテストファイルの生成を設定し、テスト用に異なるデータベースを使用できます。"
 
-#: ../../codegen.rst:651
+#: ../../codegen.md:640
 msgid "**Example: Separate Test Database**"
 msgstr "**例：個別テストデータベース**"
 
-#: ../../codegen.rst:671
+#: ../../codegen.md:660
 msgid "**Example: Same Database for Tests**"
 msgstr "**例：テスト用同一データベース**"
 
-#: ../../codegen.rst:695
+#: ../../codegen.md:685
 msgid "url"
 msgstr "url"
 
-#: ../../codegen.rst:696
+#: ../../codegen.md:686
 msgid "JDBC URL for test database (can be different from main)"
 msgstr ""
 
-#: ../../codegen.rst:697 ../../codegen.rst:700 ../../codegen.rst:703
+#: ../../codegen.md:687 ../../codegen.md:690 ../../codegen.md:693
 #, fuzzy
 msgid "Same as main configuration"
 msgstr "名前付き設定"
 
-#: ../../codegen.rst:698
+#: ../../codegen.md:688
 msgid "user"
 msgstr "user"
 
-#: ../../codegen.rst:699
+#: ../../codegen.md:689
 msgid "Database username for test database"
 msgstr ""
 
-#: ../../codegen.rst:701
+#: ../../codegen.md:691
 msgid "password"
 msgstr "password"
 
-#: ../../codegen.rst:702
+#: ../../codegen.md:692
 msgid "Database password for test database"
 msgstr ""
 
-#: ../../codegen.rst:706
+#: ../../codegen.md:696
 msgid "Customization"
 msgstr "カスタム設定"
 
-#: ../../codegen.rst:709
+#: ../../codegen.md:698
 msgid "Generating Kotlin code"
 msgstr "Kotlinコードの生成"
 
-#: ../../codegen.rst:711
+#: ../../codegen.md:700
+#, fuzzy
 msgid ""
 "To generate Kotlin code, set the languageType option to "
-"``LanguageType.KOTLIN`` as follows:"
-msgstr ""
-"Kotlin コードを生成するには、languageType オプションに "
-"``LanguageType.KOTLIN`` を指定します。"
+"`LanguageType.KOTLIN` as follows:"
+msgstr "Kotlin コードを生成するには、languageType オプションに ``LanguageType.KOTLIN`` を指定します。"
 
-#: ../../codegen.rst:736
+#: ../../codegen.md:723
 msgid "Template Customization"
 msgstr "テンプレートのカスタマイズ"
 
-#: ../../codegen.rst:738
+#: ../../codegen.md:725
+#, fuzzy
 msgid ""
-"The Doma CodeGen Plugin uses `Apache FreeMarker <https://"
-"freemarker.apache.org/>`_ templates to generate code. You can customize "
-"these templates to match your project's coding standards and requirements."
+"The Doma CodeGen Plugin uses [Apache "
+"FreeMarker](https://freemarker.apache.org/) templates to generate code. "
+"You can customize these templates to match your project's coding "
+"standards and requirements."
 msgstr ""
-"Doma CodeGenプラグインは `Apache FreeMarker <https://freemarker.apache.org/"
-">`_ テンプレートを使用してコードを生成します。これらのテンプレートをカスタマ"
-"イズして、プロジェクトのコーディング規約と要件に合わせることができます。"
+"Doma CodeGenプラグインは `Apache FreeMarker <https://freemarker.apache.org/>`_ "
+"テンプレートを使用してコードを生成します。これらのテンプレートをカスタマイズして、プロジェクトのコーディング規約と要件に合わせることができます。"
 
-#: ../../codegen.rst:741
+#: ../../codegen.md:727
 msgid "Available Templates"
 msgstr "利用可能なテンプレート"
 
-#: ../../codegen.rst:743
+#: ../../codegen.md:729
+#, fuzzy
 msgid ""
-"The default template files can be found in `the source code repository "
-"<https://github.com/domaframework/doma-codegen-plugin/tree/master/codegen/"
-"src/main/resources/org/seasar/doma/gradle/codegen/template>`_."
+"The default template files can be found in [the source code "
+"repository](https://github.com/domaframework/doma-codegen-"
+"plugin/tree/master/codegen/src/main/resources/org/seasar/doma/gradle/codegen/template)."
 msgstr ""
-"デフォルトのテンプレートファイルは `ソースコードリポジトリ <https://"
-"github.com/domaframework/doma-codegen-plugin/tree/master/codegen/src/main/"
-"resources/org/seasar/doma/gradle/codegen/template>`_ にあります。"
+"デフォルトのテンプレートファイルは `ソースコードリポジトリ <https://github.com/domaframework/doma-"
+"codegen-"
+"plugin/tree/master/codegen/src/main/resources/org/seasar/doma/gradle/codegen/template>`_"
+" にあります。"
 
-#: ../../codegen.rst:749
+#: ../../codegen.md:736
 msgid "Template File"
 msgstr "テンプレートファイル"
 
-#: ../../codegen.rst:750
+#: ../../codegen.md:737
 msgid "Purpose"
 msgstr "目的"
 
-#: ../../codegen.rst:751
+#: ../../codegen.md:738
 msgid "Generated Output"
 msgstr "生成される出力"
 
-#: ../../codegen.rst:752
+#: ../../codegen.md:739
 msgid "entity.ftl"
 msgstr ""
 
-#: ../../codegen.rst:753
+#: ../../codegen.md:740
 msgid "Entity class generation"
 msgstr "エンティティクラス生成"
 
-#: ../../codegen.rst:754
+#: ../../codegen.md:741
 msgid "Java/Kotlin entity classes with JPA annotations"
 msgstr "JPAアノテーション付きのJava/Kotlinエンティティクラス"
 
-#: ../../codegen.rst:755
+#: ../../codegen.md:742
 msgid "entityListener.ftl"
 msgstr ""
 
-#: ../../codegen.rst:756
+#: ../../codegen.md:743
 msgid "Entity listener generation"
 msgstr "エンティティリスナー生成"
 
-#: ../../codegen.rst:757
+#: ../../codegen.md:744
 msgid "Entity listener classes for lifecycle callbacks"
 msgstr "ライフサイクルコールバック用のエンティティリスナークラス"
 
-#: ../../codegen.rst:758
+#: ../../codegen.md:745
 msgid "dao.ftl"
 msgstr ""
 
-#: ../../codegen.rst:759
+#: ../../codegen.md:746
 msgid "DAO interface generation"
 msgstr "DAOインターフェース生成"
 
-#: ../../codegen.rst:760
+#: ../../codegen.md:747
 msgid "DAO interfaces with basic CRUD methods"
 msgstr "基本的なCRUDメソッドを持つDAOインターフェース"
 
-#: ../../codegen.rst:761
+#: ../../codegen.md:748
 msgid "sqlTest.ftl"
 msgstr ""
 
-#: ../../codegen.rst:762
+#: ../../codegen.md:749
 msgid "SQL test generation"
 msgstr "SQLテスト生成"
 
-#: ../../codegen.rst:763
+#: ../../codegen.md:750
 msgid "Test classes for validating SQL files"
 msgstr "SQLファイルを検証するテストクラス"
 
-#: ../../codegen.rst:764
+#: ../../codegen.md:751
 msgid "selectById.sql.ftl"
 msgstr ""
 
-#: ../../codegen.rst:765
+#: ../../codegen.md:752
 msgid "Basic select SQL"
 msgstr "基本的なSELECT SQL"
 
-#: ../../codegen.rst:766
+#: ../../codegen.md:753
 msgid "SQL files for selecting by primary key"
 msgstr "主キーによる選択のためのSQLファイル"
 
-#: ../../codegen.rst:767
+#: ../../codegen.md:754
 msgid "selectByIdAndVersion.sql.ftl"
 msgstr ""
 
-#: ../../codegen.rst:768
+#: ../../codegen.md:755
 msgid "Optimistic locking SQL"
 msgstr "楽観的ロックSQL"
 
-#: ../../codegen.rst:769
+#: ../../codegen.md:756
 msgid "SQL files for selecting with version checking"
 msgstr "バージョンチェック付きの選択のためのSQLファイル"
 
-#: ../../codegen.rst:772
+#: ../../codegen.md:759
 msgid "Setting Up Custom Templates"
 msgstr "カスタムテンプレートの設定"
 
-#: ../../codegen.rst:774
+#: ../../codegen.md:761
 #, fuzzy
 msgid "**Create Template Directory**"
 msgstr "1. **テンプレートディレクトリの作成**"
 
-#: ../../codegen.rst:785
+#: ../../codegen.md:772
 #, fuzzy
 msgid "**Configure Template Directory**"
 msgstr "2. **テンプレートディレクトリの設定**"
 
-#: ../../codegen.rst:804
+#: ../../codegen.md:791
 #, fuzzy
 msgid "**Customize Entity Template**"
 msgstr "3. **エンティティテンプレートのカスタマイズ**"
 
-#: ../../codegen.rst:806
-msgid "Create ``custom-templates/entity.ftl`` to add custom annotations:"
-msgstr ""
-"カスタムアノテーションを追加するために ``custom-templates/entity.ftl`` を作成"
-"してください："
+#: ../../codegen.md:793
+#, fuzzy
+msgid "Create `custom-templates/entity.ftl` to add custom annotations:"
+msgstr "カスタムアノテーションを追加するために ``custom-templates/entity.ftl`` を作成してください："
 
-#: ../../codegen.rst:845
+#: ../../codegen.md:832
 #, fuzzy
 msgid "**Customize DAO Template**"
 msgstr "4. **DAOテンプレートのカスタマイズ**"
 
-#: ../../codegen.rst:847
-msgid "Create ``custom-templates/dao.ftl`` for custom DAO methods:"
-msgstr ""
-"カスタムDAOメソッドのために ``custom-templates/dao.ftl`` を作成してください："
+#: ../../codegen.md:834
+#, fuzzy
+msgid "Create `custom-templates/dao.ftl` for custom DAO methods:"
+msgstr "カスタムDAOメソッドのために ``custom-templates/dao.ftl`` を作成してください："
 
-#: ../../codegen.rst:889
+#: ../../codegen.md:875
 msgid "Common Template Variables"
 msgstr "一般的なテンプレート変数"
 
-#: ../../codegen.rst:891
+#: ../../codegen.md:877
 msgid "The following variables are available in templates:"
 msgstr "テンプレートでは以下の変数が利用できます："
 
-#: ../../codegen.rst:893
+#: ../../codegen.md:879
 msgid "**Entity Templates**"
 msgstr "**エンティティテンプレート**"
 
-#: ../../codegen.rst:895
-msgid "``entityDesc.packageName`` - Package name for the entity"
+#: ../../codegen.md:881
+msgid "`entityDesc.packageName` - Package name for the entity"
 msgstr ""
 
-#: ../../codegen.rst:896
-msgid "``entityDesc.simpleName`` - Simple class name (e.g., \"User\")"
+#: ../../codegen.md:882
+msgid "`entityDesc.simpleName` - Simple class name (e.g., \"User\")"
 msgstr ""
 
-#: ../../codegen.rst:897
-msgid "``entityDesc.tableName`` - Database table name"
+#: ../../codegen.md:883
+msgid "`entityDesc.tableName` - Database table name"
 msgstr ""
 
-#: ../../codegen.rst:898
-msgid "``entityDesc.comment`` - Table comment from database"
+#: ../../codegen.md:884
+msgid "`entityDesc.comment` - Table comment from database"
 msgstr ""
 
-#: ../../codegen.rst:899
-msgid "``entityDesc.propertyDescs`` - List of property descriptors"
+#: ../../codegen.md:885
+msgid "`entityDesc.propertyDescs` - List of property descriptors"
 msgstr ""
 
-#: ../../codegen.rst:901
+#: ../../codegen.md:887
 msgid "**DAO Templates**"
 msgstr "**DAOテンプレート**"
 
-#: ../../codegen.rst:903
-msgid "``daoDesc.packageName`` - Package name for the DAO"
+#: ../../codegen.md:889
+msgid "`daoDesc.packageName` - Package name for the DAO"
 msgstr ""
 
-#: ../../codegen.rst:904
-msgid "``daoDesc.simpleName`` - Simple interface name (e.g., \"UserDao\")"
+#: ../../codegen.md:890
+msgid "`daoDesc.simpleName` - Simple interface name (e.g., \"UserDao\")"
 msgstr ""
 
-#: ../../codegen.rst:905
-msgid "``daoDesc.entityDesc`` - Associated entity descriptor"
+#: ../../codegen.md:891
+msgid "`daoDesc.entityDesc` - Associated entity descriptor"
 msgstr ""
 
-#: ../../codegen.rst:906
-msgid "``daoDesc.configClassName`` - Doma config class name"
+#: ../../codegen.md:892
+msgid "`daoDesc.configClassName` - Doma config class name"
 msgstr ""
 
-#: ../../codegen.rst:908
+#: ../../codegen.md:894
 msgid "**Property Descriptors**"
 msgstr "**プロパティ記述子**"
 
-#: ../../codegen.rst:910
-msgid "``property.propertyName`` - Java property name (e.g., \"userId\")"
+#: ../../codegen.md:896
+msgid "`property.propertyName` - Java property name (e.g., \"userId\")"
 msgstr ""
 
-#: ../../codegen.rst:911
-msgid "``property.propertyClassName`` - Java type (e.g., \"Integer\")"
+#: ../../codegen.md:897
+msgid "`property.propertyClassName` - Java type (e.g., \"Integer\")"
 msgstr ""
 
-#: ../../codegen.rst:912
-msgid "``property.columnName`` - Database column name"
+#: ../../codegen.md:898
+msgid "`property.columnName` - Database column name"
 msgstr ""
 
-#: ../../codegen.rst:913
-msgid "``property.id`` - True if primary key"
+#: ../../codegen.md:899
+msgid "`property.id` - True if primary key"
 msgstr ""
 
-#: ../../codegen.rst:914
-msgid "``property.version`` - True if version column"
+#: ../../codegen.md:900
+msgid "`property.version` - True if version column"
 msgstr ""
 
-#: ../../codegen.rst:915
-msgid "``property.comment`` - Column comment from database"
+#: ../../codegen.md:901
+msgid "`property.comment` - Column comment from database"
 msgstr ""
 
-#: ../../codegen.rst:918
+#: ../../codegen.md:903
 msgid "Advanced Template Features"
 msgstr "高度なテンプレート機能"
 
-#: ../../codegen.rst:920
+#: ../../codegen.md:905
 msgid "**Conditional Generation**"
 msgstr "**条件付き生成**"
 
-#: ../../codegen.rst:930
+#: ../../codegen.md:915
 msgid "**Custom Imports Based on Properties**"
 msgstr "**プロパティに基づくカスタムインポート**"
 
-#: ../../codegen.rst:947
+#: ../../codegen.md:931
 msgid "Troubleshooting"
 msgstr "トラブルシューティング"
 
-#: ../../codegen.rst:950
+#: ../../codegen.md:933
 msgid "Common Issues and Solutions"
 msgstr "よくある問題と解決策"
 
-#: ../../codegen.rst:952
+#: ../../codegen.md:935
 msgid "**Problem: \"No suitable driver found\" Error**"
 msgstr "**問題：「No suitable driver found」エラー**"
 
-#: ../../codegen.rst:958
+#: ../../codegen.md:941
+#, fuzzy
 msgid ""
 "*Solution:* Make sure you've added the JDBC driver dependency to the "
-"``domaCodeGen`` configuration:"
-msgstr ""
-"*解決策:* ``domaCodeGen`` 設定にJDBCドライバーの依存関係を追加したことを確認"
-"してください："
+"`domaCodeGen` configuration:"
+msgstr "*解決策:* ``domaCodeGen`` 設定にJDBCドライバーの依存関係を追加したことを確認してください："
 
-#: ../../codegen.rst:966
+#: ../../codegen.md:949
 msgid "**Problem: Generated Code in Wrong Package**"
 msgstr "**問題：生成されたコードが間違ったパッケージにある**"
 
-#: ../../codegen.rst:968
+#: ../../codegen.md:951
 msgid "*Solution:* Check your package configuration:"
 msgstr "*解決策:* パッケージ設定を確認してください："
 
-#: ../../codegen.rst:979
+#: ../../codegen.md:962
 msgid "**Problem: Custom Templates Not Applied**"
 msgstr "**問題：カスタムテンプレートが適用されない**"
 
-#: ../../codegen.rst:981
+#: ../../codegen.md:964
 msgid "*Solution:* Verify template directory structure and filenames:"
-msgstr ""
-"*解決策:* テンプレートディレクトリの構造とファイル名を確認してください："
+msgstr "*解決策:* テンプレートディレクトリの構造とファイル名を確認してください："
 
-#: ../../codegen.rst:1001
+#: ../../codegen.md:983
 msgid "Best Practices"
 msgstr "ベストプラクティス"
 
-#: ../../codegen.rst:1003
+#: ../../codegen.md:985
 #, fuzzy
 msgid "**Use Testcontainers for Development**"
 msgstr "1. **開発にTestcontainersを使用**"
 
-#: ../../codegen.rst:1005
+#: ../../codegen.md:987
 msgid ""
 "Testcontainers ensure consistent database environments across different "
 "machines:"
 msgstr "Testcontainersは異なるマシン間で一貫したデータベース環境を保証します："
 
-#: ../../codegen.rst:1012
+#: ../../codegen.md:994
 #, fuzzy
 msgid "**Use Version Control for Schema Files**"
 msgstr "3. **スキーマファイルにバージョン管理を使用**"
 
-#: ../../codegen.rst:1014
+#: ../../codegen.md:996
 msgid "Keep your initialization scripts in version control:"
 msgstr "初期化スクリプトをバージョン管理下に置いてください："
 
-#: ../../codegen.rst:1023
+#: ../../codegen.md:1005
 #, fuzzy
 msgid "**Incremental Generation**"
 msgstr "4. **段階的な生成**"
 
-#: ../../codegen.rst:1025
+#: ../../codegen.md:1007
 msgid "Use specific tasks for faster development:"
 msgstr "高速な開発のために特定のタスクを使用してください："
 
-#: ../../codegen.rst:1036
+#: ../../codegen.md:1017
 msgid "Sample Project"
 msgstr "サンプルプロジェクト"
 
-#: ../../codegen.rst:1038
+#: ../../codegen.md:1019
 msgid ""
-"`example-codegen-plugin <https://github.com/domaframework/simple-examples/"
-"tree/master/example-codegen-plugin>`_"
+"[example-codegen-plugin](https://github.com/domaframework/simple-"
+"examples/tree/master/example-codegen-plugin)"
 msgstr ""
 
-#: ../../codegen.rst:1039
-msgid "`kotlin-sample <https://github.com/domaframework/kotlin-sample>`_"
+#: ../../codegen.md:1020
+#, fuzzy
+msgid "[kotlin-sample](https://github.com/domaframework/kotlin-sample)"
 msgstr "`kotlin-sample <https://github.com/domaframework/kotlin-sample>`_"
-
-#: ../../codegen.rst:1042
-msgid "Footnote"
-msgstr "脚注"
-
-#: ../../codegen.rst:1044
-msgid ""
-"The FQN of ``LanguageType`` is "
-"``org.seasar.doma.gradle.codegen.desc.LanguageType``"
-msgstr ""
-"``LanguageType`` の FQN は "
-"``org.seasar.doma.gradle.codegen.desc.LanguageType`` です。"
-
-#: ../../codegen.rst:1045
-msgid ""
-"The FQN of ``GlobalFactory`` is "
-"``org.seasar.doma.gradle.codegen.GlobalFactory``"
-msgstr ""
-"``GlobalFactory`` の FQN は ``org.seasar.doma.gradle.codegen.GlobalFactory`` "
-"です"
-
-#: ../../codegen.rst:1046
-msgid ""
-"The FQN of ``GenerationType`` is "
-"``org.seasar.doma.gradle.codegen.desc.GenerationType``"
-msgstr ""
-"``GenerationType`` の FQN は "
-"``org.seasar.doma.gradle.codegen.desc.GenerationType`` です。"
-
-#: ../../codegen.rst:1047
-msgid ""
-"The FQN of ``NamingType`` is ``org.seasar.doma.gradle.codegen.NamingType``"
-msgstr ""
-"``NamingType`` の FQN は ``org.seasar.doma.gradle.codegen.NamingType`` です。"
 
 #~ msgid "Kotlin"
 #~ msgstr "Kotlin"
@@ -1352,8 +1300,7 @@ msgstr ""
 #~ msgstr "同じプロジェクトで複数のデータベースを設定できます："
 
 #~ msgid "To generate all files, run `domaCodeGenDevAll` task:"
-#~ msgstr ""
-#~ "すべてのファイルを生成するには、 `domaCodeGenDevAll` タスクを実行します:"
+#~ msgstr "すべてのファイルを生成するには、 `domaCodeGenDevAll` タスクを実行します:"
 
 #~ msgid "JDBC url"
 #~ msgstr "JDBCのURL"
@@ -1407,8 +1354,7 @@ msgstr ""
 #~ msgstr "templateEncoding"
 
 #~ msgid "directory for user customized template files"
-#~ msgstr ""
-#~ "ユーザーがカスタマイズしたテンプレートファイルが配置されるディレクトリ"
+#~ msgstr "ユーザーがカスタマイズしたテンプレートファイルが配置されるディレクトリ"
 
 #~ msgid "testSourceDir"
 #~ msgstr "testSourceDir"
@@ -1423,31 +1369,28 @@ msgstr ""
 #~ msgstr "configClassName"
 
 #~ msgid ""
-#~ "``org.seasar.doma.jdbc.Config`` implemented class name. The name is used "
-#~ "at @Dao"
-#~ msgstr ""
-#~ "``org.seasar.doma.jdbc.Config`` を実装したクラス名。名前は ``@Dao`` で使用"
-#~ "されます。"
+#~ "``org.seasar.doma.jdbc.Config`` implemented class "
+#~ "name. The name is used at @Dao"
+#~ msgstr "``org.seasar.doma.jdbc.Config`` を実装したクラス名。名前は ``@Dao`` で使用されます。"
 
 #~ msgid ".. note::"
 #~ msgstr ".. note::"
 
 #~ msgid ""
-#~ "SQL files are generated in ``src/main/resources/META-INF/<package>/dao/`` "
-#~ "directory."
-#~ msgstr ""
-#~ "SQLファイルは ``src/main/resources/META-INF/<package>/dao/`` ディレクトリ"
-#~ "に生成されます。"
+#~ "SQL files are generated in "
+#~ "``src/main/resources/META-INF/<package>/dao/`` directory."
+#~ msgstr "SQLファイルは ``src/main/resources/META-INF/<package>/dao/`` ディレクトリに生成されます。"
 
 #~ msgid "**Problem: Testcontainers Cannot Start Database**"
 #~ msgstr "**問題：Testcontainersがデータベースを開始できない**"
 
 #~ msgid ""
-#~ "*Solution:* Ensure Docker is running and accessible. For Testcontainers "
-#~ "URL format, verify the correct syntax:"
+#~ "*Solution:* Ensure Docker is running and"
+#~ " accessible. For Testcontainers URL format,"
+#~ " verify the correct syntax:"
 #~ msgstr ""
-#~ "*解決策:* Dockerが実行中でアクセス可能であることを確認してください。"
-#~ "TestcontainersのURL形式については、正しい構文を確認してください："
+#~ "*解決策:* "
+#~ "Dockerが実行中でアクセス可能であることを確認してください。TestcontainersのURL形式については、正しい構文を確認してください："
 
 #~ msgid "**Problem: Tables Not Found During Generation**"
 #~ msgstr "**問題：生成中にテーブルが見つからない**"
@@ -1459,21 +1402,19 @@ msgstr ""
 #~ msgstr "**問題：バージョンカラムが認識されない**"
 
 #~ msgid ""
-#~ "*Solution:* Configure the version column pattern if your column names "
-#~ "don't match the default:"
-#~ msgstr ""
-#~ "*解決策:* カラム名がデフォルトと一致しない場合は、バージョンカラムのパター"
-#~ "ンを設定してください："
+#~ "*Solution:* Configure the version column "
+#~ "pattern if your column names don't "
+#~ "match the default:"
+#~ msgstr "*解決策:* カラム名がデフォルトと一致しない場合は、バージョンカラムのパターンを設定してください："
 
 #~ msgid "**Problem: Generated Classes Missing Annotations**"
 #~ msgstr "**問題：生成されたクラスにアノテーションがない**"
 
 #~ msgid ""
-#~ "*Solution:* Ensure you're using the correct Doma dependencies in your "
-#~ "main project:"
-#~ msgstr ""
-#~ "*解決策:* メインプロジェクトで正しいDoma依存関係を使用していることを確認し"
-#~ "てください："
+#~ "*Solution:* Ensure you're using the "
+#~ "correct Doma dependencies in your main"
+#~ " project:"
+#~ msgstr "*解決策:* メインプロジェクトで正しいDoma依存関係を使用していることを確認してください："
 
 #~ msgid "**Problem: OutOfMemoryError During Generation**"
 #~ msgstr "**問題：生成中のOutOfMemoryError**"
@@ -1481,11 +1422,8 @@ msgstr ""
 #~ msgid "*Solution:* Increase JVM memory for the Gradle daemon:"
 #~ msgstr "*解決策:* GradleデーモンのJVMメモリを増やしてください："
 
-#~ msgid ""
-#~ "Or limit the number of tables processed at once using table patterns."
-#~ msgstr ""
-#~ "またはテーブルパターンを使用して、一度に処理するテーブル数を制限してくださ"
-#~ "い。"
+#~ msgid "Or limit the number of tables processed at once using table patterns."
+#~ msgstr "またはテーブルパターンを使用して、一度に処理するテーブル数を制限してください。"
 
 #~ msgid "2. **Organize Generated Code by Database**"
 #~ msgstr "2. **データベース別にコードを整理**"
@@ -1500,15 +1438,18 @@ msgstr ""
 #~ msgstr "生成されたディレクトリを.gitignoreに追加してください："
 
 #~ msgid ""
-#~ "The default template files can be found in `the source code repository of "
-#~ "the Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-"
-#~ "plugin/tree/master/codegen/src/main/resources/org/seasar/doma/gradle/"
-#~ "codegen/template>`_. These files include:"
+#~ "The default template files can be "
+#~ "found in `the source code repository "
+#~ "of the Doma CodeGen Plugin "
+#~ "<https://github.com/domaframework/doma-codegen-"
+#~ "plugin/tree/master/codegen/src/main/resources/org/seasar/doma/gradle/codegen/template>`_."
+#~ " These files include:"
 #~ msgstr ""
-#~ "デフォルトのテンプレートファイルは、 `Doma CodeGen Plugin のソースコードリ"
-#~ "ポジトリ <https://github.com/domaframework/doma-codegen-plugin/tree/"
-#~ "master/codegen/src/main/resources/org/seasar/doma/gradle/codegen/"
-#~ "template>`_ にあります。これらのファイルには以下が含まれます:"
+#~ "デフォルトのテンプレートファイルは、 `Doma CodeGen Plugin "
+#~ "のソースコードリポジトリ <https://github.com/domaframework/doma-"
+#~ "codegen-"
+#~ "plugin/tree/master/codegen/src/main/resources/org/seasar/doma/gradle/codegen/template>`_"
+#~ " にあります。これらのファイルには以下が含まれます:"
 
 #~ msgid "Data Model Class"
 #~ msgstr "データモデルクラス"
@@ -1532,17 +1473,102 @@ msgstr ""
 #~ msgstr "SQL ファイル"
 
 #~ msgid ""
-#~ "To create custom templates, copy the default files, modify their contents "
-#~ "without changing the filenames, and place them in the directory specified "
-#~ "by the ``templateDir`` option."
+#~ "To create custom templates, copy the "
+#~ "default files, modify their contents "
+#~ "without changing the filenames, and "
+#~ "place them in the directory specified"
+#~ " by the ``templateDir`` option."
 #~ msgstr ""
-#~ "カスタムテンプレートを作成するには、既定のファイルをコピーし、ファイル名を"
-#~ "変更せずに内容を変更します。 そして ``templateDir`` オプションで指定した"
-#~ "ディレクトリに配置します。"
+#~ "カスタムテンプレートを作成するには、既定のファイルをコピーし、ファイル名を変更せずに内容を変更します。 そして "
+#~ "``templateDir`` オプションで指定したディレクトリに配置します。"
 
 #~ msgid ""
-#~ "The Doma CodeGen Plugin uses `Apache FreeMarker <https://"
-#~ "freemarker.apache.org/>`_ to process the template files."
+#~ "The Doma CodeGen Plugin uses `Apache "
+#~ "FreeMarker <https://freemarker.apache.org/>`_ to "
+#~ "process the template files."
 #~ msgstr ""
-#~ "Doma CodeGenプラグインは `Apache FreeMarker <https://"
-#~ "freemarker.apache.org/>`_ を使用してテンプレートファイルを処理します。"
+#~ "Doma CodeGenプラグインは `Apache FreeMarker "
+#~ "<https://freemarker.apache.org/>`_ を使用してテンプレートファイルを処理します。"
+
+#~ msgid "``entityDesc.packageName`` - Package name for the entity"
+#~ msgstr ""
+
+#~ msgid "``entityDesc.simpleName`` - Simple class name (e.g., \"User\")"
+#~ msgstr ""
+
+#~ msgid "``entityDesc.tableName`` - Database table name"
+#~ msgstr ""
+
+#~ msgid "``entityDesc.comment`` - Table comment from database"
+#~ msgstr ""
+
+#~ msgid "``entityDesc.propertyDescs`` - List of property descriptors"
+#~ msgstr ""
+
+#~ msgid "``daoDesc.packageName`` - Package name for the DAO"
+#~ msgstr ""
+
+#~ msgid "``daoDesc.simpleName`` - Simple interface name (e.g., \"UserDao\")"
+#~ msgstr ""
+
+#~ msgid "``daoDesc.entityDesc`` - Associated entity descriptor"
+#~ msgstr ""
+
+#~ msgid "``daoDesc.configClassName`` - Doma config class name"
+#~ msgstr ""
+
+#~ msgid "``property.propertyName`` - Java property name (e.g., \"userId\")"
+#~ msgstr ""
+
+#~ msgid "``property.propertyClassName`` - Java type (e.g., \"Integer\")"
+#~ msgstr ""
+
+#~ msgid "``property.columnName`` - Database column name"
+#~ msgstr ""
+
+#~ msgid "``property.id`` - True if primary key"
+#~ msgstr ""
+
+#~ msgid "``property.version`` - True if version column"
+#~ msgstr ""
+
+#~ msgid "``property.comment`` - Column comment from database"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "`example-codegen-plugin "
+#~ "<https://github.com/domaframework/simple-examples/tree/master"
+#~ "/example-codegen-plugin>`_"
+#~ msgstr ""
+
+#~ msgid "Footnote"
+#~ msgstr "脚注"
+
+#~ msgid ""
+#~ "The FQN of ``LanguageType`` is "
+#~ "``org.seasar.doma.gradle.codegen.desc.LanguageType``"
+#~ msgstr ""
+#~ "``LanguageType`` の FQN は "
+#~ "``org.seasar.doma.gradle.codegen.desc.LanguageType`` です。"
+
+#~ msgid ""
+#~ "The FQN of ``GlobalFactory`` is "
+#~ "``org.seasar.doma.gradle.codegen.GlobalFactory``"
+#~ msgstr ""
+#~ "``GlobalFactory`` の FQN は "
+#~ "``org.seasar.doma.gradle.codegen.GlobalFactory`` です"
+
+#~ msgid ""
+#~ "The FQN of ``GenerationType`` is "
+#~ "``org.seasar.doma.gradle.codegen.desc.GenerationType``"
+#~ msgstr ""
+#~ "``GenerationType`` の FQN は "
+#~ "``org.seasar.doma.gradle.codegen.desc.GenerationType`` です。"
+
+#~ msgid ""
+#~ "The FQN of ``NamingType`` is "
+#~ "``org.seasar.doma.gradle.codegen.NamingType``"
+#~ msgstr ""
+#~ "``NamingType`` の FQN は "
+#~ "``org.seasar.doma.gradle.codegen.NamingType`` です。"
+

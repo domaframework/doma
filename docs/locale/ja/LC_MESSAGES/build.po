@@ -1,146 +1,176 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 00:59+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 196\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../build.rst:3
+#: ../../build.md:1
 msgid "Building an application"
 msgstr "アプリケーションのビルド"
 
-#: ../../build.rst:6
+#: ../../build.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../build.rst:9
+#: ../../build.md:7
 msgid "Maven Central Repository"
 msgstr "Maven セントラル リポジトリ"
 
-#: ../../build.rst:11
-msgid "You can obtain the Doma framework artifacts from the Maven central repository. We provide two artifacts: ``doma-core`` and ``doma-processor``."
-msgstr "Doma フレームワークのアーティファクトを Maven セントラルリポジトリから取得できます。 ``doma-core`` と ``doma-processor`` という 2 つのアーティファクトが提供されています。"
+#: ../../build.md:9
+#, fuzzy
+msgid ""
+"You can obtain the Doma framework artifacts from the Maven central "
+"repository. We provide two artifacts: `doma-core` and `doma-processor`."
+msgstr ""
+"Doma フレームワークのアーティファクトを Maven セントラルリポジトリから取得できます。 ``doma-core`` と ``doma-"
+"processor`` という 2 つのアーティファクトが提供されています。"
 
-#: ../../build.rst:14
-msgid "The ``doma-core`` artifact is required at both runtime and compile-time. The ``doma-processor`` artifact, which provides annotation processors, is required only at compile-time."
-msgstr "``doma-core`` アーティファクトは、実行時およびコンパイル時に必要です。 ``doma-processor`` アーティファクトはアノテーション プロセッサを提供し、コンパイル時のみに必要です。"
+#: ../../build.md:12
+#, fuzzy
+msgid ""
+"The `doma-core` artifact is required at both runtime and compile-time. "
+"The `doma-processor` artifact, which provides annotation processors, is "
+"required only at compile-time."
+msgstr ""
+"``doma-core`` アーティファクトは、実行時およびコンパイル時に必要です。 ``doma-processor`` "
+"アーティファクトはアノテーション プロセッサを提供し、コンパイル時のみに必要です。"
 
-#: ../../build.rst:17
+#: ../../build.md:15
 msgid "The group id and artifact id of those artifacts are as follows:"
 msgstr "これらのアーティファクトのグループ ID とアーティファクト ID は次のとおりです。"
 
-#: ../../build.rst:0
+#: ../../build.md
 msgid "GroupId"
 msgstr "グループID"
 
-#: ../../build.rst:19
-#: ../../build.rst:22
+#: ../../build.md:19 ../../build.md:22
 msgid "org.seasar.doma"
 msgstr ""
 
-#: ../../build.rst:0
+#: ../../build.md
 msgid "ArtifactId"
 msgstr "アーティファクトID"
 
-#: ../../build.rst:20
+#: ../../build.md:20
 msgid "doma-core"
 msgstr ""
 
-#: ../../build.rst:23
+#: ../../build.md:23
 msgid "doma-processor"
 msgstr ""
 
-#: ../../build.rst:28
+#: ../../build.md:28
 msgid "Build with Gradle"
 msgstr "Gradle でビルドする"
 
-#: ../../build.rst:30
+#: ../../build.md:30
 msgid "Write your build.gradle(.kts) as follows:"
 msgstr "build.gradle(.kts) を次のように記述します。"
 
-#: ../../build.rst:34
+#: ../../build.md
 msgid "Kotlin"
 msgstr ""
 
-#: ../../build.rst:47
+#: ../../build.md
 msgid "Groovy"
 msgstr ""
 
-#: ../../build.rst:60
-msgid "We recommend using the `org.domaframework.doma.compile`_ plugin to simplify your build script."
+#: ../../build.md:62
+#, fuzzy
+msgid ""
+"We recommend using the [org.domaframework.doma.compile] plugin to "
+"simplify your build script."
 msgstr "ビルドスクリプトを簡素化するために `org.domaframework.doma.compile`_ プラグインの使用をお勧めします。"
 
-#: ../../build.rst:62
-#: ../../build.rst:122
-msgid "See build.gradle.kts in the `getting-started`_ repository as an example."
+#: ../../build.md:64 ../../build.md:121
+#, fuzzy
+msgid "See build.gradle.kts in the [getting-started] repository as an example."
 msgstr "例として、`getting-started`_ リポジトリの build.gradle.kts を参照してください。"
 
-#: ../../build.rst:67
+#: ../../build.md:68
 msgid "Build with Maven"
 msgstr "Maven でビルドする"
 
-#: ../../build.rst:69
+#: ../../build.md:70
 msgid "Write your pom.xml as follows:"
 msgstr "pom.xml を次のように記述します。"
 
-#: ../../build.rst:114
+#: ../../build.md:114
 msgid "Build with Eclipse"
 msgstr "Eclipse でビルドする"
 
-#: ../../build.rst:117
-#: ../../build.rst:154
+#: ../../build.md:116 ../../build.md:151
 msgid "Gradle"
 msgstr ""
 
-#: ../../build.rst:119
-msgid "Import your project as a Gradle project. To reflect Gradle settings in Eclipse, right-click on your project and select Gradle > Refresh Gradle Project."
-msgstr "プロジェクトを Gradle プロジェクトとしてインポートしてください。 Eclipse 内で Gradle \n"
+#: ../../build.md:118
+msgid ""
+"Import your project as a Gradle project. To reflect Gradle settings in "
+"Eclipse, right-click on your project and select Gradle > Refresh Gradle "
+"Project."
+msgstr ""
+"プロジェクトを Gradle プロジェクトとしてインポートしてください。 Eclipse 内で Gradle \n"
 " の設定を反映するには、プロジェクトを右クリックし、Gradle > Refresh Gradle Project を選択します。"
 
-#: ../../build.rst:125
-#: ../../build.rst:160
+#: ../../build.md:123 ../../build.md:156
 msgid "Maven"
 msgstr ""
 
-#: ../../build.rst:127
+#: ../../build.md:125
 msgid "Import your project as a Maven project."
 msgstr "プロジェクトを Maven プロジェクトとしてインポートします。"
 
-#: ../../build.rst:129
-msgid "Right-click on the project and select Properties > Maven > Annotation Processing. Enable both \"Enable Project specific settings\" and \"Automatically configure JDT APT\" as shown below."
-msgstr "プロジェクトを右クリックして Properties > Maven > Annotation Processing を選択し、下図のように「Enable Project specific settings」と「Automatically configure JDT APT」を有効にしてください。"
+#: ../../build.md:127
+msgid ""
+"Right-click on the project and select Properties > Maven > Annotation "
+"Processing. Enable both \"Enable Project specific settings\" and "
+"\"Automatically configure JDT APT\" as shown below."
+msgstr ""
+"プロジェクトを右クリックして Properties > Maven > Annotation Processing "
+"を選択し、下図のように「Enable Project specific settings」と「Automatically configure "
+"JDT APT」を有効にしてください。"
 
-#: ../../build.rst:-1
+#: ../../build.md:131
 msgid "Eclipse Maven Annotation Processing"
 msgstr ""
 
-#: ../../build.rst:136
-msgid "To refresh Maven settings in Eclipse, right-click on your project and select Maven > Update Project..."
+#: ../../build.md:135
+msgid ""
+"To refresh Maven settings in Eclipse, right-click on your project and "
+"select Maven > Update Project..."
 msgstr "Eclipse で Maven の設定を更新するには、プロジェクトを右クリックし、Maven > Update Project... を選択します。"
 
-#: ../../build.rst:140
-msgid "You must add the following argument to the Maven compiler plugin configuration in your pom.xml:"
+#: ../../build.md:138
+msgid ""
+"You must add the following argument to the Maven compiler plugin "
+"configuration in your pom.xml:"
 msgstr "pom.xml の Maven コンパイラプラグイン構成に次の引数を追加する必要があります。"
 
-#: ../../build.rst:151
+#: ../../build.md:149
 msgid "Build with IntelliJ IDEA"
 msgstr "IntelliJ IDEA でビルドする"
 
-#: ../../build.rst:156
+#: ../../build.md:153
 msgid "Import your project as a Gradle project. Build and run using Gradle."
 msgstr "プロジェクトを Gradle プロジェクトとしてインポートし、Gradle を使用してビルドします。"
 
-#: ../../build.rst:162
+#: ../../build.md:158
 msgid "Import your project as a Maven project. Build and run using Maven."
 msgstr "プロジェクトを Maven プロジェクトとしてインポートし、 Maven を使用してビルドします。"
+
+#~ msgid "Kotlin"
+#~ msgstr ""
+
+#~ msgid "Groovy"
+#~ msgstr ""
 

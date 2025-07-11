@@ -1,61 +1,84 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 206\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../query/sql-processor.rst:3
+#: ../../query/sql-processor.md:1
 msgid "SQL processor"
 msgstr "SQLプロセッサ"
 
-#: ../../query/sql-processor.rst:6
+#: ../../query/sql-processor.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../query/sql-processor.rst:8
-msgid "SQL processors allow you to handle SQL statements that are generated from corresponding SQL templates. To designate a DAO method as an SQL processor, annotate it with ``@SqlProcessor``:"
-msgstr "SQL プロセッサは、対応する SQL テンプレートから生成された SQL ステートメントを処理できます。DAO メソッドを SQL プロセッサとして指定するには、``@SqlProcessor`` を使用して注釈を付けてください。"
+#: ../../query/sql-processor.md:7
+#, fuzzy
+msgid ""
+"SQL processors allow you to handle SQL statements that are generated from"
+" corresponding SQL templates. To designate a DAO method as an SQL "
+"processor, annotate it with `@SqlProcessor`:"
+msgstr ""
+"SQL プロセッサは、対応する SQL テンプレートから生成された SQL ステートメントを処理できます。DAO メソッドを SQL "
+"プロセッサとして指定するには、``@SqlProcessor`` を使用して注釈を付けてください。"
 
-#: ../../query/sql-processor.rst:22
-msgid "It is essential to be aware of SQL injection vulnerabilities when using this feature. Whenever possible, consider using alternatives to SQL processors for better security."
+#: ../../query/sql-processor.md:20
+msgid ""
+"It is essential to be aware of SQL injection vulnerabilities when using "
+"this feature. Whenever possible, consider using alternatives to SQL "
+"processors for better security."
 msgstr "この機能を使用する際には、SQLインジェクションの脆弱性に注意することが不可欠です。可能な限り、より安全な代替手段を検討してください。"
 
-#: ../../query/sql-processor.rst:26
+#: ../../query/sql-processor.md:24
 msgid "Return type"
 msgstr "戻り値"
 
-#: ../../query/sql-processor.rst:28
-msgid "The return type must be the same type as the third type parameter of ``BiFunction``:"
+#: ../../query/sql-processor.md:26
+#, fuzzy
+msgid ""
+"The return type must be the same type as the third type parameter of "
+"`BiFunction`:"
 msgstr "戻り値の型は、 ``BiFunction`` の 3 番目の型パラメータと同じ型でなければなりません。"
 
-#: ../../query/sql-processor.rst:35
-msgid "If the return type is ``void``, the third type parameter of ``BiFunction`` must be ``Void``:"
+#: ../../query/sql-processor.md:33
+#, fuzzy
+msgid ""
+"If the return type is `void`, the third type parameter of `BiFunction` "
+"must be `Void`:"
 msgstr "戻り値の型が ``void`` の場合、 ``BiFunction`` の 3 番目の型パラメータは ``Void`` でなければなりません。"
 
-#: ../../query/sql-processor.rst:43
+#: ../../query/sql-processor.md:40
 msgid "Parameter"
 msgstr "パラメータ"
 
-#: ../../query/sql-processor.rst:45
-msgid "Include a parameter whose type is ``BiFunction``. The ``BiFunction`` parameter accepts a configuration and an SQL statement then processes them. Parameters other than the ``BiFunction`` parameter are used in the SQL template."
-msgstr "タイプが ``BiFunction`` であるパラメータを含めます。 ``BiFunction`` パラメータは設定と SQL ステートメントを受け取り、それらを処理します。 SQL テンプレートでは ``BiFunction`` パラメータ以外のパラメータが使用されます。"
+#: ../../query/sql-processor.md:42
+#, fuzzy
+msgid ""
+"Include a parameter whose type is `BiFunction`. The `BiFunction` "
+"parameter accepts a configuration and an SQL statement then processes "
+"them. Parameters other than the `BiFunction` parameter are used in the "
+"SQL template."
+msgstr ""
+"タイプが ``BiFunction`` であるパラメータを含めます。 ``BiFunction`` パラメータは設定と SQL "
+"ステートメントを受け取り、それらを処理します。 SQL テンプレートでは ``BiFunction`` パラメータ以外のパラメータが使用されます。"
 
-#: ../../query/sql-processor.rst:50
+#: ../../query/sql-processor.md:46
 msgid "Example"
 msgstr "例"
 
-#: ../../query/sql-processor.rst:52
-msgid "Suppose you want to change the SQL statement generated from an SQL template and execute it:"
+#: ../../query/sql-processor.md:48
+msgid ""
+"Suppose you want to change the SQL statement generated from an SQL "
+"template and execute it:"
 msgstr "SQL テンプレートから生成された SQL ステートメントを変更して実行するとします。"
 

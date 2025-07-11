@@ -1,137 +1,220 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 21:25+0900\n"
+"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 242\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../aggregate-strategy.rst:3
+#: ../../aggregate-strategy.md:1
 msgid "Aggregate strategies"
 msgstr "アグリゲート戦略"
 
-#: ../../aggregate-strategy.rst:6
+#: ../../aggregate-strategy.md:2
 msgid "Contents"
 msgstr "目次"
 
-#: ../../aggregate-strategy.rst:8
-msgid "The aggregate strategy defines how to construct an entity aggregate from an arbitrary SELECT statement. It provides a structured way to map relational query results into hierarchical entity structures by specifying how entities should be linked together."
+#: ../../aggregate-strategy.md:7
+msgid ""
+"The aggregate strategy defines how to construct an entity aggregate from "
+"an arbitrary SELECT statement. It provides a structured way to map "
+"relational query results into hierarchical entity structures by "
+"specifying how entities should be linked together."
 msgstr "アグリゲート戦略は、任意のSELECT文からエンティティアグリゲートを構築する方法を定義します。リレーショナルなクエリ結果を階層構造のエンティティにマッピングするために、エンティティ同士の関連付け方法を指定する構造化されたアプローチを提供します。"
 
-#: ../../aggregate-strategy.rst:13
+#: ../../aggregate-strategy.md:11
 msgid "Aggregate strategy definition"
 msgstr "アグリゲート戦略の定義"
 
-#: ../../aggregate-strategy.rst:15
-msgid "An aggregate strategy is defined by annotating an interface with ``@AggregateStrategy``. This annotation specifies how an entity aggregate is reconstructed from a query result."
-msgstr "アグリゲート戦略は、インターフェースに ``@AggregateStrategy`` アノテーションを付与することで定義されます。このアノテーションは、クエリ結果からエンティティのアグリゲートをどのように再構築するかを指定します。"
+#: ../../aggregate-strategy.md:13
+#, fuzzy
+msgid ""
+"An aggregate strategy is defined by annotating an interface with "
+"`@AggregateStrategy`. This annotation specifies how an entity aggregate "
+"is reconstructed from a query result."
+msgstr ""
+"アグリゲート戦略は、インターフェースに ``@AggregateStrategy`` "
+"アノテーションを付与することで定義されます。このアノテーションは、クエリ結果からエンティティのアグリゲートをどのように再構築するかを指定します。"
 
-#: ../../aggregate-strategy.rst:25
-msgid "The ``root`` element specifies the entity class that serves as the root of the aggregate."
+#: ../../aggregate-strategy.md:23
+#, fuzzy
+msgid ""
+"The `root` element specifies the entity class that serves as the root of "
+"the aggregate."
 msgstr "``root`` 要素は、アグリゲートのルートとして機能するエンティティクラスを指定します。"
 
-#: ../../aggregate-strategy.rst:26
-msgid "The ``tableAlias`` element defines the alias for the table corresponding to the root entity class. This alias must be used in the SELECT statement to correctly map query results to entity properties."
-msgstr "``tableAlias`` 要素は、ルートのエンティティクラスに対応するテーブルのエイリアスを指定します。このエイリアスは、クエリの結果をエンティティのプロパティに正しくマップするためにSELECT文で利用される必要があります。"
+#: ../../aggregate-strategy.md:24
+#, fuzzy
+msgid ""
+"The `tableAlias` element defines the alias for the table corresponding to"
+" the root entity class. This alias must be used in the SELECT statement "
+"to correctly map query results to entity properties."
+msgstr ""
+"``tableAlias`` "
+"要素は、ルートのエンティティクラスに対応するテーブルのエイリアスを指定します。このエイリアスは、クエリの結果をエンティティのプロパティに正しくマップするためにSELECT文で利用される必要があります。"
 
-#: ../../aggregate-strategy.rst:30
+#: ../../aggregate-strategy.md:27
 msgid "Association linker definition"
 msgstr "関連付けリンカーの定義"
 
-#: ../../aggregate-strategy.rst:32
-msgid "An aggregate strategy must contain at least one field of type ``BiConsumer`` or ``BiFunction``, annotated with ``@AssociationLinker``. These functions are responsible for dynamically associating two entity instances. Use a ``BiFunction`` when associating immutable entities. For mutable entities, you may use either a ``BiConsumer`` or a ``BiFunction``."
-msgstr "アグリゲート戦略には、 ``@AssociationLinker`` で注釈された ``BiConsumer`` または ``BiFunction`` 型のフィールドが少なくとも1つ含まれている必要があります。これらの関数は、2つのエンティティインスタンスを動的に関連付ける責任があります。不変エンティティを関連付ける場合は、``BiFunction`` を使用します。変更可能なエンティティの場合は、``BiConsumer`` または ``BiFunction`` のいずれかを使用できます。"
+#: ../../aggregate-strategy.md:29
+#, fuzzy
+msgid ""
+"An aggregate strategy must contain at least one field of type "
+"`BiConsumer` or `BiFunction`, annotated with `@AssociationLinker`. These "
+"functions are responsible for dynamically associating two entity "
+"instances. Use a `BiFunction` when associating immutable entities. For "
+"mutable entities, you may use either a `BiConsumer` or a `BiFunction`."
+msgstr ""
+"アグリゲート戦略には、 ``@AssociationLinker`` で注釈された ``BiConsumer`` または "
+"``BiFunction`` "
+"型のフィールドが少なくとも1つ含まれている必要があります。これらの関数は、2つのエンティティインスタンスを動的に関連付ける責任があります。不変エンティティを関連付ける場合は、``BiFunction``"
+" を使用します。変更可能なエンティティの場合は、``BiConsumer`` または ``BiFunction`` のいずれかを使用できます。"
 
-#: ../../aggregate-strategy.rst:57
-msgid "The first type parameter of a ``BiConsumer`` or ``BiFunction`` represents the type of the property owner, and the second type parameter represents the type of the property. The third type parameter of a ``BiFunction`` must be the same as the first one and represents the type of the entity after the association is applied."
-msgstr "``BiConsumer`` と ``BiFunction`` の1番目の型パラメータはプロパティオーナーの型を表し、2番目の型パラメータはプロパティの型を表します。 ``BiFunction`` の3番目の型パラメータは1番目のものと同じでなければならず、関連付けが適用された後のエンティティの型を表します。"
+#: ../../aggregate-strategy.md:54
+#, fuzzy
+msgid ""
+"The first type parameter of a `BiConsumer` or `BiFunction` represents the"
+" type of the property owner, and the second type parameter represents the"
+" type of the property. The third type parameter of a `BiFunction` must be"
+" the same as the first one and represents the type of the entity after "
+"the association is applied."
+msgstr ""
+"``BiConsumer`` と ``BiFunction`` "
+"の1番目の型パラメータはプロパティオーナーの型を表し、2番目の型パラメータはプロパティの型を表します。 ``BiFunction`` "
+"の3番目の型パラメータは1番目のものと同じでなければならず、関連付けが適用された後のエンティティの型を表します。"
 
-#: ../../aggregate-strategy.rst:61
-msgid "The ``propertyPath`` element specifies the name of the target property as a dot-separated path from the root entity class."
+#: ../../aggregate-strategy.md:58
+#, fuzzy
+msgid ""
+"The `propertyPath` element specifies the name of the target property as a"
+" dot-separated path from the root entity class."
 msgstr "``propertyPath`` 要素は、ルートエンティティクラスからドットで区切られたパスとしてターゲットプロパティの名前を指定します。"
 
-#: ../../aggregate-strategy.rst:62
-msgid "The ``tableAlias`` element specifies the alias for the table corresponding to the entity class used as the second type parameter of the ``BiConsumer`` or ``BiFunction``. This alias must be used in the SELECT statement."
-msgstr "``tableAlias`` 要素は、``BiFunction`` の 2 番目の型パラメータとして使用されるエンティティクラスに対応するテーブルのエイリアスを指定します。 このエイリアスはSELECT文で使用する必要があります。"
+#: ../../aggregate-strategy.md:59
+#, fuzzy
+msgid ""
+"The `tableAlias` element specifies the alias for the table corresponding "
+"to the entity class used as the second type parameter of the `BiConsumer`"
+" or `BiFunction`. This alias must be used in the SELECT statement."
+msgstr ""
+"``tableAlias`` 要素は、``BiFunction`` の 2 "
+"番目の型パラメータとして使用されるエンティティクラスに対応するテーブルのエイリアスを指定します。 "
+"このエイリアスはSELECT文で使用する必要があります。"
 
-#: ../../aggregate-strategy.rst:66
+#: ../../aggregate-strategy.md:62
 msgid "Example"
 msgstr "例"
 
-#: ../../aggregate-strategy.rst:68
-msgid "The ``DepartmentAggregateStrategy`` described above is based on the following entity definitions:"
+#: ../../aggregate-strategy.md:64
+#, fuzzy
+msgid ""
+"The `DepartmentAggregateStrategy` described above is based on the "
+"following entity definitions:"
 msgstr "上記の ``DepartmentAggregateStrategy`` は以下のエンティティ定義に基づいています。"
 
-#: ../../aggregate-strategy.rst:101
-msgid "In entity classes, association properties must be annotated with ``@Association``. These properties can be linked using ``@AssociationLinker``."
-msgstr "エンティティクラスでは、関連プロパティに ``@Association`` を付与する必要があります。これらのプロパティは ``@AssociationLinker`` を使用してリンクできます。"
+#: ../../aggregate-strategy.md:97
+#, fuzzy
+msgid ""
+"In entity classes, association properties must be annotated with "
+"`@Association`. These properties can be linked using "
+"`@AssociationLinker`."
+msgstr ""
+"エンティティクラスでは、関連プロパティに ``@Association`` を付与する必要があります。これらのプロパティは "
+"``@AssociationLinker`` を使用してリンクできます。"
 
-#: ../../aggregate-strategy.rst:105
+#: ../../aggregate-strategy.md:100
 msgid "Using an aggregate strategy"
 msgstr "アグリゲート戦略の使用"
 
-#: ../../aggregate-strategy.rst:107
-msgid "``DepartmentAggregateStrategy`` is used by specifying it in the ``aggregateStrategy`` element of ``@Select``:"
-msgstr "``DepartmentAggregateStrategy`` は ``@Select`` の ``aggregateStrategy`` 要素に指定することで使用されます。"
+#: ../../aggregate-strategy.md:102
+#, fuzzy
+msgid ""
+"`DepartmentAggregateStrategy` is used by specifying it in the "
+"`aggregateStrategy` element of `@Select`:"
+msgstr ""
+"``DepartmentAggregateStrategy`` は ``@Select`` の ``aggregateStrategy`` "
+"要素に指定することで使用されます。"
 
-#: ../../aggregate-strategy.rst:117
-msgid "The ``selectById`` method requires a SELECT statement like the following:"
+#: ../../aggregate-strategy.md:112
+#, fuzzy
+msgid "The `selectById` method requires a SELECT statement like the following:"
 msgstr "``selectById`` メソッドは、次のような SELECT ステートメントを必要とします:"
 
-#: ../../aggregate-strategy.rst:141
-msgid "The SELECT list must include the IDs of all entities that form the aggregate."
+#: ../../aggregate-strategy.md:135
+msgid ""
+"The SELECT list must include the IDs of all entities that form the "
+"aggregate."
 msgstr "SELECTリストにはアグリゲートを形成するすべてのエンティティのIDを含める必要があります。"
 
-#: ../../aggregate-strategy.rst:144
+#: ../../aggregate-strategy.md:138
 msgid "Column aliasing rules"
 msgstr "カラムエイリアスのルール"
 
-#: ../../aggregate-strategy.rst:146
-msgid "Table aliases must match those defined in ``DepartmentAggregateStrategy``."
+#: ../../aggregate-strategy.md:140
+#, fuzzy
+msgid "Table aliases must match those defined in `DepartmentAggregateStrategy`."
 msgstr "テーブルエイリアスは ``DepartmentAggregateStrategy`` で定義されているものと一致する必要があります。"
 
-#: ../../aggregate-strategy.rst:147
-msgid "Column aliases must begin with the table alias followed by an underscore (``_``). For example, ``d.id`` should be aliased as ``d_id`` and ``e.id`` as ``e_id``."
-msgstr "カラムのエイリアスは、テーブルのエイリアスにアンダースコア（``_``）を付けた形式で指定する必要があります。例えば、``d.id`` は ``d_id``、``e.id`` は ``e_id`` としてエイリアスされます。"
+#: ../../aggregate-strategy.md:141
+#, fuzzy
+msgid ""
+"Column aliases must begin with the table alias followed by an underscore "
+"(`_`). For example, `d.id` should be aliased as `d_id` and `e.id` as "
+"`e_id`."
+msgstr ""
+"カラムのエイリアスは、テーブルのエイリアスにアンダースコア（``_``）を付けた形式で指定する必要があります。例えば、``d.id`` は "
+"``d_id``、``e.id`` は ``e_id`` としてエイリアスされます。"
 
-#: ../../aggregate-strategy.rst:151
+#: ../../aggregate-strategy.md:144
 msgid "Using the expansion directive"
 msgstr "選択カラムリスト展開ディレクティブの使用"
 
-#: ../../aggregate-strategy.rst:153
-msgid "By using the :ref:`expansion directive <expand>`, the above SELECT statement can be written more concisely:"
+#: ../../aggregate-strategy.md:146
+#, fuzzy, python-brace-format
+msgid ""
+"By using the {ref}`expansion directive <expand>`, the above SELECT "
+"statement can be written more concisely:"
 msgstr ":ref:`選択カラムリスト展開ディレクティブ <expand>` を使用することで、上記のSELECT文をより簡潔に記述することができます。"
 
-#: ../../aggregate-strategy.rst:170
+#: ../../aggregate-strategy.md:161
 msgid "How expansion works"
 msgstr "カラムリスト展開の仕組み"
 
-#: ../../aggregate-strategy.rst:172
-msgid "The ``/*%expand*/*`` directive automatically expands into a column list following predefined aliasing rules."
+#: ../../aggregate-strategy.md:163
+#, fuzzy, python-format
+msgid ""
+"The `/*%expand*/*` directive automatically expands into a column list "
+"following predefined aliasing rules."
 msgstr "``/*%expand */*`` ディレクティブは、あらかじめ定義されたエイリアスルールを使用して列リストに自動的に展開します。"
 
-#: ../../aggregate-strategy.rst:173
+#: ../../aggregate-strategy.md:164
 msgid "By default, all columns from all tables are included in the result set."
 msgstr "デフォルトでは、すべてのテーブルのすべての列が結果セットに含まれます。"
 
-#: ../../aggregate-strategy.rst:175
-msgid "To selectively expand only specific tables, pass a comma-separated list of table aliases:"
+#: ../../aggregate-strategy.md:166
+msgid ""
+"To selectively expand only specific tables, pass a comma-separated list "
+"of table aliases:"
 msgstr "特定のテーブルのみを選択的に展開するには、テーブルエイリアスのカンマ区切りリストを渡します。"
 
-#: ../../aggregate-strategy.rst:192
-msgid "Here, only columns from tables ``e`` (``employee``) and ``d`` (``department``) are expanded."
+#: ../../aggregate-strategy.md:183
+#, fuzzy
+msgid ""
+"Here, only columns from tables `e` (`employee`) and `d` (`department`) "
+"are expanded."
 msgstr "ここでは、テーブルの ``e`` (``employee``) と ``d`` (``department``) のカラムのみが展開されます。"
 
-#: ../../aggregate-strategy.rst:193
-msgid "The columns from table ``a`` (``address``) are explicitly specified."
+#: ../../aggregate-strategy.md:184
+#, fuzzy
+msgid "The columns from table `a` (`address`) are explicitly specified."
 msgstr "テーブル ``a`` (``address``) の列は明示的に指定されています。"
 
