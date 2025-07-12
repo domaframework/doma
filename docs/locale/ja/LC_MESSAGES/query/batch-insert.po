@@ -79,7 +79,7 @@ msgid "Batch insert by auto generated SQL"
 msgstr "自動生成されたSQLによるバッチ追加"
 
 #: ../../query/batch-insert.md:34 ../../query/batch-insert.md:131
-, python-brace-format
+
 msgid ""
 "The parameter type must be a `java.lang.Iterable` subtype that has "
 "[](../entity.md) as its element type. Only one parameter can be "
@@ -96,14 +96,14 @@ msgid "Identifier"
 msgstr "ID"
 
 #: ../../query/batch-insert.md:42
-, python-brace-format
+
 msgid ""
 "If the identifier in [](../entity.md) is annotated with "
 "`@GeneratedValue`, the identifier is automatically generated and set."
 msgstr "[エンティティ](../entity.md) の識別子に `@GeneratedValue` が付いている場合、識別子は自動的に生成され、設定されます。"
 
 #: ../../query/batch-insert.md:44
-, python-brace-format
+
 msgid "Reference [](../entity.md#id-generation) for cautionary points."
 msgstr "注意点については [IDの生成](../entity.md#id-generation) を参照してください。"
 
@@ -120,7 +120,7 @@ msgid "Version number"
 msgstr "バージョン番号"
 
 #: ../../query/batch-insert.md:56
-, python-brace-format
+
 msgid ""
 "If a value that is explicitly set is greater than `0`, then that value is"
 " used if the [](../entity.md) has a property annotated with `@Version`. "
@@ -263,7 +263,7 @@ msgstr ""
 "`true` に設定し、メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/batch-insert.md:137
-, python-brace-format
+
 msgid ""
 "If an entity listener is specified for the [](../entity.md), its methods "
 "are not called when using SQL files."
@@ -337,7 +337,7 @@ msgid ""
 msgstr "バッチサイズは `@BatchInsert` アノテーション内の `batchSize` プロパティに指定できます。"
 
 #: ../../query/batch-insert.md:182
-, python-brace-format
+
 msgid ""
 "This setting applies regardless of whether you use a SQL file or not. If "
 "you do not specify a value for the `batchSize` property, the batch size "

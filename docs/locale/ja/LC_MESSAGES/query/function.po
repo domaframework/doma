@@ -67,7 +67,7 @@ msgid "java.util.Map\\<String, Object>"
 msgstr ""
 
 #: ../../query/function.md:28
-, python-brace-format
+
 msgid ""
 "java.util.Optional, whose element type is one of [](../basic.md), "
 "[](../domain.md), [](../entity.md), or java.util.Map\\<String, Object>"
@@ -106,7 +106,7 @@ msgstr ""
 #: ../../query/function.md:41 ../../query/function.md:74
 #: ../../query/function.md:102 ../../query/function.md:133
 #: ../../query/function.md:166
-, python-brace-format
+
 msgid ""
 "java.util.Optional whose element type is either [](../basic.md) or "
 "[](../domain.md)"

@@ -179,7 +179,7 @@ msgid "Using the expansion directive"
 msgstr "選択カラムリスト展開ディレクティブの使用"
 
 #: ../../aggregate-strategy.md:146
-, python-brace-format
+
 msgid ""
 "By using the [expansion directive](sql.md#expansion-directive), the above"
 " SELECT statement can be written more concisely:"
@@ -190,7 +190,7 @@ msgid "How expansion works"
 msgstr "カラムリスト展開の仕組み"
 
 #: ../../aggregate-strategy.md:163
-, python-format
+
 msgid ""
 "The `/*%expand*/*` directive automatically expands into a column list "
 "following predefined aliasing rules."

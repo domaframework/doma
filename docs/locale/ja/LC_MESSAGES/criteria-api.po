@@ -27,7 +27,7 @@ msgid "Introduction"
 msgstr "イントロダクション"
 
 #: ../../criteria-api.md:10
-#, python-brace-format
+#
 msgid ""
 "Please use the Query DSL introduced on the [](query-dsl.md) page instead "
 "of the Entityql and NativeSql DSLs explained here. The Query DSL is a "
@@ -84,7 +84,7 @@ msgid ""
 msgstr "メタモデルの名前は、メタモデルのアノテーション要素によってカスタマイズできます。"
 
 #: ../../criteria-api.md:107
-#, python-brace-format
+#
 msgid ""
 "To customize all metamodels in bulk, you can use the annotation processor"
 " options. See [](annotation-processing.md) and check the following "
@@ -853,7 +853,7 @@ msgid "Delete statement"
 msgstr "Delete ステートメント"
 
 #: ../../criteria-api.md:1160
-#, python-brace-format
+#
 msgid ""
 "For the specification of the where expression, see [](#criteria-where). "
 "The same rule is applied to delete statements."
@@ -1003,7 +1003,7 @@ msgid "Update statement"
 msgstr "Update ステートメント"
 
 #: ../../criteria-api.md:1471
-#, python-brace-format
+#
 msgid ""
 "For the specification of the where expression, see [](#criteria-where). "
 "The same rule is applied to update statements."

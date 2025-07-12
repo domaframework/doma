@@ -28,7 +28,7 @@ msgid "The package `org.seasar.doma.jdbc.builder` provides SQL builders."
 msgstr "パッケージ `org.seasar.doma.jdbc.builder` は SQL ビルダを提供します。"
 
 #: ../../query-builder/index.md:9
-, python-brace-format
+
 msgid ""
 "When it is difficult to build a SQL statement with [](../query/index.md) "
 "or [](../query-dsl.md), consider to use the SQL builders in [](../dao.md"

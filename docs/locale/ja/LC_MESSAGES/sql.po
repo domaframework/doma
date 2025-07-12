@@ -389,7 +389,7 @@ msgid "[](#parser-level-comment-directive)"
 msgstr "[パーサーレベルコメントディレクティブ](#parser-level-comment-directive)"
 
 #: ../../sql.md:162
-#, python-brace-format
+#
 msgid ""
 "See also [](expression.md) for information of the expression language "
 "available in directives."
@@ -415,7 +415,7 @@ msgid "Basic and domain parameters"
 msgstr "パラメータ"
 
 #: ../../sql.md:176
-#, python-brace-format
+#
 msgid ""
 "The parameter whose type is one of [](basic.md) and [](domain.md) is "
 "recognised as a bind variable."
@@ -440,7 +440,7 @@ msgid ""
 msgstr "`java.lang.Iterable` のサブタイプまたは配列型のパラメータは、IN句のバインド変数として認識されます。"
 
 #: ../../sql.md:200
-#, python-brace-format
+#
 msgid ""
 "The type argument of `java.lang.Iterable` must be one of [](basic.md) and"
 " [](domain.md). The directives must be followed by test data enclosed "
@@ -673,7 +673,6 @@ msgid ""
 msgstr "`employeeId != null` が `false` と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:464
-#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%if ...*/` is unnecessary, "
 "it is removed automatically."
@@ -690,7 +689,6 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、条件ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:489
-#, python-format
 msgid ""
 "Because the SQL keyword `and` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
@@ -701,14 +699,12 @@ msgid "Restriction on condition directive"
 msgstr "条件ディレクティブの制限"
 
 #: ../../sql.md:494
-#, python-format
 msgid ""
 "The `/*%if condition*/` and `/*%end*/` directives must be included in the"
 " same SQL clause and at the same statement level."
 msgstr "`/*%if condition*/` と `/*%end*/` は、同じ SQL 句および同じステートメントレベルに含める必要があります。"
 
 #: ../../sql.md:497
-#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "FROM clause and `/*%end*/` is in the WHERE clause:"
@@ -717,7 +713,6 @@ msgstr ""
 "句にあるためです。"
 
 #: ../../sql.md:505
-#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "outer statement and `/*%end*/` is in the inner statement:"
@@ -742,7 +737,6 @@ msgstr ""
 "のサブタイプまたは配列型として評価される必要があります。"
 
 #: ../../sql.md:528
-#, python-format
 msgid ""
 "Inside the loop (between `/*%for item : sequence*/` and `/*%end*/`), two "
 "additional loop variables are available:"
@@ -799,7 +793,6 @@ msgid ""
 msgstr "シーケンス `names` が空の場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:595
-#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%for ...*/` is unnecessary,"
 " it is removed automatically."
@@ -816,7 +809,6 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、ループ ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:624
-#, python-format
 msgid ""
 "Because the SQL keyword `or` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
@@ -827,7 +819,6 @@ msgid "Restriction on loop directive"
 msgstr "ループディレクティブの制限事項"
 
 #: ../../sql.md:629
-#, python-format
 msgid ""
 "`/*%for ...*/` and `/*%end*/` must be included in the same SQL clause and"
 " at the same statement level."

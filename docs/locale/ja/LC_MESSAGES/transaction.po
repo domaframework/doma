@@ -37,7 +37,7 @@ msgstr ""
 "をサポートするフレームワークまたはアプリケーションサーバーを使用してください。"
 
 #: ../../transaction.md:13
-#, python-brace-format
+#
 msgid "See also [](config.md#configuration-definition)."
 msgstr "[](config.md#configuration-definition) も参照してください。"
 

@@ -103,7 +103,7 @@ msgid ""
 msgstr "以下の条件を満たした場合、楽観的排他制御が実行されます。"
 
 #: ../../query/batch-update.md:46
-, python-brace-format
+
 msgid ""
 "[](../entity.md) within parameter java.lang.Iterable subtype has property"
 " that is annotated with @Version"
@@ -176,7 +176,7 @@ msgid "updatable"
 msgstr "更新可能"
 
 #: ../../query/batch-update.md:81
-, python-brace-format
+
 msgid ""
 "The `updatable` property within `@Column` annotation that is specified "
 "`false` is excluded from updating target if [](../entity.md) has property"
@@ -238,7 +238,7 @@ msgstr ""
 "メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/batch-update.md:110
-, python-brace-format
+
 msgid ""
 "In batch updating by SQL file, rule is different according to using or "
 "not using [](../sql.md#population-directive)."
@@ -249,7 +249,7 @@ msgid "Case of using comment that generating update column list"
 msgstr "更新カラムリスト生成ディレクティブを使用する場合"
 
 #: ../../query/batch-update.md:123
-, python-brace-format
+
 msgid ""
 "Parameter type must be `java.lang.Iterable` subtype that has "
 "[](../entity.md) as an element. Specifiable parameter is only one. "
@@ -271,7 +271,7 @@ msgid "Parameter name indicate `Iterable` subtype element in SQL file."
 msgstr "パラメータ名は、SQL ファイル内の `Iterable` の要素を示します。"
 
 #: ../../query/batch-update.md:137
-, python-brace-format
+
 msgid ""
 "The rule that is about update target property equals [](#batch-update-by-"
 "auto-generated-sql)."
@@ -314,7 +314,7 @@ msgid ""
 msgstr "以下の条件を満たした場合、楽観的排他制御が実行されます。"
 
 #: ../../query/batch-update.md:171
-, python-brace-format
+
 msgid ""
 "java.lang.Iterable subtype element in parameter is [](../entity.md) and "
 "has property that is annotated @Version existing at [](../entity.md)."
@@ -433,7 +433,7 @@ msgid ""
 msgstr "バッチサイズは `@BatchUpdate` アノテーション内の `batchSize` プロパティに指定できます。"
 
 #: ../../query/batch-update.md:237
-, python-brace-format
+
 msgid ""
 "This specify is applied Regardless of using or not using SQL file. It you"
 " do not specify the value to `batchSize` property, batch size that is "

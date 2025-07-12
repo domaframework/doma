@@ -103,7 +103,7 @@ msgid ""
 msgstr "DAO インターフェイスよりも Kotlin 固有の Criteria API を使ってください"
 
 #: ../../kotlin-support.md:96
-, python-brace-format
+
 msgid ""
 "Doma provides `KQueryDsl`, a Criteria API specifically designed for "
 "Kotlin. It is very similar to the `QueryDsl`, which is described in "
@@ -136,7 +136,7 @@ msgid "Code Generation"
 msgstr "コード生成"
 
 #: ../../kotlin-support.md:131
-, python-brace-format
+
 msgid "Use [](codegen.md). This plugin supports Kotlin code generation."
 msgstr "[Doma CodeGen プラグイン](codegen.md) を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
 

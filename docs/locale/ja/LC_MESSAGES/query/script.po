@@ -116,7 +116,7 @@ msgstr ""
 "INF/aaa/bbb/EmployeeDao/createTable-postgres.script\" が選択されます。"
 
 #: ../../query/script.md:58
-, python-brace-format
+
 msgid "See also [](../sql.md#dependency-on-a-specific-rdbms)."
 msgstr "[特定RDBMSへの依存][](../sql.md#dependency-on-a-specific-rdbms) も参照してください。"
 
@@ -130,7 +130,7 @@ msgid "You can specify scripts to DAO methods with the `@Sql` annotation:"
 msgstr "`@Sql` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
 
 #: ../../query/script.md:74
-, python-brace-format
+
 msgid "See also [](../sql.md#sql-templates-in-annotations)."
 msgstr "[アノテーション内SQLテンプレート](../sql.md#sql-templates-in-annotations) も参照してください。"
 

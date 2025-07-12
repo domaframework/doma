@@ -108,7 +108,7 @@ msgstr ""
 
 #: ../../query/procedure.md:50 ../../query/procedure.md:78
 #: ../../query/procedure.md:109 ../../query/procedure.md:142
-, python-brace-format
+
 msgid ""
 "java.util.Optional whose element type is either [](../basic.md) or "
 "[](../domain.md)"

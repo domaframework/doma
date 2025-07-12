@@ -317,7 +317,7 @@ msgstr ""
 "を設定し、メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/update.md:183
-, python-brace-format
+
 msgid ""
 "When updating via SQL file, the rules differ depending on whether you use"
 " [](../sql.md#population-directive)."
@@ -345,7 +345,7 @@ msgid ""
 msgstr "たとえば、上記のメソッドに対応するSQLは次のように記述します。"
 
 #: ../../query/update.md:207
-, python-brace-format
+
 msgid ""
 "The rules for controlling update target properties are the same as in "
 "[](#update-by-auto-generated-sql)."
@@ -457,7 +457,7 @@ msgid ""
 msgstr "`@Update` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます"
 
 #: ../../query/update.md:287
-, python-brace-format
+
 msgid ""
 "This specification applies regardless of whether an SQL file is used or "
 "not. If the `queryTimeout` property is not set, the query timeout "
