@@ -27,8 +27,8 @@ msgid ""
 "Doma uses the [Pluggable Annotation Processing "
 "API](https://www.jcp.org/en/jsr/detail?id=269) at compile time."
 msgstr ""
-"Doma はコンパイル時に `Pluggable Annotation Processing API "
-"<https://www.jcp.org/en/jsr/detail?id=269>`_ を使用します。"
+"Doma はコンパイル時に `[Pluggable Annotation Processing API "
+"](https://www.jcp.org/en/jsr/detail?id=269) を使用します。"
 
 #: ../../annotation-processing.md:9
 msgid ""
@@ -252,8 +252,8 @@ msgid ""
 "Use [the compilerArgs "
 "property](https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs):"
 msgstr ""
-"`compilerArgs プロパティ "
-"<https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs>`_"
+"[compilerArgs プロパティ]("
+"https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.CompileOptions.html#org.gradle.api.tasks.compile.CompileOptions:compilerArgs)"
 " を使用します。"
 
 #: ../../annotation-processing.md
@@ -273,8 +273,8 @@ msgid ""
 "Use [the compilerArgs parameter](https://maven.apache.org/plugins/maven-"
 "compiler-plugin/examples/pass-compiler-arguments.html):"
 msgstr ""
-"`compilerArgs パラメータ <https://maven.apache.org/plugins/maven-compiler-"
-"plugin/examples/pass-compiler-arguments.html>`_: を使用します。"
+"[compilerArgs パラメータ](https://maven.apache.org/plugins/maven-compiler-"
+"plugin/examples/pass-compiler-arguments.html): を使用します。"
 
 #: ../../annotation-processing.md:167
 msgid "Setting Options in Eclipse"
@@ -290,8 +290,8 @@ msgid ""
 "[com.diffplug.eclipse.apt](https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt)"
 " and the `processorArgs` property:"
 msgstr ""
-"Gradle プラグイン `com.diffplug.eclipse.apt "
-"<https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt>`_ と "
+"Gradle プラグイン [com.diffplug.eclipse.apt]"
+"(https://plugins.gradle.org/plugin/com.diffplug.eclipse.apt) と "
 "`processorArgs` プロパティを使用します。"
 
 #: ../../annotation-processing.md:212

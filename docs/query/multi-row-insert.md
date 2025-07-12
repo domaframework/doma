@@ -43,7 +43,7 @@ However, in the case of SQL Server and Oracle, this feature cannot be executed o
 
 ### When using the returning property
 
-See [](#returning).
+See [Returning](#returning).
 
 ### When not using the returning property
 
@@ -63,7 +63,7 @@ During the execution of a multi-insert, automatically generated values will be s
 
 ### Identifier
 
-See [](../entity.md#id-generation).
+See [Id generation](../entity.md#id-generation).
 
 ### Version number
 
@@ -71,7 +71,7 @@ If the application does not set a value to the version property or sets a value 
 
 If the application explicitly sets a value greater than `0` to the version property, automatic generation will not occur.
 
-See also [](../entity.md#version).
+See also [Version](../entity.md#version).
 
 ## Properties of @MultiInsert
 

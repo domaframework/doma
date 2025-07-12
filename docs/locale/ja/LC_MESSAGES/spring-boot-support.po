@@ -34,9 +34,9 @@ msgid ""
 "doma](https://github.com/domaframework/doma-spring-boot) integration "
 "library."
 msgstr ""
-"Domaは、`Spring Boot <https://spring.io/projects/spring-boot>`_ "
-"をサポートしています。DomaをSpring Bootと組み合わせるには、 `spring-boot-doma "
-"<https://github.com/domaframework/doma-spring-boot>`_ をご利用ください。"
+"Domaは、[Spring Boot](https://spring.io/projects/spring-boot) "
+"をサポートしています。DomaをSpring Bootと組み合わせるには、 [spring-boot-doma]"
+"(https://github.com/domaframework/doma-spring-boot) をご利用ください。"
 
 #: ../../spring-boot-support.md:12
 msgid "Details"
@@ -45,7 +45,6 @@ msgstr "詳細"
 #: ../../spring-boot-support.md:14
 
 msgid ""
-"For more details, please refer to <https://github.com/domaframework/doma-"
-"spring-boot/wiki> ."
-msgstr "詳細は https://github.com/domaframework/doma-spring-boot/wiki をご参照ください。"
+"For more details, please refer to [https://github.com/domaframework/doma-spring-boot/wiki](https://github.com/domaframework/doma-spring-boot/wiki) ."
+msgstr "詳細は [https://github.com/domaframework/doma-spring-boot/wiki](https://github.com/domaframework/doma-spring-boot/wiki) をご参照ください。"
 

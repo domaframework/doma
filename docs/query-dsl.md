@@ -7,7 +7,7 @@
 ## Introduction
 
 The Unified Criteria API provides a clear and intuitive interface
-by integrating the Entityql and NativeSql DSLs from the [](criteria-api.md).
+by integrating the Entityql and NativeSql DSLs from the [Classic Criteria API](criteria-api.md).
 
 The following entity classes are used in the examples below:
 
@@ -93,7 +93,7 @@ In our examples, the generated metamodel classes are `Employee_`, `Department_`,
 You can customize the metamodel names using the elements of the `Metamodel` annotation.
 
 To bulk customize all metamodels, you can use annotation processor options.
-See [](annotation-processing.md) and refer to the following options:
+See [Annotation Processing](annotation-processing.md) and refer to the following options:
 
 - doma.metamodel.enabled
 - doma.metamodel.prefix
@@ -152,7 +152,7 @@ where t1_.DEPARTMENT_NAME = ?
 :::{note}
 In Kotlin, use `org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl` instead of `QueryDsl`.
 `KQueryDsl` is included in the doma-kotlin module.
-See [](kotlin-support.md#kotlin-specific-criteria-api).
+See [Kotlin-specific Criteria API](kotlin-support.md#kotlin-specific-criteria-api).
 :::
 
 ## Select Statement
@@ -1084,7 +1084,7 @@ inner join
 
 ## Delete Statement
 
-The delete statement follows the same rules as the [](#where-expression).
+The delete statement follows the same rules as the [Where Expression](#where-expression).
 
 ### Delete Settings
 
@@ -1475,7 +1475,7 @@ int count = queryDsl
 If a unique constraint violation occurs during the execution of an update statement,
 a `UniqueConstraintException` will be thrown.
 
-The update statement follows the same specifications as the [](#where-expression).
+The update statement follows the same specifications as the [Where Expression](#where-expression).
 
 ### Update Settings
 

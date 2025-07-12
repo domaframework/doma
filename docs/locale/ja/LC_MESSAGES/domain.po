@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -48,8 +48,8 @@ msgstr "内部ドメインクラス"
 msgid ""
 "Internal domain classes must be annotated with `@Domain`. The `valueType`"
 " element of the `@Domain` annotation specifies the data type of the "
-"corresponding database column. You must specify a type from [](basic.md) "
-"for the `valueType` element."
+"corresponding database column. You must specify a type from [Basic "
+"classes](basic.md) for the `valueType` element."
 msgstr ""
 "内部ドメインクラスには `@Domain` アノテーションを付ける必要があります。 `@Domain` の `valueType` "
 "要素は、対応するデータベースのカラムのデータ型を指定します。`valueType` 要素には [基本クラス](basic.md) "
@@ -74,8 +74,8 @@ msgid ""
 " corresponding to the `valueType` element of `@Domain` is resolved from "
 "the type of the constructor parameter."
 msgstr ""
-"レコードには `@Domain` の代わりに `@DataType` を使用できます。 `@Domain` の "
-"`valueType` 要素に対応する情報は、コンストラクタパラメーターの型から解決されます。"
+"レコードには `@Domain` の代わりに `@DataType` を使用できます。 `@Domain` の `valueType` "
+"要素に対応する情報は、コンストラクタパラメーターの型から解決されます。"
 
 #: ../../domain.md:60
 msgid "Instantiation with a static factory method"
@@ -122,9 +122,7 @@ msgstr "外部ドメインクラス"
 msgid ""
 "This feature allows you to define any class as a domain class, even if "
 "you cannot annotate the class with the `@Domain` annotation."
-msgstr ""
-"この機能を使用すると、`@Domain` "
-"アノテーションでクラスに注釈を付けることができなくても、任意のクラスをドメインクラスとして定義できます。"
+msgstr "この機能を使用すると、`@Domain` アノテーションでクラスに注釈を付けることができなくても、任意のクラスをドメインクラスとして定義できます。"
 
 #: ../../domain.md:171
 msgid ""
@@ -136,14 +134,12 @@ msgstr ""
 "を実装するクラスを作成し、`@ExternalDomain` を注釈する必要があります。"
 
 #: ../../domain.md:174
-
 msgid ""
 "Consider, for example, the following `PhoneNumber` class that you cannot "
 "modify directly:"
 msgstr "例えば、次のような `PhoneNumber` クラスがあり、直接修正することはできないとします:"
 
 #: ../../domain.md:195
-
 msgid ""
 "To define the `PhoneNumber` class as an external domain class, create the"
 " following converter class:"
@@ -158,7 +154,6 @@ msgid "External domain classes can also use type parameters, as shown below:"
 msgstr "以下に示すように、外部ドメインクラスも型パラメータを使用できます。"
 
 #: ../../domain.md:233
-
 msgid ""
 "In the `DomainConverter` implementation class, use a wildcard `?` as the "
 "type argument when referring to the external domain class:"

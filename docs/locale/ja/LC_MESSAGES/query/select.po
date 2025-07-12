@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -34,8 +34,8 @@ msgid ""
 "define the SQL template either in an SQL file or in the `@Sql` "
 "annotation."
 msgstr ""
-"`@Select` アノテーションには [SQLテンプレート](../sql.md) が必要です。SQLファイルまたは `@Sql` "
-" アノテーションでSQLテンプレートを記述してください。"
+"`@Select` アノテーションには [SQLテンプレート](../sql.md) が必要です。SQLファイルまたは `@Sql`  "
+"アノテーションでSQLテンプレートを記述してください。"
 
 #: ../../query/select.md:21
 msgid "Search condition"
@@ -50,14 +50,14 @@ msgstr "検索条件はメソッドパラメータを使用して定義されま
 #: ../../query/select.md:26 ../../query/select.md:91 ../../query/select.md:114
 #: ../../query/select.md:160 ../../query/select.md:176
 #: ../../query/select.md:241
-msgid "[](../basic.md)"
-msgstr ""
+msgid "[Basic classes](../basic.md)"
+msgstr "[基本クラス](../basic.md)"
 
 #: ../../query/select.md:27 ../../query/select.md:92 ../../query/select.md:115
 #: ../../query/select.md:161 ../../query/select.md:177
 #: ../../query/select.md:242
-msgid "[](../domain.md)"
-msgstr ""
+msgid "[Domain classes](../domain.md)"
+msgstr "[ドメインクラス](../domain.md)"
 
 #: ../../query/select.md:28
 msgid "Arbitrary type"
@@ -65,15 +65,15 @@ msgstr "任意の型"
 
 #: ../../query/select.md:29
 msgid ""
-"java.util.Optional containing either [](../basic.md), [](../domain.md), "
-"or arbitrary type as its element."
-msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) や任意の型を要素とするjava.util.Optional"
+"java.util.Optional containing either [Basic classes](../basic.md), "
+"[Domain classes](../domain.md), or arbitrary type as its element."
+msgstr "[基本クラス](../basic.md) や [ドメインクラス](../domain.md) や任意の型を要素とするjava.util.Optional"
 
 #: ../../query/select.md:30
 msgid ""
-"java.util.Iterable containing either [](../basic.md) or [](../domain.md) "
-"as its element."
-msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) を要素とするjava.util.Iterable"
+"java.util.Iterable containing either [Basic classes](../basic.md) or "
+"[Domain classes](../domain.md) as its element."
+msgstr "[基本クラス](../basic.md) や [ドメインクラス](../domain.md) を要素とするjava.util.Iterable"
 
 #: ../../query/select.md:31 ../../query/select.md:96 ../../query/select.md:119
 #: ../../query/select.md:165 ../../query/select.md:181
@@ -107,14 +107,18 @@ msgid "Query using basic classes or domain classes"
 msgstr "基本クラスまたはドメインクラスを使用したクエリ"
 
 #: ../../query/select.md:40
-msgid "Declare [](../basic.md) or [](../domain.md) as method parameters."
-msgstr "メソッドのパラメータとして [基本型](../basic.md) または [ドメイン型](../domain.md) を宣言します。"
+msgid ""
+"Declare [Basic classes](../basic.md) or [Domain classes](../domain.md) as"
+" method parameters."
+msgstr "メソッドのパラメータとして [基本クラス](../basic.md) または [ドメインクラス](../domain.md) を宣言します。"
 
 #: ../../query/select.md:47
 msgid ""
-"Use the [](../sql.md#bind-variable-directive) to bind method parameters "
-"to SQL."
-msgstr "メソッドのパラメータをSQLにバインドするには、 [バインド変数ディレクティブ](../sql.md#bind-variable-directive) を使用します。"
+"Use the [Bind variable directive](../sql.md#bind-variable-directive) to "
+"bind method parameters to SQL."
+msgstr ""
+"メソッドのパラメータをSQLにバインドするには、 [バインド変数ディレクティブ](../sql.md#bind-variable-"
+"directive) を使用します。"
 
 #: ../../query/select.md:53
 msgid "Query using arbitrary type"
@@ -155,8 +159,8 @@ msgstr "単一のレコード検索では、メソッドの戻り値の型は次
 
 #: ../../query/select.md:93 ../../query/select.md:116 ../../query/select.md:162
 #: ../../query/select.md:178 ../../query/select.md:243
-msgid "[](../entity.md)"
-msgstr ""
+msgid "[Entity classes](../entity.md)"
+msgstr "[エンティティ](../entity.md)"
 
 #: ../../query/select.md:94 ../../query/select.md:117 ../../query/select.md:163
 #: ../../query/select.md:179 ../../query/select.md:244
@@ -165,10 +169,11 @@ msgstr ""
 
 #: ../../query/select.md:95
 msgid ""
-"java.util.Optional containing either [](../basic.md), [](../domain.md), "
-"[](../entity.md), or java.util.Map\\<String, Object> as its element."
+"java.util.Optional containing either [Basic classes](../basic.md), "
+"[Domain classes](../domain.md), [Entity classes](../entity.md), or "
+"java.util.Map\\<String, Object> as its element."
 msgstr ""
-"[基本型](../basic.md)、 [ドメイン型](../domain.md)、 [エンティティ](../entity.md)、または "
+"[基本クラス](../basic.md)、 [ドメインクラス](../domain.md)、 [エンティティ](../entity.md)、または "
 "java.util.Map<String, Object> を要素とするjava.util.Optional"
 
 #: ../../query/select.md:105
@@ -192,16 +197,14 @@ msgid ""
 "When searching for multiple records, specify `java.util.List` as the "
 "return type of the method. The elements of the `List` can be of the "
 "following types:"
-msgstr ""
-"複数のレコードを検索する場合は、メソッドの戻り値の型に `java.util.List` を指定します。`List` "
-"の要素は以下の型になります。"
+msgstr "複数のレコードを検索する場合は、メソッドの戻り値の型に `java.util.List` を指定します。`List` の要素は以下の型になります。"
 
 #: ../../query/select.md:118 ../../query/select.md:180
 #: ../../query/select.md:245
 msgid ""
-"java.util.Optional containing either [](../basic.md) or [](../domain.md) "
-"as its element."
-msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) を要素とするjava.util.Optional"
+"java.util.Optional containing either [Basic classes](../basic.md) or "
+"[Domain classes](../domain.md) as its element."
+msgstr "[基本クラス](../basic.md) や [ドメインクラス](../domain.md) を要素とするjava.util.Optional"
 
 #: ../../query/select.md:128
 msgid "If there are no search results, an empty list is returned."
@@ -234,9 +237,8 @@ msgid ""
 "`SelectType.STREAM`, and add a parameter that is a subtype of "
 "`java.util.Function<Stream<TARGET, RESULT>>`."
 msgstr ""
-"`@Select` アノテーションの `strategy` プロパティを `SelectType.STREAM` "
-"に設定し、パラメータとして `java.util.Function<Stream<TARGET, RESULT>>` "
-"のサブタイプを追加します。"
+"`@Select` アノテーションの `strategy` プロパティを `SelectType.STREAM` に設定し、パラメータとして "
+"`java.util.Function<Stream<TARGET, RESULT>>` のサブタイプを追加します。"
 
 #: ../../query/select.md:149
 msgid ""
@@ -248,13 +250,15 @@ msgstr "DAOメソッドの呼び出し元は、ストリームを受け取って
 msgid ""
 "The type parameter `TARGET` of `Function<Stream<TARGET>, RESULT>` must be"
 " one of the following:"
-msgstr ""
-"`Function<Stream<TARGET>, RESULT>` の型パラメータ `TARGET` "
-"は以下のいずれかである必要があります。"
+msgstr "`Function<Stream<TARGET>, RESULT>` の型パラメータ `TARGET` は以下のいずれかである必要があります。"
 
 #: ../../query/select.md:164
-msgid "Either [](../basic.md) or [](../domain.md) is within java.util.Optional"
-msgstr "[基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかを要素とする java.util.Optional"
+msgid ""
+"Either [Basic classes](../basic.md) or [Domain classes](../domain.md) is "
+"within java.util.Optional"
+msgstr ""
+"[基本クラス](../basic.md) または [ドメインクラス](../domain.md) のいずれかを要素とする "
+"java.util.Optional"
 
 #: ../../query/select.md:169
 msgid "The type parameter `RESULT` must match the return type of the DAO method."
@@ -308,8 +312,8 @@ msgid ""
 "or `java.stream.Collector<TARGET, ?, RESULT>`."
 msgstr ""
 "`Collector` を使用して検索結果を処理するには、`@Select` の `strategy` プロパティに "
-"`SelectType.COLLECT` を設定し、`java.stream.Collector<TARGET, ACCUMULATION,"
-" RESULT>` または `java.stream.Collector<TARGET, ?, RESULT>` "
+"`SelectType.COLLECT` を設定し、`java.stream.Collector<TARGET, ACCUMULATION, "
+"RESULT>` または `java.stream.Collector<TARGET, ?, RESULT>` "
 "のサブタイプであるパラメータを追加します。"
 
 #: ../../query/select.md:231
@@ -355,13 +359,13 @@ msgstr ""
 "要素は、事前に定義されたアグリゲート戦略に基づいて、クエリ結果を階層構造のエンティティにマッピングすることを可能にします。"
 
 #: ../../query/select.md:267
-msgid "For more details, see [](../aggregate-strategy.md)."
+msgid "For more details, see [Aggregate strategies](../aggregate-strategy.md)."
 msgstr "詳細は、 [アグリゲート戦略](../aggregate-strategy.md) を参照してください。"
 
 #: ../../query/select.md:270
 msgid ""
-"The aggregate strategy cannot be used in combination with [](#stream-"
-"search) or [](#collector-search)."
+"The aggregate strategy cannot be used in combination with [Stream Search"
+"](#stream-search) or [Collector Search](#collector-search)."
 msgstr ""
 "アグリゲート戦略は、 [ストリーム検索](#stream-search) または [コレクター検索](#collector-search) "
 "と組み合わせて使用することはできません。"
@@ -398,8 +402,8 @@ msgid ""
 "the DAO method."
 msgstr ""
 "ページネーションを実装するには、`SelectOptions` で取得するレコード数を指定するための `limit` "
-"メソッドと、開始位置を指定するための `offset` メソッドを使用します。この `SelectOptions` インスタンスを DAO"
-" メソッドに渡します。"
+"メソッドと、開始位置を指定するための `offset` メソッドを使用します。この `SelectOptions` インスタンスを DAO "
+"メソッドに渡します。"
 
 #: ../../query/select.md:305
 msgid ""
@@ -485,8 +489,7 @@ msgid ""
 "locks without waiting."
 msgstr ""
 "`SelectOptions` は、 `forUpdate` で始まる名前を持つ悲観的排他制御のためのメソッドを提供します。 "
-"ロックされるテーブルや列のエイリアスを指定する `forUpdate` や ロックの取得を待機しない `forUpdateNowait` "
-"など。"
+"ロックされるテーブルや列のエイリアスを指定する `forUpdate` や ロックの取得を待機しない `forUpdateNowait` など。"
 
 #: ../../query/select.md:334
 msgid ""
@@ -597,9 +600,8 @@ msgid ""
 "hasn't been executed before the DAO method call, the `getCount` method "
 "will return -1."
 msgstr ""
-"レコードの総数は、DAOメソッドを呼び出した後に `SelectOptions` の `getCount` "
-"メソッドを使用して取得されます。 `count` メソッドがDAO メソッドの呼び出しより前に実行されていない場合、`getCount` "
-"メソッドは -1 を返します。"
+"レコードの総数は、DAOメソッドを呼び出した後に `SelectOptions` の `getCount` メソッドを使用して取得されます。 "
+"`count` メソッドがDAO メソッドの呼び出しより前に実行されていない場合、`getCount` メソッドは -1 を返します。"
 
 #: ../../query/select.md:369
 msgid "Ensure the existence of search results"
@@ -649,7 +651,7 @@ msgstr "`@Select` アノテーション内の `queryTimeout` プロパティに�
 #: ../../query/select.md:402
 msgid ""
 "If the value of the `queryTimeout` property is not set, the query timeout"
-" specified in the [](../config.md) will be used."
+" specified in the [Configuration](../config.md) will be used."
 msgstr ""
 "`queryTimeout` プロパティの値が設定されていない場合は、 [設定](../config.md) "
 "で指定されたクエリタイムアウトが使用されます。"
@@ -667,7 +669,7 @@ msgstr "`@Select` アノテーションの `fetchSize` プロパティで、フ�
 #: ../../query/select.md:413
 msgid ""
 "If the value of the `fetchSize` property is not set, the fetch size "
-"specified in the [](../config.md) will be used."
+"specified in the [Configuration](../config.md) will be used."
 msgstr "`fetchSize` プロパティの値が設定されていない場合、 [設定](../config.md) で指定されたフェッチサイズが使用されます。"
 
 #: ../../query/select.md:415
@@ -683,7 +685,7 @@ msgstr "`@Select` アノテーションの `maxRows` プロパティで、最大
 #: ../../query/select.md:424
 msgid ""
 "If the value of the `maxRows` property is not set, the maximum number of "
-"rows specified in the [](../config.md) will be used."
+"rows specified in the [Configuration](../config.md) will be used."
 msgstr "`maxRows` プロパティの値が設定されていない場合、 [設定](../config.md) で指定された最大行数が使用されます。"
 
 #: ../../query/select.md:426
@@ -711,7 +713,8 @@ msgstr ""
 #: ../../query/select.md:439
 msgid ""
 "The final conversion result is determined by the value specified here and"
-" the implementation of `MapKeyNaming` specified in the [](../config.md)."
+" the implementation of `MapKeyNaming` specified in the "
+"[Configuration](../config.md)."
 msgstr ""
 "最終的な変換結果は、ここで指定された値と [設定](../config.md) で指定された `MapKeyNaming` "
 "の実装によって決定されます。"
@@ -732,10 +735,10 @@ msgid ""
 " the log."
 msgstr "`SqlLogType.RAW` は、SQLステートメントとそのバインドパラメータをログに出力します。"
 
-#~ msgid "[基本型](../basic.md)"
+#~ msgid "[基本クラス](../basic.md)"
 #~ msgstr ""
 
-#~ msgid "[ドメイン型](../domain.md)"
+#~ msgid "[ドメインクラス](../domain.md)"
 #~ msgstr ""
 
 #~ msgid "[エンティティ](../entity.md)"
@@ -751,5 +754,14 @@ msgstr "`SqlLogType.RAW` は、SQLステートメントとそのバインドパ�
 #~ msgstr ""
 
 #~ msgid "{doc}`../entity`"
+#~ msgstr ""
+
+#~ msgid "[](../basic.md)"
+#~ msgstr ""
+
+#~ msgid "[](../domain.md)"
+#~ msgstr ""
+
+#~ msgid "[](../entity.md)"
 #~ msgstr ""
 

@@ -27,7 +27,7 @@ msgstr "コンテンツ"
 msgid ""
 "Doma supports [Lombok](https://projectlombok.org/) version 1.16.12 and "
 "later."
-msgstr "Doma は、`Lombok <https://projectlombok.org/>`_ 1.16.12 以降をサポートしています。"
+msgstr "Doma は、[Lombok](https://projectlombok.org/) 1.16.12 以降をサポートしています。"
 
 #: ../../lombok-support.md:10
 msgid "If you intend to use Eclipse, use version 4.5 or above."

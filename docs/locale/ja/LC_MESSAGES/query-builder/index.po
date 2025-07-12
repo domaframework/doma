@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,19 +23,19 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query-builder/index.md:7
-
 msgid "The package `org.seasar.doma.jdbc.builder` provides SQL builders."
 msgstr "パッケージ `org.seasar.doma.jdbc.builder` は SQL ビルダを提供します。"
 
 #: ../../query-builder/index.md:9
-
 msgid ""
-"When it is difficult to build a SQL statement with [](../query/index.md) "
-"or [](../query-dsl.md), consider to use the SQL builders in [](../dao.md"
-"#default-method)."
+"When it is difficult to build a SQL statement with "
+"[Queries](../query/index.md) or [Unified Criteria API](../query-dsl.md), "
+"consider to use the SQL builders in [Default method](../dao.md#default-"
+"method)."
 msgstr ""
-"[クエリ](../query/index.md) や [クエリDSL](../query-dsl.md) でSQLステートメントを構築することが困難な場合は、 "
-"[デフォルトメソッド](../dao.md#default-method) の中でSQLビルダーを使用することを検討してください。"
+"[クエリ](../query/index.md) や [クエリDSL](../query-dsl.md) "
+"でSQLステートメントを構築することが困難な場合は、 [デフォルトメソッド](../dao.md#default-method) "
+"の中でSQLビルダーを使用することを検討してください。"
 
 #: ../../query-builder/index.md:12
 msgid "Search"

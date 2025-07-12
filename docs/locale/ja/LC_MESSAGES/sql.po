@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -93,8 +93,8 @@ msgid ""
 "corresponding SQL files. DAO methods must be annotated with one of the "
 "following annotations:"
 msgstr ""
-"上記の `selectById` メソッドと `deleteByName` メソッドは、それぞれ独自の SQL ファイルにマップされます。"
-" DAO メソッドには、次のいずれかのアノテーションを付ける必要があります。"
+"上記の `selectById` メソッドと `deleteByName` メソッドは、それぞれ独自の SQL ファイルにマップされます。 DAO"
+" メソッドには、次のいずれかのアノテーションを付ける必要があります。"
 
 #: ../../sql.md:60 ../../sql.md:136
 msgid "@Select"
@@ -357,42 +357,41 @@ msgstr ""
 "コメントがディレクティブとして認識されます。サポートされているディレクティブは次のとおりです。"
 
 #: ../../sql.md:152
-msgid "[](#bind-variable-directive)"
+msgid "[Bind Variable Directive](#bind-variable-directive)"
 msgstr "[バインド変数ディレクティブ](#bind-variable-directive)"
 
 #: ../../sql.md:153
-msgid "[](#literal-variable-directive)"
+msgid "[Literal Variable Directive](#literal-variable-directive)"
 msgstr "[リテラル変数ディレクティブ](#literal-variable-directive)"
 
 #: ../../sql.md:154
-msgid "[](#embedded-variable-directive)"
+msgid "[Embedded Variable Directive](#embedded-variable-directive)"
 msgstr "[埋め込み変数ディレクティブ](#embedded-variable-directive)"
 
 #: ../../sql.md:155
-msgid "[](#condition-directive)"
+msgid "[Condition Directive](#condition-directive)"
 msgstr "[条件ディレクティブ](#condition-directive)"
 
 #: ../../sql.md:156
-msgid "[](#loop-directive)"
+msgid "[Loop Directive](#loop-directive)"
 msgstr "[ループディレクティブ](#loop-directive)"
 
 #: ../../sql.md:157
-msgid "[](#expansion-directive)"
+msgid "[Expansion Directive](#expansion-directive)"
 msgstr "[選択カラムリスト展開ディレクティブ](#expansion-directive)"
 
 #: ../../sql.md:158
-msgid "[](#population-directive)"
+msgid "[Population Directive](#population-directive)"
 msgstr "[更新カラムリスト生成ディレクティブ](#population-directive)"
 
 #: ../../sql.md:159
-msgid "[](#parser-level-comment-directive)"
+msgid "[Parser Level Comment Directive](#parser-level-comment-directive)"
 msgstr "[パーサーレベルコメントディレクティブ](#parser-level-comment-directive)"
 
 #: ../../sql.md:162
-#
 msgid ""
-"See also [](expression.md) for information of the expression language "
-"available in directives."
+"See also [Expression language](expression.md) for information of the "
+"expression language available in directives."
 msgstr "ディレクティブで使用できる式言語については、[expression](expression.md) も参照してください。"
 
 #: ../../sql.md:167
@@ -415,10 +414,9 @@ msgid "Basic and domain parameters"
 msgstr "パラメータ"
 
 #: ../../sql.md:176
-#
 msgid ""
-"The parameter whose type is one of [](basic.md) and [](domain.md) is "
-"recognised as a bind variable."
+"The parameter whose type is one of [Basic classes](basic.md) and [Domain "
+"classes](domain.md) is recognised as a bind variable."
 msgstr "型が [basic](basic.md) または [domain](domain.md) のいずれかのパラメータはバインド変数として認識されます。"
 
 #: ../../sql.md:179 ../../sql.md:203 ../../sql.md:234 ../../sql.md:272
@@ -440,14 +438,13 @@ msgid ""
 msgstr "`java.lang.Iterable` のサブタイプまたは配列型のパラメータは、IN句のバインド変数として認識されます。"
 
 #: ../../sql.md:200
-#
 msgid ""
-"The type argument of `java.lang.Iterable` must be one of [](basic.md) and"
-" [](domain.md). The directives must be followed by test data enclosed "
-"between `(` and `)`."
+"The type argument of `java.lang.Iterable` must be one of [Basic "
+"classes](basic.md) and [Domain classes](domain.md). The directives must "
+"be followed by test data enclosed between `(` and `)`."
 msgstr ""
-"`java.lang.Iterable` のサブタイプもしくは配列の要素の型は [basic](basic.md) または [domain](domain.md) "
-"でなければいけません。ディレクトティブの直後には `(` と `)` で囲まれたテストデータが必須です。"
+"`java.lang.Iterable` のサブタイプもしくは配列の要素の型は [basic](basic.md) または "
+"[domain](domain.md) でなければいけません。ディレクトティブの直後には `(` と `)` で囲まれたテストデータが必須です。"
 
 #: ../../sql.md:213
 msgid ""
@@ -605,8 +602,8 @@ msgid ""
 "If the `employeeId == null && department_id != null` is evaluated `true`,"
 " the generated SQL statement is as follows:"
 msgstr ""
-"`employeeId == null && department_id != null` が  `true` "
-"と評価された場合、生成される SQL ステートメントは次のようになります。"
+"`employeeId == null && department_id != null` が  `true` と評価された場合、生成される "
+"SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:403
 msgid ""
@@ -619,8 +616,8 @@ msgid ""
 "If the `employeeId == null && department_id == null` is evaluated `true`,"
 " the generated SQL statement is as follows:"
 msgstr ""
-"`employeeId == null && department_id == null`  が `true` "
-"と評価された場合、生成される SQL ステートメントは次のようになります。"
+"`employeeId == null && department_id == null`  が `true` と評価された場合、生成される "
+"SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:417
 msgid ""
@@ -673,6 +670,7 @@ msgid ""
 msgstr "`employeeId != null` が `false` と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:464
+#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%if ...*/` is unnecessary, "
 "it is removed automatically."
@@ -689,6 +687,7 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、条件ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:489
+#, python-format
 msgid ""
 "Because the SQL keyword `and` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
@@ -699,12 +698,14 @@ msgid "Restriction on condition directive"
 msgstr "条件ディレクティブの制限"
 
 #: ../../sql.md:494
+#, python-format
 msgid ""
 "The `/*%if condition*/` and `/*%end*/` directives must be included in the"
 " same SQL clause and at the same statement level."
 msgstr "`/*%if condition*/` と `/*%end*/` は、同じ SQL 句および同じステートメントレベルに含める必要があります。"
 
 #: ../../sql.md:497
+#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "FROM clause and `/*%end*/` is in the WHERE clause:"
@@ -713,12 +714,13 @@ msgstr ""
 "句にあるためです。"
 
 #: ../../sql.md:505
+#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "outer statement and `/*%end*/` is in the inner statement:"
 msgstr ""
-"次のテンプレートは、外側のステートメントに `/* %if condition*/` があり、内側のステートメントに `/* "
-"%end*/` があるため、無効です。"
+"次のテンプレートは、外側のステートメントに `/* %if condition*/` があり、内側のステートメントに `/* %end*/` "
+"があるため、無効です。"
 
 #: ../../sql.md:513
 msgid "Loop directive"
@@ -737,6 +739,7 @@ msgstr ""
 "のサブタイプまたは配列型として評価される必要があります。"
 
 #: ../../sql.md:528
+#, python-format
 msgid ""
 "Inside the loop (between `/*%for item : sequence*/` and `/*%end*/`), two "
 "additional loop variables are available:"
@@ -793,6 +796,7 @@ msgid ""
 msgstr "シーケンス `names` が空の場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:595
+#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%for ...*/` is unnecessary,"
 " it is removed automatically."
@@ -809,6 +813,7 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、ループ ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:624
+#, python-format
 msgid ""
 "Because the SQL keyword `or` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
@@ -819,6 +824,7 @@ msgid "Restriction on loop directive"
 msgstr "ループディレクティブの制限事項"
 
 #: ../../sql.md:629
+#, python-format
 msgid ""
 "`/*%for ...*/` and `/*%end*/` must be included in the same SQL clause and"
 " at the same statement level."
@@ -922,8 +928,8 @@ msgid ""
 "Java identifier and is not one of `%`, `#`, `@`, `\"`, or `'`, then `/*` "
 "marks the beginning of a multi-line comment."
 msgstr ""
-"`/*` に続く文字が Java 識別子の最初の文字として許可されておらず、かつそれが "
-"`%`、`#`、`@`、`\"`、`'` のいずれでもない場合、`/*` は複数行コメントの始まりです。"
+"`/*` に続く文字が Java 識別子の最初の文字として許可されておらず、かつそれが `%`、`#`、`@`、`\"`、`'` "
+"のいずれでもない場合、`/*` は複数行コメントの始まりです。"
 
 #: ../../sql.md:772
 msgid "The following are examples of multi-line comment beginnings:"

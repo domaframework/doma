@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -51,14 +51,12 @@ msgid "We use annotation processing for the following purposes:"
 msgstr "Domaにおいて、アノテーション処理は次の目的で使用されます。"
 
 #: ../../faq.md:20
-
 msgid ""
 "Generating meta-classes from classes annotated with `@Entity` and "
 "`@Domain`."
 msgstr "`@Entity` と `@Domain` のアノテーションが付けられたクラスからメタクラスを生成します。"
 
 #: ../../faq.md:21
-
 msgid "Generating implementation classes for interfaces annotated with `@Dao`."
 msgstr "`@Dao` アノテーションが付けられたインターフェースの実装クラスを生成します。"
 
@@ -176,7 +174,7 @@ msgid ""
 msgstr "このエラーは、ビルド ツールや IDE ごとの推奨設定に則ることで回避できます。"
 
 #: ../../faq.md:81
-msgid "See [](build.md)."
+msgid "See [Building an application](build.md)."
 msgstr ""
 
 #: ../../faq.md:83
@@ -188,14 +186,13 @@ msgid "Yes."
 msgstr "はい。"
 
 #: ../../faq.md:87
-
 msgid ""
 "We provide the [Doma CodeGen plugin](https://github.com/domaframework"
 "/doma-codegen-plugin) that generates Java and SQL files from your "
 "database schema."
 msgstr ""
-"データベーススキーマからJavaファイルとSQLファイルを生成する `Doma CodeGen plugin "
-"<https://github.com/domaframework/doma-codegen-plugin>`_ を提供します。"
+"データベーススキーマからJavaファイルとSQLファイルを生成する [Doma CodeGen plugin]("
+"https://github.com/domaframework/doma-codegen-plugin) を提供します。"
 
 #: ../../faq.md:90
 msgid "Features as a database access library"
@@ -250,8 +247,9 @@ msgid "The Criteria API."
 msgstr "Criteria API"
 
 #: ../../faq.md:110
-
-msgid "See [](sql.md) and [](query-dsl.md) for detailed information."
+msgid ""
+"See [SQL templates](sql.md) and [Unified Criteria API](query-dsl.md) for "
+"detailed information."
 msgstr "詳細については [SQLテンプレート](sql.md) と [クエリDSL](query-dsl.md) を参照してください。"
 
 #: ../../faq.md:112
@@ -265,13 +263,11 @@ msgid "Yes, there are two ways to fetch relationships:"
 msgstr "リレーションシップを取得するには2つの方法があります。"
 
 #: ../../faq.md:116
-
-msgid "[](aggregate-strategy.md) with SQL Templates."
+msgid "[Aggregate strategies](aggregate-strategy.md) with SQL Templates."
 msgstr "[アグリゲート戦略](aggregate-strategy.md) を用いた SQLテンプレート"
 
 #: ../../faq.md:117
-
-msgid "[](query-dsl.md#association) with the Criteria API."
+msgid "[Association](query-dsl.md#association) with the Criteria API."
 msgstr "[関連](query-dsl.md#association) を用いた Criteria API"
 
 #: ../../faq.md:119
@@ -283,14 +279,16 @@ msgid "No."
 msgstr "いいえ。"
 
 #: ../../faq.md:123
-
 msgid ""
 "Use Doma together with a JDBC connection pool library such as "
 "[HikariCP](https://github.com/brettwooldridge/HikariCP)."
 msgstr ""
-"Doma を `HikariCP <https://github.com/brettwooldridge/HikariCP>`_ などの JDBC"
+"Doma を [HikariCP](https://github.com/brettwooldridge/HikariCP) などの JDBC"
 " 接続プール ライブラリと組み合わせて使用してください。"
 
 #~ msgid "See {doc}`build`."
 #~ msgstr ":doc:`build` を参照してください。"
+
+#~ msgid "See [](build.md)."
+#~ msgstr ""
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -26,9 +26,7 @@ msgstr "コンテンツ"
 msgid ""
 "Configurable items must be returned from the methods of a class that "
 "implements the `org.seasar.doma.jdbc.Config` interface."
-msgstr ""
-"設定可能な項目は、 `org.seasar.doma.jdbc.Config` "
-"インターフェースの実装クラスのメソッドから返される必要があります。"
+msgstr "設定可能な項目は、 `org.seasar.doma.jdbc.Config` インターフェースの実装クラスのメソッドから返される必要があります。"
 
 #: ../../config.md:10
 msgid "Configurable items"
@@ -48,8 +46,7 @@ msgstr ""
 "トランザクションが必要な場合は、 `LocalTransactionDataSource` を返します。"
 
 #: ../../config.md:17 ../../config.md:150
-
-msgid "See also: [](transaction.md)"
+msgid "See also: [Transaction](transaction.md)"
 msgstr "[トランザクション](transaction.md) も参照してください。"
 
 #: ../../config.md:20 ../../config.md:62
@@ -83,9 +80,7 @@ msgstr "SQL ダイアレクト"
 msgid ""
 "Return a `Dialect` from the `getDialect` method. You must choose an "
 "appropriate dialect for the database you are using."
-msgstr ""
-"`getDialect` メソッドから `Dialect` "
-"を返します。使用するデータベースに合わせて適切なダイアレクトを選択する必要があります。"
+msgstr "`getDialect` メソッドから `Dialect` を返します。使用するデータベースに合わせて適切なダイアレクトを選択する必要があります。"
 
 #: ../../config.md:36
 msgid "Doma provides the following dialects:"
@@ -240,8 +235,8 @@ msgid ""
 "The default JdbcLogger is UtilLoggingJdbcLogger, which uses "
 "`java.util.logging`."
 msgstr ""
-"デフォルトの `JdbcLogger` は、`java.util.logging` を使用する "
-"`UtilLoggingJdbcLogger` です。"
+"デフォルトの `JdbcLogger` は、`java.util.logging` を使用する `UtilLoggingJdbcLogger` "
+"です。"
 
 #: ../../config.md:77
 msgid "SQL File Repository"
@@ -282,8 +277,7 @@ msgid ""
 "transaction lock time shorter."
 msgstr ""
 "`getRequiresNewController` メソッドから `RequiresNewController` を返します。 "
-"`RequiresNewController` "
-"は、トランザクションのロック時間を短縮するために新しいトランザクションを開始する場合があります。"
+"`RequiresNewController` は、トランザクションのロック時間を短縮するために新しいトランザクションを開始する場合があります。"
 
 #: ../../config.md:94
 msgid ""
@@ -380,9 +374,8 @@ msgid ""
 "values for the name elements of `@Table` and `@Column`, the naming "
 "convention is not applied to them."
 msgstr ""
-"`getNaming` メソッドから `Naming` を返します。 `@Entity` の `naming` "
-"要素は、この値よりも優先されます。 `@Table` と `@Column` の `name` "
-"要素に明示的な値を指定すると、命名規則は適用されません。"
+"`getNaming` メソッドから `Naming` を返します。 `@Entity` の `naming` 要素は、この値よりも優先されます。"
+" `@Table` と `@Column` の `name` 要素に明示的な値を指定すると、命名規則は適用されません。"
 
 #: ../../config.md:136
 msgid "The default Naming does nothing."
@@ -398,8 +391,8 @@ msgid ""
 "MapKeyNaming is used when the result set is mapped to "
 "`java.util.Map<String, Object>`."
 msgstr ""
-"`getMapKeyNaming` メソッドから `MapKeyNaming` を返します。 `MapKeyNaming` "
-"は、結果セットが `java.util.Map<String, Object>` にマップされるときに使用されます。"
+"`getMapKeyNaming` メソッドから `MapKeyNaming` を返します。 `MapKeyNaming` は、結果セットが "
+"`java.util.Map<String, Object>` にマップされるときに使用されます。"
 
 #: ../../config.md:143
 msgid "The default MapKeyNaming does nothing."
@@ -468,10 +461,9 @@ msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../config.md:174
-
 msgid ""
 "Return the query timeout (in seconds) from the `getQueryTimeout` method. "
-"This value is used as the default in [](query/index.md)."
+"This value is used as the default in [Queries](query/index.md)."
 msgstr ""
 "`getQueryTimeout` メソッドからクエリタイムアウト (秒) を返します。この値は、[クエリ](query/index.md) "
 "でデフォルトの値として使用されます。"
@@ -481,21 +473,21 @@ msgid "Max rows"
 msgstr "最大行数"
 
 #: ../../config.md:179
-
 msgid ""
 "Return the max rows from the `getMaxRows` method. This value is used as "
-"the default in [](query/select.md)."
-msgstr "`getMaxRows` メソッドから最大行数を返します。この値は [選択クエリ](query/select.md) でデフォルトの値として使用されます。"
+"the default in [Select](query/select.md)."
+msgstr ""
+"`getMaxRows` メソッドから最大行数を返します。この値は [選択クエリ](query/select.md) "
+"でデフォルトの値として使用されます。"
 
 #: ../../config.md:182
 msgid "Fetch size"
 msgstr "フェッチサイズ"
 
 #: ../../config.md:184
-
 msgid ""
 "Return the fetch size from the `getFetchSize` method. This value is used "
-"as the default in [](query/select.md)."
+"as the default in [Select](query/select.md)."
 msgstr ""
 "`getFetchSize` メソッドからフェッチ サイズを返します。この値は [選択クエリ](query/select.md) "
 "でデフォルトの値として使用されます。"
@@ -505,15 +497,14 @@ msgid "Batch size"
 msgstr "バッチサイズ"
 
 #: ../../config.md:189
-
 msgid ""
 "Return the batch size from the `getBatchSize` method. This value is used "
-"as the default in [](query/batch-insert.md), [](query/batch-update.md) "
-"and [](query/batch-delete.md)."
+"as the default in [Batch insert](query/batch-insert.md), [Batch "
+"update](query/batch-update.md) and [Batch delete](query/batch-delete.md)."
 msgstr ""
 "`getBatchSize` メソッドからバッチサイズを返します。この値は、[バッチ挿入](query/batch-"
-"insert.md)、[バッチ更新](query/batch-update.md)、および [バッチ削除](query/batch-delete.md) "
-"でデフォルトの値として使用されます。"
+"insert.md)、[バッチ更新](query/batch-update.md)、および [バッチ削除](query/batch-"
+"delete.md) でデフォルトの値として使用されます。"
 
 #: ../../config.md:193
 msgid "Providing entity listeners"
@@ -630,8 +621,8 @@ msgid ""
 "method of `StatisticManager` periodically or create an appropriate "
 "implementation class for `StatisticManager`."
 msgstr ""
-"デフォルトの実装では、有効にすると統計情報を無期限に収集します。メモリの枯渇を防ぐためには、定期的に `StatisticManager` の"
-" `clear` メソッドを呼び出すか、 `StatisticManager` の適切な実装クラスを作成してください。"
+"デフォルトの実装では、有効にすると統計情報を無期限に収集します。メモリの枯渇を防ぐためには、定期的に `StatisticManager` の "
+"`clear` メソッドを呼び出すか、 `StatisticManager` の適切な実装クラスを作成してください。"
 
 #: ../../config.md:246
 msgid "Loading JDBC drivers"
@@ -699,9 +690,7 @@ msgstr "`org.seasar.doma.jdbc.SimpleConfig` を使用すると、より簡単に
 msgid ""
 "`SimpleConfig` determines the `Dialect` based on the connection string "
 "and manages transactions using local transactions."
-msgstr ""
-"`SimpleConfig` は接続文字列に基づいて `Dialect` "
-"を決定し、ローカルトランザクションを使用してトランザクションを管理します。"
+msgstr "`SimpleConfig` は接続文字列に基づいて `Dialect` を決定し、ローカルトランザクションを使用してトランザクションを管理します。"
 
 #: ../../config.md:330
 msgid "Here is an example of building a `Config` using `SimpleConfig`."

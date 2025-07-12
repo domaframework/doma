@@ -33,9 +33,9 @@ msgid ""
 "integrate Doma with Quarkus, you need to use the [quarkus-"
 "doma](https://github.com/quarkiverse/quarkus-doma) extension."
 msgstr ""
-"Domaは `Quarkus <https://quarkus.io/>`_ "
-"v3.7.0以降をサポートしています。DomaとQuarkusを統合するには、 `quarkus-doma "
-"<https://github.com/quarkiverse/quarkus-doma>`_ エクステンションを使用する必要があります。"
+"Domaは [Quarkus](https://quarkus.io/) "
+"v3.7.0以降をサポートしています。DomaとQuarkusを統合するには、 [quarkus-doma]("
+"https://github.com/quarkiverse/quarkus-doma) エクステンションを使用する必要があります。"
 
 #: ../../quarkus-support.md:13
 msgid "Quarkus and the quarkus-doma module require Java 17 and later."
@@ -110,8 +110,8 @@ msgid ""
 "References](https://docs.quarkiverse.io/quarkus-"
 "doma/dev/index.html#_configuration_references) for details."
 msgstr ""
-"詳細は `Configuration Reference <https://docs.quarkiverse.io/quarkus-"
-"doma/dev/index.html#_configuration_references>`_ を参照してください。"
+"詳細は [Configuration Reference](https://docs.quarkiverse.io/quarkus-"
+"doma/dev/index.html#_configuration_references) を参照してください。"
 
 #: ../../quarkus-support.md:113
 msgid "Multiple Datasources"
