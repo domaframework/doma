@@ -464,7 +464,7 @@ msgid ""
 "specified in [](../config.md) is used."
 msgstr ""
 "この仕様は、SQLファイルが使用されるかどうかにかかわらず適用されます。`queryTimeout` "
-"プロパティが設定されていない場合、:doc:`../config` に指定されているクエリタイムアウトが適用されます。"
+"プロパティが設定されていない場合、[設定](../config.md) に指定されているクエリタイムアウトが適用されます。"
 
 #: ../../query/update.md:290
 msgid "SQL log output format"

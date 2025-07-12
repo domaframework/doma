@@ -35,7 +35,7 @@ msgid ""
 "#default-method)."
 msgstr ""
 "[クエリ](../query/index.md) や [クエリDSL](../query-dsl.md) でSQLステートメントを構築することが困難な場合は、 "
-"[デフォルトメソッド](#dao-default-method) の中でSQLビルダーを使用することを検討してください。"
+"[デフォルトメソッド](../dao.md#default-method) の中でSQLビルダーを使用することを検討してください。"
 
 #: ../../query-builder/index.md:12
 msgid "Search"

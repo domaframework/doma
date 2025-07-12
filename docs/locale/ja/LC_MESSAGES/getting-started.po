@@ -159,11 +159,9 @@ msgstr "DSL スタイル"
 
 msgid ""
 "In the DSL style, you work with examples in the "
-"`boilerplate.java17.repository.EmployeeRepository` and the [](query-"
-"dsl.md) for operations."
+"`boilerplate.java17.repository.EmployeeRepository` and the [](query-dsl.md) for operations."
 msgstr ""
-"DSL スタイルでは、`boilerplate.java17.repository.EmployeeRepository` と :doc"
-":`query-dsl` を使った例を使用します。"
+"DSL スタイルでは、`boilerplate.java17.repository.EmployeeRepository` と :[クエリDSL](query-dsl.md)  を使った例を使用します。"
 
 #: ../../getting-started.md:78
 msgid "SELECT"

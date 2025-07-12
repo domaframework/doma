@@ -105,7 +105,7 @@ msgstr "[エンティティ](../entity.md) のIDが `@GeneratedValue` で注釈�
 #: ../../query/insert.md:56
 
 msgid "Reference [](../entity.md#id-generation) for cautionary points."
-msgstr "注意点については [ID自動生成](#identity-auto-generation) を参照してください。"
+msgstr "注意点については [ID自動生成](../entity.md#id-generation) を参照してください。"
 
 #: ../../query/insert.md:58
 msgid "Version numbers"

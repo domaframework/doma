@@ -73,7 +73,7 @@ msgid ""
 "[](../domain.md), [](../entity.md), or java.util.Map\\<String, Object>"
 msgstr ""
 "要素の型が "
-"[基本型](../basic.md)、[ドメイン型](../domain.md)、:doc:`../entity`、java.util.Map<String, "
+"[基本型](../basic.md)、[ドメイン型](../domain.md)、[エンティティクラス](../entity.md),、java.util.Map<String, "
 "Object> のいずれかである java.util.Optional"
 
 #: ../../query/function.md:30 ../../query/function.md:42
