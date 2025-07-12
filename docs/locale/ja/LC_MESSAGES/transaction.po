@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-11 23:27+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -37,9 +37,9 @@ msgstr ""
 "をサポートするフレームワークまたはアプリケーションサーバーを使用してください。"
 
 #: ../../transaction.md:13
-#, fuzzy, python-brace-format
-msgid "See also {ref}`config-configuration-definition` ."
-msgstr ":ref:`config-configuration-definition` も参照してください。"
+#, python-brace-format
+msgid "See also [](config.md#configuration-definition)."
+msgstr "[](config.md#configuration-definition) も参照してください。"
 
 #: ../../transaction.md:15
 msgid "Configuration"
@@ -50,38 +50,34 @@ msgid "To use local transactions, the following conditions are required:"
 msgstr "ローカル トランザクションを使用するには、次の条件が必要です。"
 
 #: ../../transaction.md:19
-#, fuzzy
 msgid ""
 "Return a `LocalTransactionDataSource` from the `getDataSource` method in "
 "your `Config` implementation"
 msgstr ""
-"``Config`` の ``getDataSource`` メソッドから ``LocalTransactionDataSource`` "
+"`Config` 実装の `getDataSource` メソッドから `LocalTransactionDataSource` "
 "を返します。"
 
 #: ../../transaction.md:20
-#, fuzzy
 msgid ""
 "Create a `LocalTransactionManager` using the `LocalTransactionDataSource`"
 " in the constructor"
 msgstr ""
-"コンストラクターで ``LocalTransactionDataSource`` を使用して "
-"``LocalTransactionManager`` を作成します"
+"コンストラクターで `LocalTransactionDataSource` を使用して "
+"`LocalTransactionManager` を作成します"
 
 #: ../../transaction.md:21
-#, fuzzy
 msgid "Use this `LocalTransactionManager` to control database access"
-msgstr "この ``LocalTransactionManager`` を使用してデータベースアクセスを制御します"
+msgstr "この `LocalTransactionManager` を使用してデータベースアクセスを制御します"
 
 #: ../../transaction.md:23
-#, fuzzy
 msgid ""
 "There are several ways to create and access the "
 "`LocalTransactionManager`, but the simplest approach is to create it in "
 "the constructor of your `Config` implementation class and make that "
 "`Config` implementation a singleton instance."
 msgstr ""
-"``LocalTransactionManager`` を生成・取得する方法はいくつかありますが、最も簡単な方法は ``Config`` "
-"実装クラスのコンストラクタ内で生成し、``Config`` 実装クラスをシングルトンにすることです。"
+"`LocalTransactionManager` を生成・取得する方法はいくつかありますが、最も簡単な方法は `Config` "
+"実装クラスのコンストラクタ内で生成し、`Config` 実装クラスをシングルトンにすることです。"
 
 #: ../../transaction.md:27
 msgid "Here is an example:"
@@ -100,32 +96,28 @@ msgid "Starting and Managing Transactions"
 msgstr "トランザクションの開始と管理"
 
 #: ../../transaction.md:90
-#, fuzzy
 msgid ""
 "You can start a transaction using one of the following methods of "
 "`TransactionManager`:"
-msgstr "次の ``TransactionManager`` のメソッドのいずれかを使用してトランザクションを開始できます。"
+msgstr "次の `TransactionManager` のメソッドのいずれかを使用してトランザクションを開始できます。"
 
 #: ../../transaction.md:92
-#, fuzzy
 msgid ""
 "`required` - Uses an existing transaction if available, or creates a new "
 "one if none exists"
-msgstr "``required`` - 利用可能な既存のトランザクションを使用するか、存在しない場合は新しいトランザクションを作成します"
+msgstr "`required` - 利用可能な既存のトランザクションを使用するか、存在しない場合は新しいトランザクションを作成します"
 
 #: ../../transaction.md:93
-#, fuzzy
 msgid ""
 "`requiresNew` - Always creates a new transaction, suspending any existing"
 " transaction"
-msgstr "``requiresNew`` - 常に新しいトランザクションを作成し、既存のトランザクションを中断します"
+msgstr "`requiresNew` - 常に新しいトランザクションを作成し、既存のトランザクションを中断します"
 
 #: ../../transaction.md:94
-#, fuzzy
 msgid ""
 "`notSupported` - Executes without a transaction, suspending any existing "
 "transaction"
-msgstr "``notSupported`` - トランザクションなしで実行され、既存のトランザクションを一時停止"
+msgstr "`notSupported` - トランザクションなしで実行され、既存のトランザクションを一時停止します"
 
 #: ../../transaction.md:96
 msgid ""
@@ -145,11 +137,10 @@ msgid "Explicit Rollback"
 msgstr "明示的なロールバック"
 
 #: ../../transaction.md:115
-#, fuzzy
 msgid ""
 "Besides throwing an exception, you can use the `setRollbackOnly` method "
 "to explicitly roll back a transaction."
-msgstr "例外をスローする以外に、``setRollbackOnly`` メソッドを使用してトランザクションを明示的にロールバックすることもできます。"
+msgstr "例外をスローする以外に、`setRollbackOnly` メソッドを使用してトランザクションを明示的にロールバックすることもできます。"
 
 #: ../../transaction.md:131
 msgid "Using Savepoints"

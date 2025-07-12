@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,20 +23,18 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/select.md:7
-#, fuzzy
 msgid ""
 "To perform a search operation using the SELECT statement, annotate the "
 "DAO method with `@Select`."
-msgstr "SELECTステートメントを使用して検索操作を実行するには、DAOメソッドに ``@Select`` を注釈として付けます。"
+msgstr "SELECTステートメントを使用して検索操作を実行するには、DAOメソッドに `@Select` を注釈として付けます。"
 
 #: ../../query/select.md:18
-#, fuzzy, python-brace-format
 msgid ""
-"The `@Select` annotation requires an {doc}`SQL template <../sql>`. You "
-"can define the SQL template either in an SQL file or in the `@Sql` "
+"The `@Select` annotation requires an [SQL template](../sql.md). You can "
+"define the SQL template either in an SQL file or in the `@Sql` "
 "annotation."
 msgstr ""
-"``@Select`` アノテーションには :doc:`SQLテンプレート <../sql>` が必要です。SQLファイルまたは ``@Sql``"
+"`@Select` アノテーションには [SQLテンプレート](../sql.md) が必要です。SQLファイルまたは `@Sql` "
 " アノテーションでSQLテンプレートを記述してください。"
 
 #: ../../query/select.md:21
@@ -52,15 +50,13 @@ msgstr "検索条件はメソッドパラメータを使用して定義されま
 #: ../../query/select.md:26 ../../query/select.md:91 ../../query/select.md:114
 #: ../../query/select.md:160 ../../query/select.md:176
 #: ../../query/select.md:241
-#, python-brace-format
-msgid "{doc}`../basic`"
+msgid "[](../basic.md)"
 msgstr ""
 
 #: ../../query/select.md:27 ../../query/select.md:92 ../../query/select.md:115
 #: ../../query/select.md:161 ../../query/select.md:177
 #: ../../query/select.md:242
-#, python-brace-format
-msgid "{doc}`../domain`"
+msgid "[](../domain.md)"
 msgstr ""
 
 #: ../../query/select.md:28
@@ -68,18 +64,16 @@ msgid "Arbitrary type"
 msgstr "任意の型"
 
 #: ../../query/select.md:29
-#, fuzzy, python-brace-format
 msgid ""
-"java.util.Optional containing either {doc}`../basic`, {doc}`../domain`, "
+"java.util.Optional containing either [](../basic.md), [](../domain.md), "
 "or arbitrary type as its element."
-msgstr ":doc:`../basic` や :doc:`../domain` や任意の型を要素とするjava.util.Optional"
+msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) や任意の型を要素とするjava.util.Optional"
 
 #: ../../query/select.md:30
-#, fuzzy, python-brace-format
 msgid ""
-"java.util.Iterable containing either {doc}`../basic` or {doc}`../domain` "
+"java.util.Iterable containing either [](../basic.md) or [](../domain.md) "
 "as its element."
-msgstr ":doc:`../basic` や :doc:`../domain` や任意の型を要素とするjava.util.Iterable"
+msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) を要素とするjava.util.Iterable"
 
 #: ../../query/select.md:31 ../../query/select.md:96 ../../query/select.md:119
 #: ../../query/select.md:165 ../../query/select.md:181
@@ -100,41 +94,39 @@ msgid "java.util.OptionalDouble"
 msgstr ""
 
 #: ../../query/select.md:35
-#, fuzzy
 msgid ""
 "If the parameter type is either a basic type or a domain type, you can "
 "pass `null` as an argument. For all other parameter types, the argument "
 "must not be `null`."
 msgstr ""
-"パラメータータイプが基本タイプまたはドメインタイプである場合、引数として ``null`` "
-"を渡すことができます。それ以外のパラメータータイプでは、引数として ``null`` を渡すことはできません。"
+"パラメータータイプが基本タイプまたはドメインタイプである場合、引数として `null` "
+"を渡すことができます。それ以外のパラメータータイプでは、引数として `null` を渡すことはできません。"
 
 #: ../../query/select.md:38
 msgid "Query using basic classes or domain classes"
 msgstr "基本クラスまたはドメインクラスを使用したクエリ"
 
 #: ../../query/select.md:40
-#, fuzzy, python-brace-format
-msgid "Declare {doc}`../basic` or {doc}`../domain` as method parameters."
-msgstr "メソッドのパラメータとして :doc:`../basic` または :doc:`../domain` を宣言します。"
+msgid "Declare [](../basic.md) or [](../domain.md) as method parameters."
+msgstr "メソッドのパラメータとして [基本型](../basic.md) または [ドメイン型](../domain.md) を宣言します。"
 
 #: ../../query/select.md:47
-#, fuzzy, python-brace-format
-msgid "Use the {ref}`bind-variable-directive` to bind method parameters to SQL."
-msgstr "メソッドのパラメータをSQLにバインドするには、 :ref:`bind-variable-directive` を使用します。"
+msgid ""
+"Use the [](../sql.md#bind-variable-directive) to bind method parameters "
+"to SQL."
+msgstr "メソッドのパラメータをSQLにバインドするには、 [バインド変数ディレクティブ](../sql.md#bind-variable-directive) を使用します。"
 
 #: ../../query/select.md:53
 msgid "Query using arbitrary type"
 msgstr "任意の型を使用したクエリ"
 
 #: ../../query/select.md:55
-#, fuzzy
 msgid ""
 "When using arbitrary types as method parameters, use a dot `.` in the "
 "bind variable directive to access fields or invoke methods, and bind the "
 "result to SQL."
 msgstr ""
-"メソッドのパラメータに任意の型を使用する場合は、バインド変数ディレクティブの中で ``.`` "
+"メソッドのパラメータに任意の型を使用する場合は、バインド変数ディレクティブの中で `.` "
 "を使ってフィールドアクセスまたはメソッド呼び出しを行い結果をSQLにバインドします。"
 
 #: ../../query/select.md:67
@@ -146,11 +138,10 @@ msgid "Mapping to the IN clause"
 msgstr "IN句へのマッピング"
 
 #: ../../query/select.md:76
-#, fuzzy
 msgid ""
 "To bind to the IN clause, use a subtype of `java.lang.Iterable` as the "
 "parameter."
-msgstr "IN句にバインドするには、パラメータとして ``java.lang.Iterable`` のサブタイプを使用します。"
+msgstr "IN句にバインドするには、パラメータとして `java.lang.Iterable` のサブタイプを使用します。"
 
 #: ../../query/select.md:87
 msgid "Single record search"
@@ -164,8 +155,7 @@ msgstr "単一のレコード検索では、メソッドの戻り値の型は次
 
 #: ../../query/select.md:93 ../../query/select.md:116 ../../query/select.md:162
 #: ../../query/select.md:178 ../../query/select.md:243
-#, python-brace-format
-msgid "{doc}`../entity`"
+msgid "[](../entity.md)"
 msgstr ""
 
 #: ../../query/select.md:94 ../../query/select.md:117 ../../query/select.md:163
@@ -174,49 +164,44 @@ msgid "java.util.Map\\<String, Object>"
 msgstr ""
 
 #: ../../query/select.md:95
-#, fuzzy, python-brace-format
 msgid ""
-"java.util.Optional containing either {doc}`../basic`, {doc}`../domain`, "
-"{doc}`../entity`, or java.util.Map\\<String, Object> as its element."
+"java.util.Optional containing either [](../basic.md), [](../domain.md), "
+"[](../entity.md), or java.util.Map\\<String, Object> as its element."
 msgstr ""
-":doc:`../basic`、 :doc:`../domain`、 :doc:`../entity`、または "
+"[基本型](../basic.md)、 [ドメイン型](../domain.md)、 [エンティティ](../entity.md)、または "
 "java.util.Map<String, Object> を要素とするjava.util.Optional"
 
 #: ../../query/select.md:105
-#, fuzzy
 msgid ""
 "If the return type is not `Optional` and the result count is 0, `null` is"
 " returned."
-msgstr "戻り値の型が ``Optional`` でなく、結果件数が 0 の場合、``null`` が返されます。"
+msgstr "戻り値の型が `Optional` でなく、結果件数が 0 の場合、`null` が返されます。"
 
 #: ../../query/select.md:107
-#, fuzzy
 msgid ""
 "If there are 2 or more search results, a `NonUniqueResultException` is "
 "thrown."
-msgstr "検索結果が2つ以上ある場合は、``NonUniqueResultException`` がスローされます。"
+msgstr "検索結果が2つ以上ある場合は、`NonUniqueResultException` がスローされます。"
 
 #: ../../query/select.md:109
 msgid "Multiple record search"
 msgstr "複数レコードの検索"
 
 #: ../../query/select.md:111
-#, fuzzy
 msgid ""
 "When searching for multiple records, specify `java.util.List` as the "
 "return type of the method. The elements of the `List` can be of the "
 "following types:"
 msgstr ""
-"複数のレコードを検索する場合は、メソッドの戻り値の型に ``java.util.List`` を指定します。``List`` "
+"複数のレコードを検索する場合は、メソッドの戻り値の型に `java.util.List` を指定します。`List` "
 "の要素は以下の型になります。"
 
 #: ../../query/select.md:118 ../../query/select.md:180
 #: ../../query/select.md:245
-#, fuzzy, python-brace-format
 msgid ""
-"java.util.Optional containing either {doc}`../basic` or {doc}`../domain` "
+"java.util.Optional containing either [](../basic.md) or [](../domain.md) "
 "as its element."
-msgstr ":doc:`../basic` や :doc:`../domain` を要素とするjava.util.Optional"
+msgstr "[基本型](../basic.md) や [ドメイン型](../domain.md) を要素とするjava.util.Optional"
 
 #: ../../query/select.md:128
 msgid "If there are no search results, an empty list is returned."
@@ -227,33 +212,30 @@ msgid "Stream search"
 msgstr "ストリーム検索"
 
 #: ../../query/select.md:134
-#, fuzzy
 msgid ""
 "For processing a large number of records incrementally, you can use "
 "stream search with `java.util.stream.Stream`."
-msgstr "大量のレコードをインクリメンタルに処理するために、 ``java.util.stream.Stream`` を使ったストリーム検索を利用できます。"
+msgstr "大量のレコードをインクリメンタルに処理するために、 `java.util.stream.Stream` を使ったストリーム検索を利用できます。"
 
 #: ../../query/select.md:136
-#, fuzzy
 msgid ""
 "There are two approaches to stream searches: you can either pass a Stream"
 " to a `java.util.Function`, or return a `Stream` directly from the "
 "method."
-msgstr "ストリーム検索を行う方法は2つあります：1つはストリームを``java.util.Function``へ渡す方法、もう1つはメソッドから直接``Stream``を返す方法です。"
+msgstr "ストリーム検索を行う方法は2つあります：1つはストリームを`java.util.Function`へ渡す方法、もう1つはメソッドから直接`Stream`を返す方法です。"
 
 #: ../../query/select.md:139
 msgid "Passing a Stream to Function"
 msgstr "関数にストリームを渡す"
 
 #: ../../query/select.md:141
-#, fuzzy
 msgid ""
 "Set the `strategy` property in the `@Select` annotation to "
 "`SelectType.STREAM`, and add a parameter that is a subtype of "
 "`java.util.Function<Stream<TARGET, RESULT>>`."
 msgstr ""
-"``@Select`` アノテーションの ``strategy`` プロパティを ``SelectType.STREAM`` "
-"に設定し、パラメータとして ``java.util.Function<Stream<TARGET, RESULT>>`` "
+"`@Select` アノテーションの `strategy` プロパティを `SelectType.STREAM` "
+"に設定し、パラメータとして `java.util.Function<Stream<TARGET, RESULT>>` "
 "のサブタイプを追加します。"
 
 #: ../../query/select.md:149
@@ -263,138 +245,123 @@ msgid ""
 msgstr "DAOメソッドの呼び出し元は、ストリームを受け取って結果を返すラムダ式を渡します。"
 
 #: ../../query/select.md:158
-#, fuzzy
 msgid ""
 "The type parameter `TARGET` of `Function<Stream<TARGET>, RESULT>` must be"
 " one of the following:"
 msgstr ""
-"``Function<Stream<TARGET>, RESULT>`` の型パラメータ ``TARGET`` "
+"`Function<Stream<TARGET>, RESULT>` の型パラメータ `TARGET` "
 "は以下のいずれかである必要があります。"
 
 #: ../../query/select.md:164
-#, fuzzy, python-brace-format
-msgid "Either {doc}`../basic` or {doc}`../domain` is within java.util.Optional"
-msgstr ":doc:`../basic` または :doc:`../domain` のいずれかを要素とする java.util.Optional"
+msgid "Either [](../basic.md) or [](../domain.md) is within java.util.Optional"
+msgstr "[基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかを要素とする java.util.Optional"
 
 #: ../../query/select.md:169
-#, fuzzy
 msgid "The type parameter `RESULT` must match the return type of the DAO method."
-msgstr "型パラメータの ``RESULT`` は、DAO メソッドの戻り値の型と一致する必要があります。"
+msgstr "型パラメータの `RESULT` は、DAO メソッドの戻り値の型と一致する必要があります。"
 
 #: ../../query/select.md:171
 msgid "Returning a Stream"
 msgstr "ストリームを返す"
 
 #: ../../query/select.md:173
-#, fuzzy
 msgid ""
 "Define the method return type as `java.util.stream.Stream`. The Stream "
 "can contain elements of the following types:"
-msgstr "メソッドの戻り値型を``java.util.stream.Stream``に定義します。Streamには次の型の要素が含まれる可能性があります:"
+msgstr "メソッドの戻り値型を `java.util.stream.Stream` に定義します。Streamには次の型の要素が含まれる可能性があります:"
 
 #: ../../query/select.md:190
 msgid "The caller of the DAO method will be as follows:"
 msgstr "DAOメソッドの呼び出し元は以下のとおりです。"
 
 #: ../../query/select.md:200
-#, fuzzy
 msgid ""
 "To ensure the proper closing of resources such as `java.sql.ResultSet`, "
 "`java.sql.PreparedStatement`, and `java.sql.Connection`, always close the"
 " `Stream`."
 msgstr ""
-"``java.sql.ResultSet`` 、 ``java.sql.PreparedStatement`` 、 "
-"``java.sql.Connection`` などのリソースを適切に閉じるために、必ず ``Stream`` を閉じてください。"
+"`java.sql.ResultSet` 、 `java.sql.PreparedStatement` 、 "
+"`java.sql.Connection` などのリソースを適切に閉じるために、必ず `Stream` を閉じてください。"
 
 #: ../../query/select.md:206
-#, fuzzy
 msgid ""
 "Due to the risk of forgetting to release resources when returning values,"
 " Doma displays a warning message. To suppress the warning message, please"
 " specify `@Suppress` as follows:"
 msgstr ""
 "値を返すときにリソースを解放することを忘れるリスクがあるため、Domaは警告メッセージを表示します。 "
-"警告メッセージを抑制するには、``@Supress`` を以下のように指定してください。"
+"警告メッセージを抑制するには、`@Suppress` を以下のように指定してください。"
 
 #: ../../query/select.md:218
 msgid "Collector search"
 msgstr "コレクター検索"
 
 #: ../../query/select.md:220
-#, fuzzy
 msgid "Search results can be processed using `java.util.Collector`."
-msgstr "検索結果は ``java.util.Collector`` を使用して処理できます。"
+msgstr "検索結果は `java.util.Collector` を使用して処理できます。"
 
 #: ../../query/select.md:222
-#, fuzzy
 msgid ""
 "To process search results using `Collector`, set the `strategy` property "
 "of `@Select` to `SelectType.COLLECT`, and add a parameter that is a "
 "subtype of either `java.stream.Collector<TARGET, ACCUMULATION, RESULT>` "
 "or `java.stream.Collector<TARGET, ?, RESULT>`."
 msgstr ""
-"``Collector`` を使用して検索結果を処理するには、``@Select`` の ``strategy`` プロパティに "
-"``SelectType.COLLECT`` を設定し、``java.stream.Collector<TARGET, ACCUMULATION,"
-" RESULT>`` または ``java.stream.Collector<TARGET, ?, RESULT>`` "
+"`Collector` を使用して検索結果を処理するには、`@Select` の `strategy` プロパティに "
+"`SelectType.COLLECT` を設定し、`java.stream.Collector<TARGET, ACCUMULATION,"
+" RESULT>` または `java.stream.Collector<TARGET, ?, RESULT>` "
 "のサブタイプであるパラメータを追加します。"
 
 #: ../../query/select.md:231
-#, fuzzy
 msgid "The caller of the DAO method passes an instance of `Collector`."
-msgstr "DAOメソッドの呼び出し元は ``Collector`` のインスタンスを渡します。"
+msgstr "DAOメソッドの呼び出し元は `Collector` のインスタンスを渡します。"
 
 #: ../../query/select.md:239
-#, fuzzy
 msgid ""
 "The type parameter `TARGET` of `Collector<TARGET, ACCUMULATION, RESULT>` "
 "must be one of the following:"
 msgstr ""
-"``Function<TARGET, ACCUMULATION, RESULT>, RESULT>`` の型パラメータ ``TARGET`` "
+"`Function<TARGET, ACCUMULATION, RESULT>, RESULT>` の型パラメータ `TARGET` "
 "は以下のいずれかである必要があります。"
 
 #: ../../query/select.md:250
-#, fuzzy
 msgid ""
 "The type parameter `RESULT` of `Collector<TARGET, ACCUMULATION, RESULT>` "
 "must match the return type of the DAO method."
 msgstr ""
-"``Collector<TARGET, ACCUMULATION, RESULT>`` の型パラメータの ``RESULT`` "
+"`Collector<TARGET, ACCUMULATION, RESULT>` の型パラメータの `RESULT` "
 "は、DAOメソッドの戻り値の型と一致する必要があります。"
 
 #: ../../query/select.md:253
-#, fuzzy
 msgid ""
 "Collector search is a shortcut for passing a collector to a Function in "
 "stream search. You can achieve the same result by calling the `collect` "
 "method on the `Stream` object obtained from a stream search."
 msgstr ""
-"コレクト検索はストリーム検索のFunctionに渡す方法のショートカットです。ストリーム検索で得られる ``Stream`` オブジェクトの "
-"``collect`` メソッドを使って同等のことができます。"
+"コレクト検索はストリーム検索のFunctionに渡す方法のショートカットです。ストリーム検索で得られる `Stream` オブジェクトの "
+"`collect` メソッドを使って同等のことができます。"
 
 #: ../../query/select.md:257
 msgid "Aggregate strategy"
 msgstr "アグリゲート戦略"
 
 #: ../../query/select.md:259
-#, fuzzy
 msgid ""
 "The `aggregateStrategy` property in `@Select` allows query results to be "
 "mapped to hierarchical entity structures based on a predefined aggregate "
 "strategy."
 msgstr ""
-"``@Select`` の ``aggregateStrategy`` "
+"`@Select` の `aggregateStrategy` "
 "要素は、事前に定義されたアグリゲート戦略に基づいて、クエリ結果を階層構造のエンティティにマッピングすることを可能にします。"
 
 #: ../../query/select.md:267
-#, fuzzy, python-brace-format
-msgid "For more details, see {doc}`../aggregate-strategy`."
-msgstr "詳細は、 :doc:`../aggregate-strategy` を参照してください。"
+msgid "For more details, see [](../aggregate-strategy.md)."
+msgstr "詳細は、 [アグリゲート戦略](../aggregate-strategy.md) を参照してください。"
 
 #: ../../query/select.md:270
-#, fuzzy, python-brace-format
 msgid ""
-"The aggregate strategy cannot be used in combination with {ref}`stream-"
-"search` or {ref}`collector-search`."
+"The aggregate strategy cannot be used in combination with [](#stream-"
+"search) or [](#collector-search)."
 msgstr ""
 "アグリゲート戦略は、 :ref:`stream-search` または :ref:`collector-search` "
 "と組み合わせて使用することはできません。"
@@ -404,38 +371,34 @@ msgid "Search options"
 msgstr "検索オプション"
 
 #: ../../query/select.md:275
-#, fuzzy
 msgid ""
 "By using `SelectOptions`, you can convert the SELECT statement into SQL "
 "for paging or pessimistic locking purposes."
-msgstr "``SelectOptions`` を使用することで、SELECTステートメントをページングや悲観的排他制御のためのSQLへ変換することが可能です。"
+msgstr "`SelectOptions` を使用することで、SELECTステートメントをページングや悲観的排他制御のためのSQLへ変換することが可能です。"
 
 #: ../../query/select.md:277
-#, fuzzy
 msgid "`SelectOptions` is defined as a parameter of the DAO method."
-msgstr "``SelectOptions`` はDAOメソッドのパラメータとして定義されます。"
+msgstr "`SelectOptions` はDAOメソッドのパラメータとして定義されます。"
 
 #: ../../query/select.md:288
-#, fuzzy
 msgid ""
 "You can obtain an instance of `SelectOptions` through a static `get` "
 "method."
-msgstr "静的な ``get`` メソッドを使用して ``SelectOptions`` のインスタンスを取得できます。"
+msgstr "静的な `get` メソッドを使用して `SelectOptions` のインスタンスを取得できます。"
 
 #: ../../query/select.md:294
 msgid "Paging"
 msgstr "ページング"
 
 #: ../../query/select.md:296
-#, fuzzy
 msgid ""
 "To implement pagination, use the `offset` method to specify the starting "
 "position and the `limit` method to specify the number of records to "
 "retrieve in `SelectOptions`. Then pass this `SelectOptions` instance to "
 "the DAO method."
 msgstr ""
-"ページネーションを実装するには、``SelectOptions`` で取得するレコード数を指定するための ``limit`` "
-"メソッドと、開始位置を指定するための ``offset`` メソッドを使用します。この ``SelectOptions`` インスタンスを DAO"
+"ページネーションを実装するには、`SelectOptions` で取得するレコード数を指定するための `limit` "
+"メソッドと、開始位置を指定するための `offset` メソッドを使用します。この `SelectOptions` インスタンスを DAO"
 " メソッドに渡します。"
 
 #: ../../query/select.md:305
@@ -509,22 +472,20 @@ msgid "Pessimistic concurrency control"
 msgstr "悲観的排他制御"
 
 #: ../../query/select.md:322
-#, fuzzy
 msgid ""
 "You can indicate pessimistic concurrency control using the `forUpdate` "
 "method of `SelectOptions`."
-msgstr "``SelectOptions`` の ``forUpdate`` メソッドを使用すると、悲観的排他制御を指定できます。"
+msgstr "`SelectOptions` の `forUpdate` メソッドを使用すると、悲観的排他制御を指定できます。"
 
 #: ../../query/select.md:330
-#, fuzzy
 msgid ""
 "`SelectOptions` provides methods for pessimistic concurrency control with"
 " names starting with `forUpdate`, such as `forUpdate` to specify aliases "
 "for tables or columns to be locked, and `forUpdateNowait` to acquire "
 "locks without waiting."
 msgstr ""
-"``SelectOptions`` は、 `forUpdate` で始まる名前を持つ悲観的排他制御のためのメソッドを提供します。 "
-"ロックされるテーブルや列のエイリアスを指定する ``forUpdate`` や ロックの取得を待機しない ``forUpdateNowait`` "
+"`SelectOptions` は、 `forUpdate` で始まる名前を持つ悲観的排他制御のためのメソッドを提供します。 "
+"ロックされるテーブルや列のエイリアスを指定する `forUpdate` や ロックの取得を待機しない `forUpdateNowait` "
 "など。"
 
 #: ../../query/select.md:334
@@ -621,25 +582,23 @@ msgid "Count"
 msgstr "カウント"
 
 #: ../../query/select.md:356
-#, fuzzy
 msgid ""
 "Use the `count` method of `SelectOptions` to retrieve the total number of"
 " records. This is typically used with pagination to get the total record "
 "count before any pagination filtering is applied."
 msgstr ""
-"SelectOptionsの ``count`` "
+"SelectOptionsの `count` "
 "メソッドを使用して、レコードの総数を取得します。これは通常、ページネーションと共に使用され、ページネーションのフィルタリングが適用される前の総レコード数を取得します。"
 
 #: ../../query/select.md:366
-#, fuzzy
 msgid ""
 "The total count of records is obtained using the `getCount` method of "
 "`SelectOptions` after calling the DAO method. If the `count` method "
 "hasn't been executed before the DAO method call, the `getCount` method "
 "will return -1."
 msgstr ""
-"レコードの総数は、DAOメソッドを呼び出した後に ``SelectOptions`` の ``getCount`` "
-"メソッドを使用して取得されます。 ``count`` メソッドがDAO メソッドの呼び出しより前に実行されていない場合、``getCount`` "
+"レコードの総数は、DAOメソッドを呼び出した後に `SelectOptions` の `getCount` "
+"メソッドを使用して取得されます。 `count` メソッドがDAO メソッドの呼び出しより前に実行されていない場合、`getCount` "
 "メソッドは -1 を返します。"
 
 #: ../../query/select.md:369
@@ -647,58 +606,52 @@ msgid "Ensure the existence of search results"
 msgstr "検索結果の保証"
 
 #: ../../query/select.md:371
-#, fuzzy
 msgid ""
 "To ensure that at least one result is returned from the search, set the "
 "`ensureResult` property of the `@Select` annotation to `true`."
 msgstr ""
-"検索結果が少なくとも1つ返されるようにするには、 ``@Select`` アノテーションの \n"
-"``ensureResult`` プロパティを ``true`` に設定します。"
+"検索結果が少なくとも1つ返されるようにするには、 `@Select` アノテーションの \n"
+"`ensureResult` プロパティを `true` に設定します。"
 
 #: ../../query/select.md:378
-#, fuzzy
 msgid "If there are no search results, a `NoResultException` will be thrown."
-msgstr "検索結果がない場合は、``NoResultException`` がスローされます。"
+msgstr "検索結果がない場合は、`NoResultException` がスローされます。"
 
 #: ../../query/select.md:380
 msgid "Ensure the mapping of search results"
 msgstr "検索結果のマッピングの保証"
 
 #: ../../query/select.md:382
-#, fuzzy
 msgid ""
 "If you want to ensure that all columns of the result set are mapped to "
 "properties of the entity without missing any, specify `true` for the "
 "`ensureResultMapping` element of `@Select`."
 msgstr ""
-"結果セットのすべての列が欠落せずにエンティティのプロパティにマップされていることを確認したい場合、 ``@Select`` の "
-"``ensureResultMapping`` 要素に ``true`` を指定します。"
+"結果セットのすべての列が欠落せずにエンティティのプロパティにマップされていることを確認したい場合、 `@Select` の "
+"`ensureResultMapping` 要素に `true` を指定します。"
 
 #: ../../query/select.md:390
-#, fuzzy
 msgid ""
 "If there are properties in the entity that are not mapped to columns in "
 "the result set, a `ResultMappingException` will be thrown."
-msgstr "結果セットのカラムにマッピングされていないプロパティがある場合、 ``ResultMappingException`` がスローされます。"
+msgstr "結果セットのカラムにマッピングされていないプロパティがある場合、 `ResultMappingException` がスローされます。"
 
 #: ../../query/select.md:393
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../query/select.md:395
-#, fuzzy
 msgid ""
 "You can specify the query timeout in seconds using the `queryTimeout` "
 "property in the `@Select` annotation."
-msgstr "``@Select`` アノテーション内の ``queryTimeout`` プロパティにクエリタイムアウトを秒単位で指定できます。"
+msgstr "`@Select` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトを秒単位で指定できます。"
 
 #: ../../query/select.md:402
-#, fuzzy, python-brace-format
 msgid ""
 "If the value of the `queryTimeout` property is not set, the query timeout"
-" specified in the {doc}`../config` will be used."
+" specified in the [](../config.md) will be used."
 msgstr ""
-"``queryTimeout`` プロパティの値が設定されていない場合は、 :doc:`../config` "
+"`queryTimeout` プロパティの値が設定されていない場合は、 [設定](../config.md) "
 "で指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/select.md:404
@@ -706,97 +659,97 @@ msgid "Fetch size"
 msgstr "フェッチサイズ"
 
 #: ../../query/select.md:406
-#, fuzzy
 msgid ""
 "You can specify the fetch size using the `fetchSize` property in the "
 "`@Select` annotation."
-msgstr "``@Select`` アノテーションの ``fetchSize`` プロパティで、フェッチサイズを指定できます。"
+msgstr "`@Select` アノテーションの `fetchSize` プロパティで、フェッチサイズを指定できます。"
 
 #: ../../query/select.md:413
-#, fuzzy, python-brace-format
 msgid ""
 "If the value of the `fetchSize` property is not set, the fetch size "
-"specified in the {doc}`../config` will be used."
-msgstr "``fetchSize`` プロパティの値が設定されていない場合、 :doc:`../config` で指定されたフェッチサイズが使用されます。"
+"specified in the [](../config.md) will be used."
+msgstr "`fetchSize` プロパティの値が設定されていない場合、 [設定](../config.md) で指定されたフェッチサイズが使用されます。"
 
 #: ../../query/select.md:415
 msgid "Max row count"
 msgstr "最大行数"
 
 #: ../../query/select.md:417
-#, fuzzy
 msgid ""
 "You can specify the maximum number of rows using the `maxRows` property "
 "in the `@Select` annotation."
-msgstr "``@Select`` アノテーションの ``maxRows`` プロパティで、最大行数を指定できます。"
+msgstr "`@Select` アノテーションの `maxRows` プロパティで、最大行数を指定できます。"
 
 #: ../../query/select.md:424
-#, fuzzy, python-brace-format
 msgid ""
 "If the value of the `maxRows` property is not set, the maximum number of "
-"rows specified in the {doc}`../config` will be used."
-msgstr "``maxRows`` プロパティの値が設定されていない場合、 :doc:`../config` で指定された最大行数が使用されます。"
+"rows specified in the [](../config.md) will be used."
+msgstr "`maxRows` プロパティの値が設定されていない場合、 [設定](../config.md) で指定された最大行数が使用されます。"
 
 #: ../../query/select.md:426
 msgid "The naming convention for the keys of the Map"
 msgstr "マップのキーの命名規則"
 
 #: ../../query/select.md:428
-#, fuzzy
 msgid ""
 "If you are mapping search results to `java.util.Map<String, Object>`, you"
 " can specify the naming convention for the keys of the map using the "
 "`mapKeyNaming` property of `@Select`."
 msgstr ""
-"検索結果を ``java.util.Map<String, Object>`` にマッピングする場合、 ``@Select`` の "
-"``mapKeyNaming`` プロパティでマップのキーの命名規則を指定できます。"
+"検索結果を `java.util.Map<String, Object>` にマッピングする場合、 `@Select` の "
+"`mapKeyNaming` プロパティでマップのキーの命名規則を指定できます。"
 
 #: ../../query/select.md:436
-#, fuzzy
 msgid ""
 "`MapKeyNamingType.CAMEL_CASE` indicates that the column names will be "
 "converted to camel case. There are also conventions to convert column "
 "names to uppercase or lowercase."
 msgstr ""
-"``MapKeyNamingType.CAMEL_CASE`` "
+"`MapKeyNamingType.CAMEL_CASE` "
 "は、カラム名がキャメルケースに変換されることを示します。カラム名を大文字または小文字に変換する規約もあります。"
 
 #: ../../query/select.md:439
-#, fuzzy, python-brace-format
 msgid ""
 "The final conversion result is determined by the value specified here and"
-" the implementation of `MapKeyNaming` specified in the {doc}`../config`."
+" the implementation of `MapKeyNaming` specified in the [](../config.md)."
 msgstr ""
-"最終的な変換結果は、ここで指定された値と :doc:`../config` で指定された ``MapKeyNaming`` "
+"最終的な変換結果は、ここで指定された値と [設定](../config.md) で指定された `MapKeyNaming` "
 "の実装によって決定されます。"
 
-#: ../../query/select.md:442
+#: ../../query/select.md:441
 msgid "Output format of SQL logs"
 msgstr "SQLログの出力形式"
 
-#: ../../query/select.md:444
-#, fuzzy
+#: ../../query/select.md:443
 msgid ""
 "You can specify the format of SQL log output using the `sqlLog` property "
 "of the `@Select` annotation."
-msgstr "``@Select`` アノテーションの ``sqlLog`` プロパティでSQLログの出力形式を指定できます。"
+msgstr "`@Select` アノテーションの `sqlLog` プロパティでSQLログの出力形式を指定できます。"
 
-#: ../../query/select.md:451
-#, fuzzy
+#: ../../query/select.md:450
 msgid ""
 "`SqlLogType.RAW` outputs the SQL statement with its binding parameters in"
 " the log."
-msgstr "``SqlLogType.RAW`` は、SQLステートメントとそのバインドパラメータをログに出力します。"
+msgstr "`SqlLogType.RAW` は、SQLステートメントとそのバインドパラメータをログに出力します。"
 
-#~ msgid ":doc:`../basic`"
+#~ msgid "[基本型](../basic.md)"
 #~ msgstr ""
 
-#~ msgid ":doc:`../domain`"
+#~ msgid "[ドメイン型](../domain.md)"
 #~ msgstr ""
 
-#~ msgid ":doc:`../entity`"
+#~ msgid "[エンティティ](../entity.md)"
 #~ msgstr ""
 
 #~ msgid "java.util.Map<String, Object>"
+#~ msgstr ""
+
+#~ msgid "{doc}`../basic`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../domain`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../entity`"
 #~ msgstr ""
 

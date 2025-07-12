@@ -27,7 +27,7 @@ msgid "Overview"
 msgstr "概要"
 
 #: ../../spring-boot-support.md:9
-#, fuzzy
+
 msgid ""
 "Doma supports [Spring Boot](https://spring.io/projects/spring-boot). To "
 "combine Doma with Spring Boot, use the [spring-boot-"
@@ -43,7 +43,7 @@ msgid "Details"
 msgstr "詳細"
 
 #: ../../spring-boot-support.md:14
-#, fuzzy
+
 msgid ""
 "For more details, please refer to <https://github.com/domaframework/doma-"
 "spring-boot/wiki> ."

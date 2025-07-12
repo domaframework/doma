@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,16 +23,16 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query-builder/index.md:7
-#, fuzzy
+
 msgid "The package `org.seasar.doma.jdbc.builder` provides SQL builders."
-msgstr "パッケージ ``org.seasar.doma.jdbc.builder`` は SQL ビルダを提供します。"
+msgstr "パッケージ `org.seasar.doma.jdbc.builder` は SQL ビルダを提供します。"
 
 #: ../../query-builder/index.md:9
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
-"When it is difficult to build a SQL statement with {doc}`../query/index` "
-"or {doc}`../query-dsl`, consider to use the SQL builders in {ref}`dao-"
-"default-method`."
+"When it is difficult to build a SQL statement with [](../query/index.md) "
+"or [](../query-dsl.md), consider to use the SQL builders in [](../dao.md"
+"#default-method)."
 msgstr ""
 ":doc:`../query/index` や :doc:`../query-dsl` でSQLステートメントを構築することが困難な場合は、 "
 ":ref:`dao-default-method` の中でSQLビルダーを使用することを検討してください。"

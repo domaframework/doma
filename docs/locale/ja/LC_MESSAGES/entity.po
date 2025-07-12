@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -43,17 +43,15 @@ msgid "The following code snippet shows how to inherit from another entity class
 msgstr "次のコード スニペットは、他のエンティティ クラスを継承する方法を示しています。"
 
 #: ../../entity.md:32
-#, fuzzy
 msgid "You can annotate [records] with `@Entity`:"
-msgstr "`records`_ には ``@Entity`` を注釈できます。"
+msgstr "[records](https://docs.oracle.com/javase/records/) には `@Entity` を注釈できます。"
 
 #: ../../entity.md:40
-#, fuzzy, python-brace-format
 msgid ""
-"In this case, the entity is recognized as {ref}`immutable` even though "
-"the `immutable` property of `@Entity` is `false`."
+"In this case, the entity is recognized as [immutable](#immutable) even "
+"though the `immutable` property of `@Entity` is `false`."
 msgstr ""
-"この場合、``@Entity`` の不変プロパティが ``false`` であっても、エンティティは :ref:`immutable` "
+"この場合、`@Entity` の不変プロパティが `false` であっても、エンティティは [immutable` "
 "として認識されます。"
 
 #: ../../entity.md:44
@@ -73,11 +71,10 @@ msgid "The following code snippet shows how to define an entity listener:"
 msgstr "次のコードスニペットは、エンティティリスナーを定義する方法を示しています。"
 
 #: ../../entity.md:56
-#, fuzzy
 msgid ""
 "To use the entity listener, specify it in the `listener` property of the "
 "`@Entity` annotation:"
-msgstr "エンティティ リスナーを使用するには、それを ``@Entity`` アノテーション 内の ``listener`` プロパティに指定します。"
+msgstr "エンティティ リスナーを使用するには、それを `@Entity` アノテーション 内の `listener` プロパティに指定します。"
 
 #: ../../entity.md:65
 msgid "An entity subclass inherits its parent's entity listener."
@@ -106,13 +103,12 @@ msgid ""
 msgstr "次のコードスニペットは、命名規則をエンティティに適用する方法を示しています。"
 
 #: ../../entity.md:85
-#, fuzzy
 msgid ""
 "When the `name` property of the `@Table` or `@Column` annotation is "
 "explicitly specified, the naming convention is ignored for that specific "
 "element."
 msgstr ""
-"``@Table`` または ``@Column`` アノテーション内の ``name`` "
+"`@Table` または `@Column` アノテーション内の `name` "
 "プロパティに値が明示的に指定された場合、命名規則はその要素に対して無視されます。"
 
 #: ../../entity.md:88
@@ -132,13 +128,12 @@ msgid "The following code snippet shows how to define an immutable entity:"
 msgstr "次のコード スニペットは、不変エンティティを定義する方法を示しています。"
 
 #: ../../entity.md:116
-#, fuzzy
 msgid ""
 "The `immutable` property of the `@Entity` annotation must be set to "
 "`true`. All persistent fields must be declared as `final`."
 msgstr ""
-"``@Entity`` アノテーションの ``immutable`` プロパティは ``true`` "
-"に設定されている必要があります。すべての永続フィールドは ``final`` として宣言されなければなりません。"
+"`@Entity` アノテーションの `immutable` プロパティは `true` "
+"に設定されている必要があります。すべての永続フィールドは `final` として宣言されなければなりません。"
 
 #: ../../entity.md:119
 msgid "An entity subclass inherits its parent's immutable property."
@@ -149,16 +144,14 @@ msgid "Table"
 msgstr "テーブル"
 
 #: ../../entity.md:123
-#, fuzzy
 msgid "You can specify the corresponding table name with the `@Table` annotation:"
-msgstr "``@Table`` アノテーション を使用して、対応するテーブル名を指定できます。"
+msgstr "`@Table` アノテーション を使用して、対応するテーブル名を指定できます。"
 
 #: ../../entity.md:133
-#, fuzzy, python-brace-format
 msgid ""
 "If the `@Table` annotation is not specified, the table name is determined"
-" by the {ref}`naming-convention` ."
-msgstr "``@Table`` アノテーションが指定されていない場合、テーブル名は :ref:`naming-convention` によって決定されます。"
+" by the [](#naming-convention) ."
+msgstr "`@Table` アノテーションが指定されていない場合、テーブル名は [naming-convention` によって決定されます。"
 
 #: ../../entity.md:135
 msgid "Field definition"
@@ -175,24 +168,20 @@ msgid "The field type must be one of the following:"
 msgstr "フィールドの型は次のいずれかである必要があります。"
 
 #: ../../entity.md:141
-#, python-brace-format
-msgid "{doc}`basic`"
+msgid "[](basic.md)"
 msgstr ""
 
 #: ../../entity.md:142
-#, python-brace-format
-msgid "{doc}`domain`"
+msgid "[](domain.md)"
 msgstr ""
 
 #: ../../entity.md:143
-#, python-brace-format
-msgid "{doc}`embeddable`"
+msgid "[](embeddable.md)"
 msgstr ""
 
 #: ../../entity.md:144
-#, fuzzy, python-brace-format
-msgid "java.util.Optional, whose element is either {doc}`basic` or {doc}`domain`"
-msgstr ":doc:`basic` または :doc:`domain` のいずれかを要素とする java.util.Optional"
+msgid "java.util.Optional, whose element is either [](basic.md) or [](domain.md)"
+msgstr "[basic` または [domain` のいずれかを要素とする java.util.Optional"
 
 #: ../../entity.md:145
 msgid "java.util.OptionalInt"
@@ -215,75 +204,66 @@ msgid "Column"
 msgstr "カラム"
 
 #: ../../entity.md:161
-#, fuzzy
 msgid ""
 "You can specify the corresponding column name with the `@Column` "
 "annotation:"
-msgstr "カラム名を ``@Column`` アノテーションで指定できます。"
+msgstr "カラム名を `@Column` アノテーションで指定できます。"
 
 #: ../../entity.md:168
-#, fuzzy
 msgid ""
 "To exclude fields from INSERT or UPDATE statements, set the `insertable` "
 "or `updatable` properties to `false` within the `@Column` annotation:"
 msgstr ""
-"INSERT または UPDATE ステートメントからフィールドを除外するには、``@Column`` アノテーション内の "
-"``insertable`` または ``updatable`` プロパティに ``false`` を設定します。"
+"INSERT または UPDATE ステートメントからフィールドを除外するには、`@Column` アノテーション内の "
+"`insertable` または `updatable` プロパティに `false` を設定します。"
 
 #: ../../entity.md:176
-#, fuzzy, python-brace-format
 msgid ""
 "If the `@Column` annotation is not specified, the column name is "
-"determined by the {ref}`naming-convention` ."
-msgstr "``@Column`` アノテーションが指定されていない場合、カラム名は :ref:`naming-convention` によって決定されます。"
+"determined by the [](#naming-convention) ."
+msgstr "`@Column` アノテーションが指定されていない場合、カラム名は [naming-convention` によって決定されます。"
 
 #: ../../entity.md:179
-#, fuzzy, python-brace-format
 msgid ""
-"When the field type is {doc}`embeddable`, you cannot apply the `@Column` "
+"When the field type is [](embeddable.md), you cannot apply the `@Column` "
 "annotation to the field."
-msgstr "フィールドタイプが :doc:`embeddable` の場合、フィールドに ``@Column`` アノテーション を適用することはできません。"
+msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Column` アノテーション を適用することはできません。"
 
 #: ../../entity.md:182
 msgid "Id"
 msgstr "ID"
 
 #: ../../entity.md:184
-#, fuzzy
 msgid "The database primary keys are represented with the `@Id` annotation:"
-msgstr "データベースの主キーは ``@Id`` アノテーション で表されます。"
+msgstr "データベースの主キーは `@Id` アノテーション で表されます。"
 
 #: ../../entity.md:191
-#, fuzzy
 msgid "For composite primary keys, apply the `@Id` annotation to multiple fields:"
-msgstr "複合主キーに対しては、複数のフィールドに ``@Id`` アノテーションを適用します。"
+msgstr "複合主キーに対しては、複数のフィールドに `@Id` アノテーションを適用します。"
 
 #: ../../entity.md:202
-#, fuzzy, python-brace-format
 msgid ""
-"When the field type is {doc}`embeddable`, you cannot apply the `@Id` "
+"When the field type is [](embeddable.md), you cannot apply the `@Id` "
 "annotation to the field."
-msgstr "フィールドタイプが :doc:`embeddable` の場合、フィールドに ``@Id`` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Id` アノテーションを適用することはできません。"
 
 #: ../../entity.md:207
 msgid "Id generation"
 msgstr "IDの生成"
 
 #: ../../entity.md:209
-#, fuzzy
 msgid ""
 "You can instruct Doma to generate id values automatically using the "
 "`@GeneratedValue` annotation."
-msgstr "``@GeneratedValue`` アノテーション を使用して、ID 値を自動的に生成するように Doma に指示できます。"
+msgstr "`@GeneratedValue` アノテーション を使用して、ID 値を自動的に生成するように Doma に指示できます。"
 
 #: ../../entity.md:213 ../../entity.md:293
 msgid "the subclass of java.lang.Number"
 msgstr "java.lang.Number のサブクラス"
 
 #: ../../entity.md:214 ../../entity.md:294
-#, fuzzy, python-brace-format
-msgid "{doc}`domain`, whose value type is the subclass of java.lang.Number"
-msgstr "値の型が java.lang.Number のサブクラスである :doc:`domain`"
+msgid "[](domain.md), whose value type is the subclass of java.lang.Number"
+msgstr "値の型が java.lang.Number のサブクラスである [domain`"
 
 #: ../../entity.md:215 ../../entity.md:295
 msgid "java.util.Optional, whose element is either above types"
@@ -306,29 +286,27 @@ msgid "the primitive types for number"
 msgstr "数値のプリミティブ型"
 
 #: ../../entity.md:222
-#, fuzzy
 msgid ""
 "The generated values are assigned to the field only when the field is "
 "either `null` or has a value less than `0`. If you use one of the "
 "primitive types as the field type, initialize the field with a value less"
 " than `0`, such as `-1`."
 msgstr ""
-"生成された値は、フィールドが ``null`` または ``0`` 未満の場合にのみフィールドに割り当てられます。プリミティブ型の 1 "
-"つをフィールド型として使用する場合は、フィールドを ``-1`` などの ``0`` より小さい値で初期化してください。"
+"生成された値は、フィールドが `null` または `0` 未満の場合にのみフィールドに割り当てられます。プリミティブ型の 1 "
+"つをフィールド型として使用する場合は、フィールドを `-1` などの `0` より小さい値で初期化してください。"
 
 #: ../../entity.md:227
 msgid "Id generation by IDENTITY"
 msgstr "IDENTITYによるID生成"
 
 #: ../../entity.md:229
-#, fuzzy
 msgid ""
 "To generate values using the RDBMS IDENTITY function, set the `strategy` "
 "property of the `@GeneratedValue` annotation to "
 "`GenerationType.IDENTITY`:"
 msgstr ""
-"RDBMSのIDENTITY機能を使用して値を生成するには、 ``@GeneratedValue`` アノテーションの ``strategy`` "
-"プロパティを ``GenerationType.IDENTITY`` に設定します:"
+"RDBMSのIDENTITY機能を使用して値を生成するには、 `@GeneratedValue` アノテーションの `strategy` "
+"プロパティを `GenerationType.IDENTITY` に設定します:"
 
 #: ../../entity.md:237
 msgid ""
@@ -345,25 +323,23 @@ msgid "Id generation by SEQUENCE"
 msgstr "SEQUENCEによるID生成"
 
 #: ../../entity.md:245
-#, fuzzy
 msgid ""
 "To generate values using the RDBMS SEQUENCE, set the `strategy` property "
 "of the `@GeneratedValue` annotation to `GenerationType.SEQUENCE`. And use"
 " the `@SequenceGenerator` annotation:"
 msgstr ""
-"RDBMSのSEQUENCEを使用して値を生成するには、``@GeneratedValue`` アノテーションの ``strategy`` "
-"プロパティを ``GenerationType.SEQUENCE`` に設定します。そして、``@SequenceGenerator`` "
+"RDBMSのSEQUENCEを使用して値を生成するには、`@GeneratedValue` アノテーションの `strategy` "
+"プロパティを `GenerationType.SEQUENCE` に設定します。そして、`@SequenceGenerator` "
 "アノテーションを使用します:"
 
 #: ../../entity.md:255
-#, fuzzy
 msgid ""
 "In advance, define the SEQUENCE in the database. The SEQUENCE definitions"
 " (such as name, allocation size, and initial size) must match the "
 "properties specified in the `@SequenceGenerator` annotation."
 msgstr ""
 "あらかじめデータベースにSEQUENCEを定義しておきます。名前、割り当てサイズ、初期サイズなどの SEQUENCE "
-"定義は、``@SequenceGenerator`` アノテーション 内のプロパティに対応する必要があります。"
+"定義は、`@SequenceGenerator` アノテーション 内のプロパティに対応する必要があります。"
 
 #: ../../entity.md:260
 msgid "Not all RDBMS systems support SEQUENCES."
@@ -374,109 +350,98 @@ msgid "Id generation by TABLE"
 msgstr "TABLEによるID生成"
 
 #: ../../entity.md:265
-#, fuzzy
 msgid ""
 "To generate values using the RDBMS TABLE, set the `strategy` property of "
 "the `@GeneratedValue` annotation to `GenerationType.TABLE`. And use the "
 "`@TableGenerator` annotation:"
 msgstr ""
-"RDBMSのTABLEを使用して値を生成するには、``@GeneratedValue`` アノテーションの ``strategy`` プロパティを"
-" ``GenerationType.TABLE`` に設定します。そして、``@TableGenerator`` アノテーションを使用します:"
+"RDBMSのTABLEを使用して値を生成するには、`@GeneratedValue` アノテーションの `strategy` プロパティを"
+" `GenerationType.TABLE` に設定します。そして、`@TableGenerator` アノテーションを使用します:"
 
 #: ../../entity.md:275
-#, fuzzy
 msgid ""
 "In advance, define the TABLE in the database. The TABLE's definition must"
 " correspond to the properties within the `@TableGenerator` annotation. "
 "For example, the DDL should look like this:"
 msgstr ""
-"あらかじめデータベースにTABLEを定義しておきます。 TABLE の定義は、``@TableGenerator`` アノテーション "
+"あらかじめデータベースにTABLEを定義しておきます。 TABLE の定義は、`@TableGenerator` アノテーション "
 "内のプロパティに対応する必要があります。たとえば、DDL は次のようになります。"
 
 #: ../../entity.md:283
-#, fuzzy
 msgid ""
 "You can change the table name and the column names using the properties "
 "within the `@TableGenerator` annotation."
-msgstr "テーブル と カラム の名前は、``@TableGenerator`` アノテーション 内のプロパティを使用して変更できます。"
+msgstr "テーブル と カラム の名前は、`@TableGenerator` アノテーション 内のプロパティを使用して変更できます。"
 
 #: ../../entity.md:287
 msgid "Version"
 msgstr "バージョン"
 
 #: ../../entity.md:289
-#, fuzzy
 msgid ""
 "The version fields for optimistic locking are represented with the "
 "`@Version` annotation."
-msgstr "楽観的排他制御のバージョンフィールドは、``@Version`` アノテーションで表されます。"
+msgstr "楽観的排他制御のバージョンフィールドは、`@Version` アノテーションで表されます。"
 
 #: ../../entity.md:307
-#, fuzzy, python-brace-format
 msgid ""
-"When the field type is {doc}`embeddable`, you cannot apply the `@Version`"
+"When the field type is [](embeddable.md), you cannot apply the `@Version`"
 " annotation to the field."
-msgstr "フィールドタイプが :doc:`embeddable` の場合、フィールドに ``@Version`` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Version` アノテーションを適用することはできません。"
 
 #: ../../entity.md:310
 msgid "Tenant Id"
 msgstr "テナント ID"
 
 #: ../../entity.md:312
-#, fuzzy
 msgid ""
 "The tenant id fields are represented with the `@TenantId` annotation. The"
 " column corresponding to the annotated field is included in the WHERE "
 "clause of UPDATE and DELETE statements."
 msgstr ""
-"テナント IDのフィールドは、``@TenantId`` アノテーション で表されます。このフィールドに対応するカラム "
+"テナント IDのフィールドは、`@TenantId` アノテーション で表されます。このフィールドに対応するカラム "
 "は、UPDATEステートメント および DELETEステートメント の WHERE 句に含まれます。"
 
 #: ../../entity.md:321
-#, fuzzy, python-brace-format
 msgid ""
-"When the field type is {doc}`embeddable`, you cannot apply the "
+"When the field type is [](embeddable.md), you cannot apply the "
 "`@TenantId` annotation to the field."
-msgstr "フィールドタイプが :doc:`embeddable` の場合、フィールドに ``@TenantId`` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@TenantId` アノテーションを適用することはできません。"
 
 #: ../../entity.md:324
 msgid "Transient"
 msgstr "Transient"
 
 #: ../../entity.md:326
-#, fuzzy
 msgid ""
 "If an entity has fields that you don't want to persist, you can annotate "
 "them using `@Transient`:"
-msgstr "エンティティに永続化したくないフィールドがある場合は、 ``@Transient`` アノテーションを付けることができます。"
+msgstr "エンティティに永続化したくないフィールドがある場合は、 `@Transient` アノテーションを付けることができます。"
 
 #: ../../entity.md:333
 msgid "Association"
 msgstr ""
 
 #: ../../entity.md:335
-#, fuzzy
 msgid ""
 "Use the `@Association` annotation for fields that represent associations "
 "between entities:"
-msgstr "エンティティ間の関連を表すフィールドには ``@Association`` アノテーションを使用します。"
+msgstr "エンティティ間の関連を表すフィールドには `@Association` アノテーションを使用します。"
 
 #: ../../entity.md:347
-#, fuzzy
 msgid ""
 "Fields annotated with `@Association` are not persisted in the database. "
 "Instead, this annotation is used to define entity relationships within an"
 " aggregate."
 msgstr ""
-"``@Association`` "
+"`@Association` "
 "で注釈されたフィールドはデータベースへ永続化されません。代わりに、この注釈はアグリゲートでエンティティリレーションシップを定義するために使用されます。"
 
 #: ../../entity.md:350
-#, fuzzy, python-brace-format
 msgid ""
 "This annotation should be used in conjunction with the aggregate "
 "strategy, ensuring that related entities are treated as a single unit of "
-"consistency. For more details, see {doc}`aggregate-strategy`."
+"consistency. For more details, see [](aggregate-strategy.md)."
 msgstr ""
 "このアノテーションは、アグリゲート戦略と併用し、関連するエンティティが一貫性のある単位として扱われるようにする必要があります。詳細については、:doc"
 ":`aggregate-strategy` を参照してください。"
@@ -486,13 +451,12 @@ msgid "OriginalStates"
 msgstr "OriginalStates"
 
 #: ../../entity.md:356
-#, fuzzy
 msgid ""
 "If you want to include only changed values in UPDATE statements, you can "
 "define fields annotated with `@OriginalStates`. The fields can hold the "
 "original values that were fetched from the database."
 msgstr ""
-"変更された値のみを UPDATE ステートメントに含めたい場合は、``@OriginalStates`` "
+"変更された値のみを UPDATE ステートメントに含めたい場合は、`@OriginalStates` "
 "の注釈を付けたフィールドを定義できます。フィールドには、データベースから取得した元の値を保持できます。"
 
 #: ../../entity.md:360
@@ -505,7 +469,7 @@ msgstr ""
 
 #: ../../entity.md:363
 msgid "The following code snippet shows how to define original states:"
-msgstr "次のコードスニペットは、``OriginalStates`` を定義する方法を示しています。"
+msgstr "次のコードスニペットは、`OriginalStates` を定義する方法を示しています。"
 
 #: ../../entity.md:370
 msgid "The field type must be the same as the entity type."
@@ -524,16 +488,24 @@ msgid "Example"
 msgstr "例"
 
 #: ../../entity.md:378
-#, fuzzy
 msgid "Instantiate the `Employee` entity class and use its instance:"
-msgstr "``Employee`` エンティティクラスをインスタンス化し、そのインスタンスを使用します。"
+msgstr "`Employee` エンティティクラスをインスタンス化し、そのインスタンスを使用します。"
 
-#~ msgid ":doc:`basic`"
+#~ msgid "[basic`"
 #~ msgstr ""
 
-#~ msgid ":doc:`domain`"
+#~ msgid "[domain`"
 #~ msgstr ""
 
-#~ msgid ":doc:`embeddable`"
+#~ msgid "[embeddable`"
+#~ msgstr ""
+
+#~ msgid "{doc}`basic`"
+#~ msgstr ""
+
+#~ msgid "{doc}`domain`"
+#~ msgstr ""
+
+#~ msgid "{doc}`embeddable`"
 #~ msgstr ""
 

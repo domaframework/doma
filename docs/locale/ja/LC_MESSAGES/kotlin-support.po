@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,7 +23,7 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../kotlin-support.md:7
-#, fuzzy
+
 msgid "Doma supports [Kotlin](https://kotlinlang.org/) 1.4.0 or later."
 msgstr "Doma は、 `Kotlin <https://kotlinlang.org/>`_ 1.4.0 以降をサポートしています。"
 
@@ -46,9 +46,9 @@ msgid "Define as a plain class"
 msgstr "プレーンクラスとして定義する"
 
 #: ../../kotlin-support.md:16
-#, fuzzy
+
 msgid "Specify a `Metamodel` annotation in the `metamodel` element of `@Entity`"
-msgstr "``@Entity`` の ``metamodel`` 要素に ``Metamodel`` annotation を指定する"
+msgstr "`@Entity` の `metamodel` 要素に `Metamodel` annotation を指定する"
 
 #: ../../kotlin-support.md:40
 msgid "Domain classes"
@@ -63,9 +63,9 @@ msgid "Define only one constructor"
 msgstr "コンストラクターを 1 つだけ定義する"
 
 #: ../../kotlin-support.md:44
-#, fuzzy
+
 msgid "Define only one property named `value` in the constructor"
-msgstr "コンストラクターでは、名前が ``value`` であるプロパティを 1 つだけ定義する"
+msgstr "コンストラクターでは、名前が `value` であるプロパティを 1 つだけ定義する"
 
 #: ../../kotlin-support.md:45
 msgid "Use `val` for the property definition"
@@ -88,9 +88,9 @@ msgid "Dao interfaces"
 msgstr "Dao インターフェース"
 
 #: ../../kotlin-support.md:66
-#, fuzzy
+
 msgid "Specify a SQL template with `@org.seasar.doma.Sql`"
-msgstr "SQLテンプレートを ``@org.seasar.doma.Sql`` で指定する"
+msgstr "SQLテンプレートを `@org.seasar.doma.Sql` で指定する"
 
 #: ../../kotlin-support.md:90
 msgid "Kotlin-specific Criteria API"
@@ -103,17 +103,17 @@ msgid ""
 msgstr "DAO インターフェイスよりも Kotlin 固有の Criteria API を使ってください"
 
 #: ../../kotlin-support.md:96
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
 "Doma provides `KQueryDsl`, a Criteria API specifically designed for "
-"Kotlin. It is very similar to the `QueryDsl`, which is described in {doc"
-"}`query-dsl`. The main advantage of `KQueryDsl` is its simplicity."
+"Kotlin. It is very similar to the `QueryDsl`, which is described in "
+"[](query-dsl.md). The main advantage of `KQueryDsl` is its simplicity."
 msgstr ""
-"Doma はKotlin 専用の Criteria APIである ``KQueryDsl`` を提供します。これは :doc:`query-"
-"dsl` で説明されている ``QueryDsl`` にとても似ています。``KQueryDsl`` の最大の特徴はシンプルさです。"
+"Doma はKotlin 専用の Criteria APIである `KQueryDsl` を提供します。これは :doc:`query-"
+"dsl` で説明されている `QueryDsl` にとても似ています。`KQueryDsl` の最大の特徴はシンプルさです。"
 
 #: ../../kotlin-support.md:117
-#, fuzzy
+
 msgid ""
 "You can find more sample code [here](https://github.com/domaframework"
 "/kotlin-sample)."
@@ -122,13 +122,13 @@ msgstr ""
 "コードを参照できます。"
 
 #: ../../kotlin-support.md:119
-#, fuzzy
+
 msgid ""
 "The `KQueryDsl` is included in the doma-kotlin module. Note that you "
 "should use doma-kotlin instead of doma-core in your build script. You can"
 " configure your build.gradle.kts as follows:"
 msgstr ""
-"``KQueryDsl`` はdoma-kotlinモジュールに含まれています。ビルドスクリプトでは doma-core の代わりに doma-"
+"`KQueryDsl` はdoma-kotlinモジュールに含まれています。ビルドスクリプトでは doma-core の代わりに doma-"
 "kotlin を使用してください。build.gradle.kts は次のように構成できます:"
 
 #: ../../kotlin-support.md:129
@@ -136,8 +136,8 @@ msgid "Code Generation"
 msgstr "コード生成"
 
 #: ../../kotlin-support.md:131
-#, fuzzy, python-brace-format
-msgid "Use {doc}`codegen`. This plugin supports Kotlin code generation."
+, python-brace-format
+msgid "Use [](codegen.md). This plugin supports Kotlin code generation."
 msgstr ":doc:`codegen` を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
 
 #: ../../kotlin-support.md:134
@@ -145,7 +145,7 @@ msgid "Using kapt in Gradle"
 msgstr "Gradle での kapt の使用"
 
 #: ../../kotlin-support.md:136
-#, fuzzy
+
 msgid ""
 "Annotation processors are supported in Kotlin with the "
 "[kapt](https://kotlinlang.org/docs/reference/kapt.html) compiler plugin."
@@ -164,7 +164,7 @@ msgstr ""
 "build.gradle.kts を記述できます。"
 
 #: ../../kotlin-support.md:149
-#, fuzzy
+
 msgid ""
 "To simplify your build script, we recommend using the [Doma Compile "
 "Plugin](https://github.com/domaframework/doma-compile-plugin)."
@@ -177,7 +177,7 @@ msgid "Sample project"
 msgstr "サンプルプロジェクト"
 
 #: ../../kotlin-support.md:154
-#, fuzzy
+
 msgid "[kotlin-sample](https://github.com/domaframework/kotlin-sample)"
 msgstr ""
 "`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル "

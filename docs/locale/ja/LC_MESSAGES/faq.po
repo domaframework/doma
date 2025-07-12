@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 01:18+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -51,16 +51,16 @@ msgid "We use annotation processing for the following purposes:"
 msgstr "Domaにおいて、アノテーション処理は次の目的で使用されます。"
 
 #: ../../faq.md:20
-#, fuzzy
+
 msgid ""
 "Generating meta-classes from classes annotated with `@Entity` and "
 "`@Domain`."
-msgstr "``@Entity`` と ``@Domain`` のアノテーションが付けられたクラスからメタクラスを生成します。"
+msgstr "`@Entity` と `@Domain` のアノテーションが付けられたクラスからメタクラスを生成します。"
 
 #: ../../faq.md:21
-#, fuzzy
+
 msgid "Generating implementation classes for interfaces annotated with `@Dao`."
-msgstr "``@Dao`` アノテーションが付けられたインターフェースの実装クラスを生成します。"
+msgstr "`@Dao` アノテーションが付けられたインターフェースの実装クラスを生成します。"
 
 #: ../../faq.md:22
 msgid "Validating SQL templates."
@@ -176,9 +176,8 @@ msgid ""
 msgstr "このエラーは、ビルド ツールや IDE ごとの推奨設定に則ることで回避できます。"
 
 #: ../../faq.md:81
-#, fuzzy, python-brace-format
-msgid "See {doc}`build`."
-msgstr ":doc:`build` を参照してください。"
+msgid "See [](build.md)."
+msgstr ""
 
 #: ../../faq.md:83
 msgid "Do you provide a tool to generate Java code from a database schema?"
@@ -189,7 +188,7 @@ msgid "Yes."
 msgstr "はい。"
 
 #: ../../faq.md:87
-#, fuzzy
+
 msgid ""
 "We provide the [Doma CodeGen plugin](https://github.com/domaframework"
 "/doma-codegen-plugin) that generates Java and SQL files from your "
@@ -251,8 +250,8 @@ msgid "The Criteria API."
 msgstr "Criteria API"
 
 #: ../../faq.md:110
-#, fuzzy, python-brace-format
-msgid "See {doc}`sql` and {doc}`query-dsl` for detailed information."
+, python-brace-format
+msgid "See [](sql.md) and [](query-dsl.md) for detailed information."
 msgstr "詳細については :doc:`sql` と :doc:`query-dsl` を参照してください。"
 
 #: ../../faq.md:112
@@ -266,13 +265,13 @@ msgid "Yes, there are two ways to fetch relationships:"
 msgstr "リレーションシップを取得するには2つの方法があります。"
 
 #: ../../faq.md:116
-#, fuzzy, python-brace-format
-msgid "{doc}`aggregate-strategy` with SQL Templates."
+, python-brace-format
+msgid "[](aggregate-strategy.md) with SQL Templates."
 msgstr ":doc:`aggregate-strategy` を用いた SQLテンプレート"
 
 #: ../../faq.md:117
-#, fuzzy, python-brace-format
-msgid "{ref}`query-dsl-associate` with The Criteria API."
+, python-brace-format
+msgid "[](query-dsl.md#association) with the Criteria API."
 msgstr ":ref:`query_dsl_associate` を用いた Criteria API"
 
 #: ../../faq.md:119
@@ -284,11 +283,14 @@ msgid "No."
 msgstr "いいえ。"
 
 #: ../../faq.md:123
-#, fuzzy
+
 msgid ""
 "Use Doma together with a JDBC connection pool library such as "
 "[HikariCP](https://github.com/brettwooldridge/HikariCP)."
 msgstr ""
 "Doma を `HikariCP <https://github.com/brettwooldridge/HikariCP>`_ などの JDBC"
 " 接続プール ライブラリと組み合わせて使用してください。"
+
+#~ msgid "See {doc}`build`."
+#~ msgstr ":doc:`build` を参照してください。"
 

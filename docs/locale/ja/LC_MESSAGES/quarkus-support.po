@@ -27,7 +27,7 @@ msgid "Overview"
 msgstr "概要"
 
 #: ../../quarkus-support.md:9
-#, fuzzy
+
 msgid ""
 "Doma supports [Quarkus](https://quarkus.io/) v3.7.0 and later. To "
 "integrate Doma with Quarkus, you need to use the [quarkus-"
@@ -104,7 +104,7 @@ msgid "The above properties are all optional."
 msgstr "上記のプロパティはすべてオプションです。"
 
 #: ../../quarkus-support.md:111
-#, fuzzy
+
 msgid ""
 "Please refer to the [Configuration "
 "References](https://docs.quarkiverse.io/quarkus-"
@@ -122,11 +122,11 @@ msgid "You can bind Doma’s configurations to each datasource as follows:"
 msgstr "Domaの設定を各データソースに次のようにバインドできます。"
 
 #: ../../quarkus-support.md:149
-#, fuzzy
+
 msgid ""
 "You can inject the named Doma’s resource using the "
 "`io.quarkus.agroal.DataSource` qualifier as follows:"
-msgstr "``io.quarkus.agroal.DataSource`` 修飾子を使用して、名前付きのDomaのリソースを注入できます。"
+msgstr "`io.quarkus.agroal.DataSource` 修飾子を使用して、名前付きのDomaのリソースを注入できます。"
 
 #: ../../quarkus-support.md:174
 msgid "Support for native images"

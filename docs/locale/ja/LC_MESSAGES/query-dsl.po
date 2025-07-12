@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 01:18+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -27,12 +27,12 @@ msgid "Introduction"
 msgstr "イントロダクション"
 
 #: ../../query-dsl.md:9
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "The Unified Criteria API provides a clear and intuitive interface by "
-"integrating the Entityql and NativeSql DSLs from the {doc}`criteria-api`."
+"integrating the Entityql and NativeSql DSLs from the [](criteria-api.md)."
 msgstr ""
-"Unified Criteria APIは、 :doc:`criteria-api` の Entityql と NativeSql "
+"Unified Criteria APIは、[](criteria-api.md) の Entityql と NativeSql "
 "DSLを統合することで、明確で直感的なインターフェイスを提供します。"
 
 #: ../../query-dsl.md:12
@@ -40,21 +40,19 @@ msgid "The following entity classes are used in the examples below:"
 msgstr "次のエンティティクラスは以下の例で使用されます。"
 
 #: ../../query-dsl.md:88
-#, fuzzy
 msgid ""
 "The `@Entity(metamodel = @Metamodel)` annotation on these classes "
 "instructs Doma's annotation processor to generate corresponding metamodel"
 " classes that enable type-safe query creation."
 msgstr ""
-"これらのクラスに対する ``@Entity(metamodel = @Metamodel)`` "
+"これらのクラスに対する `@Entity(metamodel = @Metamodel)` "
 "アノテーションは、型安全なクエリ作成を可能にする対応するメタモデルクラスの生成をDomaのアノテーションプロセッサに指示します。"
 
 #: ../../query-dsl.md:91
-#, fuzzy
 msgid ""
 "In our examples, the generated metamodel classes are `Employee_`, "
 "`Department_`, `Emp_`, and `Dept_`."
-msgstr "例として、生成されたメタモデルクラスは``Employee_``、``Department_``、``Emp_``、そして``Dept_``です。"
+msgstr "例として、生成されたメタモデルクラスは`Employee_`、`Department_`、`Emp_`、そして`Dept_`です。"
 
 #: ../../query-dsl.md:93
 msgid ""
@@ -63,14 +61,13 @@ msgid ""
 msgstr "`Metamodel` アノテーションの要素を使用して、メタモデル名をカスタマイズできます。"
 
 #: ../../query-dsl.md:95
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "To bulk customize all metamodels, you can use annotation processor "
-"options. See {doc}`annotation-processing` and refer to the following "
+"options. See [](annotation-processing.md) and refer to the following "
 "options:"
 msgstr ""
-"すべてのメタモデルを一括でカスタマイズするには、アノテーションプロセッサのオプションを使用できます。 :doc:`annotation-"
-"processing` を参照して、次のオプションを確認してください。"
+"すべてのメタモデルを一括でカスタマイズするには、アノテーションプロセッサのオプションを使用できます。[](annotation-processing.md) を参照して、次のオプションを確認してください。"
 
 #: ../../query-dsl.md:98
 msgid "doma.metamodel.enabled"
@@ -93,14 +90,13 @@ msgid "The Unified Criteria API is essentially the Query DSL."
 msgstr "Unified Criteria API の実体はQuery DSLです。"
 
 #: ../../query-dsl.md:106
-#, fuzzy
 msgid ""
 "The Query DSL can execute entity queries and associations. The entry "
 "point is the `org.seasar.doma.jdbc.criteria.QueryDsl` class. This class "
 "includes the following methods:"
 msgstr ""
 "Query DSL は、エンティティをクエリして関連付けることができます。エントリポイントは "
-"``org.seasar.doma.jdbc.criteria.QueryDsl`` クラスです。このクラスには次のメソッドがあります。"
+"`org.seasar.doma.jdbc.criteria.QueryDsl` クラスです。このクラスには次のメソッドがあります。"
 
 #: ../../query-dsl.md:110
 msgid "from"
@@ -119,32 +115,29 @@ msgid "update"
 msgstr ""
 
 #: ../../query-dsl.md:115
-#, fuzzy
 msgid "Instantiate the `QueryDsl` class as follows:"
-msgstr "``QueryDsl`` クラスを以下のようにインスタンス化します。"
+msgstr "`QueryDsl` クラスを以下のようにインスタンス化します。"
 
 #: ../../query-dsl.md:121
-#, fuzzy
 msgid ""
 "For example, to query `Employee` and `Department` entities and associate "
 "them, use:"
-msgstr "例えば、``Employee`` と ``Department`` エンティティを照会し、それらを関連付けるには、次のようにします。"
+msgstr "例えば、`Employee` と `Department` エンティティを照会し、それらを関連付けるには、次のようにします。"
 
 #: ../../query-dsl.md:142
 msgid "The query above generates the following SQL statement:"
 msgstr "上記のクエリは、次の SQL ステートメントを生成します。"
 
 #: ../../query-dsl.md:153
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "In Kotlin, use `org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl` instead "
 "of `QueryDsl`. `KQueryDsl` is included in the doma-kotlin module. See "
-"{ref}`kotlin-specific-criteria-api`."
+"[](kotlin-support.md#kotlin-specific-criteria-api)."
 msgstr ""
-"Kotlin では、``QueryDsl`` の代わりに "
-"``org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl`` を使用します。``KQueryDsl`` は"
-"、doma-kotlin モジュールに含まれています。 :ref:`kotlin-specific-criteria-api` "
-"を参照してください。"
+"Kotlin では、`QueryDsl` の代わりに "
+"`org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl` を使用します。`KQueryDsl` は"
+"、doma-kotlin モジュールに含まれています。[](kotlin-support.md#kotlin-specific-criteria-api) を参照してください。"
 
 #: ../../query-dsl.md:158
 msgid "Select Statement"
@@ -246,34 +239,31 @@ msgid "Entity Selection"
 msgstr "エンティティの検索"
 
 #: ../../query-dsl.md:244
-#, fuzzy
 msgid ""
 "By default, the result entity type is the same as the type specified in "
 "the `from` method:"
-msgstr "デフォルトでは、結果エンティティの型は ``from`` メソッドで指定された型と同じです。"
+msgstr "デフォルトでは、結果エンティティの型は `from` メソッドで指定された型と同じです。"
 
 #: ../../query-dsl.md:256
 msgid "The above query generates the following SQL statement:"
 msgstr "上記のクエリは、次の SQL ステートメントを生成します。"
 
 #: ../../query-dsl.md:265
-#, fuzzy
 msgid ""
 "To choose a joined entity type as the result entity type, use `project` "
 "or `select`:"
-msgstr "結果のエンティティタイプとして結合されたエンティティタイプを選択するには、``project`` または ``select`` を使用します。"
+msgstr "結果のエンティティタイプとして結合されたエンティティタイプを選択するには、`project` または `select` を使用します。"
 
 #: ../../query-dsl.md:278
 msgid "This query generates the following SQL:"
 msgstr "このクエリは以下のSQLを生成します。"
 
 #: ../../query-dsl.md:287
-#, fuzzy
 msgid ""
 "The `project` method removes duplicate entities, while `select` does not."
 " If you call neither method, duplicates are removed by default."
 msgstr ""
-"``project`` メソッドは重複したエンティティを削除しますが、``select`` "
+"`project` メソッドは重複したエンティティを削除しますが、`select` "
 "は削除しません。どちらのメソッドも呼び出さない場合、重複はデフォルトで削除されます。"
 
 #: ../../query-dsl.md:291
@@ -294,18 +284,16 @@ msgid "In the tuple, an entity is null if all its properties are null."
 msgstr "タプル内では、すべてのプロパティが null の場合、エンティティは null になります。"
 
 #: ../../query-dsl.md:320
-#, fuzzy
 msgid "The `select` method does not remove duplicates."
-msgstr "``select`` メソッドは重複を削除しません。"
+msgstr "`select` メソッドは重複を削除しません。"
 
 #: ../../query-dsl.md:323
 msgid "Column Projection"
 msgstr "カラムの射影"
 
 #: ../../query-dsl.md:325
-#, fuzzy
 msgid "To project columns, use `select`. For one column:"
-msgstr "カラムを選択するには、``select`` を使用します。1つのカラムの選択は次のようにします。"
+msgstr "カラムを選択するには、`select` を使用します。1つのカラムの選択は次のようにします。"
 
 #: ../../query-dsl.md:333 ../../query-dsl.md:350 ../../query-dsl.md:441
 #: ../../query-dsl.md:520 ../../query-dsl.md:541 ../../query-dsl.md:716
@@ -324,44 +312,38 @@ msgid "For multiple columns:"
 msgstr "複数のカラムを選択する場合は次のようにします。"
 
 #: ../../query-dsl.md:356
-#, fuzzy
 msgid ""
 "Columns up to 9 are held in `Tuple2` to `Tuple9`. Beyond that, they are "
 "held in `Row`."
-msgstr "9 列までは ``Tuple2`` から ``Tuple9`` で保持されます。それ以外は ``Row`` で保持されます。"
+msgstr "9 列までは `Tuple2` から `Tuple9` で保持されます。それ以外は `Row` で保持されます。"
 
 #: ../../query-dsl.md:358
-#, fuzzy
 msgid "Use `selectAsRow` for a `Row` list:"
-msgstr "``Row`` リストには ``selectAsRow`` を使用します。"
+msgstr "`Row` リストには `selectAsRow` を使用します。"
 
 #: ../../query-dsl.md:366
 msgid "Column Projection and Mapping"
 msgstr "カラムの射影とマッピング"
 
 #: ../../query-dsl.md:368
-#, fuzzy
 msgid ""
 "To project columns and map them to an entity, use the `projectTo` or "
 "`selectTo` methods:"
-msgstr "カラムを選択しエンティティにマップするには、``projectTo`` または ``selectTo`` メソッドを使用します。"
+msgstr "カラムを選択しエンティティにマップするには、`projectTo` または `selectTo` メソッドを使用します。"
 
 #: ../../query-dsl.md:382
-#, fuzzy
 msgid ""
 "Note that the SQL select clause includes the primary key \"EMPLOYEE_ID\"."
 " The `projectTo` and `selectTo` methods always include the entity's ID "
 "properties, even if they aren't explicitly specified."
 msgstr ""
-"SQL の select 句にはプライマリキー \"EMPLOYEE_ID\" が含まれていることに注意してください。 ``projectTo``"
-" と ``selectTo`` メソッドは、明示的に指定されていない場合でも、エンティティの ID プロパティを常に含めます。"
+"SQL の select 句にはプライマリキー \"EMPLOYEE_ID\" が含まれていることに注意してください。 `projectTo` と `selectTo` メソッドは、明示的に指定されていない場合でも、エンティティの ID プロパティを常に含めます。"
 
 #: ../../query-dsl.md:385
-#, fuzzy
 msgid ""
 "The `projectTo` method removes duplicate entity IDs from the results, "
 "while `selectTo` does not."
-msgstr "``projectTo`` メソッドは結果から重複したエンティティIDを削除しますが、``selectTo`` メソッドは削除しません。"
+msgstr "`projectTo` メソッドは結果から重複したエンティティIDを削除しますが、`selectTo` メソッドは削除しません。"
 
 #: ../../query-dsl.md:390
 msgid "Where Expression"
@@ -432,14 +414,12 @@ msgid "notExists - (not exists)"
 msgstr ""
 
 #: ../../query-dsl.md:411
-#, fuzzy
 msgid ""
 "If the right-hand operand is `null`, the WHERE or HAVING clause will "
 "exclude the operator. See [WhereDeclaration] and [HavingDeclaration] "
 "javadoc for details."
 msgstr ""
-"右側のオペランドが ``null`` の場合、WHEREまたはHAVING句は演算子を除外します。詳細は `WhereDeclaration`_ "
-"と `HavingDeclaration`_ の javadoc を参照してください。"
+"右側のオペランドが `null` の場合、WHEREまたはHAVING句は演算子を除外します。詳細は [WhereDeclaration] と [HavingDeclaration] の javadoc を参照してください。"
 
 #: ../../query-dsl.md:414
 msgid "We also support utility operators:"
@@ -493,11 +473,11 @@ msgid "For example, with a conditional expression:"
 msgstr "例えば、条件付き式を指定します。"
 
 #: ../../query-dsl.md:493
-#, fuzzy
+
 msgid ""
 "If `enableNameCondition` is `false`, the `like` expression is ignored, "
 "generating:"
-msgstr "``enableNameCondition`` が ``false`` の場合、``like`` 式は無視されます。"
+msgstr "`enableNameCondition` が `false` の場合、`like` 式は無視されます。"
 
 #: ../../query-dsl.md:501
 msgid "Join Expression"
@@ -528,11 +508,11 @@ msgid "Association"
 msgstr "関連付け"
 
 #: ../../query-dsl.md:553
-#, fuzzy
+
 msgid ""
 "You can associate entities using the `associate` operation in conjunction"
 " with a join expression:"
-msgstr "joinと一緒に ``associate`` を使用し、エンティティを関連付けることができます"
+msgstr "joinと一緒に `associate` を使用し、エンティティを関連付けることができます"
 
 #: ../../query-dsl.md:583
 msgid "Associating Multiple Entities:"
@@ -543,11 +523,11 @@ msgid "Associating Immutable Entities"
 msgstr "不変エンティティの関連付け"
 
 #: ../../query-dsl.md:608
-#, fuzzy
+
 msgid ""
 "To associate immutable entities, use the `associateWith` operation with a"
 " join expression:"
-msgstr "イミュータブルなエンティティを関連付けるには、joinと一緒に ``associateWith`` を使用します。"
+msgstr "イミュータブルなエンティティを関連付けるには、joinと一緒に `associateWith` を使用します。"
 
 #: ../../query-dsl.md:639
 msgid "Dynamic Join Expression"
@@ -564,22 +544,22 @@ msgid "For example, with a conditional join:"
 msgstr "例えば、条件付きjoinを使用する場合は次のようにします。"
 
 #: ../../query-dsl.md:659
-#, fuzzy
+
 msgid "If `join` is `false`, the `on` expression is ignored, generating:"
-msgstr "``join`` が ``false`` の場合、``on`` 式は無視されます。"
+msgstr "`join` が `false` の場合、`on` 式は無視されます。"
 
 #: ../../query-dsl.md:667
 msgid "Dynamic Association"
 msgstr "動的な関連付け"
 
 #: ../../query-dsl.md:669
-#, fuzzy
+
 msgid ""
 "With dynamic join expressions, associations can be made optional. Use "
 "`AssociationOption.optional()` in the `associate` method:"
 msgstr ""
-"動的なjoin式では、関連付けを任意にすることができます。``AssociationOption.optional()`` を "
-"``associate`` メソッドで使用します。"
+"動的なjoin式では、関連付けを任意にすることができます。`AssociationOption.optional()` を "
+"`associate` メソッドで使用します。"
 
 #: ../../query-dsl.md:693
 msgid "Aggregate Functions"
@@ -622,19 +602,19 @@ msgid "sum(property)"
 msgstr ""
 
 #: ../../query-dsl.md:706
-#, fuzzy
+
 msgid ""
 "These functions are defined in the "
 "`org.seasar.doma.jdbc.criteria.expression.Expressions` class and can be "
 "used with static imports."
 msgstr ""
-"これらは ``org.seasar.doma.jdbc.criteria.expression.Expressions`` "
+"これらは `org.seasar.doma.jdbc.criteria.expression.Expressions` "
 "クラスで定義されており、静的インポートで使用できます。"
 
 #: ../../query-dsl.md:708
-#, fuzzy
+
 msgid "For example, to pass the `sum` function to the select method:"
-msgstr "たとえば、 ``sum`` 関数を select メソッドに渡すことができます。"
+msgstr "たとえば、 `sum` 関数を select メソッドに渡すことができます。"
 
 #: ../../query-dsl.md:722
 msgid "Group By Expression"
@@ -686,11 +666,11 @@ msgid "For instance, a conditional expression in a having clause:"
 msgstr "例えば、HAVING句の条件式は以下の通りです。"
 
 #: ../../query-dsl.md:813
-#, fuzzy
+
 msgid ""
 "If `countCondition` is `false`, the `having` clause is ignored in the SQL"
 " statement."
-msgstr "``countCondition`` が ``false`` の場合、SQL文では ``having`` 句は無視されます。"
+msgstr "`countCondition` が `false` の場合、SQL文では `having` 句は無視されます。"
 
 #: ../../query-dsl.md:815
 msgid "Order By Expression"
@@ -727,9 +707,9 @@ msgid "Distinct Expression"
 msgstr "Distinct 式"
 
 #: ../../query-dsl.md:849
-#, fuzzy
+
 msgid "To select distinct rows, use `distinct()`:"
-msgstr "重複のない行を検索するには、 ``distinct()`` を使用します。"
+msgstr "重複のない行を検索するには、 `distinct()` を使用します。"
 
 #: ../../query-dsl.md:868
 msgid "Limit and Offset Expression"
@@ -757,9 +737,9 @@ msgid "For Update Expression"
 msgstr "For update 式"
 
 #: ../../query-dsl.md:899
-#, fuzzy
+
 msgid "The `forUpdate` method allows row locking in SQL:"
-msgstr "``forUpdate`` メソッドはSQLで行をロックできます。"
+msgstr "`forUpdate` メソッドはSQLで行をロックできます。"
 
 #: ../../query-dsl.md:921
 msgid "Union Expression"
@@ -826,9 +806,9 @@ msgid "Delete Statement"
 msgstr "Delete ステートメント"
 
 #: ../../query-dsl.md:1087
-#, fuzzy, python-brace-format
-msgid "The delete statement follows the same rules as the {ref}`query-dsl-where`."
-msgstr "DELETEステートメントは、 :ref:`query_dsl_where` と同じルールに従います。"
+#, python-brace-format
+msgid "The delete statement follows the same rules as the [](#where-expression)."
+msgstr "DELETEステートメントは、[](#where-expression) と同じルールに従います。"
 
 #: ../../query-dsl.md:1089
 msgid "Delete Settings"
@@ -855,11 +835,11 @@ msgid "All are optional and can be applied as follows:"
 msgstr "すべてオプションで、以下のように適用できます。"
 
 #: ../../query-dsl.md:1120
-#, fuzzy
+
 msgid ""
 "To allow a delete statement with an empty WHERE clause, enable the "
 "`allowEmptyWhere` setting."
-msgstr "空のWHERE句でDELETEステートメントを許可するには、 ``allowEmptyWhere`` 設定を有効にしてください。"
+msgstr "空のWHERE句でDELETEステートメントを許可するには、 `allowEmptyWhere` 設定を有効にしてください。"
 
 #: ../../query-dsl.md:1123
 msgid "Delete Record by Entity"
@@ -884,28 +864,28 @@ msgid "Delete Record by Entity and Retrieve the Deleted Record"
 msgstr "エンティティによるレコードの削除と削除されたレコードの取得"
 
 #: ../../query-dsl.md:1153
-#, fuzzy
+
 msgid ""
 "By calling the `returning` method, you can delete an entity and retrieve "
 "the deleted entity at the same time:"
-msgstr "``returning`` メソッドを呼び出すことで、エンティティを削除すると同時に削除したエンティティを取得できます。"
+msgstr "`returning` メソッドを呼び出すことで、エンティティを削除すると同時に削除したエンティティを取得できます。"
 
 #: ../../query-dsl.md:1159 ../../query-dsl.md:1368 ../../query-dsl.md:1569
 msgid "This generates the following SQL:"
 msgstr "このSQLを生成します。"
 
 #: ../../query-dsl.md:1166 ../../query-dsl.md:1375 ../../query-dsl.md:1577
-#, fuzzy
+
 msgid "You can also specify which properties to return in the `returning` method."
-msgstr "``returning`` メソッドで返すプロパティを指定することもできます。"
+msgstr "`returning` メソッドで返すプロパティを指定することもできます。"
 
 #: ../../query-dsl.md:1168 ../../query-dsl.md:1377 ../../query-dsl.md:1579
-#, fuzzy
+
 msgid ""
 "To receive the result as an `Optional`, use the `fetchOptional` method "
 "instead of `fetchOne`."
 msgstr ""
-"結果を ``Optional`` として受け取るには、``fetchOne`` の代わりに ``fetchOptional`` "
+"結果を `Optional` として受け取るには、`fetchOne` の代わりに `fetchOptional` "
 "メソッドを使用します。"
 
 #: ../../query-dsl.md:1171 ../../query-dsl.md:1387 ../../query-dsl.md:1582
@@ -923,20 +903,20 @@ msgid "To delete by a condition:"
 msgstr "条件で削除するには次のようにします。"
 
 #: ../../query-dsl.md:1188
-#, fuzzy
+
 msgid "To delete all records, use the `all` method:"
-msgstr "すべてのレコードを削除するには、``all`` メソッドを使用します。"
+msgstr "すべてのレコードを削除するには、`all` メソッドを使用します。"
 
 #: ../../query-dsl.md:1194
 msgid "Insert Statement"
 msgstr "Insert ステートメント"
 
 #: ../../query-dsl.md:1196
-#, fuzzy
+
 msgid ""
 "If a unique constraint violation occurs during the execution of an insert"
 " statement, a `UniqueConstraintException` will be thrown."
-msgstr "INSERT文の実行中に一意制約違反が発生すると、``UniqueConstraintException`` がスローされます。"
+msgstr "INSERT文の実行中に一意制約違反が発生すると、`UniqueConstraintException` がスローされます。"
 
 #: ../../query-dsl.md:1199
 msgid "Insert Settings"
@@ -980,23 +960,23 @@ msgstr "単一のエンティティの追加:"
 
 #: ../../query-dsl.md:1267 ../../query-dsl.md:1301 ../../query-dsl.md:1338
 #: ../../query-dsl.md:1432
-#, fuzzy
+
 msgid "Functionality equivalent to `INSERT ... ON CONFLICT` is supported."
-msgstr "``INSERT ... ON CONFLICT`` に相当する機能がサポートされています。"
+msgstr "`INSERT ... ON CONFLICT` に相当する機能がサポートされています。"
 
 #: ../../query-dsl.md:1269
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyUpdate` method to update the existing record when "
 "a duplicate key is found:"
-msgstr "重複したキーが見つかった場合、既存のレコードを更新するために ``onDuplicateKeyUpdate`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、既存のレコードを更新するために `onDuplicateKeyUpdate` メソッドを使用します。"
 
 #: ../../query-dsl.md:1279
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyIgnore` method when you want to do nothing in case"
 " of a duplicate key:"
-msgstr "重複したキーが見つかった場合、何もしないことを表すには ``onDuplicateKeyIgnore`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、何もしないことを表すには `onDuplicateKeyIgnore` メソッドを使用します。"
 
 #: ../../query-dsl.md:1289
 msgid "batch"
@@ -1007,18 +987,18 @@ msgid "Batch Insert is also supported:"
 msgstr "バッチ追加もサポートされています。"
 
 #: ../../query-dsl.md:1303 ../../query-dsl.md:1340
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyUpdate` method to update existing records when "
 "duplicate keys are found:"
-msgstr "重複したキーが見つかった場合、既存のレコードを更新するために ``onDuplicateKeyUpdate`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、既存のレコードを更新するために `onDuplicateKeyUpdate` メソッドを使用します。"
 
 #: ../../query-dsl.md:1313
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyIgnore` method to skip the insert operation when a"
 " duplicate key is found:"
-msgstr "重複したキーが見つかった場合、何もしないことを表すには ``onDuplicateKeyIgnore`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、何もしないことを表すには `onDuplicateKeyIgnore` メソッドを使用します。"
 
 #: ../../query-dsl.md:1323
 msgid "multi"
@@ -1029,30 +1009,30 @@ msgid "Multi-row Insert is also supported:"
 msgstr "複数行追加もサポートされています。"
 
 #: ../../query-dsl.md:1350 ../../query-dsl.md:1456
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyIgnore` method to skip insert operations when "
 "duplicate keys are found:"
-msgstr "重複したキーが見つかった場合、何もしないことを表すには ``onDuplicateKeyIgnore`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、何もしないことを表すには `onDuplicateKeyIgnore` メソッドを使用します。"
 
 #: ../../query-dsl.md:1360
 msgid "Insert Record with Entity and Retrieve the Inserted Record"
 msgstr "エンティティでレコードを追加し、追加されたレコードを取得する"
 
 #: ../../query-dsl.md:1362
-#, fuzzy
+
 msgid ""
 "By calling the `returning` method, you can insert an entity and retrieve "
 "the inserted entity at the same time:"
-msgstr "``returning`` メソッドを呼び出すことで、エンティティを追加すると同時に追加したエンティティを取得できます。"
+msgstr "`returning` メソッドを呼び出すことで、エンティティを追加すると同時に追加したエンティティを取得できます。"
 
 #: ../../query-dsl.md:1379
-#, fuzzy
+
 msgid ""
 "The `returning` method is also supported for multi-row inserts. In that "
 "case, the `fetch` method returns a List of inserted entities:"
 msgstr ""
-"``returning`` メソッドは複数行追加にも対応しています。その場合、 ``fetch`` "
+"`returning` メソッドは複数行追加にも対応しています。その場合、 `fetch` "
 "メソッドは、挿入されたエンティティのリストを返します。"
 
 #: ../../query-dsl.md:1390
@@ -1068,29 +1048,29 @@ msgid "We also support the INSERT SELECT syntax:"
 msgstr "INSERT SELECT 構文もサポートしています。"
 
 #: ../../query-dsl.md:1434
-#, fuzzy
+
 msgid ""
 "Use the `onDuplicateKeyUpdate` method when you want to perform an update "
 "in case of a duplicate key:"
-msgstr "重複したキーが見つかった場合、既存のレコードを更新するために ``onDuplicateKeyUpdate`` メソッドを使用します。"
+msgstr "重複したキーが見つかった場合、既存のレコードを更新するために `onDuplicateKeyUpdate` メソッドを使用します。"
 
 #: ../../query-dsl.md:1473
 msgid "Update Statement"
 msgstr "Update ステートメント"
 
 #: ../../query-dsl.md:1475
-#, fuzzy
+
 msgid ""
 "If a unique constraint violation occurs during the execution of an update"
 " statement, a `UniqueConstraintException` will be thrown."
-msgstr "UPDATE文の実行中に一意制約違反が発生すると、``UniqueConstraintException`` がスローされます。"
+msgstr "UPDATE文の実行中に一意制約違反が発生すると、`UniqueConstraintException` がスローされます。"
 
 #: ../../query-dsl.md:1478
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
-"The update statement follows the same specifications as the {ref}`query-"
-"dsl-where`."
-msgstr "UPDATEステートメントは、 :ref:`query_dsl_where` と同じルールに従います。"
+"The update statement follows the same specifications as the [](#where-"
+"expression)."
+msgstr "UPDATEステートメントは、[](#where-expression) と同じルールに従います。"
 
 #: ../../query-dsl.md:1480
 msgid "Update Settings"
@@ -1101,11 +1081,11 @@ msgid "You can also specify excluded columns:"
 msgstr "除外するカラムを指定することもできます。"
 
 #: ../../query-dsl.md:1525
-#, fuzzy
+
 msgid ""
 "To perform an update without a WHERE clause, enable the `allowEmptyWhere`"
 " setting."
-msgstr "WHERE句なしで更新を実行するには、 ``allowEmptyWhere`` の設定を有効にしてください。"
+msgstr "WHERE句なしで更新を実行するには、 `allowEmptyWhere` の設定を有効にしてください。"
 
 #: ../../query-dsl.md:1528
 msgid "Update Record by Entity"
@@ -1134,11 +1114,11 @@ msgid "Update Record by Entity and Retrieve the Updated Record"
 msgstr "エンティティによるレコードの更新と更新されたレコードの取得"
 
 #: ../../query-dsl.md:1563
-#, fuzzy
+
 msgid ""
 "By calling the `returning` method, you can update an entity and retrieve "
 "the updated entity at the same time:"
-msgstr "``returning`` メソッドを呼び出すことで、エンティティを更新すると同時に更新したエンティティを取得できます。"
+msgstr "`returning` メソッドを呼び出すことで、エンティティを更新すると同時に更新したエンティティを取得できます。"
 
 #: ../../query-dsl.md:1585
 msgid "Update Records by Where Expression"
@@ -1153,14 +1133,13 @@ msgid "Property Expressions"
 msgstr "プロパティ式"
 
 #: ../../query-dsl.md:1608
-#, fuzzy
+
 msgid ""
 "All property expression methods are in the "
 "`org.seasar.doma.jdbc.criteria.expression.Expressions` class and can be "
 "used with static imports."
 msgstr ""
-"すべてのプロパティ式メソッドは ``org.seasar.doma.jdbc.criteria.expressions.Expressions``"
-" クラスにあり、静的なインポートで使用できます。"
+"すべてのプロパティ式メソッドは `org.seasar.doma.jdbc.criteria.expression.Expressions` クラスにあり、静的なインポートで使用できます。"
 
 #: ../../query-dsl.md:1610
 msgid "Arithmetic Expressions"
@@ -1191,9 +1170,9 @@ msgid "mod - (%)"
 msgstr ""
 
 #: ../../query-dsl.md:1620
-#, fuzzy
+
 msgid "Example of using the `add` method:"
-msgstr "``add`` メソッドを使用する例です。"
+msgstr "`add` メソッドを使用する例です。"
 
 #: ../../query-dsl.md:1637
 msgid "String Functions"
@@ -1228,23 +1207,23 @@ msgid "rtrim"
 msgstr ""
 
 #: ../../query-dsl.md:1648
-#, fuzzy
+
 msgid "Example using `concat`:"
-msgstr "``concat`` を使用した例です。"
+msgstr "`concat` を使用した例です。"
 
 #: ../../query-dsl.md:1665
 msgid "Literal Expression"
 msgstr "リテラル式"
 
 #: ../../query-dsl.md:1667
-#, fuzzy
+
 msgid "The `literal` method supports all basic data types."
-msgstr "``literal`` メソッドはすべての基本データ型をサポートしています。"
+msgstr "`literal` メソッドはすべての基本データ型をサポートしています。"
 
 #: ../../query-dsl.md:1669
-#, fuzzy
+
 msgid "Example of using `literal`:"
-msgstr "``literal`` を使用する例です。"
+msgstr "`literal` を使用する例です。"
 
 #: ../../query-dsl.md:1687
 msgid ""
@@ -1265,18 +1244,18 @@ msgid "when"
 msgstr ""
 
 #: ../../query-dsl.md:1696
-#, fuzzy
+
 msgid "Example of using `when`:"
-msgstr "``when`` を使用する例は次のとおりです。"
+msgstr "`when` を使用する例は次のとおりです。"
 
 #: ../../query-dsl.md:1719
 msgid "Subquery Select Expression"
 msgstr "サブクエリ select 式"
 
 #: ../../query-dsl.md:1721
-#, fuzzy
+
 msgid "The `select` method supports subquery select expressions."
-msgstr "``select`` メソッドはサブクエリのselect式をサポートします。"
+msgstr "`select` メソッドはサブクエリのselect式をサポートします。"
 
 #: ../../query-dsl.md:1723
 msgid "Example usage:"
@@ -1287,19 +1266,19 @@ msgid "User-Defined Expressions"
 msgstr "ユーザー定義式"
 
 #: ../../query-dsl.md:1760
-#, fuzzy
+
 msgid "You can define user-defined expressions using `Expressions.userDefined`."
-msgstr "``Expressions.userDefined`` を利用することで、ユーザー定義の式を定義できます。"
+msgstr "`Expressions.userDefined` を利用することで、ユーザー定義の式を定義できます。"
 
 #: ../../query-dsl.md:1762
-#, fuzzy
+
 msgid "Example of defining a custom `replace` function:"
-msgstr "カスタムの ``replace`` 関数を定義する例です。"
+msgstr "カスタムの `replace` 関数を定義する例です。"
 
 #: ../../query-dsl.md:1778
-#, fuzzy
+
 msgid "Using the custom `replace` function in a query:"
-msgstr "クエリでカスタムの ``replace`` 関数を使用します。"
+msgstr "クエリでカスタムの `replace` 関数を使用します。"
 
 #: ../../query-dsl.md:1793
 msgid "Scopes"
@@ -1310,28 +1289,28 @@ msgid "Scopes allow you to specify commonly used query conditions."
 msgstr "スコープを使用すると、よく使用されるクエリ条件を指定できます。"
 
 #: ../../query-dsl.md:1797
-#, fuzzy
+
 msgid "To define a scope, create a class with a method annotated with `@Scope`:"
-msgstr "スコープを定義するには、 ``@Scope`` で注釈されたメソッドを持つクラスを作成します。"
+msgstr "スコープを定義するには、 `@Scope` で注釈されたメソッドを持つクラスを作成します。"
 
 #: ../../query-dsl.md:1808
-#, fuzzy
+
 msgid ""
 "To enable the scope, specify the scope class in the `scopes` element of "
 "`@Metamodel`:"
-msgstr "スコープを有効にするには、``@Metamodel`` の ``scopes`` 要素にスコープクラスを指定します。"
+msgstr "スコープを有効にするには、`@Metamodel` の `scopes` 要素にスコープクラスを指定します。"
 
 #: ../../query-dsl.md:1815
-#, fuzzy
+
 msgid ""
 "Now `Department_` includes the `onlyTokyo` method, which can be used as "
 "follows:"
-msgstr "``Department_`` には ``onlyTokyo`` メソッドが含まれています。このメソッドは以下のように使用できます。"
+msgstr "`Department_` には `onlyTokyo` メソッドが含まれています。このメソッドは以下のように使用できます。"
 
 #: ../../query-dsl.md:1828
-#, fuzzy
+
 msgid "To combine other query conditions with scopes, use the `andThen` method:"
-msgstr "他のクエリ条件をスコープと組み合わせるには、``andThen`` メソッドを使用します。"
+msgstr "他のクエリ条件をスコープと組み合わせるには、`andThen` メソッドを使用します。"
 
 #: ../../query-dsl.md:1837
 msgid "Defining multiple scopes within a class:"
@@ -1346,22 +1325,22 @@ msgid "Execution in DAO"
 msgstr "DAO での実行"
 
 #: ../../query-dsl.md:1862
-#, fuzzy
+
 msgid ""
 "It can be useful to execute DSLs within a default method of the DAO "
 "interface. To obtain a `config` object, call `Config.get(this)` within "
 "the default method:"
 msgstr ""
-"DAOインタフェースのデフォルトメソッド内でDSLを実行すると便利です。 ``config`` オブジェクトを取得するには、デフォルトメソッド内で"
-" ``Config.get(this)`` を呼び出します。"
+"DAOインタフェースのデフォルトメソッド内でDSLを実行すると便利です。 `config` オブジェクトを取得するには、デフォルトメソッド内で"
+" `Config.get(this)` を呼び出します。"
 
 #: ../../query-dsl.md:1878
-#, fuzzy
+
 msgid ""
 "You can also use `QueryDsl.of(this)` as a shortcut for `new "
 "QueryDsl(Config.get(this))`."
 msgstr ""
-"また、 ``QueryDsl.of(this)`` を ``new QueryDsl(Config.get(this))`` "
+"また、 `QueryDsl.of(this)` を `new QueryDsl(Config.get(this))` "
 "のショートカットとして使用することもできます。"
 
 #: ../../query-dsl.md:1891
@@ -1385,12 +1364,12 @@ msgid "User-Defined Operators"
 msgstr "ユーザー定義演算子"
 
 #: ../../query-dsl.md:1917
-#, fuzzy
+
 msgid ""
 "User-defined operators can be implemented as methods in a class that "
 "accepts a `UserDefinedCriteriaContext` instance via its constructor."
 msgstr ""
-"ユーザー定義の演算子は、 ``UserDefinedCriteriaContext`` "
+"ユーザー定義の演算子は、 `UserDefinedCriteriaContext` "
 "インスタンスをコンストラクタを介して受け入れるクラスのメソッドとして実装することができます。"
 
 #: ../../query-dsl.md:1932
@@ -1408,28 +1387,28 @@ msgid "Debugging"
 msgstr "デバッグ"
 
 #: ../../query-dsl.md:1956
-#, fuzzy
+
 msgid "To inspect the SQL statement generated by DSLs, use the `asSql` method:"
-msgstr "DSL によって生成される SQL ステートメントを調べるには、``asSql`` メソッドを使用します。"
+msgstr "DSL によって生成される SQL ステートメントを調べるには、`asSql` メソッドを使用します。"
 
 #: ../../query-dsl.md:1968
 msgid "The code above outputs the following:"
 msgstr "上記のコードは以下を出力します。"
 
 #: ../../query-dsl.md:1975
-#, fuzzy
+
 msgid ""
 "The `asSql` method does not execute the SQL statement against the "
 "database; instead, it only constructs the SQL statement and returns it as"
 " an `Sql` object."
 msgstr ""
-"``asSql`` メソッドはSQLステートメントをデータベースに対して実行しません。代わりに、SQLステートメントを構築し、``Sql`` "
+"`asSql` メソッドはSQLステートメントをデータベースに対して実行しません。代わりに、SQLステートメントを構築し、`Sql` "
 "オブジェクトとして返します。"
 
 #: ../../query-dsl.md:1977
-#, fuzzy
+
 msgid "You can also obtain the `Sql` object by using the `peek` method:"
-msgstr "``peek`` メソッドを使用して ``Sql`` オブジェクトを取得することもできます。"
+msgstr "`peek` メソッドを使用して `Sql` オブジェクトを取得することもできます。"
 
 #: ../../query-dsl.md:1992
 msgid "The code above outputs SQL statements at various stages of the query:"

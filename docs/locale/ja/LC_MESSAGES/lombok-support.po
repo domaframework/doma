@@ -23,7 +23,7 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../lombok-support.md:7
-#, fuzzy
+
 msgid ""
 "Doma supports [Lombok](https://projectlombok.org/) version 1.16.12 and "
 "later."
@@ -45,7 +45,7 @@ msgid ""
 msgstr "LombokとDomaの両方がアノテーションプロセッサを利用しています。Javaはアノテーションプロセッサの実行順序を特定の順番で保証していません。つまり、DomaのプロセッサがLombokがクラスの変更を終える前に実行される可能性があります。"
 
 #: ../../lombok-support.md:19
-#, fuzzy
+
 msgid ""
 "To address this issue, Doma's annotation processors recognize several "
 "Lombok annotations and adjust their behavior accordingly. For example, "
@@ -54,7 +54,7 @@ msgid ""
 "parameters matching all its instance fields."
 msgstr ""
 "この問題を解決するために、DomaのアノテーションプロセッサはLombokのアノテーションのいくつかを認識し、その動作を調整します。例えば、Domaのアノテーションプロセッサが"
-" ``@lombok.Value`` "
+" `@lombok.Value` "
 "が付けられたクラスを見つけると、そのクラスには全てのインスタンスフィールドに対応するパラメータを持つコンストラクタがあると仮定します。"
 
 #: ../../lombok-support.md:24
@@ -76,21 +76,21 @@ msgid "Immutable Entity Classes"
 msgstr "不変エンティティクラス"
 
 #: ../../lombok-support.md:32
-#, fuzzy
+
 msgid "Specify `true` to the `immutable` element of `@Entity`"
-msgstr "``@Entity`` の ``immutable`` 要素に ``true`` を指定する"
+msgstr "`@Entity` の `immutable` 要素に `true` を指定する"
 
 #: ../../lombok-support.md:33 ../../lombok-support.md:102
-#, fuzzy
+
 msgid "Specify either `@lombok.Value` or `@lombok.AllArgsConstructor`"
-msgstr "``@lombok.Value`` または ``@lombok.AllArgsConstructor`` のいずれかを指定する"
+msgstr "`@lombok.Value` または `@lombok.AllArgsConstructor` のいずれかを指定する"
 
 #: ../../lombok-support.md:34 ../../lombok-support.md:103
-#, fuzzy
+
 msgid ""
 "Specify `@lombok.Getter` to generate getters, in case of "
 "`@lombok.AllArgsConstructor`"
-msgstr "``@lombok.AllArgsConstructor`` の場合、ゲッターを生成するには ``@lombok.Getter`` を指定する"
+msgstr "`@lombok.AllArgsConstructor` の場合、ゲッターを生成するには `@lombok.Getter` を指定する"
 
 #: ../../lombok-support.md:59
 msgid "mutable entity classes"
@@ -101,27 +101,27 @@ msgid "Define a default constructor"
 msgstr "デフォルトのコンストラクターを定義する"
 
 #: ../../lombok-support.md:62
-#, fuzzy
+
 msgid ""
 "Specify `@lombok.Data` or `@lombok.Getter`/`@lombok.Setter` to generate "
 "getters/setters"
 msgstr ""
-"ゲッター/セッターを生成するには、``@lombok.Data`` または "
-"``@lombok.Getter``/``@lombok.Setter`` を指定する"
+"ゲッター/セッターを生成するには、`@lombok.Data` または "
+"`@lombok.Getter`/`@lombok.Setter` を指定する"
 
 #: ../../lombok-support.md:87
 msgid "Domain class definition"
 msgstr "ドメインクラスの定義"
 
 #: ../../lombok-support.md:89
-#, fuzzy
+
 msgid "Specify `@lombok.Value`"
-msgstr "``@lombok.Value`` を指定する"
+msgstr "`@lombok.Value` を指定する"
 
 #: ../../lombok-support.md:90
-#, fuzzy
+
 msgid "Define only one instance field whose name is `value`"
-msgstr "``value`` という名前のインスタンスフィールドを 1 つだけ定義する"
+msgstr "`value` という名前のインスタンスフィールドを 1 つだけ定義する"
 
 #: ../../lombok-support.md:100
 msgid "Embeddable class definition"

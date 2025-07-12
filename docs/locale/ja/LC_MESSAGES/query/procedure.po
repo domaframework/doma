@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,34 +23,34 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/procedure.md:7
-#, fuzzy
+
 msgid ""
 "To call stored procedures, you must annotate DAO methods with the "
 "`@Procedure` annotation:"
-msgstr "ストアドプロシージャを呼び出すには、DAO メソッドに ``@Procedure`` アノテーションを付ける必要があります。"
+msgstr "ストアドプロシージャを呼び出すには、DAO メソッドに `@Procedure` アノテーションを付ける必要があります。"
 
 #: ../../query/procedure.md:18
 msgid "Return Type"
 msgstr "戻り値"
 
 #: ../../query/procedure.md:20
-#, fuzzy
+
 msgid "The method return type must be `void`."
-msgstr "メソッドの戻り値の型は ``void`` でなければなりません。"
+msgstr "メソッドの戻り値の型は `void` でなければなりません。"
 
 #: ../../query/procedure.md:22
 msgid "Procedure name"
 msgstr "プロシージャ名"
 
 #: ../../query/procedure.md:24
-#, fuzzy
+
 msgid ""
 "By default, the annotated method name is used as the procedure name. To "
 "specify a different name, set the `name` property of the `@Procedure` "
 "annotation:"
 msgstr ""
-"デフォルトでは、注釈付きのメソッド名がプロシージャ名として使用されます。別の名前を指定するには、``@Procedure`` 注釈の "
-"``name`` プロパティを設定してください。"
+"デフォルトでは、注釈付きのメソッド名がプロシージャ名として使用されます。別の名前を指定するには、`@Procedure` 注釈の "
+"`name` プロパティを設定してください。"
 
 #: ../../query/procedure.md:32
 msgid "Parameters"
@@ -87,33 +87,31 @@ msgid "IN parameter"
 msgstr "IN パラメータ"
 
 #: ../../query/procedure.md:45
-#, fuzzy
+
 msgid ""
 "To indicate IN parameters, annotate corresponding DAO method parameters "
 "with the `@In` annotation. The type of the DAO method parameter must be "
 "one of the following:"
 msgstr ""
-"IN パラメータを示すには、対応する DAO メソッドのパラメータに ``@In`` アノテーションを付けます。 DAO "
+"IN パラメータを示すには、対応する DAO メソッドのパラメータに `@In` アノテーションを付けます。 DAO "
 "メソッドのパラメータの型は、次のいずれかである必要があります。"
 
 #: ../../query/procedure.md:48 ../../query/procedure.md:76
 #: ../../query/procedure.md:107 ../../query/procedure.md:138
-#, python-brace-format
-msgid "{doc}`../basic`"
+msgid "[](../basic.md)"
 msgstr ""
 
 #: ../../query/procedure.md:49 ../../query/procedure.md:77
 #: ../../query/procedure.md:108 ../../query/procedure.md:139
-#, python-brace-format
-msgid "{doc}`../domain`"
+msgid "[](../domain.md)"
 msgstr ""
 
 #: ../../query/procedure.md:50 ../../query/procedure.md:78
 #: ../../query/procedure.md:109 ../../query/procedure.md:142
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
-"java.util.Optional whose element type is either {doc}`../basic` or "
-"{doc}`../domain`"
+"java.util.Optional whose element type is either [](../basic.md) or "
+"[](../domain.md)"
 msgstr "要素の型が :doc:`../basic` または :doc:`../domain` のいずれかである java.util.Optional"
 
 #: ../../query/procedure.md:51 ../../query/procedure.md:79
@@ -146,15 +144,15 @@ msgid "INOUT parameter"
 msgstr "INOUT パラメータ"
 
 #: ../../query/procedure.md:71
-#, fuzzy
+
 msgid ""
 "To indicate INOUT parameters, annotate corresponding DAO method "
 "parameters with the `@InOut` annotation. The type of the DAO method "
 "parameter must be `org.seasar.doma.jdbc.Reference` and its type parameter"
 " must be one of the following:"
 msgstr ""
-"INOUT パラメータを示すには、対応する DAO メソッドのパラメータに ``@InOut`` アノテーションを付けます。 DAO "
-"メソッドのパラメータの型は ``org.seasar.doma.jdbc.Reference`` "
+"INOUT パラメータを示すには、対応する DAO メソッドのパラメータに `@InOut` アノテーションを付けます。 DAO "
+"メソッドのパラメータの型は `org.seasar.doma.jdbc.Reference` "
 "である必要があり、その型パラメータは次のいずれかである必要があります。"
 
 #: ../../query/procedure.md:100
@@ -162,15 +160,15 @@ msgid "OUT parameter"
 msgstr "OUT パラメータ"
 
 #: ../../query/procedure.md:102
-#, fuzzy
+
 msgid ""
 "To indicate OUT parameters, annotate corresponding DAO method parameters "
 "with the `@Out` annotation. The type of the DAO method parameter must be "
 "`org.seasar.doma.jdbc.Reference` and its type parameter must be one of "
 "the following:"
 msgstr ""
-"OUT パラメータを示すには、対応する DAO メソッドのパラメータに ``@Out`` アノテーションを付けます。 DAO "
-"メソッドのパラメータの型は ``org.seasar.doma.jdbc.Reference`` "
+"OUT パラメータを示すには、対応する DAO メソッドのパラメータに `@Out` アノテーションを付けます。 DAO "
+"メソッドのパラメータの型は `org.seasar.doma.jdbc.Reference` "
 "である必要があり、その型パラメータは次のいずれかである必要があります。"
 
 #: ../../query/procedure.md:130
@@ -178,22 +176,21 @@ msgid "Cursor or result set"
 msgstr "カーソルのOUTパラメータもしくは結果セット"
 
 #: ../../query/procedure.md:132
-#, fuzzy
+
 msgid ""
 "To indicate cursors or result sets, annotate corresponding DAO method "
 "parameters with the `@ResultSet` annotation."
-msgstr "カーソルまたは結果セットを示すには、対応する DAO メソッドのパラメータに ``@ResultSet`` アノテーションを付けます。"
+msgstr "カーソルまたは結果セットを示すには、対応する DAO メソッドのパラメータに `@ResultSet` アノテーションを付けます。"
 
 #: ../../query/procedure.md:135
-#, fuzzy
+
 msgid ""
 "The DAO method parameter type must be `java.util.List` and its element "
 "type must be one of the following:"
-msgstr "DAO メソッドのパラメータの型は ``java.util.List`` であり、その要素の型は次のいずれかである必要があります。"
+msgstr "DAO メソッドのパラメータの型は `java.util.List` であり、その要素の型は次のいずれかである必要があります。"
 
 #: ../../query/procedure.md:140
-#, python-brace-format
-msgid "{doc}`../entity`"
+msgid "[](../entity.md)"
 msgstr ""
 
 #: ../../query/procedure.md:141
@@ -210,5 +207,14 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "java.util.Map<String, Object>"
+#~ msgstr ""
+
+#~ msgid "{doc}`../basic`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../domain`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../entity`"
 #~ msgstr ""
 

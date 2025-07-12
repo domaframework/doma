@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -45,15 +45,14 @@ msgid "Internal domain classes"
 msgstr "内部ドメインクラス"
 
 #: ../../domain.md:16
-#, fuzzy, python-brace-format
 msgid ""
 "Internal domain classes must be annotated with `@Domain`. The `valueType`"
 " element of the `@Domain` annotation specifies the data type of the "
-"corresponding database column. You must specify a type from {doc}`basic` "
+"corresponding database column. You must specify a type from [](basic.md) "
 "for the `valueType` element."
 msgstr ""
-"内部ドメインクラスには ``@Domain`` アノテーションを付ける必要があります。 ``@Domain`` の ``valueType`` "
-"要素は、対応するデータベースのカラムのデータ型を指定します。``valueType`` 要素には :doc:`basic` "
+"内部ドメインクラスには `@Domain` アノテーションを付ける必要があります。 `@Domain` の `valueType` "
+"要素は、対応するデータベースのカラムのデータ型を指定します。`valueType` 要素には [基本クラス](basic.md) "
 "からタイプを指定しなければなりません。"
 
 #: ../../domain.md:20
@@ -61,36 +60,33 @@ msgid "Instantiation with a constructor"
 msgstr "コンストラクタを使用したインスタンス化"
 
 #: ../../domain.md:22
-#, fuzzy
 msgid ""
 "The default value of the `factoryMethod` element in the `@Domain` "
 "annotation is `new`. The value `new` indicates that instances of the "
 "annotated class will be created using a constructor."
 msgstr ""
-"``@Domain`` の ``factoryMethod`` 要素のデフォルト値は ``new`` です。値 ``new`` "
+"`@Domain` の `factoryMethod` 要素のデフォルト値は `new` です。値 `new` "
 "は、アノテーションが付けられたクラスのインスタンスがコンストラクタを使用して作成されることを意味します。"
 
 #: ../../domain.md:46
-#, fuzzy
 msgid ""
 "You can use `@DataType` instead of `@Domain` for records. The information"
 " corresponding to the `valueType` element of `@Domain` is resolved from "
 "the type of the constructor parameter."
 msgstr ""
-"レコードには ``@Domain`` の代わりに ``@DataType`` を使用できます。 ``@Domain`` の "
-"``valueType`` 要素に対応する情報は、コンストラクタパラメーターの型から解決されます。"
+"レコードには `@Domain` の代わりに `@DataType` を使用できます。 `@Domain` の "
+"`valueType` 要素に対応する情報は、コンストラクタパラメーターの型から解決されます。"
 
 #: ../../domain.md:60
 msgid "Instantiation with a static factory method"
 msgstr "静的ファクトリメソッドによるインスタンス化"
 
 #: ../../domain.md:62
-#, fuzzy
 msgid ""
 "To create instances using a static factory method, specify the method "
 "name in the `factoryMethod` element of the `@Domain` annotation."
 msgstr ""
-"静的ファクトリメソッドを使用してインスタンスを作成するには、``@Domain`` アノテーションの ``factoryMethod`` "
+"静的ファクトリメソッドを使用してインスタンスを作成するには、`@Domain` アノテーションの `factoryMethod` "
 "要素にメソッド名を指定します。"
 
 #: ../../domain.md:65
@@ -98,11 +94,10 @@ msgid "The method must be static and non-private:"
 msgstr "メソッドは静的で非プライベートである必要があります。"
 
 #: ../../domain.md:91
-#, fuzzy
 msgid ""
 "With a static factory method, you can apply the `@Domain` annotation to "
 "enum types:"
-msgstr "静的ファクトリメソッドを使用すると、``@Domain`` アノテーションを列挙型に適用できます。"
+msgstr "静的ファクトリメソッドを使用すると、`@Domain` アノテーションを列挙型に適用できます。"
 
 #: ../../domain.md:123
 msgid "Using type parameters in internal domain classes"
@@ -124,37 +119,35 @@ msgid "External domain classes"
 msgstr "外部ドメインクラス"
 
 #: ../../domain.md:168
-#, fuzzy
 msgid ""
 "This feature allows you to define any class as a domain class, even if "
 "you cannot annotate the class with the `@Domain` annotation."
 msgstr ""
-"この機能を使用すると、``@Domain`` "
+"この機能を使用すると、`@Domain` "
 "アノテーションでクラスに注釈を付けることができなくても、任意のクラスをドメインクラスとして定義できます。"
 
 #: ../../domain.md:171
-#, fuzzy
 msgid ""
 "To define external domain classes, you must create a class that "
 "implements `org.seasar.doma.jdbc.domain.DomainConverter` and annotate it "
 "with `@ExternalDomain`."
 msgstr ""
-"外部ドメインクラスを定義するには、``org.seasar.doma.jdbc.domain.DomainConverter`` "
-"を実装するクラスを作成し、``@ExternalDomain`` を注釈する必要があります。"
+"外部ドメインクラスを定義するには、`org.seasar.doma.jdbc.domain.DomainConverter` "
+"を実装するクラスを作成し、`@ExternalDomain` を注釈する必要があります。"
 
 #: ../../domain.md:174
-#, fuzzy
+
 msgid ""
 "Consider, for example, the following `PhoneNumber` class that you cannot "
 "modify directly:"
-msgstr "例えば、次のような ``PhoneNumber`` クラスがあり、直接修正することはできないとします:"
+msgstr "例えば、次のような `PhoneNumber` クラスがあり、直接修正することはできないとします:"
 
 #: ../../domain.md:195
-#, fuzzy
+
 msgid ""
 "To define the `PhoneNumber` class as an external domain class, create the"
 " following converter class:"
-msgstr "``PhoneNumber`` クラスを外部ドメインクラスとして定義するには、次のコンバータクラスを作成します。"
+msgstr "`PhoneNumber` クラスを外部ドメインクラスとして定義するには、次のコンバータクラスを作成します。"
 
 #: ../../domain.md:214
 msgid "Using type parameters in external domain classes"
@@ -165,11 +158,11 @@ msgid "External domain classes can also use type parameters, as shown below:"
 msgstr "以下に示すように、外部ドメインクラスも型パラメータを使用できます。"
 
 #: ../../domain.md:233
-#, fuzzy
+
 msgid ""
 "In the `DomainConverter` implementation class, use a wildcard `?` as the "
 "type argument when referring to the external domain class:"
-msgstr "``DomainConverter`` 実装クラスで、外部ドメインクラスへの型引数としてワイルドカード ``?`` を使用します。"
+msgstr "`DomainConverter` 実装クラスで、外部ドメインクラスへの型引数としてワイルドカード `?` を使用します。"
 
 #: ../../domain.md:254
 msgid "Direct mapping of external domain classes to the database"
@@ -180,32 +173,28 @@ msgid "All external domain classes can be directly mapped to any database type."
 msgstr "すべての外部ドメインクラスは、直接任意のデータベースの型にマッピングできます。"
 
 #: ../../domain.md:258
-#, fuzzy
 msgid "Here's an example of mapping `java.util.UUID` to PostgreSQL's UUID type."
-msgstr "``java.util.UUID`` を PostgreSQL の UUID 型にマッピングする例を次に示します。"
+msgstr "`java.util.UUID` を PostgreSQL の UUID 型にマッピングする例を次に示します。"
 
 #: ../../domain.md:260
-#, fuzzy
 msgid ""
 "First, create an implementation of `org.seasar.doma.jdbc.type.JdbcType` "
 "to handle the mapping:"
-msgstr "まず、マッピングを処理するために ``org.seasar.doma.jdbc.type.JdbcType`` の実装を作成します。"
+msgstr "まず、マッピングを処理するために `org.seasar.doma.jdbc.type.JdbcType` の実装を作成します。"
 
 #: ../../domain.md:294
-#, fuzzy
 msgid ""
 "Then, create a class that extends "
 "`org.seasar.doma.it.domain.JdbcTypeProvider`. In the `getJdbcType` "
 "method, return an instance of the `JdbcType` implementation created "
 "above:"
 msgstr ""
-"次に、``org.seasar.doma.it.domain.JdbcTypeProvider`` "
-"を拡張したクラスを作成し、``getJdbcType`` メソッドで上記で作成した ``JdbcType`` 実装のインスタンスを返します。"
+"次に、`org.seasar.doma.it.domain.JdbcTypeProvider` "
+"を拡張したクラスを作成し、`getJdbcType` メソッドで上記で作成した `JdbcType` 実装のインスタンスを返します。"
 
 #: ../../domain.md:310
-#, fuzzy
 msgid "Remember to annotate this class with `@ExternalDomain`."
-msgstr "このクラスに ``@ExternalDomain`` を注釈することを忘れないでください。"
+msgstr "このクラスに `@ExternalDomain` を注釈することを忘れないでください。"
 
 #: ../../domain.md:312
 msgid "Example"

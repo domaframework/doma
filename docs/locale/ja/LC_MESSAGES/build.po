@@ -27,22 +27,22 @@ msgid "Maven Central Repository"
 msgstr "Maven セントラル リポジトリ"
 
 #: ../../build.md:9
-#, fuzzy
+
 msgid ""
 "You can obtain the Doma framework artifacts from the Maven central "
 "repository. We provide two artifacts: `doma-core` and `doma-processor`."
 msgstr ""
-"Doma フレームワークのアーティファクトを Maven セントラルリポジトリから取得できます。 ``doma-core`` と ``doma-"
-"processor`` という 2 つのアーティファクトが提供されています。"
+"Doma フレームワークのアーティファクトを Maven セントラルリポジトリから取得できます。 `doma-core` と `doma-"
+"processor` という 2 つのアーティファクトが提供されています。"
 
 #: ../../build.md:12
-#, fuzzy
+
 msgid ""
 "The `doma-core` artifact is required at both runtime and compile-time. "
 "The `doma-processor` artifact, which provides annotation processors, is "
 "required only at compile-time."
 msgstr ""
-"``doma-core`` アーティファクトは、実行時およびコンパイル時に必要です。 ``doma-processor`` "
+"`doma-core` アーティファクトは、実行時およびコンパイル時に必要です。 `doma-processor` "
 "アーティファクトはアノテーション プロセッサを提供し、コンパイル時のみに必要です。"
 
 #: ../../build.md:15
@@ -86,14 +86,14 @@ msgid "Groovy"
 msgstr ""
 
 #: ../../build.md:62
-#, fuzzy
+
 msgid ""
 "We recommend using the [org.domaframework.doma.compile] plugin to "
 "simplify your build script."
 msgstr "ビルドスクリプトを簡素化するために `org.domaframework.doma.compile`_ プラグインの使用をお勧めします。"
 
 #: ../../build.md:64 ../../build.md:121
-#, fuzzy
+
 msgid "See build.gradle.kts in the [getting-started] repository as an example."
 msgstr "例として、`getting-started`_ リポジトリの build.gradle.kts を参照してください。"
 

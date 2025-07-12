@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,63 +23,63 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/batch-update.md:7
-#, fuzzy
+
 msgid ""
 "Annotate a Dao method with `@BatchUpdate` to execute batch update "
 "operations."
-msgstr "DAO メソッドに ``@BatchUpdate`` を付けて、バッチ更新操作を実行します。"
+msgstr "DAO メソッドに `@BatchUpdate` を付けて、バッチ更新操作を実行します。"
 
 #: ../../query/batch-update.md:20
-#, fuzzy
+
 msgid ""
 "By default, the UPDATE statement is automatically generated. You can map "
 "to an arbitrary SQL file by setting the `sqlFile` property to `true` in "
 "the `@BatchUpdate` annotation."
 msgstr ""
-"デフォルトでは、UPDATE ステートメントが自動生成されます。 ``@BatchUpdate`` アノテーション内の ``sqlFile`` "
-"プロパティに ``true`` を指定することで、任意の SQL ファイルをマッピングできます。"
+"デフォルトでは、UPDATE ステートメントが自動生成されます。 `@BatchUpdate` アノテーション内の `sqlFile` "
+"プロパティに `true` を指定することで、任意の SQL ファイルをマッピングできます。"
 
 #: ../../query/batch-update.md:23
-#, fuzzy
+
 msgid ""
 "If an entity listener is specified for the entity class, its `preUpdate` "
 "method is called for each entity before executing the update operation. "
 "Similarly, the `postUpdate` method is called for each entity after the "
 "update operation completes."
 msgstr ""
-"エンティティクラスにエンティティリスナーが指定されている場合、``preUpdate`` "
+"エンティティクラスにエンティティリスナーが指定されている場合、`preUpdate` "
 "メソッドは更新操作を実行する前にそれぞれのエンティティに対して呼び出されます。同様に、更新操作が完了した後に、それぞれのエンティティに対して "
-"``postUpdate`` メソッドが呼び出されます。"
+"`postUpdate` メソッドが呼び出されます。"
 
 #: ../../query/batch-update.md:26
 msgid "Return value"
 msgstr "戻り値"
 
 #: ../../query/batch-update.md:28
-#, fuzzy
+
 msgid ""
 "If the elements of the parameter (which must be an `Iterable` subtype) "
 "are immutable entity classes, the return value must be "
 "`org.seasar.doma.jdbc.BatchResult` with the entity class as its element "
 "type."
 msgstr ""
-"パラメータの要素がイミュータブルなエンティティクラスの場合、戻り値は ``org.seasar.doma.jdbc.BatchResult`` "
+"パラメータの要素がイミュータブルなエンティティクラスの場合、戻り値は `org.seasar.doma.jdbc.BatchResult` "
 "で、要素タイプとしてそのエンティティクラスが含まれていなければなりません。"
 
 #: ../../query/batch-update.md:30
-#, fuzzy
+
 msgid ""
 "If the above condition is not met, the return value must be `int[]`, "
 "where each element represents the number of rows affected by each update "
 "operation."
-msgstr "上記の条件が満たされない場合、戻り値は ``int[]`` でなければならず、各要素は各更新操作によって影響を受けた行数を表します。"
+msgstr "上記の条件が満たされない場合、戻り値は `int[]` でなければならず、各要素は各更新操作によって影響を受けた行数を表します。"
 
 #: ../../query/batch-update.md:34
 msgid "Batch update by auto generated SQL"
 msgstr "自動生成SQLによるバッチ更新"
 
 #: ../../query/batch-update.md:36
-#, fuzzy
+
 msgid ""
 "The parameter type must be a subtype of `java.lang.Iterable` with entity "
 "classes as its elements. Only one parameter can be specified. The "
@@ -88,9 +88,9 @@ msgid ""
 "in the array represents the number of rows affected by the corresponding "
 "update operation."
 msgstr ""
-"パラメータの型は、エンティティクラスを要素とする ``java.lang.Iterable`` "
-"のサブタイプでなければなりません。指定できるパラメータは1つだけで、パラメータは ``null`` であってはなりません。返値の配列の要素数は "
-"``Iterable`` の要素数と等しく、それぞれの配列要素は該当する更新操作によって影響を受ける行の数を表します。"
+"パラメータの型は、エンティティクラスを要素とする `java.lang.Iterable` "
+"のサブタイプでなければなりません。指定できるパラメータは1つだけで、パラメータは `null` であってはなりません。返値の配列の要素数は "
+"`Iterable` の要素数と等しく、それぞれの配列要素は該当する更新操作によって影響を受ける行の数を表します。"
 
 #: ../../query/batch-update.md:42
 msgid "Version number and optimistic concurrency control in auto generated SQL"
@@ -103,9 +103,9 @@ msgid ""
 msgstr "以下の条件を満たした場合、楽観的排他制御が実行されます。"
 
 #: ../../query/batch-update.md:46
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
-"{doc}`../entity` within parameter java.lang.Iterable subtype has property"
+"[](../entity.md) within parameter java.lang.Iterable subtype has property"
 " that is annotated with @Version"
 msgstr ""
 "パラメータ java.lang.Iterable サブタイプ内の :doc:`../entity` に @Version "
@@ -113,10 +113,10 @@ msgstr ""
 
 #: ../../query/batch-update.md:47
 msgid "The ignoreVersion element within @BatchUpdate annotation is false"
-msgstr "``@BatchUpdate`` アノテーション内の ``ignoreVersion`` 要素が ``false`` である"
+msgstr "`@BatchUpdate` アノテーション内の `ignoreVersion` 要素が `false` である"
 
 #: ../../query/batch-update.md:49
-#, fuzzy
+
 msgid ""
 "When optimistic concurrency control is enabled, the version number is "
 "included with the identifier in the update condition and is incremented "
@@ -125,7 +125,7 @@ msgid ""
 "update count is 1, the version property in the entity is incremented by 1"
 " and no exception is thrown."
 msgstr ""
-"楽観的排他制御が有効になっている場合、バージョン番号が識別子とともに更新条件に含まれ、1ずつ増加されます。更新数が0の場合、``BatchOptimisticLockException``"
+"楽観的排他制御が有効になっている場合、バージョン番号が識別子とともに更新条件に含まれ、1ずつ増加されます。更新数が0の場合、`BatchOptimisticLockException`"
 " がスローされ、楽観的排他制御の失敗を示します。更新数が1の場合、エンティティ内のバージョンプロパティは1増加され、例外はスローされません。"
 
 #: ../../query/batch-update.md:53 ../../query/batch-update.md:190
@@ -133,7 +133,7 @@ msgid "ignoreVersion"
 msgstr "ignoreVersion"
 
 #: ../../query/batch-update.md:55
-#, fuzzy
+
 msgid ""
 "If the `ignoreVersion` property of the `@BatchUpdate` annotation is set "
 "to `true`, the version number is not included in the update condition but"
@@ -142,17 +142,17 @@ msgid ""
 "`BatchOptimisticLockException` is not thrown even if the update count is "
 "0."
 msgstr ""
-"``@BatchUpdate`` アノテーションの ``ignoreVersion`` プロパティが ``true`` "
+"`@BatchUpdate` アノテーションの `ignoreVersion` プロパティが `true` "
 "に設定されている場合、バージョン番号は更新条件に含まれず、UPDATE 文の SET "
 "句に含まれます。バージョン番号はアプリケーションで設定した値で更新されます。この場合、更新件数が 0 であっても "
-"``BatchOptimisticLockException`` はスローされません。"
+"`BatchOptimisticLockException` はスローされません。"
 
 #: ../../query/batch-update.md:65 ../../query/batch-update.md:201
 msgid "suppressOptimisticLockException"
 msgstr "suppressOptimisticLockException"
 
 #: ../../query/batch-update.md:67
-#, fuzzy
+
 msgid ""
 "When the `suppressOptimisticLockException` property of the `@BatchUpdate`"
 " annotation is set to `true`, if a property annotated with `@Version` "
@@ -161,10 +161,10 @@ msgid ""
 "if the update count is 0. However, the version property value in the "
 "entity is incremented by 1."
 msgstr ""
-"``@BatchUpdate`` アノテーションの ``suppressOptimisticLockException`` プロパティが "
-"``true`` の場合、``@Version`` "
+"`@BatchUpdate` アノテーションの `suppressOptimisticLockException` プロパティが "
+"`true` の場合、`@Version` "
 "アノテーションが付けられたプロパティが存在する場合は、バージョン番号が更新条件に含まれ、1ずつ増分されますが、更新件数が0でも "
-"``BatchOptimisticLockException`` はスローされません。しかし、エンティティ内のバージョン "
+"`BatchOptimisticLockException` はスローされません。しかし、エンティティ内のバージョン "
 "プロパティ値は1ずつ増分されます。"
 
 #: ../../query/batch-update.md:77
@@ -176,21 +176,21 @@ msgid "updatable"
 msgstr "更新可能"
 
 #: ../../query/batch-update.md:81
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
 "The `updatable` property within `@Column` annotation that is specified "
-"`false` is excluded from updating target if {doc}`../entity` has property"
+"`false` is excluded from updating target if [](../entity.md) has property"
 " that is annotated with `@Column`."
 msgstr ""
-":doc:`../entity` に ``@Column`` アノテーションが付けられたプロパティがある場合、 ``@Column`` "
-"アノテーション内の ``false`` が指定された ``updatable`` プロパティは更新対象から除外されます。 。"
+":doc:`../entity` に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` "
+"アノテーション内の `false` が指定された `updatable` プロパティは更新対象から除外されます。 。"
 
 #: ../../query/batch-update.md:83
 msgid "exclude"
 msgstr ""
 
 #: ../../query/batch-update.md:85
-#, fuzzy
+
 msgid ""
 "Properties specified in the `exclude` property of the `@BatchUpdate` "
 "annotation are excluded from the update operation. Even if the "
@@ -198,16 +198,16 @@ msgid ""
 "property will be excluded from the update if it is listed in the "
 "`exclude` property."
 msgstr ""
-"``@BatchUpdate`` アノテーションの ``exclude`` "
-"プロパティに指定されたプロパティは、更新操作から除外されます。``@Column`` の ``updatable`` プロパティが "
-"``true`` に設定されていても、``exclude`` プロパティに記載されたプロパティは更新から除外されます。"
+"`@BatchUpdate` アノテーションの `exclude` "
+"プロパティに指定されたプロパティは、更新操作から除外されます。`@Column` の `updatable` プロパティが "
+"`true` に設定されていても、`exclude` プロパティに記載されたプロパティは更新から除外されます。"
 
 #: ../../query/batch-update.md:93
 msgid "include"
 msgstr ""
 
 #: ../../query/batch-update.md:95
-#, fuzzy
+
 msgid ""
 "Only properties specified in the `include` property of the `@BatchUpdate`"
 " annotation are included in the update operation. If a property is "
@@ -217,10 +217,10 @@ msgid ""
 "from the update operation if the `updatable` property of its `@Column` "
 "annotation is set to `false`."
 msgstr ""
-"``@BatchUpdate`` の ``include`` プロパティに指定されたプロパティのみが更新操作に含まれます。 "
-"``@BatchUpdate`` の ``include`` プロパティと ``exclude`` "
-"プロパティの両方にプロパティが指定された場合、そのプロパティは更新操作から除外されます。 たとえ ``include`` "
-"プロパティに指定されていても、 ``@Column`` の ``updatable`` プロパティが ``false`` "
+"`@BatchUpdate` の `include` プロパティに指定されたプロパティのみが更新操作に含まれます。 "
+"`@BatchUpdate` の `include` プロパティと `exclude` "
+"プロパティの両方にプロパティが指定された場合、そのプロパティは更新操作から除外されます。 たとえ `include` "
+"プロパティに指定されていても、 `@Column` の `updatable` プロパティが `false` "
 "に設定されている場合、そのプロパティは更新操作から除外されます。"
 
 #: ../../query/batch-update.md:104
@@ -228,20 +228,20 @@ msgid "Batch update by SQL file"
 msgstr "SQLファイルによるバッチ更新"
 
 #: ../../query/batch-update.md:106
-#, fuzzy
+
 msgid ""
 "To execute batch updating by SQL file, you set `true` to `sqlFile` "
 "property within `@BatchUpdate` annotation and prepare SQL file that "
 "correspond method."
 msgstr ""
-"SQLファイルによるバッチ更新を行うには、 ``@BatchUpdate`` の ``sqlFile`` 要素に ``true`` を設定し、 "
+"SQLファイルによるバッチ更新を行うには、 `@BatchUpdate` の `sqlFile` 要素に `true` を設定し、 "
 "メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/batch-update.md:110
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
 "In batch updating by SQL file, rule is different according to using or "
-"not using {ref}`populate`."
+"not using [](../sql.md#population-directive)."
 msgstr "SQLファイルによるバッチ更新では、:ref:`populate` を使用する場合と使用しない場合でルールが異なります。"
 
 #: ../../query/batch-update.md:113
@@ -249,32 +249,32 @@ msgid "Case of using comment that generating update column list"
 msgstr "更新カラムリスト生成ディレクティブを使用する場合"
 
 #: ../../query/batch-update.md:123
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
 "Parameter type must be `java.lang.Iterable` subtype that has "
-"{doc}`../entity` as an element. Specifiable parameter is only one. "
+"[](../entity.md) as an element. Specifiable parameter is only one. "
 "Parameter must not be `null`. Return value array element count become "
 "equal `Iterable` element count. Update count is returned to array each "
 "element."
 msgstr ""
-"パラメータの型は要素として :doc:`../entity` を持つ ``java.lang.Iterable`` "
-"のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは ``null`` "
-"であってはなりません。戻り値の配列要素数は、 ``Iterable`` の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
+"パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` "
+"のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` "
+"であってはなりません。戻り値の配列要素数は、 `Iterable` の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
 
 #: ../../query/batch-update.md:129 ../../query/batch-update.md:155
 msgid "For example, you describe SQL like below to correspond above method."
 msgstr "例えば、上記のメソッドに対応するには以下のようなSQLを記述します。"
 
 #: ../../query/batch-update.md:135 ../../query/batch-update.md:162
-#, fuzzy
+
 msgid "Parameter name indicate `Iterable` subtype element in SQL file."
-msgstr "パラメータ名は、SQL ファイル内の ``Iterable`` の要素を示します。"
+msgstr "パラメータ名は、SQL ファイル内の `Iterable` の要素を示します。"
 
 #: ../../query/batch-update.md:137
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
-"The rule that is about update target property equals {ref}`auto-batch-"
-"update`."
+"The rule that is about update target property equals [](#batch-update-by-"
+"auto-generated-sql)."
 msgstr "更新対象プロパティの制御に関するルールは :ref:`auto-batch-update` と同等です。"
 
 #: ../../query/batch-update.md:139
@@ -282,26 +282,26 @@ msgid "Case of not using comment that generating update column list"
 msgstr "更新カラムリスト生成ディレクティブを使用しない場合"
 
 #: ../../query/batch-update.md:149
-#, fuzzy
+
 msgid ""
 "Parameter type must be `java.lang.Iterable` subtype that has arbitrary "
 "type as an element. Specifiable parameter is only one. Parameter must not"
 " be `null`. Return value array element count become equal `Iterable` "
 "element count. Update count is returned to array each element."
 msgstr ""
-"パラメータの型は、任意の型を要素として持つ ``java.lang.Iterable`` でなければなりません。指定できるパラメータは 1 "
-"つだけです。パラメータは ``null`` であってはなりません。戻り値の配列要素数は、 ``Iterable`` "
+"パラメータの型は、任意の型を要素として持つ `java.lang.Iterable` でなければなりません。指定できるパラメータは 1 "
+"つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` "
 "の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
 
 #: ../../query/batch-update.md:164
-#, fuzzy
+
 msgid ""
 "Version number auto updating is not executed in batch update by SQL file."
 " Also, `exclude` property and `include` property within `@BatchUpdate` "
 "annotation are not referenced."
 msgstr ""
-"SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。 また、 ``@BatchUpdate`` の ``exclude``"
-" 要素、 ``include`` 要素は参照されません。"
+"SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。 また、 `@BatchUpdate` の `exclude`"
+" 要素、 `include` 要素は参照されません。"
 
 #: ../../query/batch-update.md:167
 msgid "Version number and optimistic concurrency control in SQL file"
@@ -314,10 +314,10 @@ msgid ""
 msgstr "以下の条件を満たした場合、楽観的排他制御が実行されます。"
 
 #: ../../query/batch-update.md:171
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
-"java.lang.Iterable subtype element in parameter is {doc}`../entity` and "
-"has property that is annotated @Version existing at {doc}`../entity`."
+"java.lang.Iterable subtype element in parameter is [](../entity.md) and "
+"has property that is annotated @Version existing at [](../entity.md)."
 msgstr ""
 "パラメータ内の java.lang.Iterable の要素は :doc:`../entity` であり、 @Version "
 "アノテーションが付けられたプロパティが :doc:`../entity` に存在する"
@@ -337,19 +337,19 @@ msgstr ""
 "句でバージョン番号を指定し、SET 句でバージョン番号を 1 ずつインクリメントする必要があります。"
 
 #: ../../query/batch-update.md:183
-#, fuzzy
+
 msgid ""
 "`BatchOptimisticLockException` representing optimistic concurrency "
 "control failure is thrown, if this SQL updated count is 0. "
 "`BatchOptimisticLockException` is not thrown and version property within "
 "entity is increment by 1 if updated count is not 0."
 msgstr ""
-"このSQLの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す ``BatchOptimisticLockException`` "
-"がスローされます。 更新件数が1件の場合、 ``BatchOptimisticLockException`` はスローされず、 "
+"このSQLの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す `BatchOptimisticLockException` "
+"がスローされます。 更新件数が1件の場合、 `BatchOptimisticLockException` はスローされず、 "
 "エンティティのバージョンプロパティの値が1増分されます。"
 
 #: ../../query/batch-update.md:186
-#, fuzzy
+
 msgid ""
 "If optimistic concurrency control is enable, version number is included "
 "with identifier in update condition and is updated increment by 1. "
@@ -359,32 +359,32 @@ msgid ""
 "thrown and entity version property is increment by 1."
 msgstr ""
 "楽観的排他制御が有効であれば、バージョン番号は識別子とともに更新条件に含まれ、 1増分して更新されます。 "
-"このときの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す ``BatchOptimisticLockException`` "
-"がスローされます。 一方、更新件数が1件の場合、 ``BatchOptimisticLockException`` "
+"このときの更新件数が0件または複数件の場合、楽観的排他制御の失敗を示す `BatchOptimisticLockException` "
+"がスローされます。 一方、更新件数が1件の場合、 `BatchOptimisticLockException` "
 "はスローされず、エンティティのバージョンプロパティの値が1増分されます。"
 
 #: ../../query/batch-update.md:192
-#, fuzzy
+
 msgid ""
 "If the `ignoreVersion` property of the `@BatchUpdate` annotation is set "
 "to true, `BatchOptimisticLockException` is not thrown, even if the update"
 " count is 0 or multiple. Additionally, the entity version property is not"
 " modified."
 msgstr ""
-"``@BatchUpdate`` アノテーション内の ``ignoreVersion`` プロパティが ``true`` "
-"の場合、更新件数が何件であっても ``BatchOptimisticLockException`` "
+"`@BatchUpdate` アノテーション内の `ignoreVersion` プロパティが `true` "
+"の場合、更新件数が何件であっても `BatchOptimisticLockException` "
 "はスローされません。また、エンティティのバージョン プロパティは変更されません。"
 
 #: ../../query/batch-update.md:203
-#, fuzzy
+
 msgid ""
 "When the `suppressOptimisticLockException` property of the `@BatchUpdate`"
 " annotation is set to `true`, `BatchOptimisticLockException` is not "
 "thrown even if the update count is 0. However, the entity version "
 "property value is incremented by 1."
 msgstr ""
-"``@BatchUpdate`` の ``suppressOptimisticLockException`` 要素が ``true`` "
-"の場合、更新件数が 0 であっても ``BatchOptimisticLockException`` はスローされません。 "
+"`@BatchUpdate` の `suppressOptimisticLockException` 要素が `true` "
+"の場合、更新件数が 0 であっても `BatchOptimisticLockException` はスローされません。 "
 "ただし、エンティティのバージョンプロパティの値は 1 増分されます。"
 
 #: ../../query/batch-update.md:212
@@ -392,33 +392,33 @@ msgid "Unique constraint violation"
 msgstr "一意制約違反"
 
 #: ../../query/batch-update.md:214
-#, fuzzy
+
 msgid ""
 "`UniqueConstraintException` is thrown regardless of with or without using"
 " sql file if unique constraint violation is occurred."
 msgstr ""
 "一意制約違反が発生した場合は、SQLファイルの使用の有無に関係なく\n"
-"``UniqueConstraintException`` がスローされます。"
+"`UniqueConstraintException` がスローされます。"
 
 #: ../../query/batch-update.md:216
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../query/batch-update.md:218
-#, fuzzy
+
 msgid ""
 "You can specify seconds of query timeout to `queryTimeout` property "
 "within `@BatchUpdate` annotation."
-msgstr "``@BatchUpdate`` アノテーション内の ``queryTimeout`` プロパティにクエリタイムアウトの秒数を指定できます。"
+msgstr "`@BatchUpdate` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます。"
 
 #: ../../query/batch-update.md:225
-#, fuzzy
+
 msgid ""
 "This specifying is applied regardless of with or without using sql file. "
 "Query timeout that is specified in config class is used if `queryTimeout`"
 " property is not set value."
 msgstr ""
-"この指定はSQLファイルの使用の有無に関わらず適用されます。 ``queryTimeout`` "
+"この指定はSQLファイルの使用の有無に関わらず適用されます。 `queryTimeout` "
 "プロパティに値が設定されていない場合は、config クラスで指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/batch-update.md:228
@@ -426,20 +426,20 @@ msgid "Batch size"
 msgstr "バッチサイズ"
 
 #: ../../query/batch-update.md:230
-#, fuzzy
+
 msgid ""
 "You can specify batch size to `batchSize` property within `@BatchUpdate` "
 "annotation."
-msgstr "バッチサイズは ``@BatchUpdate`` アノテーション内の ``batchSize`` プロパティに指定できます。"
+msgstr "バッチサイズは `@BatchUpdate` アノテーション内の `batchSize` プロパティに指定できます。"
 
 #: ../../query/batch-update.md:237
-#, fuzzy, python-brace-format
+, python-brace-format
 msgid ""
 "This specify is applied Regardless of using or not using SQL file. It you"
 " do not specify the value to `batchSize` property, batch size that is "
-"specified at {doc}`../config` class is applied."
+"specified at [](../config.md) class is applied."
 msgstr ""
-"この指定はSQLファイルの使用有無に関わらず適用されます。 ``batchSize`` "
+"この指定はSQLファイルの使用有無に関わらず適用されます。 `batchSize` "
 "プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-update.md:240
@@ -447,16 +447,16 @@ msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
 #: ../../query/batch-update.md:242
-#, fuzzy
+
 msgid ""
 "You can specify SQL log output format to `sqlLog` property within "
 "`@BatchUpdate` annotation."
-msgstr "``@BatchUpdate`` アノテーション内の `sqlLog` プロパティに SQL ログの出力形式を指定できます。"
+msgstr "`@BatchUpdate` アノテーション内の `sqlLog` プロパティに SQL ログの出力形式を指定できます。"
 
 #: ../../query/batch-update.md:249
-#, fuzzy
+
 msgid ""
 "`SqlLogType.RAW` represent outputting log that is sql with a binding "
 "parameter."
-msgstr "``SqlLogType.RAW`` はバインドパラメータ（?）付きの SQL をログ出力することを表します。"
+msgstr "`SqlLogType.RAW` はバインドパラメータ（?）付きの SQL をログ出力することを表します。"
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -45,7 +45,6 @@ msgid "Get sample project"
 msgstr "サンプルプロジェクトの入手"
 
 #: ../../getting-started.md:17
-#, fuzzy
 msgid ""
 "To get the sample project, clone the [getting-"
 "started](https://github.com/domaframework/getting-started) repository and"
@@ -60,9 +59,8 @@ msgid "Ensure successful project setup with:"
 msgstr "次のコマンドが成功すれば、プロジェクトのセットアップは完了です。"
 
 #: ../../getting-started.md:32
-#, fuzzy
 msgid "For Windows users, execute `gradlew build`."
-msgstr "Windowsユーザーは、``./gradlew build`` の代わりに ``gradlew build`` を実行してください。"
+msgstr "Windowsユーザーは、`./gradlew build` の代わりに `gradlew build` を実行してください。"
 
 #: ../../getting-started.md:35
 msgid "Sample project structure"
@@ -93,7 +91,6 @@ msgstr ""
 "プロジェクトとしてインポートしてください。"
 
 #: ../../getting-started.md:48
-#, fuzzy
 msgid ""
 "If you want to store SQL statements in files, [Doma "
 "Tools](https://github.com/domaframework/doma-tools) can help you."
@@ -120,12 +117,10 @@ msgid ""
 msgstr "次のIntelliJ IDEAプラグインを使用してDomaをサポートできます。機能が重複しているため、いずれか一方をお選びください。"
 
 #: ../../getting-started.md:60
-#, fuzzy
 msgid "[Doma Support](https://plugins.jetbrains.com/plugin/7615-doma-support)"
 msgstr "`Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_"
 
 #: ../../getting-started.md:61
-#, fuzzy
 msgid ""
 "[Doma Tools for IntelliJ](https://plugins.jetbrains.com/plugin/26701"
 "-doma-tools/)"
@@ -161,13 +156,13 @@ msgid "DSL style"
 msgstr "DSL スタイル"
 
 #: ../../getting-started.md:75
-#, fuzzy, python-brace-format
+
 msgid ""
 "In the DSL style, you work with examples in the "
-"`boilerplate.java17.repository.EmployeeRepository` and the {doc}`query-"
-"dsl` for operations."
+"`boilerplate.java17.repository.EmployeeRepository` and the [](query-"
+"dsl.md) for operations."
 msgstr ""
-"DSL スタイルでは、``boilerplate.java17.repository.EmployeeRepository`` と :doc"
+"DSL スタイルでは、`boilerplate.java17.repository.EmployeeRepository` と :doc"
 ":`query-dsl` を使った例を使用します。"
 
 #: ../../getting-started.md:78
@@ -181,20 +176,18 @@ msgid ""
 msgstr "SELECT ステートメントを実行して Java オブジェクトの結果を取得するには、次の例に従います。"
 
 #: ../../getting-started.md:89
-#, fuzzy
 msgid ""
 "You'll use a metamodel class, like `Employee_` for `Employee`, which is "
 "auto-generated through annotation processing."
 msgstr ""
-"クエリを組み立てるために ``Employee`` エンティティクラスのメタモデルクラスである ``Employee_`` "
+"クエリを組み立てるために `Employee` エンティティクラスのメタモデルクラスである `Employee_` "
 "を使用します。メタモデルクラスは、アノテーション処理を通じて自動生成されるクラスです。"
 
 #: ../../getting-started.md:91
-#, fuzzy
 msgid ""
 "The `queryDsl` instance from the `QueryDsl` class serves as the Criteria "
 "API's starting point."
-msgstr "``QueryDsl`` クラスの ``queryDsl`` インスタンスは、Criteria API の開始点として機能します。"
+msgstr "`QueryDsl` クラスの `queryDsl` インスタンスは、Criteria API の開始点として機能します。"
 
 #: ../../getting-started.md:93 ../../getting-started.md:160
 msgid "The above code generates the following SQL statement:"
@@ -229,12 +222,12 @@ msgid "DAO style"
 msgstr "DAO スタイル"
 
 #: ../../getting-started.md:134
-#, fuzzy, python-brace-format
+
 msgid ""
 "You can find some examples in `boilerplate.java17.dao.EmployeeDao`. See "
-"{doc}`dao` and {doc}`sql` for more information."
+"[](dao.md) and [](sql.md) for more information."
 msgstr ""
-"いくつかの例は ``boilerplate.java17.dao.EmployeeDao`` にあります。詳細については、:doc:`dao` "
+"いくつかの例は `boilerplate.java17.dao.EmployeeDao` にあります。詳細については、:doc:`dao` "
 "および :doc:`sql` を参照してください。"
 
 #: ../../getting-started.md:137
@@ -242,16 +235,15 @@ msgid "SELECT (DAO)"
 msgstr ""
 
 #: ../../getting-started.md:139
-#, fuzzy
 msgid ""
 "In the DAO style, for issuing a SELECT statement to retrieve Java "
 "objects, use the `@Sql` annotation with Text Blocks for SQL templates:"
 msgstr ""
 "DAO スタイルで SELECT ステートメントを発行して Java オブジェクトを取得するには、SQL テンプレートのテキストブロックで "
-"``@Sql`` アノテーションを使用します。"
+"`@Sql` アノテーションを使用します。"
 
 #: ../../getting-started.md:155
-#, fuzzy, python-format
+
 msgid ""
 "This SQL template contains two special expressions: `/*%expand*/` and `/*"
 " id */`. When processing the SQL template, `/*%expand*/` and the "
@@ -260,10 +252,10 @@ msgid ""
 "value bound to this variable is the `id` parameter of the `selectById` "
 "method."
 msgstr ""
-"このSQLテンプレートには、``/*%expand*/`` と ``/* id */`` "
-"の二つの特別な式が含まれています。SQLテンプレートの処理中に、``/*%expand*/`` とその後の ``*`` "
-"は完全なカラムリストに置き換えられます。同様に、``/* id */`` とその後の ``0`` はバインド変数 ``?`` "
-"に置き換えられます。バインドされる値は ``selectById`` メソッドの ``id`` パラメータです。"
+"このSQLテンプレートには、`/*%expand*/` と `/* id */` "
+"の二つの特別な式が含まれています。SQLテンプレートの処理中に、`/*%expand*/` とその後の `*` "
+"は完全なカラムリストに置き換えられます。同様に、`/* id */` とその後の `0` はバインド変数 `?` "
+"に置き換えられます。バインドされる値は `selectById` メソッドの `id` パラメータです。"
 
 #: ../../getting-started.md:171
 msgid "DELETE (DAO)"

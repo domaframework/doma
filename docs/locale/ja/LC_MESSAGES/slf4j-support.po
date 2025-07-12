@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -27,7 +27,7 @@ msgid "Overview"
 msgstr "概要"
 
 #: ../../slf4j-support.md:9
-#, fuzzy
+
 msgid ""
 "Doma uses Java Util Logging as its underlying logging framework, but you "
 "can easily replace it with [SLF4J](http://www.slf4j.org/)."
@@ -48,19 +48,18 @@ msgid "Configuration"
 msgstr "設定"
 
 #: ../../slf4j-support.md:26
-#, fuzzy
+
 msgid ""
 "Return an `org.seasar.doma.slf4j.Slf4jJdbcLogger` instance from the "
 "`getJdbcLogger` method of your `org.seasar.doma.jdbc.Config` "
 "implementation class."
 msgstr ""
-"``org.seasar.doma.slf4j.Slf4jJdbcLogger`` インスタンスを "
-"``org.seasar.doma.jdbc.Config`` の実装クラスの ``getJdbcLogger`` メソッドから返してください。"
+"`org.seasar.doma.slf4j.Slf4jJdbcLogger` インスタンスを "
+"`org.seasar.doma.jdbc.Config` の実装クラスの `getJdbcLogger` メソッドから返してください。"
 
 #: ../../slf4j-support.md:29
-#, fuzzy, python-brace-format
-msgid "See also {ref}`Logger<config-logger>`."
-msgstr ":ref:`Logger <config-logger>` も参照してください。"
+msgid "See also [](config.md#logger)."
+msgstr ""
 
 #: ../../slf4j-support.md:31
 msgid "Loggers"
@@ -135,7 +134,7 @@ msgid "org.seasar.doma.jdbc.LogKind.SQL.UPDATE"
 msgstr ""
 
 #: ../../slf4j-support.md:52
-#, fuzzy
+
 msgid ""
 "For more information, see the [source "
 "code](https://github.com/domaframework/doma/blob/master/doma-"
@@ -150,7 +149,7 @@ msgid "Examples"
 msgstr "例"
 
 #: ../../slf4j-support.md:56
-#, fuzzy
+
 msgid "Below are some sample [logback](http://logback.qos.ch/) configurations."
 msgstr "以下に、`logback <http://logback.qos.ch/>`_ の設定例を示します。"
 
@@ -165,4 +164,7 @@ msgstr "すべての SQL ステートメントをログに記録する"
 #: ../../slf4j-support.md:94
 msgid "Log only SELECT statements"
 msgstr "SELECT ステートメントのみをログに記録する"
+
+#~ msgid "See also {ref}`Logger<config-logger>`."
+#~ msgstr ":ref:`Logger <config-logger>` も参照してください。"
 

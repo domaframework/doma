@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -51,7 +51,6 @@ msgstr ""
 "メソッドのペアがあるとします。"
 
 #: ../../sql.md:26
-#, fuzzy
 msgid ""
 "The `employeeId` expression enclosed between `/*` and `*/` corresponds to"
 " the method parameter \"employeeId\" of the DAO. At runtime, the SQL "
@@ -60,20 +59,19 @@ msgid ""
 "this variable. The SQL statement generated from the SQL template is as "
 "follows:"
 msgstr ""
-"``/*`` と ``*/`` で囲まれた ``employeeId`` 式は、DAO のメソッドパラメータ ``employeeId`` "
-"に対応します。実行時には、SQL コメントとそれに続く数値 ``/*employeeId */99`` がバインド変数 ``?`` "
-"に置き換えられ、メソッド パラメータ ``employeeId`` がその変数に渡されます。 SQL テンプレートから生成される SQL "
+"`/*` と `*/` で囲まれた `employeeId` 式は、DAO のメソッドパラメータ `employeeId` "
+"に対応します。実行時には、SQL コメントとそれに続く数値 `/*employeeId */99` がバインド変数 `?` "
+"に置き換えられ、メソッド パラメータ `employeeId` がその変数に渡されます。 SQL テンプレートから生成される SQL "
 "ステートメントは次のとおりです。"
 
 #: ../../sql.md:36
-#, fuzzy
 msgid ""
 "The number `99` in the SQL template is test data that is never used at "
 "runtime. This test data is only useful when you execute the SQL template "
 "directly in your database tools. In other words, you can check whether "
 "the SQL template is grammatically correct with your favorite SQL tools."
 msgstr ""
-"SQL テンプレート内の数字 ``99`` はテストデータであり、実行時には決して使用されません。テストデータは、SQL "
+"SQL テンプレート内の数字 `99` はテストデータであり、実行時には決して使用されません。テストデータは、SQL "
 "テンプレートをそのまま実行する場合にのみ役立ちます。つまり、お気に入りの SQL ツールを使用して、SQL "
 "テンプレートが文法的に正しいかどうかを確認できます。"
 
@@ -90,13 +88,12 @@ msgid "You can specify SQL templates in text files:"
 msgstr "SQL テンプレートはテキストファイルに記載できます。"
 
 #: ../../sql.md:57
-#, fuzzy
 msgid ""
 "The `selectById` and `deleteByName` methods above are mapped to their "
 "corresponding SQL files. DAO methods must be annotated with one of the "
 "following annotations:"
 msgstr ""
-"上記の ``selectById`` メソッドと ``deleteByName`` メソッドは、それぞれ独自の SQL ファイルにマップされます。"
+"上記の `selectById` メソッドと `deleteByName` メソッドは、それぞれ独自の SQL ファイルにマップされます。"
 " DAO メソッドには、次のいずれかのアノテーションを付ける必要があります。"
 
 #: ../../sql.md:60 ../../sql.md:136
@@ -158,7 +155,6 @@ msgid "META-INF/*path-format-of-dao-interface*/*dao-method*.sql"
 msgstr ""
 
 #: ../../sql.md:82
-#, fuzzy
 msgid ""
 "For example, when the DAO interface name is `aaa.bbb.EmployeeDao` and the"
 " DAO method name is `selectById`, the SQL file path is as follows:"
@@ -313,14 +309,12 @@ msgid "SQL templates in annotations"
 msgstr "アノテーション内の SQL テンプレート"
 
 #: ../../sql.md:119
-#, fuzzy
 msgid "You can specify SQL templates to DAO methods with the `@Sql` annotation:"
-msgstr "``@Sql`` アノテーションを使用して SQL テンプレートを DAO メソッドに指定できます。"
+msgstr "`@Sql` アノテーションを使用して SQL テンプレートを DAO メソッドに指定できます。"
 
 #: ../../sql.md:134
-#, fuzzy
 msgid "The `@Sql` annotation must be combined with following annotations:"
-msgstr "``@Sql`` アノテーションは次のアノテーションと組み合わせる必要があります。"
+msgstr "`@Sql` アノテーションは次のアノテーションと組み合わせる必要があります。"
 
 #: ../../sql.md:137
 msgid "@Script"
@@ -363,65 +357,56 @@ msgstr ""
 "コメントがディレクティブとして認識されます。サポートされているディレクティブは次のとおりです。"
 
 #: ../../sql.md:152
-#, fuzzy
-msgid "[Bind variable directive]"
-msgstr "バインド変数ディレクティブ"
+msgid "[](#bind-variable-directive)"
+msgstr "[バインド変数ディレクティブ](#bind-variable-directive)"
 
 #: ../../sql.md:153
-#, fuzzy
-msgid "[Literal variable directive]"
-msgstr "リテラル変数ディレクティブ"
+msgid "[](#literal-variable-directive)"
+msgstr "[リテラル変数ディレクティブ](#literal-variable-directive)"
 
 #: ../../sql.md:154
-#, fuzzy
-msgid "[Embedded variable directive]"
-msgstr "埋め込み変数ディレクティブ"
+msgid "[](#embedded-variable-directive)"
+msgstr "[埋め込み変数ディレクティブ](#embedded-variable-directive)"
 
 #: ../../sql.md:155
-#, fuzzy
-msgid "[Condition directive]"
-msgstr "条件ディレクティブ"
+msgid "[](#condition-directive)"
+msgstr "[条件ディレクティブ](#condition-directive)"
 
 #: ../../sql.md:156
-#, fuzzy
-msgid "[Loop directive]"
-msgstr "ループディレクティブ"
+msgid "[](#loop-directive)"
+msgstr "[ループディレクティブ](#loop-directive)"
 
 #: ../../sql.md:157
-#, fuzzy
-msgid "[Expansion directive]"
-msgstr "選択カラムリスト展開ディレクティブ"
+msgid "[](#expansion-directive)"
+msgstr "[選択カラムリスト展開ディレクティブ](#expansion-directive)"
 
 #: ../../sql.md:158
-#, fuzzy
-msgid "[Population directive]"
-msgstr "更新カラムリスト生成ディレクティブ"
+msgid "[](#population-directive)"
+msgstr "[更新カラムリスト生成ディレクティブ](#population-directive)"
 
 #: ../../sql.md:159
-#, fuzzy
-msgid "[Parser-level comment directive]"
-msgstr "パーサーレベルコメントディレクティブ"
+msgid "[](#parser-level-comment-directive)"
+msgstr "[パーサーレベルコメントディレクティブ](#parser-level-comment-directive)"
 
 #: ../../sql.md:162
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
-"See also {doc}`expression` for information of the expression language "
+"See also [](expression.md) for information of the expression language "
 "available in directives."
-msgstr "ディレクティブで使用できる式言語については、:doc:`expression` も参照してください。"
+msgstr "ディレクティブで使用できる式言語については、[expression](expression.md) も参照してください。"
 
 #: ../../sql.md:167
 msgid "Bind variable directive"
 msgstr "バインド変数ディレクティブ"
 
 #: ../../sql.md:169
-#, fuzzy
 msgid ""
 "The bind variable directive is written in the format `/*...*/`. The "
 "expression enclosed between `/*` and `*/` is evaluated, and its result is"
 " passed to a bind variable in the SQL statement. The directive must be "
 "followed by test data, which is never used at runtime."
 msgstr ""
-"バインド変数ディレクティブは ``/*...*/`` の形式で表されます。 ``/*`` と ``*/`` "
+"バインド変数ディレクティブは `/*...*/` の形式で表されます。 `/*` と `*/` "
 "で囲まれた式が評価され、その評価結果がSQL文のバインド変数に渡されます。ディレクティブの後にはテストデータを続ける必要がありますが、テスト "
 "データは実行時には使用されません。"
 
@@ -430,11 +415,11 @@ msgid "Basic and domain parameters"
 msgstr "パラメータ"
 
 #: ../../sql.md:176
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
-"The parameter whose type is one of {doc}`basic` and {doc}`domain` is "
+"The parameter whose type is one of [](basic.md) and [](domain.md) is "
 "recognised as a bind variable."
-msgstr "型が :doc:`basic` または :doc:`domain` のいずれかのパラメータはバインド変数として認識されます。"
+msgstr "型が [basic](basic.md) または [domain](domain.md) のいずれかのパラメータはバインド変数として認識されます。"
 
 #: ../../sql.md:179 ../../sql.md:203 ../../sql.md:234 ../../sql.md:272
 msgid "The following example is the pair of a DAO method and an SQL template:"
@@ -449,42 +434,38 @@ msgid "Parameters in IN clause"
 msgstr "IN句のパラメータ"
 
 #: ../../sql.md:197
-#, fuzzy
 msgid ""
 "Parameters that are either a subtype of `java.lang.Iterable` or an array "
 "type are recognized as bind variables in an IN clause."
-msgstr "``java.lang.Iterable`` のサブタイプまたは配列型のパラメータは、IN句のバインド変数として認識されます。"
+msgstr "`java.lang.Iterable` のサブタイプまたは配列型のパラメータは、IN句のバインド変数として認識されます。"
 
 #: ../../sql.md:200
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
-"The type argument of `java.lang.Iterable` must be one of {doc}`basic` and"
-" {doc}`domain`. The directives must be followed by test data enclosed "
+"The type argument of `java.lang.Iterable` must be one of [](basic.md) and"
+" [](domain.md). The directives must be followed by test data enclosed "
 "between `(` and `)`."
 msgstr ""
-"``java.lang.Iterable`` のサブタイプもしくは配列の要素の型は :doc:`basic` または :doc:`domain` "
-"でなければいけません。ディレクトティブの直後には ``(`` と ``)`` で囲まれたテストデータが必須です。"
+"`java.lang.Iterable` のサブタイプもしくは配列の要素の型は [basic](basic.md) または [domain](domain.md) "
+"でなければいけません。ディレクトティブの直後には `(` と `)` で囲まれたテストデータが必須です。"
 
 #: ../../sql.md:213
-#, fuzzy
 msgid ""
 "In case that the `employeeIdList` contains five elements, the following "
 "SQL statement is generated from the SQL template:"
-msgstr "``employeeIdList`` に 5 つの要素が含まれる場合、SQL テンプレートから次の SQL ステートメントが生成されます。"
+msgstr "`employeeIdList` に 5 つの要素が含まれる場合、SQL テンプレートから次の SQL ステートメントが生成されます。"
 
 #: ../../sql.md:220
-#, fuzzy
 msgid ""
 "In case that the `employeeIdList` is empty, the IN clause is replaced "
 "with `in (null)` in runtime:"
-msgstr "``employeeIdList`` が空の場合、実行時に IN 句は ``in (null)`` に置き換えられます。"
+msgstr "`employeeIdList` が空の場合、実行時に IN 句は `in (null)` に置き換えられます。"
 
 #: ../../sql.md:227
 msgid "Literal variable directive"
 msgstr "リテラル変数ディレクティブ"
 
 #: ../../sql.md:229
-#, fuzzy
 msgid ""
 "The literal variable directive is written in the format `/*^...*/`. The "
 "expression enclosed between `/*^` and `*/` is evaluated, and its result "
@@ -492,7 +473,7 @@ msgid ""
 "statement. The directive must be followed by test data, which is never "
 "used at runtime."
 msgstr ""
-"リテラル変数ディレクティブは ``/*^...*/`` の形式で表されます。 ``/*^`` と ``*/`` "
+"リテラル変数ディレクティブは `/*^...*/` の形式で表されます。 `/*^` と `*/` "
 "で囲まれた式を評価し、その評価結果をリテラル形式に変換してSQL文に埋め込みます。ディレクティブの後にはテスト "
 "データを続ける必要がありますが、テスト データは実行時には使用されません。"
 
@@ -512,26 +493,24 @@ msgid ""
 msgstr "リテラル変数ディレクティブは、バインド変数を回避し、SQL 実行計画を固定するのに役立ちます。"
 
 #: ../../sql.md:262
-#, fuzzy
 msgid ""
 "Literal variable directives do not escape parameters for SQL injection. "
 "But the directives reject parameters containing the single quotation `'`."
 msgstr ""
 "リテラル変数ディレクティブは、SQL インジェクションを引き起こす可能性のある文字列をエスケープしません。ただし、ディレクティブは一重引用符 "
-"``'`` を含むパラメータを拒否します。"
+"`'` を含むパラメータを拒否します。"
 
 #: ../../sql.md:266
 msgid "Embedded variable directive"
 msgstr "埋め込み変数ディレクティブ"
 
 #: ../../sql.md:268
-#, fuzzy
 msgid ""
 "The embedded variable directive is written in the format `/*#...*/`. The "
 "expression enclosed between `/*#` and `*/` is evaluated, and its result "
 "is embedded directly in the SQL statement."
 msgstr ""
-"埋込み変数ディレクティブは ``/*#...*/`` の形式で表現します。 ``/*#`` と ``*/`` "
+"埋込み変数ディレクティブは `/*#...*/` の形式で表現します。 `/*#` と `*/` "
 "で囲まれた式が評価され、その評価結果がSQL文に埋め込まれます。"
 
 #: ../../sql.md:298
@@ -548,24 +527,20 @@ msgid ""
 msgstr "SQL インジェクションの脆弱性を防ぐために、埋め込み変数ディレクティブは次の文字またはシーケンスを含むパラメータを拒否します。"
 
 #: ../../sql.md:305
-#, fuzzy
 msgid "Single quotation mark `'`"
-msgstr "一重引用符 ``'``"
+msgstr "一重引用符 `'`"
 
 #: ../../sql.md:306
-#, fuzzy
 msgid "Semicolon `;`"
-msgstr "セミコロン ``;``"
+msgstr "セミコロン `;`"
 
 #: ../../sql.md:307
-#, fuzzy
 msgid "Double hyphen `--`"
-msgstr "ダブルハイフン ``--``"
+msgstr "ダブルハイフン `--`"
 
 #: ../../sql.md:308
-#, fuzzy
 msgid "Slash followed by an asterisk `/*`"
-msgstr "スラッシュとアスタリスク ``/*``"
+msgstr "スラッシュとアスタリスク `/*`"
 
 #: ../../sql.md:311
 msgid "Condition directive"
@@ -581,16 +556,14 @@ msgid "Synopsis"
 msgstr "概要"
 
 #: ../../sql.md:329
-#, fuzzy
 msgid ""
 "The expressions `condition`, `condition2`, and `condition3` must evaluate"
 " to either a primitive `boolean` or `java.lang.Boolean` object."
 msgstr ""
-"式 ``condition``, ``condition2``, および ``condition3`` は、``boolean`` または "
-"``java.lang.Boolean`` のいずれかに評価される必要があります。"
+"式 `condition`, `condition2`, および `condition3` は、`boolean` または "
+"`java.lang.Boolean` のいずれかに評価される必要があります。"
 
 #: ../../sql.md:332
-#, fuzzy
 msgid "The `elseif` directives and the `else` directive are optional."
 msgstr "`elseif` ディレクティブと `else` ディレクティブはオプションです。"
 
@@ -604,64 +577,56 @@ msgid "Suppose you have the following SQL template:"
 msgstr "次の SQL テンプレートがあるとします。"
 
 #: ../../sql.md:345
-#, fuzzy
 msgid ""
 "If the `employeeId` is not `null`, the generated SQL statement is as "
 "follows:"
-msgstr "``employeeId`` が ``null`` でない場合、生成される SQL ステートメントは次のようになります。"
+msgstr "`employeeId` が `null` でない場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:351
-#, fuzzy
 msgid "If the `employeeId` is `null`, the generated SQL statement is as follows:"
-msgstr "``employeeId`` が ``null`` の場合、生成される SQL ステートメントは次のようになります。"
+msgstr "`employeeId` が `null` の場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:357
-#, fuzzy
 msgid "The SQL keyword `where` is removed automatically."
-msgstr "SQL キーワード ``where`` は自動的に削除されます。"
+msgstr "SQL キーワード `where` は自動的に削除されます。"
 
 #: ../../sql.md:359
 msgid "elseif and else"
 msgstr "elseifとelse"
 
 #: ../../sql.md:380
-#, fuzzy
 msgid ""
 "If the `employeeId != null` is evaluated `true`, the generated SQL "
 "statement is as follows:"
-msgstr "``employeeId != null`` が ``true`` と評価された場合、生成される SQL ステートメントは次のようになります。"
+msgstr "`employeeId != null` が `true` と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:391
-#, fuzzy
 msgid ""
 "If the `employeeId == null && department_id != null` is evaluated `true`,"
 " the generated SQL statement is as follows:"
 msgstr ""
-"``employeeId == null && department_id != null`` が  ``true`` "
+"`employeeId == null && department_id != null` が  `true` "
 "と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:403
-#, fuzzy
 msgid ""
 "The SQL keyword `and` followed by `department_id` is removed "
 "automatically:"
-msgstr "SQL キーワード ``and`` と ``department_id`` は自動的に削除されます。"
+msgstr "SQL キーワード `and` と `department_id` は自動的に削除されます。"
 
 #: ../../sql.md:405
-#, fuzzy
 msgid ""
 "If the `employeeId == null && department_id == null` is evaluated `true`,"
 " the generated SQL statement is as follows:"
 msgstr ""
-"``employeeId == null && department_id == null``  が ``true`` "
+"`employeeId == null && department_id == null`  が `true` "
 "と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:417
-#, fuzzy
 msgid ""
 "The SQL keyword `and` followed by `department_id` is automatically "
 "removed."
-msgstr "SQL キーワード ``and`` の次に続く ``departmentId`` が自動的に削除されます。"
+msgstr "SQL キーワード `and` の次に続く `departmentId` が自動的に削除されます。"
 
 #: ../../sql.md:419
 msgid "Nested condition directive"
@@ -702,18 +667,17 @@ msgid "In such cases, these clauses are automatically removed."
 msgstr "このような場合、これらの節は自動的に削除されます。"
 
 #: ../../sql.md:457 ../../sql.md:482
-#, fuzzy
 msgid ""
 "If the `employeeId != null` is evaluated `false`, the generated SQL "
 "statement is as follows:"
-msgstr "``employeeId != null`` が ``false`` と評価された場合、生成される SQL ステートメントは次のようになります。"
+msgstr "`employeeId != null` が `false` と評価された場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:464
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%if ...*/` is unnecessary, "
 "it is removed automatically."
-msgstr "SQL 句 ``where`` の後に ``/* %i f ...*/`` が続く部分は不要なため、自動的に削除されます。"
+msgstr "SQL 句 `where` の後に `/* %if ...*/` が続く部分は不要なため、自動的に削除されます。"
 
 #: ../../sql.md:467
 msgid "Removal of AND and OR keywords on the condition directives"
@@ -726,40 +690,40 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、条件ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:489
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Because the SQL keyword `and` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
-msgstr "``/* %end*/`` に続くSQLキーワード ``and`` は不要なため、自動的に削除されます。"
+msgstr "`/* %end*/` に続くSQLキーワード `and` は不要なため、自動的に削除されます。"
 
 #: ../../sql.md:492
 msgid "Restriction on condition directive"
 msgstr "条件ディレクティブの制限"
 
 #: ../../sql.md:494
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The `/*%if condition*/` and `/*%end*/` directives must be included in the"
 " same SQL clause and at the same statement level."
-msgstr "``/*%if condition*/`` と ``/*%end*/`` は、同じ SQL 句および同じステートメントレベルに含める必要があります。"
+msgstr "`/*%if condition*/` と `/*%end*/` は、同じ SQL 句および同じステートメントレベルに含める必要があります。"
 
 #: ../../sql.md:497
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "FROM clause and `/*%end*/` is in the WHERE clause:"
 msgstr ""
-"次のテンプレートは無効です。 ``/* %ifcondition*/`` が FROM 句にあり、``/* %end*/`` が WHERE "
+"次のテンプレートは無効です。 `/* %if condition*/` が FROM 句にあり、`/* %end*/` が WHERE "
 "句にあるためです。"
 
 #: ../../sql.md:505
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The following template is invalid, because `/*%if condition*/` is in the "
 "outer statement and `/*%end*/` is in the inner statement:"
 msgstr ""
-"次のテンプレートは、外側のステートメントに ``/* %if condition*/`` があり、内側のステートメントに ``/* "
-"%end*/`` があるため、無効です。"
+"次のテンプレートは、外側のステートメントに `/* %if condition*/` があり、内側のステートメントに `/* "
+"%end*/` があるため、無効です。"
 
 #: ../../sql.md:513
 msgid "Loop directive"
@@ -770,20 +734,19 @@ msgid "The loop directive allows you to build SQL statements using loops."
 msgstr "ループディレクティブを使用すると、ループを使用して SQL ステートメントを構築できます。"
 
 #: ../../sql.md:525
-#, fuzzy
 msgid ""
 "Here, `item` is the loop variable. The expression `sequence` must "
 "evaluate to a subtype of `java.lang.Iterable` or an array type."
 msgstr ""
-"ここで、``item`` はループ変数です。式 ``sequence`` は ``java.lang.Iterable`` "
+"ここで、`item` はループ変数です。式 `sequence` は `java.lang.Iterable` "
 "のサブタイプまたは配列型として評価される必要があります。"
 
 #: ../../sql.md:528
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Inside the loop (between `/*%for item : sequence*/` and `/*%end*/`), two "
 "additional loop variables are available:"
-msgstr "``/*%for item : sequence*/`` と ``/*%end*/`` の間のループ内部には、2つの追加ループ変数が利用可能です。"
+msgstr "`/*%for item : sequence*/` と `/*%end*/` の間のループ内部には、2つの追加ループ変数が利用可能です。"
 
 #: ../../sql.md
 msgid "item_index"
@@ -804,20 +767,18 @@ msgid ""
 msgstr "現在の項目がシーケンスの最後であるかどうかを示すブール値"
 
 #: ../../sql.md:537
-#, fuzzy
 msgid "The prefix `item` indicates the name of the loop variable."
-msgstr "接頭辞 ``item`` はループ変数の名前を示します。"
+msgstr "接頭辞 `item` はループ変数の名前を示します。"
 
 #: ../../sql.md:539
 msgid "for and item_has_next"
 msgstr "for と item_has_next"
 
 #: ../../sql.md:553
-#, fuzzy
 msgid ""
 "If the sequence `names` contains three items, the generated SQL statement"
 " is as follows:"
-msgstr "シーケンス ``names`` に 3 つの項目が含まれる場合、生成される SQL ステートメントは次のようになります。"
+msgstr "シーケンス `names` に 3 つの項目が含まれる場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:565
 msgid "Removal of clauses in the loop directive"
@@ -832,18 +793,17 @@ msgid "In such cases, these clauses are removed automatically."
 msgstr "そのような場合には、これらの句は自動的に削除されます。"
 
 #: ../../sql.md:588 ../../sql.md:617
-#, fuzzy
 msgid ""
 "If the sequence `names` is empty, the generated SQL statement is as "
 "follows:"
-msgstr "シーケンス ``names`` が空の場合、生成される SQL ステートメントは次のようになります。"
+msgstr "シーケンス `names` が空の場合、生成される SQL ステートメントは次のようになります。"
 
 #: ../../sql.md:595
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Because the SQL clause `where` followed by `/*%for ...*/` is unnecessary,"
 " it is removed automatically."
-msgstr "SQL 句 ``where`` の後に ``/* %for ...``*/`` が続く部分は不要なため、自動的に削除されます。"
+msgstr "SQL 句 `where` の後に `/* %for ...*/` が続く部分は不要なため、自動的に削除されます。"
 
 #: ../../sql.md:598
 msgid "Removal of AND and OR keywords in the loop directive"
@@ -856,27 +816,26 @@ msgid ""
 msgstr "AND キーワードと OR キーワードは、ループ ディレクティブでは不要になる場合があります。その場合は自動的に削除されます。"
 
 #: ../../sql.md:624
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Because the SQL keyword `or` following `/*%end*/` is unnecessary, it is "
 "removed automatically."
-msgstr "``/* %end*/`` に続く SQL キーワード ``or`` は不要なため、自動的に削除されます。"
+msgstr "`/* %end*/` に続く SQL キーワード `or` は不要なため、自動的に削除されます。"
 
 #: ../../sql.md:627
 msgid "Restriction on loop directive"
 msgstr "ループディレクティブの制限事項"
 
 #: ../../sql.md:629
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "`/*%for ...*/` and `/*%end*/` must be included in the same SQL clause and"
 " at the same statement level."
-msgstr "``/* %for ...*/`` と ``/* %end*/`` は、同じ SQL 句および同じ文レベルに含める必要があります。"
+msgstr "`/* %for ...*/` と `/* %end*/` は、同じ SQL 句および同じ文レベルに含める必要があります。"
 
 #: ../../sql.md:632
-#, fuzzy
 msgid "See also [Restriction on condition directive]."
-msgstr "`条件ディレクティブの制限`_ も参照してください。"
+msgstr "[条件ディレクティブの制限](#restriction-on-condition-directive) も参照してください。"
 
 #: ../../sql.md:634
 msgid "Expansion directive"
@@ -889,16 +848,14 @@ msgid ""
 msgstr "選択カラムリスト展開ディレクティブは、エンティティ定義に基づいてSELECT句の列リストを自動生成します。"
 
 #: ../../sql.md:644
-#, fuzzy
 msgid ""
 "The expression `alias` is optional. When specified, it must evaluate to a"
 " `java.lang.String`."
-msgstr "式 ``alias`` はオプションです。指定した場合は、 ``java.lang.String`` として評価される必要があります。"
+msgstr "式 `alias` はオプションです。指定した場合は、 `java.lang.String` として評価される必要があります。"
 
 #: ../../sql.md:647
-#, fuzzy
 msgid "The directive must be followed by an asterisk `*`."
-msgstr "ディレクティブの後にはアスタリスク ``*`` を付ける必要があります。"
+msgstr "ディレクティブの後にはアスタリスク `*` を付ける必要があります。"
 
 #: ../../sql.md:651
 msgid "expand"
@@ -959,25 +916,23 @@ msgid "Single line comment"
 msgstr "一行コメント"
 
 #: ../../sql.md:763
-#, fuzzy
 msgid ""
 "A string beginning with two hyphens `--` is always treated as a single "
 "line comment, never as a directive."
-msgstr "文字列が二重ハイフン ``--`` で始まる場合は常に、ディレクティブではなく、一行コメントとして扱われます。"
+msgstr "文字列が二重ハイフン `--` で始まる場合は常に、ディレクティブではなく、一行コメントとして扱われます。"
 
 #: ../../sql.md:766
 msgid "Multi line comment"
 msgstr "複数行のコメント"
 
 #: ../../sql.md:768
-#, fuzzy
 msgid ""
 "If the character following `/*` is not valid as the first character in a "
 "Java identifier and is not one of `%`, `#`, `@`, `\"`, or `'`, then `/*` "
 "marks the beginning of a multi-line comment."
 msgstr ""
-"``/*`` に続く文字が Java 識別子の最初の文字として許可されておらず、かつそれが "
-"``%``、``#``、``@``、``\"``、``'`` のいずれでもない場合、``/*`` は複数行コメントの始まりです。"
+"`/*` に続く文字が Java 識別子の最初の文字として許可されておらず、かつそれが "
+"`%`、`#`、`@`、`\"`、`'` のいずれでもない場合、`/*` は複数行コメントの始まりです。"
 
 #: ../../sql.md:772
 msgid "The following are examples of multi-line comment beginnings:"
@@ -1052,11 +1007,10 @@ msgid "/\\*%...\\*/"
 msgstr ""
 
 #: ../../sql.md:795
-#, fuzzy
 msgid ""
 "We recommend always using `/**...*/` for multi-line comments because it's"
 " straightforward and clearly distinguishable from directives."
-msgstr "複数行コメントには常に ``/**...*/`` を使用することをお勧めします。これは簡単で、ディレクティブと明確に区別できるからです。"
+msgstr "複数行コメントには常に `/**...*/` を使用することをお勧めします。これは簡単で、ディレクティブと明確に区別できるからです。"
 
 #: ../../sql.md:798
 msgid "doma-template module"

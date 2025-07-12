@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,12 +23,11 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../config.md:7
-#, fuzzy
 msgid ""
 "Configurable items must be returned from the methods of a class that "
 "implements the `org.seasar.doma.jdbc.Config` interface."
 msgstr ""
-"設定可能な項目は、 ``org.seasar.doma.jdbc.Config`` "
+"設定可能な項目は、 `org.seasar.doma.jdbc.Config` "
 "インターフェースの実装クラスのメソッドから返される必要があります。"
 
 #: ../../config.md:10
@@ -40,19 +39,18 @@ msgid "DataSource"
 msgstr "データソース"
 
 #: ../../config.md:14
-#, fuzzy
 msgid ""
 "Return a JDBC `DataSource` from the `getDataSource` method. If you need "
 "to use local transactions provided by Doma, return a "
 "`LocalTransactionDataSource`."
 msgstr ""
-"``getDataSource`` メソッドから JDBC ``DataSource`` を返します。 Doma が提供するローカル "
-"トランザクションが必要な場合は、 ``LocalTransactionDataSource`` を返します。"
+"`getDataSource` メソッドから JDBC `DataSource` を返します。 Doma が提供するローカル "
+"トランザクションが必要な場合は、 `LocalTransactionDataSource` を返します。"
 
 #: ../../config.md:17 ../../config.md:150
-#, fuzzy, python-brace-format
-msgid "See also: {doc}`transaction`"
-msgstr ":doc:`transaction` も参照してください。"
+python-brace-format
+msgid "See also: [](transaction.md)"
+msgstr "[トランザクション](transaction.md) も参照してください。"
 
 #: ../../config.md:20 ../../config.md:62
 msgid "This is a required configuration item."
@@ -63,33 +61,30 @@ msgid "DataSource's name"
 msgstr "データソースの名前"
 
 #: ../../config.md:25
-#, fuzzy
 msgid ""
 "Return the DataSource's name from the `getDataSourceName` method. In "
 "environments where multiple DataSources are used, this name is important."
 " You must assign a unique name to each DataSource."
 msgstr ""
-"``getDataSourceName`` メソッドから DataSource "
+"`getDataSourceName` メソッドから DataSource "
 "の名前を返します。複数のデータソースが使用される環境では、名前が重要です。各データソースに一意の名前を付ける必要があります。"
 
 #: ../../config.md:29
-#, fuzzy
 msgid ""
 "The default value is the full qualified name of the implementation class "
 "of `Config`."
-msgstr "デフォルト値は ``Config`` の実装クラスの完全修飾名です。"
+msgstr "デフォルト値は `Config` の実装クラスの完全修飾名です。"
 
 #: ../../config.md:31
 msgid "SQL dialect"
 msgstr "SQL ダイアレクト"
 
 #: ../../config.md:33
-#, fuzzy
 msgid ""
 "Return a `Dialect` from the `getDialect` method. You must choose an "
 "appropriate dialect for the database you are using."
 msgstr ""
-"``getDialect`` メソッドから ``Dialect`` "
+"`getDialect` メソッドから `Dialect` "
 "を返します。使用するデータベースに合わせて適切なダイアレクトを選択する必要があります。"
 
 #: ../../config.md:36
@@ -213,9 +208,8 @@ msgid "SqliteDialect"
 msgstr ""
 
 #: ../../config.md:52
-#, fuzzy
 msgid "These dialects are located in the `org.seasar.doma.jdbc.dialect` package."
-msgstr "これらのダイアレクトは ``org.seasar.doma.jdbc.dialect`` パッケージにあります。"
+msgstr "これらのダイアレクトは `org.seasar.doma.jdbc.dialect` パッケージにあります。"
 
 #: ../../config.md:54
 msgid ""
@@ -230,9 +224,8 @@ msgid "Logger"
 msgstr "ロガー"
 
 #: ../../config.md:69
-#, fuzzy
 msgid "Return a `JdbcLogger` from the `getJdbcLogger` method."
-msgstr "``getJdbcLogger`` メソッドから ``JdbcLogger`` を返します。"
+msgstr "`getJdbcLogger` メソッドから `JdbcLogger` を返します。"
 
 #: ../../config.md:71
 msgid "Doma provides the following JdbcLogger:"
@@ -243,22 +236,20 @@ msgid "org.seasar.doma.jdbc.UtilLoggingJdbcLogger"
 msgstr ""
 
 #: ../../config.md:75
-#, fuzzy
 msgid ""
 "The default JdbcLogger is UtilLoggingJdbcLogger, which uses "
 "`java.util.logging`."
 msgstr ""
-"デフォルトの ``JdbcLogger`` は、``java.util.logging`` を使用する "
-"``UtilLoggingJdbcLogger`` です。"
+"デフォルトの `JdbcLogger` は、`java.util.logging` を使用する "
+"`UtilLoggingJdbcLogger` です。"
 
 #: ../../config.md:77
 msgid "SQL File Repository"
 msgstr "SQLファイルリポジトリ"
 
 #: ../../config.md:79
-#, fuzzy
 msgid "Return a `SqlFileRepository` from the `getSqlFileRepository` method."
-msgstr "``getSqlFileRepository`` メソッドから ``SqlFileRepository`` を返します。"
+msgstr "`getSqlFileRepository` メソッドから `SqlFileRepository` を返します。"
 
 #: ../../config.md:81
 msgid "Doma provides the following SqlFileRepositories:"
@@ -277,7 +268,7 @@ msgid ""
 "The default SqlFileRepository is GreedyCacheSqlFileRepository, which "
 "caches the results of SQL parsing without limitation."
 msgstr ""
-"デフォルトの ``SqlFileRepository`` は ``GreedyCacheSqlFileRepository`` で、SQL "
+"デフォルトの `SqlFileRepository` は `GreedyCacheSqlFileRepository` で、SQL "
 "解析の結果を無制限にキャッシュします。"
 
 #: ../../config.md:89
@@ -285,60 +276,55 @@ msgid "Controlling REQUIRES_NEW transaction"
 msgstr "REQUIRES_NEW トランザクションの制御"
 
 #: ../../config.md:91
-#, fuzzy
 msgid ""
 "Return a `RequiresNewController` from the `getRequiresNewController` "
 "method. RequiresNewController may begin new transactions to make "
 "transaction lock time shorter."
 msgstr ""
-"``getRequiresNewController`` メソッドから ``RequiresNewController`` を返します。 "
-"``RequiresNewController`` "
+"`getRequiresNewController` メソッドから `RequiresNewController` を返します。 "
+"`RequiresNewController` "
 "は、トランザクションのロック時間を短縮するために新しいトランザクションを開始する場合があります。"
 
 #: ../../config.md:94
-#, fuzzy
 msgid ""
 "This feature is used only when you use `@TableGenerator`, which generates"
 " identities using a database table."
-msgstr "この機能は、テーブルを使用する ``@TableGenerator`` の場合にのみ使用され、データベーステーブルを使用して ID を生成します。"
+msgstr "この機能は、テーブルを使用する `@TableGenerator` の場合にのみ使用され、データベーステーブルを使用して ID を生成します。"
 
 #: ../../config.md:96
 msgid "The default RequiresNewController does nothing."
-msgstr "デフォルトの ``RequiresNewController`` は何も行いません。"
+msgstr "デフォルトの `RequiresNewController` は何も行いません。"
 
 #: ../../config.md:98
 msgid "Loading classes"
 msgstr "クラスのロード"
 
 #: ../../config.md:100
-#, fuzzy
 msgid "Return a `ClassHelper` from the `getClassHelper` method."
-msgstr "``getClassHelper`` メソッドから ``ClassHelper`` を返します。"
+msgstr "`getClassHelper` メソッドから `ClassHelper` を返します。"
 
 #: ../../config.md:102
 msgid ""
 "When the application server or framework you use loads classes in a "
 "specific way, consider creating your own ClassHelper."
 msgstr ""
-"使用するアプリケーションサーバーとフレームワークが独自の方法でクラスをロードする場合は、独自の ``ClassHelper`` "
+"使用するアプリケーションサーバーとフレームワークが独自の方法でクラスをロードする場合は、独自の `ClassHelper` "
 "を作成することを検討してください。"
 
 #: ../../config.md:105
-#, fuzzy
 msgid "The default ClassHelper primarily loads classes using `Class#forName`."
-msgstr "デフォルトの ``ClassHelper`` は主に ``Class#forName`` を使ってクラスをロードします。"
+msgstr "デフォルトの `ClassHelper` は主に `Class#forName` を使ってクラスをロードします。"
 
 #: ../../config.md:107
 msgid "Choosing SQL format contained in exception messages"
 msgstr "例外メッセージに含まれる SQL 形式の選択"
 
 #: ../../config.md:109
-#, fuzzy
 msgid ""
 "Return a `SqlLogType` from the `getExceptionSqlLogType` method. The "
 "default SqlLogType includes the formatted SQL in exception messages."
 msgstr ""
-"``getExceptionSqlLogType`` から ``SqlLogType`` を返します。デフォルトの ``SqlLogType`` "
+"`getExceptionSqlLogType` から `SqlLogType` を返します。デフォルトの `SqlLogType` "
 "を使うと、フォーマットされた SQLが例外メッセージに含まれます。"
 
 #: ../../config.md:112
@@ -346,25 +332,23 @@ msgid "Handling duplicate columns"
 msgstr "重複したカラムの処理"
 
 #: ../../config.md:114
-#, fuzzy
 msgid ""
 "Return a `DuplicateColumnHandler` from the `getDuplicateColumnHandler` "
 "method. In result set mappings, if a duplicate column for an entity class"
 " is found, the `DuplicateColumnHandler` handles this situation."
 msgstr ""
-"``getDuplicateColumnHandler`` メソッドから ``DuplicateColumnHandler`` "
-"を返します。結果セットのマッピング処理で、エンティティクラスに対する重複したカラムが見つかった場合、``DuplicateColumnHandler``"
+"`getDuplicateColumnHandler` メソッドから `DuplicateColumnHandler` "
+"を返します。結果セットのマッピング処理で、エンティティクラスに対する重複したカラムが見つかった場合、`DuplicateColumnHandler`"
 " がこの状況を処理します。"
 
 #: ../../config.md:118
-#, fuzzy
 msgid ""
 "The default `DuplicateColumnHandler` does nothing. To throw a "
 "`DuplicateColumnException` when duplicates are found, return a "
 "`ThrowingDuplicateColumnHandler`."
 msgstr ""
-"デフォルトの ``DuplicateColumnHandler`` は何もしません。 重複が見つかった場合に "
-"``DuplicateColumnException`` をスローするには、``ThrowingDuplicateColumnHandler`` "
+"デフォルトの `DuplicateColumnHandler` は何もしません。 重複が見つかった場合に "
+"`DuplicateColumnException` をスローするには、`ThrowingDuplicateColumnHandler` "
 "を返します。"
 
 #: ../../config.md:121
@@ -372,86 +356,80 @@ msgid "Handling unknown columns"
 msgstr "不明なカラムのハンドリング"
 
 #: ../../config.md:123
-#, fuzzy
 msgid ""
 "Return a `UnknownColumnHandler` from the `getUnknownColumnHandler` "
 "method. In result set mappings, if a column unknown to an entity class is"
 " found, the UnknownColumnHandler handles this situation."
 msgstr ""
-"``getUnknownColumnHandler`` メソッドから ``UnknownColumnHandler`` "
-"を返します。結果セットのマッピング処理で、エンティティクラスのプロパティに対応しないカラムが見つかった場合、``UnknownColumnHandler``"
+"`getUnknownColumnHandler` メソッドから `UnknownColumnHandler` "
+"を返します。結果セットのマッピング処理で、エンティティクラスのプロパティに対応しないカラムが見つかった場合、`UnknownColumnHandler`"
 " によってハンドリングが行われます。"
 
 #: ../../config.md:127
-#, fuzzy
 msgid "The default UnknownColumnHandler throws an `UnknownColumnException`."
-msgstr "デフォルトの ``UnknownColumnHandler`` は ``UnknownColumnException`` をスローします。"
+msgstr "デフォルトの `UnknownColumnHandler` は `UnknownColumnException` をスローします。"
 
 #: ../../config.md:129
 msgid "Naming convention for tables and columns"
 msgstr "テーブルとカラムの命名規則"
 
 #: ../../config.md:131
-#, fuzzy
 msgid ""
 "Return a `Naming` from the `getNaming` method. The `naming` element of "
 "`@Entity` takes precedence over this value. When you specify explicit "
 "values for the name elements of `@Table` and `@Column`, the naming "
 "convention is not applied to them."
 msgstr ""
-"``getNaming`` メソッドから ``Naming`` を返します。 ``@Entity`` の ``naming`` "
-"要素は、この値よりも優先されます。 ``@Table`` と ``@Column`` の ``name`` "
+"`getNaming` メソッドから `Naming` を返します。 `@Entity` の `naming` "
+"要素は、この値よりも優先されます。 `@Table` と `@Column` の `name` "
 "要素に明示的な値を指定すると、命名規則は適用されません。"
 
 #: ../../config.md:136
 msgid "The default Naming does nothing."
-msgstr "デフォルトの ``Naming`` は何も行いません。"
+msgstr "デフォルトの `Naming` は何も行いません。"
 
 #: ../../config.md:138
 msgid "Naming convention for keys of java.util.Map"
 msgstr "java.util.Map のキーの命名規則"
 
 #: ../../config.md:140
-#, fuzzy
 msgid ""
 "Return a `MapKeyNaming` from the `getMapKeyNaming` method. The "
 "MapKeyNaming is used when the result set is mapped to "
 "`java.util.Map<String, Object>`."
 msgstr ""
-"``getMapKeyNaming`` メソッドから ``MapKeyNaming`` を返します。 ``MapKeyNaming`` "
-"は、結果セットが ``java.util.Map<String, Object>`` にマップされるときに使用されます。"
+"`getMapKeyNaming` メソッドから `MapKeyNaming` を返します。 `MapKeyNaming` "
+"は、結果セットが `java.util.Map<String, Object>` にマップされるときに使用されます。"
 
 #: ../../config.md:143
 msgid "The default MapKeyNaming does nothing."
-msgstr "デフォルトの ``MapKeyNaming`` は何も行いません。"
+msgstr "デフォルトの `MapKeyNaming` は何も行いません。"
 
 #: ../../config.md:145
 msgid "Local transaction manager"
 msgstr "ローカルトランザクションマネージャ"
 
 #: ../../config.md:147
-#, fuzzy
 msgid ""
 "Return a `LocalTransactionManager` from the `getTransactionManager` "
 "method. By default, the `getTransactionManager` method throws "
 "`UnsupportedOperationException`."
 msgstr ""
-"``getTransactionManager`` メソッドから ``LocalTransactionManager`` "
-"を返します。デフォルトでは、``getTransactionManager`` メソッドは "
-"``UnsupportedOperationException`` をスローします。"
+"`getTransactionManager` メソッドから `LocalTransactionManager` "
+"を返します。デフォルトでは、`getTransactionManager` メソッドは "
+"`UnsupportedOperationException` をスローします。"
 
 #: ../../config.md:152
 msgid "Adding SQL identifiers to SQLs as comments"
 msgstr "SQLにコメントとしてSQL識別子を追加する"
 
 #: ../../config.md:154
-#, fuzzy
 msgid "Return a `Commenter` from the `getCommenter` method."
-msgstr "``getCommenter`` メソッドから ``Commenter`` を返します。"
+msgstr "`getCommenter` メソッドから `Commenter` を返します。"
 
 #: ../../config.md:156
 msgid "Doma provides the following commenter:"
-msgstr "Doma は次のような ``Commenter`` を提供します。"
+msgstr "Doma は次のような `Commenter` を提供します。"
 
 #: ../../config.md:158
 msgid "org.seasar.doma.jdbc.CallerCommenter"
@@ -459,45 +437,43 @@ msgstr ""
 
 #: ../../config.md:160
 msgid "The default Commenter does nothing."
-msgstr "デフォルトの ``Commenter`` は何も行いません。"
+msgstr "デフォルトの `Commenter` は何も行いません。"
 
 #: ../../config.md:162
 msgid "Command implementors"
 msgstr ""
 
 #: ../../config.md:164
-#, fuzzy
 msgid ""
 "Return a `CommandImplementors` from the `getCommandImplementors` method. "
 "For example, the CommandImplementors provides a hook to execute JDBC API."
 msgstr ""
-"``getCommandImplementors`` メソッドから ``CommandImplementors`` "
-"を返します。例えば、``CommandImplementors`` は、JDBC API を実行するためのフックを提供します。"
+"`getCommandImplementors` メソッドから `CommandImplementors` "
+"を返します。例えば、`CommandImplementors` は、JDBC API を実行するためのフックを提供します。"
 
 #: ../../config.md:167
 msgid "Query implementors"
 msgstr ""
 
 #: ../../config.md:169
-#, fuzzy
 msgid ""
 "Return a `QueryImplementors` from the `getQueryImplementors` method. For "
 "example, the QueryImplementors provides a hook to rewrite SQL statements."
 msgstr ""
-"``getQueryImplementors`` メソッドから ``QueryImplementors`` "
-"を返します。たとえば、``QueryImplementors`` は、SQL ステートメントを書き直すためのフックを提供します。"
+"`getQueryImplementors` メソッドから `QueryImplementors` "
+"を返します。たとえば、`QueryImplementors` は、SQL ステートメントを書き直すためのフックを提供します。"
 
 #: ../../config.md:172
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../config.md:174
-#, fuzzy, python-brace-format
+python-brace-format
 msgid ""
 "Return the query timeout (in seconds) from the `getQueryTimeout` method. "
-"This value is used as the default in {doc}`query/index`."
+"This value is used as the default in [](query/index.md)."
 msgstr ""
-"``getQueryTimeout`` メソッドからクエリタイムアウト (秒) を返します。この値は、:doc:`query/index` "
+"`getQueryTimeout` メソッドからクエリタイムアウト (秒) を返します。この値は、[クエリ](query/index.md) "
 "でデフォルトの値として使用されます。"
 
 #: ../../config.md:177
@@ -505,23 +481,23 @@ msgid "Max rows"
 msgstr "最大行数"
 
 #: ../../config.md:179
-#, fuzzy, python-brace-format
+python-brace-format
 msgid ""
 "Return the max rows from the `getMaxRows` method. This value is used as "
-"the default in {doc}`query/select`."
-msgstr "``getMaxRows`` メソッドから最大行数を返します。この値は :doc:`query/select` でデフォルトの値として使用されます。"
+"the default in [](query/select.md)."
+msgstr "`getMaxRows` メソッドから最大行数を返します。この値は [選択クエリ](query/select.md) でデフォルトの値として使用されます。"
 
 #: ../../config.md:182
 msgid "Fetch size"
 msgstr "フェッチサイズ"
 
 #: ../../config.md:184
-#, fuzzy, python-brace-format
+python-brace-format
 msgid ""
 "Return the fetch size from the `getFetchSize` method. This value is used "
-"as the default in {doc}`query/select`."
+"as the default in [](query/select.md)."
 msgstr ""
-"``getFetchSize`` メソッドからフェッチ サイズを返します。この値は :doc:`query/select` "
+"`getFetchSize` メソッドからフェッチ サイズを返します。この値は [選択クエリ](query/select.md) "
 "でデフォルトの値として使用されます。"
 
 #: ../../config.md:187
@@ -529,14 +505,14 @@ msgid "Batch size"
 msgstr "バッチサイズ"
 
 #: ../../config.md:189
-#, fuzzy, python-brace-format
+python-brace-format
 msgid ""
 "Return the batch size from the `getBatchSize` method. This value is used "
-"as the default in {doc}`query/batch-insert`, {doc}`query/batch-update` "
-"and {doc}`query/batch-delete`."
+"as the default in [](query/batch-insert.md), [](query/batch-update.md) "
+"and [](query/batch-delete.md)."
 msgstr ""
-"``getBatchSize`` メソッドからバッチサイズを返します。この値は、:doc:`query/batch-"
-"insert`、:doc:`query/batch-update`、および :doc:`query/batch-delete` "
+"`getBatchSize` メソッドからバッチサイズを返します。この値は、[バッチ挿入](query/batch-"
+"insert.md)、[バッチ更新](query/batch-update.md)、および [バッチ削除](query/batch-delete.md) "
 "でデフォルトの値として使用されます。"
 
 #: ../../config.md:193
@@ -544,35 +520,32 @@ msgid "Providing entity listeners"
 msgstr "エンティティリスナーの提供"
 
 #: ../../config.md:195
-#, fuzzy
 msgid ""
 "Return an `EntityListenerProvider` from the `getEntityListenerProvider` "
 "method. When you want to get entity listeners from a dependency injection"
 " container, create your own EntityListenerProvider."
 msgstr ""
-"``getEntityListenerProvider`` メソッドから ``EntityListenerProvider`` "
-"を返します。依存性注入コンテナからエンティティリスナーを取得する場合は、独自の ``EntityListenerProvider`` "
+"`getEntityListenerProvider` メソッドから `EntityListenerProvider` "
+"を返します。依存性注入コンテナからエンティティリスナーを取得する場合は、独自の `EntityListenerProvider` "
 "を作成してください。"
 
 #: ../../config.md:199
 msgid ""
 "The default EntityListenerProvider gets the entity listener from the "
 "supplied provider."
-msgstr "デフォルトの ``EntityListenerProvider`` は、供給されたプロバイダーからエンティティリスナーを取得します。"
+msgstr "デフォルトの `EntityListenerProvider` は、供給されたプロバイダーからエンティティリスナーを取得します。"
 
 #: ../../config.md:201
 msgid "SQL Builder Settings"
 msgstr "SQL ビルダーの設定"
 
 #: ../../config.md:203
-#, fuzzy
 msgid "Return a `SqlBuilderSettings` from the `getSqlBuilderSettings` method."
-msgstr "``getSqlBuilderSettings`` メソッドから ``SqlBuilderSettings`` を返します。"
+msgstr "`getSqlBuilderSettings` メソッドから `SqlBuilderSettings` を返します。"
 
 #: ../../config.md:205
-#, fuzzy
 msgid "`SqlBuilderSettings` controls the following aspects of SQL building:"
-msgstr "``SqlBuilderSettings`` は次のSQLの構築に関する設定を制御します:"
+msgstr "`SqlBuilderSettings` は次のSQLの構築に関する設定を制御します:"
 
 #: ../../config.md:207
 msgid "Whether to remove block comments from SQL"
@@ -611,16 +584,14 @@ msgid "Statistic Manager"
 msgstr "統計マネージャー"
 
 #: ../../config.md:221
-#, fuzzy
 msgid "Return a `StatisticManager` from the `getStatisticManager` method."
-msgstr "``getStatisticManager`` メソッドから ``StatisticManager`` を返します。"
+msgstr "`getStatisticManager` メソッドから `StatisticManager` を返します。"
 
 #: ../../config.md:223
-#, fuzzy
 msgid ""
 "`StatisticManager` manages statistical information related to SQL "
 "execution. It retains the following information for each SQL statement:"
-msgstr "``StatisticManager`` は SQL 実行に関連する統計情報を管理します。各 SQL 文に対して次の情報を保持します:"
+msgstr "`StatisticManager` は SQL 実行に関連する統計情報を管理します。各 SQL 文に対して次の情報を保持します:"
 
 #: ../../config.md:226
 msgid "execution count"
@@ -649,34 +620,30 @@ msgid ""
 msgstr "統計情報の収集はデフォルトで無効です。有効にするには、次の操作を行います:"
 
 #: ../../config.md:240
-#, fuzzy
 msgid "To disable it, call `setEnabled(false)`."
-msgstr "無効にするには、``setEnabled(false)`` を呼び出します。"
+msgstr "無効にするには、`setEnabled(false)` を呼び出します。"
 
 #: ../../config.md:242
-#, fuzzy
 msgid ""
 "The default implementation collects statistical information indefinitely "
 "while enabled. To prevent memory exhaustion, either call the `clear` "
 "method of `StatisticManager` periodically or create an appropriate "
 "implementation class for `StatisticManager`."
 msgstr ""
-"デフォルトの実装では、有効にすると統計情報を無期限に収集します。メモリの枯渇を防ぐためには、定期的に ``StatisticManager`` の"
-" ``clear`` メソッドを呼び出すか、 ``StatisticManager`` の適切な実装クラスを作成してください。"
+"デフォルトの実装では、有効にすると統計情報を無期限に収集します。メモリの枯渇を防ぐためには、定期的に `StatisticManager` の"
+" `clear` メソッドを呼び出すか、 `StatisticManager` の適切な実装クラスを作成してください。"
 
 #: ../../config.md:246
 msgid "Loading JDBC drivers"
 msgstr "JDBCドライバのロード"
 
 #: ../../config.md:248
-#, fuzzy
 msgid ""
 "All JDBC drivers are loaded automatically by the [service provider] "
 "mechanism."
-msgstr "すべての JDBC ドライバは、 `サービスプロバイダ <service provider_>`_ メカニズムによって自動的にロードされます。"
+msgstr "すべての JDBC ドライバは、[サービスプロバイダ][service provider] メカニズムによって自動的にロードされます。"
 
 #: ../../config.md:251
-#, fuzzy
 msgid ""
 "But in the specific environment, the mechanism doesn't work "
 "appropriately. For example, when you use Apache Tomcat, you will find the"
@@ -684,7 +651,7 @@ msgid ""
 "memory leaks][tomcat driver]"
 msgstr ""
 "ただし、特定の環境では、このメカニズムが適切に動作しません。たとえば、Apache Tomcat を使用すると、このケースが見つかります。参照: "
-"`DriverManager、サービス プロバイダのメカニズムとメモリリーク <tomcat driver_>`_"
+"[DriverManager、サービス プロバイダのメカニズムとメモリリーク][tomcat driver]"
 
 #: ../../config.md:258
 msgid "Configuration definition"
@@ -709,51 +676,44 @@ msgid "Local transactions is used"
 msgstr "ローカルトランザクションが使用される"
 
 #: ../../config.md:307
-#, fuzzy
 msgid "You can use the above `DbConfig` class as follows:"
-msgstr "上記の ``DbConfig`` クラスは次のように使用できます。"
+msgstr "上記の `DbConfig` クラスは次のように使用できます。"
 
 #: ../../config.md:313
-#, fuzzy
 msgid ""
 "The above `EmployeeDao` interface must be annotated with the `@Dao` "
 "annotation as follows:"
-msgstr "上記の ``EmployeeDao`` インタフェースには、次のように ``@Dao`` アノテーションを付ける必要があります。"
+msgstr "上記の `EmployeeDao` インタフェースには、次のように `@Dao` アノテーションを付ける必要があります。"
 
 #: ../../config.md:324
 msgid "More Simple definition"
 msgstr "さらに単純な定義"
 
 #: ../../config.md:326
-#, fuzzy
 msgid ""
 "You can build the configuration more easily by using "
 "`org.seasar.doma.jdbc.SimpleConfig`."
-msgstr "``org.seasar.doma.jdbc.SimpleConfig`` を使用すると、より簡単に構成を構築できます。"
+msgstr "`org.seasar.doma.jdbc.SimpleConfig` を使用すると、より簡単に構成を構築できます。"
 
 #: ../../config.md:328
-#, fuzzy
 msgid ""
 "`SimpleConfig` determines the `Dialect` based on the connection string "
 "and manages transactions using local transactions."
 msgstr ""
-"``SimpleConfig`` は接続文字列に基づいて ``Dialect`` "
+"`SimpleConfig` は接続文字列に基づいて `Dialect` "
 "を決定し、ローカルトランザクションを使用してトランザクションを管理します。"
 
 #: ../../config.md:330
-#, fuzzy
 msgid "Here is an example of building a `Config` using `SimpleConfig`."
-msgstr "ここでは、``SimpleConfig`` を使用して ``Config`` を構築する例を示します。"
+msgstr "ここでは、`SimpleConfig` を使用して `Config` を構築する例を示します。"
 
 #: ../../config.md:339
-#, fuzzy
 msgid "You can use the above `config` instance as follows:"
-msgstr "上記の ``config`` インスタンスは以下のように使用できます。"
+msgstr "上記の `config` インスタンスは以下のように使用できます。"
 
 #: ../../config.md:346
-#, fuzzy
 msgid "`SimpleConfig` is primarily intended for use in sample or test code."
-msgstr "``SimpleConfig`` は、主にサンプルコードまたはテストコードで使用するために使用されます。"
+msgstr "`SimpleConfig` は、主にサンプルコードまたはテストコードで使用するために使用されます。"
 
 #: ../../config.md:349
 msgid "Advanced definition"
@@ -776,34 +736,30 @@ msgid ""
 msgstr "トランザクションマネージャが使用するアプリケーションサーバーまたはフレームワークから提供される"
 
 #: ../../config.md:356
-#, fuzzy
 msgid ""
 "Suppose the `dialect` and the `dataSource` are injected by the dependency"
 " injection container:"
-msgstr "``dialect`` と ``dataSource`` が依存性注入コンテナによって注入されると仮定します。"
+msgstr "`dialect` と `dataSource` が依存性注入コンテナによって注入されると仮定します。"
 
 #: ../../config.md:385
-#, fuzzy
 msgid ""
 "To inject the instance of the above class to your DAO implementation "
 "instance, you have to annotate your DAO interfaces with `@AnnotateWith`:"
 msgstr ""
-"上記のクラスのインスタンスを DAO のインスタンスに注入するには、DAO インタフェースに ``@AnnotateWith`` "
+"上記のクラスのインスタンスを DAO のインスタンスに注入するには、DAO インタフェースに `@AnnotateWith` "
 "アノテーションを付ける必要があります。"
 
 #: ../../config.md:410
-#, fuzzy
 msgid ""
 "To avoid annotating your DAO interfaces with `@AnnotateWith` repeatedly, "
 "annotate the arbitrary annotation with it only once:"
 msgstr ""
-"DAO インタフェースに ``@AnnotateWith`` で繰り返しアノテーションを付けることを避けるには、任意のアノテーションに 1 "
+"DAO インタフェースに `@AnnotateWith` で繰り返しアノテーションを付けることを避けるには、任意のアノテーションに 1 "
 "回だけアノテーションを付けます。"
 
 #: ../../config.md:420
-#, fuzzy
 msgid ""
 "Then, you can annotate your DAO interfaces with the above `@InjectConfig`"
 " annotation:"
-msgstr "次に、DAO インタフェースに上記の ``@InjectConfig`` アノテーションを付けることができます。"
+msgstr "次に、DAO インタフェースに上記の `@InjectConfig` アノテーションを付けることができます。"
 

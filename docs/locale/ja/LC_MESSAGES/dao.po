@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-11 23:27+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -33,9 +33,8 @@ msgid "DAO definition"
 msgstr "DAOの定義"
 
 #: ../../dao.md:11
-#, fuzzy
 msgid "DAOs are defined as interfaces annotated with `@Dao`."
-msgstr "DAO は ``@Dao`` アノテーションが付けられたインタフェースとして定義されます。"
+msgstr "DAO は `@Dao` アノテーションが付けられたインタフェースとして定義されます。"
 
 #: ../../dao.md:13
 msgid ""
@@ -48,16 +47,13 @@ msgid "Query definition"
 msgstr "クエリ定義"
 
 #: ../../dao.md:17
-#, fuzzy, python-brace-format
-msgid "{doc}`query/index` can be defined using annotations."
+msgid "[](query/index.md) can be defined using annotations."
 msgstr ":doc:`query/index` は、アノテーションを使用して定義できます。"
 
 #: ../../dao.md:19
-#, fuzzy, python-brace-format
 msgid ""
-"You can use {doc}`query-builder/index` or {doc}`query-dsl` in a {ref"
-"}`dao-default-method` when you need to build queries dynamically in Java "
-"code."
+"You can use [](query-builder/index.md) or [](query-dsl.md) in a [](#dao-"
+"default-method) when you need to build queries dynamically in Java code."
 msgstr ""
 "Javaコード内で動的にクエリを構築する必要がある場合は、:ref:`dao-default-method` 内で :doc:`query-"
 "builder/index` や :doc:`query-dsl` を使用できます。"
@@ -71,12 +67,11 @@ msgid "You can write Java code freely in default methods."
 msgstr "デフォルトメソッドではJavaコードを自由に記述できます。"
 
 #: ../../dao.md:27
-#, fuzzy
 msgid ""
 "You can get the `Config` instance associated with a DAO instance by "
 "calling `Config.get` with the DAO instance as an argument."
 msgstr ""
-"DAOインスタンスを引数として ``Config.get`` を呼び出すことで、DAOインスタンスに関連付けられた ``Config`` "
+"DAOインスタンスを引数として `Config.get` を呼び出すことで、DAOインスタンスに関連付けられた `Config` "
 "インスタンスを取得できます。"
 
 #: ../../dao.md:42
@@ -93,13 +88,12 @@ msgid ""
 msgstr "実装クラスはコンパイル時にアノテーションプロセッサによって自動生成されます。これらの実装クラスは直接インスタンス化して使用することができます。ただし、設定クラスが依存性注入（DI）コンテナによって管理されている場合、DIコンテナが実装クラスのインスタンス化を制御する必要があります。"
 
 #: ../../dao.md:54
-#, fuzzy, python-brace-format
 msgid ""
 "By default, the implementation class name is the interface name suffixed "
-"with `Impl`. Please refer to {doc}`annotation-processing` for information"
+"with `Impl`. Please refer to [](annotation-processing.md) for information"
 " on how to customize the package name and suffix."
 msgstr ""
-"デフォルトでは、実装クラス名はインターフェース名に ``Impl`` を付けたものです。パッケージ名とサフィックスをカスタマイズする方法については"
+"デフォルトでは、実装クラス名はインターフェース名に `Impl` を付けたものです。パッケージ名とサフィックスをカスタマイズする方法については"
 " :doc:`annotation-processing` を参照してください。"
 
 #: ../../dao.md:57

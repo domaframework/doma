@@ -23,14 +23,14 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/sql-processor.md:7
-#, fuzzy
+
 msgid ""
 "SQL processors allow you to handle SQL statements that are generated from"
 " corresponding SQL templates. To designate a DAO method as an SQL "
 "processor, annotate it with `@SqlProcessor`:"
 msgstr ""
 "SQL プロセッサは、対応する SQL テンプレートから生成された SQL ステートメントを処理できます。DAO メソッドを SQL "
-"プロセッサとして指定するには、``@SqlProcessor`` を使用して注釈を付けてください。"
+"プロセッサとして指定するには、`@SqlProcessor` を使用して注釈を付けてください。"
 
 #: ../../query/sql-processor.md:20
 msgid ""
@@ -44,33 +44,33 @@ msgid "Return type"
 msgstr "戻り値"
 
 #: ../../query/sql-processor.md:26
-#, fuzzy
+
 msgid ""
 "The return type must be the same type as the third type parameter of "
 "`BiFunction`:"
-msgstr "戻り値の型は、 ``BiFunction`` の 3 番目の型パラメータと同じ型でなければなりません。"
+msgstr "戻り値の型は、 `BiFunction` の 3 番目の型パラメータと同じ型でなければなりません。"
 
 #: ../../query/sql-processor.md:33
-#, fuzzy
+
 msgid ""
 "If the return type is `void`, the third type parameter of `BiFunction` "
 "must be `Void`:"
-msgstr "戻り値の型が ``void`` の場合、 ``BiFunction`` の 3 番目の型パラメータは ``Void`` でなければなりません。"
+msgstr "戻り値の型が `void` の場合、 `BiFunction` の 3 番目の型パラメータは `Void` でなければなりません。"
 
 #: ../../query/sql-processor.md:40
 msgid "Parameter"
 msgstr "パラメータ"
 
 #: ../../query/sql-processor.md:42
-#, fuzzy
+
 msgid ""
 "Include a parameter whose type is `BiFunction`. The `BiFunction` "
 "parameter accepts a configuration and an SQL statement then processes "
 "them. Parameters other than the `BiFunction` parameter are used in the "
 "SQL template."
 msgstr ""
-"タイプが ``BiFunction`` であるパラメータを含めます。 ``BiFunction`` パラメータは設定と SQL "
-"ステートメントを受け取り、それらを処理します。 SQL テンプレートでは ``BiFunction`` パラメータ以外のパラメータが使用されます。"
+"タイプが `BiFunction` であるパラメータを含めます。 `BiFunction` パラメータは設定と SQL "
+"ステートメントを受け取り、それらを処理します。 SQL テンプレートでは `BiFunction` パラメータ以外のパラメータが使用されます。"
 
 #: ../../query/sql-processor.md:46
 msgid "Example"

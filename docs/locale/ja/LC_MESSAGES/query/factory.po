@@ -23,12 +23,12 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/factory.md:7
-#, fuzzy
+
 msgid ""
 "To obtain instances from the factory methods of `java.sql.Connection`, "
 "annotate DAO methods with one of the following annotations:"
 msgstr ""
-"``java.sql.Connection`` のファクトリメソッドからインスタンスを取得するには、DAO "
+"`java.sql.Connection` のファクトリメソッドからインスタンスを取得するには、DAO "
 "メソッドに次のいずれかのアノテーションを付けます。"
 
 #: ../../query/factory.md:10
@@ -56,61 +56,61 @@ msgid "Creating Array instances"
 msgstr "配列インスタンスの作成"
 
 #: ../../query/factory.md:18
-#, fuzzy
+
 msgid ""
 "A return type must be `java.sql.Array` and the number of parameters must "
 "be one. The parameter type must be an array type and the parameter must "
 "not be null."
 msgstr ""
-"戻り値の型は ``java.sql.Array`` で、パラメータの数は 1 "
+"戻り値の型は `java.sql.Array` で、パラメータの数は 1 "
 "つでなければなりません。パラメータの型は配列型である必要があり、パラメータは null であってはなりません。"
 
 #: ../../query/factory.md:21
-#, fuzzy
+
 msgid "Specify a database type name to the `@ArrayFactory`'s `typeName` element:"
-msgstr "データベースタイプ名を ``@ArrayFactory`` の ``typeName`` 要素に指定します。"
+msgstr "データベースタイプ名を `@ArrayFactory` の `typeName` 要素に指定します。"
 
 #: ../../query/factory.md:28
 msgid "Creating Blob instances"
 msgstr "Blob インスタンスの作成"
 
 #: ../../query/factory.md:30
-#, fuzzy
+
 msgid ""
 "A return type must be `java.sql.Blob` and the number of parameters must "
 "be zero:"
-msgstr "戻り値の型は ``java.sql.Blob`` でなければならず、パラメータの数は 0 でなければなりません。"
+msgstr "戻り値の型は `java.sql.Blob` でなければならず、パラメータの数は 0 でなければなりません。"
 
 #: ../../query/factory.md:37
 msgid "Creating Clob instances"
 msgstr "Clob インスタンスの作成"
 
 #: ../../query/factory.md:39
-#, fuzzy
+
 msgid ""
 "A return type must be `java.sql.Clob` and the number of parameters must "
 "be zero:"
-msgstr "戻り値の型は ``java.sql.Clob`` で、パラメータの数は 0 でなければなりません。"
+msgstr "戻り値の型は `java.sql.Clob` で、パラメータの数は 0 でなければなりません。"
 
 #: ../../query/factory.md:46
 msgid "Creating NClob instances"
 msgstr "NClob インスタンスの作成"
 
 #: ../../query/factory.md:48
-#, fuzzy
+
 msgid ""
 "A return type must be `java.sql.NClob` and the number of parameters must "
 "be zero:"
-msgstr "戻り値の型は ``java.sql.NClob`` でなければならず、パラメータの数は 0 でなければなりません。"
+msgstr "戻り値の型は `java.sql.NClob` でなければならず、パラメータの数は 0 でなければなりません。"
 
 #: ../../query/factory.md:55
 msgid "Creating SQLXML instances"
 msgstr "SQLXMLインスタンスの作成"
 
 #: ../../query/factory.md:57
-#, fuzzy
+
 msgid ""
 "A return type must be `java.sql.SQLXML` and the number of parameters must"
 " be zero:"
-msgstr "戻り値の型は ``java.sql.SQLXML`` でなければならず、パラメータの数は 0 でなければなりません。"
+msgstr "戻り値の型は `java.sql.SQLXML` でなければならず、パラメータの数は 0 でなければなりません。"
 

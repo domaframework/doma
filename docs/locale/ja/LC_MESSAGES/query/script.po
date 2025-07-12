@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,18 +23,18 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/script.md:7
-#, fuzzy
+
 msgid ""
 "To run a series of static SQL statements, annotate DAO methods with "
 "`@Script`:"
-msgstr "一連の静的 SQL ステートメントを実行するには、DAO メソッドに ``@Script`` アノテーションを付けます。"
+msgstr "一連の静的 SQL ステートメントを実行するには、DAO メソッドに `@Script` アノテーションを付けます。"
 
 #: ../../query/script.md:19
-#, fuzzy
+
 msgid ""
 "The return type of the method must be `void` and the number of parameters"
 " must be zero."
-msgstr "メソッドの戻り値の型は ``void`` でなければならず、パラメータの数は 0 でなければなりません。"
+msgstr "メソッドの戻り値の型は `void` でなければならず、パラメータの数は 0 でなければなりません。"
 
 #: ../../query/script.md:21
 msgid "Script representation"
@@ -75,12 +75,12 @@ msgid "META-INF/*path-format-of-dao-interface*/*dao-method*.script"
 msgstr "META-INF/*daoインターフェイスのパス形式*/*daoメソッド*.script"
 
 #: ../../query/script.md:40
-#, fuzzy
+
 msgid ""
 "For example, when the DAO interface name is `aaa.bbb.EmployeeDao` and the"
 " DAO method name is `createTable`, the script file path is as follows:"
 msgstr ""
-"たとえば、DAOインターフェース名が ``aaa.bbb.EmployeeDao`` 、DAOメソッド名が ``createTable`` "
+"たとえば、DAOインターフェース名が `aaa.bbb.EmployeeDao` 、DAOメソッド名が `createTable` "
 "の場合、スクリプトファイルのパスは次のようになります。"
 
 #: ../../query/script.md:43
@@ -116,8 +116,8 @@ msgstr ""
 "INF/aaa/bbb/EmployeeDao/createTable-postgres.script\" が選択されます。"
 
 #: ../../query/script.md:58
-#, fuzzy, python-brace-format
-msgid "See also {ref}`dependency-on-a-specific-rdbms`."
+, python-brace-format
+msgid "See also [](../sql.md#dependency-on-a-specific-rdbms)."
 msgstr ":ref:`dependency-on-a-specific-rdbms` も参照してください。"
 
 #: ../../query/script.md:60
@@ -125,13 +125,13 @@ msgid "Scripts in annotation"
 msgstr "アノテーション内のスクリプト"
 
 #: ../../query/script.md:62
-#, fuzzy
+
 msgid "You can specify scripts to DAO methods with the `@Sql` annotation:"
-msgstr "``@Sql`` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
+msgstr "`@Sql` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
 
 #: ../../query/script.md:74
-#, fuzzy, python-brace-format
-msgid "See also {ref}`sql-templates-in-annotations`."
+, python-brace-format
+msgid "See also [](../sql.md#sql-templates-in-annotations)."
 msgstr ":ref:`sql-templates-in-annotations` も参照してください。"
 
 #: ../../query/script.md:76
@@ -151,13 +151,13 @@ msgid "block delimiter"
 msgstr "ブロック区切り文字"
 
 #: ../../query/script.md:83
-#, fuzzy
+
 msgid ""
 "The statement delimiter is always a semicolon `;`. The block delimiter is"
 " determined by a `Dialect` instance. The RDBMS block delimiters are as "
 "follows:"
 msgstr ""
-"ステートメントの区切り文字は常にセミコロン ``;`` です。ブロック区切り文字は ``Dialect`` インスタンスによって決定されます。 "
+"ステートメントの区切り文字は常にセミコロン `;` です。ブロック区切り文字は `Dialect` インスタンスによって決定されます。 "
 "RDBMS ブロック区切り文字は次のとおりです。"
 
 #: ../../query/script.md:3
@@ -265,11 +265,11 @@ msgid "SqliteDialect"
 msgstr ""
 
 #: ../../query/script.md:100
-#, fuzzy
+
 msgid ""
 "You can also specify the block delimiter to `@Script`'s `blockDelimiter` "
 "element:"
-msgstr "``@Script`` の ``blockDelimiter`` 要素にブロック区切り文字を指定することもできます。"
+msgstr "`@Script` の `blockDelimiter` 要素にブロック区切り文字を指定することもできます。"
 
 #: ../../query/script.md:107
 msgid "The corresponding script file is as follows:"
@@ -280,13 +280,13 @@ msgid "Stopping on error"
 msgstr "エラーによる停止"
 
 #: ../../query/script.md:125
-#, fuzzy
+
 msgid ""
 "Script running will stop when any statement execution fails. To continue "
 "the script running, specify `false` to the `haltOnError` element:"
 msgstr ""
-"ステートメントの実行が失敗すると、スクリプトの実行は停止します。スクリプトの実行を続行するには、 ``haltOnError`` 要素に "
-"``false`` を指定します。"
+"ステートメントの実行が失敗すると、スクリプトの実行は停止します。スクリプトの実行を続行するには、 `haltOnError` 要素に "
+"`false` を指定します。"
 
 #: ../../query/script.md:133
 msgid "Example"
@@ -297,21 +297,21 @@ msgid "Following script is valid for Oracle Database:"
 msgstr "次のスクリプトは Oracle データベースに対して有効です。"
 
 #: ../../query/script.md:176
-#, fuzzy
+
 msgid ""
 "You can use both a single line comment `--` and a multi-line comment `/* "
 "... */`. Each statement must end with a semicolon `;`. Be careful that a "
 "new line doesn't mean the end of a statement."
 msgstr ""
-"単一行コメント ``--`` と複数行コメント ``/* ... */`` の両方を使用できます。各ステートメントはセミコロン ``;`` "
+"単一行コメント `--` と複数行コメント `/* ... */` の両方を使用できます。各ステートメントはセミコロン `;` "
 "で終わる必要があります。新しい行はステートメントの終わりを意味しないことに注意してください。"
 
 #: ../../query/script.md:180
-#, fuzzy
+
 msgid ""
 "In this example, the slash `/` is a block delimiter. The block delimiter "
 "must appear at the beginning of a line and be followed by a new line."
-msgstr "この例では、スラッシュ ``/`` がブロック区切り文字です。ブロック区切り文字は行の先頭に表示され、その後に新しい行が続く必要があります。"
+msgstr "この例では、スラッシュ `/` がブロック区切り文字です。ブロック区切り文字は行の先頭に表示され、その後に新しい行が続く必要があります。"
 
 #~ msgid "$$"
 #~ msgstr ""

@@ -37,9 +37,8 @@ msgid "List of basic classes"
 msgstr "基本クラス一覧"
 
 #: ../../basic.md:13
-#, fuzzy
 msgid "primitive types except `char`"
-msgstr "``char`` を除くプリミティブ型"
+msgstr "`char` を除くプリミティブ型"
 
 #: ../../basic.md:14
 msgid "wrapper classes for the above primitive types"
