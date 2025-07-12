@@ -33,14 +33,14 @@ Write your build.gradle(.kts) as follows:
 
 :::{tab-item} Kotlin
 ```kotlin
-            plugins {
-                id("org.domaframework.doma.compile") version "{{ doma_compile_version }}"
-            }
+plugins {
+    id("org.domaframework.doma.compile") version "{{ doma_compile_version }}"
+}
 
-            dependencies {
-                implementation("org.seasar.doma:doma-core:{{ doma_version }}")
-                annotationProcessor("org.seasar.doma:doma-processor:{{ doma_version }}")
-            }
+dependencies {
+    implementation("org.seasar.doma:doma-core:{{ doma_version }}")
+    annotationProcessor("org.seasar.doma:doma-processor:{{ doma_version }}")
+}
 ```
 :::
 
