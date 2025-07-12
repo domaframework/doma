@@ -114,7 +114,7 @@ See [](sql.md) and [](query-dsl.md) for detailed information.
 Yes, there are two ways to fetch relationships:
 
 - [](aggregate-strategy.md) with SQL Templates.
-- [](query-dsl.md#association) with the Criteria API.
+- [](query-dsl.md#association) with The Criteria API.
 
 ### Does Doma provide a JDBC connection pooling feature?
 
