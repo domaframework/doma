@@ -112,7 +112,7 @@ msgstr ""
 msgid ""
 "java.util.Optional whose element type is either [](../basic.md) or "
 "[](../domain.md)"
-msgstr "要素の型が :doc:`../basic` または :doc:`../domain` のいずれかである java.util.Optional"
+msgstr "要素の型が [基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかである java.util.Optional"
 
 #: ../../query/procedure.md:51 ../../query/procedure.md:79
 #: ../../query/procedure.md:110 ../../query/procedure.md:143
@@ -197,10 +197,10 @@ msgstr ""
 msgid "java.util.Map\\<String, Object>"
 msgstr ""
 
-#~ msgid ":doc:`../basic`"
+#~ msgid "[基本型](../basic.md)"
 #~ msgstr ""
 
-#~ msgid ":doc:`../domain`"
+#~ msgid "[ドメイン型](../domain.md)"
 #~ msgstr ""
 
 #~ msgid ":doc:`../entity`"

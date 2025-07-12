@@ -109,8 +109,8 @@ msgid ""
 "Kotlin. It is very similar to the `QueryDsl`, which is described in "
 "[](query-dsl.md). The main advantage of `KQueryDsl` is its simplicity."
 msgstr ""
-"Doma はKotlin 専用の Criteria APIである `KQueryDsl` を提供します。これは :doc:`query-"
-"dsl` で説明されている `QueryDsl` にとても似ています。`KQueryDsl` の最大の特徴はシンプルさです。"
+"Doma はKotlin 専用の Criteria APIである `KQueryDsl` を提供します。これは [クエリDSL](query-"
+"dsl.md) で説明されている `QueryDsl` にとても似ています。`KQueryDsl` の最大の特徴はシンプルさです。"
 
 #: ../../kotlin-support.md:117
 
@@ -138,7 +138,7 @@ msgstr "コード生成"
 #: ../../kotlin-support.md:131
 , python-brace-format
 msgid "Use [](codegen.md). This plugin supports Kotlin code generation."
-msgstr ":doc:`codegen` を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
+msgstr "[Doma CodeGen プラグイン](codegen.md) を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
 
 #: ../../kotlin-support.md:134
 msgid "Using kapt in Gradle"

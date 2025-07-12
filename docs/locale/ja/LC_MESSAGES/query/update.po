@@ -321,7 +321,7 @@ msgstr ""
 msgid ""
 "When updating via SQL file, the rules differ depending on whether you use"
 " [](../sql.md#population-directive)."
-msgstr "SQLファイルによる更新では :ref:`populate` を使用する場合と使用しない場合でルールが異なります。"
+msgstr "SQLファイルによる更新では [更新カラムリスト生成ディレクティブ](../sql.md#population-directive) を使用する場合と使用しない場合でルールが異なります。"
 
 #: ../../query/update.md:186
 msgid "Case of using the populate directive"
@@ -349,7 +349,7 @@ msgstr "たとえば、上記のメソッドに対応するSQLは次のように
 msgid ""
 "The rules for controlling update target properties are the same as in "
 "[](#update-by-auto-generated-sql)."
-msgstr "対象プロパティの更新制御に関するルールは :ref:`auto-update` と同様です。"
+msgstr "対象プロパティの更新制御に関するルールは [自動生成されたSQLによる更新](#update-by-auto-generated-sql)と同様です。"
 
 #: ../../query/update.md:209
 msgid "Case of not using the populate directive"

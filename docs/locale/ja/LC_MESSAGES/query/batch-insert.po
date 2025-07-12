@@ -87,7 +87,7 @@ msgid ""
 "element count equals the `Iterable` element count. Each element in the "
 "array represents the insert count for the corresponding operation."
 msgstr ""
-"パラメータの型は、:doc:`../entity` を要素とする `java.lang.Iterable` "
+"パラメータの型は、[エンティティ](../entity.md) を要素とする `java.lang.Iterable` "
 "のサブタイプでなければなりません。指定できるパラメータは1つだけで、パラメータは `null` であってはなりません。返値の配列の要素数は "
 "`Iterable` の要素数と等しく、それぞれの配列要素は該当する更新操作によって影響を受ける行の数を表します。"
 
@@ -100,12 +100,12 @@ msgstr "ID"
 msgid ""
 "If the identifier in [](../entity.md) is annotated with "
 "`@GeneratedValue`, the identifier is automatically generated and set."
-msgstr ":doc:`../entity` の識別子に `@GeneratedValue` が付いている場合、識別子は自動的に生成され、設定されます。"
+msgstr "[エンティティ](../entity.md) の識別子に `@GeneratedValue` が付いている場合、識別子は自動的に生成され、設定されます。"
 
 #: ../../query/batch-insert.md:44
 , python-brace-format
 msgid "Reference [](../entity.md#id-generation) for cautionary points."
-msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
+msgstr "注意点については [IDの生成](../entity.md#id-generation) を参照してください。"
 
 #: ../../query/batch-insert.md:46
 msgid ""
@@ -127,7 +127,7 @@ msgid ""
 "If the value is not set or is less than `0`, the value is automatically "
 "set to `1`."
 msgstr ""
-":doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
+"[エンティティ](../entity.md) に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
 "以上の値が設定されていればその値を使用します。 もし設定されていないか、 0 未満の値が設定されていれば 1 を自動で設定します。"
 
 #: ../../query/batch-insert.md:59
@@ -267,7 +267,7 @@ msgstr ""
 msgid ""
 "If an entity listener is specified for the [](../entity.md), its methods "
 "are not called when using SQL files."
-msgstr "エンティティリスナーが :doc:`../entity` に指定されている場合、SQLファイルを使用する際にそのメソッドは呼び出されません。"
+msgstr "エンティティリスナーが [エンティティ](../entity.md) に指定されている場合、SQLファイルを使用する際にそのメソッドは呼び出されません。"
 
 #: ../../query/batch-insert.md:139
 msgid ""
@@ -344,7 +344,7 @@ msgid ""
 "configured in the [](../config.md) class is used."
 msgstr ""
 "この指定は、SQL ファイルの使用の有無に関係なく適用されます。 `batchSize` "
-"プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+"プロパティに値を指定しない場合は、[設定](../config.md) クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-insert.md:185
 msgid "SQL log output format"

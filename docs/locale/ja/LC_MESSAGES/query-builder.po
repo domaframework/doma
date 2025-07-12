@@ -31,7 +31,7 @@ msgstr "パッケージ `org.seasar.doma.jdbc.builder` は SQL ビルダを提�
 
 #: ../../query-builder/index.rst:10
 msgid "When it is difficult to build a SQL statement with :doc:`../query/index`, consider to use the SQL builders in :ref:`dao-default-method`."
-msgstr ":doc:`../query/index` を使用して SQL ステートメントを構築するのが難しい場合は、:ref:`dao-default-method` の中で クエリビルダを使用することを検討してください。"
+msgstr "[クエリ](../query/index.md) を使用して SQL ステートメントを構築するのが難しい場合は、[デフォルトメソッド](#dao-default-method) の中で クエリビルダを使用することを検討してください。"
 
 #: ../../query-builder/index.rst:14
 msgid "Search"

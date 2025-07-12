@@ -118,7 +118,7 @@ msgstr ""
 #: ../../query/script.md:58
 , python-brace-format
 msgid "See also [](../sql.md#dependency-on-a-specific-rdbms)."
-msgstr ":ref:`dependency-on-a-specific-rdbms` も参照してください。"
+msgstr "[特定RDBMSへの依存][](../sql.md#dependency-on-a-specific-rdbms) も参照してください。"
 
 #: ../../query/script.md:60
 msgid "Scripts in annotation"
@@ -132,7 +132,7 @@ msgstr "`@Sql` アノテーションを使用して DAO メソッドにスクリ
 #: ../../query/script.md:74
 , python-brace-format
 msgid "See also [](../sql.md#sql-templates-in-annotations)."
-msgstr ":ref:`sql-templates-in-annotations` も参照してください。"
+msgstr "[アノテーション内SQLテンプレート](../sql.md#sql-templates-in-annotations) も参照してください。"
 
 #: ../../query/script.md:76
 msgid "Delimiter"

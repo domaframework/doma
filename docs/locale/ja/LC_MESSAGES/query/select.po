@@ -363,7 +363,7 @@ msgid ""
 "The aggregate strategy cannot be used in combination with [](#stream-"
 "search) or [](#collector-search)."
 msgstr ""
-"アグリゲート戦略は、 :ref:`stream-search` または :ref:`collector-search` "
+"アグリゲート戦略は、 [ストリーム検索](#stream-search) または [コレクター検索](#collector-search) "
 "と組み合わせて使用することはできません。"
 
 #: ../../query/select.md:273

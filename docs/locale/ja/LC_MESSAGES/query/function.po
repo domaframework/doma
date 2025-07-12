@@ -73,7 +73,7 @@ msgid ""
 "[](../domain.md), [](../entity.md), or java.util.Map\\<String, Object>"
 msgstr ""
 "要素の型が "
-":doc:`../basic`、:doc:`../domain`、:doc:`../entity`、java.util.Map<String, "
+"[基本型](../basic.md)、[ドメイン型](../domain.md)、:doc:`../entity`、java.util.Map<String, "
 "Object> のいずれかである java.util.Optional"
 
 #: ../../query/function.md:30 ../../query/function.md:42
@@ -110,7 +110,7 @@ msgstr ""
 msgid ""
 "java.util.Optional whose element type is either [](../basic.md) or "
 "[](../domain.md)"
-msgstr "要素タイプが :doc:`../basic` または :doc:`../domain` のいずれかである java.util.Optional"
+msgstr "要素タイプが [基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかである java.util.Optional"
 
 #: ../../query/function.md:46
 msgid "Function name"
@@ -230,10 +230,10 @@ msgid ""
 "type must be one of the following:"
 msgstr "DAO メソッドのパラメータの型は `java.util.List` であり、その要素の型は次のいずれかである必要があります。"
 
-#~ msgid ":doc:`../basic`"
+#~ msgid "[基本型](../basic.md)"
 #~ msgstr ""
 
-#~ msgid ":doc:`../domain`"
+#~ msgid "[ドメイン型](../domain.md)"
 #~ msgstr ""
 
 #~ msgid ":doc:`../entity`"

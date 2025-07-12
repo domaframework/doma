@@ -227,8 +227,8 @@ msgid ""
 "You can find some examples in `boilerplate.java17.dao.EmployeeDao`. See "
 "[](dao.md) and [](sql.md) for more information."
 msgstr ""
-"いくつかの例は `boilerplate.java17.dao.EmployeeDao` にあります。詳細については、:doc:`dao` "
-"および :doc:`sql` を参照してください。"
+"いくつかの例は `boilerplate.java17.dao.EmployeeDao` にあります。詳細については、[DAOインタフェース](dao.md) "
+"および [SQLテンプレート](sql.md) を参照してください。"
 
 #: ../../getting-started.md:137
 msgid "SELECT (DAO)"

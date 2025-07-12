@@ -45,8 +45,8 @@ msgid "By default DELETE statement is auto generated. You can mapping arbitrary 
 msgstr "デフォルトでは、DELETE ステートメントが自動生成されます。 `@BatchDelete` アノテーション内の `sqlFile` プロパティに `true` を指定することで、任意の SQL ファイルをマッピングできます。"
 
 #: ../../query/batch-delete.rst:22
-msgid "The `preDelete` method of entity listener is called each entity when before executing delete if the entity listener is specified at :doc:`../entity` parameter. Also the `postDelete` method of entity listener method is called each entity when after executing delete."
-msgstr ":doc:`../entity` パラメータでエンティティリスナーが指定されている場合、エンティティリスナーの `preDelete` メソッドは、削除を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの `postDelete` メソッドは、削除実行後に各エンティティごとに呼び出されます。"
+msgid "The `preDelete` method of entity listener is called each entity when before executing delete if the entity listener is specified at [エンティティ](../entity.md) parameter. Also the `postDelete` method of entity listener method is called each entity when after executing delete."
+msgstr "[エンティティ](../entity.md) パラメータでエンティティリスナーが指定されている場合、エンティティリスナーの `preDelete` メソッドは、削除を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの `postDelete` メソッドは、削除実行後に各エンティティごとに呼び出されます。"
 
 #: ../../query/batch-delete.rst:26
 #: ../../query/batch-insert.rst:28
@@ -72,8 +72,8 @@ msgid "Batch delete by auto generated SQL"
 msgstr "自動生成SQLによる一括削除"
 
 #: ../../query/batch-delete.rst:35
-msgid "Parameter type must be `java.lang.Iterable` subtype that has :doc:`../entity` as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Delete count is returned to array each element."
-msgstr "パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` 要素数と等しくなります。戻り値の配列のそれぞれの要素は削除された件数を表します。"
+msgid "Parameter type must be `java.lang.Iterable` subtype that has [エンティティ](../entity.md) as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Delete count is returned to array each element."
+msgstr "パラメータの型は要素として [エンティティ](../entity.md) を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` 要素数と等しくなります。戻り値の配列のそれぞれの要素は削除された件数を表します。"
 
 #: ../../query/batch-delete.rst:42
 #: ../../query/batch-update.rst:46
@@ -95,8 +95,8 @@ msgstr "以下の条件を満たした場合、楽観的排他制御が実行さ
 
 #: ../../query/batch-delete.rst:46
 #: ../../query/batch-update.rst:50
-msgid ":doc:`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version"
-msgstr "パラメータ java.lang.Iterable サブタイプ内の :doc:`../entity` に @Version アノテーションが付けられたプロパティがある"
+msgid "[エンティティ](../entity.md) within parameter java.lang.Iterable subtype has property that is annotated with @Version"
+msgstr "パラメータ java.lang.Iterable サブタイプ内の [エンティティ](../entity.md) に @Version アノテーションが付けられたプロパティがある"
 
 #: ../../query/batch-delete.rst:47
 #: ../../query/batch-delete.rst:105
@@ -168,8 +168,8 @@ msgid "Version number and optimistic concurrency control in SQL file"
 msgstr "SQLファイルにおけるバージョン番号と楽観的排他制御"
 
 #: ../../query/batch-delete.rst:104
-msgid "The parameter `java.lang.Iterable` subtype has :doc:`../entity` element, the  :doc:`../entity` element is annotated with @Version"
-msgstr "パラメータの `java.lang.Iterable` のサブタイプには :doc:`../entity` 要素があり、 :doc:`../entity` 要素には @Version の注釈が付けられている"
+msgid "The parameter `java.lang.Iterable` subtype has [エンティティ](../entity.md) element, the  [エンティティ](../entity.md) element is annotated with @Version"
+msgstr "パラメータの `java.lang.Iterable` のサブタイプには [エンティティ](../entity.md) 要素があり、 [エンティティ](../entity.md) 要素には @Version の注釈が付けられている"
 
 #: ../../query/batch-delete.rst:107
 #: ../../query/delete.rst:113
@@ -219,8 +219,8 @@ msgid "You can specify batch size to `batchSize` property within `@BatchDelete` 
 msgstr "バッチサイズは `@BatchDelete` アノテーション内の `batchSize` プロパティに指定できます。"
 
 #: ../../query/batch-delete.rst:161
-msgid "This specify is applied regardless of using or not using SQL file. It you do not specify the value to `batchSize` property, batch size that is specified at :doc:`../config` class is applied."
-msgstr "この指定は、SQL ファイルの使用の有無に関係なく適用されます。 `batchSize` プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+msgid "This specify is applied regardless of using or not using SQL file. It you do not specify the value to `batchSize` property, batch size that is specified at [設定](../config.md) class is applied."
+msgstr "この指定は、SQL ファイルの使用の有無に関係なく適用されます。 `batchSize` プロパティに値を指定しない場合は、[設定](../config.md) クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-delete.rst:165
 #: ../../query/batch-insert.rst:161
@@ -258,8 +258,8 @@ msgid "By default INSERT statement is auto generated. You can mapping arbitrary 
 msgstr "デフォルトでは、INSERT ステートメントが自動生成されます。 `@BatchInsert` アノテーション内の `sqlFile` プロパティに `true` を指定することで、任意の SQL ファイルをマッピングできます。"
 
 #: ../../query/batch-insert.rst:24
-msgid "The `preInsert` method of entity listener is called each entity when before executing insert if the entity listener is specified at :doc:`../entity` parameter. Also the `postInsert` method of entity listener method is called each entity when after executing insert."
-msgstr "エンティティリスナーの `preInsert` メソッドは、:doc:`../entity` パラメータでエンティティリスナーが指定されている場合、追加を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの「postInsert」メソッドは、挿入実行後に各エンティティごとに呼び出されます。"
+msgid "The `preInsert` method of entity listener is called each entity when before executing insert if the entity listener is specified at [エンティティ](../entity.md) parameter. Also the `postInsert` method of entity listener method is called each entity when after executing insert."
+msgstr "エンティティリスナーの `preInsert` メソッドは、[エンティティ](../entity.md) パラメータでエンティティリスナーが指定されている場合、追加を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの「postInsert」メソッドは、挿入実行後に各エンティティごとに呼び出されます。"
 
 #: ../../query/batch-insert.rst:32
 msgid "Return value must be `int[]` that is represented each inserting process's updated count if the above conditions are not satisfied."
@@ -271,8 +271,8 @@ msgstr "自動生成されたSQLによるバッチ追加"
 
 #: ../../query/batch-insert.rst:37
 #: ../../query/batch-insert.rst:109
-msgid "Parameter type must be `java.lang.Iterable` subtype that has :doc:`../entity` as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Insert count is returned to array each element."
-msgstr "パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` 要素数と等しくなります。配列のそれぞれの要素が更新された件数を返します。"
+msgid "Parameter type must be `java.lang.Iterable` subtype that has [エンティティ](../entity.md) as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Insert count is returned to array each element."
+msgstr "パラメータの型は要素として [エンティティ](../entity.md) を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` 要素数と等しくなります。配列のそれぞれの要素が更新された件数を返します。"
 
 #: ../../query/batch-insert.rst:44
 #: ../../query/insert.rst:50
@@ -280,12 +280,12 @@ msgid "Identifier"
 msgstr "識別子"
 
 #: ../../query/batch-insert.rst:46
-msgid "If annotated with `@GeneratedValue` at :doc:`../entity` identifier, the identifier is auto generated and set."
-msgstr ":doc:`../entity` 識別子に `@GeneratedValue` の注釈が付けられている場合、識別子は自動生成されて設定されます。"
+msgid "If annotated with `@GeneratedValue` at [エンティティ](../entity.md) identifier, the identifier is auto generated and set."
+msgstr "[エンティティ](../entity.md) 識別子に `@GeneratedValue` の注釈が付けられている場合、識別子は自動生成されて設定されます。"
 
 #: ../../query/batch-insert.rst:48
 msgid "You reference :ref:`identity-auto-generation` about cautionary point."
-msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
+msgstr "注意点については [ID自動生成](#identity-auto-generation) を参照してください。"
 
 #: ../../query/batch-insert.rst:50
 msgid "If you don't use auto-generated keys in your application, you can enable the `ingoreGeneratedKeys` flag. This flag may improve performance."
@@ -296,8 +296,8 @@ msgid "Version number"
 msgstr "バージョン番号"
 
 #: ../../query/batch-insert.rst:61
-msgid "If value that explicitly set is over `0` then use the value if :doc:`../entity` has property that is annotated  with `@Version`. If the value is not set or is less than `0` the value is set `1` automatically."
-msgstr " :doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。 もし設定されていないか、 0 未満の値が設定されていれば 1 を自動で設定します。"
+msgid "If value that explicitly set is over `0` then use the value if [エンティティ](../entity.md) has property that is annotated  with `@Version`. If the value is not set or is less than `0` the value is set `1` automatically."
+msgstr " [エンティティ](../entity.md) に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。 もし設定されていないか、 0 未満の値が設定されていれば 1 を自動で設定します。"
 
 #: ../../query/batch-insert.rst:65
 msgid "Insert target property"
@@ -309,8 +309,8 @@ msgid "insertable"
 msgstr ""
 
 #: ../../query/batch-insert.rst:70
-msgid "The `insertable` property within `@Column` annotation that is specified `false` is excluded from insert target if :doc:`../entity` has property that is annotated with `@Column`."
-msgstr ":doc:`../entity` に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` アノテーション内の `false` が指定された `insertable` プロパティは挿入対象から除外されます。 "
+msgid "The `insertable` property within `@Column` annotation that is specified `false` is excluded from insert target if [エンティティ](../entity.md) has property that is annotated with `@Column`."
+msgstr "[エンティティ](../entity.md) に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` アノテーション内の `false` が指定された `insertable` プロパティは挿入対象から除外されます。 "
 
 #: ../../query/batch-insert.rst:73
 #: ../../query/batch-update.rst:92
@@ -343,8 +343,8 @@ msgid "To execute batch inserting by SQL file, you set `true` to `sqlFile` prope
 msgstr "SQLファイルによるバッチ挿入を実行するには、 `@BatchInsert` アノテーション内の `sqlFile` プロパティに `true` を設定し、メソッドに対応したSQLファイルを用意します。"
 
 #: ../../query/batch-insert.rst:115
-msgid "If entity listener is specified at :doc:`../entity` then entity listener method is not called."
-msgstr "エンティティ リスナーが :doc:`../entity` で指定されている場合、エンティティ リスナー メソッドは呼び出されません。"
+msgid "If entity listener is specified at [エンティティ](../entity.md) then entity listener method is not called."
+msgstr "エンティティ リスナーが [エンティティ](../entity.md) で指定されている場合、エンティティ リスナー メソッドは呼び出されません。"
 
 #: ../../query/batch-insert.rst:126
 msgid "Identifier auto setting and version number auto setting are not executed in batch insert by SQL file. Also, `exclude` property and `include` property within `@BatchInsert` are not referenced."
@@ -374,8 +374,8 @@ msgstr "バッチサイズは `@BatchInsert` アノテーション内の `batchS
 
 #: ../../query/batch-insert.rst:157
 #: ../../query/batch-update.rst:256
-msgid "This specify is applied Regardless of using or not using SQL file. It you do not specify the value to `batchSize` property, batch size that is specified at :doc:`../config` class is applied."
-msgstr "この指定はSQLファイルの使用有無に関わらず適用されます。 `batchSize` プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+msgid "This specify is applied Regardless of using or not using SQL file. It you do not specify the value to `batchSize` property, batch size that is specified at [設定](../config.md) class is applied."
+msgstr "この指定はSQLファイルの使用有無に関わらず適用されます。 `batchSize` プロパティに値を指定しない場合は、[設定](../config.md) クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-insert.rst:163
 msgid "You can specify SQL log output format to `sqlLog` property within `@BatchInsert` annotation."
@@ -394,8 +394,8 @@ msgid "By default UPDATE statement is auto generated. You can mapping arbitrary 
 msgstr "デフォルトでは、UPDATE ステートメントが自動生成されます。 `@BatchUpdate` アノテーション内の `sqlFile` プロパティに `true` を指定することで、任意の SQL ファイルをマッピングできます。"
 
 #: ../../query/batch-update.rst:24
-msgid "The `preUpdate` method of entity listener is called each entity when before executing update if the entity listener is specified at :doc:`../entity` parameter. Also the `postUpdate` method of entity listener method is called each entity when after executing update."
-msgstr "エンティティリスナーの `preUpdate` メソッドは、:doc:`../entity` パラメータでエンティティリスナーが指定されている場合、更新を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの `postUpdate` メソッドは、更新実行後に各エンティティごとに呼び出されます。"
+msgid "The `preUpdate` method of entity listener is called each entity when before executing update if the entity listener is specified at [エンティティ](../entity.md) parameter. Also the `postUpdate` method of entity listener method is called each entity when after executing update."
+msgstr "エンティティリスナーの `preUpdate` メソッドは、[エンティティ](../entity.md) パラメータでエンティティリスナーが指定されている場合、更新を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの `postUpdate` メソッドは、更新実行後に各エンティティごとに呼び出されます。"
 
 #: ../../query/batch-update.rst:32
 msgid "Return value must be `int[]` that is represented each updating process's updated count if the above conditions are not satisfied."
@@ -407,8 +407,8 @@ msgstr "自動生成SQLによるバッチ更新"
 
 #: ../../query/batch-update.rst:39
 #: ../../query/batch-update.rst:135
-msgid "Parameter type must be `java.lang.Iterable` subtype that has :doc:`../entity` as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Update count is returned to array each element."
-msgstr "パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
+msgid "Parameter type must be `java.lang.Iterable` subtype that has [エンティティ](../entity.md) as an element. Specifiable parameter is only one. Parameter must not be `null`. Return value array element count become equal `Iterable` element count. Update count is returned to array each element."
+msgstr "パラメータの型は要素として [エンティティ](../entity.md) を持つ `java.lang.Iterable` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
 
 #: ../../query/batch-update.rst:51
 msgid "The ignoreVersion element within @BatchUpdate annotation is false"
@@ -436,8 +436,8 @@ msgid "updatable"
 msgstr "更新可能"
 
 #: ../../query/batch-update.rst:89
-msgid "The `updatable` property within `@Column` annotation that is specified `false` is excluded from updating target if :doc:`../entity` has property that is annotated with `@Column`."
-msgstr ":doc:`../entity` に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` アノテーション内の `false` が指定された `updatable` プロパティは更新対象から除外されます。 。"
+msgid "The `updatable` property within `@Column` annotation that is specified `false` is excluded from updating target if [エンティティ](../entity.md) has property that is annotated with `@Column`."
+msgstr "[エンティティ](../entity.md) に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` アノテーション内の `false` が指定された `updatable` プロパティは更新対象から除外されます。 。"
 
 #: ../../query/batch-update.rst:94
 msgid "Property that is specified with `exclude` property within the `@BatchUpdate` annotation is excluded from updating target. Even if `updatable` property within `@Column` annotation is  specified `true` the property is excluded from updating target if the property is specified by this element."
@@ -456,8 +456,8 @@ msgid "To execute batch updating by SQL file, you set `true` to `sqlFile` proper
 msgstr "SQLファイルによるバッチ更新を行うには、 `@BatchUpdate` の `sqlFile` 要素に `true` を設定し、 メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/batch-update.rst:122
-msgid "In batch updating by SQL file, rule is different according to using or not using :ref:`populate`."
-msgstr "SQLファイルによる一括更新では、:ref:`populate`を使用する場合と使用しない場合でルールが異なります。"
+msgid "In batch updating by SQL file, rule is different according to using or not using [ポピュレート](#populate)."
+msgstr "SQLファイルによる一括更新では、[ポピュレート](#populate)を使用する場合と使用しない場合でルールが異なります。"
 
 #: ../../query/batch-update.rst:125
 #: ../../query/update.rst:159
@@ -470,8 +470,8 @@ msgid "Parameter name indicate `Iterable` subtype element in SQL file."
 msgstr "パラメータ名は、SQL ファイル内の `Iterable` の要素を示します。"
 
 #: ../../query/batch-update.rst:149
-msgid "The rule that is about update target property  equals :ref:`auto-batch-update`."
-msgstr "更新対象プロパティの制御に関するルールは :ref:`auto-batch-update` と同等です。"
+msgid "The rule that is about update target property  equals [自動バッチ更新](#auto-batch-update)."
+msgstr "更新対象プロパティの制御に関するルールは [自動バッチ更新](#auto-batch-update) と同等です。"
 
 #: ../../query/batch-update.rst:152
 #: ../../query/update.rst:183
@@ -487,8 +487,8 @@ msgid "Version number auto updating is not executed in batch update by SQL file.
 msgstr "SQLファイルによるバッチ更新では、バージョン番号の自動更新は行われません。 また、 `@BatchUpdate` の `exclude` 要素、 `include` 要素は参照されません。"
 
 #: ../../query/batch-update.rst:185
-msgid "java.lang.Iterable subtype element in parameter is :doc:`../entity` and has property that is annotated @Version existing at :doc:`../entity`."
-msgstr "パラメータ内の java.lang.Iterable の要素は :doc:`../entity` であり、 @Version アノテーションが付けられたプロパティが :doc:`../entity` に存在する"
+msgid "java.lang.Iterable subtype element in parameter is [エンティティ](../entity.md) and has property that is annotated @Version existing at [エンティティ](../entity.md)."
+msgstr "パラメータ内の java.lang.Iterable の要素は [エンティティ](../entity.md) であり、 @Version アノテーションが付けられたプロパティが [エンティティ](../entity.md) に存在する"
 
 #: ../../query/batch-update.rst:187
 msgid "ignoreVersion property within @BatchUpdate annotation is false."
@@ -646,8 +646,8 @@ msgstr "`@Delete` アノテーション内の `queryTimeout` プロパティに�
 
 #: ../../query/delete.rst:156
 #: ../../query/update.rst:267
-msgid "This specifying is applied regardless of with or without using sql file. Query timeout that is specified in :doc:`../config` is used if `queryTimeout` property is not set value."
-msgstr "この指定はSQLファイルの使用の有無に関わらず適用されます。 `queryTimeout` プロパティの値が設定されていない場合は、 :doc:`../config` で指定されたクエリタイムアウトが使用されます。"
+msgid "This specifying is applied regardless of with or without using sql file. Query timeout that is specified in [設定](../config.md) is used if `queryTimeout` property is not set value."
+msgstr "この指定はSQLファイルの使用の有無に関わらず適用されます。 `queryTimeout` プロパティの値が設定されていない場合は、 [設定](../config.md) で指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/delete.rst:162
 msgid "You can specify SQL log output format to `sqlLog` property within `@Delete` annotation."
@@ -762,7 +762,7 @@ msgstr "ストアドファンクションが単一の結果を返す場合、戻
 #: ../../query/select.rst:176
 #: ../../query/select.rst:195
 #: ../../query/select.rst:262
-msgid ":doc:`../basic`"
+msgid "[基本型](../basic.md)"
 msgstr ""
 
 #: ../../query/function.rst:27
@@ -781,7 +781,7 @@ msgstr ""
 #: ../../query/select.rst:177
 #: ../../query/select.rst:196
 #: ../../query/select.rst:263
-msgid ":doc:`../domain`"
+msgid "[ドメイン型](../domain.md)"
 msgstr ""
 
 #: ../../query/function.rst:28
@@ -793,7 +793,7 @@ msgstr ""
 #: ../../query/select.rst:178
 #: ../../query/select.rst:197
 #: ../../query/select.rst:264
-msgid ":doc:`../entity`"
+msgid "[エンティティ](../entity.md)"
 msgstr ""
 
 #: ../../query/function.rst:29
@@ -809,8 +809,8 @@ msgid "java.util.Map<String, Object>"
 msgstr ""
 
 #: ../../query/function.rst:30
-msgid "java.util.Optional, whose element type is one of :doc:`../basic`, :doc:`../domain`, :doc:`../entity`, and java.util.Map<String, Object>"
-msgstr "要素の型が :doc:`../basic`、:doc:`../domain`、:doc:`../entity`、および java.util.Map<String, Object>のいずれかであるjava.util.Optional"
+msgid "java.util.Optional, whose element type is one of [基本型](../basic.md), [ドメイン型](../domain.md), [エンティティ](../entity.md), and java.util.Map<String, Object>"
+msgstr "要素の型が [基本型](../basic.md)、[ドメイン型](../domain.md)、[エンティティ](../entity.md)、および java.util.Map<String, Object>のいずれかであるjava.util.Optional"
 
 #: ../../query/function.rst:32
 #: ../../query/function.rst:44
@@ -882,8 +882,8 @@ msgstr "ストアドファンクションが結果リストを返す場合、戻
 #: ../../query/procedure.rst:84
 #: ../../query/procedure.rst:116
 #: ../../query/procedure.rst:150
-msgid "java.util.Optional whose element type is either :doc:`../basic` or :doc:`../domain`"
-msgstr "要素タイプが :doc:`../basic` または :doc:`../domain` のいずれかである java.util.Optional"
+msgid "java.util.Optional whose element type is either [基本型](../basic.md) or [ドメイン型](../domain.md)"
+msgstr "要素タイプが [基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかである java.util.Optional"
 
 #: ../../query/function.rst:49
 msgid "Function name"
@@ -1011,8 +1011,8 @@ msgid "By default insert statement is auto generated. You can mapping arbitrary 
 msgstr "デフォルトでは、追加ステートメントは自動生成されます。 `@Insert` の `sqlFile` 要素に `true` を設定することで、任意の SQL ファイルをマッピングすることができます。"
 
 #: ../../query/insert.rst:24
-msgid "Entity listener `preInsert` method is called when before executing insert if the entity listener is specified :doc:`../entity` parameter. Also entity listener `postInsert` method is called when after executing insert."
-msgstr ":doc:`../entity` パラメータでエンティティ リスナーが指定されている場合、挿入を実行する前にエンティティ リスナーの `preInsert` メソッドが呼び出されます。また、挿入実行後にエンティティリスナーの `postInsert` メソッドが呼び出されます。"
+msgid "Entity listener `preInsert` method is called when before executing insert if the entity listener is specified [エンティティ](../entity.md) parameter. Also entity listener `postInsert` method is called when after executing insert."
+msgstr "[エンティティ](../entity.md) パラメータでエンティティ リスナーが指定されている場合、挿入を実行する前にエンティティ リスナーの `preInsert` メソッドが呼び出されます。また、挿入実行後にエンティティリスナーの `postInsert` メソッドが呼び出されます。"
 
 #: ../../query/insert.rst:35
 msgid "Insert by auto generated SQL"
@@ -1024,20 +1024,20 @@ msgid "Parameter type must be entity class. Specifiable parameter is only one. P
 msgstr "パラメータのタイプはエンティティ クラスである必要があります。指定できるパラメータは 1 つだけです。パラメータは null であってはなりません。"
 
 #: ../../query/insert.rst:53
-msgid "Identifier is auto generated and setting if :doc:`../entity` identifier is annotated with `@GeneratedValue`."
-msgstr "識別子は自動生成され、 :doc:`../entity` 識別子に `@GeneratedValue` の注釈が付けられるかどうかを設定します。"
+msgid "Identifier is auto generated and setting if [エンティティ](../entity.md) identifier is annotated with `@GeneratedValue`."
+msgstr "識別子は自動生成され、 [エンティティ](../entity.md) 識別子に `@GeneratedValue` の注釈が付けられるかどうかを設定します。"
 
 #: ../../query/insert.rst:55
 msgid "Reference :ref:`identity-auto-generation` about cautionary point."
-msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
+msgstr "注意点については [ID自動生成](#identity-auto-generation) を参照してください。"
 
 #: ../../query/insert.rst:58
 msgid "Version numbers"
 msgstr "バージョン番号"
 
 #: ../../query/insert.rst:60
-msgid "If value that explicitly set is over 0 then use the value if :doc:`../entity` has property that is annotated  with `@Version`."
-msgstr ":doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。 "
+msgid "If value that explicitly set is over 0 then use the value if [エンティティ](../entity.md) has property that is annotated  with `@Version`."
+msgstr "[エンティティ](../entity.md) に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。 "
 
 #: ../../query/insert.rst:62
 msgid "If the value is not set or is less than 0 the value is set 1 automatically."
@@ -1112,10 +1112,10 @@ msgid "You can specify second of query timeout to `queryTimeout` element of `@In
 msgstr "`@Insert` の `queryTimeout` 要素にクエリタイムアウトの秒数を指定できます。"
 
 #: ../../query/insert.rst:155
-msgid "This specifying is applied regardless with or without using sql file. Query timeout that is specified in :doc:`../config` is used if `queryTimeout` element is not set value."
+msgid "This specifying is applied regardless with or without using sql file. Query timeout that is specified in [設定](../config.md) is used if `queryTimeout` element is not set value."
 msgstr "この指定は、SQLファイルの使用の有無に関係なく適用されます。\n"
 "`queryTimeout` 要素に値を指定しない場合、\n"
-":doc:`../config` に指定されたクエリタイムアウトが使用されます。"
+"[設定](../config.md) に指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/insert.rst:161
 msgid "You can specify SQL log output format to `sqlLog` element of `@Insert`."
@@ -1226,8 +1226,8 @@ msgid "The script files specific to RDBMSs are given priority. For example, in t
 msgstr "RDBMS固有のスクリプトファイルが優先されます。例えば、PostgreSQLを使用する環境では、 \"META-INF/aaa/bbb/EmployeeDao/createTable.script\" ではなく !META-INF/aaa/bbb/EmployeeDao/createTable-postgres.script\" が選択されます。"
 
 #: ../../query/script.rst:65
-msgid "See also :ref:`dependency-on-a-specific-rdbms`."
-msgstr ":ref:`dependency-on-a-specific-rdbms` も参照してください。"
+msgid "See also [特定RDBMSへの依存](#dependency-on-a-specific-rdbms)."
+msgstr "[特定RDBMSへの依存](#dependency-on-a-specific-rdbms) も参照してください。"
 
 #: ../../query/script.rst:68
 msgid "Scripts in annotation"
@@ -1238,8 +1238,8 @@ msgid "You can specify scripts to DAO methods with the `@Sql` annotation:"
 msgstr "`@Script` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
 
 #: ../../query/script.rst:82
-msgid "See also :ref:`sql-templates-in-annotations`."
-msgstr ":ref:`sql-templates-in-annotations` も参照してください。"
+msgid "See also [アノテーション内SQLテンプレート](#sql-templates-in-annotations)."
+msgstr "[アノテーション内SQLテンプレート](#sql-templates-in-annotations) も参照してください。"
 
 #: ../../query/script.rst:85
 msgid "Delimiter"
@@ -1441,24 +1441,24 @@ msgid "Arbitrary type"
 msgstr "任意の型"
 
 #: ../../query/select.rst:37
-msgid ":doc:`../basic` , :doc:`../domain` or arbitrary type are within java.util.Optional"
-msgstr ":doc:`../basic` 、 :doc:`../domain` または任意の型を型パラメータに持つ java.util.Optional"
+msgid "[基本型](../basic.md) , [ドメイン型](../domain.md) or arbitrary type are within java.util.Optional"
+msgstr "[基本型](../basic.md) 、 [ドメイン型](../domain.md) または任意の型を型パラメータに持つ java.util.Optional"
 
 #: ../../query/select.rst:38
-msgid ":doc:`../basic` or :doc:`../domain` are within java.util.Iterable"
-msgstr ":doc:`../basic` または :doc:`../domain` は java.util.Iterable"
+msgid "[基本型](../basic.md) or [ドメイン型](../domain.md) are within java.util.Iterable"
+msgstr "[基本型](../basic.md) または [ドメイン型](../domain.md) は java.util.Iterable"
 
 #: ../../query/select.rst:43
-msgid "Parameters count is no limit. You can set `null` to parameter if parameter type is :doc:`../basic` or :doc:`../domain`. Parameter must not be `null` if the type is other than that."
-msgstr "パラメータ数に制限はありません。パラメータのタイプが :doc:`../basic` または :doc:`../domain` の場合、パラメータに `null` を設定できます。型がそれ以外の場合、パラメータは `null` であってはなりません。"
+msgid "Parameters count is no limit. You can set `null` to parameter if parameter type is [基本型](../basic.md) or [ドメイン型](../domain.md). Parameter must not be `null` if the type is other than that."
+msgstr "パラメータ数に制限はありません。パラメータのタイプが [基本型](../basic.md) または [ドメイン型](../domain.md) の場合、パラメータに `null` を設定できます。型がそれ以外の場合、パラメータは `null` であってはなりません。"
 
 #: ../../query/select.rst:48
 msgid "Query that is used basic type or domain class"
 msgstr "基本型またはドメインクラスを使用したクエリ"
 
 #: ../../query/select.rst:50
-msgid "You declare :doc:`../basic` or :doc:`../domain` to method or parameter."
-msgstr "メソッドまたはパラメータに :doc:`../basic` または :doc:`../domain` を宣言します。"
+msgid "You declare [基本型](../basic.md) or [ドメイン型](../domain.md) to method or parameter."
+msgstr "メソッドまたはパラメータに [基本型](../basic.md) または [ドメイン型](../domain.md) を宣言します。"
 
 #: ../../query/select.rst:57
 msgid "You map method parameter to SQL by using SQL comment in SQL file. In SQL comment, method parameter name is referenced."
@@ -1493,8 +1493,8 @@ msgid "You specify method return value type either of below for search single re
 msgstr "単一レコード検索の場合、メソッドの戻り値の型は以下のいずれかでなければいけません。"
 
 #: ../../query/select.rst:108
-msgid "Either :doc:`../basic` , :doc:`../domain` , :doc:`../entity` or java.util.Map<String, Object> is within java.util.Optional"
-msgstr ":doc:`../basic` 、 :doc:`../domain` 、 :doc:`../entity` または java.util.Map<String, Object> のいずれかを要素とする java.util.Optional"
+msgid "Either [基本型](../basic.md) , [ドメイン型](../domain.md) , [エンティティ](../entity.md) or java.util.Map<String, Object> is within java.util.Optional"
+msgstr "[基本型](../basic.md) 、 [ドメイン型](../domain.md) 、 [エンティティ](../entity.md) または java.util.Map<String, Object> のいずれかを要素とする java.util.Optional"
 
 #: ../../query/select.rst:119
 msgid "`null` is return if return type is not `Optional` and result count is 0. If `Ensure of search result`_ is enabled, exception is thrown regardless return value type if search count is 0."
@@ -1514,8 +1514,8 @@ msgstr "複数レコードを検索する場合はメソッドの戻り値の型
 
 #: ../../query/select.rst:134
 #: ../../query/select.rst:180
-msgid "Either :doc:`../basic` or :doc:`../domain` is within java.util.Optional"
-msgstr ":doc:`../basic` または :doc:`../domain` のいずれかを要素とする java.util.Optional"
+msgid "Either [基本型](../basic.md) or [ドメイン型](../domain.md) is within java.util.Optional"
+msgstr "[基本型](../basic.md) または [ドメイン型](../domain.md) のいずれかを要素とする java.util.Optional"
 
 #: ../../query/select.rst:144
 msgid "Empty list instead of `null` is return if result count is 0. But if `Ensure of search result`_ is enabled, exception is thrown if search count is 0."
@@ -1569,8 +1569,8 @@ msgstr "メソッドの戻り値に `java.util.stream.Stream` を定義します
 
 #: ../../query/select.rst:199
 #: ../../query/select.rst:266
-msgid "Either :doc:`../basic` or :doc:`../domain` within java.util.Optional"
-msgstr ":doc:`../basic` または :doc:`../domain` を型パラメータとする java.util.Optional"
+msgid "Either [基本型](../basic.md) or [ドメイン型](../domain.md) within java.util.Optional"
+msgstr "[基本型](../basic.md) または [ドメイン型](../domain.md) を型パラメータとする java.util.Optional"
 
 #: ../../query/select.rst:209
 msgid "Below is a caller."
@@ -1799,8 +1799,8 @@ msgid "You can specify seconds of query timeout to `queryTimeout` property withi
 msgstr "結果セットのカラムにマッピングされないプロパティが存在する場合 `ResultMappingException` がスローされます。"
 
 #: ../../query/select.rst:443
-msgid "Query timeout that is specified in :doc:`../config` is used if `queryTimeout` property is not set value."
-msgstr "`queryTimeout` プロパティの値が設定されていない場合は、 :doc:`../config` で指定されたクエリタイムアウトが使用されます。"
+msgid "Query timeout that is specified in [設定](../config.md) is used if `queryTimeout` property is not set value."
+msgstr "`queryTimeout` プロパティの値が設定されていない場合は、 [設定](../config.md) で指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/select.rst:446
 msgid "Fetch size"
@@ -1811,8 +1811,8 @@ msgid "You can specify fetch size to `fetchSize` property within `@Select` annot
 msgstr "フェッチサイズは `@Select` アノテーション内の `fetchSize` プロパティに指定できます。"
 
 #: ../../query/select.rst:455
-msgid "Fetch size that is specified in :doc:`../config` is used if value is not set."
-msgstr "値が設定されていない場合は、 :doc:`../config` で指定されたフェッチ サイズが使用されます。"
+msgid "Fetch size that is specified in [設定](../config.md) is used if value is not set."
+msgstr "値が設定されていない場合は、 [設定](../config.md) で指定されたフェッチ サイズが使用されます。"
 
 #: ../../query/select.rst:458
 msgid "Max row count"
@@ -1823,8 +1823,8 @@ msgid "You can specify max row count to `maxRows` property within `@Select` anno
 msgstr "最大行数は `@Select` アノテーション内の `maxRows` プロパティに指定できます。"
 
 #: ../../query/select.rst:467
-msgid "Max row count that is is specified in :doc:`../config` is used if value is not set."
-msgstr "値が設定されていない場合は、:doc:`../config` で指定された最大行数が使用されます。"
+msgid "Max row count that is is specified in [設定](../config.md) is used if value is not set."
+msgstr "値が設定されていない場合は、[設定](../config.md) で指定された最大行数が使用されます。"
 
 #: ../../query/select.rst:470
 msgid "Naming rule of map's key"
@@ -1841,8 +1841,8 @@ msgstr "`MapKeyNamingType.CAMEL_CASE` は、カラム名をキャメルケース
 "そのほかにカラム名を大文字や小文字に変換する規約があります。"
 
 #: ../../query/select.rst:483
-msgid "The final conversion result is decide by value specified here and implementation of `MapKeyNaming` is specified at :doc:`../config`."
-msgstr "最終的な変換結果は、ここに指定した値と :doc:`../config` に指定された\n"
+msgid "The final conversion result is decide by value specified here and implementation of `MapKeyNaming` is specified at [設定](../config.md)."
+msgstr "最終的な変換結果は、ここに指定した値と [設定](../config.md) に指定された\n"
 "`MapKeyNaming` の実装により決まります。"
 
 #: ../../query/select.rst:488
@@ -1975,8 +1975,8 @@ msgid "First parameter type must be entity class. Specifiable parameters count i
 msgstr "最初のパラメータの型はエンティティ クラスである必要があります。指定できるパラメータの数に制限はありません。パラメータの型が基本型またはドメインクラスの場合、パラメータに `null` を設定できます。型がそれ以外の場合、パラメータは `null` であってはなりません。"
 
 #: ../../query/update.rst:180
-msgid "The rule about controlling updating target property is same as :ref:`auto-update`."
-msgstr "対象プロパティの更新制御に関するルールは :ref:`auto-update` と同様です。"
+msgid "The rule about controlling updating target property is same as [自動更新](#auto-update)."
+msgstr "対象プロパティの更新制御に関するルールは [自動更新](#auto-update) と同様です。"
 
 #: ../../query/update.rst:205
 msgid "`exclude` property and `include` property, `excludeNull` property, `includeUnchanged` property they are within `@Update` annotation are not referenced in updating by SQL file."

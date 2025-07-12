@@ -108,7 +108,7 @@ msgid ""
 "[](../entity.md) within parameter java.lang.Iterable subtype has property"
 " that is annotated with @Version"
 msgstr ""
-"パラメータ java.lang.Iterable サブタイプ内の :doc:`../entity` に @Version "
+"パラメータ java.lang.Iterable サブタイプ内の [エンティティ](../entity.md) に @Version "
 "アノテーションが付けられたプロパティがある"
 
 #: ../../query/batch-update.md:47
@@ -182,7 +182,7 @@ msgid ""
 "`false` is excluded from updating target if [](../entity.md) has property"
 " that is annotated with `@Column`."
 msgstr ""
-":doc:`../entity` に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` "
+"[エンティティ](../entity.md) に `@Column` アノテーションが付けられたプロパティがある場合、 `@Column` "
 "アノテーション内の `false` が指定された `updatable` プロパティは更新対象から除外されます。 。"
 
 #: ../../query/batch-update.md:83
@@ -242,7 +242,7 @@ msgstr ""
 msgid ""
 "In batch updating by SQL file, rule is different according to using or "
 "not using [](../sql.md#population-directive)."
-msgstr "SQLファイルによるバッチ更新では、:ref:`populate` を使用する場合と使用しない場合でルールが異なります。"
+msgstr "SQLファイルによるバッチ更新では、[更新カラムリスト生成ディレクティブ](../sql.md#population-directive) を使用する場合と使用しない場合でルールが異なります。"
 
 #: ../../query/batch-update.md:113
 msgid "Case of using comment that generating update column list"
@@ -257,7 +257,7 @@ msgid ""
 "equal `Iterable` element count. Update count is returned to array each "
 "element."
 msgstr ""
-"パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` "
+"パラメータの型は要素として [エンティティ](../entity.md) を持つ `java.lang.Iterable` "
 "のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` "
 "であってはなりません。戻り値の配列要素数は、 `Iterable` の要素数と等しくなります。配列のそれぞれの要素が更新された件数を表します。"
 
@@ -275,7 +275,7 @@ msgstr "パラメータ名は、SQL ファイル内の `Iterable` の要素を�
 msgid ""
 "The rule that is about update target property equals [](#batch-update-by-"
 "auto-generated-sql)."
-msgstr "更新対象プロパティの制御に関するルールは :ref:`auto-batch-update` と同等です。"
+msgstr "更新対象プロパティの制御に関するルールは [自動生成SQLによるバッチ更新](#auto-batch-update) と同等です。"
 
 #: ../../query/batch-update.md:139
 msgid "Case of not using comment that generating update column list"
@@ -319,8 +319,8 @@ msgid ""
 "java.lang.Iterable subtype element in parameter is [](../entity.md) and "
 "has property that is annotated @Version existing at [](../entity.md)."
 msgstr ""
-"パラメータ内の java.lang.Iterable の要素は :doc:`../entity` であり、 @Version "
-"アノテーションが付けられたプロパティが :doc:`../entity` に存在する"
+"パラメータ内の java.lang.Iterable の要素は [エンティティ](../entity.md) であり、 @Version "
+"アノテーションが付けられたプロパティが [エンティティ](../entity.md) に存在する"
 
 #: ../../query/batch-update.md:173
 msgid "ignoreVersion property within @BatchUpdate annotation is false."
@@ -440,7 +440,7 @@ msgid ""
 "specified at [](../config.md) class is applied."
 msgstr ""
 "この指定はSQLファイルの使用有無に関わらず適用されます。 `batchSize` "
-"プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+"プロパティに値を指定しない場合は、[設定](../config.md) クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-update.md:240
 msgid "SQL log output format"
