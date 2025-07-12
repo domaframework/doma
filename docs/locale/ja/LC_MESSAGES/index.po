@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 01:18+0900\n"
+"POT-Creation-Date: 2025-07-12 15:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -60,9 +60,12 @@ msgstr ""
 "いただいたご寄付は、バグ修正の迅速化やライブラリの改善、新機能の追加に活用させていただきます。"
 
 #: ../../index.md:29
-
-msgid "You can make a contribution here: <https://opencollective.com/doma>"
-msgstr "こちらで寄付ができます: https://opencollective.com/doma"
+msgid ""
+"You can make a contribution here: "
+"[https://opencollective.com/doma](https://opencollective.com/doma)"
+msgstr ""
+"こちらで寄付ができます: "
+"[https://opencollective.com/doma](https://opencollective.com/doma)"
 
 #: ../../index.md:31
 msgid "Thank you very much for supporting Doma!"
@@ -81,22 +84,18 @@ msgid "Links"
 msgstr "リンク集"
 
 #: ../../index.md:75
-
 msgid "[News and announcements](https://twitter.com/domaframework)"
 msgstr "[ニュースやアナウンス](https://twitter.com/domaframework)"
 
 #: ../../index.md:76
-
 msgid "[GitHub repository](https://github.com/domaframework/doma)"
 msgstr "[GitHub リポジトリ](https://github.com/domaframework/doma)"
 
 #: ../../index.md:77
-
 msgid "[Release Notes](https://github.com/domaframework/doma/releases)"
 msgstr "[リリースノート](https://github.com/domaframework/doma/releases)"
 
 #: ../../index.md:78
-
 msgid ""
 "[JavaDoc](https://www.javadoc.io/doc/org.seasar.doma/doma-"
 "core/latest/index.html)"
@@ -105,12 +104,10 @@ msgstr ""
 "core/latest/index.html)"
 
 #: ../../index.md:79
-
 msgid "[Examples](https://github.com/domaframework/simple-examples)"
 msgstr "[サンプルプロジェクト](https://github.com/domaframework/simple-examples)"
 
 #: ../../index.md:80
-
 msgid ""
 "[Doma Compile Plugin](https://github.com/domaframework/doma-compile-"
 "plugin)"
@@ -119,7 +116,6 @@ msgstr ""
 "plugin)"
 
 #: ../../index.md:81
-
 msgid ""
 "[Doma CodeGen Plugin](https://github.com/domaframework/doma-codegen-"
 "plugin)"
@@ -128,7 +124,6 @@ msgstr ""
 "plugin)"
 
 #: ../../index.md:82
-
 msgid "[Doma version 1](http://doma.seasar.org/)"
 msgstr "[Doma v1.x のWebサイト](http://doma.seasar.org/)"
 
