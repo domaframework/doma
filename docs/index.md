@@ -33,6 +33,7 @@ Thank you very much for supporting Doma!
 
 # User Documentation
 
+% for MyST parser
 ```{toctree}
 :maxdepth: 2
 
@@ -61,6 +62,31 @@ spring-boot-support.md
 quarkus-support.md
 codegen.md
 ```
+
+% for Markdown editors
+% [](config.md)
+% [](basic.md)
+% [](domain.md)
+% [](embeddable.md)
+% [](entity.md)
+% [](dao.md)
+% [](aggregate-strategy.md)
+% [](query/index.md)
+% [](query-builder/index.md)
+% [](criteria-api.md)
+% [](query-dsl.md)
+% [](sql.md)
+% [](expression.md)
+% [](transaction.md)
+% [](build.md)
+% [](annotation-processing.md)
+% [](lombok-support.md)
+% [](kotlin-support.md)
+% [](slf4j-support.md)
+% [](jpms-support.md)
+% [](spring-boot-support.md)
+% [](quarkus-support.md)
+% [](codegen.md)
 
 # About Doma
 
