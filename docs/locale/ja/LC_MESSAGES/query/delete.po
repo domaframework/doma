@@ -310,14 +310,14 @@ msgid ""
 msgstr "`@Delete` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます。"
 
 #: ../../query/delete.md:185
-, python-brace-format
+
 msgid ""
 "This specifying is applied regardless of with or without using sql file. "
 "Query timeout that is specified in [](../config.md) is used if "
 "`queryTimeout` property is not set value."
 msgstr ""
 "この指定はSQLファイルの使用の有無に関わらず適用されます。 `queryTimeout` プロパティの値が設定されていない場合は、 "
-":doc:`../config` で指定されたクエリタイムアウトが使用されます。"
+"[設定](../config.md) で指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/delete.md:188
 msgid "SQL log output format"

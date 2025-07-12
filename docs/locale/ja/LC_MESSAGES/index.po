@@ -83,17 +83,17 @@ msgstr "リンク集"
 #: ../../index.md:75
 
 msgid "[News and announcements](https://twitter.com/domaframework)"
-msgstr "`ニュースやアナウンス <https://twitter.com/domaframework>`_"
+msgstr "[ニュースやアナウンス](https://twitter.com/domaframework)"
 
 #: ../../index.md:76
 
 msgid "[GitHub repository](https://github.com/domaframework/doma)"
-msgstr "`GitHub リポジトリ <https://github.com/domaframework/doma>`_"
+msgstr "[GitHub リポジトリ](https://github.com/domaframework/doma)"
 
 #: ../../index.md:77
 
 msgid "[Release Notes](https://github.com/domaframework/doma/releases)"
-msgstr "`リリースノート <https://github.com/domaframework/doma/releases>`_"
+msgstr "[リリースノート](https://github.com/domaframework/doma/releases)"
 
 #: ../../index.md:78
 
@@ -101,13 +101,13 @@ msgid ""
 "[JavaDoc](https://www.javadoc.io/doc/org.seasar.doma/doma-"
 "core/latest/index.html)"
 msgstr ""
-"`JavaDoc <https://www.javadoc.io/doc/org.seasar.doma/doma-"
-"core/latest/index.html>`_"
+"[JavaDoc](https://www.javadoc.io/doc/org.seasar.doma/doma-"
+"core/latest/index.html)"
 
 #: ../../index.md:79
 
 msgid "[Examples](https://github.com/domaframework/simple-examples)"
-msgstr "`サンプルプロジェクト <https://github.com/domaframework/simple-examples>`_"
+msgstr "[サンプルプロジェクト](https://github.com/domaframework/simple-examples)"
 
 #: ../../index.md:80
 
@@ -115,8 +115,8 @@ msgid ""
 "[Doma Compile Plugin](https://github.com/domaframework/doma-compile-"
 "plugin)"
 msgstr ""
-"`Doma Compile Plugin <https://github.com/domaframework/doma-compile-"
-"plugin>`_"
+"[Doma Compile Plugin](https://github.com/domaframework/doma-compile-"
+"plugin)"
 
 #: ../../index.md:81
 
@@ -124,13 +124,13 @@ msgid ""
 "[Doma CodeGen Plugin](https://github.com/domaframework/doma-codegen-"
 "plugin)"
 msgstr ""
-"`Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-"
-"plugin>`_"
+"[Doma CodeGen Plugin](https://github.com/domaframework/doma-codegen-"
+"plugin)"
 
 #: ../../index.md:82
 
 msgid "[Doma version 1](http://doma.seasar.org/)"
-msgstr "`Doma v1.x のWebサイト <http://doma.seasar.org/>`_"
+msgstr "[Doma v1.x のWebサイト](http://doma.seasar.org/)"
 
 #~ msgid "`User Documentation`_"
 #~ msgstr "`ユーザー向けドキュメンテーション`_"

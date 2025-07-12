@@ -48,7 +48,7 @@ msgstr ""
 "トランザクションが必要な場合は、 `LocalTransactionDataSource` を返します。"
 
 #: ../../config.md:17 ../../config.md:150
-python-brace-format
+
 msgid "See also: [](transaction.md)"
 msgstr "[トランザクション](transaction.md) も参照してください。"
 
@@ -468,7 +468,7 @@ msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../config.md:174
-python-brace-format
+
 msgid ""
 "Return the query timeout (in seconds) from the `getQueryTimeout` method. "
 "This value is used as the default in [](query/index.md)."
@@ -481,7 +481,7 @@ msgid "Max rows"
 msgstr "最大行数"
 
 #: ../../config.md:179
-python-brace-format
+
 msgid ""
 "Return the max rows from the `getMaxRows` method. This value is used as "
 "the default in [](query/select.md)."
@@ -492,7 +492,7 @@ msgid "Fetch size"
 msgstr "フェッチサイズ"
 
 #: ../../config.md:184
-python-brace-format
+
 msgid ""
 "Return the fetch size from the `getFetchSize` method. This value is used "
 "as the default in [](query/select.md)."
@@ -505,7 +505,7 @@ msgid "Batch size"
 msgstr "バッチサイズ"
 
 #: ../../config.md:189
-python-brace-format
+
 msgid ""
 "Return the batch size from the `getBatchSize` method. This value is used "
 "as the default in [](query/batch-insert.md), [](query/batch-update.md) "

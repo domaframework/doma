@@ -317,11 +317,11 @@ msgstr ""
 "を設定し、メソッドに対応するSQLファイルを用意します。"
 
 #: ../../query/update.md:183
-, python-brace-format
+
 msgid ""
 "When updating via SQL file, the rules differ depending on whether you use"
 " [](../sql.md#population-directive)."
-msgstr "SQLファイルによる更新では :ref:`populate` を使用する場合と使用しない場合でルールが異なります。"
+msgstr "SQLファイルによる更新では [更新カラムリスト生成ディレクティブ](../sql.md#population-directive) を使用する場合と使用しない場合でルールが異なります。"
 
 #: ../../query/update.md:186
 msgid "Case of using the populate directive"
@@ -345,11 +345,11 @@ msgid ""
 msgstr "たとえば、上記のメソッドに対応するSQLは次のように記述します。"
 
 #: ../../query/update.md:207
-, python-brace-format
+
 msgid ""
 "The rules for controlling update target properties are the same as in "
 "[](#update-by-auto-generated-sql)."
-msgstr "対象プロパティの更新制御に関するルールは :ref:`auto-update` と同様です。"
+msgstr "対象プロパティの更新制御に関するルールは [自動生成されたSQLによる更新](#update-by-auto-generated-sql)と同様です。"
 
 #: ../../query/update.md:209
 msgid "Case of not using the populate directive"
@@ -457,14 +457,14 @@ msgid ""
 msgstr "`@Update` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます"
 
 #: ../../query/update.md:287
-, python-brace-format
+
 msgid ""
 "This specification applies regardless of whether an SQL file is used or "
 "not. If the `queryTimeout` property is not set, the query timeout "
 "specified in [](../config.md) is used."
 msgstr ""
 "この仕様は、SQLファイルが使用されるかどうかにかかわらず適用されます。`queryTimeout` "
-"プロパティが設定されていない場合、:doc:`../config` に指定されているクエリタイムアウトが適用されます。"
+"プロパティが設定されていない場合、[設定](../config.md) に指定されているクエリタイムアウトが適用されます。"
 
 #: ../../query/update.md:290
 msgid "SQL log output format"

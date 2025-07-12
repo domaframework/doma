@@ -250,9 +250,9 @@ msgid "The Criteria API."
 msgstr "Criteria API"
 
 #: ../../faq.md:110
-, python-brace-format
+
 msgid "See [](sql.md) and [](query-dsl.md) for detailed information."
-msgstr "詳細については :doc:`sql` と :doc:`query-dsl` を参照してください。"
+msgstr "詳細については [SQLテンプレート](sql.md) と [クエリDSL](query-dsl.md) を参照してください。"
 
 #: ../../faq.md:112
 msgid ""
@@ -265,14 +265,14 @@ msgid "Yes, there are two ways to fetch relationships:"
 msgstr "リレーションシップを取得するには2つの方法があります。"
 
 #: ../../faq.md:116
-, python-brace-format
+
 msgid "[](aggregate-strategy.md) with SQL Templates."
-msgstr ":doc:`aggregate-strategy` を用いた SQLテンプレート"
+msgstr "[アグリゲート戦略](aggregate-strategy.md) を用いた SQLテンプレート"
 
 #: ../../faq.md:117
-, python-brace-format
+
 msgid "[](query-dsl.md#association) with the Criteria API."
-msgstr ":ref:`query_dsl_associate` を用いた Criteria API"
+msgstr "[関連](query-dsl.md#association) を用いた Criteria API"
 
 #: ../../faq.md:119
 msgid "Does Doma provide a JDBC connection pooling feature?"

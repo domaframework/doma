@@ -48,15 +48,15 @@ msgstr "クエリ定義"
 
 #: ../../dao.md:17
 msgid "[](query/index.md) can be defined using annotations."
-msgstr ":doc:`query/index` は、アノテーションを使用して定義できます。"
+msgstr "[クエリ](query/index.md) は、アノテーションを使用して定義できます。"
 
 #: ../../dao.md:19
 msgid ""
 "You can use [](query-builder/index.md) or [](query-dsl.md) in a [](#dao-"
 "default-method) when you need to build queries dynamically in Java code."
 msgstr ""
-"Javaコード内で動的にクエリを構築する必要がある場合は、:ref:`dao-default-method` 内で :doc:`query-"
-"builder/index` や :doc:`query-dsl` を使用できます。"
+"Javaコード内で動的にクエリを構築する必要がある場合は、[デフォルトメソッド](#dao-default-method) 内で [クエリビルダ](query-"
+"builder/index.md) や [クエリDSL](query-dsl.md) を使用できます。"
 
 #: ../../dao.md:23
 msgid "Default method"
@@ -94,7 +94,7 @@ msgid ""
 " on how to customize the package name and suffix."
 msgstr ""
 "デフォルトでは、実装クラス名はインターフェース名に `Impl` を付けたものです。パッケージ名とサフィックスをカスタマイズする方法については"
-" :doc:`annotation-processing` を参照してください。"
+" [アノテーション処理](annotation-processing.md) を参照してください。"
 
 #: ../../dao.md:57
 msgid ""

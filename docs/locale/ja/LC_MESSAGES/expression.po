@@ -23,7 +23,7 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../expression.md:7
-#, python-brace-format
+#
 msgid ""
 "You can write simple expressions in [SQL directives](sql.md#directives). "
 "The grammar is very similar to Java, although not all Java features are "
@@ -47,7 +47,6 @@ msgstr ""
 "パラメータを取るメソッドを呼び出すこともできません。"
 
 #: ../../expression.md:19
-#, python-format
 msgid ""
 "To check if an optional value exists, use `/*%if optional != null */` "
 "instead of `/*%if optional.isPresent() */`."

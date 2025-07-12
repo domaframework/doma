@@ -51,7 +51,7 @@ msgid ""
 "In this case, the entity is recognized as [immutable](#immutable) even "
 "though the `immutable` property of `@Entity` is `false`."
 msgstr ""
-"この場合、`@Entity` の不変プロパティが `false` であっても、エンティティは [immutable` "
+"この場合、`@Entity` の不変プロパティが `false` であっても、エンティティは [immutable](#immutable) "
 "として認識されます。"
 
 #: ../../entity.md:44
@@ -181,7 +181,7 @@ msgstr ""
 
 #: ../../entity.md:144
 msgid "java.util.Optional, whose element is either [](basic.md) or [](domain.md)"
-msgstr "[basic` または [domain` のいずれかを要素とする java.util.Optional"
+msgstr "[基本型](basic.md)または [ドメインクラス](domain.md) のいずれかを要素とする java.util.Optional"
 
 #: ../../entity.md:145
 msgid "java.util.OptionalInt"
@@ -227,7 +227,7 @@ msgstr "`@Column` アノテーションが指定されていない場合、カ�
 msgid ""
 "When the field type is [](embeddable.md), you cannot apply the `@Column` "
 "annotation to the field."
-msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Column` アノテーション を適用することはできません。"
+msgstr "フィールドタイプが [埋め込み可能クラス](embeddable.md) の場合、フィールドに `@Column` アノテーション を適用することはできません。"
 
 #: ../../entity.md:182
 msgid "Id"
@@ -245,7 +245,7 @@ msgstr "複合主キーに対しては、複数のフィールドに `@Id` ア�
 msgid ""
 "When the field type is [](embeddable.md), you cannot apply the `@Id` "
 "annotation to the field."
-msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Id` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [埋め込み可能クラス](embeddable.md) の場合、フィールドに `@Id` アノテーションを適用することはできません。"
 
 #: ../../entity.md:207
 msgid "Id generation"
@@ -263,7 +263,7 @@ msgstr "java.lang.Number のサブクラス"
 
 #: ../../entity.md:214 ../../entity.md:294
 msgid "[](domain.md), whose value type is the subclass of java.lang.Number"
-msgstr "値の型が java.lang.Number のサブクラスである [domain`"
+msgstr "値の型が java.lang.Number のサブクラスである [ドメインクラス](domain.md)"
 
 #: ../../entity.md:215 ../../entity.md:295
 msgid "java.util.Optional, whose element is either above types"
@@ -387,7 +387,7 @@ msgstr "楽観的排他制御のバージョンフィールドは、`@Version` �
 msgid ""
 "When the field type is [](embeddable.md), you cannot apply the `@Version`"
 " annotation to the field."
-msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@Version` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [埋め込み可能クラス](embeddable.md)の場合、フィールドに `@Version` アノテーションを適用することはできません。"
 
 #: ../../entity.md:310
 msgid "Tenant Id"
@@ -406,7 +406,7 @@ msgstr ""
 msgid ""
 "When the field type is [](embeddable.md), you cannot apply the "
 "`@TenantId` annotation to the field."
-msgstr "フィールドタイプが [embeddable` の場合、フィールドに `@TenantId` アノテーションを適用することはできません。"
+msgstr "フィールドタイプが [埋め込み可能クラス](embeddable.md) の場合、フィールドに `@TenantId` アノテーションを適用することはできません。"
 
 #: ../../entity.md:324
 msgid "Transient"
@@ -443,8 +443,8 @@ msgid ""
 "strategy, ensuring that related entities are treated as a single unit of "
 "consistency. For more details, see [](aggregate-strategy.md)."
 msgstr ""
-"このアノテーションは、アグリゲート戦略と併用し、関連するエンティティが一貫性のある単位として扱われるようにする必要があります。詳細については、:doc"
-":`aggregate-strategy` を参照してください。"
+"このアノテーションは、アグリゲート戦略と併用し、関連するエンティティが一貫性のある単位として扱われるようにする必要があります。詳細については、"
+"[アグリゲート戦略](aggregate-strategy.md) を参照してください。"
 
 #: ../../entity.md:354
 msgid "OriginalStates"

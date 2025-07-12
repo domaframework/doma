@@ -96,28 +96,28 @@ msgid "Identifier"
 msgstr "ID"
 
 #: ../../query/insert.md:54
-, python-brace-format
+
 msgid ""
 "The identifier is automatically generated and set if the [](../entity.md)"
 " identifier is annotated with `@GeneratedValue`."
-msgstr ":doc:`../entity` のIDが `@GeneratedValue` で注釈されている場合にIDは自動的に生成され設定されます。"
+msgstr "[エンティティ](../entity.md) のIDが `@GeneratedValue` で注釈されている場合にIDは自動的に生成され設定されます。"
 
 #: ../../query/insert.md:56
-, python-brace-format
+
 msgid "Reference [](../entity.md#id-generation) for cautionary points."
-msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
+msgstr "注意点については [ID自動生成](../entity.md#id-generation) を参照してください。"
 
 #: ../../query/insert.md:58
 msgid "Version numbers"
 msgstr "バージョン番号"
 
 #: ../../query/insert.md:60
-, python-brace-format
+
 msgid ""
 "If a value that is explicitly set is greater than 0, then that value is "
 "used if the [](../entity.md) has a property annotated with `@Version`."
 msgstr ""
-":doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
+"[エンティティ](../entity.md) に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
 "以上の値が設定されていればその値を使用します。"
 
 #: ../../query/insert.md:62
@@ -370,7 +370,7 @@ msgid ""
 msgstr "`@Insert` の `queryTimeout` 要素にクエリタイムアウトの秒数を指定できます。"
 
 #: ../../query/insert.md:221
-, python-brace-format
+
 msgid ""
 "This specification is applied regardless of whether an SQL file is used "
 "or not. The query timeout specified in [](../config.md) is used if the "
@@ -378,7 +378,7 @@ msgid ""
 msgstr ""
 "この指定は、SQLファイルの使用の有無に関係なく適用されます。\n"
 "`queryTimeout` 要素に値を指定しない場合、\n"
-":doc:`../config` に指定されたクエリタイムアウトが使用されます。"
+"[設定](../config.md) に指定されたクエリタイムアウトが使用されます。"
 
 #: ../../query/insert.md:224
 msgid "SQL log output format"

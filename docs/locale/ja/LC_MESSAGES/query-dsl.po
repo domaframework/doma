@@ -27,7 +27,7 @@ msgid "Introduction"
 msgstr "イントロダクション"
 
 #: ../../query-dsl.md:9
-#, python-brace-format
+#
 msgid ""
 "The Unified Criteria API provides a clear and intuitive interface by "
 "integrating the Entityql and NativeSql DSLs from the [](criteria-api.md)."
@@ -61,7 +61,7 @@ msgid ""
 msgstr "`Metamodel` アノテーションの要素を使用して、メタモデル名をカスタマイズできます。"
 
 #: ../../query-dsl.md:95
-#, python-brace-format
+#
 msgid ""
 "To bulk customize all metamodels, you can use annotation processor "
 "options. See [](annotation-processing.md) and refer to the following "
@@ -129,7 +129,7 @@ msgid "The query above generates the following SQL statement:"
 msgstr "上記のクエリは、次の SQL ステートメントを生成します。"
 
 #: ../../query-dsl.md:153
-#, python-brace-format
+#
 msgid ""
 "In Kotlin, use `org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl` instead "
 "of `QueryDsl`. `KQueryDsl` is included in the doma-kotlin module. See "
@@ -806,7 +806,7 @@ msgid "Delete Statement"
 msgstr "Delete ステートメント"
 
 #: ../../query-dsl.md:1087
-#, python-brace-format
+#
 msgid "The delete statement follows the same rules as the [](#where-expression)."
 msgstr "DELETEステートメントは、[](#where-expression) と同じルールに従います。"
 
@@ -1066,7 +1066,7 @@ msgid ""
 msgstr "UPDATE文の実行中に一意制約違反が発生すると、`UniqueConstraintException` がスローされます。"
 
 #: ../../query-dsl.md:1478
-#, python-brace-format
+#
 msgid ""
 "The update statement follows the same specifications as the [](#where-"
 "expression)."

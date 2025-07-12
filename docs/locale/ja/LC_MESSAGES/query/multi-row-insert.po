@@ -142,9 +142,9 @@ msgid "Identifier"
 msgstr "識別子"
 
 #: ../../query/multi-row-insert.md:66
-, python-brace-format
+
 msgid "See [](../entity.md#id-generation)."
-msgstr ":ref:`identity-auto-generation` を参照してください。"
+msgstr "[IDの生成](../entity.md#id-generation) を参照してください。"
 
 #: ../../query/multi-row-insert.md:68
 msgid "Version number"
@@ -168,9 +168,9 @@ msgid ""
 msgstr "アプリケーションが `0` より大きい値を明示的にバージョンプロパティに設定した場合、自動生成は行われません。"
 
 #: ../../query/multi-row-insert.md:74
-, python-brace-format
+
 msgid "See also [](../entity.md#version)."
-msgstr ":ref:`entity-version` も参照してください。"
+msgstr "[バージョン](../entity.md#version)) も参照してください。"
 
 #: ../../query/multi-row-insert.md:76
 msgid "Properties of @MultiInsert"
