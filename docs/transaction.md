@@ -10,7 +10,7 @@ This document explains how to configure and use local transactions in your appli
 If you want to use global transactions, use frameworks or application servers
 that support JTA (Java Transaction API).
 
-See also {ref}`config-configuration-definition` .
+See also [](config.md#configuration-definition).
 
 ## Configuration
 

@@ -143,7 +143,7 @@ The SELECT list must include the IDs of all entities that form the aggregate.
 
 ### Using the expansion directive
 
-By using the {ref}`expansion directive <expand>`, the above SELECT statement can be written more concisely:
+By using the [expansion directive](sql.md#expansion-directive), the above SELECT statement can be written more concisely:
 
 ```sql
 select

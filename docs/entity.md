@@ -37,7 +37,7 @@ public record Employee(...) {
 }
 ```
 
-In this case, the entity is recognized as {ref}`immutable`
+In this case, the entity is recognized as [immutable](#immutable)
 even though the `immutable` property of `@Entity` is `false`.
 :::
 
@@ -130,7 +130,7 @@ public class Employee {
 }
 ```
 
-If the `@Table` annotation is not specified, the table name is determined by the {ref}`naming-convention` .
+If the `@Table` annotation is not specified, the table name is determined by the [](#naming-convention) .
 
 ## Field definition
 
@@ -173,7 +173,7 @@ properties to `false` within the `@Column` annotation:
 String employeeName;
 ```
 
-If the `@Column` annotation is not specified, the column name is determined by the {ref}`naming-convention` .
+If the `@Column` annotation is not specified, the column name is determined by the [](#naming-convention) .
 
 :::{note}
 When the field type is [](embeddable.md), you cannot apply the `@Column` annotation to the field.

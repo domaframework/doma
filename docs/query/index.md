@@ -3,17 +3,17 @@
 ```{toctree}
 :maxdepth: 3
 
-select
-insert
-update
-delete
-batch-insert
-batch-update
-batch-delete
-multi-row-insert
-function
-procedure
-factory
-script
-sql-processor
+select.md
+insert.md
+update.md
+delete.md
+batch-insert.md
+batch-update.md
+batch-delete.md
+multi-row-insert.md
+function.md
+procedure.md
+factory.md
+script.md
+sql-processor.md
 ```

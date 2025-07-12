@@ -44,7 +44,7 @@ Declare [](../basic.md) or [](../domain.md) as method parameters.
 List<Employee> selectByNameAndSalary(String name, Salary salary);
 ```
 
-Use the {ref}`bind-variable-directive` to bind method parameters to SQL.
+Use the [](../sql.md#bind-variable-directive) to bind method parameters to SQL.
 
 ```sql
 select * from employee where employee_name = /* name */'hoge' and salary > /* salary */100
@@ -267,7 +267,7 @@ Employee selectByName(String name);
 For more details, see [](../aggregate-strategy.md).
 
 :::{note}
-The aggregate strategy cannot be used in combination with {ref}`stream-search` or {ref}`collector-search`.
+The aggregate strategy cannot be used in combination with [](#stream-search) or [](#collector-search).
 :::
 
 ## Search options

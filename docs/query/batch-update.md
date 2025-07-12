@@ -107,7 +107,7 @@ To execute batch updating by SQL file,
 you set `true` to `sqlFile` property within `@BatchUpdate` annotation and prepare SQL file that correspond method.
 
 :::{note}
-In batch updating by SQL file, rule is different according to using or not using {ref}`populate`.
+In batch updating by SQL file, rule is different according to using or not using [](../sql.md#population-directive).
 :::
 
 ### Case of using comment that generating update column list
@@ -134,7 +134,7 @@ update employee set /*%populate*/ id = id where name = /* employees.name */'hoge
 
 Parameter name indicate `Iterable` subtype element in SQL file.
 
-The rule that is about update target property equals {ref}`auto-batch-update`.
+The rule that is about update target property equals [](#batch-update-by-auto-generated-sql).
 
 ### Case of not using comment that generating update column list
 

@@ -36,30 +36,30 @@ Thank you very much for supporting Doma!
 ```{toctree}
 :maxdepth: 2
 
-getting-started
-config
-basic
-domain
-embeddable
-entity
-dao
-aggregate-strategy
-query/index
-query-builder/index
-criteria-api
-query-dsl
-sql
-expression
-transaction
-build
-annotation-processing
-lombok-support
-kotlin-support
-slf4j-support
-jpms-support
-spring-boot-support
-quarkus-support
-codegen
+getting-started.md
+config.md
+basic.md
+domain.md
+embeddable.md
+entity.md
+dao.md
+aggregate-strategy.md
+query/index.md
+query-builder/index.md
+criteria-api.md
+query-dsl.md
+sql.md
+expression.md
+transaction.md
+build.md
+annotation-processing.md
+lombok-support.md
+kotlin-support.md
+slf4j-support.md
+jpms-support.md
+spring-boot-support.md
+quarkus-support.md
+codegen.md
 ```
 
 # About Doma

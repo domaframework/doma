@@ -152,7 +152,7 @@ where t1_.DEPARTMENT_NAME = ?
 :::{note}
 In Kotlin, use `org.seasar.doma.kotlin.jdbc.criteria.KQueryDsl` instead of `QueryDsl`.
 `KQueryDsl` is included in the doma-kotlin module.
-See {ref}`kotlin-specific-criteria-api`.
+See [](kotlin-support.md#kotlin-specific-criteria-api).
 :::
 
 ## Select Statement
@@ -1084,7 +1084,7 @@ inner join
 
 ## Delete Statement
 
-The delete statement follows the same rules as the {ref}`query-dsl-where`.
+The delete statement follows the same rules as the [](#where-expression).
 
 ### Delete Settings
 
@@ -1475,7 +1475,7 @@ int count = queryDsl
 If a unique constraint violation occurs during the execution of an update statement,
 a `UniqueConstraintException` will be thrown.
 
-The update statement follows the same specifications as the {ref}`query-dsl-where`.
+The update statement follows the same specifications as the [](#where-expression).
 
 ### Update Settings
 

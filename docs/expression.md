@@ -4,7 +4,7 @@
 :depth: 4
 ```
 
-You can write simple expressions in SQL {ref}`sql-directives`.
+You can write simple expressions in [SQL directives](sql.md#directives).
 The grammar is very similar to Java,
 although not all Java features are supported.
 

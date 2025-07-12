@@ -149,14 +149,14 @@ The `@Sql` annotation must be combined with following annotations:
 In SQL templates, the SQL comments following the specific rules are recognised as directives.
 Supported directives are as follows:
 
-- [Bind variable directive]
-- [Literal variable directive]
-- [Embedded variable directive]
-- [Condition directive]
-- [Loop directive]
-- [Expansion directive]
-- [Population directive]
-- [Parser-level comment directive]
+- [](#bind-variable-directive)
+- [](#literal-variable-directive)
+- [](#embedded-variable-directive)
+- [](#condition-directive)
+- [](#loop-directive)
+- [](#expansion-directive)
+- [](#population-directive)
+- [](#parser-level-comment-directive)
 
 :::{note}
 See also [](expression.md) for information of the expression language available in directives.

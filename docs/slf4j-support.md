@@ -26,7 +26,7 @@ dependencies {
 Return an `org.seasar.doma.slf4j.Slf4jJdbcLogger` instance from
 the `getJdbcLogger` method of your `org.seasar.doma.jdbc.Config` implementation class.
 
-See also {ref}`Logger<config-logger>`.
+See also [](config.md#logger).
 
 ## Loggers
 

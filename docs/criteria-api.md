@@ -1157,7 +1157,7 @@ order by
 
 ## Delete statement
 
-For the specification of the where expression, see {ref}`criteria-where`.
+For the specification of the where expression, see [](#criteria-where).
 The same rule is applied to delete statements.
 
 ### Delete settings (Entityql, NativeSql)
@@ -1468,7 +1468,7 @@ int count result = nativeSql
 
 ## Update statement
 
-For the specification of the where expression, see {ref}`criteria-where`.
+For the specification of the where expression, see [](#criteria-where).
 The same rule is applied to update statements.
 
 ### Update settings (Entityql, NativeSql)

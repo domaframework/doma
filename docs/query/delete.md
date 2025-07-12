@@ -24,7 +24,7 @@ Similarly, the `postDelete` method is called after the delete operation complete
 
 ### When using the returning property
 
-See {ref}`delete-returning`.
+See [](#returning).
 
 ### When not using the returning property
 

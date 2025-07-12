@@ -27,7 +27,7 @@ Similarly, the `postInsert` method is called after the insert operation complete
 
 ### When using the returning property
 
-See {ref}`insert-returning`.
+See [](#returning).
 
 ### When not using the returning property
 
@@ -53,7 +53,7 @@ Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
 The identifier is automatically generated and set if the [](../entity.md) identifier is annotated with `@GeneratedValue`.
 
-Reference {ref}`identity-auto-generation` for cautionary points.
+Reference [](../entity.md#id-generation) for cautionary points.
 
 ### Version numbers
 
