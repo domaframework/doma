@@ -1,226 +1,364 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 218\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../query/batch-insert.rst:3
+#: ../../query/batch-insert.md:1
 msgid "Batch insert"
 msgstr "バッチ追加"
 
-#: ../../query/batch-insert.rst:6
+#: ../../query/batch-insert.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../query/batch-insert.rst:8
-msgid "Annotate a Dao method with ``@BatchInsert`` to execute batch insert operations."
-msgstr "DAO メソッドに ``@BatchInsert`` を付けて、バッチ追加操作を実行します。"
+#: ../../query/batch-insert.md:7
 
-#: ../../query/batch-insert.rst:21
-msgid "By default, the INSERT statement is automatically generated. You can map to an arbitrary SQL file by setting the ``sqlFile`` property to ``true`` in the ``@BatchInsert`` annotation."
-msgstr "デフォルトでは、INSERT ステートメントが自動生成されます。``@BatchInsert`` アノテーション内の ``sqlFile`` プロパティに ``true`` を設定することで、任意の SQL ファイルをマッピングできます。"
+msgid ""
+"Annotate a Dao method with `@BatchInsert` to execute batch insert "
+"operations."
+msgstr "DAO メソッドに `@BatchInsert` を付けて、バッチ追加操作を実行します。"
 
-#: ../../query/batch-insert.rst:24
-msgid "If an entity listener is specified for the entity class, its ``preInsert`` method is called for each entity before executing the insert operation. Similarly, the ``postInsert`` method is called for each entity after the insert operation completes."
-msgstr "エンティティクラスにエンティティリスナーが指定されている場合、``preInsert`` メソッドは追加操作を実行する前にそれぞれのエンティティに対して呼び出されます。同様に、追加操作が完了した後に、それぞれのエンティティに対して ``postInsert`` メソッドが呼び出されます。"
+#: ../../query/batch-insert.md:20
 
-#: ../../query/batch-insert.rst:28
+msgid ""
+"By default, the INSERT statement is automatically generated. You can map "
+"to an arbitrary SQL file by setting the `sqlFile` property to `true` in "
+"the `@BatchInsert` annotation."
+msgstr ""
+"デフォルトでは、INSERT ステートメントが自動生成されます。`@BatchInsert` アノテーション内の `sqlFile` "
+"プロパティに `true` を設定することで、任意の SQL ファイルをマッピングできます。"
+
+#: ../../query/batch-insert.md:23
+
+msgid ""
+"If an entity listener is specified for the entity class, its `preInsert` "
+"method is called for each entity before executing the insert operation. "
+"Similarly, the `postInsert` method is called for each entity after the "
+"insert operation completes."
+msgstr ""
+"エンティティクラスにエンティティリスナーが指定されている場合、`preInsert` "
+"メソッドは追加操作を実行する前にそれぞれのエンティティに対して呼び出されます。同様に、追加操作が完了した後に、それぞれのエンティティに対して "
+"`postInsert` メソッドが呼び出されます。"
+
+#: ../../query/batch-insert.md:26
 msgid "Return value"
 msgstr "戻り値"
 
-#: ../../query/batch-insert.rst:30
-msgid "If the elements of the parameter (which must be an ``Iterable`` subtype) are immutable entity classes, the return value must be ``org.seasar.doma.jdbc.BatchResult`` with the entity class as its element type."
-msgstr "パラメータの要素がイミュータブルなエンティティクラスの場合、戻り値は ``org.seasar.doma.jdbc.BatchResult`` で、要素タイプとしてそのエンティティクラスが含まれていなければなりません。"
+#: ../../query/batch-insert.md:28
 
-#: ../../query/batch-insert.rst:32
-msgid "If the above condition is not met, the return value must be ``int[]``, where each element represents the number of rows affected by each insert operation."
-msgstr "上記の条件が満たされない場合、戻り値は ``int[]`` でなければならず、各要素は各挿入操作によって影響を受けた行数を表します。"
+msgid ""
+"If the elements of the parameter (which must be an `Iterable` subtype) "
+"are immutable entity classes, the return value must be "
+"`org.seasar.doma.jdbc.BatchResult` with the entity class as its element "
+"type."
+msgstr ""
+"パラメータの要素がイミュータブルなエンティティクラスの場合、戻り値は `org.seasar.doma.jdbc.BatchResult` "
+"で、要素タイプとしてそのエンティティクラスが含まれていなければなりません。"
 
-#: ../../query/batch-insert.rst:35
+#: ../../query/batch-insert.md:30
+
+msgid ""
+"If the above condition is not met, the return value must be `int[]`, "
+"where each element represents the number of rows affected by each insert "
+"operation."
+msgstr "上記の条件が満たされない場合、戻り値は `int[]` でなければならず、各要素は各挿入操作によって影響を受けた行数を表します。"
+
+#: ../../query/batch-insert.md:32
 msgid "Batch insert by auto generated SQL"
 msgstr "自動生成されたSQLによるバッチ追加"
 
-#: ../../query/batch-insert.rst:37
-#: ../../query/batch-insert.rst:143
-msgid "The parameter type must be a ``java.lang.Iterable`` subtype that has :doc:`../entity` as its element type. Only one parameter can be specified. The parameter must not be ``null``. The return value array's element count equals the ``Iterable`` element count. Each element in the array represents the insert count for the corresponding operation."
-msgstr "パラメータの型は、:doc:`../entity` を要素とする ``java.lang.Iterable`` のサブタイプでなければなりません。指定できるパラメータは1つだけで、パラメータは ``null`` であってはなりません。返値の配列の要素数は ``Iterable`` の要素数と等しく、それぞれの配列要素は該当する更新操作によって影響を受ける行の数を表します。"
+#: ../../query/batch-insert.md:34 ../../query/batch-insert.md:131
+, python-brace-format
+msgid ""
+"The parameter type must be a `java.lang.Iterable` subtype that has "
+"[](../entity.md) as its element type. Only one parameter can be "
+"specified. The parameter must not be `null`. The return value array's "
+"element count equals the `Iterable` element count. Each element in the "
+"array represents the insert count for the corresponding operation."
+msgstr ""
+"パラメータの型は、:doc:`../entity` を要素とする `java.lang.Iterable` "
+"のサブタイプでなければなりません。指定できるパラメータは1つだけで、パラメータは `null` であってはなりません。返値の配列の要素数は "
+"`Iterable` の要素数と等しく、それぞれの配列要素は該当する更新操作によって影響を受ける行の数を表します。"
 
-#: ../../query/batch-insert.rst:44
+#: ../../query/batch-insert.md:40
 msgid "Identifier"
 msgstr "ID"
 
-#: ../../query/batch-insert.rst:46
-msgid "If the identifier in :doc:`../entity` is annotated with ``@GeneratedValue``, the identifier is automatically generated and set."
-msgstr ":doc:`../entity` の識別子に ``@GeneratedValue`` が付いている場合、識別子は自動的に生成され、設定されます。"
+#: ../../query/batch-insert.md:42
+, python-brace-format
+msgid ""
+"If the identifier in [](../entity.md) is annotated with "
+"`@GeneratedValue`, the identifier is automatically generated and set."
+msgstr ":doc:`../entity` の識別子に `@GeneratedValue` が付いている場合、識別子は自動的に生成され、設定されます。"
 
-#: ../../query/batch-insert.rst:48
-msgid "Reference :ref:`identity-auto-generation` for cautionary points."
+#: ../../query/batch-insert.md:44
+, python-brace-format
+msgid "Reference [](../entity.md#id-generation) for cautionary points."
 msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
 
-#: ../../query/batch-insert.rst:50
-msgid "If you don't use auto-generated keys in your application, you can enable the `ignoreGeneratedKeys` flag. This flag may improve performance."
-msgstr "アプリケーションで自動生成された ID を使用しない場合は、``ingoreGeneratedKeys`` フラグを有効にすることができます。このフラグによりパフォーマンスが向上する可能性があります。"
+#: ../../query/batch-insert.md:46
+msgid ""
+"If you don't use auto-generated keys in your application, you can enable "
+"the `ignoreGeneratedKeys` flag. This flag may improve performance."
+msgstr ""
+"アプリケーションで自動生成された ID を使用しない場合は、`ingoreGeneratedKeys` "
+"フラグを有効にすることができます。このフラグによりパフォーマンスが向上する可能性があります。"
 
-#: ../../query/batch-insert.rst:59
+#: ../../query/batch-insert.md:54
 msgid "Version number"
 msgstr "バージョン番号"
 
-#: ../../query/batch-insert.rst:61
-msgid "If a value that is explicitly set is greater than ``0``, then that value is used if the :doc:`../entity` has a property annotated with ``@Version``. If the value is not set or is less than ``0``, the value is automatically set to ``1``."
-msgstr ":doc:`../entity` に ``@Version`` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。 もし設定されていないか、 0 未満の値が設定されていれば 1 を自動で設定します。"
+#: ../../query/batch-insert.md:56
+, python-brace-format
+msgid ""
+"If a value that is explicitly set is greater than `0`, then that value is"
+" used if the [](../entity.md) has a property annotated with `@Version`. "
+"If the value is not set or is less than `0`, the value is automatically "
+"set to `1`."
+msgstr ""
+":doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
+"以上の値が設定されていればその値を使用します。 もし設定されていないか、 0 未満の値が設定されていれば 1 を自動で設定します。"
 
-#: ../../query/batch-insert.rst:65
+#: ../../query/batch-insert.md:59
 msgid "Properties of @BatchInsert"
 msgstr "@BatchInsert のプロパティ"
 
-#: ../../query/batch-insert.rst:68
+#: ../../query/batch-insert.md:61
 msgid "insertable"
 msgstr ""
 
-#: ../../query/batch-insert.rst:70
-msgid "A property is excluded from insertion if the entity class has a property annotated with ``@Column`` and the ``insertable`` property of the ``@Column`` annotation is set to ``false``."
-msgstr "エンティティクラスに ``@Column`` が注釈されたプロパティが含まれており、その ``@Column`` の ``insertable`` プロパティが ``false`` に設定されている場合、プロパティは追加から除外されます。"
+#: ../../query/batch-insert.md:63
 
-#: ../../query/batch-insert.rst:73
-#: ../../query/batch-insert.rst:164
+msgid ""
+"A property is excluded from insertion if the entity class has a property "
+"annotated with `@Column` and the `insertable` property of the `@Column` "
+"annotation is set to `false`."
+msgstr ""
+"エンティティクラスに `@Column` が注釈されたプロパティが含まれており、その `@Column` の `insertable`"
+" プロパティが `false` に設定されている場合、プロパティは追加から除外されます。"
+
+#: ../../query/batch-insert.md:65 ../../query/batch-insert.md:152
 msgid "exclude"
 msgstr ""
 
-#: ../../query/batch-insert.rst:75
-msgid "A property specified in the ``exclude`` property of the ``@BatchInsert`` annotation is excluded from the insertion operation. Even if the ``insertable`` property of the ``@Column`` annotation is set to ``true``, the property is excluded from the insertion operation if it is specified in this element."
-msgstr "``@BatchInsert`` の ``exclude`` プロパティに指定されたプロパティは追加操作から除外されます。``@Column`` の ``insertable`` プロパティが ``true`` に設定されていても、この要素にプロパティが指定されている場合は追加操作から除外されます。"
+#: ../../query/batch-insert.md:67
 
-#: ../../query/batch-insert.rst:84
-#: ../../query/batch-insert.rst:165
+msgid ""
+"A property specified in the `exclude` property of the `@BatchInsert` "
+"annotation is excluded from the insertion operation. Even if the "
+"`insertable` property of the `@Column` annotation is set to `true`, the "
+"property is excluded from the insertion operation if it is specified in "
+"this element."
+msgstr ""
+"`@BatchInsert` の `exclude` プロパティに指定されたプロパティは追加操作から除外されます。`@Column` "
+"の `insertable` プロパティが `true` "
+"に設定されていても、この要素にプロパティが指定されている場合は追加操作から除外されます。"
+
+#: ../../query/batch-insert.md:75 ../../query/batch-insert.md:153
 msgid "include"
 msgstr ""
 
-#: ../../query/batch-insert.rst:86
-msgid "Only properties specified in the ``include`` property of the ``@BatchInsert`` annotation are included in the insertion operation. If the same property is specified in both the ``include`` property and the ``exclude`` property of the ``@BatchInsert`` annotation, it is excluded from the insertion operation. Even if a property is specified in this element, it is excluded from the insertion operation if the ``insertable`` property of its ``@Column`` annotation is set to ``false``."
-msgstr "``@BatchInsert`` 注釈の ``include`` プロパティに指定されたプロパティのみが追加操作に含まれます。 ``@BatchInsert`` の ``include`` プロパティと ``exclude`` プロパティの両方にプロパティが指定されている場合、そのプロパティは挿入操作から除外されます。この要素でプロパティを指定していても、その ``@Column`` の ``insertable`` プロパティが ``false`` に設定されている場合、そのプロパティは追加操作から除外されます。"
+#: ../../query/batch-insert.md:77
 
-#: ../../query/batch-insert.rst:96
-#: ../../query/batch-insert.rst:166
+msgid ""
+"Only properties specified in the `include` property of the `@BatchInsert`"
+" annotation are included in the insertion operation. If the same property"
+" is specified in both the `include` property and the `exclude` property "
+"of the `@BatchInsert` annotation, it is excluded from the insertion "
+"operation. Even if a property is specified in this element, it is "
+"excluded from the insertion operation if the `insertable` property of its"
+" `@Column` annotation is set to `false`."
+msgstr ""
+"`@BatchInsert` 注釈の `include` プロパティに指定されたプロパティのみが追加操作に含まれます。 "
+"`@BatchInsert` の `include` プロパティと `exclude` "
+"プロパティの両方にプロパティが指定されている場合、そのプロパティは挿入操作から除外されます。この要素でプロパティを指定していても、その "
+"`@Column` の `insertable` プロパティが `false` "
+"に設定されている場合、そのプロパティは追加操作から除外されます。"
+
+#: ../../query/batch-insert.md:86 ../../query/batch-insert.md:154
 msgid "duplicateKeyType"
 msgstr "duplicateKeyType"
 
-#: ../../query/batch-insert.rst:98
-msgid "This property defines the strategy for handling duplicate keys during an insert operation."
+#: ../../query/batch-insert.md:88
+msgid ""
+"This property defines the strategy for handling duplicate keys during an "
+"insert operation."
 msgstr "このプロパティは、追加操作時に重複したキーを処理するための戦略を定義します。"
 
-#: ../../query/batch-insert.rst:100
+#: ../../query/batch-insert.md:90
 msgid "It can take one of three values:"
 msgstr "次の3つの値のいずれかを取ることができます:"
 
-#: ../../query/batch-insert.rst:102
-msgid "``DuplicateKeyType.UPDATE``: If a duplicate key is encountered, the existing row in the table will be updated."
-msgstr "``DuplicateKeyType.UPDATE``: 重複したキーが見つかった場合、テーブル内の既存の行が更新されます。"
+#: ../../query/batch-insert.md:92
 
-#: ../../query/batch-insert.rst:103
-msgid "``DuplicateKeyType.IGNORE``: If a duplicate key is encountered, the insert operation will be ignored, and no changes will be made to the table."
-msgstr "``DuplicateKeyType.IGNORE``: 重複したキーが見つかった場合、挿入操作は無視され、テーブルに変更は加えられません。"
+msgid ""
+"`DuplicateKeyType.UPDATE`: If a duplicate key is encountered, the "
+"existing row in the table will be updated."
+msgstr "`DuplicateKeyType.UPDATE`: 重複したキーが見つかった場合、テーブル内の既存の行が更新されます。"
 
-#: ../../query/batch-insert.rst:104
-msgid "``DuplicateKeyType.EXCEPTION``: If a duplicate key is encountered, an exception will be thrown."
-msgstr "``DuplicateKeyType.EXCEPTION``: 重複したキーが発生した場合、例外が投げられます。"
+#: ../../query/batch-insert.md:93
 
-#: ../../query/batch-insert.rst:112
-#: ../../query/batch-insert.rst:167
+msgid ""
+"`DuplicateKeyType.IGNORE`: If a duplicate key is encountered, the insert "
+"operation will be ignored, and no changes will be made to the table."
+msgstr "`DuplicateKeyType.IGNORE`: 重複したキーが見つかった場合、挿入操作は無視され、テーブルに変更は加えられません。"
+
+#: ../../query/batch-insert.md:94
+
+msgid ""
+"`DuplicateKeyType.EXCEPTION`: If a duplicate key is encountered, an "
+"exception will be thrown."
+msgstr "`DuplicateKeyType.EXCEPTION`: 重複したキーが発生した場合、例外が投げられます。"
+
+#: ../../query/batch-insert.md:101 ../../query/batch-insert.md:155
 msgid "duplicateKeys"
 msgstr ""
 
-#: ../../query/batch-insert.rst:114
-msgid "This property represents the keys that should be used to determine if a duplicate key exists. If the duplicate key exists, the operation will use the ``duplicateKeyType`` strategy to handle the duplicate key."
-msgstr "このプロパティは、重複キーが存在するかどうかを判断するために使用するキーを表します。 重複キーが存在する場合、重複キーを処理するために ``duplicateKeyType`` ストラテジーを使用します。"
+#: ../../query/batch-insert.md:103
 
-#: ../../query/batch-insert.rst:123
-msgid "This property is only utilized when the ``duplicateKeyType`` strategy is either ``DuplicateKeyType.UPDATE`` or ``DuplicateKeyType.IGNORE``."
-msgstr "このプロパティは、``duplicateKeyType`` ストラテジーが ``DuplicateKeyType.UPDATE`` または ``DuplicateKeyType.IGNORE`` のいずれかである場合にのみ使用されます。"
+msgid ""
+"This property represents the keys that should be used to determine if a "
+"duplicate key exists. If the duplicate key exists, the operation will use"
+" the `duplicateKeyType` strategy to handle the duplicate key."
+msgstr ""
+"このプロパティは、重複キーが存在するかどうかを判断するために使用するキーを表します。 重複キーが存在する場合、重複キーを処理するために "
+"`duplicateKeyType` ストラテジーを使用します。"
 
-#: ../../query/batch-insert.rst:127
+#: ../../query/batch-insert.md:111
+
+msgid ""
+"This property is only utilized when the `duplicateKeyType` strategy is "
+"either `DuplicateKeyType.UPDATE` or `DuplicateKeyType.IGNORE`."
+msgstr ""
+"このプロパティは、`duplicateKeyType` ストラテジーが `DuplicateKeyType.UPDATE` または "
+"`DuplicateKeyType.IGNORE` のいずれかである場合にのみ使用されます。"
+
+#: ../../query/batch-insert.md:115
 msgid "The MySQL dialect does not utilize this property."
 msgstr "MySQLの方言はこのプロパティを利用しません。"
 
-#: ../../query/batch-insert.rst:130
+#: ../../query/batch-insert.md:118
 msgid "Batch insert by SQL file"
 msgstr "SQLファイルによるバッチ追加"
 
-#: ../../query/batch-insert.rst:132
-msgid "To execute batch insertion using an SQL file, set the ``sqlFile`` property of the ``@BatchInsert`` annotation to ``true`` and prepare an SQL file that corresponds to the method."
-msgstr "SQLファイルによるバッチ追加を実行するには、``@BatchInsert`` アノテーションの ``sqlFile`` プロパティを ``true`` に設定し、メソッドに対応するSQLファイルを用意します。"
+#: ../../query/batch-insert.md:120
 
-#: ../../query/batch-insert.rst:149
-msgid "If an entity listener is specified for the :doc:`../entity`, its methods are not called when using SQL files."
+msgid ""
+"To execute batch insertion using an SQL file, set the `sqlFile` property "
+"of the `@BatchInsert` annotation to `true` and prepare an SQL file that "
+"corresponds to the method."
+msgstr ""
+"SQLファイルによるバッチ追加を実行するには、`@BatchInsert` アノテーションの `sqlFile` プロパティを "
+"`true` に設定し、メソッドに対応するSQLファイルを用意します。"
+
+#: ../../query/batch-insert.md:137
+, python-brace-format
+msgid ""
+"If an entity listener is specified for the [](../entity.md), its methods "
+"are not called when using SQL files."
 msgstr "エンティティリスナーが :doc:`../entity` に指定されている場合、SQLファイルを使用する際にそのメソッドは呼び出されません。"
 
-#: ../../query/batch-insert.rst:151
-msgid "For example, you would write SQL like the following to correspond to the above method:"
+#: ../../query/batch-insert.md:139
+msgid ""
+"For example, you would write SQL like the following to correspond to the "
+"above method:"
 msgstr "たとえば、上記のメソッドに対応するSQLは次のように記述します。"
 
-#: ../../query/batch-insert.rst:158
-msgid "The parameter name in the SQL file refers to the element of the ``java.lang.Iterable`` subtype."
-msgstr "SQL ファイル内のパラメータ名は、``java.lang.Iterable`` サブタイプの要素を参照します。"
+#: ../../query/batch-insert.md:146
 
-#: ../../query/batch-insert.rst:160
-msgid "Automatic identifier setting and automatic version number setting are not performed when inserting via SQL file."
+msgid ""
+"The parameter name in the SQL file refers to the element of the "
+"`java.lang.Iterable` subtype."
+msgstr "SQL ファイル内のパラメータ名は、`java.lang.Iterable` サブタイプの要素を参照します。"
+
+#: ../../query/batch-insert.md:148
+msgid ""
+"Automatic identifier setting and automatic version number setting are not"
+" performed when inserting via SQL file."
 msgstr "SQLファイルから追加する際に、識別子およびバージョンの自動設定は行われません。"
 
-#: ../../query/batch-insert.rst:162
-msgid "Additionally, the following properties of ``@BatchInsert`` are not used:"
-msgstr "また、以下の ``@BatchInsert`` のプロパティは使用されません。"
+#: ../../query/batch-insert.md:150
 
-#: ../../query/batch-insert.rst:170
+msgid "Additionally, the following properties of `@BatchInsert` are not used:"
+msgstr "また、以下の `@BatchInsert` のプロパティは使用されません。"
+
+#: ../../query/batch-insert.md:157
 msgid "Unique constraint violation"
 msgstr "一意制約違反"
 
-#: ../../query/batch-insert.rst:172
-msgid "``UniqueConstraintException`` is thrown if a unique constraint violation occurs, regardless of whether an SQL file is used or not."
-msgstr "SQLファイルの使用にかかわらず、ユニーク制約違反が発生すると ``UniqueConstraintException`` がスローされます。"
+#: ../../query/batch-insert.md:159
 
-#: ../../query/batch-insert.rst:175
+msgid ""
+"`UniqueConstraintException` is thrown if a unique constraint violation "
+"occurs, regardless of whether an SQL file is used or not."
+msgstr "SQLファイルの使用にかかわらず、ユニーク制約違反が発生すると `UniqueConstraintException` がスローされます。"
+
+#: ../../query/batch-insert.md:161
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
-#: ../../query/batch-insert.rst:177
-msgid "You can specify the query timeout in seconds using the ``queryTimeout`` property of the ``@BatchInsert`` annotation."
+#: ../../query/batch-insert.md:163
+
+msgid ""
+"You can specify the query timeout in seconds using the `queryTimeout` "
+"property of the `@BatchInsert` annotation."
 msgstr "`@BatchInsert` アノテーションの `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます"
 
-#: ../../query/batch-insert.rst:184
-msgid "This specification is applied regardless of whether an SQL file is used or not. The query timeout specified in the config class is used if the ``queryTimeout`` property is not set."
-msgstr "この指定は、SQLファイルの使用の有無に関係なく適用されます。``queryTimeout`` プロパティが設定されていない場合、config クラスに指定されたクエリタイムアウトが使用されます。"
+#: ../../query/batch-insert.md:170
 
-#: ../../query/batch-insert.rst:188
+msgid ""
+"This specification is applied regardless of whether an SQL file is used "
+"or not. The query timeout specified in the config class is used if the "
+"`queryTimeout` property is not set."
+msgstr ""
+"この指定は、SQLファイルの使用の有無に関係なく適用されます。`queryTimeout` プロパティが設定されていない場合、config "
+"クラスに指定されたクエリタイムアウトが使用されます。"
+
+#: ../../query/batch-insert.md:173
 msgid "Batch size"
 msgstr "バッチサイズ"
 
-#: ../../query/batch-insert.rst:190
-msgid "You can specify the batch size using the ``batchSize`` property of the ``@BatchInsert`` annotation."
-msgstr "バッチサイズは ``@BatchInsert`` アノテーション内の ``batchSize`` プロパティに指定できます。"
+#: ../../query/batch-insert.md:175
 
-#: ../../query/batch-insert.rst:197
-msgid "This setting applies regardless of whether you use a SQL file or not. If you do not specify a value for the ``batchSize`` property, the batch size configured in the :doc:`../config` class is used."
-msgstr "この指定は、SQL ファイルの使用の有無に関係なく適用されます。 ``batchSize`` プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+msgid ""
+"You can specify the batch size using the `batchSize` property of the "
+"`@BatchInsert` annotation."
+msgstr "バッチサイズは `@BatchInsert` アノテーション内の `batchSize` プロパティに指定できます。"
 
-#: ../../query/batch-insert.rst:201
+#: ../../query/batch-insert.md:182
+, python-brace-format
+msgid ""
+"This setting applies regardless of whether you use a SQL file or not. If "
+"you do not specify a value for the `batchSize` property, the batch size "
+"configured in the [](../config.md) class is used."
+msgstr ""
+"この指定は、SQL ファイルの使用の有無に関係なく適用されます。 `batchSize` "
+"プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+
+#: ../../query/batch-insert.md:185
 msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
-#: ../../query/batch-insert.rst:203
-msgid "You can specify the SQL log output format using the ``sqlLog`` property of the ``@BatchInsert`` annotation."
-msgstr "``@BatchInsert`` の ``sqlLog`` プロパティを使用して SQL ログ出力形式を指定できます。"
+#: ../../query/batch-insert.md:187
 
-#: ../../query/batch-insert.rst:210
-msgid "``SqlLogType.RAW`` indicates that the log outputs SQL with bind parameters."
-msgstr "``SqlLogType.RAW`` は、バインドパラメータでSQLをログに記録することを示します。"
+msgid ""
+"You can specify the SQL log output format using the `sqlLog` property of "
+"the `@BatchInsert` annotation."
+msgstr "`@BatchInsert` の `sqlLog` プロパティを使用して SQL ログ出力形式を指定できます。"
+
+#: ../../query/batch-insert.md:194
+
+msgid "`SqlLogType.RAW` indicates that the log outputs SQL with bind parameters."
+msgstr "`SqlLogType.RAW` は、バインドパラメータでSQLをログに記録することを示します。"
 

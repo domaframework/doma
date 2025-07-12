@@ -1,246 +1,243 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-08 08:40+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: Japanese\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 192\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../embeddable.rst:3
+#: ../../embeddable.md:1
 msgid "Embeddable classes"
 msgstr "埋め込み可能クラス"
 
-#: ../../embeddable.rst:6
+#: ../../embeddable.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../embeddable.rst:8
+#: ../../embeddable.md:7
 msgid "Embeddable classes group properties for entity classes."
-msgstr ""
-"埋め込み可能クラスは、エンティティクラスのプロパティをグループ化します。"
+msgstr "埋め込み可能クラスは、エンティティクラスのプロパティをグループ化します。"
 
-#: ../../embeddable.rst:11
+#: ../../embeddable.md:9
 msgid "Embeddable definition"
 msgstr "埋め込み可能クラスの定義"
 
-#: ../../embeddable.rst:13
+#: ../../embeddable.md:11
 msgid "Here is an example of how to define an embeddable class:"
 msgstr "埋め込み可能クラスを定義する方法を示します:"
 
-#: ../../embeddable.rst:34
-msgid ""
-"You can apply the ``@Embeddable`` annotation to both classes and records:"
-msgstr ""
-"クラスとレコードの両方に ``@Embeddable`` アノテーションを適用できます。"
+#: ../../embeddable.md:32
+msgid "You can apply the `@Embeddable` annotation to both classes and records:"
+msgstr "クラスとレコードの両方に `@Embeddable` アノテーションを適用できます。"
 
-#: ../../embeddable.rst:45
+#: ../../embeddable.md:43
 msgid "The embeddable class is used as the entity field type:"
 msgstr "埋め込み可能クラスはエンティティフィールドの型として使用されます。"
 
-#: ../../embeddable.rst:57
+#: ../../embeddable.md:55
 msgid "The above entity definition is equivalent to following one:"
 msgstr "上記のエンティティ定義は、次のエンティティ定義と同等です。"
 
-#: ../../embeddable.rst:75
+#: ../../embeddable.md:72
 msgid "Naming convention"
 msgstr "命名規則"
 
-#: ../../embeddable.rst:77
+#: ../../embeddable.md:74
 msgid "The naming convention is inherited from the enclosing entity class."
 msgstr "命名規則は、囲んでいるエンティティクラスから継承されます。"
 
-#: ../../embeddable.rst:80
+#: ../../embeddable.md:76
 msgid "Field definition"
 msgstr "フィールドの定義"
 
-#: ../../embeddable.rst:82
+#: ../../embeddable.md:78
 msgid ""
-"By default, all fields are persistent and correspond to database columns or "
-"result set columns."
-msgstr ""
-"デフォルトでは、すべてのフィールドは永続的で、データベースまたは結果セットの"
-"カラムに対応します。"
+"By default, all fields are persistent and correspond to database columns "
+"or result set columns."
+msgstr "デフォルトでは、すべてのフィールドは永続的で、データベースまたは結果セットのカラムに対応します。"
 
-#: ../../embeddable.rst:84
+#: ../../embeddable.md:80
 msgid "The field type must be one of the following:"
 msgstr "フィールドの型は次のいずれかである必要があります。"
 
-#: ../../embeddable.rst:86
-msgid ":doc:`basic`"
-msgstr ""
+#: ../../embeddable.md:82
+msgid "[](basic.md)"
+msgstr "[基本クラス](basic.md)"
 
-#: ../../embeddable.rst:87
-msgid ":doc:`domain`"
-msgstr ""
+#: ../../embeddable.md:83
+msgid "[](domain.md)"
+msgstr "[ドメインクラス](domain.md)"
 
-#: ../../embeddable.rst:88
-msgid ""
-"java.util.Optional, whose element is either :doc:`basic` or :doc:`domain`"
-msgstr ""
-"要素を :doc:`basic` または :doc:`domain` のいずれかとする java.util.Optional"
+#: ../../embeddable.md:84
+msgid "java.util.Optional, whose element is either [](basic.md) or [](domain.md)"
+msgstr "要素を [基本クラス](basic.md) または [ドメインクラス](domain.md) のいずれかとする java.util.Optional"
 
-#: ../../embeddable.rst:89
+#: ../../embeddable.md:85
 msgid "java.util.OptionalInt"
 msgstr ""
 
-#: ../../embeddable.rst:90
+#: ../../embeddable.md:86
 msgid "java.util.OptionalLong"
 msgstr ""
 
-#: ../../embeddable.rst:91
+#: ../../embeddable.md:87
 msgid "java.util.OptionalDouble"
 msgstr ""
 
-#: ../../embeddable.rst:102
+#: ../../embeddable.md:97
 msgid "Column"
 msgstr "カラム"
 
-#: ../../embeddable.rst:104
+#: ../../embeddable.md:99
 msgid ""
-"You can specify the corresponding column name with the ``@Column`` "
+"You can specify the corresponding column name with the `@Column` "
 "annotation:"
-msgstr "カラム名を ``@Column``  アノテーションで指定できます。"
+msgstr "カラム名を `@Column`  アノテーションで指定できます。"
 
-#: ../../embeddable.rst:112
+#: ../../embeddable.md:106
 msgid "Transient"
 msgstr "Transient"
 
-#: ../../embeddable.rst:114
+#: ../../embeddable.md:108
 msgid ""
-"If an embeddable has fields that you don’t want to persist, you can annotate "
-"them using ``@Transient``:"
-msgstr ""
-"埋め込み可能オブジェクトに永続化したくないフィールドがある場合は、 "
-"``@Transient`` アノテーションを指定できます。"
+"If an embeddable has fields that you don’t want to persist, you can "
+"annotate them using `@Transient`:"
+msgstr "埋め込み可能オブジェクトに永続化したくないフィールドがある場合は、 `@Transient` アノテーションを指定できます。"
 
-#: ../../embeddable.rst:117
+#: ../../embeddable.md:110
 msgid "Method definition"
 msgstr "メソッドの定義"
 
-#: ../../embeddable.rst:119
+#: ../../embeddable.md:112
 msgid "There are no limitations in the use of methods."
 msgstr "メソッドの使用に制限はありません。"
 
-#: ../../embeddable.rst:122
+#: ../../embeddable.md:114
 msgid "Using @Embedded annotation"
 msgstr "@Embeddedアノテーションの使用"
 
-#: ../../embeddable.rst:124
+#: ../../embeddable.md:116
 msgid ""
-"You can use the ``@Embedded`` annotation to embed the same embeddable type "
-"multiple times within a single entity with different column name prefixes."
+"You can use the `@Embedded` annotation to embed the same embeddable type "
+"multiple times within a single entity with different column name "
+"prefixes."
 msgstr ""
-"``@Embedded`` アノテーションを使用すると、同じ埋め込み可能型を異なるカラム名"
-"プレフィックスで単一のエンティティ内に複数回埋め込むことができます。"
+"`@Embedded` "
+"アノテーションを使用すると、同じ埋め込み可能型を異なるカラム名プレフィックスで単一のエンティティ内に複数回埋め込むことができます。"
 
-#: ../../embeddable.rst:127
+#: ../../embeddable.md:118
 msgid "Basic usage"
 msgstr "基本的な使用方法"
 
-#: ../../embeddable.rst:146
+#: ../../embeddable.md:137
 msgid "This will generate the following columns in the SQL statements:"
 msgstr "これにより、SQL文で以下のカラムが生成されます："
 
-#: ../../embeddable.rst:148
-msgid "``billing_street``"
-msgstr "``billing_street``"
+#: ../../embeddable.md:139
+msgid "`billing_street`"
+msgstr "`billing_street`"
 
-#: ../../embeddable.rst:149
-msgid "``billing_city``"
-msgstr "``billing_city``"
+#: ../../embeddable.md:140
+msgid "`billing_city`"
+msgstr "`billing_city`"
 
-#: ../../embeddable.rst:150
-msgid "``billing_zip_code``"
-msgstr "``billing_zip_code``"
+#: ../../embeddable.md:141
+msgid "`billing_zip_code`"
+msgstr "`billing_zip_code`"
 
-#: ../../embeddable.rst:151
-msgid "``shipping_street``"
-msgstr "``shipping_street``"
+#: ../../embeddable.md:142
+msgid "`shipping_street`"
+msgstr "`shipping_street`"
 
-#: ../../embeddable.rst:152
-msgid "``shipping_city``"
-msgstr "``shipping_city``"
+#: ../../embeddable.md:143
+msgid "`shipping_city`"
+msgstr "`shipping_city`"
 
-#: ../../embeddable.rst:153
-msgid "``shipping_zip_code``"
-msgstr "``shipping_zip_code``"
+#: ../../embeddable.md:144
+msgid "`shipping_zip_code`"
+msgstr "`shipping_zip_code`"
 
-#: ../../embeddable.rst:156
+#: ../../embeddable.md:146
 msgid "Prefix behavior"
 msgstr "プレフィックスの動作"
 
-#: ../../embeddable.rst:158
-msgid "The ``prefix`` attribute controls how column names are generated:"
-msgstr "``prefix`` 属性はカラム名の生成方法を制御します："
+#: ../../embeddable.md:148
+msgid "The `prefix` attribute controls how column names are generated:"
+msgstr "`prefix` 属性はカラム名の生成方法を制御します："
 
-#: ../../embeddable.rst:160
+#: ../../embeddable.md:150
 msgid ""
-"Column names are generated by combining the prefix with the embeddable field "
-"column name"
-msgstr ""
-"カラム名は、プレフィックスと埋め込み可能フィールドのカラム名を組み合わせて生"
-"成されます"
+"Column names are generated by combining the prefix with the embeddable "
+"field column name"
+msgstr "カラム名は、プレフィックスと埋め込み可能フィールドのカラム名を組み合わせて生成されます"
 
-#: ../../embeddable.rst:161
+#: ../../embeddable.md:151
 msgid "The prefix is added as-is to the field column name"
 msgstr "プレフィックスはフィールドのカラム名にそのまま追加されます"
 
-#: ../../embeddable.rst:162
+#: ../../embeddable.md:152
 msgid ""
 "If no prefix is specified, the behavior remains the same as using the "
 "embeddable field column name directly"
-msgstr ""
-"プレフィックスが指定されていない場合、動作は埋め込み可能フィールドのカラム名"
-"を直接使用する場合と同じままです"
+msgstr "プレフィックスが指定されていない場合、動作は埋め込み可能フィールドのカラム名を直接使用する場合と同じままです"
 
-#: ../../embeddable.rst:180
+#: ../../embeddable.md:169
 msgid "Column overrides"
 msgstr "カラムのオーバーライド"
 
-#: ../../embeddable.rst:182
+#: ../../embeddable.md:171
 msgid ""
-"You can use the ``columnOverrides`` attribute along with ``@ColumnOverride`` "
+"You can use the `columnOverrides` attribute along with `@ColumnOverride` "
 "annotations to have fine-grained control over individual column mappings:"
 msgstr ""
-"``columnOverrides`` 属性を ``@ColumnOverride`` アノテーションと共に使用することで、"
-"個々のカラムマッピングをきめ細かく制御できます："
+"`columnOverrides` 属性を `@ColumnOverride` "
+"アノテーションと共に使用することで、個々のカラムマッピングをきめ細かく制御できます："
 
-#: ../../embeddable.rst:204
-msgid "The ``@ColumnOverride`` annotation allows you to:"
-msgstr "``@ColumnOverride`` アノテーションを使用すると、以下のことができます："
+#: ../../embeddable.md:193
+msgid "The `@ColumnOverride` annotation allows you to:"
+msgstr "`@ColumnOverride` アノテーションを使用すると、以下のことができます："
 
-#: ../../embeddable.rst:206
+#: ../../embeddable.md:195
 msgid "Specify a custom column name for a specific embeddable field"
 msgstr "特定の埋め込み可能フィールドにカスタムカラム名を指定する"
 
-#: ../../embeddable.rst:207
+#: ../../embeddable.md:196
+msgid "Override column attributes such as `insertable`, `updatable`, and `quote`"
+msgstr "`insertable`、`updatable`、`quote` などのカラム属性をオーバーライドする"
+
+#: ../../embeddable.md:197
+msgid "Take precedence over any `prefix` attribute when both are specified"
+msgstr "両方が指定されている場合、`prefix` 属性よりも優先される"
+
+#: ../../embeddable.md:200
 msgid ""
-"Override column attributes such as ``insertable``, ``updatable``, and "
-"``quote``"
+"When both `prefix` and `columnOverrides` are used, the `@ColumnOverride` "
+"settings take precedence for the specified fields."
 msgstr ""
-"``insertable``、``updatable``、``quote`` などのカラム属性をオーバーライドする"
+"`prefix` と `columnOverrides` の両方が使用されている場合、指定されたフィールドに対しては "
+"`@ColumnOverride` の設定が優先されます。"
 
-#: ../../embeddable.rst:208
-msgid "Take precedence over any ``prefix`` attribute when both are specified"
-msgstr "両方が指定されている場合、``prefix`` 属性よりも優先される"
-
-#: ../../embeddable.rst:211
-msgid ""
-"When both ``prefix`` and ``columnOverrides`` are used, the "
-"``@ColumnOverride`` settings take precedence for the specified fields."
-msgstr ""
-"``prefix`` と ``columnOverrides`` の両方が使用されている場合、"
-"指定されたフィールドに対しては ``@ColumnOverride`` の設定が優先されます。"
-
-#: ../../embeddable.rst:214
+#: ../../embeddable.md:203
 msgid "Example"
 msgstr "例"
+
+#~ msgid ":doc:`basic`"
+#~ msgstr ""
+
+#~ msgid ":doc:`domain`"
+#~ msgstr ""
+
+#~ msgid "{doc}`basic`"
+#~ msgstr ""
+
+#~ msgid "{doc}`domain`"
+#~ msgstr ""
+

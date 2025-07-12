@@ -1,177 +1,287 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 214\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../query/batch-delete.rst:3
+#: ../../query/batch-delete.md:1
 msgid "Batch delete"
 msgstr "バッチ削除"
 
-#: ../../query/batch-delete.rst:6
+#: ../../query/batch-delete.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../query/batch-delete.rst:8
-msgid "Annotate a Dao method with ``@BatchDelete`` to execute batch delete operations."
-msgstr "DAO メソッドに ``@BatchDelete`` を付けて、バッチ削除操作を実行します。"
+#: ../../query/batch-delete.md:7
+msgid ""
+"Annotate a Dao method with `@BatchDelete` to execute batch delete "
+"operations."
+msgstr "DAO メソッドに `@BatchDelete` を付けて、バッチ削除操作を実行します。"
 
-#: ../../query/batch-delete.rst:19
-msgid "By default, the DELETE statement is automatically generated. You can map to an arbitrary SQL file by setting the ``sqlFile`` property to ``true`` in the ``@BatchDelete`` annotation."
-msgstr "デフォルトでは、DELETE ステートメントが自動生成されます。 ``@BatchDelete`` アノテーション内の ``sqlFile`` プロパティに ``true`` を設定することで、任意の SQL ファイルをマッピングできます。"
+#: ../../query/batch-delete.md:18
+msgid ""
+"By default, the DELETE statement is automatically generated. You can map "
+"to an arbitrary SQL file by setting the `sqlFile` property to `true` in "
+"the `@BatchDelete` annotation."
+msgstr ""
+"デフォルトでは、DELETE ステートメントが自動生成されます。 `@BatchDelete` アノテーション内の `sqlFile` "
+"プロパティに `true` を設定することで、任意の SQL ファイルをマッピングできます。"
 
-#: ../../query/batch-delete.rst:22
-msgid "The ``preDelete`` method of entity listener is called each entity when before executing delete if the entity listener is specified at :doc:`../entity` parameter. Also the ``postDelete`` method of entity listener method is called each entity when after executing delete."
-msgstr ":doc:`../entity` パラメータでエンティティリスナーが指定されている場合、エンティティリスナーの ``preDelete`` メソッドは、削除を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの ``postDelete`` メソッドは、削除実行後に各エンティティごとに呼び出されます。"
+#: ../../query/batch-delete.md:21
 
-#: ../../query/batch-delete.rst:26
+msgid ""
+"The `preDelete` method of entity listener is called each entity when "
+"before executing delete if the entity listener is specified at "
+"[](../entity.md) parameter. Also the `postDelete` method of entity "
+"listener method is called each entity when after executing delete."
+msgstr ""
+":doc:`../entity` パラメータでエンティティリスナーが指定されている場合、エンティティリスナーの `preDelete` "
+"メソッドは、削除を実行する前に各エンティティごとに呼び出されます。また、エンティティリスナーメソッドの `postDelete` "
+"メソッドは、削除実行後に各エンティティごとに呼び出されます。"
+
+#: ../../query/batch-delete.md:24
 msgid "Return value"
 msgstr "戻り値"
 
-#: ../../query/batch-delete.rst:28
-msgid "Return value must be ``org.seasar.doma.jdbc.BatchResult`` that has entity class as an element if parameter ``Iterable`` subtype element is immutable entity class."
-msgstr "パラメータ ``Iterable`` のサブタイプの要素が不変エンティティクラスの場合、戻り値はエンティティクラスを要素として持つ ``org.seasar.doma.jdbc.BatchResult`` でなければなりません。"
+#: ../../query/batch-delete.md:26
+msgid ""
+"Return value must be `org.seasar.doma.jdbc.BatchResult` that has entity "
+"class as an element if parameter `Iterable` subtype element is immutable "
+"entity class."
+msgstr ""
+"パラメータ `Iterable` のサブタイプの要素が不変エンティティクラスの場合、戻り値はエンティティクラスを要素として持つ "
+"`org.seasar.doma.jdbc.BatchResult` でなければなりません。"
 
-#: ../../query/batch-delete.rst:30
-msgid "Return value must be ``int[]`` that is represented each deleting process's updated count if the above conditions are not satisfied."
-msgstr "上記の条件が満たされない場合、戻り値は各削除プロセスの更新回数を表す ``int[]`` でなければなりません。"
+#: ../../query/batch-delete.md:28
+msgid ""
+"Return value must be `int[]` that is represented each deleting process's "
+"updated count if the above conditions are not satisfied."
+msgstr "上記の条件が満たされない場合、戻り値は各削除プロセスの更新回数を表す `int[]` でなければなりません。"
 
-#: ../../query/batch-delete.rst:33
+#: ../../query/batch-delete.md:30
 msgid "Batch delete by auto generated SQL"
 msgstr "自動生成SQLによるバッチ削除"
 
-#: ../../query/batch-delete.rst:35
-msgid "Parameter type must be ``java.lang.Iterable`` subtype that has :doc:`../entity` as an element. Specifiable parameter is only one. Parameter must not be ``null``. Return value array element count become equal ``Iterable`` element count. Delete count is returned to array each element."
-msgstr "パラメータの型は要素として :doc:`../entity` を持つ ``java.lang.Iterable`` のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは ``null`` であってはなりません。戻り値の配列要素数は、 ``Iterable`` 要素数と等しくなります。戻り値の配列のそれぞれの要素は削除された件数を表します。"
+#: ../../query/batch-delete.md:32
 
-#: ../../query/batch-delete.rst:42
+msgid ""
+"Parameter type must be `java.lang.Iterable` subtype that has "
+"[](../entity.md) as an element. Specifiable parameter is only one. "
+"Parameter must not be `null`. Return value array element count become "
+"equal `Iterable` element count. Delete count is returned to array each "
+"element."
+msgstr ""
+"パラメータの型は要素として :doc:`../entity` を持つ `java.lang.Iterable` "
+"のサブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは `null` "
+"であってはなりません。戻り値の配列要素数は、 `Iterable` "
+"要素数と等しくなります。戻り値の配列のそれぞれの要素は削除された件数を表します。"
+
+#: ../../query/batch-delete.md:38
 msgid "Version number and optimistic concurrency control in auto generated SQL"
 msgstr "自動生成された SQL におけるバージョン番号と楽観的排他制御"
 
-#: ../../query/batch-delete.rst:44
-#: ../../query/batch-delete.rst:102
-msgid "Optimistic concurrency control is executed if you satisfied below conditions."
+#: ../../query/batch-delete.md:40 ../../query/batch-delete.md:94
+msgid ""
+"Optimistic concurrency control is executed if you satisfied below "
+"conditions."
 msgstr "以下の条件を満たした場合、楽観的排他制御が実行されます。"
 
-#: ../../query/batch-delete.rst:46
-msgid ":doc:`../entity` within parameter java.lang.Iterable subtype has property that is annotated with @Version"
-msgstr "パラメータ java.lang.Iterable サブタイプ内の :doc:`../entity` に @Version アノテーションが付けられたプロパティがある"
+#: ../../query/batch-delete.md:42
 
-#: ../../query/batch-delete.rst:47
-#: ../../query/batch-delete.rst:105
+msgid ""
+"[](../entity.md) within parameter java.lang.Iterable subtype has property"
+" that is annotated with @Version"
+msgstr ""
+"パラメータ java.lang.Iterable サブタイプ内の :doc:`../entity` に @Version "
+"アノテーションが付けられたプロパティがある"
+
+#: ../../query/batch-delete.md:43 ../../query/batch-delete.md:97
 msgid "The ignoreVersion element within @BatchDelete annotation is false"
 msgstr "@BatchDelete アノテーション内のignoreVersion要素がfalseである"
 
-#: ../../query/batch-delete.rst:49
-msgid "If optimistic concurrency control is enable, version number is included with identifier in delete condition. ``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if at that time deleted count is 0."
-msgstr "楽観的排他制御が有効な場合、バージョン番号と識別子が削除条件に含まれます。削除件数が 0 の場合、楽観的排他制御の失敗を表す ``BatchOptimisticLockException`` がスローされます。"
+#: ../../query/batch-delete.md:45
+msgid ""
+"If optimistic concurrency control is enable, version number is included "
+"with identifier in delete condition. `BatchOptimisticLockException` "
+"representing optimistic concurrency control failure is thrown, if at that"
+" time deleted count is 0."
+msgstr ""
+"楽観的排他制御が有効な場合、バージョン番号と識別子が削除条件に含まれます。削除件数が 0 の場合、楽観的排他制御の失敗を表す "
+"`BatchOptimisticLockException` がスローされます。"
 
-#: ../../query/batch-delete.rst:53
-#: ../../query/batch-delete.rst:117
+#: ../../query/batch-delete.md:48 ../../query/batch-delete.md:108
 msgid "ignoreVersion"
 msgstr "ignoreVersion"
 
-#: ../../query/batch-delete.rst:55
-msgid "If the ``ignoreVersion`` property of the ``@BatchDelete`` annotation is set to ``true``, the version number is not included in the delete condition. ``BatchOptimisticLockException`` is not thrown, even if the delete count is 0."
-msgstr "``@BatchDelete`` アノテーション内の ``ignoreVersion`` プロパティが ``true`` の場合、バージョン番号は削除条件に含まれません。削除数が0であっても ``BatchOptimisticLockException`` はスローされません。"
+#: ../../query/batch-delete.md:50
+msgid ""
+"If the `ignoreVersion` property of the `@BatchDelete` annotation is set "
+"to `true`, the version number is not included in the delete condition. "
+"`BatchOptimisticLockException` is not thrown, even if the delete count is"
+" 0."
+msgstr ""
+"`@BatchDelete` アノテーション内の `ignoreVersion` プロパティが `true` "
+"の場合、バージョン番号は削除条件に含まれません。削除数が0であっても `BatchOptimisticLockException` "
+"はスローされません。"
 
-#: ../../query/batch-delete.rst:64
-#: ../../query/batch-delete.rst:128
+#: ../../query/batch-delete.md:58 ../../query/batch-delete.md:118
 msgid "suppressOptimisticLockException"
 msgstr "suppressOptimisticLockException"
 
-#: ../../query/batch-delete.rst:66
-msgid "When the ``suppressOptimisticLockException`` property of the ``@BatchDelete`` annotation is set to ``true``, the version number is included in the delete condition but ``BatchOptimisticLockException`` is not thrown even if the delete count is 0."
-msgstr "``@BatchDelete`` アノテーションの ``suppressOptimisticLockException`` プロパティが ``true`` に設定されている場合、削除条件にバージョン番号が含まれますが、削除件数がゼロでも ``BatchOptimisticLockException`` はスローされません。"
+#: ../../query/batch-delete.md:60
+msgid ""
+"When the `suppressOptimisticLockException` property of the `@BatchDelete`"
+" annotation is set to `true`, the version number is included in the "
+"delete condition but `BatchOptimisticLockException` is not thrown even if"
+" the delete count is 0."
+msgstr ""
+"`@BatchDelete` アノテーションの `suppressOptimisticLockException` プロパティが "
+"`true` に設定されている場合、削除条件にバージョン番号が含まれますが、削除件数がゼロでも "
+"`BatchOptimisticLockException` はスローされません。"
 
-#: ../../query/batch-delete.rst:75
+#: ../../query/batch-delete.md:68
 msgid "Batch delete by SQL file"
 msgstr "SQLファイルによるバッチ削除"
 
-#: ../../query/batch-delete.rst:77
-msgid "To execute batch deleting by SQL file, you set ``true`` to ``sqlFile`` property within ``@BatchDelete`` annotation and prepare SQL file that correspond method."
-msgstr "SQLファイルによるバッチ削除を実行するには、 ``@BatchDelete`` アノテーション内の ``sqlFile`` プロパティに ``true`` を設定し、対応するSQLファイルを用意します。"
+#: ../../query/batch-delete.md:70
+msgid ""
+"To execute batch deleting by SQL file, you set `true` to `sqlFile` "
+"property within `@BatchDelete` annotation and prepare SQL file that "
+"correspond method."
+msgstr ""
+"SQLファイルによるバッチ削除を実行するには、 `@BatchDelete` アノテーション内の `sqlFile` プロパティに "
+"`true` を設定し、対応するSQLファイルを用意します。"
 
-#: ../../query/batch-delete.rst:85
-msgid "Parameter type must be ``java.lang.Iterable`` subtype that has arbitrary type as an element. Specifiable parameter is only one. Parameter must not be ``null``. Return value array element count become equal ``Iterable`` element count. Delete count is returned to array each element."
-msgstr "パラメータの型は、任意の型を要素として持つ ``java.lang.Iterable`` サブタイプでなければなりません。指定できるパラメータは 1 つだけです。パラメータは ``null`` であってはなりません。戻り値の配列要素数は、 ``Iterable`` 要素数と等しくなります。配列のそれぞれの要素が削除された件数を表します。"
+#: ../../query/batch-delete.md:78
+msgid ""
+"Parameter type must be `java.lang.Iterable` subtype that has arbitrary "
+"type as an element. Specifiable parameter is only one. Parameter must not"
+" be `null`. Return value array element count become equal `Iterable` "
+"element count. Delete count is returned to array each element."
+msgstr ""
+"パラメータの型は、任意の型を要素として持つ `java.lang.Iterable` サブタイプでなければなりません。指定できるパラメータは "
+"1 つだけです。パラメータは `null` であってはなりません。戻り値の配列要素数は、 `Iterable` "
+"要素数と等しくなります。配列のそれぞれの要素が削除された件数を表します。"
 
-#: ../../query/batch-delete.rst:91
+#: ../../query/batch-delete.md:84
 msgid "For example, you describe SQL like below to correspond above method."
 msgstr "例えば、上記のメソッドに対応するには以下のようなSQLを記述します。"
 
-#: ../../query/batch-delete.rst:97
-msgid "Parameter name indicate ``java.lang.Iterable`` subtype element in SQL file."
-msgstr "SQL ファイル内では、メソッドのパラメータ名は ``java.lang.Iterable`` の要素を示します。"
+#: ../../query/batch-delete.md:90
+msgid "Parameter name indicate `java.lang.Iterable` subtype element in SQL file."
+msgstr "SQL ファイル内では、メソッドのパラメータ名は `java.lang.Iterable` の要素を示します。"
 
-#: ../../query/batch-delete.rst:100
+#: ../../query/batch-delete.md:92
 msgid "Version number and optimistic concurrency control in SQL file"
 msgstr "SQLファイルにおけるバージョン番号と楽観的排他制御"
 
-#: ../../query/batch-delete.rst:104
-msgid "The parameter ``java.lang.Iterable`` subtype has :doc:`../entity` element, the  :doc:`../entity` element is annotated with @Version"
-msgstr "パラメータの ``java.lang.Iterable`` のサブタイプには :doc:`../entity` 要素があり、 :doc:`../entity` 要素には @Version の注釈が付けられている"
+#: ../../query/batch-delete.md:96
 
-#: ../../query/batch-delete.rst:107
-msgid "However, describing to SQL file for Optimistic concurrency control SQL is application developer's responsibility. For example like below SQL, you must specify version number in WHERE clauses."
-msgstr "ただし、楽観的排他制御のためのSQLを記述するのはアプリケーション開発者の責任となります。たとえば、以下の SQL のように、WHERE 句にバージョン番号を指定する必要があります。"
+msgid ""
+"The parameter `java.lang.Iterable` subtype has [](../entity.md) element, "
+"the [](../entity.md) element is annotated with @Version"
+msgstr ""
+"パラメータの `java.lang.Iterable` のサブタイプには :doc:`../entity` 要素があり、 "
+":doc:`../entity` 要素には @Version の注釈が付けられている"
 
-#: ../../query/batch-delete.rst:114
-msgid "``BatchOptimisticLockException`` representing optimistic concurrency control failure is thrown, if deleted count is 0 or multiple in this SQL."
-msgstr "この SQL で削除件数が 0 以上の場合、楽観的排他制御の失敗を表す ``BatchOptimisticLockException`` がスローされます。"
+#: ../../query/batch-delete.md:99
+msgid ""
+"However, describing to SQL file for Optimistic concurrency control SQL is"
+" application developer's responsibility. For example like below SQL, you "
+"must specify version number in WHERE clauses."
+msgstr ""
+"ただし、楽観的排他制御のためのSQLを記述するのはアプリケーション開発者の責任となります。たとえば、以下の SQL のように、WHERE "
+"句にバージョン番号を指定する必要があります。"
 
-#: ../../query/batch-delete.rst:119
-msgid "If the ``ignoreVersion`` property of the ``@BatchDelete`` annotation is set to true, ``BatchOptimisticLockException`` is not thrown even if the deleted count is 0 or multiple."
-msgstr "``@BatchDelete`` アノテーションの ``ignoreVersion`` プロパティが ``true`` に設定されている場合、削除件数が 0 または複数でも ``BatchOptimisticLockException`` はスローされません。"
+#: ../../query/batch-delete.md:106
+msgid ""
+"`BatchOptimisticLockException` representing optimistic concurrency "
+"control failure is thrown, if deleted count is 0 or multiple in this SQL."
+msgstr ""
+"この SQL で削除件数が 0 以上の場合、楽観的排他制御の失敗を表す `BatchOptimisticLockException` "
+"がスローされます。"
 
-#: ../../query/batch-delete.rst:130
-msgid "If the ``suppressOptimisticLockException`` property of the ``@BatchDelete`` annotation is set to ``true``, ``BatchOptimisticLockException`` is not thrown even if the deleted count is 0 or multiple."
-msgstr "``@BatchDelete`` アノテーションの ``suppressOptimisticLockException`` プロパティが ``true`` に設定されている場合、削除された件数が 0 または複数であっても ``BatchOptimisticLockException`` はスローされません。"
+#: ../../query/batch-delete.md:110
+msgid ""
+"If the `ignoreVersion` property of the `@BatchDelete` annotation is set "
+"to true, `BatchOptimisticLockException` is not thrown even if the deleted"
+" count is 0 or multiple."
+msgstr ""
+"`@BatchDelete` アノテーションの `ignoreVersion` プロパティが `true` "
+"に設定されている場合、削除件数が 0 または複数でも `BatchOptimisticLockException` はスローされません。"
 
-#: ../../query/batch-delete.rst:139
+#: ../../query/batch-delete.md:120
+msgid ""
+"If the `suppressOptimisticLockException` property of the `@BatchDelete` "
+"annotation is set to `true`, `BatchOptimisticLockException` is not thrown"
+" even if the deleted count is 0 or multiple."
+msgstr ""
+"`@BatchDelete` アノテーションの `suppressOptimisticLockException` プロパティが "
+"`true` に設定されている場合、削除された件数が 0 または複数であっても "
+"`BatchOptimisticLockException` はスローされません。"
+
+#: ../../query/batch-delete.md:128
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
-#: ../../query/batch-delete.rst:141
-msgid "You can specify seconds of query timeout to ``queryTimeout`` property within ``@BatchDelete`` annotation."
-msgstr "``@BatchDelete`` アノテーション内の ``queryTimeout`` プロパティにクエリタイムアウトの秒数を指定できます。"
+#: ../../query/batch-delete.md:130
+msgid ""
+"You can specify seconds of query timeout to `queryTimeout` property "
+"within `@BatchDelete` annotation."
+msgstr "`@BatchDelete` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます。"
 
-#: ../../query/batch-delete.rst:148
-msgid "This specifying is applied regardless of with or without using sql file. Query timeout that is specified in config class is used if ``queryTimeout`` property is not set value."
-msgstr "この指定はSQLファイルの使用の有無に関わらず適用されます。 ``queryTimeout`` プロパティに値が設定されていない場合は、config クラスで指定されたクエリタイムアウトが使用されます。"
+#: ../../query/batch-delete.md:137
+msgid ""
+"This specifying is applied regardless of with or without using sql file. "
+"Query timeout that is specified in config class is used if `queryTimeout`"
+" property is not set value."
+msgstr ""
+"この指定はSQLファイルの使用の有無に関わらず適用されます。 `queryTimeout` "
+"プロパティに値が設定されていない場合は、config クラスで指定されたクエリタイムアウトが使用されます。"
 
-#: ../../query/batch-delete.rst:152
+#: ../../query/batch-delete.md:140
 msgid "Batch size"
 msgstr "バッチサイズ"
 
-#: ../../query/batch-delete.rst:154
-msgid "You can specify batch size to ``batchSize`` property within ``@BatchDelete`` annotation."
-msgstr "バッチサイズは ``@BatchDelete`` アノテーション内の ``batchSize`` プロパティに指定できます。"
+#: ../../query/batch-delete.md:142
+msgid ""
+"You can specify batch size to `batchSize` property within `@BatchDelete` "
+"annotation."
+msgstr "バッチサイズは `@BatchDelete` アノテーション内の `batchSize` プロパティに指定できます。"
 
-#: ../../query/batch-delete.rst:161
-msgid "This setting applies regardless of whether you use a SQL file or not. If you do not specify a value for the ``batchSize`` property, the batch size configured in the :doc:`../config` class is used."
-msgstr "この指定は、SQL ファイルの使用の有無に関係なく適用されます。 ``batchSize`` プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+#: ../../query/batch-delete.md:149
 
-#: ../../query/batch-delete.rst:165
+msgid ""
+"This setting applies regardless of whether you use a SQL file or not. If "
+"you do not specify a value for the `batchSize` property, the batch size "
+"configured in the [](../config.md) class is used."
+msgstr ""
+"この指定は、SQL ファイルの使用の有無に関係なく適用されます。 `batchSize` "
+"プロパティに値を指定しない場合は、:doc:`../config` クラスで指定されたバッチサイズが適用されます。"
+
+#: ../../query/batch-delete.md:152
 msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
-#: ../../query/batch-delete.rst:167
-msgid "You can specify SQL log output format to ``sqlLog`` property within ``@BatchDelete`` annotation."
-msgstr "SQLログの出力形式は ``@BatchDelete`` アノテーション内の ``sqlLog`` プロパティに指定できます。"
+#: ../../query/batch-delete.md:154
+msgid ""
+"You can specify SQL log output format to `sqlLog` property within "
+"`@BatchDelete` annotation."
+msgstr "SQLログの出力形式は `@BatchDelete` アノテーション内の `sqlLog` プロパティに指定できます。"
 
-#: ../../query/batch-delete.rst:174
-msgid "``SqlLogType.RAW`` outputs the SQL statement with its binding parameters in the log."
-msgstr "``SqlLogType.RAW`` は、SQLステートメントとそのバインドパラメータをログに出力します。"
+#: ../../query/batch-delete.md:161
+msgid ""
+"`SqlLogType.RAW` outputs the SQL statement with its binding parameters in"
+" the log."
+msgstr "`SqlLogType.RAW` は、SQLステートメントとそのバインドパラメータをログに出力します。"
 

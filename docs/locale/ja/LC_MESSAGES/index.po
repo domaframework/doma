@@ -1,122 +1,155 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 21:57+0900\n"
+"POT-Creation-Date: 2025-07-12 01:18+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 194\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../index.rst:13
+#: ../../index.md:13
 msgid "Welcome to Doma"
 msgstr "Doma へようこそ"
 
-#: ../../index.rst:15
-msgid "Doma is a database access framework for Java with several notable strengths:"
+#: ../../index.md:15
+msgid ""
+"Doma is a database access framework for Java with several notable "
+"strengths:"
 msgstr "Domaは、いくつかの優れた特長を備えたJava用のデータベースアクセスフレームワークです。"
 
-#: ../../index.rst:17
-msgid "It checks and generates source code at compile time using annotation processing."
+#: ../../index.md:17
+msgid ""
+"It checks and generates source code at compile time using annotation "
+"processing."
 msgstr "コンパイル時にアノテーション処理を使用してソースコードを検証および生成します。"
 
-#: ../../index.rst:18
+#: ../../index.md:18
 msgid "It supports associations between entities."
 msgstr "エンティティ間の関連付けをサポートします。"
 
-#: ../../index.rst:19
+#: ../../index.md:19
 msgid "It offers a type-safe Criteria API."
 msgstr "型安全なCriteria APIを提供します。"
 
-#: ../../index.rst:20
+#: ../../index.md:20
 msgid "It includes SQL templates, known as “two-way SQL.”"
 msgstr "\"two-way SQL\"と呼ばれるSQLテンプレートを含みます。"
 
-#: ../../index.rst:21
+#: ../../index.md:21
 msgid "It runs independently, without relying on any other libraries."
 msgstr "他のライブラリに依存せずに独立して実行されます。"
 
-#: ../../index.rst:23
-msgid "This document consists of following sections:"
-msgstr "このドキュメントは、以下のセクションで構成されています。"
-
-#: ../../index.rst:25
-msgid "`User Documentation`_"
-msgstr "`ユーザー向けドキュメンテーション`_"
-
-#: ../../index.rst:26
-msgid "`About Doma`_"
-msgstr "`Domaについて`_"
-
-#: ../../index.rst:27
-msgid "`Links`_"
-msgstr "`リンク集`_"
-
-#: ../../index.rst:29
+#: ../../index.md:23
 msgid "Support Doma Development"
 msgstr "Domaの開発をご支援ください"
 
-#: ../../index.rst:32
-msgid "We kindly ask for your support to help us continue the development and maintenance of Doma. Your donation will enable us to fix bugs faster, improve the library, and add new features."
-msgstr "Domaの開発とメンテナンスを続けていくために、ぜひご支援をお願いします。\n"
+#: ../../index.md:26
+msgid ""
+"We kindly ask for your support to help us continue the development and "
+"maintenance of Doma. Your donation will enable us to fix bugs faster, "
+"improve the library, and add new features."
+msgstr ""
+"Domaの開発とメンテナンスを続けていくために、ぜひご支援をお願いします。\n"
 "いただいたご寄付は、バグ修正の迅速化やライブラリの改善、新機能の追加に活用させていただきます。"
 
-#: ../../index.rst:35
-msgid "You can make a contribution here: https://opencollective.com/doma"
+#: ../../index.md:29
+
+msgid "You can make a contribution here: <https://opencollective.com/doma>"
 msgstr "こちらで寄付ができます: https://opencollective.com/doma"
 
-#: ../../index.rst:37
+#: ../../index.md:31
 msgid "Thank you very much for supporting Doma!"
 msgstr "Domaを応援していただき、ありがとうございます。"
 
-#: ../../index.rst:40
+#: ../../index.md:34
 msgid "User Documentation"
 msgstr "ユーザー向けドキュメンテーション"
 
-#: ../../index.rst:71
+#: ../../index.md:65
 msgid "About Doma"
 msgstr "Domaについて"
 
-#: ../../index.rst:79
+#: ../../index.md:73
 msgid "Links"
 msgstr "リンク集"
 
-#: ../../index.rst:81
-msgid "`News and announcements <https://twitter.com/domaframework>`_"
+#: ../../index.md:75
+
+msgid "[News and announcements](https://twitter.com/domaframework)"
 msgstr "`ニュースやアナウンス <https://twitter.com/domaframework>`_"
 
-#: ../../index.rst:82
-msgid "`GitHub repository <https://github.com/domaframework/doma>`_"
+#: ../../index.md:76
+
+msgid "[GitHub repository](https://github.com/domaframework/doma)"
 msgstr "`GitHub リポジトリ <https://github.com/domaframework/doma>`_"
 
-#: ../../index.rst:83
-msgid "`Release Notes <https://github.com/domaframework/doma/releases>`_"
+#: ../../index.md:77
+
+msgid "[Release Notes](https://github.com/domaframework/doma/releases)"
 msgstr "`リリースノート <https://github.com/domaframework/doma/releases>`_"
 
-#: ../../index.rst:84
-msgid "`JavaDoc <https://www.javadoc.io/doc/org.seasar.doma/doma-core/latest/index.html>`_"
-msgstr ""
+#: ../../index.md:78
 
-#: ../../index.rst:85
-msgid "`Examples <https://github.com/domaframework/simple-examples>`_"
+msgid ""
+"[JavaDoc](https://www.javadoc.io/doc/org.seasar.doma/doma-"
+"core/latest/index.html)"
+msgstr ""
+"`JavaDoc <https://www.javadoc.io/doc/org.seasar.doma/doma-"
+"core/latest/index.html>`_"
+
+#: ../../index.md:79
+
+msgid "[Examples](https://github.com/domaframework/simple-examples)"
 msgstr "`サンプルプロジェクト <https://github.com/domaframework/simple-examples>`_"
 
-#: ../../index.rst:86
-msgid "`Doma Compile Plugin <https://github.com/domaframework/doma-compile-plugin>`_"
-msgstr ""
+#: ../../index.md:80
 
-#: ../../index.rst:87
-msgid "`Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-plugin>`_"
+msgid ""
+"[Doma Compile Plugin](https://github.com/domaframework/doma-compile-"
+"plugin)"
 msgstr ""
+"`Doma Compile Plugin <https://github.com/domaframework/doma-compile-"
+"plugin>`_"
 
-#: ../../index.rst:88
-msgid "`Doma version 1 <http://doma.seasar.org/>`_"
+#: ../../index.md:81
+
+msgid ""
+"[Doma CodeGen Plugin](https://github.com/domaframework/doma-codegen-"
+"plugin)"
+msgstr ""
+"`Doma CodeGen Plugin <https://github.com/domaframework/doma-codegen-"
+"plugin>`_"
+
+#: ../../index.md:82
+
+msgid "[Doma version 1](http://doma.seasar.org/)"
 msgstr "`Doma v1.x のWebサイト <http://doma.seasar.org/>`_"
+
+#~ msgid "`User Documentation`_"
+#~ msgstr "`ユーザー向けドキュメンテーション`_"
+
+#~ msgid "`About Doma`_"
+#~ msgstr "`Domaについて`_"
+
+#~ msgid "`Links`_"
+#~ msgstr "`リンク集`_"
+
+#~ msgid "This document consists of following sections:"
+#~ msgstr "このドキュメントは、以下のセクションで構成されています。"
+
+#~ msgid "[User Documentation]"
+#~ msgstr "ユーザー向けドキュメンテーション"
+
+#~ msgid "[About Doma]"
+#~ msgstr "Domaについて"
+
+#~ msgid "[Links]"
+#~ msgstr "リンク集"
 

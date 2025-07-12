@@ -1,103 +1,129 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 10:05+0900\n"
+"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 166\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../lombok-support.rst:3
+#: ../../lombok-support.md:1
 msgid "Lombok support"
 msgstr "Lombok サポート"
 
-#: ../../lombok-support.rst:6
+#: ../../lombok-support.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../lombok-support.rst:8
-msgid "Doma supports `Lombok <https://projectlombok.org/>`_ version 1.16.12 and later."
+#: ../../lombok-support.md:7
+
+msgid ""
+"Doma supports [Lombok](https://projectlombok.org/) version 1.16.12 and "
+"later."
 msgstr "Doma は、`Lombok <https://projectlombok.org/>`_ 1.16.12 以降をサポートしています。"
 
-#: ../../lombok-support.rst:12
+#: ../../lombok-support.md:10
 msgid "If you intend to use Eclipse, use version 4.5 or above."
 msgstr "Eclipse を使用する場合は、バージョン 4.5 以降を使用してください。"
 
-#: ../../lombok-support.rst:15
+#: ../../lombok-support.md:13
 msgid "Overview"
 msgstr "概要"
 
-#: ../../lombok-support.rst:17
-msgid "Both Lombok and Doma use annotation processors. Java doesn't guarantee any specific order for annotation processors to run. This means Doma's processors might execute before Lombok has finished modifying classes."
+#: ../../lombok-support.md:15
+msgid ""
+"Both Lombok and Doma use annotation processors. Java doesn't guarantee "
+"any specific order for annotation processors to run. This means Doma's "
+"processors might execute before Lombok has finished modifying classes."
 msgstr "LombokとDomaの両方がアノテーションプロセッサを利用しています。Javaはアノテーションプロセッサの実行順序を特定の順番で保証していません。つまり、DomaのプロセッサがLombokがクラスの変更を終える前に実行される可能性があります。"
 
-#: ../../lombok-support.rst:21
-msgid "To address this issue, Doma's annotation processors recognize several Lombok annotations and adjust their behavior accordingly. For example, when Doma's annotation processors encounter a class annotated with ``@lombok.Value``, they assume that the class has a constructor with parameters matching all its instance fields."
-msgstr "この問題を解決するために、DomaのアノテーションプロセッサはLombokのアノテーションのいくつかを認識し、その動作を調整します。例えば、Domaのアノテーションプロセッサが ``@lombok.Value`` が付けられたクラスを見つけると、そのクラスには全てのインスタンスフィールドに対応するパラメータを持つコンストラクタがあると仮定します。"
+#: ../../lombok-support.md:19
 
-#: ../../lombok-support.rst:27
+msgid ""
+"To address this issue, Doma's annotation processors recognize several "
+"Lombok annotations and adjust their behavior accordingly. For example, "
+"when Doma's annotation processors encounter a class annotated with "
+"`@lombok.Value`, they assume that the class has a constructor with "
+"parameters matching all its instance fields."
+msgstr ""
+"この問題を解決するために、DomaのアノテーションプロセッサはLombokのアノテーションのいくつかを認識し、その動作を調整します。例えば、Domaのアノテーションプロセッサが"
+" `@lombok.Value` "
+"が付けられたクラスを見つけると、そのクラスには全てのインスタンスフィールドに対応するパラメータを持つコンストラクタがあると仮定します。"
+
+#: ../../lombok-support.md:24
 msgid "Best practices"
 msgstr "ベストプラクティス"
 
-#: ../../lombok-support.rst:29
-msgid "Here are the recommended patterns for using Lombok annotations with Doma classes:"
+#: ../../lombok-support.md:26
+msgid ""
+"Here are the recommended patterns for using Lombok annotations with Doma "
+"classes:"
 msgstr "こちらは、DomaクラスでLombok注釈を使用するための推奨パターンです。"
 
-#: ../../lombok-support.rst:32
+#: ../../lombok-support.md:28
 msgid "Entity class definition"
 msgstr "エンティティクラスの定義"
 
-#: ../../lombok-support.rst:35
+#: ../../lombok-support.md:30
 msgid "Immutable Entity Classes"
 msgstr "不変エンティティクラス"
 
-#: ../../lombok-support.rst:37
-msgid "Specify ``true`` to the ``immutable`` element of ``@Entity``"
-msgstr "``@Entity`` の ``immutable`` 要素に ``true`` を指定する"
+#: ../../lombok-support.md:32
 
-#: ../../lombok-support.rst:38
-#: ../../lombok-support.rst:110
-msgid "Specify either ``@lombok.Value`` or ``@lombok.AllArgsConstructor``"
-msgstr "``@lombok.Value`` または ``@lombok.AllArgsConstructor`` のいずれかを指定する"
+msgid "Specify `true` to the `immutable` element of `@Entity`"
+msgstr "`@Entity` の `immutable` 要素に `true` を指定する"
 
-#: ../../lombok-support.rst:39
-#: ../../lombok-support.rst:111
-msgid "Specify ``@lombok.Getter`` to generate getters, in case of ``@lombok.AllArgsConstructor``"
-msgstr "``@lombok.AllArgsConstructor`` の場合、ゲッターを生成するには ``@lombok.Getter`` を指定する"
+#: ../../lombok-support.md:33 ../../lombok-support.md:102
 
-#: ../../lombok-support.rst:65
+msgid "Specify either `@lombok.Value` or `@lombok.AllArgsConstructor`"
+msgstr "`@lombok.Value` または `@lombok.AllArgsConstructor` のいずれかを指定する"
+
+#: ../../lombok-support.md:34 ../../lombok-support.md:103
+
+msgid ""
+"Specify `@lombok.Getter` to generate getters, in case of "
+"`@lombok.AllArgsConstructor`"
+msgstr "`@lombok.AllArgsConstructor` の場合、ゲッターを生成するには `@lombok.Getter` を指定する"
+
+#: ../../lombok-support.md:59
 msgid "mutable entity classes"
 msgstr "可変エンティティクラス"
 
-#: ../../lombok-support.rst:67
+#: ../../lombok-support.md:61
 msgid "Define a default constructor"
 msgstr "デフォルトのコンストラクターを定義する"
 
-#: ../../lombok-support.rst:68
-msgid "Specify ``@lombok.Data`` or ``@lombok.Getter``/``@lombok.Setter`` to generate getters/setters"
-msgstr "ゲッター/セッターを生成するには、``@lombok.Data`` または ``@lombok.Getter``/``@lombok.Setter`` を指定する"
+#: ../../lombok-support.md:62
 
-#: ../../lombok-support.rst:94
+msgid ""
+"Specify `@lombok.Data` or `@lombok.Getter`/`@lombok.Setter` to generate "
+"getters/setters"
+msgstr ""
+"ゲッター/セッターを生成するには、`@lombok.Data` または "
+"`@lombok.Getter`/`@lombok.Setter` を指定する"
+
+#: ../../lombok-support.md:87
 msgid "Domain class definition"
 msgstr "ドメインクラスの定義"
 
-#: ../../lombok-support.rst:96
-msgid "Specify ``@lombok.Value``"
-msgstr "``@lombok.Value`` を指定する"
+#: ../../lombok-support.md:89
 
-#: ../../lombok-support.rst:97
-msgid "Define only one instance field whose name is ``value``"
-msgstr "``value`` という名前のインスタンスフィールドを 1 つだけ定義する"
+msgid "Specify `@lombok.Value`"
+msgstr "`@lombok.Value` を指定する"
 
-#: ../../lombok-support.rst:108
+#: ../../lombok-support.md:90
+
+msgid "Define only one instance field whose name is `value`"
+msgstr "`value` という名前のインスタンスフィールドを 1 つだけ定義する"
+
+#: ../../lombok-support.md:100
 msgid "Embeddable class definition"
 msgstr "埋め込み可能クラスの定義"
 

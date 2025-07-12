@@ -1,200 +1,253 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 13:10+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 224\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../query/function.rst:3
+#: ../../query/function.md:1
 msgid "Stored function"
 msgstr "ストアドファンクション"
 
-#: ../../query/function.rst:6
+#: ../../query/function.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../query/function.rst:8
-msgid "To call stored functions, you must annotate DAO methods with the ``@Function`` annotation:"
-msgstr "ストアドファンクションを呼び出すには、DAO メソッドに ``@Function`` アノテーションを付ける必要があります。"
+#: ../../query/function.md:7
 
-#: ../../query/function.rst:20
+msgid ""
+"To call stored functions, you must annotate DAO methods with the "
+"`@Function` annotation:"
+msgstr "ストアドファンクションを呼び出すには、DAO メソッドに `@Function` アノテーションを付ける必要があります。"
+
+#: ../../query/function.md:18
 msgid "Return type"
 msgstr "戻り値の型"
 
-#: ../../query/function.rst:22
-msgid "If the stored function returns nothing, the return type must be ``void``."
-msgstr "ストアドファンクションが何も返さない場合、戻り値の型は ``void`` でなければなりません。"
+#: ../../query/function.md:20
 
-#: ../../query/function.rst:24
-msgid "If the stored function returns a single result, the return type must be one of the following:"
+msgid "If the stored function returns nothing, the return type must be `void`."
+msgstr "ストアドファンクションが何も返さない場合、戻り値の型は `void` でなければなりません。"
+
+#: ../../query/function.md:22
+msgid ""
+"If the stored function returns a single result, the return type must be "
+"one of the following:"
 msgstr "ストアドファンクションが単一の結果を返す場合、戻り値の型は次のいずれかである必要があります。"
 
-#: ../../query/function.rst:26
-#: ../../query/function.rst:39
-#: ../../query/function.rst:77
-#: ../../query/function.rst:106
-#: ../../query/function.rst:138
-#: ../../query/function.rst:170
-msgid ":doc:`../basic`"
+#: ../../query/function.md:24 ../../query/function.md:37
+#: ../../query/function.md:72 ../../query/function.md:100
+#: ../../query/function.md:131 ../../query/function.md:162
+msgid "[](../basic.md)"
 msgstr ""
 
-#: ../../query/function.rst:27
-#: ../../query/function.rst:40
-#: ../../query/function.rst:78
-#: ../../query/function.rst:107
-#: ../../query/function.rst:139
-#: ../../query/function.rst:171
-msgid ":doc:`../domain`"
+#: ../../query/function.md:25 ../../query/function.md:38
+#: ../../query/function.md:73 ../../query/function.md:101
+#: ../../query/function.md:132 ../../query/function.md:163
+msgid "[](../domain.md)"
 msgstr ""
 
-#: ../../query/function.rst:28
-#: ../../query/function.rst:41
-#: ../../query/function.rst:172
-msgid ":doc:`../entity`"
+#: ../../query/function.md:26 ../../query/function.md:39
+#: ../../query/function.md:164
+msgid "[](../entity.md)"
 msgstr ""
 
-#: ../../query/function.rst:29
-#: ../../query/function.rst:42
-#: ../../query/function.rst:173
-msgid "java.util.Map<String, Object>"
+#: ../../query/function.md:27 ../../query/function.md:40
+#: ../../query/function.md:165
+msgid "java.util.Map\\<String, Object>"
 msgstr ""
 
-#: ../../query/function.rst:30
-msgid "java.util.Optional, whose element type is one of :doc:`../basic`, :doc:`../domain`, :doc:`../entity`, or java.util.Map<String, Object>"
-msgstr "要素の型が :doc:`../basic`、:doc:`../domain`、:doc:`../entity`、java.util.Map<String, Object> のいずれかである java.util.Optional"
+#: ../../query/function.md:28
+, python-brace-format
+msgid ""
+"java.util.Optional, whose element type is one of [](../basic.md), "
+"[](../domain.md), [](../entity.md), or java.util.Map\\<String, Object>"
+msgstr ""
+"要素の型が "
+":doc:`../basic`、:doc:`../domain`、:doc:`../entity`、java.util.Map<String, "
+"Object> のいずれかである java.util.Optional"
 
-#: ../../query/function.rst:32
-#: ../../query/function.rst:44
-#: ../../query/function.rst:80
-#: ../../query/function.rst:109
-#: ../../query/function.rst:141
-#: ../../query/function.rst:175
+#: ../../query/function.md:30 ../../query/function.md:42
+#: ../../query/function.md:75 ../../query/function.md:103
+#: ../../query/function.md:134 ../../query/function.md:167
 msgid "java.util.OptionalInt"
 msgstr ""
 
-#: ../../query/function.rst:33
-#: ../../query/function.rst:45
-#: ../../query/function.rst:81
-#: ../../query/function.rst:110
-#: ../../query/function.rst:142
-#: ../../query/function.rst:176
+#: ../../query/function.md:31 ../../query/function.md:43
+#: ../../query/function.md:76 ../../query/function.md:104
+#: ../../query/function.md:135 ../../query/function.md:168
 msgid "java.util.OptionalLong"
 msgstr ""
 
-#: ../../query/function.rst:34
-#: ../../query/function.rst:46
-#: ../../query/function.rst:82
-#: ../../query/function.rst:111
-#: ../../query/function.rst:143
-#: ../../query/function.rst:177
+#: ../../query/function.md:32 ../../query/function.md:44
+#: ../../query/function.md:77 ../../query/function.md:105
+#: ../../query/function.md:136 ../../query/function.md:169
 msgid "java.util.OptionalDouble"
 msgstr ""
 
-#: ../../query/function.rst:36
-msgid "If the stored function returns a result list, the return type must be ``java.util.List`` and its element type must be one of the following:"
-msgstr "ストアドファンクションが結果リストを返す場合、戻り値の型は ``java.util.List`` であり、その要素の型は次のいずれかである必要があります。"
+#: ../../query/function.md:34
 
-#: ../../query/function.rst:43
-#: ../../query/function.rst:79
-#: ../../query/function.rst:108
-#: ../../query/function.rst:140
-#: ../../query/function.rst:174
-msgid "java.util.Optional whose element type is either :doc:`../basic` or :doc:`../domain`"
+msgid ""
+"If the stored function returns a result list, the return type must be "
+"`java.util.List` and its element type must be one of the following:"
+msgstr ""
+"ストアドファンクションが結果リストを返す場合、戻り値の型は `java.util.List` "
+"であり、その要素の型は次のいずれかである必要があります。"
+
+#: ../../query/function.md:41 ../../query/function.md:74
+#: ../../query/function.md:102 ../../query/function.md:133
+#: ../../query/function.md:166
+, python-brace-format
+msgid ""
+"java.util.Optional whose element type is either [](../basic.md) or "
+"[](../domain.md)"
 msgstr "要素タイプが :doc:`../basic` または :doc:`../domain` のいずれかである java.util.Optional"
 
-#: ../../query/function.rst:49
+#: ../../query/function.md:46
 msgid "Function name"
 msgstr "ファクション名"
 
-#: ../../query/function.rst:51
-msgid "The annotated method name is recognized as the function name by default. To override it, you can specify a value for the ``@Function``'s ``name`` element:"
-msgstr "アノテーションが付けられたメソッド名は、デフォルトで関数名として認識されます。これをオーバーライドするには、 ``@Function`` の ``name`` 要素に値を指定します。"
+#: ../../query/function.md:48
 
-#: ../../query/function.rst:60
+msgid ""
+"The annotated method name is recognized as the function name by default. "
+"To override it, you can specify a value for the `@Function`'s `name` "
+"element:"
+msgstr ""
+"アノテーションが付けられたメソッド名は、デフォルトで関数名として認識されます。これをオーバーライドするには、 `@Function` の "
+"`name` 要素に値を指定します。"
+
+#: ../../query/function.md:56
 msgid "Parameters"
 msgstr "パラメータ"
 
-#: ../../query/function.rst:62
-msgid "The order of stored function parameters must correspond with the order of DAO method parameters."
+#: ../../query/function.md:58
+msgid ""
+"The order of stored function parameters must correspond with the order of"
+" DAO method parameters."
 msgstr "ストアドファンクションのパラメータの順序は、DAO メソッドのパラメータの順序と一致する必要があります。"
 
-#: ../../query/function.rst:64
+#: ../../query/function.md:60
 msgid "All parameters must be annotated with one of the following annotations:"
 msgstr "すべてのパラメータには、次のいずれかのアノテーションを付ける必要があります。"
 
-#: ../../query/function.rst:66
+#: ../../query/function.md:62
 msgid "@In"
 msgstr ""
 
-#: ../../query/function.rst:67
+#: ../../query/function.md:63
 msgid "@InOut"
 msgstr ""
 
-#: ../../query/function.rst:68
+#: ../../query/function.md:64
 msgid "@Out"
 msgstr ""
 
-#: ../../query/function.rst:69
+#: ../../query/function.md:65
 msgid "@ResultSet"
 msgstr ""
 
-#: ../../query/function.rst:72
+#: ../../query/function.md:67
 msgid "IN parameter"
 msgstr "IN パラメータ"
 
-#: ../../query/function.rst:74
-msgid "To indicate IN parameters, annotate corresponding DAO method parameters with the ``@In`` annotation. The type of the DAO method parameter must be one of the following:"
-msgstr "IN パラメータを示すには、対応する DAO メソッド パラメータに ``@In`` アノテーションを付けます。 DAO メソッド パラメータのタイプは、次のいずれかである必要があります。"
+#: ../../query/function.md:69
 
-#: ../../query/function.rst:84
-#: ../../query/function.rst:113
-#: ../../query/function.rst:145
-#: ../../query/function.rst:179
+msgid ""
+"To indicate IN parameters, annotate corresponding DAO method parameters "
+"with the `@In` annotation. The type of the DAO method parameter must be "
+"one of the following:"
+msgstr ""
+"IN パラメータを示すには、対応する DAO メソッド パラメータに `@In` アノテーションを付けます。 DAO メソッド "
+"パラメータのタイプは、次のいずれかである必要があります。"
+
+#: ../../query/function.md:79 ../../query/function.md:107
+#: ../../query/function.md:138 ../../query/function.md:171
 msgid "Suppose you have the following definition:"
 msgstr "次の定義があるとします。"
 
-#: ../../query/function.rst:91
-#: ../../query/function.rst:120
-#: ../../query/function.rst:152
-#: ../../query/function.rst:186
+#: ../../query/function.md:86 ../../query/function.md:114
+#: ../../query/function.md:145 ../../query/function.md:178
 msgid "You can invoke the method as follows:"
 msgstr "このメソッドは次のように呼び出すことができます。"
 
-#: ../../query/function.rst:99
+#: ../../query/function.md:93
 msgid "INOUT parameter"
 msgstr "INOUT パラメータ"
 
-#: ../../query/function.rst:101
-msgid "To indicate INOUT parameters, annotate corresponding DAO method parameters with the ``@InOut`` annotation. The type of the DAO method parameter must be ``org.seasar.doma.jdbc.Reference`` and its type parameter must be one of the following:"
-msgstr "INOUT パラメータを示すには、対応する DAO メソッド パラメータに ``@InOut`` アノテーションを付けます。 DAO メソッド パラメータの型は ``org.seasar.doma.jdbc.Reference`` である必要があり、その type パラメータは次のいずれかである必要があります。"
+#: ../../query/function.md:95
 
-#: ../../query/function.rst:131
+msgid ""
+"To indicate INOUT parameters, annotate corresponding DAO method "
+"parameters with the `@InOut` annotation. The type of the DAO method "
+"parameter must be `org.seasar.doma.jdbc.Reference` and its type parameter"
+" must be one of the following:"
+msgstr ""
+"INOUT パラメータを示すには、対応する DAO メソッド パラメータに `@InOut` アノテーションを付けます。 DAO メソッド "
+"パラメータの型は `org.seasar.doma.jdbc.Reference` である必要があり、その type "
+"パラメータは次のいずれかである必要があります。"
+
+#: ../../query/function.md:124
 msgid "OUT parameter"
 msgstr "OUT パラメータ"
 
-#: ../../query/function.rst:133
-msgid "To indicate OUT parameters, annotate corresponding DAO method parameters with the ``@Out`` annotation. The type of the DAO method parameter must be ``org.seasar.doma.jdbc.Reference`` and its type parameter must be one of the following:"
-msgstr "OUT パラメータを示すには、対応する DAO メソッドパラメータに ``@Out`` アノテーションを付けます。 DAO メソッド パラメータの型は ``org.seasar.doma.jdbc.Reference`` である必要があり、その type パラメータは次のいずれかである必要があります。"
+#: ../../query/function.md:126
 
-#: ../../query/function.rst:162
+msgid ""
+"To indicate OUT parameters, annotate corresponding DAO method parameters "
+"with the `@Out` annotation. The type of the DAO method parameter must be "
+"`org.seasar.doma.jdbc.Reference` and its type parameter must be one of "
+"the following:"
+msgstr ""
+"OUT パラメータを示すには、対応する DAO メソッドパラメータに `@Out` アノテーションを付けます。 DAO メソッド "
+"パラメータの型は `org.seasar.doma.jdbc.Reference` である必要があり、その type "
+"パラメータは次のいずれかである必要があります。"
+
+#: ../../query/function.md:154
 msgid "Cursor or result set"
 msgstr "カーソルのOUTパラメータもしくは結果セット"
 
-#: ../../query/function.rst:164
-msgid "To indicate cursors or result sets, annotate corresponding DAO method parameters with the ``@ResultSet`` annotation."
-msgstr "カーソルまたは結果セットを示すには、対応する DAO メソッドのパラメータに ``@ResultSet`` アノテーションを付けます。"
+#: ../../query/function.md:156
 
-#: ../../query/function.rst:167
-msgid "The DAO method parameter type must be ``java.util.List`` and its element type must be one of the following:"
-msgstr "DAO メソッドのパラメータの型は ``java.util.List`` であり、その要素の型は次のいずれかである必要があります。"
+msgid ""
+"To indicate cursors or result sets, annotate corresponding DAO method "
+"parameters with the `@ResultSet` annotation."
+msgstr "カーソルまたは結果セットを示すには、対応する DAO メソッドのパラメータに `@ResultSet` アノテーションを付けます。"
+
+#: ../../query/function.md:159
+
+msgid ""
+"The DAO method parameter type must be `java.util.List` and its element "
+"type must be one of the following:"
+msgstr "DAO メソッドのパラメータの型は `java.util.List` であり、その要素の型は次のいずれかである必要があります。"
+
+#~ msgid ":doc:`../basic`"
+#~ msgstr ""
+
+#~ msgid ":doc:`../domain`"
+#~ msgstr ""
+
+#~ msgid ":doc:`../entity`"
+#~ msgstr ""
+
+#~ msgid "java.util.Map<String, Object>"
+#~ msgstr ""
+
+#~ msgid "{doc}`../basic`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../domain`"
+#~ msgstr ""
+
+#~ msgid "{doc}`../entity`"
+#~ msgstr ""
 

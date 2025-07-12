@@ -140,6 +140,9 @@ sphinx-autobuild . _build/html
 
 # Generate translation files
 sphinx-build -b gettext . _build/gettext
+
+# Updates Japanese translation files
+sphinx-intl update -p _build/gettext -l ja
 ```
 
 ### Documentation Guidelines

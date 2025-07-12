@@ -1,121 +1,156 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 10:05+0900\n"
+"POT-Creation-Date: 2025-07-12 00:16+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 236\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../quarkus-support.rst:3
+#: ../../quarkus-support.md:1
 msgid "Quarkus support"
 msgstr "Quarkus サポート"
 
-#: ../../quarkus-support.rst:6
+#: ../../quarkus-support.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../quarkus-support.rst:9
+#: ../../quarkus-support.md:7
 msgid "Overview"
 msgstr "概要"
 
-#: ../../quarkus-support.rst:11
-msgid "Doma supports `Quarkus <https://quarkus.io/>`_ v3.7.0 and later. To integrate Doma with Quarkus, you need to use the `quarkus-doma <https://github.com/quarkiverse/quarkus-doma>`_ extension."
-msgstr "Domaは `Quarkus <https://quarkus.io/>`_ v3.7.0以降をサポートしています。DomaとQuarkusを統合するには、 `quarkus-doma <https://github.com/quarkiverse/quarkus-doma>`_ エクステンションを使用する必要があります。"
+#: ../../quarkus-support.md:9
 
-#: ../../quarkus-support.rst:16
+msgid ""
+"Doma supports [Quarkus](https://quarkus.io/) v3.7.0 and later. To "
+"integrate Doma with Quarkus, you need to use the [quarkus-"
+"doma](https://github.com/quarkiverse/quarkus-doma) extension."
+msgstr ""
+"Domaは `Quarkus <https://quarkus.io/>`_ "
+"v3.7.0以降をサポートしています。DomaとQuarkusを統合するには、 `quarkus-doma "
+"<https://github.com/quarkiverse/quarkus-doma>`_ エクステンションを使用する必要があります。"
+
+#: ../../quarkus-support.md:13
 msgid "Quarkus and the quarkus-doma module require Java 17 and later."
 msgstr "Quarkusとquarkus-domaモジュールにはJava 17以降が必要です。"
 
-#: ../../quarkus-support.rst:19
+#: ../../quarkus-support.md:16
 msgid "Installing"
 msgstr "インストール"
 
-#: ../../quarkus-support.rst:22
+#: ../../quarkus-support.md:18
 msgid "Gradle"
 msgstr ""
 
-#: ../../quarkus-support.rst:33
+#: ../../quarkus-support.md:28
 msgid "Maven"
 msgstr ""
 
-#: ../../quarkus-support.rst:85
+#: ../../quarkus-support.md:79
 msgid "Main features"
 msgstr "主な特徴"
 
-#: ../../quarkus-support.rst:88
+#: ../../quarkus-support.md:81
 msgid "Hot reloading"
 msgstr "ホットリロード"
 
-#: ../../quarkus-support.rst:90
-msgid "In development mode, the quarkus-doma extension automatically detects and reloads SQL and Script files whenever you modify them."
+#: ../../quarkus-support.md:83
+msgid ""
+"In development mode, the quarkus-doma extension automatically detects and"
+" reloads SQL and Script files whenever you modify them."
 msgstr "開発モードでは、quarkus-domaエクステンションは、変更時にSQLとスクリプトファイルを自動検出してリロードします。"
 
-#: ../../quarkus-support.rst:93
+#: ../../quarkus-support.md:85
 msgid "Automatic bean register"
 msgstr "自動Bean登録"
 
-#: ../../quarkus-support.rst:95
-msgid "The quarkus-doma extension automatically registers all DAO beans in the Quarkus CDI container."
+#: ../../quarkus-support.md:87
+msgid ""
+"The quarkus-doma extension automatically registers all DAO beans in the "
+"Quarkus CDI container."
 msgstr "quarkus-domaエクステンションは、すべてのDAO BeanをQuarkus CDIコンテナに自動的に登録します。"
 
-#: ../../quarkus-support.rst:98
+#: ../../quarkus-support.md:89
 msgid "Automatic SQL execution on startup"
 msgstr "起動時のSQL自動実行"
 
-#: ../../quarkus-support.rst:100
-msgid "The quarkus-doma extension automatically executes the import.sql script file during application startup to initialize your database."
-msgstr "quarkus-domaエクステンションは、アプリケーション起動時にimport.sqlスクリプトファイルを自動的に実行し、データベースを初期化します。"
+#: ../../quarkus-support.md:91
+msgid ""
+"The quarkus-doma extension automatically executes the import.sql script "
+"file during application startup to initialize your database."
+msgstr ""
+"quarkus-"
+"domaエクステンションは、アプリケーション起動時にimport.sqlスクリプトファイルを自動的に実行し、データベースを初期化します。"
 
-#: ../../quarkus-support.rst:103
+#: ../../quarkus-support.md:93
 msgid "Configuration"
 msgstr "設定"
 
-#: ../../quarkus-support.rst:105
-msgid "You can write the following configurations in your application.properties file:"
+#: ../../quarkus-support.md:95
+msgid ""
+"You can write the following configurations in your application.properties"
+" file:"
 msgstr "application.propertiesファイルに次の構成を記述できます。"
 
-#: ../../quarkus-support.rst:119
+#: ../../quarkus-support.md:109
 msgid "The above properties are all optional."
 msgstr "上記のプロパティはすべてオプションです。"
 
-#: ../../quarkus-support.rst:121
-msgid "Please refer to the `Configuration References <https://docs.quarkiverse.io/quarkus-doma/dev/index.html#_configuration_references>`_ for details."
-msgstr "詳細は `Configuration Reference <https://docs.quarkiverse.io/quarkus-doma/dev/index.html#_configuration_references>`_ を参照してください。"
+#: ../../quarkus-support.md:111
 
-#: ../../quarkus-support.rst:124
+msgid ""
+"Please refer to the [Configuration "
+"References](https://docs.quarkiverse.io/quarkus-"
+"doma/dev/index.html#_configuration_references) for details."
+msgstr ""
+"詳細は `Configuration Reference <https://docs.quarkiverse.io/quarkus-"
+"doma/dev/index.html#_configuration_references>`_ を参照してください。"
+
+#: ../../quarkus-support.md:113
 msgid "Multiple Datasources"
 msgstr "複数のデータソース"
 
-#: ../../quarkus-support.rst:126
+#: ../../quarkus-support.md:115
 msgid "You can bind Doma’s configurations to each datasource as follows:"
 msgstr "Domaの設定を各データソースに次のようにバインドできます。"
 
-#: ../../quarkus-support.rst:160
-msgid "You can inject the named Doma’s resource using the ``io.quarkus.agroal.DataSource`` qualifier as follows:"
-msgstr "``io.quarkus.agroal.DataSource`` 修飾子を使用して、名前付きのDomaのリソースを注入できます。"
+#: ../../quarkus-support.md:149
 
-#: ../../quarkus-support.rst:186
+msgid ""
+"You can inject the named Doma’s resource using the "
+"`io.quarkus.agroal.DataSource` qualifier as follows:"
+msgstr "`io.quarkus.agroal.DataSource` 修飾子を使用して、名前付きのDomaのリソースを注入できます。"
+
+#: ../../quarkus-support.md:174
 msgid "Support for native images"
 msgstr "ネイティブイメージのサポート"
 
-#: ../../quarkus-support.rst:188
-msgid "The quarkus-doma extension automatically recognizes reflective classes and resources. These are included in your native image without requiring any additional configuration."
+#: ../../quarkus-support.md:176
+msgid ""
+"The quarkus-doma extension automatically recognizes reflective classes "
+"and resources. These are included in your native image without requiring "
+"any additional configuration."
 msgstr ""
 
-#: ../../quarkus-support.rst:191
+#: ../../quarkus-support.md:178
 msgid "Sample project"
 msgstr "サンプルプロジェクト"
 
-#: ../../quarkus-support.rst:193
-msgid "`domaframework/quarkus-sample <https://github.com/domaframework/quarkus-sample>`_"
+#: ../../quarkus-support.md:180
+msgid ""
+"[domaframework/quarkus-sample](https://github.com/domaframework/quarkus-"
+"sample)"
 msgstr ""
+
+#~ msgid ""
+#~ "`domaframework/quarkus-sample "
+#~ "<https://github.com/domaframework/quarkus-sample>`_"
+#~ msgstr ""
 

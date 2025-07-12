@@ -1,258 +1,399 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-05 10:20+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 210\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../query/insert.rst:3
+#: ../../query/insert.md:1
 msgid "Insert"
 msgstr "追加"
 
-#: ../../query/insert.rst:6
+#: ../../query/insert.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../query/insert.rst:8
-msgid "Annotate a Dao method with ``@Insert`` to execute insert operations."
-msgstr "DAO メソッドに ``@Insert`` を付けて、追加操作を実行します。"
+#: ../../query/insert.md:7
 
-#: ../../query/insert.rst:21
-msgid "By default, the INSERT statement is automatically generated. You can map to an arbitrary SQL file by setting the ``sqlFile`` property to ``true`` in the ``@Insert`` annotation."
-msgstr "デフォルトでは、INSERT ステートメントが自動生成されます。``@Insert`` アノテーション内の ``sqlFile`` プロパティに ``true`` を設定することで、任意の SQL ファイルをマッピングできます。"
+msgid "Annotate a Dao method with `@Insert` to execute insert operations."
+msgstr "DAO メソッドに `@Insert` を付けて、追加操作を実行します。"
 
-#: ../../query/insert.rst:24
-msgid "If an entity listener is specified for the entity class parameter, its ``preInsert`` method is called before executing the insert operation. Similarly, the ``postInsert`` method is called after the insert operation completes."
-msgstr "エンティティクラスパラメータにエンティティリスナーが指定されている場合、追加操作を実行する前にその ``preInsert`` メソッドが呼び出されます。同様に、追加操作が完了した後で ``postInsert`` メソッドが呼び出されます。"
+#: ../../query/insert.md:20
 
-#: ../../query/insert.rst:28
+msgid ""
+"By default, the INSERT statement is automatically generated. You can map "
+"to an arbitrary SQL file by setting the `sqlFile` property to `true` in "
+"the `@Insert` annotation."
+msgstr ""
+"デフォルトでは、INSERT ステートメントが自動生成されます。`@Insert` アノテーション内の `sqlFile` プロパティに "
+"`true` を設定することで、任意の SQL ファイルをマッピングできます。"
+
+#: ../../query/insert.md:23
+
+msgid ""
+"If an entity listener is specified for the entity class parameter, its "
+"`preInsert` method is called before executing the insert operation. "
+"Similarly, the `postInsert` method is called after the insert operation "
+"completes."
+msgstr ""
+"エンティティクラスパラメータにエンティティリスナーが指定されている場合、追加操作を実行する前にその `preInsert` "
+"メソッドが呼び出されます。同様に、追加操作が完了した後で `postInsert` メソッドが呼び出されます。"
+
+#: ../../query/insert.md:26
 msgid "Return value"
 msgstr "戻り値"
 
-#: ../../query/insert.rst:31
+#: ../../query/insert.md:28
 msgid "When using the returning property"
 msgstr "returning プロパティを使用する場合"
 
-#: ../../query/insert.rst:33
-msgid "See :ref:`insert-returning`."
-msgstr ":ref:`insert-returning` を参照してください。"
+#: ../../query/insert.md:30
 
-#: ../../query/insert.rst:36
+msgid "See [](#returning)."
+msgstr "returning"
+
+#: ../../query/insert.md:32
 msgid "When not using the returning property"
 msgstr "returning プロパティを使用しない場合"
 
-#: ../../query/insert.rst:38
-msgid "The return value must be an ``org.seasar.doma.jdbc.Result`` with the entity class as its element if the parameter is an immutable entity class."
-msgstr "パラメータが不変のエンティティクラスの場合、戻り値はエンティティクラスを要素とする ``org.seasar.doma.jdbc.Result`` である必要があります。"
+#: ../../query/insert.md:34
 
-#: ../../query/insert.rst:40
-msgid "The return value must be an ``int`` representing the update count if the above condition is not satisfied."
-msgstr "上記の条件が満たされない場合、戻り値は更新された件数を表す ``int`` でなければなりません。"
+msgid ""
+"The return value must be an `org.seasar.doma.jdbc.Result` with the entity"
+" class as its element if the parameter is an immutable entity class."
+msgstr ""
+"パラメータが不変のエンティティクラスの場合、戻り値はエンティティクラスを要素とする `org.seasar.doma.jdbc.Result`"
+" である必要があります。"
 
-#: ../../query/insert.rst:43
+#: ../../query/insert.md:36
+
+msgid ""
+"The return value must be an `int` representing the update count if the "
+"above condition is not satisfied."
+msgstr "上記の条件が満たされない場合、戻り値は更新された件数を表す `int` でなければなりません。"
+
+#: ../../query/insert.md:38
 msgid "Insert by auto generated SQL"
 msgstr "自動生成された SQL による追加"
 
-#: ../../query/insert.rst:45
-msgid "The parameter type must be an entity class. Only one parameter can be specified. The parameter must not be null."
+#: ../../query/insert.md:40
+msgid ""
+"The parameter type must be an entity class. Only one parameter can be "
+"specified. The parameter must not be null."
 msgstr "パラメータの型はエンティティクラスである必要があります。指定できるパラメータは1つだけです。パラメータはnullであってはなりません。"
 
-#: ../../query/insert.rst:58
+#: ../../query/insert.md:52
 msgid "Identifier"
 msgstr "ID"
 
-#: ../../query/insert.rst:61
-msgid "The identifier is automatically generated and set if the :doc:`../entity` identifier is annotated with ``@GeneratedValue``."
-msgstr ":doc:`../entity` のIDが ``@GeneratedValue`` で注釈されている場合にIDは自動的に生成され設定されます。"
+#: ../../query/insert.md:54
+, python-brace-format
+msgid ""
+"The identifier is automatically generated and set if the [](../entity.md)"
+" identifier is annotated with `@GeneratedValue`."
+msgstr ":doc:`../entity` のIDが `@GeneratedValue` で注釈されている場合にIDは自動的に生成され設定されます。"
 
-#: ../../query/insert.rst:63
-msgid "Reference :ref:`identity-auto-generation` for cautionary points."
+#: ../../query/insert.md:56
+, python-brace-format
+msgid "Reference [](../entity.md#id-generation) for cautionary points."
 msgstr "注意点については :ref:`identity-auto-generation` を参照してください。"
 
-#: ../../query/insert.rst:66
+#: ../../query/insert.md:58
 msgid "Version numbers"
 msgstr "バージョン番号"
 
-#: ../../query/insert.rst:68
-msgid "If a value that is explicitly set is greater than 0, then that value is used if the :doc:`../entity` has a property annotated with ``@Version``."
-msgstr ":doc:`../entity` に ``@Version`` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 以上の値が設定されていればその値を使用します。"
+#: ../../query/insert.md:60
+, python-brace-format
+msgid ""
+"If a value that is explicitly set is greater than 0, then that value is "
+"used if the [](../entity.md) has a property annotated with `@Version`."
+msgstr ""
+":doc:`../entity` に `@Version` が注釈されたプロパティがある場合、 そのプロパティに明示的に 0 "
+"以上の値が設定されていればその値を使用します。"
 
-#: ../../query/insert.rst:70
-msgid "If the value is not set or is less than 0, the value is automatically set to 1."
+#: ../../query/insert.md:62
+msgid ""
+"If the value is not set or is less than 0, the value is automatically set"
+" to 1."
 msgstr "もし設定されていないか、0 未満の値が設定されていれば、1 を自動的に設定します。"
 
-#: ../../query/insert.rst:73
+#: ../../query/insert.md:64
 msgid "Properties of @Insert"
 msgstr "@Insert のプロパティ"
 
-#: ../../query/insert.rst:76
+#: ../../query/insert.md:66
 msgid "insertable"
 msgstr ""
 
-#: ../../query/insert.rst:78
-msgid "A property is excluded from insertion if the entity class has a property annotated with ``@Column`` and the ``insertable`` property of ``@Column`` is set to false."
-msgstr "エンティティクラスに ``@Column`` が注釈されたプロパティが含まれており、その ``@Column`` の ``insertable`` 要素がfalseに設定されている場合、プロパティは追加から除外されます。"
+#: ../../query/insert.md:68
 
-#: ../../query/insert.rst:81
-#: ../../query/insert.rst:219
+msgid ""
+"A property is excluded from insertion if the entity class has a property "
+"annotated with `@Column` and the `insertable` property of `@Column` is "
+"set to false."
+msgstr ""
+"エンティティクラスに `@Column` が注釈されたプロパティが含まれており、その `@Column` の `insertable`"
+" 要素がfalseに設定されている場合、プロパティは追加から除外されます。"
+
+#: ../../query/insert.md:70 ../../query/insert.md:202
 msgid "exclude"
 msgstr ""
 
-#: ../../query/insert.rst:83
-msgid "A property specified in the ``exclude`` element of ``@Insert`` is excluded from insertion. Even if the ``insertable`` element of ``@Column`` is set to true, the property is excluded from insertion if it is specified in this element."
-msgstr "``@Insert`` の ``exclude`` 要素に指定されたプロパティは挿入から除外されます。 ``@Column`` の ``insertable`` 要素が true に設定されていても、この要素にプロパティが指定されている場合は追加から除外されます。"
+#: ../../query/insert.md:72
 
-#: ../../query/insert.rst:92
-#: ../../query/insert.rst:220
+msgid ""
+"A property specified in the `exclude` element of `@Insert` is excluded "
+"from insertion. Even if the `insertable` element of `@Column` is set to "
+"true, the property is excluded from insertion if it is specified in this "
+"element."
+msgstr ""
+"`@Insert` の `exclude` 要素に指定されたプロパティは挿入から除外されます。 `@Column` の "
+"`insertable` 要素が true に設定されていても、この要素にプロパティが指定されている場合は追加から除外されます。"
+
+#: ../../query/insert.md:80 ../../query/insert.md:203
 msgid "include"
 msgstr ""
 
-#: ../../query/insert.rst:94
-msgid "A property specified in the ``include`` element of ``@Insert`` is included in the insertion. If the same property is specified in both the ``include`` element and the ``exclude`` element of ``@Insert``, the property is excluded from insertion."
-msgstr "``@Insert`` の ``include`` 要素に指定されたプロパティのみを追加対象とします。\n"
-"``@Insert`` の ``include`` 要素と ``exclude`` 要素の両方に同じプロパティが指定された場合、\n"
+#: ../../query/insert.md:82
+
+msgid ""
+"A property specified in the `include` element of `@Insert` is included in"
+" the insertion. If the same property is specified in both the `include` "
+"element and the `exclude` element of `@Insert`, the property is excluded "
+"from insertion."
+msgstr ""
+"`@Insert` の `include` 要素に指定されたプロパティのみを追加対象とします。\n"
+"`@Insert` の `include` 要素と `exclude` 要素の両方に同じプロパティが指定された場合、\n"
 "そのプロパティは追加対象外になります。"
 
-#: ../../query/insert.rst:97
-msgid "Even if a property is specified in this element, it is excluded from insertion if the ``insertable`` element of its ``@Column`` annotation is set to false."
-msgstr "この要素にプロパティが指定されている場合でも、 ``@Column`` の ``insertable`` 要素が ``false`` に設定されている場合は追加されません。"
+#: ../../query/insert.md:85
 
-#: ../../query/insert.rst:105
-#: ../../query/insert.rst:221
+msgid ""
+"Even if a property is specified in this element, it is excluded from "
+"insertion if the `insertable` element of its `@Column` annotation is set "
+"to false."
+msgstr ""
+"この要素にプロパティが指定されている場合でも、 `@Column` の `insertable` 要素が `false` "
+"に設定されている場合は追加されません。"
+
+#: ../../query/insert.md:92 ../../query/insert.md:204
 msgid "excludeNull"
 msgstr ""
 
-#: ../../query/insert.rst:107
-msgid "Properties with a value of ``null`` are excluded from insertion when the ``excludeNull`` element of ``@Insert`` is set to true. When this element is set to true, a property is excluded from insertion if its value is ``null``, even if the ``insertable`` element of its ``@Column`` annotation is set to true or the property is specified in the ``include`` element of ``@Insert``."
-msgstr "``@Insert`` の ``excludeNull`` 要素が true に設定されている場合、値が ``null`` であるプロパティは追加から除外されます。この要素が true に設定されている場合でも、そのプロパティの ``@Column`` アノテーションの ``insertable`` 要素が true でも、またはそのプロパティが ``@Insert`` の ``include`` 要素で指定されていても、値が ``null`` の場合は挿入から除外されます。"
+#: ../../query/insert.md:94
 
-#: ../../query/insert.rst:116
-#: ../../query/insert.rst:222
+msgid ""
+"Properties with a value of `null` are excluded from insertion when the "
+"`excludeNull` element of `@Insert` is set to true. When this element is "
+"set to true, a property is excluded from insertion if its value is "
+"`null`, even if the `insertable` element of its `@Column` annotation is "
+"set to true or the property is specified in the `include` element of "
+"`@Insert`."
+msgstr ""
+"`@Insert` の `excludeNull` 要素が true に設定されている場合、値が `null` "
+"であるプロパティは追加から除外されます。この要素が true に設定されている場合でも、そのプロパティの `@Column` アノテーションの"
+" `insertable` 要素が true でも、またはそのプロパティが `@Insert` の `include` "
+"要素で指定されていても、値が `null` の場合は挿入から除外されます。"
+
+#: ../../query/insert.md:102 ../../query/insert.md:205
 msgid "duplicateKeyType"
 msgstr "duplicateKeyType"
 
-#: ../../query/insert.rst:118
-msgid "This property defines how to handle duplicate keys during an insert operation."
+#: ../../query/insert.md:104
+msgid ""
+"This property defines how to handle duplicate keys during an insert "
+"operation."
 msgstr "このプロパティは、追加操作時に重複したキーを処理する方法を定義します。"
 
-#: ../../query/insert.rst:120
+#: ../../query/insert.md:106
 msgid "It can take one of three values:"
 msgstr "次の3つの値のいずれかを取ることができます:"
 
-#: ../../query/insert.rst:122
-msgid "``DuplicateKeyType.UPDATE``: If a duplicate key is encountered, the existing row in the table will be updated."
-msgstr "``DuplicateKeyType.UPDATE``: 重複したキーが見つかった場合、テーブル内の既存の行が更新されます。"
+#: ../../query/insert.md:108
 
-#: ../../query/insert.rst:123
-msgid "``DuplicateKeyType.IGNORE``: If a duplicate key is encountered, the insert operation will be ignored, and no changes will be made to the table."
-msgstr "``DuplicateKeyType.IGNORE``: 重複したキーが見つかった場合、挿入操作は無視され、テーブルに変更は加えられません。"
+msgid ""
+"`DuplicateKeyType.UPDATE`: If a duplicate key is encountered, the "
+"existing row in the table will be updated."
+msgstr "`DuplicateKeyType.UPDATE`: 重複したキーが見つかった場合、テーブル内の既存の行が更新されます。"
 
-#: ../../query/insert.rst:124
-msgid "``DuplicateKeyType.EXCEPTION``: If a duplicate key is encountered, an exception will be thrown."
-msgstr "``DuplicateKeyType.EXCEPTION``: 重複したキーが発生した場合、例外が投げられます。"
+#: ../../query/insert.md:109
 
-#: ../../query/insert.rst:132
-#: ../../query/insert.rst:223
+msgid ""
+"`DuplicateKeyType.IGNORE`: If a duplicate key is encountered, the insert "
+"operation will be ignored, and no changes will be made to the table."
+msgstr "`DuplicateKeyType.IGNORE`: 重複したキーが見つかった場合、挿入操作は無視され、テーブルに変更は加えられません。"
+
+#: ../../query/insert.md:110
+
+msgid ""
+"`DuplicateKeyType.EXCEPTION`: If a duplicate key is encountered, an "
+"exception will be thrown."
+msgstr "`DuplicateKeyType.EXCEPTION`: 重複したキーが発生した場合、例外が投げられます。"
+
+#: ../../query/insert.md:117 ../../query/insert.md:206
 msgid "duplicateKeys"
 msgstr ""
 
-#: ../../query/insert.rst:134
-msgid "This property represents the keys that should be used to determine if a duplicate key exists. If the duplicate key exists, the operation will use the ``duplicateKeyType`` strategy to handle the duplicate key."
-msgstr "このプロパティは、重複キーが存在するかどうかを判断するために使用するキーを表します。 重複キーが存在する場合、重複キーを処理するために ``duplicateKeyType`` ストラテジーを使用します。"
+#: ../../query/insert.md:119
 
-#: ../../query/insert.rst:143
-msgid "This property is only utilized when the ``duplicateKeyType`` strategy is either ``DuplicateKeyType.UPDATE`` or ``DuplicateKeyType.IGNORE``."
-msgstr "このプロパティは、``duplicateKeyType`` ストラテジーが ``DuplicateKeyType.UPDATE`` または ``DuplicateKeyType.IGNORE`` のいずれかである場合にのみ使用されます。"
+msgid ""
+"This property represents the keys that should be used to determine if a "
+"duplicate key exists. If the duplicate key exists, the operation will use"
+" the `duplicateKeyType` strategy to handle the duplicate key."
+msgstr ""
+"このプロパティは、重複キーが存在するかどうかを判断するために使用するキーを表します。 重複キーが存在する場合、重複キーを処理するために "
+"`duplicateKeyType` ストラテジーを使用します。"
 
-#: ../../query/insert.rst:147
+#: ../../query/insert.md:127
+
+msgid ""
+"This property is only utilized when the `duplicateKeyType` strategy is "
+"either `DuplicateKeyType.UPDATE` or `DuplicateKeyType.IGNORE`."
+msgstr ""
+"このプロパティは、`duplicateKeyType` ストラテジーが `DuplicateKeyType.UPDATE` または "
+"`DuplicateKeyType.IGNORE` のいずれかである場合にのみ使用されます。"
+
+#: ../../query/insert.md:131
 msgid "The MySQL dialect does not utilize this property."
 msgstr "MySQLの方言はこのプロパティを利用しません。"
 
-#: ../../query/insert.rst:152
+#: ../../query/insert.md:136
 msgid "returning"
 msgstr "returning"
 
-#: ../../query/insert.rst:154
-msgid "By specifying ``@Returning`` in the ``returning`` property, you can generate SQL equivalent to the ``INSERT .. RETURNING`` clause."
-msgstr "``returning`` プロパティで ``@Returning`` を指定することで、SQL の ``INSERT .. RETURNING`` 句に相当するコードを生成できます。"
+#: ../../query/insert.md:138
 
-#: ../../query/insert.rst:174
-msgid "You can use the ``include`` element of ``@Returning`` to specify which entity properties (corresponding to database columns) should be returned by the RETURNING clause. Alternatively, you can use the ``exclude`` element to specify which properties should not be returned. If the same entity property is included in both ``include`` and ``exclude`` elements, it will not be returned."
-msgstr "``@Returning`` の ``include`` 要素を使用して、RETURNING 句によって返されるエンティティのプロパティ（データベース列に対応）を指定できます。また、``exclude`` 要素を使用して、返されるべきでないプロパティを指定することもできます。同じエンティティのプロパティが ``include`` と ``exclude`` の両方の要素に含まれている場合、それは返されません。"
+msgid ""
+"By specifying `@Returning` in the `returning` property, you can generate "
+"SQL equivalent to the `INSERT .. RETURNING` clause."
+msgstr ""
+"`returning` プロパティで `@Returning` を指定することで、SQL の `INSERT .. "
+"RETURNING` 句に相当するコードを生成できます。"
 
-#: ../../query/insert.rst:179
-msgid "The return type must be either an entity class or an ``Optional`` containing an entity class as its element."
-msgstr "戻り値の型は、エンティティクラスまたはエンティティクラスを要素として含む ``Optional`` のいずれかでなければなりません。"
+#: ../../query/insert.md:158
 
-#: ../../query/insert.rst:184
-msgid "Only H2 Database, PostgreSQL, SQL Server, and SQLite Dialects support this feature."
+msgid ""
+"You can use the `include` element of `@Returning` to specify which entity"
+" properties (corresponding to database columns) should be returned by the"
+" RETURNING clause. Alternatively, you can use the `exclude` element to "
+"specify which properties should not be returned. If the same entity "
+"property is included in both `include` and `exclude` elements, it will "
+"not be returned."
+msgstr ""
+"`@Returning` の `include` 要素を使用して、RETURNING "
+"句によって返されるエンティティのプロパティ（データベース列に対応）を指定できます。また、`exclude` "
+"要素を使用して、返されるべきでないプロパティを指定することもできます。同じエンティティのプロパティが `include` と "
+"`exclude` の両方の要素に含まれている場合、それは返されません。"
+
+#: ../../query/insert.md:163
+
+msgid ""
+"The return type must be either an entity class or an `Optional` "
+"containing an entity class as its element."
+msgstr "戻り値の型は、エンティティクラスまたはエンティティクラスを要素として含む `Optional` のいずれかでなければなりません。"
+
+#: ../../query/insert.md:167
+msgid ""
+"Only H2 Database, PostgreSQL, SQL Server, and SQLite Dialects support "
+"this feature."
 msgstr "この機能は、H2 Database、PostgreSQL、SQL Server、およびSQLiteのダイアレクトのみがサポートしています。"
 
-#: ../../query/insert.rst:187
+#: ../../query/insert.md:170
 msgid "Insert by SQL file"
 msgstr "SQLファイルによる追加"
 
-#: ../../query/insert.rst:189
-msgid "To execute insertion using an SQL file, set the ``sqlFile`` element of ``@Insert`` to ``true`` and prepare an SQL file that corresponds to the method."
-msgstr "SQLファイルによる挿入を行うには、``@Insert`` の ``sqlFile`` 要素に ``true`` を設定し、メソッドに対応するSQLファイルを用意します。"
+#: ../../query/insert.md:172
 
-#: ../../query/insert.rst:192
-msgid "You can use parameters of any type. There is no limit to the number of parameters that can be specified. You can set ``null`` to a parameter if the parameter type is a basic type or domain class. For other types, the parameter must not be ``null``."
-msgstr "任意の型をパラメータとして使用できます。指定できるパラメータの数に制限はありません。パラメータの型が基本型またはドメインクラスの場合、パラメータに ``null`` を設定できます。型がそれ以外の場合、パラメータは ``null`` であってはなりません。"
+msgid ""
+"To execute insertion using an SQL file, set the `sqlFile` element of "
+"`@Insert` to `true` and prepare an SQL file that corresponds to the "
+"method."
+msgstr ""
+"SQLファイルによる挿入を行うには、`@Insert` の `sqlFile` 要素に `true` "
+"を設定し、メソッドに対応するSQLファイルを用意します。"
 
-#: ../../query/insert.rst:205
+#: ../../query/insert.md:175
+
+msgid ""
+"You can use parameters of any type. There is no limit to the number of "
+"parameters that can be specified. You can set `null` to a parameter if "
+"the parameter type is a basic type or domain class. For other types, the "
+"parameter must not be `null`."
+msgstr ""
+"任意の型をパラメータとして使用できます。指定できるパラメータの数に制限はありません。パラメータの型が基本型またはドメインクラスの場合、パラメータに"
+" `null` を設定できます。型がそれ以外の場合、パラメータは `null` であってはなりません。"
+
+#: ../../query/insert.md:188
 msgid "For example, you describe SQL file like below to correspond above method."
 msgstr "たとえば、上記のメソッドに対応するSQLは次のように記述します。"
 
-#: ../../query/insert.rst:215
-msgid "Automatic identifier setting and automatic version value setting are not performed when inserting via SQL file."
+#: ../../query/insert.md:198
+msgid ""
+"Automatic identifier setting and automatic version value setting are not "
+"performed when inserting via SQL file."
 msgstr "SQLファイルから追加する際に、識別子およびバージョンの自動設定は行われません。"
 
-#: ../../query/insert.rst:217
-msgid "Additionally, the following properties of ``@Insert`` are not used:"
-msgstr "また、以下の ``@Insert`` のプロパティは使用されません。"
+#: ../../query/insert.md:200
 
-#: ../../query/insert.rst:226
+msgid "Additionally, the following properties of `@Insert` are not used:"
+msgstr "また、以下の `@Insert` のプロパティは使用されません。"
+
+#: ../../query/insert.md:208
 msgid "Unique constraint violation"
 msgstr "一意制約違反"
 
-#: ../../query/insert.rst:228
-msgid "A ``UniqueConstraintException`` is thrown if a unique constraint violation occurs, regardless of whether you use a SQL file or not."
-msgstr "SQLファイルの使用にかかわらず、ユニーク制約違反が発生すると ``UniqueConstraintException`` がスローされます。"
+#: ../../query/insert.md:210
 
-#: ../../query/insert.rst:231
+msgid ""
+"A `UniqueConstraintException` is thrown if a unique constraint violation "
+"occurs, regardless of whether you use a SQL file or not."
+msgstr "SQLファイルの使用にかかわらず、ユニーク制約違反が発生すると `UniqueConstraintException` がスローされます。"
+
+#: ../../query/insert.md:212
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
-#: ../../query/insert.rst:233
-msgid "You can specify second of query timeout to ``queryTimeout`` element of ``@Insert``."
-msgstr "``@Insert`` の ``queryTimeout`` 要素にクエリタイムアウトの秒数を指定できます。"
+#: ../../query/insert.md:214
 
-#: ../../query/insert.rst:240
-msgid "This specification is applied regardless of whether an SQL file is used or not. The query timeout specified in :doc:`../config` is used if the ``queryTimeout`` element is not set."
-msgstr "この指定は、SQLファイルの使用の有無に関係なく適用されます。\n"
-"``queryTimeout`` 要素に値を指定しない場合、\n"
+msgid ""
+"You can specify second of query timeout to `queryTimeout` element of "
+"`@Insert`."
+msgstr "`@Insert` の `queryTimeout` 要素にクエリタイムアウトの秒数を指定できます。"
+
+#: ../../query/insert.md:221
+, python-brace-format
+msgid ""
+"This specification is applied regardless of whether an SQL file is used "
+"or not. The query timeout specified in [](../config.md) is used if the "
+"`queryTimeout` element is not set."
+msgstr ""
+"この指定は、SQLファイルの使用の有無に関係なく適用されます。\n"
+"`queryTimeout` 要素に値を指定しない場合、\n"
 ":doc:`../config` に指定されたクエリタイムアウトが使用されます。"
 
-#: ../../query/insert.rst:244
+#: ../../query/insert.md:224
 msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
-#: ../../query/insert.rst:246
-msgid "You can specify SQL log output format to ``sqlLog`` element of ``@Insert``."
-msgstr "``@Insert`` の ``sqlLog`` 要素に SQL のログ出力形式を指定できます。"
+#: ../../query/insert.md:226
 
-#: ../../query/insert.rst:253
-msgid "``SqlLogType.RAW`` indicates that the log outputs SQL with bind parameters."
-msgstr "``SqlLogType.RAW`` は、バインドパラメータでSQLをログに記録することを示します。"
+msgid "You can specify SQL log output format to `sqlLog` element of `@Insert`."
+msgstr "`@Insert` の `sqlLog` 要素に SQL のログ出力形式を指定できます。"
+
+#: ../../query/insert.md:233
+
+msgid "`SqlLogType.RAW` indicates that the log outputs SQL with bind parameters."
+msgstr "`SqlLogType.RAW` は、バインドパラメータでSQLをログに記録することを示します。"
+
+#~ msgid "See {ref}`insert-returning`."
+#~ msgstr ":ref:`insert-returning` を参照してください。"
 

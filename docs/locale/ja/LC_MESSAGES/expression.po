@@ -1,542 +1,708 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: doma-docs\n"
+"Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-03 18:54+0900\n"
+"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: doma-docs\n"
-"X-Crowdin-Project-ID: 657384\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File-ID: 178\n"
 "Language: ja_JP\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
 
-#: ../../expression.rst:3
+#: ../../expression.md:1
 msgid "Expression language"
 msgstr "式言語"
 
-#: ../../expression.rst:6
+#: ../../expression.md:2
 msgid "Contents"
 msgstr "コンテンツ"
 
-#: ../../expression.rst:8
-msgid "You can write simple expressions in SQL :ref:`sql-directives`. The grammar is very similar to Java, although not all Java features are supported."
-msgstr "SQL :ref:`sql-directives` で簡単な式を書くことができます。文法はJavaに非常に似ていますが、すべてのJavaの機能がサポートされているわけではありません。"
+#: ../../expression.md:7
+#, python-brace-format
+msgid ""
+"You can write simple expressions in [SQL directives](sql.md#directives). "
+"The grammar is very similar to Java, although not all Java features are "
+"supported."
+msgstr ""
+"[SQL ディレクティブ](sql.md#directives) "
+"で簡単な式を書くことができます。文法はJavaに非常に似ていますが、すべてのJavaの機能がサポートされているわけではありません。"
 
-#: ../../expression.rst:14
-msgid "A key difference is in how optional types like ``java.util.Optional`` are handled. In expressions, values of ``Optional`` type are automatically converted to values of their element type. For example, a value of ``Optional<String>`` is treated as a ``String``. As a result, you cannot call methods on the ``Optional`` object itself, nor can you call methods that take ``Optional`` parameters."
-msgstr "オプション型 (例: ``java.util.Optional``) の扱いには重要な違いがあります。式の中では、``Optional`` 型の値はその要素型の値に自動的に変換されます。例えば、``Optional<String>`` の値は ``String`` として扱われます。その結果、``Optional`` オブジェクト自体のメソッドを呼び出すことはできず、また、``Optional`` パラメータを取るメソッドを呼び出すこともできません。"
+#: ../../expression.md:12
+msgid ""
+"A key difference is in how optional types like `java.util.Optional` are "
+"handled. In expressions, values of `Optional` type are automatically "
+"converted to values of their element type. For example, a value of "
+"`Optional<String>` is treated as a `String`. As a result, you cannot call"
+" methods on the `Optional` object itself, nor can you call methods that "
+"take `Optional` parameters."
+msgstr ""
+"オプション型 (例: `java.util.Optional`) の扱いには重要な違いがあります。式の中では、`Optional` "
+"型の値はその要素型の値に自動的に変換されます。例えば、`Optional<String>` の値は `String` "
+"として扱われます。その結果、`Optional` オブジェクト自体のメソッドを呼び出すことはできず、また、`Optional` "
+"パラメータを取るメソッドを呼び出すこともできません。"
 
-#: ../../expression.rst:21
-msgid "To check if an optional value exists, use ``/*%if optional != null */`` instead of ``/*%if optional.isPresent() */``."
-msgstr "オプションの値が存在するかどうかを確認する場合は、``/*%if optional.isPresent() */`` ではなく、``/*%if optional != null */`` を使用してください。"
+#: ../../expression.md:19
+#, python-format
+msgid ""
+"To check if an optional value exists, use `/*%if optional != null */` "
+"instead of `/*%if optional.isPresent() */`."
+msgstr ""
+"オプションの値が存在するかどうかを確認する場合は、`/*%if optional.isPresent() */` ではなく、`/*%if "
+"optional != null */` を使用してください。"
 
-#: ../../expression.rst:24
-msgid "This behavior applies to all optional types including ``java.util.OptionalInt``, ``java.util.OptionalDouble``, and ``java.util.OptionalLong``."
-msgstr "この挙動は、``java.util.OptionalInt``、``java.util.OptionalDouble``、および ``java.util.OptionalLong`` を含むすべてのオプショナル型に適用されます。"
+#: ../../expression.md:22
+msgid ""
+"This behavior applies to all optional types including "
+"`java.util.OptionalInt`, `java.util.OptionalDouble`, and "
+"`java.util.OptionalLong`."
+msgstr ""
+"この挙動は、`java.util.OptionalInt`、`java.util.OptionalDouble`、および "
+"`java.util.OptionalLong` を含むすべてのオプショナル型に適用されます。"
 
-#: ../../expression.rst:28
+#: ../../expression.md:26
 msgid "Literals"
 msgstr "リテラル"
 
-#: ../../expression.rst:30
+#: ../../expression.md:28
 msgid "You can use the following literals:"
 msgstr "次のリテラルを使用できます。"
 
-#: ../../expression.rst:33
+#: ../../expression.md:11
 msgid "Literal"
 msgstr "リテラル"
 
-#: ../../expression.rst:33
+#: ../../expression.md:11
 msgid "Type"
 msgstr "型"
 
-#: ../../expression.rst:35
+#: ../../expression.md:11
 msgid "null"
 msgstr ""
 
-#: ../../expression.rst:35
+#: ../../expression.md:11
 msgid "void"
 msgstr ""
 
-#: ../../expression.rst:37
+#: ../../expression.md:11
 msgid "true"
 msgstr ""
 
-#: ../../expression.rst:37
-#: ../../expression.rst:39
+#: ../../expression.md:11
 msgid "boolean"
 msgstr ""
 
-#: ../../expression.rst:39
+#: ../../expression.md:11
 msgid "false"
 msgstr ""
 
-#: ../../expression.rst:41
+#: ../../expression.md:11
 msgid "10"
 msgstr ""
 
-#: ../../expression.rst:41
+#: ../../expression.md:11
 msgid "int"
 msgstr ""
 
-#: ../../expression.rst:43
+#: ../../expression.md:11
 msgid "10L"
 msgstr ""
 
-#: ../../expression.rst:43
+#: ../../expression.md:11
 msgid "long"
 msgstr ""
 
-#: ../../expression.rst:45
+#: ../../expression.md:11
 msgid "0.123F"
 msgstr ""
 
-#: ../../expression.rst:45
+#: ../../expression.md:11
 msgid "float"
 msgstr ""
 
-#: ../../expression.rst:47
+#: ../../expression.md:11
 msgid "0.123D"
 msgstr ""
 
-#: ../../expression.rst:47
+#: ../../expression.md:11
 msgid "double"
 msgstr ""
 
-#: ../../expression.rst:49
+#: ../../expression.md:11
 msgid "0.123B"
 msgstr ""
 
-#: ../../expression.rst:49
+#: ../../expression.md:11
 msgid "java.math.BigDecimal"
 msgstr ""
 
-#: ../../expression.rst:51
+#: ../../expression.md:11
 msgid "'a'"
 msgstr ""
 
-#: ../../expression.rst:51
-#: ../../expression.rst:155
+#: ../../expression.md:11 ../../expression.md:123
 msgid "char"
 msgstr ""
 
-#: ../../expression.rst:53
+#: ../../expression.md:11
 msgid "\"a\""
 msgstr ""
 
-#: ../../expression.rst:53
-#: ../../expression.rst:153
+#: ../../expression.md:11 ../../expression.md:121
 msgid "java.lang.String"
 msgstr ""
 
-#: ../../expression.rst:56
-msgid "Numeric types are distinguished by suffix letters such as ``L`` or ``F`` at the end of the literals. Note that these suffixes must be capital letters."
-msgstr "数値の種類は、リテラルの末尾にある ``L`` や ``F`` などの接尾辞によって区別されます。接尾辞は大文字である必要があります。"
+#: ../../expression.md:43
+msgid ""
+"Numeric types are distinguished by suffix letters such as `L` or `F` at "
+"the end of the literals. Note that these suffixes must be capital "
+"letters."
+msgstr "数値の種類は、リテラルの末尾にある `L` や `F` などの接尾辞によって区別されます。接尾辞は大文字である必要があります。"
 
-#: ../../expression.rst:67
+#: ../../expression.md:53
 msgid "Comparison operators"
 msgstr "比較演算子"
 
-#: ../../expression.rst:69
+#: ../../expression.md:55
 msgid "You can use the following comparison operators:"
 msgstr "次の比較演算子を使用できます。"
 
-#: ../../expression.rst:72
-#: ../../expression.rst:104
-#: ../../expression.rst:126
+#: ../../expression.md:11
 msgid "Operator"
 msgstr "演算子"
 
-#: ../../expression.rst:72
-#: ../../expression.rst:104
-#: ../../expression.rst:126
+#: ../../expression.md:11
 msgid "Description"
 msgstr "説明"
 
-#: ../../expression.rst:74
+#: ../../expression.md:11
 msgid "=="
 msgstr ""
 
-#: ../../expression.rst:74
+#: ../../expression.md:11
 msgid "Equal to operator"
 msgstr "等値演算子"
 
-#: ../../expression.rst:76
+#: ../../expression.md:11
 msgid "!="
 msgstr ""
 
-#: ../../expression.rst:76
+#: ../../expression.md:11
 msgid "Not equal to operator"
 msgstr "不等値演算子"
 
-#: ../../expression.rst:78
-msgid "<"
+#: ../../expression.md:11
+msgid "\\<"
 msgstr ""
 
-#: ../../expression.rst:78
+#: ../../expression.md:11
 msgid "Less than operator"
 msgstr "小なり演算子"
 
-#: ../../expression.rst:80
-msgid "<="
+#: ../../expression.md:11
+msgid "\\<="
 msgstr ""
 
-#: ../../expression.rst:80
+#: ../../expression.md:11
 msgid "Less than or equal to operator"
 msgstr "小なりイコール演算子"
 
-#: ../../expression.rst:82
+#: ../../expression.md:11
 msgid ">"
 msgstr ""
 
-#: ../../expression.rst:82
+#: ../../expression.md:11
 msgid "Greater than operator"
 msgstr "大なり演算子"
 
-#: ../../expression.rst:84
+#: ../../expression.md:11
 msgid ">="
 msgstr ""
 
-#: ../../expression.rst:84
+#: ../../expression.md:11
 msgid "Greater than or equal to operator"
 msgstr "大なりイコール演算子"
 
-#: ../../expression.rst:87
-msgid "To use comparison operators, the operands must implement ``java.lang.Comparable``."
-msgstr "比較演算子を使用するには、被演算子で ``java.lang.Comparable`` を実装する必要があります。"
+#: ../../expression.md:66
+msgid ""
+"To use comparison operators, the operands must implement "
+"`java.lang.Comparable`."
+msgstr "比較演算子を使用するには、被演算子で `java.lang.Comparable` を実装する必要があります。"
 
-#: ../../expression.rst:89
-msgid "For the operators ``<``, ``<=``, ``>``, and ``>=``, the operands must not be ``null``."
-msgstr "``<``, ``<=``, ``>``, ``>=`` の被演算子は ``null`` であってはなりません。"
+#: ../../expression.md:68
+msgid ""
+"For the operators `<`, `<=`, `>`, and `>=`, the operands must not be "
+"`null`."
+msgstr "`<`, `<=`, `>`, `>=` の被演算子は `null` であってはなりません。"
 
-#: ../../expression.rst:99
+#: ../../expression.md:77
 msgid "Logical operators"
 msgstr "論理演算子"
 
-#: ../../expression.rst:101
+#: ../../expression.md:79
 msgid "You can use the following logical operators:"
 msgstr "次の論理演算子を使用できます。"
 
-#: ../../expression.rst:106
+#: ../../expression.md:11
 msgid "!"
 msgstr ""
 
-#: ../../expression.rst:106
+#: ../../expression.md:11
 msgid "Logical NOT operator"
 msgstr "論理否定演算子"
 
-#: ../../expression.rst:107
+#: ../../expression.md:11
 msgid "&&"
 msgstr ""
 
-#: ../../expression.rst:107
+#: ../../expression.md:11
 msgid "Logical AND operator"
 msgstr "論理積演算子"
 
-#: ../../expression.rst:108
+#: ../../expression.md:11
 msgid "||"
 msgstr ""
 
-#: ../../expression.rst:108
+#: ../../expression.md:11
 msgid "Logical OR operator"
 msgstr "論理和演算子"
 
-#: ../../expression.rst:111
+#: ../../expression.md:87
 msgid "You can use parentheses to control the precedence of operators."
 msgstr "括弧を使用して、演算子の優先順位を制御できます。"
 
-#: ../../expression.rst:121
+#: ../../expression.md:96
 msgid "Arithmetic operators"
 msgstr "算術演算子"
 
-#: ../../expression.rst:123
+#: ../../expression.md:98
 msgid "You can use the following arithmetic operators:"
 msgstr "次の算術演算子を使用できます。"
 
-#: ../../expression.rst:128
-msgid "\\+"
+#: ../../expression.md:11
+msgid "+"
 msgstr ""
 
-#: ../../expression.rst:128
+#: ../../expression.md:11
 msgid "Additive operator"
 msgstr "加法演算子"
 
-#: ../../expression.rst:130
-msgid "\\-"
+#: ../../expression.md:11
+msgid "-"
 msgstr ""
 
-#: ../../expression.rst:130
+#: ../../expression.md:11
 msgid "Subtraction operator"
 msgstr "減算演算子"
 
-#: ../../expression.rst:132
+#: ../../expression.md:11
 msgid "\\*"
 msgstr ""
 
-#: ../../expression.rst:132
+#: ../../expression.md:11
 msgid "Multiplication operator"
 msgstr "乗算演算子"
 
-#: ../../expression.rst:134
+#: ../../expression.md:11
 msgid "/"
 msgstr ""
 
-#: ../../expression.rst:134
+#: ../../expression.md:11
 msgid "Division operator"
 msgstr "除算演算子"
 
-#: ../../expression.rst:136
+#: ../../expression.md:11
 msgid "%"
 msgstr ""
 
-#: ../../expression.rst:136
+#: ../../expression.md:11
 msgid "Remainder operator"
 msgstr "剰余演算子"
 
-#: ../../expression.rst:139
+#: ../../expression.md:108
 msgid "All operands must be of numeric type."
 msgstr "すべてのオペランドは数値型でなければなりません。"
 
-#: ../../expression.rst:147
+#: ../../expression.md:115
 msgid "String concatenation operator"
 msgstr "文字列連結演算子"
 
-#: ../../expression.rst:149
-msgid "You can concatenate strings using the concatenation operator ``+``."
-msgstr "連結演算子 ``+`` を使用して文字列を連結できます。"
+#: ../../expression.md:117
+msgid "You can concatenate strings using the concatenation operator `+`."
+msgstr "連結演算子 `+` を使用して文字列を連結できます。"
 
-#: ../../expression.rst:151
+#: ../../expression.md:119
 msgid "The operand must be one of the following types:"
 msgstr "被演算子は次のいずれかのタイプである必要があります。"
 
-#: ../../expression.rst:154
+#: ../../expression.md:122
 msgid "java.lang.Character"
 msgstr ""
 
-#: ../../expression.rst:163
+#: ../../expression.md:130
 msgid "Calling instance methods"
 msgstr "インスタンスメソッドの呼び出し"
 
-#: ../../expression.rst:165
-msgid "You can call instance methods using dot notation (`.`). The called methods must have public visibility."
+#: ../../expression.md:132
+msgid ""
+"You can call instance methods using dot notation (`.`). The called "
+"methods must have public visibility."
 msgstr "インスタンスメソッドはドット表記（`.`）を使用して呼び出すことができます。呼び出されたメソッドは公開されている必要があります。"
 
-#: ../../expression.rst:175
-msgid "If the method has no argument, specify ``()`` after the method name."
-msgstr "メソッドに引数がない場合は、メソッド名の後に ``()`` を指定します。"
+#: ../../expression.md:142
+msgid "If the method has no argument, specify `()` after the method name."
+msgstr "メソッドに引数がない場合は、メソッド名の後に `()` を指定します。"
 
-#: ../../expression.rst:185
+#: ../../expression.md:151
 msgid "Accessing instance fields"
 msgstr "インスタンスフィールドへのアクセス"
 
-#: ../../expression.rst:187
-msgid "You can access instance fields using dot notation (`.`). Fields can be accessed regardless of their visibility, even if they are private."
-msgstr "インスタンスフィールドにはドット記法 (`.`) を使用してアクセスできます。フィールドは、その可視性に関係なく、プライベートであってもアクセス可能です。"
+#: ../../expression.md:153
+msgid ""
+"You can access instance fields using dot notation (`.`). Fields can be "
+"accessed regardless of their visibility, even if they are private."
+msgstr ""
+"インスタンスフィールドにはドット記法 (`.`) "
+"を使用してアクセスできます。フィールドは、その可視性に関係なく、プライベートであってもアクセス可能です。"
 
-#: ../../expression.rst:196
+#: ../../expression.md:161
 msgid "Calling static methods"
 msgstr "静的メソッドの呼び出し"
 
-#: ../../expression.rst:198
-msgid "You can call static methods by prefixing the method name with the fully qualified class name enclosed in ``@`` symbols. The method must have public visibility."
-msgstr "静的メソッドを呼び出すには、 ``@`` で囲んだ完全修飾クラス名をメソッド名に続けます。メソッドの可視性はパブリックである必要があります。"
+#: ../../expression.md:163
+msgid ""
+"You can call static methods by prefixing the method name with the fully "
+"qualified class name enclosed in `@` symbols. The method must have public"
+" visibility."
+msgstr "静的メソッドを呼び出すには、 `@` で囲んだ完全修飾クラス名をメソッド名に続けます。メソッドの可視性はパブリックである必要があります。"
 
-#: ../../expression.rst:210
+#: ../../expression.md:174
 msgid "Accessing to static fields"
 msgstr "静的フィールドへのアクセス"
 
-#: ../../expression.rst:212
-msgid "You can access static fields by prefixing the field name with the fully qualified class name enclosed in ``@`` symbols. Fields can be accessed regardless of their visibility, even if they are private."
-msgstr "静的フィールドにアクセスするには、フィールド名に ``@`` で囲まれた完全修飾クラス名を添えます。可視性に関係なく、仮にそれが非公開であってもアクセスできます。"
+#: ../../expression.md:176
+msgid ""
+"You can access static fields by prefixing the field name with the fully "
+"qualified class name enclosed in `@` symbols. Fields can be accessed "
+"regardless of their visibility, even if they are private."
+msgstr ""
+"静的フィールドにアクセスするには、フィールド名に `@` "
+"で囲まれた完全修飾クラス名を添えます。可視性に関係なく、仮にそれが非公開であってもアクセスできます。"
 
-#: ../../expression.rst:224
+#: ../../expression.md:187
 msgid "Using built-in functions"
 msgstr "組み込み関数の使用"
 
-#: ../../expression.rst:226
-msgid "Built-in functions are utilities primarily designed to transform values of binding variables before they are bound to SQL statements."
+#: ../../expression.md:189
+msgid ""
+"Built-in functions are utilities primarily designed to transform values "
+"of binding variables before they are bound to SQL statements."
 msgstr "組み込み関数は、主に SQL にバインドする前にバインド変数の値を変更するためのユーティリティです。"
 
-#: ../../expression.rst:229
-msgid "For example, when you run a prefix search with a LIKE clause, you can write like this:"
+#: ../../expression.md:192
+msgid ""
+"For example, when you run a prefix search with a LIKE clause, you can "
+"write like this:"
 msgstr "たとえば、LIKE 句を使用して前方検索を実行する場合は、次のように記述できます。"
 
-#: ../../expression.rst:237
-msgid "``@prefix(employee.employeeName)`` passes the value of ``employee.employeeName`` to the ``@prefix`` function. This function converts the received character sequence into a string suitable for prefix (forward match) search. It also escapes any special characters in the string. For example, if the value of ``employee.employeeName`` is ``ABC``, it's converted to ``ABC%``. If the value of ``employee.employeeName`` contains ``%`` such as ``AB%C``, the ``%`` is escaped with a default escape sequence ``$``, therefore the value is converted to ``AB$%C%``."
-msgstr "``@prefix(employee.employeeName)`` は、 ``employee.employeeName`` の値を ``@prefix`` 関数に渡します。この関数は受け取った文字列を前方一致検索に適した文字列に変換し、特殊文字をエスケープします。例えば、``employee.employeeName`` の値が ``ABC`` の場合、これは ``ABC%`` に変換されます。``employee.employeeName`` の値に ``%`` が含まれている場合、例え ``AB%C`` のように、``%`` はデフォルトのエスケープシーケンス ``$`` によってエスケープされ、そのため値は ``AB$%C%`` に変換されます。"
+#: ../../expression.md:200
+msgid ""
+"`@prefix(employee.employeeName)` passes the value of "
+"`employee.employeeName` to the `@prefix` function. This function converts"
+" the received character sequence into a string suitable for prefix "
+"(forward match) search. It also escapes any special characters in the "
+"string. For example, if the value of `employee.employeeName` is `ABC`, "
+"it's converted to `ABC%`. If the value of `employee.employeeName` "
+"contains `%` such as `AB%C`, the `%` is escaped with a default escape "
+"sequence `$`, therefore the value is converted to `AB$%C%`."
+msgstr ""
+"`@prefix(employee.employeeName)` は、 `employee.employeeName` の値を "
+"`@prefix` "
+"関数に渡します。この関数は受け取った文字列を前方一致検索に適した文字列に変換し、特殊文字をエスケープします。例えば、`employee.employeeName`"
+" の値が `ABC` の場合、これは `ABC%` に変換されます。`employee.employeeName` の値に `%`"
+" が含まれている場合、例え `AB%C` のように、`%` はデフォルトのエスケープシーケンス `$` "
+"によってエスケープされ、そのため値は `AB$%C%` に変換されます。"
 
-#: ../../expression.rst:247
+#: ../../expression.md:210
 msgid "You can use following function signatures:"
 msgstr "次の関数シグネチャを使用できます。"
 
-#: ../../expression.rst:253
-msgid "String @escape(CharSequence text, char escapeChar = '$')"
+#: ../../expression.md:212
+msgid "String @escape(CharSequence text, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.rst:250
-msgid "Escapes the character sequence for LIKE operation. The return value is a string which is a result of escaping the character sequence. If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "LIKE 操作の文字シーケンスをエスケープします。戻り値は文字列をエスケープした結果の文字列です。 ``escapeChar`` が指定されていない場合、デフォルトのエスケープシーケンスとして ``$`` が使用されます。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:214
+msgid ""
+"Escapes the character sequence for LIKE operation. The return value is a "
+"string which is a result of escaping the character sequence. If "
+"`escapeChar` isn't specified, `$` is used as a default escape sequence. "
+"It returns `null` if you pass `null` as a parameter."
+msgstr ""
+"LIKE 操作の文字シーケンスをエスケープします。戻り値は文字列をエスケープした結果の文字列です。 `escapeChar` "
+"が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` を渡すと "
+"`null` を返します。"
 
-#: ../../expression.rst:260
-msgid "String @prefix(CharSequence prefix, char escapeChar = '$')"
+#: ../../expression.md:219
+msgid "String @prefix(CharSequence prefix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.rst:256
-msgid "Converts the character sequence for prefix search. The return value is a string which is a result of escaping the character sequence and adding a wild card character at the end. If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "前方一致検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、末尾にワイルドカード文字を追加した結果の文字列です。 ``escapeChar`` が指定されていない場合、デフォルトのエスケープシーケンスとして ``$`` が使用されます。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:221
+msgid ""
+"Converts the character sequence for prefix search. The return value is a "
+"string which is a result of escaping the character sequence and adding a "
+"wild card character at the end. If `escapeChar` isn't specified, `$` is "
+"used as a default escape sequence. It returns `null` if you pass `null` "
+"as a parameter."
+msgstr ""
+"前方一致検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、末尾にワイルドカード文字を追加した結果の文字列です。 "
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
+"`null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:267
-msgid "String @infix(CharSequence infix, char escapeChar = '$')"
+#: ../../expression.md:227
+msgid "String @infix(CharSequence infix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.rst:263
-msgid "Converts the character sequence for infix search. The return value is a string which is a result of escaping the character sequence and adding wild card characters at the beginning and the end. If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "中置検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭と末尾にワイルドカード文字を追加した結果の文字列です。 ``escapeChar`` が指定されていない場合、デフォルトのエスケープシーケンスとして ``$`` が使用されます。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:229
+msgid ""
+"Converts the character sequence for infix search. The return value is a "
+"string which is a result of escaping the character sequence and adding "
+"wild card characters at the beginning and the end. If `escapeChar` isn't "
+"specified, `$` is used as a default escape sequence. It returns `null` if"
+" you pass `null` as a parameter."
+msgstr ""
+"中置検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭と末尾にワイルドカード文字を追加した結果の文字列です。 "
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
+"`null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:274
-msgid "String @suffix(CharSequence suffix, char escapeChar = '$')"
+#: ../../expression.md:235
+msgid "String @suffix(CharSequence suffix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.rst:270
-msgid "Converts the character sequence for suffix search. The return value is a string which is a result of escaping the character sequence and adding a wild card character at the beginning. If ``escapeChar`` isn't specified, ``$`` is used as a default escape sequence. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "接尾辞検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭にワイルドカード文字を追加した結果の文字列です。 ``escapeChar`` が指定されていない場合、デフォルトのエスケープシーケンスとして ``$`` が使用されます。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:237
+msgid ""
+"Converts the character sequence for suffix search. The return value is a "
+"string which is a result of escaping the character sequence and adding a "
+"wild card character at the beginning. If `escapeChar` isn't specified, "
+"`$` is used as a default escape sequence. It returns `null` if you pass "
+"`null` as a parameter."
+msgstr ""
+"接尾辞検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭にワイルドカード文字を追加した結果の文字列です。 "
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
+"`null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:279
+#: ../../expression.md:243
 msgid "java.util.Date @roundDownTimePart(java.util.Date date)"
 msgstr ""
 
-#: ../../expression.rst:277
-#: ../../expression.rst:282
-msgid "Rounds down the time part. The return value is a new Date which is rounded down the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい日付です。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:245 ../../expression.md:251
+msgid ""
+"Rounds down the time part. The return value is a new Date which is "
+"rounded down the time part. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい日付です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:284
+#: ../../expression.md:249
 msgid "java.sql.Date @roundDownTimePart(java.sql.Date date)"
 msgstr ""
 
-#: ../../expression.rst:289
+#: ../../expression.md:255
 msgid "java.sql.Timestamp @roundDownTimePart(java.sql.Timestamp timestamp)"
 msgstr ""
 
-#: ../../expression.rst:287
-msgid "Rounds down the time part. The return value is a new Timestamp which is rounded down the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しいタイムスタンプです。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:257
+msgid ""
+"Rounds down the time part. The return value is a new Timestamp which is "
+"rounded down the time part. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr ""
+"時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` "
+"を返します。"
 
-#: ../../expression.rst:294
-msgid "java.time.LocalDateTime @roundDownTimePart(java.time.LocalDateTime localDateTime)"
+#: ../../expression.md:261
+msgid ""
+"java.time.LocalDateTime @roundDownTimePart(java.time.LocalDateTime "
+"localDateTime)"
 msgstr ""
 
-#: ../../expression.rst:292
-msgid "Rounds down the time part. The return value is a new LocalDateTime which is rounded down the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい LocalDateTime です。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:263
+msgid ""
+"Rounds down the time part. The return value is a new LocalDateTime which "
+"is rounded down the time part. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr ""
+"時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい LocalDateTime です。パラメータとして `null` を渡すと "
+"`null` を返します。"
 
-#: ../../expression.rst:299
+#: ../../expression.md:267
 msgid "java.util.Date @roundUpTimePart(java.util.Date date)"
 msgstr ""
 
-#: ../../expression.rst:297
-#: ../../expression.rst:302
-msgid "Rounds up the time part. The return value is a new Date which is rounded up the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しい日付です。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:269 ../../expression.md:275
+msgid ""
+"Rounds up the time part. The return value is a new Date which is rounded "
+"up the time part. It returns `null` if you pass `null` as a parameter."
+msgstr "時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しい日付です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:304
+#: ../../expression.md:273
 msgid "java.sql.Date @roundUpTimePart(java.sql.Date date)"
 msgstr ""
 
-#: ../../expression.rst:309
+#: ../../expression.md:279
 msgid "java.sql.Timestamp @roundUpTimePart(java.sql.Timestamp timestamp)"
 msgstr ""
 
-#: ../../expression.rst:307
-msgid "Rounds up the time part. The return value is a new Timestamp which is rounded up the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しいタイムスタンプです。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:281
+msgid ""
+"Rounds up the time part. The return value is a new Timestamp which is "
+"rounded up the time part. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr ""
+"時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` "
+"を返します。"
 
-#: ../../expression.rst:314
-msgid "java.time.LocalDateTime @roundUpTimePart(java.time.LocalDateTime localDateTime)"
+#: ../../expression.md:285
+msgid ""
+"java.time.LocalDateTime @roundUpTimePart(java.time.LocalDateTime "
+"localDateTime)"
 msgstr ""
 
-#: ../../expression.rst:312
-msgid "Rounds up the time part. The return value is a new LocalDateTime which is rounded up the time part. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "時間部分を切り上げます。戻り値は、時刻部分を切り上げた新しい LocalDateTime です。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:287
+msgid ""
+"Rounds up the time part. The return value is a new LocalDateTime which is"
+" rounded up the time part. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr ""
+"時間部分を切り上げます。戻り値は、時刻部分を切り上げた新しい LocalDateTime です。パラメータとして `null` を渡すと "
+"`null` を返します。"
 
-#: ../../expression.rst:319
+#: ../../expression.md:291
 msgid "java.time.LocalDate @roundUpTimePart(java.time.LocalDate localDate)"
 msgstr ""
 
-#: ../../expression.rst:317
-msgid "Returns the next day. The return value is a new LocalDate which is the next one after the argument. It returns ``null`` if you pass ``null`` as a parameter."
-msgstr "翌日返却。戻り値は、引数の次の新しい LocalDate です。パラメータとして ``null`` を渡すと ``null`` を返します。"
+#: ../../expression.md:293
+msgid ""
+"Returns the next day. The return value is a new LocalDate which is the "
+"next one after the argument. It returns `null` if you pass `null` as a "
+"parameter."
+msgstr "翌日返却。戻り値は、引数の次の新しい LocalDate です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.rst:322
+#: ../../expression.md:297
 msgid "boolean @isEmpty(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.rst:322
-msgid "Returns ``true`` if the character sequence is ``null`` or the length is ``0``."
-msgstr "文字シーケンスが ``null`` または長さが ``0`` の場合は ``true`` を返します。"
+#: ../../expression.md:299
+msgid "Returns `true` if the character sequence is `null` or the length is `0`."
+msgstr "文字シーケンスが `null` または長さが `0` の場合は `true` を返します。"
 
-#: ../../expression.rst:325
+#: ../../expression.md:301
 msgid "boolean @isNotEmpty(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.rst:325
-msgid "Returns ``true`` if the character sequence isn't ``null`` and the length isn't ``0``."
-msgstr "文字シーケンスが ``null`` でなく、長さが ``0`` でない場合は ``true`` を返します。"
+#: ../../expression.md:303
+msgid ""
+"Returns `true` if the character sequence isn't `null` and the length "
+"isn't `0`."
+msgstr "文字シーケンスが `null` でなく、長さが `0` でない場合は `true` を返します。"
 
-#: ../../expression.rst:329
+#: ../../expression.md:305
 msgid "boolean @isBlank(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.rst:328
-msgid "Returns ``true`` only if the character sequence is ``null``, the length is ``0``, or the sequence is formed with whitespaces only."
-msgstr "文字シーケンスが ``null`` であるか、長さが ``0`` であるか、または文字シーケンスが空白のみで形成されている場合にのみ ``true`` を返します。"
+#: ../../expression.md:307
+msgid ""
+"Returns `true` only if the character sequence is `null`, the length is "
+"`0`, or the sequence is formed with whitespaces only."
+msgstr ""
+"文字シーケンスが `null` であるか、長さが `0` であるか、または文字シーケンスが空白のみで形成されている場合にのみ "
+"`true` を返します。"
 
-#: ../../expression.rst:333
+#: ../../expression.md:310
 msgid "boolean @isNotBlank(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.rst:332
-msgid "Returns ``true`` if the character sequence isn't ``null``, the length isn't ``0``, and the sequence isn't formed with whitespaces only."
-msgstr "文字列が ``null`` でなく、長さが ``0`` でなく、文字列が空白だけで形成されていない場合は ``true`` を返します。"
+#: ../../expression.md:312
+msgid ""
+"Returns `true` if the character sequence isn't `null`, the length isn't "
+"`0`, and the sequence isn't formed with whitespaces only."
+msgstr "文字列が `null` でなく、長さが `0` でなく、文字列が空白だけで形成されていない場合は `true` を返します。"
 
-#: ../../expression.rst:335
-msgid "These functions are correspond to the methods of ``org.seasar.doma.expr.ExpressionFunctions``."
-msgstr "これらの関数は ``org.seasar.doma.expr.ExpressionFunctions`` のメソッドに対応します。"
+#: ../../expression.md:315
+msgid ""
+"These functions are correspond to the methods of "
+"`org.seasar.doma.expr.ExpressionFunctions`."
+msgstr "これらの関数は `org.seasar.doma.expr.ExpressionFunctions` のメソッドに対応します。"
 
-#: ../../expression.rst:338
+#: ../../expression.md:317
 msgid "Using custom functions"
 msgstr "カスタム関数の使用"
 
-#: ../../expression.rst:340
+#: ../../expression.md:319
 msgid "You can define and use your own custom functions."
 msgstr "独自の関数を定義して使用できます。"
 
-#: ../../expression.rst:342
+#: ../../expression.md:321
 msgid "To use custom functions that you define, follow these steps:"
 msgstr "定義したカスタム関数を利用するには、次の手順に従います。"
 
-#: ../../expression.rst:344
-msgid "Define the function as a method in a class that implements ``org.seasar.doma.expr.ExpressionFunctions``."
-msgstr "関数は``org.seasar.doma.expr.ExpressionFunctions``を実装するクラスのメソッドとして定義します。"
+#: ../../expression.md:323
+msgid ""
+"Define the function as a method in a class that implements "
+"`org.seasar.doma.expr.ExpressionFunctions`."
+msgstr "関数は`org.seasar.doma.expr.ExpressionFunctions`を実装するクラスのメソッドとして定義します。"
 
-#: ../../expression.rst:346
+#: ../../expression.md:325
 msgid "The method must be a public instance method."
 msgstr "このメソッドはパブリック インスタンス メソッドである必要があります。"
 
-#: ../../expression.rst:347
-msgid "Register the class as an option in the annotation processing configuration. Use ``doma.expr.functions`` as the option key."
-msgstr "アノテーション処理設定でクラスをオプションとして登録します。オプションキーには ``doma.expr.functions`` を使用してください。"
+#: ../../expression.md:326
+msgid ""
+"Register the class as an option in the annotation processing "
+"configuration. Use `doma.expr.functions` as the option key."
+msgstr "アノテーション処理設定でクラスをオプションとして登録します。オプションキーには `doma.expr.functions` を使用してください。"
 
-#: ../../expression.rst:349
-msgid "Use an instance of your class in the RDBMS dialect within your configuration class (Doma's RDBMS dialect implementations accept an ``ExpressionFunctions`` parameter in their constructors)."
-msgstr "構成クラス内でRDBMS方言のクラスのインスタンスを使用します（Doma の RDBMS 方言の実装は、コンストラクタに ``ExpressionFunctions`` パラメータを受け入れます）。"
+#: ../../expression.md:328
+msgid ""
+"Use an instance of your class in the RDBMS dialect within your "
+"configuration class (Doma's RDBMS dialect implementations accept an "
+"`ExpressionFunctions` parameter in their constructors)."
+msgstr ""
+"構成クラス内でRDBMS方言のクラスのインスタンスを使用します（Doma の RDBMS 方言の実装は、コンストラクタに "
+"`ExpressionFunctions` パラメータを受け入れます）。"
 
-#: ../../expression.rst:353
-msgid "To call a custom function, add ``@`` at the beginning of the function name like built-in functions. For example, you can call ``myfunc`` function like this:"
-msgstr "カスタム関数を呼び出す場合は、組み込み関数と同様に関数名の先頭に ``@`` を付けます。たとえば、次のように ``myfunc`` 関数を呼び出すことができます。"
+#: ../../expression.md:332
+msgid ""
+"To call a custom function, add `@` at the beginning of the function name "
+"like built-in functions. For example, you can call `myfunc` function like"
+" this:"
+msgstr ""
+"カスタム関数を呼び出す場合は、組み込み関数と同様に関数名の先頭に `@` を付けます。たとえば、次のように `myfunc` "
+"関数を呼び出すことができます。"
+
+#~ msgid "<"
+#~ msgstr ""
+
+#~ msgid "<="
+#~ msgstr ""
+
+#~ msgid "\\+"
+#~ msgstr ""
+
+#~ msgid "\\-"
+#~ msgstr ""
+
+#~ msgid "String @escape(CharSequence text, char escapeChar = '$')"
+#~ msgstr ""
+
+#~ msgid "String @prefix(CharSequence prefix, char escapeChar = '$')"
+#~ msgstr ""
+
+#~ msgid "String @infix(CharSequence infix, char escapeChar = '$')"
+#~ msgstr ""
+
+#~ msgid "String @suffix(CharSequence suffix, char escapeChar = '$')"
+#~ msgstr ""
 
