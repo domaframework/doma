@@ -31,7 +31,7 @@ If the above condition is not met, the return value must be `int[]`, where each 
 
 ## Batch insert by auto generated SQL
 
-The parameter type must be a `java.lang.Iterable` subtype that has [](../entity.md) as its element type.
+The parameter type must be a `java.lang.Iterable` subtype that has [Entity classes](../entity.md) as its element type.
 Only one parameter can be specified.
 The parameter must not be `null`.
 The return value array's element count equals the `Iterable` element count.
@@ -39,9 +39,9 @@ Each element in the array represents the insert count for the corresponding oper
 
 ### Identifier
 
-If the identifier in [](../entity.md) is annotated with `@GeneratedValue`, the identifier is automatically generated and set.
+If the identifier in [Entity classes](../entity.md) is annotated with `@GeneratedValue`, the identifier is automatically generated and set.
 
-Reference [](../entity.md#id-generation) for cautionary points.
+Reference [Id generation](../entity.md#id-generation) for cautionary points.
 
 If you don't use auto-generated keys in your application, you can enable the `ignoreGeneratedKeys` flag.
 This flag may improve performance.
@@ -53,7 +53,7 @@ int[] insert(List<Employee> entities);
 
 ### Version number
 
-If a value that is explicitly set is greater than `0`, then that value is used if the [](../entity.md) has a property annotated with `@Version`.
+If a value that is explicitly set is greater than `0`, then that value is used if the [Entity classes](../entity.md) has a property annotated with `@Version`.
 If the value is not set or is less than `0`, the value is automatically set to `1`.
 
 ### Properties of @BatchInsert
@@ -128,13 +128,13 @@ int[] insert(List<Employee> employees);
 BatchResult<ImmutableEmployee> insert(List<ImmutableEmployee> employees);
 ```
 
-The parameter type must be a `java.lang.Iterable` subtype that has [](../entity.md) as its element type.
+The parameter type must be a `java.lang.Iterable` subtype that has [Entity classes](../entity.md) as its element type.
 Only one parameter can be specified.
 The parameter must not be `null`.
 The return value array's element count equals the `Iterable` element count.
 Each element in the array represents the insert count for the corresponding operation.
 
-If an entity listener is specified for the [](../entity.md), its methods are not called when using SQL files.
+If an entity listener is specified for the [Entity classes](../entity.md), its methods are not called when using SQL files.
 
 For example, you would write SQL like the following to correspond to the above method:
 
@@ -180,7 +180,7 @@ int[] insert(List<Employee> employees);
 ```
 
 This setting applies regardless of whether you use a SQL file or not.
-If you do not specify a value for the `batchSize` property, the batch size configured in the [](../config.md) class is used.
+If you do not specify a value for the `batchSize` property, the batch size configured in the [Configuration](../config.md) class is used.
 
 ## SQL log output format
 

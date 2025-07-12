@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -69,15 +69,17 @@ msgid "The field type must be one of the following:"
 msgstr "フィールドの型は次のいずれかである必要があります。"
 
 #: ../../embeddable.md:82
-msgid "[](basic.md)"
+msgid "[Basic classes](basic.md)"
 msgstr "[基本クラス](basic.md)"
 
 #: ../../embeddable.md:83
-msgid "[](domain.md)"
+msgid "[Domain classes](domain.md)"
 msgstr "[ドメインクラス](domain.md)"
 
 #: ../../embeddable.md:84
-msgid "java.util.Optional, whose element is either [](basic.md) or [](domain.md)"
+msgid ""
+"java.util.Optional, whose element is either [Basic classes](basic.md) or "
+"[Domain classes](domain.md)"
 msgstr "要素を [基本クラス](basic.md) または [ドメインクラス](domain.md) のいずれかとする java.util.Optional"
 
 #: ../../embeddable.md:85

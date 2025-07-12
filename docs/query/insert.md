@@ -27,7 +27,7 @@ Similarly, the `postInsert` method is called after the insert operation complete
 
 ### When using the returning property
 
-See [](#returning).
+See [Returning](#returning).
 
 ### When not using the returning property
 
@@ -51,13 +51,13 @@ Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
 ### Identifier
 
-The identifier is automatically generated and set if the [](../entity.md) identifier is annotated with `@GeneratedValue`.
+The identifier is automatically generated and set if the [Entity classes](../entity.md) identifier is annotated with `@GeneratedValue`.
 
-Reference [](../entity.md#id-generation) for cautionary points.
+Reference [Id generation](../entity.md#id-generation) for cautionary points.
 
 ### Version numbers
 
-If a value that is explicitly set is greater than 0, then that value is used if the [](../entity.md) has a property annotated with `@Version`.
+If a value that is explicitly set is greater than 0, then that value is used if the [Entity classes](../entity.md) has a property annotated with `@Version`.
 
 If the value is not set or is less than 0, the value is automatically set to 1.
 
@@ -219,7 +219,7 @@ int insert(Employee employee);
 ```
 
 This specification is applied regardless of whether an SQL file is used or not.
-The query timeout specified in [](../config.md) is used if the `queryTimeout` element is not set.
+The query timeout specified in [Configuration](../config.md) is used if the `queryTimeout` element is not set.
 
 ## SQL log output format
 

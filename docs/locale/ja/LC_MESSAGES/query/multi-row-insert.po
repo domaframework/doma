@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,7 +23,6 @@ msgid "Contents"
 msgstr "内容"
 
 #: ../../query/multi-row-insert.md:7
-
 msgid "Annotate the DAO method with `@MultiInsert` to execute a multi-row insert."
 msgstr "複数行の追加を実行するために `@MultiInsert` を使用して DAO メソッドに注釈を付けます。"
 
@@ -34,7 +33,6 @@ msgid ""
 msgstr "複数行の追加を使用すると、次のような SQL ステートメントを発行できます。"
 
 #: ../../query/multi-row-insert.md:27
-
 msgid ""
 "If an entity listener is specified for the entity class, its `preInsert` "
 "method is called for each entity before executing the insert operation. "
@@ -84,8 +82,7 @@ msgid "When using the returning property"
 msgstr "returning プロパティを使用する場合"
 
 #: ../../query/multi-row-insert.md:46
-
-msgid "See [](#returning)."
+msgid "See [Returning](#returning)."
 msgstr "returning"
 
 #: ../../query/multi-row-insert.md:48
@@ -93,7 +90,6 @@ msgid "When not using the returning property"
 msgstr "returning プロパティを使用しない場合"
 
 #: ../../query/multi-row-insert.md:50
-
 msgid ""
 "If the type argument of the `Iterable` parameter is an immutable entity "
 "class, the return type must be `org.seasar.doma.jdbc.MultiResult` with "
@@ -103,27 +99,22 @@ msgstr ""
 "`org easar.doma.jdbc.MultiResult` でなければいけません。"
 
 #: ../../query/multi-row-insert.md:52
-
 msgid ""
 "If the type argument of the `Iterable` parameter is a mutable entity "
 "class, the return type must be `int` that represents updated count."
-msgstr ""
-"`Iterable` パラメータの型引数が変更可能なエンティティクラスの場合、戻り値の型は更新された件数を表す `int` "
-"でなければなりません。"
+msgstr "`Iterable` パラメータの型引数が変更可能なエンティティクラスの場合、戻り値の型は更新された件数を表す `int` でなければなりません。"
 
 #: ../../query/multi-row-insert.md:54
 msgid "Parameter type"
 msgstr "パラメータの型"
 
 #: ../../query/multi-row-insert.md:56
-
 msgid ""
 "The parameter type must be a subtype of `java.lang.Iterable` that has the"
 " entity class as its element."
 msgstr "パラメータの型はエンティティクラスを要素とする `java.lang.Iterable` のサブタイプでなければなりません。"
 
 #: ../../query/multi-row-insert.md:58
-
 msgid "The parameter must not be `null`."
 msgstr "パラメータは `null` であってはいけません。"
 
@@ -142,8 +133,7 @@ msgid "Identifier"
 msgstr "識別子"
 
 #: ../../query/multi-row-insert.md:66
-
-msgid "See [](../entity.md#id-generation)."
+msgid "See [Id generation](../entity.md#id-generation)."
 msgstr "[IDの生成](../entity.md#id-generation) を参照してください。"
 
 #: ../../query/multi-row-insert.md:68
@@ -151,25 +141,20 @@ msgid "Version number"
 msgstr "バージョン番号"
 
 #: ../../query/multi-row-insert.md:70
-
 msgid ""
 "If the application does not set a value to the version property or sets a"
 " value less than `0`, the value `1` will be ultimately set to that "
 "property."
-msgstr ""
-"アプリケーションがバージョンプロパティに値を設定しない場合や `0` より小さい値を設定する場合、`1` "
-"が最終的にそのプロパティに設定されます。"
+msgstr "アプリケーションがバージョンプロパティに値を設定しない場合や `0` より小さい値を設定する場合、`1` が最終的にそのプロパティに設定されます。"
 
 #: ../../query/multi-row-insert.md:72
-
 msgid ""
 "If the application explicitly sets a value greater than `0` to the "
 "version property, automatic generation will not occur."
 msgstr "アプリケーションが `0` より大きい値を明示的にバージョンプロパティに設定した場合、自動生成は行われません。"
 
 #: ../../query/multi-row-insert.md:74
-
-msgid "See also [](../entity.md#version)."
+msgid "See also [Version](../entity.md#version)."
 msgstr "[バージョン](../entity.md#version)) も参照してください。"
 
 #: ../../query/multi-row-insert.md:76
@@ -181,28 +166,25 @@ msgid "exclude"
 msgstr ""
 
 #: ../../query/multi-row-insert.md:80
-
 msgid ""
 "Entity properties specified in the `exclude` property of `@MultiInsert` "
 "will be excluded from the insert targets, even if they are set as "
 "`insertable` in the `@Column` annotation."
 msgstr ""
-"`@MultiInsert` の `exclude` プロパティで指定されたエンティティプロパティは、追加の対象から除外されます。 "
-"たとえそれらが `@Column` 注釈で `insertable` に設定されていたとしてもです。"
+"`@MultiInsert` の `exclude` プロパティで指定されたエンティティプロパティは、追加の対象から除外されます。 たとえそれらが"
+" `@Column` 注釈で `insertable` に設定されていたとしてもです。"
 
 #: ../../query/multi-row-insert.md:88
 msgid "include"
 msgstr ""
 
 #: ../../query/multi-row-insert.md:90
-
 msgid ""
 "Only the entity properties specified in the `include` property of "
 "`@MultiInsert` will be included in the insert targets."
 msgstr "`@MultiInsert` の `include` プロパティに指定されたエンティティプロパティのみが追加の対象に含まれます。"
 
 #: ../../query/multi-row-insert.md:92
-
 msgid ""
 "If the same entity property is specified in both the `exclude` and "
 "`include` properties, that entity property will not be included in the "
@@ -212,14 +194,13 @@ msgstr ""
 "の両方のプロパティに同じエンティティプロパティが指定されている場合、そのエンティティプロパティは追加の対象には含まれません。"
 
 #: ../../query/multi-row-insert.md:94
-
 msgid ""
 "Entity properties with `insertable` set to `false` in the `@Column` "
 "annotation will not be included in the insert targets, even if they are "
 "specified in the `include` property."
 msgstr ""
-"`@Column` 注釈で `insertable` が `false` "
-"に設定されたエンティティプロパティは追加対象には含まれません。 `include` プロパティで指定されていたとしても含まれません。"
+"`@Column` 注釈で `insertable` が `false` に設定されたエンティティプロパティは追加対象には含まれません。 "
+"`include` プロパティで指定されていたとしても含まれません。"
 
 #: ../../query/multi-row-insert.md:101
 msgid "duplicateKeyType"
@@ -236,21 +217,18 @@ msgid "It can take one of three values:"
 msgstr "次の3つの値のいずれかを取ることができます:"
 
 #: ../../query/multi-row-insert.md:107
-
 msgid ""
 "`DuplicateKeyType.UPDATE`: If a duplicate key is encountered, the "
 "existing row in the table will be updated."
 msgstr "`DuplicateKeyType.UPDATE`: 重複したキーが見つかった場合、テーブル内の既存の行が更新されます。"
 
 #: ../../query/multi-row-insert.md:108
-
 msgid ""
 "`DuplicateKeyType.IGNORE`: If a duplicate key is encountered, the insert "
 "operation will be ignored, and no changes will be made to the table."
 msgstr "`DuplicateKeyType.IGNORE`: 重複したキーが見つかった場合、挿入操作は無視され、テーブルに変更は加えられません。"
 
 #: ../../query/multi-row-insert.md:109
-
 msgid ""
 "`DuplicateKeyType.EXCEPTION`: If a duplicate key is encountered, an "
 "exception will be thrown."
@@ -261,7 +239,6 @@ msgid "duplicateKeys"
 msgstr ""
 
 #: ../../query/multi-row-insert.md:118
-
 msgid ""
 "This property represents the keys that should be used to determine if a "
 "duplicate key exists. If the duplicate key exists, the operation will use"
@@ -271,7 +248,6 @@ msgstr ""
 "`duplicateKeyType` ストラテジーを使用します。"
 
 #: ../../query/multi-row-insert.md:126
-
 msgid ""
 "This property is only utilized when the `duplicateKeyType` strategy is "
 "either `DuplicateKeyType.UPDATE` or `DuplicateKeyType.IGNORE`."
@@ -288,16 +264,14 @@ msgid "returning"
 msgstr "returning"
 
 #: ../../query/multi-row-insert.md:137
-
 msgid ""
 "By specifying `@Returning` in the `returning` property, you can generate "
 "SQL equivalent to the `INSERT .. RETURNING` clause."
 msgstr ""
-"`returning` プロパティで `@Returning` を指定することで、SQL の `INSERT .. "
-"RETURNING` 句に相当するコードを生成できます。"
+"`returning` プロパティで `@Returning` を指定することで、SQL の `INSERT .. RETURNING` "
+"句に相当するコードを生成できます。"
 
 #: ../../query/multi-row-insert.md:154
-
 msgid ""
 "You can use the `include` element of `@Returning` to specify which entity"
 " properties (corresponding to database columns) should be returned by the"
@@ -308,11 +282,10 @@ msgid ""
 msgstr ""
 "`@Returning` の `include` 要素を使用して、RETURNING "
 "句によって返されるエンティティのプロパティ（データベース列に対応）を指定できます。また、`exclude` "
-"要素を使用して、返されるべきでないプロパティを指定することもできます。同じエンティティのプロパティが `include` と "
-"`exclude` の両方の要素に含まれている場合、それは返されません。"
+"要素を使用して、返されるべきでないプロパティを指定することもできます。同じエンティティのプロパティが `include` と `exclude` "
+"の両方の要素に含まれている場合、それは返されません。"
 
 #: ../../query/multi-row-insert.md:159
-
 msgid "The return type must be a `List` of entity instances."
 msgstr "戻り値の型はエンティティインスタンスの `List` でなければなりません。"
 
@@ -327,7 +300,6 @@ msgid "Unique constraint violation"
 msgstr "一意制約違反"
 
 #: ../../query/multi-row-insert.md:167
-
 msgid ""
 "An `org.seasar.doma.jdbc.UniqueConstraintException` is thrown if a unique"
 " constraint violation occurs."
@@ -338,14 +310,12 @@ msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
 #: ../../query/multi-row-insert.md:171
-
 msgid ""
 "You can specify seconds of query timeout to `queryTimeout` property "
 "within `@MultiInsert` annotation."
 msgstr "`@MultiInsert` アノテーション内の `queryTimeout` プロパティにクエリタイムアウトの秒数を指定できます。"
 
 #: ../../query/multi-row-insert.md:178
-
 msgid ""
 "If no value is set for the `queryTimeout` property, the query timeout "
 "specified in the config class is used."
@@ -356,14 +326,12 @@ msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
 #: ../../query/multi-row-insert.md:182
-
 msgid ""
 "You can specify SQL log output format to `sqlLog` property within "
 "`@MultiInsert` annotation."
 msgstr "`@MultiInsert` アノテーション内の `sqlLog` プロパティに SQL ログの出力形式を指定できます。"
 
 #: ../../query/multi-row-insert.md:189
-
 msgid ""
 "`SqlLogType.RAW` outputs the SQL statement with its binding parameters in"
 " the log."

@@ -27,7 +27,7 @@ Similarly, the `postUpdate` method of the entity listener is called after execut
 
 ### When using the returning property
 
-See [](#returning).
+See [Returning](#returning).
 
 ### When not using the returning property
 
@@ -180,7 +180,7 @@ To execute an update using an SQL file,
 set the `sqlFile` property to `true` in the `@Update` annotation and prepare an SQL file that corresponds to the method.
 
 :::{note}
-When updating via SQL file, the rules differ depending on whether you use [](../sql.md#population-directive).
+When updating via SQL file, the rules differ depending on whether you use [Population directive](../sql.md#population-directive).
 :::
 
 ### Case of using the populate directive
@@ -204,7 +204,7 @@ For example, you would write an SQL file like the one below to correspond to the
 update employee set /*%populate*/ id = id where salary > /* salary */0
 ```
 
-The rules for controlling update target properties are the same as in [](#update-by-auto-generated-sql).
+The rules for controlling update target properties are the same as in [Update By Auto Generated Sql](#update-by-auto-generated-sql).
 
 ### Case of not using the populate directive
 
@@ -285,7 +285,7 @@ int update(Employee employee);
 ```
 
 This specification applies regardless of whether an SQL file is used or not.
-If the `queryTimeout` property is not set, the query timeout specified in [](../config.md) is used.
+If the `queryTimeout` property is not set, the query timeout specified in [Configuration](../config.md) is used.
 
 ## SQL log output format
 

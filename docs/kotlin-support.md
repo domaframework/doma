@@ -94,7 +94,7 @@ It is recommended to use the Kotlin-specific Criteria API rather than DAO interf
 :::
 
 Doma provides `KQueryDsl`, a Criteria API specifically designed for Kotlin.
-It is very similar to the `QueryDsl`, which is described in [](query-dsl.md).
+It is very similar to the `QueryDsl`, which is described in [Unified Criteria API](query-dsl.md).
 The main advantage of `KQueryDsl` is its simplicity.
 
 ```kotlin
@@ -128,7 +128,7 @@ dependencies {
 
 ### Code Generation
 
-Use [](codegen.md).
+Use [Doma CodeGen Plugin](codegen.md).
 This plugin supports Kotlin code generation.
 
 ### Using kapt in Gradle

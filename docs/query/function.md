@@ -21,12 +21,12 @@ If the stored function returns nothing, the return type must be `void`.
 
 If the stored function returns a single result, the return type must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- [](../entity.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- [Entity classes](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional, whose element type is one of [](../basic.md), [](../domain.md),
-  [](../entity.md), or java.util.Map\<String, Object>
+- java.util.Optional, whose element type is one of [Basic classes](../basic.md), [Domain classes](../domain.md),
+  [Entity classes](../entity.md), or java.util.Map\<String, Object>
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -34,11 +34,11 @@ If the stored function returns a single result, the return type must be one of t
 If the stored function returns a result list, the return type must be `java.util.List`
 and its element type must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- [](../entity.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- [Entity classes](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional whose element type is either [](../basic.md) or [](../domain.md)
+- java.util.Optional whose element type is either [Basic classes](../basic.md) or [Domain classes](../domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -69,9 +69,9 @@ All parameters must be annotated with one of the following annotations:
 To indicate IN parameters, annotate corresponding DAO method parameters with the `@In` annotation.
 The type of the DAO method parameter must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- java.util.Optional whose element type is either [](../basic.md) or [](../domain.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- java.util.Optional whose element type is either [Basic classes](../basic.md) or [Domain classes](../domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -97,9 +97,9 @@ the `@InOut` annotation.
 The type of the DAO method parameter must be `org.seasar.doma.jdbc.Reference`
 and its type parameter must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- java.util.Optional whose element type is either [](../basic.md) or [](../domain.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- java.util.Optional whose element type is either [Basic classes](../basic.md) or [Domain classes](../domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -128,9 +128,9 @@ the `@Out` annotation.
 The type of the DAO method parameter must be `org.seasar.doma.jdbc.Reference`
 and its type parameter must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- java.util.Optional whose element type is either [](../basic.md) or [](../domain.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- java.util.Optional whose element type is either [Basic classes](../basic.md) or [Domain classes](../domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -159,11 +159,11 @@ annotate corresponding DAO method parameters with the `@ResultSet` annotation.
 The DAO method parameter type must be `java.util.List`
 and its element type must be one of the following:
 
-- [](../basic.md)
-- [](../domain.md)
-- [](../entity.md)
+- [Basic classes](../basic.md)
+- [Domain classes](../domain.md)
+- [Entity classes](../entity.md)
 - java.util.Map\<String, Object>
-- java.util.Optional whose element type is either [](../basic.md) or [](../domain.md)
+- java.util.Optional whose element type is either [Basic classes](../basic.md) or [Domain classes](../domain.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble

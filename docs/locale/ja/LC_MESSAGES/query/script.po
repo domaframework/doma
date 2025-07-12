@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,14 +23,12 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../query/script.md:7
-
 msgid ""
 "To run a series of static SQL statements, annotate DAO methods with "
 "`@Script`:"
 msgstr "一連の静的 SQL ステートメントを実行するには、DAO メソッドに `@Script` アノテーションを付けます。"
 
 #: ../../query/script.md:19
-
 msgid ""
 "The return type of the method must be `void` and the number of parameters"
 " must be zero."
@@ -75,7 +73,6 @@ msgid "META-INF/*path-format-of-dao-interface*/*dao-method*.script"
 msgstr "META-INF/*daoインターフェイスのパス形式*/*daoメソッド*.script"
 
 #: ../../query/script.md:40
-
 msgid ""
 "For example, when the DAO interface name is `aaa.bbb.EmployeeDao` and the"
 " DAO method name is `createTable`, the script file path is as follows:"
@@ -116,8 +113,9 @@ msgstr ""
 "INF/aaa/bbb/EmployeeDao/createTable-postgres.script\" が選択されます。"
 
 #: ../../query/script.md:58
-
-msgid "See also [](../sql.md#dependency-on-a-specific-rdbms)."
+msgid ""
+"See also [Dependency on a specific RDBMS](../sql.md#dependency-on-a"
+"-specific-rdbms)."
 msgstr "[特定RDBMSへの依存][](../sql.md#dependency-on-a-specific-rdbms) も参照してください。"
 
 #: ../../query/script.md:60
@@ -125,13 +123,13 @@ msgid "Scripts in annotation"
 msgstr "アノテーション内のスクリプト"
 
 #: ../../query/script.md:62
-
 msgid "You can specify scripts to DAO methods with the `@Sql` annotation:"
 msgstr "`@Sql` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
 
 #: ../../query/script.md:74
-
-msgid "See also [](../sql.md#sql-templates-in-annotations)."
+msgid ""
+"See also [SQL templates in annotations](../sql.md#sql-templates-in-"
+"annotations)."
 msgstr "[アノテーション内SQLテンプレート](../sql.md#sql-templates-in-annotations) も参照してください。"
 
 #: ../../query/script.md:76
@@ -151,14 +149,13 @@ msgid "block delimiter"
 msgstr "ブロック区切り文字"
 
 #: ../../query/script.md:83
-
 msgid ""
 "The statement delimiter is always a semicolon `;`. The block delimiter is"
 " determined by a `Dialect` instance. The RDBMS block delimiters are as "
 "follows:"
 msgstr ""
-"ステートメントの区切り文字は常にセミコロン `;` です。ブロック区切り文字は `Dialect` インスタンスによって決定されます。 "
-"RDBMS ブロック区切り文字は次のとおりです。"
+"ステートメントの区切り文字は常にセミコロン `;` です。ブロック区切り文字は `Dialect` インスタンスによって決定されます。 RDBMS"
+" ブロック区切り文字は次のとおりです。"
 
 #: ../../query/script.md:3
 msgid "RDBMS"
@@ -265,7 +262,6 @@ msgid "SqliteDialect"
 msgstr ""
 
 #: ../../query/script.md:100
-
 msgid ""
 "You can also specify the block delimiter to `@Script`'s `blockDelimiter` "
 "element:"
@@ -280,7 +276,6 @@ msgid "Stopping on error"
 msgstr "エラーによる停止"
 
 #: ../../query/script.md:125
-
 msgid ""
 "Script running will stop when any statement execution fails. To continue "
 "the script running, specify `false` to the `haltOnError` element:"
@@ -297,7 +292,6 @@ msgid "Following script is valid for Oracle Database:"
 msgstr "次のスクリプトは Oracle データベースに対して有効です。"
 
 #: ../../query/script.md:176
-
 msgid ""
 "You can use both a single line comment `--` and a multi-line comment `/* "
 "... */`. Each statement must end with a semicolon `;`. Be careful that a "
@@ -307,7 +301,6 @@ msgstr ""
 "で終わる必要があります。新しい行はステートメントの終わりを意味しないことに注意してください。"
 
 #: ../../query/script.md:180
-
 msgid ""
 "In this example, the slash `/` is a block delimiter. The block delimiter "
 "must appear at the beginning of a line and be followed by a new line."

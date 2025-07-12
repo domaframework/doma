@@ -24,7 +24,7 @@ Similarly, the `postDelete` method is called after the delete operation complete
 
 ### When using the returning property
 
-See [](#returning).
+See [Returning](#returning).
 
 ### When not using the returning property
 
@@ -183,7 +183,7 @@ int delete(Employee employee);
 ```
 
 This specifying is applied regardless of with or without using sql file.
-Query timeout that is specified in [](../config.md) is used if `queryTimeout` property is not set value.
+Query timeout that is specified in [Configuration](../config.md) is used if `queryTimeout` property is not set value.
 
 ## SQL log output format
 

@@ -149,17 +149,17 @@ The `@Sql` annotation must be combined with following annotations:
 In SQL templates, the SQL comments following the specific rules are recognised as directives.
 Supported directives are as follows:
 
-- [](#bind-variable-directive)
-- [](#literal-variable-directive)
-- [](#embedded-variable-directive)
-- [](#condition-directive)
-- [](#loop-directive)
-- [](#expansion-directive)
-- [](#population-directive)
-- [](#parser-level-comment-directive)
+- [Bind Variable Directive](#bind-variable-directive)
+- [Literal Variable Directive](#literal-variable-directive)
+- [Embedded Variable Directive](#embedded-variable-directive)
+- [Condition Directive](#condition-directive)
+- [Loop Directive](#loop-directive)
+- [Expansion Directive](#expansion-directive)
+- [Population Directive](#population-directive)
+- [Parser Level Comment Directive](#parser-level-comment-directive)
 
 :::{note}
-See also [](expression.md) for information of the expression language available in directives.
+See also [Expression language](expression.md) for information of the expression language available in directives.
 :::
 
 (bind-variable-directive)=
@@ -173,7 +173,7 @@ The directive must be followed by test data, which is never used at runtime.
 
 #### Basic and domain parameters
 
-The parameter whose type is one of [](basic.md) and [](domain.md)
+The parameter whose type is one of [Basic classes](basic.md) and [Domain classes](domain.md)
 is recognised as a bind variable.
 
 The following example is the pair of a DAO method and an SQL template:
@@ -197,7 +197,7 @@ select * from employee where employee_id = ?
 Parameters that are either a subtype of `java.lang.Iterable` or an array type are
 recognized as bind variables in an IN clause.
 
-The type argument of `java.lang.Iterable` must be one of [](basic.md) and [](domain.md).
+The type argument of `java.lang.Iterable` must be one of [Basic classes](basic.md) and [Domain classes](domain.md).
 The directives must be followed by test data enclosed between `(` and `)`.
 
 The following example is the pair of a DAO method and an SQL template:

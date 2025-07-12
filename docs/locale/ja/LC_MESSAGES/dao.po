@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -47,16 +47,17 @@ msgid "Query definition"
 msgstr "クエリ定義"
 
 #: ../../dao.md:17
-msgid "[](query/index.md) can be defined using annotations."
+msgid "[Queries](query/index.md) can be defined using annotations."
 msgstr "[クエリ](query/index.md) は、アノテーションを使用して定義できます。"
 
 #: ../../dao.md:19
 msgid ""
-"You can use [](query-builder/index.md) or [](query-dsl.md) in a [](#dao-"
-"default-method) when you need to build queries dynamically in Java code."
+"You can use [Query builders](query-builder/index.md) or [Unified Criteria"
+" API](query-dsl.md) in a [Dao Default Method](#dao-default-method) when "
+"you need to build queries dynamically in Java code."
 msgstr ""
-"Javaコード内で動的にクエリを構築する必要がある場合は、[デフォルトメソッド](#dao-default-method) 内で [クエリビルダ](query-"
-"builder/index.md) や [クエリDSL](query-dsl.md) を使用できます。"
+"Javaコード内で動的にクエリを構築する必要がある場合は、[デフォルトメソッド](#dao-default-method) 内で [クエリビルダ"
+"](query-builder/index.md) や [クエリDSL](query-dsl.md) を使用できます。"
 
 #: ../../dao.md:23
 msgid "Default method"
@@ -90,11 +91,12 @@ msgstr "実装クラスはコンパイル時にアノテーションプロセッ
 #: ../../dao.md:54
 msgid ""
 "By default, the implementation class name is the interface name suffixed "
-"with `Impl`. Please refer to [](annotation-processing.md) for information"
-" on how to customize the package name and suffix."
+"with `Impl`. Please refer to [Annotation Processing](annotation-"
+"processing.md) for information on how to customize the package name and "
+"suffix."
 msgstr ""
-"デフォルトでは、実装クラス名はインターフェース名に `Impl` を付けたものです。パッケージ名とサフィックスをカスタマイズする方法については"
-" [アノテーション処理](annotation-processing.md) を参照してください。"
+"デフォルトでは、実装クラス名はインターフェース名に `Impl` を付けたものです。パッケージ名とサフィックスをカスタマイズする方法については "
+"[アノテーション処理](annotation-processing.md) を参照してください。"
 
 #: ../../dao.md:57
 msgid ""

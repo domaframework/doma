@@ -7,7 +7,7 @@
 ## Introduction
 
 :::{warning}
-Please use the Query DSL introduced on the [](query-dsl.md) page instead of the Entityql and NativeSql
+Please use the Query DSL introduced on the [Unified Criteria API](query-dsl.md) page instead of the Entityql and NativeSql
 DSLs explained here.
 The Query DSL is a new, unified interface that combines both Entityql and NativeSql DSLs.
 :::
@@ -105,7 +105,7 @@ These metamodels allow you to make your query typesafe.
 You can customize the name of the metamodels by the Metamodel annotation elements.
 
 To customize all metamodels in bulk, you can use the annotation processor options.
-See [](annotation-processing.md) and check the following options:
+See [Annotation Processing](annotation-processing.md) and check the following options:
 
 - doma.metamodel.enabled
 - doma.metamodel.prefix
@@ -1157,7 +1157,7 @@ order by
 
 ## Delete statement
 
-For the specification of the where expression, see [](#criteria-where).
+For the specification of the where expression, see [Criteria Where](#criteria-where).
 The same rule is applied to delete statements.
 
 ### Delete settings (Entityql, NativeSql)
@@ -1468,7 +1468,7 @@ int count result = nativeSql
 
 ## Update statement
 
-For the specification of the where expression, see [](#criteria-where).
+For the specification of the where expression, see [Criteria Where](#criteria-where).
 The same rule is applied to update statements.
 
 ### Update settings (Entityql, NativeSql)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -37,9 +37,8 @@ msgstr ""
 "をサポートするフレームワークまたはアプリケーションサーバーを使用してください。"
 
 #: ../../transaction.md:13
-#
-msgid "See also [](config.md#configuration-definition)."
-msgstr "[](config.md#configuration-definition) も参照してください。"
+msgid "See also [Configuration definition](config.md#configuration-definition)."
+msgstr "[設定の定義](config.md#configuration-definition) も参照してください。"
 
 #: ../../transaction.md:15
 msgid "Configuration"
@@ -53,17 +52,15 @@ msgstr "ローカル トランザクションを使用するには、次の条�
 msgid ""
 "Return a `LocalTransactionDataSource` from the `getDataSource` method in "
 "your `Config` implementation"
-msgstr ""
-"`Config` 実装の `getDataSource` メソッドから `LocalTransactionDataSource` "
-"を返します。"
+msgstr "`Config` 実装の `getDataSource` メソッドから `LocalTransactionDataSource` を返します。"
 
 #: ../../transaction.md:20
 msgid ""
 "Create a `LocalTransactionManager` using the `LocalTransactionDataSource`"
 " in the constructor"
 msgstr ""
-"コンストラクターで `LocalTransactionDataSource` を使用して "
-"`LocalTransactionManager` を作成します"
+"コンストラクターで `LocalTransactionDataSource` を使用して `LocalTransactionManager` "
+"を作成します"
 
 #: ../../transaction.md:21
 msgid "Use this `LocalTransactionManager` to control database access"

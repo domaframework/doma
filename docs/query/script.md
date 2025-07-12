@@ -55,7 +55,7 @@ For example, in the environment where PostgreSQL is used,
 "META-INF/aaa/bbb/EmployeeDao/createTable-postgres.script"
 is chosen instead of "META-INF/aaa/bbb/EmployeeDao/createTable.script".
 
-See also [](../sql.md#dependency-on-a-specific-rdbms).
+See also [Dependency on a specific RDBMS](../sql.md#dependency-on-a-specific-rdbms).
 
 ### Scripts in annotation
 
@@ -71,7 +71,7 @@ public interface EmployeeDao {
 }
 ```
 
-See also [](../sql.md#sql-templates-in-annotations).
+See also [SQL templates in annotations](../sql.md#sql-templates-in-annotations).
 
 ## Delimiter
 

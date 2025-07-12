@@ -474,7 +474,6 @@ msgid "``[\"TABLE\", \"VIEW\"]`` (include tables and views)"
 msgstr ""
 
 #: ../../codegen.md:393
-#, fuzzy
 msgid "``[\"TABLE\"]``"
 msgstr "`[\"TABLE\"]`"
 
@@ -487,12 +486,10 @@ msgid "Regex to identify version columns"
 msgstr ""
 
 #: ../../codegen.md:396
-#, fuzzy
 msgid "``VERSION([_]?NO)?`` or ``.*_version``"
 msgstr "`VERSION([_]?NO)?`"
 
 #: ../../codegen.md:397
-#, fuzzy
 msgid "``VERSION([_]?NO)?``"
 msgstr "`VERSION([_]?NO)?`"
 
@@ -505,12 +502,10 @@ msgid "Target programming language"
 msgstr ""
 
 #: ../../codegen.md:400
-#, fuzzy
 msgid "``LanguageType.JAVA`` or ``LanguageType.KOTLIN``"
 msgstr "`LanguageType.JAVA` または `LanguageType.KOTLIN`"
 
 #: ../../codegen.md:401
-#, fuzzy
 msgid "``LanguageType.JAVA``"
 msgstr "`LanguageType.JAVA`"
 
@@ -539,7 +534,6 @@ msgid "``UTF-8``, ``Shift_JIS``"
 msgstr ""
 
 #: ../../codegen.md:409
-#, fuzzy
 msgid "``UTF-8``"
 msgstr "`UTF-8`"
 
@@ -568,7 +562,6 @@ msgid "Output directory for generated SQL files"
 msgstr "生成されたSQLファイルの出力ディレクトリ"
 
 #: ../../codegen.md:416 ../../codegen.md:417
-#, fuzzy
 msgid "``src/main/resources``"
 msgstr "`src/main/resources`"
 
@@ -819,7 +812,6 @@ msgid "whether to overwrite generated DAO files or not"
 msgstr "生成されたDAOファイルを上書きするかどうか"
 
 #: ../../codegen.md:591
-#, fuzzy
 msgid "``false``"
 msgstr "`false`"
 
@@ -861,7 +853,6 @@ msgid "whether to overwrite generated sql files or not"
 msgstr "生成された SQL ファイルを上書きするかどうか"
 
 #: ../../codegen.md:633
-#, fuzzy
 msgid "``true``"
 msgstr "`true`"
 

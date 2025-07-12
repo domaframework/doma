@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -50,8 +50,8 @@ msgid ""
 "started](https://github.com/domaframework/getting-started) repository and"
 " navigate to the created directory using these commands:"
 msgstr ""
-"サンプルプロジェクトを入手するには、次のコマンドを使用して、`getting-started "
-"<https://github.com/domaframework/getting-started>`_ "
+"サンプルプロジェクトを入手するには、次のコマンドを使用して、[getting-started]"
+"(https://github.com/domaframework/getting-started) "
 "リポジトリのクローンを作成し、新しいディレクトリに移動します。"
 
 #: ../../getting-started.md:25
@@ -95,8 +95,8 @@ msgid ""
 "If you want to store SQL statements in files, [Doma "
 "Tools](https://github.com/domaframework/doma-tools) can help you."
 msgstr ""
-"SQL文をファイルで管理する場合、`Doma Tools <https://github.com/domaframework/doma-"
-"tools>`_ が役立つかもしれません。"
+"SQL文をファイルで管理する場合、[Doma Tools](https://github.com/domaframework/doma-"
+"tools) が役立つかもしれません。"
 
 #: ../../getting-started.md:52
 msgid "IntelliJ IDEA"
@@ -118,15 +118,15 @@ msgstr "次のIntelliJ IDEAプラグインを使用してDomaをサポートで�
 
 #: ../../getting-started.md:60
 msgid "[Doma Support](https://plugins.jetbrains.com/plugin/7615-doma-support)"
-msgstr "`Doma Support <https://plugins.jetbrains.com/plugin/7615-doma-support>`_"
+msgstr "[Doma Support](https://plugins.jetbrains.com/plugin/7615-doma-support)"
 
 #: ../../getting-started.md:61
 msgid ""
 "[Doma Tools for IntelliJ](https://plugins.jetbrains.com/plugin/26701"
 "-doma-tools/)"
 msgstr ""
-"`Doma Tools for IntelliJ <https://plugins.jetbrains.com/plugin/26701"
-"-doma-tools/>`_"
+"[Doma Tools for IntelliJ](https://plugins.jetbrains.com/plugin/26701"
+"-doma-tools/)"
 
 #: ../../getting-started.md:64
 msgid "Programming styles"
@@ -156,12 +156,13 @@ msgid "DSL style"
 msgstr "DSL スタイル"
 
 #: ../../getting-started.md:75
-
 msgid ""
 "In the DSL style, you work with examples in the "
-"`boilerplate.java17.repository.EmployeeRepository` and the [](query-dsl.md) for operations."
+"`boilerplate.java17.repository.EmployeeRepository` and the [Unified "
+"Criteria API](query-dsl.md) for operations."
 msgstr ""
-"DSL スタイルでは、`boilerplate.java17.repository.EmployeeRepository` と :[クエリDSL](query-dsl.md)  を使った例を使用します。"
+"DSL スタイルでは、`boilerplate.java17.repository.EmployeeRepository` と :[クエリDSL"
+"](query-dsl.md)  を使った例を使用します。"
 
 #: ../../getting-started.md:78
 msgid "SELECT"
@@ -220,13 +221,13 @@ msgid "DAO style"
 msgstr "DAO スタイル"
 
 #: ../../getting-started.md:134
-
 msgid ""
 "You can find some examples in `boilerplate.java17.dao.EmployeeDao`. See "
-"[](dao.md) and [](sql.md) for more information."
+"[DAO interfaces](dao.md) and [SQL templates](sql.md) for more "
+"information."
 msgstr ""
-"いくつかの例は `boilerplate.java17.dao.EmployeeDao` にあります。詳細については、[DAOインタフェース](dao.md) "
-"および [SQLテンプレート](sql.md) を参照してください。"
+"いくつかの例は `boilerplate.java17.dao.EmployeeDao` "
+"にあります。詳細については、[DAOインタフェース](dao.md) および [SQLテンプレート](sql.md) を参照してください。"
 
 #: ../../getting-started.md:137
 msgid "SELECT (DAO)"
@@ -241,7 +242,7 @@ msgstr ""
 "`@Sql` アノテーションを使用します。"
 
 #: ../../getting-started.md:155
-
+#, python-format
 msgid ""
 "This SQL template contains two special expressions: `/*%expand*/` and `/*"
 " id */`. When processing the SQL template, `/*%expand*/` and the "

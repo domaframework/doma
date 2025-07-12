@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2025-07-12 16:05+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -23,9 +23,8 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../kotlin-support.md:7
-
 msgid "Doma supports [Kotlin](https://kotlinlang.org/) 1.4.0 or later."
-msgstr "Doma は、 `Kotlin <https://kotlinlang.org/>`_ 1.4.0 以降をサポートしています。"
+msgstr "Doma は、 [Kotlin](https://kotlinlang.org/)  1.4.0 以降をサポートしています。"
 
 #: ../../kotlin-support.md:9
 msgid "Best practices"
@@ -46,7 +45,6 @@ msgid "Define as a plain class"
 msgstr "プレーンクラスとして定義する"
 
 #: ../../kotlin-support.md:16
-
 msgid "Specify a `Metamodel` annotation in the `metamodel` element of `@Entity`"
 msgstr "`@Entity` の `metamodel` 要素に `Metamodel` annotation を指定する"
 
@@ -63,7 +61,6 @@ msgid "Define only one constructor"
 msgstr "コンストラクターを 1 つだけ定義する"
 
 #: ../../kotlin-support.md:44
-
 msgid "Define only one property named `value` in the constructor"
 msgstr "コンストラクターでは、名前が `value` であるプロパティを 1 つだけ定義する"
 
@@ -88,7 +85,6 @@ msgid "Dao interfaces"
 msgstr "Dao インターフェース"
 
 #: ../../kotlin-support.md:66
-
 msgid "Specify a SQL template with `@org.seasar.doma.Sql`"
 msgstr "SQLテンプレートを `@org.seasar.doma.Sql` で指定する"
 
@@ -103,26 +99,24 @@ msgid ""
 msgstr "DAO インターフェイスよりも Kotlin 固有の Criteria API を使ってください"
 
 #: ../../kotlin-support.md:96
-
 msgid ""
 "Doma provides `KQueryDsl`, a Criteria API specifically designed for "
 "Kotlin. It is very similar to the `QueryDsl`, which is described in "
-"[](query-dsl.md). The main advantage of `KQueryDsl` is its simplicity."
+"[Unified Criteria API](query-dsl.md). The main advantage of `KQueryDsl` "
+"is its simplicity."
 msgstr ""
 "Doma はKotlin 専用の Criteria APIである `KQueryDsl` を提供します。これは [クエリDSL](query-"
 "dsl.md) で説明されている `QueryDsl` にとても似ています。`KQueryDsl` の最大の特徴はシンプルさです。"
 
 #: ../../kotlin-support.md:117
-
 msgid ""
 "You can find more sample code [here](https://github.com/domaframework"
 "/kotlin-sample)."
 msgstr ""
-"`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル "
+"[ここ](https://github.com/domaframework/kotlin-sample) で多くのサンプル "
 "コードを参照できます。"
 
 #: ../../kotlin-support.md:119
-
 msgid ""
 "The `KQueryDsl` is included in the doma-kotlin module. Note that you "
 "should use doma-kotlin instead of doma-core in your build script. You can"
@@ -136,8 +130,9 @@ msgid "Code Generation"
 msgstr "コード生成"
 
 #: ../../kotlin-support.md:131
-
-msgid "Use [](codegen.md). This plugin supports Kotlin code generation."
+msgid ""
+"Use [Doma CodeGen Plugin](codegen.md). This plugin supports Kotlin code "
+"generation."
 msgstr "[Doma CodeGen プラグイン](codegen.md) を使用してください。このプラグインはKotlinのコード生成をサポートしています。"
 
 #: ../../kotlin-support.md:134
@@ -145,13 +140,12 @@ msgid "Using kapt in Gradle"
 msgstr "Gradle での kapt の使用"
 
 #: ../../kotlin-support.md:136
-
 msgid ""
 "Annotation processors are supported in Kotlin with the "
 "[kapt](https://kotlinlang.org/docs/reference/kapt.html) compiler plugin."
 msgstr ""
-"アノテーション プロセッサは、Kotlin で `kapt "
-"<https://kotlinlang.org/docs/reference/kapt.html>`_ コンパイラ "
+"アノテーション プロセッサは、Kotlin で [kapt]"
+"(https://kotlinlang.org/docs/reference/kapt.html) コンパイラ "
 "プラグインを使用してサポートされています。"
 
 #: ../../kotlin-support.md:139
@@ -164,23 +158,21 @@ msgstr ""
 "build.gradle.kts を記述できます。"
 
 #: ../../kotlin-support.md:149
-
 msgid ""
 "To simplify your build script, we recommend using the [Doma Compile "
 "Plugin](https://github.com/domaframework/doma-compile-plugin)."
 msgstr ""
-"ビルド スクリプトを簡略化するには、`Doma コンパイル プラグイン <https://github.com/domaframework"
-"/doma-compile-plugin>`_ を使用することをお勧めします。"
+"ビルド スクリプトを簡略化するには、[Doma コンパイル プラグイン](https://github.com/domaframework"
+"/doma-compile-plugin) を使用することをお勧めします。"
 
 #: ../../kotlin-support.md:152
 msgid "Sample project"
 msgstr "サンプルプロジェクト"
 
 #: ../../kotlin-support.md:154
-
 msgid "[kotlin-sample](https://github.com/domaframework/kotlin-sample)"
 msgstr ""
-"`ここ <https://github.com/domaframework/kotlin-sample>`_ で多くのサンプル "
+"[kotlin-sample](https://github.com/domaframework/kotlin-sample) で多くのサンプル "
 "コードを参照できます。"
 
 #~ msgid "`kotlin-sample <https://github.com/domaframework/kotlin-sample>`_"
