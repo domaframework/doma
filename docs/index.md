@@ -26,7 +26,7 @@ Doma is a database access framework for Java with several notable strengths:
 We kindly ask for your support to help us continue the development and maintenance of Doma.
 Your donation will enable us to fix bugs faster, improve the library, and add new features.
 
-You can make a contribution here: <https://opencollective.com/doma>
+You can make a contribution here: [https://opencollective.com/doma](https://opencollective.com/doma)
 
 Thank you very much for supporting Doma!
 :::
