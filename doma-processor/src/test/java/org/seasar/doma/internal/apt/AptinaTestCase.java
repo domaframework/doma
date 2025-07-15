@@ -345,14 +345,16 @@ class AptinaTestCase
   @Override
   public void assertMessage(Message message) {
     assertCompiled();
+    var unmatchedMessages = new ArrayList<Message>();
     for (Diagnostic<? extends JavaFileObject> diagnostic : getDiagnostics()) {
       Message m = extractMessage(diagnostic);
       if (m == message) {
         // found
         return;
       }
+      unmatchedMessages.add(m);
     }
-    fail();
+    fail("unmatched messages: " + unmatchedMessages);
   }
 
   private Message extractMessage(Diagnostic<? extends JavaFileObject> diagnostic) {
