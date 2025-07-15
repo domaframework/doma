@@ -85,7 +85,7 @@ class EmbeddablePropertyMetaFactory {
         throw new AptException(
             Message.DOMA4301, fieldElement, new Object[] {optionalCtType.getQualifiedName()});
       }
-      return null;
+      return optionalCtType.getElementCtType().accept(this, aVoid);
     }
 
     @Override

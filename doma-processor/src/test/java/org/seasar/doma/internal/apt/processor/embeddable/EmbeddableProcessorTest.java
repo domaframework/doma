@@ -154,7 +154,8 @@ class EmbeddableProcessorTest extends AbstractCompilerTest {
               LombokAllArgsConstructorAccess_none.class,
               Message.DOMA4427,
               "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
-          invocationContext(Outer__illegalName.class, Message.DOMA4417));
+          invocationContext(Outer__illegalName.class, Message.DOMA4417),
+          invocationContext(IllegalOptionalProperty.class, Message.DOMA4298));
     }
 
     private TestTemplateInvocationContext invocationContext(
