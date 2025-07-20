@@ -32,7 +32,7 @@ public class EntityMeta implements TypeElementMeta {
 
   private final List<AssociationPropertyMeta> associationPropertyMetas = new ArrayList<>();
 
-  private final List<EntityPropertyMeta> allPropertyMetas = new ArrayList<>();
+  private final List<EntityFieldMeta> allFieldMetas = new ArrayList<>();
 
   private final List<EntityPropertyMeta> idPropertyMetas = new ArrayList<>();
 
@@ -115,28 +115,30 @@ public class EntityMeta implements TypeElementMeta {
     return associationPropertyMetas;
   }
 
-  public void addPropertyMeta(EntityPropertyMeta propertyMeta) {
-    assertNotNull(propertyMeta);
-    allPropertyMetas.add(propertyMeta);
-    if (propertyMeta.isId()) {
-      idPropertyMetas.add(propertyMeta);
-      if (propertyMeta.getIdGeneratorMeta() != null) {
-        generatedIdPropertyMeta = propertyMeta;
+  public void addFieldMeta(EntityFieldMeta fieldMeta) {
+    assertNotNull(fieldMeta);
+    allFieldMetas.add(fieldMeta);
+    if (fieldMeta instanceof EntityPropertyMeta propertyMeta) {
+      if (propertyMeta.isId()) {
+        idPropertyMetas.add(propertyMeta);
+        if (propertyMeta.getIdGeneratorMeta() != null) {
+          generatedIdPropertyMeta = propertyMeta;
+        }
       }
-    }
-    if (propertyMeta.isVersion()) {
-      versionPropertyMeta = propertyMeta;
-    }
-    if (propertyMeta.isTenantId()) {
-      tenantIdPropertyMeta = propertyMeta;
+      if (propertyMeta.isVersion()) {
+        versionPropertyMeta = propertyMeta;
+      }
+      if (propertyMeta.isTenantId()) {
+        tenantIdPropertyMeta = propertyMeta;
+      }
     }
   }
 
-  public List<EntityPropertyMeta> getAllPropertyMetas() {
+  public List<EntityFieldMeta> getAllFieldMetas() {
     if (constructorMeta == null) {
-      return allPropertyMetas;
+      return allFieldMetas;
     }
-    return constructorMeta.getEntityPropertyMetas();
+    return constructorMeta.getEntityFieldMetas();
   }
 
   public List<EntityPropertyMeta> getIdPropertyMetas() {
@@ -233,8 +235,8 @@ public class EntityMeta implements TypeElementMeta {
     return typeElement.getModifiers().contains(Modifier.ABSTRACT);
   }
 
-  public boolean hasEmbeddedProperties() {
-    return allPropertyMetas.stream().anyMatch(EntityPropertyMeta::isEmbedded);
+  public boolean hasEmbeddedFields() {
+    return allFieldMetas.stream().anyMatch(it -> it instanceof EmbeddedMeta);
   }
 
   public void addScopeClassMeta(ScopeClassMeta scopeClassMeta) {

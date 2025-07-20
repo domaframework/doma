@@ -43,6 +43,10 @@ class EmbeddableProcessorTest extends AbstractCompilerTest {
   @BeforeEach
   void beforeEach() {
     addProcessor(new DomaProcessor());
+
+    // Add the dependent embeddables
+    addCompilationUnit(NestedEmbeddable2.class);
+    addCompilationUnit(NestedEmbeddable3.class);
   }
 
   @TestTemplate
@@ -73,7 +77,8 @@ class EmbeddableProcessorTest extends AbstractCompilerTest {
           invocationContext(
               LombokAllArgsConstructor.class,
               "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
-          invocationContext(Derived.class));
+          invocationContext(Derived.class),
+          invocationContext(NestedEmbeddable1.class));
     }
 
     private TestTemplateInvocationContext invocationContext(
@@ -155,7 +160,8 @@ class EmbeddableProcessorTest extends AbstractCompilerTest {
               Message.DOMA4427,
               "-Adoma.lombok.AllArgsConstructor=" + AllArgsConstructor.class.getName()),
           invocationContext(Outer__illegalName.class, Message.DOMA4417),
-          invocationContext(IllegalOptionalProperty.class, Message.DOMA4298));
+          invocationContext(IllegalOptionalProperty.class, Message.DOMA4298),
+          invocationContext(CircularReference.class, Message.DOMA4500));
     }
 
     private TestTemplateInvocationContext invocationContext(

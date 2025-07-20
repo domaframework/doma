@@ -1020,6 +1020,7 @@ public enum Message implements MessageResource {
   DOMA4498(
       "You cannot annotate the field with @Embedded if the field type is not an embeddable class."),
   DOMA4499("The property \"{0}\" is not found in the embeddable class \"{1}\"."),
+  DOMA4500("The property \"{0}\" refers to the class \"{1}\", which creates a circular reference."),
 
   // other
   DOMA5001(

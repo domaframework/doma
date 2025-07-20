@@ -983,14 +983,54 @@ public class QueryDslEntitySelectTest {
 
     CustomerAddress billingAddress = customer.getBillingAddress();
     assertNotNull(billingAddress);
-    assertEquals("123 MAIN ST", billingAddress.street());
     assertEquals("TOKYO", billingAddress.city());
     assertEquals("100-0001", billingAddress.zipCode());
+    assertEquals("123 MAIN ST", billingAddress.street());
 
     CustomerAddress shippingAddress = customer.getShippingAddress();
     assertNotNull(shippingAddress);
-    assertEquals("456 OAK AVE", shippingAddress.street());
     assertEquals("YOKOHAMA", shippingAddress.city());
     assertEquals("220-0012", shippingAddress.zipCode());
+    assertEquals("456 OAK AVE", shippingAddress.street());
+  }
+
+  @Test
+  void embeddable_nested() {
+    Client_ c = new Client_();
+
+    QueryDsl queryDsl = new QueryDsl(config);
+    Client client = queryDsl.from(c).where(w -> w.eq(c.customerId, 1)).fetchOne();
+
+    assertEquals(1, client.getCustomerId());
+
+    CustomerAddress billingAddress = client.getAddress().billingAddress();
+    assertNotNull(billingAddress);
+    assertEquals("TOKYO", billingAddress.city());
+    assertEquals("100-0001", billingAddress.zipCode());
+    assertEquals("123 MAIN ST", billingAddress.street());
+
+    CustomerAddress shippingAddress = client.getAddress().shippingAddress();
+    assertNotNull(shippingAddress);
+    assertEquals("YOKOHAMA", shippingAddress.city());
+    assertEquals("220-0012", shippingAddress.zipCode());
+    assertEquals("456 OAK AVE", shippingAddress.street());
+  }
+
+  @Test
+  void embeddable_nested_multiple() {
+    Buyer_ b = new Buyer_();
+
+    QueryDsl queryDsl = new QueryDsl(config);
+    Buyer buyer = queryDsl.from(b).where(w -> w.eq(b.customerId, 1)).fetchOne();
+
+    assertEquals(1, buyer.getCustomerId());
+
+    assertEquals("TOKYO", buyer.getBillingCityInfo().city());
+    assertEquals("100-0001", buyer.getBillingCityInfo().zipCodeInfo().zipCode());
+    assertEquals("123 MAIN ST", buyer.getBillingCityInfo().zipCodeInfo().streetInfo().street());
+
+    assertEquals("YOKOHAMA", buyer.getShippingCityInfo().city());
+    assertEquals("220-0012", buyer.getShippingCityInfo().zipCodeInfo().zipCode());
+    assertEquals("456 OAK AVE", buyer.getShippingCityInfo().zipCodeInfo().streetInfo().street());
   }
 }

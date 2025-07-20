@@ -21,7 +21,7 @@ import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 
-public class EmbeddablePropertyMeta {
+public final class EmbeddablePropertyMeta implements EmbeddableFieldMeta {
 
   private final CtType ctType;
 
@@ -33,6 +33,7 @@ public class EmbeddablePropertyMeta {
     this.ctType = ctType;
   }
 
+  @Override
   public String getName() {
     return name;
   }
@@ -61,6 +62,7 @@ public class EmbeddablePropertyMeta {
     return columnAnnot != null && columnAnnot.getQuoteValue();
   }
 
+  @Override
   public CtType getCtType() {
     return ctType;
   }

@@ -537,7 +537,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
           } else if (fieldElement.getAnnotation(Association.class) != null) {
             doAssociationPropertyMeta(classElement, fieldElement, entityMeta);
           } else {
-            doEntityPropertyMeta(classElement, fieldElement, entityMeta);
+            doEntityFieldMeta(classElement, fieldElement, entityMeta);
           }
         } catch (AptException e) {
           ctx.getReporter().report(e);
@@ -613,13 +613,13 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
       entityMeta.addAssociationPropertyMeta(associationPropertyMeta);
     }
 
-    void doEntityPropertyMeta(
+    void doEntityFieldMeta(
         TypeElement classElement, VariableElement fieldElement, EntityMeta entityMeta) {
       validateFieldAnnotation(fieldElement, entityMeta);
-      EntityPropertyMetaFactory propertyMetaFactory =
-          new EntityPropertyMetaFactory(ctx, entityMeta, fieldElement);
-      EntityPropertyMeta propertyMeta = propertyMetaFactory.createEntityPropertyMeta();
-      entityMeta.addPropertyMeta(propertyMeta);
+      EntityFieldMetaFactory fieldMetaFactory =
+          new EntityFieldMetaFactory(ctx, entityMeta, fieldElement);
+      EntityFieldMeta fieldMeta = fieldMetaFactory.createEntityFieldMeta();
+      entityMeta.addFieldMeta(fieldMeta);
       validateField(classElement, fieldElement, entityMeta);
     }
 
@@ -656,7 +656,7 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     public void validateOriginalStates(TypeElement classElement, EntityMeta entityMeta) {
-      if (entityMeta.hasOriginalStatesMeta() && entityMeta.hasEmbeddedProperties()) {
+      if (entityMeta.hasOriginalStatesMeta() && entityMeta.hasEmbeddedFields()) {
         throw new AptException(Message.DOMA4305, classElement, new Object[] {});
       }
     }
@@ -683,14 +683,14 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
     }
 
     EntityConstructorMeta getConstructorMeta(TypeElement classElement, EntityMeta entityMeta) {
-      Map<String, EntityPropertyMeta> entityPropertyMetaMap = new HashMap<>();
-      for (EntityPropertyMeta propertyMeta : entityMeta.getAllPropertyMetas()) {
+      Map<String, EntityFieldMeta> entityPropertyMetaMap = new HashMap<>();
+      for (EntityFieldMeta propertyMeta : entityMeta.getAllFieldMetas()) {
         entityPropertyMetaMap.put(propertyMeta.getName(), propertyMeta);
       }
       outer:
       for (ExecutableElement constructor :
           ElementFilter.constructorsIn(classElement.getEnclosedElements())) {
-        List<EntityPropertyMeta> entityPropertyMetaList = new ArrayList<>();
+        List<EntityFieldMeta> entityPropertyMetaList = new ArrayList<>();
         for (VariableElement param : constructor.getParameters()) {
           String name = param.getSimpleName().toString();
           ParameterName parameterName = param.getAnnotation(ParameterName.class);
@@ -698,11 +698,11 @@ public class EntityMetaFactory implements TypeElementMetaFactory<EntityMeta> {
             name = parameterName.value();
           }
           TypeMirror paramType = param.asType();
-          EntityPropertyMeta propertyMeta = entityPropertyMetaMap.get(name);
+          EntityFieldMeta propertyMeta = entityPropertyMetaMap.get(name);
           if (propertyMeta == null) {
             continue outer;
           }
-          TypeMirror propertyType = propertyMeta.getType();
+          TypeMirror propertyType = propertyMeta.getCtType().getType();
           if (!ctx.getMoreTypes().isSameTypeWithErasure(paramType, propertyType)) {
             continue outer;
           }

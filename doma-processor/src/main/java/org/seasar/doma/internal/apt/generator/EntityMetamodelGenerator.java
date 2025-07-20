@@ -28,6 +28,8 @@ import org.seasar.doma.internal.ClassNames;
 import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.cttype.CtType;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddedMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityFieldMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.internal.apt.meta.entity.ScopeClassMeta;
@@ -140,12 +142,12 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     iprint("this.__qualifiedTableName = java.util.Objects.requireNonNull(qualifiedTableName);%n");
     iprint(
         "java.util.ArrayList<%1$s<?>> __list = new java.util.ArrayList<>(%2$s);%n",
-        PropertyMetamodel.class, entityMeta.getAllPropertyMetas().size());
-    for (EntityPropertyMeta p : entityMeta.getAllPropertyMetas()) {
-      if (p.isEmbedded()) {
-        iprint("__list.addAll(%1$s.allPropertyMetamodels());%n", p.getName());
-      } else {
-        iprint("__list.add(%1$s);%n", p.getName());
+        PropertyMetamodel.class, entityMeta.getAllFieldMetas().size());
+    for (EntityFieldMeta f : entityMeta.getAllFieldMetas()) {
+      if (f instanceof EmbeddedMeta embeddedMeta) {
+        iprint("__list.addAll(%1$s.allPropertyMetamodels());%n", embeddedMeta.getName());
+      } else if (f instanceof EntityPropertyMeta propertyMeta) {
+        iprint("__list.add(%1$s);%n", propertyMeta.getName());
       }
     }
     iprint("__allPropertyMetamodels = java.util.Collections.unmodifiableList(__list);%n");
@@ -156,28 +158,30 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
 
   private void printPropertyMetamodelFields() {
     UnwrapOptionalVisitor visitor = new UnwrapOptionalVisitor();
-    for (EntityPropertyMeta p : entityMeta.getAllPropertyMetas()) {
-      if (p.isEmbedded()) {
-        ClassName className = createEmbeddableTypeClassName(p);
+    for (EntityFieldMeta f : entityMeta.getAllFieldMetas()) {
+      if (f instanceof EmbeddedMeta embeddedMeta) {
+        ClassName className = createEmbeddableTypeClassName(embeddedMeta);
         iprint(
             "public final %1$s.Metamodel %2$s = new %1$s.Metamodel(__entityType, \"%2$s\");%n",
-            /* 1 */ className, /* 2 */ p.getName());
-      } else {
-        Pair<CtType, TypeMirror> pair = p.getCtType().accept(visitor, null);
+            /* 1 */ className, /* 2 */ embeddedMeta.getName());
+      } else if (f instanceof EntityPropertyMeta propertyMeta) {
+        Pair<CtType, TypeMirror> pair = propertyMeta.getCtType().accept(visitor, null);
         iprint(
             "public final %1$s<%2$s> %3$s = new %4$s<%2$s>(%5$s.class, __entityType, \"%3$s\");%n",
             /* 1 */ PropertyMetamodel.class,
             /* 2 */ pair.snd,
-            /* 3 */ p.getName(),
+            /* 3 */ propertyMeta.getName(),
             /* 4 */ DefaultPropertyMetamodel.class,
             /* 5 */ pair.fst.getQualifiedName());
+      } else {
+        throw new AptIllegalStateException(f.getName());
       }
       print("%n");
     }
   }
 
-  private ClassName createEmbeddableTypeClassName(EntityPropertyMeta p) {
-    TypeElement embeddableTypeElement = ctx.getMoreTypes().toTypeElement(p.getType());
+  private ClassName createEmbeddableTypeClassName(EmbeddedMeta p) {
+    TypeElement embeddableTypeElement = ctx.getMoreTypes().toTypeElement(p.getCtType().getType());
     if (embeddableTypeElement == null) {
       throw new AptIllegalStateException("embeddableTypeElement");
     }
