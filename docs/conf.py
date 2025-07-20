@@ -186,6 +186,14 @@ gettext_uuid = False
 gettext_compact = False
 
 html_context = {
+    # "Edit Source" link
+    'display_github': True,
+    'github_user': 'domaframework',
+    'github_repo': 'doma',
+    'github_version': 'master',
+    'conf_py_path': '/docs/',
+
+    # versions
     'doma_version': '3.10.0',
     'doma_compile_version': '4.0.2',
     'doma_codegen_version': '3.2.1',
