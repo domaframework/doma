@@ -3,30 +3,31 @@ package org.seasar.doma.internal.apt.processor.embeddable;
 /** */
 @javax.annotation.processing.Generated(value = { "Doma", "@VERSION@" }, date = "1970-01-01T09:00:00.000+0900")
 @org.seasar.doma.EmbeddableTypeImplementation
-public final class _AbstractEmbeddable implements org.seasar.doma.jdbc.entity.EmbeddableType<org.seasar.doma.internal.apt.processor.embeddable.AbstractEmbeddable> {
+public final class _NestedEmbeddable1 implements org.seasar.doma.jdbc.entity.EmbeddableType<org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1> {
 
     static {
         org.seasar.doma.internal.Artifact.validateVersion("@VERSION@");
     }
 
-    private static final _AbstractEmbeddable __singleton = new _AbstractEmbeddable();
+    private static final _NestedEmbeddable1 __singleton = new _NestedEmbeddable1();
 
     @Override
     public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType, org.seasar.doma.jdbc.entity.EmbeddedType embeddedType) {
         return java.util.List.of(
-            java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".aaa", "", namingType, true, true, false, embeddedType))
+            org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().getEmbeddablePropertyTypes(embeddedPropertyName + ".nestedEmbeddable2", entityClass, namingType, embeddedType)
         ).stream().flatMap(it -> it.stream()).toList();
     }
 
     @Override
-    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.AbstractEmbeddable newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
-        return null;
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1 newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
+        return new org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1(
+            (org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable2)org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().newEmbeddable(embeddedPropertyName + ".nestedEmbeddable2", __args));
     }
 
     /**
      * @return the singleton
      */
-    public static _AbstractEmbeddable getSingletonInternal() {
+    public static _NestedEmbeddable1 getSingletonInternal() {
         return __singleton;
     }
 
@@ -35,12 +36,12 @@ public final class _AbstractEmbeddable implements org.seasar.doma.jdbc.entity.Em
 
         private final java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __allPropertyMetamodels;
 
-        public final org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<java.lang.String> aaa;
+        public final org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.Metamodel nestedEmbeddable2;
 
         public Metamodel(org.seasar.doma.jdbc.entity.EntityType<?> entityType, String name) {
-            this.aaa = new org.seasar.doma.jdbc.criteria.metamodel.DefaultPropertyMetamodel<java.lang.String>(java.lang.String.class, entityType, name + ".aaa");
+            this.nestedEmbeddable2 = new org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.Metamodel(entityType, name + ".nestedEmbeddable2");
             java.util.List<org.seasar.doma.jdbc.criteria.metamodel.PropertyMetamodel<?>> __list = new java.util.ArrayList<>(1);
-            __list.add(this.aaa);
+            __list.addAll(this.nestedEmbeddable2.allPropertyMetamodels());
             __allPropertyMetamodels = java.util.Collections.unmodifiableList(__list);
         }
 

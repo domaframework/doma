@@ -17,16 +17,21 @@ package org.seasar.doma.internal.apt.generator;
 
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.seasar.doma.EmbeddableTypeImplementation;
 import org.seasar.doma.internal.ClassName;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.RoundContext;
+import org.seasar.doma.internal.apt.annot.ColumnOverrideAnnot;
+import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddableFieldMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddableMeta;
 import org.seasar.doma.internal.apt.meta.entity.EmbeddablePropertyMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddedMeta;
+import org.seasar.doma.jdbc.entity.ColumnType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
 import org.seasar.doma.jdbc.entity.EmbeddableType;
 import org.seasar.doma.jdbc.entity.EmbeddedType;
@@ -103,33 +108,44 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
         /* 2 */ EntityPropertyType.class,
         /* 3 */ NamingType.class,
         /* 4 */ EmbeddedType.class);
-    iprint("    return %1$s.asList(%n", Arrays.class);
-    for (Iterator<EmbeddablePropertyMeta> it =
-            embeddableMeta.getEmbeddablePropertyMetas().iterator();
+    iprint("    return %1$s.of(%n", List.class);
+    for (Iterator<EmbeddableFieldMeta> it = embeddableMeta.getEmbeddableFieldMetas().iterator();
         it.hasNext(); ) {
-      EmbeddablePropertyMeta propertyMeta = it.next();
-      ScalarMeta scalarMeta = propertyMeta.getCtType().accept(new ScalarMetaFactory(), false);
-      iprint(
-          "        new %1$s<ENTITY, %2$s, %3$s>("
-              + "entityClass, %4$s, embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s, embeddedType)",
-          /* 1 */ DefaultPropertyType.class,
-          /* 2 */ scalarMeta.getBasicType(),
-          /* 3 */ scalarMeta.getContainerType(),
-          /* 4 */ scalarMeta.getSupplier(),
-          /* 5 */ propertyMeta.getName(),
-          /* 6 */ propertyMeta.getColumnName(),
-          /* 7 */ propertyMeta.isColumnInsertable(),
-          /* 8 */ propertyMeta.isColumnUpdatable(),
-          /* 9 */ propertyMeta.isColumnQuoteRequired());
+      EmbeddableFieldMeta fieldMeta = it.next();
+      if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
+        iprint(
+            "        %1$s.getEmbeddablePropertyTypes(embeddedPropertyName + \".%2$s\", entityClass, namingType, %3$s)",
+            /* 1 */ embeddedMeta.embeddableCtType().getTypeCode(),
+            /* 2 */ embeddedMeta.name(),
+            /* 3 */ toEmbeddedTypeCode(embeddedMeta.name(), embeddedMeta.embeddedAnnot()));
+
+      } else if (fieldMeta instanceof EmbeddablePropertyMeta propertyMeta) {
+        ScalarMeta scalarMeta = propertyMeta.getCtType().accept(new ScalarMetaFactory(), false);
+        iprint(
+            "        java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new %1$s<ENTITY, %2$s, %3$s>("
+                + "entityClass, %4$s, embeddedPropertyName + \".%5$s\", \"%6$s\", namingType, %7$s, %8$s, %9$s, embeddedType))",
+            /* 1 */ DefaultPropertyType.class,
+            /* 2 */ scalarMeta.getBasicType(),
+            /* 3 */ scalarMeta.getContainerType(),
+            /* 4 */ scalarMeta.getSupplier(),
+            /* 5 */ propertyMeta.getName(),
+            /* 6 */ propertyMeta.getColumnName(),
+            /* 7 */ propertyMeta.isColumnInsertable(),
+            /* 8 */ propertyMeta.isColumnUpdatable(),
+            /* 9 */ propertyMeta.isColumnQuoteRequired());
+      } else {
+        throw new AptIllegalStateException(fieldMeta.toString());
+      }
       print(it.hasNext() ? ",%n" : "");
     }
-    print(");%n");
+    print("%n");
+    iprint("    ).stream().flatMap(it -> it.stream()).toList();%n");
     iprint("}%n");
     print("%n");
   }
 
   private void printNewEmbeddableMethod() {
-    if (embeddableMeta.getEmbeddablePropertyMetas().stream()
+    if (embeddableMeta.getEmbeddableFieldMetas().stream()
         .anyMatch(p -> p.getCtType().hasTypeParameter())) {
       iprint("@SuppressWarnings(\"unchecked\")%n");
     }
@@ -141,14 +157,24 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
       iprint("    return null;%n");
     } else {
       iprint("    return new %1$s(%n", embeddableMeta.getType());
-      for (Iterator<EmbeddablePropertyMeta> it =
-              embeddableMeta.getEmbeddablePropertyMetas().iterator();
+      for (Iterator<EmbeddableFieldMeta> it = embeddableMeta.getEmbeddableFieldMetas().iterator();
           it.hasNext(); ) {
-        EmbeddablePropertyMeta propertyMeta = it.next();
-        iprint(
-            "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") "
-                + "!= null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
-            propertyMeta.getBoxedType(), propertyMeta.getName());
+        EmbeddableFieldMeta fieldMeta = it.next();
+        if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
+          iprint(
+              "        (%1$s)%2$s.newEmbeddable(embeddedPropertyName + \".%3$s\", __args)",
+              embeddedMeta.embeddableMeta().getType(),
+              embeddedMeta.embeddableCtType().getTypeCode(),
+              embeddedMeta.name());
+
+        } else if (fieldMeta instanceof EmbeddablePropertyMeta propertyMeta) {
+          iprint(
+              "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") "
+                  + "!= null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
+              propertyMeta.getBoxedType(), propertyMeta.getName());
+        } else {
+          throw new AptIllegalStateException(fieldMeta.toString());
+        }
         if (it.hasNext()) {
           print(",%n");
         }
@@ -173,5 +199,45 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     EmbeddableMetamodelGenerator generator =
         new EmbeddableMetamodelGenerator(ctx, className, printer, embeddableMeta);
     generator.generate();
+  }
+
+  private Code toEmbeddedTypeCode(String referenceName, EmbeddedAnnot embeddedAnnot) {
+    return new Code(
+        p -> {
+          if (embeddedAnnot == null) {
+            p.print("embeddedType");
+          } else {
+            p.print(
+                "new %1$s(\"%2$s\", java.util.Map.ofEntries(%3$s)).merge(embeddedType)",
+                /* 1 */ EmbeddedType.class,
+                /* 2 */ embeddedAnnot.getPrefixValue(),
+                /* 3 */ toMapEntryCode(referenceName, embeddedAnnot.getColumnOverridesValue()));
+          }
+        });
+  }
+
+  private Code toMapEntryCode(
+      String referenceName, List<ColumnOverrideAnnot> columnOverrideAnnotList) {
+    return new Code(
+        p -> {
+          var it = columnOverrideAnnotList.iterator();
+          while (it.hasNext()) {
+            var columnOverrideAnnot = it.next();
+            var name = columnOverrideAnnot.getNameValue();
+            var column = columnOverrideAnnot.getColumnValue();
+            p.print(
+                "java.util.Map.entry(embeddedPropertyName + \".%7$s\" + \".%1$s\", new %2$s(%3$s, %4$s, %5$s, %6$s))",
+                /* 1 */ name,
+                /* 2 */ ColumnType.class,
+                /* 3 */ column.getNameValue() != null ? '"' + column.getNameValue() + '"' : null,
+                /* 4 */ column.getInsertableValue(),
+                /* 5 */ column.getUpdatableValue(),
+                /* 6 */ column.getQuoteValue(),
+                /* 7 */ referenceName);
+            if (it.hasNext()) {
+              p.print(", ");
+            }
+          }
+        });
   }
 }

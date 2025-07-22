@@ -371,7 +371,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_overridesColumnName() {
     ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, null);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -389,7 +389,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_overridesInsertable() {
     ColumnType columnType = new ColumnType("CUSTOM_COLUMN", false, null, null);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -407,7 +407,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_overridesUpdatable() {
     ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, false, null);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -425,7 +425,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_overridesQuote() {
     ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, true);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -443,7 +443,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_ignoresPrefixWhenOverridden() {
     ColumnType columnType = new ColumnType("CUSTOM_COLUMN", null, null, null);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,
@@ -481,7 +481,7 @@ public class DefaultPropertyTypeTest {
   @Test
   public void testColumnTypeMap_multipleOverrides() {
     ColumnType columnType = new ColumnType("OVERRIDDEN_NAME", false, true, true);
-    Map<String, ColumnType> columnTypeMap = Map.of("hoge", columnType);
+    Map<String, ColumnType> columnTypeMap = Map.of("foo.hoge", columnType);
     DefaultPropertyType<DefaultPropertyTypeTest, String, String> propertyType =
         new DefaultPropertyType<>(
             DefaultPropertyTypeTest.class,

@@ -24,20 +24,20 @@ import javax.lang.model.element.ExecutableElement;
 public class EntityConstructorMeta {
 
   private final ExecutableElement constructorElement;
-  private final List<EntityPropertyMeta> entityPropertyMetas;
+  private final List<EntityFieldMeta> entityFieldMetas;
 
   public EntityConstructorMeta(
-      ExecutableElement constructorElement, List<EntityPropertyMeta> entityPropertyMetas) {
-    assertNotNull(constructorElement, entityPropertyMetas);
+      ExecutableElement constructorElement, List<EntityFieldMeta> entityFieldMetas) {
+    assertNotNull(constructorElement, entityFieldMetas);
     this.constructorElement = constructorElement;
-    this.entityPropertyMetas = Collections.unmodifiableList(entityPropertyMetas);
+    this.entityFieldMetas = Collections.unmodifiableList(entityFieldMetas);
   }
 
   public ExecutableElement getConstructorElement() {
     return constructorElement;
   }
 
-  public List<EntityPropertyMeta> getEntityPropertyMetas() {
-    return entityPropertyMetas;
+  public List<EntityFieldMeta> getEntityFieldMetas() {
+    return entityFieldMetas;
   }
 }

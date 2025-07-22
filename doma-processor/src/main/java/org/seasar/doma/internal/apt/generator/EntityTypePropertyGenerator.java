@@ -22,9 +22,9 @@ import org.seasar.doma.internal.ClassName;
 import org.seasar.doma.internal.apt.RoundContext;
 import org.seasar.doma.internal.apt.annot.ColumnOverrideAnnot;
 import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
-import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
-import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.generator.ScalarMetaFactory.ScalarMeta;
+import org.seasar.doma.internal.apt.meta.entity.EmbeddedMeta;
+import org.seasar.doma.internal.apt.meta.entity.EntityFieldMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
@@ -40,18 +40,18 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
 
   private final EntityMeta entityMeta;
 
-  private final EntityPropertyMeta propertyMeta;
+  private final EntityFieldMeta fieldMeta;
 
   EntityTypePropertyGenerator(
       RoundContext ctx,
       ClassName className,
       Printer printer,
       EntityMeta entityMeta,
-      EntityPropertyMeta entityPropertyMeta) {
+      EntityFieldMeta entityFieldMeta) {
     super(ctx, className, printer);
     assertNotNull(entityMeta);
     this.entityMeta = entityMeta;
-    this.propertyMeta = entityPropertyMeta;
+    this.fieldMeta = entityFieldMeta;
   }
 
   @Override
@@ -60,41 +60,40 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printPropertyTypeField() {
-    if (propertyMeta.isEmbedded()) {
-      EmbeddableCtTypeVisitor visitor = new EmbeddableCtTypeVisitor();
-      EmbeddableCtType embeddableCtType = propertyMeta.getCtType().accept(visitor, null);
-      printEmbeddedPropertyTypeField(embeddableCtType);
-    } else {
+    if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
+      printEmbeddedPropertyTypeField(embeddedMeta);
+    } else if (fieldMeta instanceof EntityPropertyMeta propertyMeta) {
       ScalarMeta scalarMeta = propertyMeta.getCtType().accept(new ScalarMetaFactory(), false);
       if (propertyMeta.isId()) {
         if (propertyMeta.getIdGeneratorMeta() != null) {
-          printGeneratedIdPropertyTypeField(scalarMeta);
+          printGeneratedIdPropertyTypeField(propertyMeta, scalarMeta);
         } else {
-          printAssignedIdPropertyTypeField(scalarMeta);
+          printAssignedIdPropertyTypeField(propertyMeta, scalarMeta);
         }
       } else if (propertyMeta.isVersion()) {
-        printVersionPropertyTypeField(scalarMeta);
+        printVersionPropertyTypeField(propertyMeta, scalarMeta);
       } else if (propertyMeta.isTenantId()) {
-        printTenantIdPropertyTypeField(scalarMeta);
+        printTenantIdPropertyTypeField(propertyMeta, scalarMeta);
       } else {
-        printDefaultPropertyTypeField(scalarMeta);
+        printDefaultPropertyTypeField(propertyMeta, scalarMeta);
       }
     }
   }
 
-  private void printEmbeddedPropertyTypeField(EmbeddableCtType embeddableCtType) {
+  private void printEmbeddedPropertyTypeField(EmbeddedMeta embeddedMeta) {
     print(
         "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType, %7$s))",
         /* 1 */ EmbeddedPropertyType.class,
         /* 2 */ entityMeta.getType(),
-        /* 3 */ propertyMeta.getType(),
+        /* 3 */ fieldMeta.getCtType().getType(),
         /* 4 */ null,
-        /* 5 */ propertyMeta.getName(),
-        /* 6 */ embeddableCtType.getTypeCode(),
-        /* 7 */ toEmbeddedTypeCode(propertyMeta.getEmbeddedAnnot()));
+        /* 5 */ fieldMeta.getName(),
+        /* 6 */ embeddedMeta.embeddableCtType().getTypeCode(),
+        /* 7 */ toEmbeddedTypeCode(embeddedMeta.embeddedAnnot()));
   }
 
-  private void printGeneratedIdPropertyTypeField(ScalarMeta scalarMeta) {
+  private void printGeneratedIdPropertyTypeField(
+      EntityPropertyMeta propertyMeta, ScalarMeta scalarMeta) {
     print(
         "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, __idGenerator)",
         /* 1 */ GeneratedIdPropertyType.class,
@@ -109,7 +108,8 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 10 */ propertyMeta.isColumnQuoteRequired());
   }
 
-  private void printAssignedIdPropertyTypeField(ScalarMeta scalarMeta) {
+  private void printAssignedIdPropertyTypeField(
+      EntityPropertyMeta propertyMeta, ScalarMeta scalarMeta) {
     print(
         "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ AssignedIdPropertyType.class,
@@ -124,7 +124,8 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 10 */ propertyMeta.isColumnQuoteRequired());
   }
 
-  private void printVersionPropertyTypeField(ScalarMeta scalarMeta) {
+  private void printVersionPropertyTypeField(
+      EntityPropertyMeta propertyMeta, ScalarMeta scalarMeta) {
     print(
         "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ VersionPropertyType.class,
@@ -139,7 +140,8 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 10 */ propertyMeta.isColumnQuoteRequired());
   }
 
-  private void printTenantIdPropertyTypeField(ScalarMeta scalarMeta) {
+  private void printTenantIdPropertyTypeField(
+      EntityPropertyMeta propertyMeta, ScalarMeta scalarMeta) {
     print(
         "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s)",
         /* 1 */ TenantIdPropertyType.class,
@@ -154,7 +156,8 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 10 */ propertyMeta.isColumnQuoteRequired());
   }
 
-  private void printDefaultPropertyTypeField(ScalarMeta scalarMeta) {
+  private void printDefaultPropertyTypeField(
+      EntityPropertyMeta propertyMeta, ScalarMeta scalarMeta) {
     print(
         "new %1$s<%2$s, %3$s, %4$s>(%6$s.class, %7$s, \"%8$s\", \"%9$s\", __namingType, %10$s, %11$s, %12$s)",
         /* 1 */ DefaultPropertyType.class,
@@ -164,7 +167,7 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
         /* 5 */ null,
         /* 6 */ entityMeta.getType(),
         /* 7 */ scalarMeta.getSupplier(),
-        /* 8 */ propertyMeta.getName(),
+        /* 8 */ fieldMeta.getName(),
         /* 9 */ propertyMeta.getColumnName(),
         /* 10 */ propertyMeta.isColumnInsertable(),
         /* 11 */ propertyMeta.isColumnUpdatable(),
@@ -195,27 +198,18 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
             var name = columnOverrideAnnot.getNameValue();
             var column = columnOverrideAnnot.getColumnValue();
             p.print(
-                "java.util.Map.entry(\"%1$s\", new %2$s(%3$s, %4$s, %5$s, %6$s))",
+                "java.util.Map.entry(\"%7$s.%1$s\", new %2$s(%3$s, %4$s, %5$s, %6$s))",
                 /* 1 */ name,
                 /* 2 */ ColumnType.class,
                 /* 3 */ column.getNameValue() != null ? '"' + column.getNameValue() + '"' : null,
                 /* 4 */ column.getInsertableValue(),
                 /* 5 */ column.getUpdatableValue(),
-                /* 6 */ column.getQuoteValue());
+                /* 6 */ column.getQuoteValue(),
+                /* 7 */ fieldMeta.getName());
             if (it.hasNext()) {
               p.print(", ");
             }
           }
         });
-  }
-
-  private static class EmbeddableCtTypeVisitor
-      extends SimpleCtTypeVisitor<EmbeddableCtType, Void, RuntimeException> {
-
-    @Override
-    public EmbeddableCtType visitEmbeddableCtType(EmbeddableCtType ctType, Void aVoid)
-        throws RuntimeException {
-      return ctType;
-    }
   }
 }

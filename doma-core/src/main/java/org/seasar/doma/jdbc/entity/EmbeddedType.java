@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.jdbc.entity;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,5 +56,32 @@ public record EmbeddedType(String prefix, Map<String, ColumnType> columnTypeMap)
   public EmbeddedType {
     Objects.requireNonNull(prefix);
     Objects.requireNonNull(columnTypeMap);
+  }
+
+  /**
+   * Merges this EmbeddedType with a parent EmbeddedType to create a new EmbeddedType instance.
+   *
+   * <p>This method is used to handle nested embeddable objects. When an embeddable object contains
+   * another embeddable object, this method combines the configuration from both the parent and
+   * child embedded types.
+   *
+   * <p>The merging process combines:
+   *
+   * <ul>
+   *   <li>Prefixes are concatenated (parent prefix + this prefix)
+   *   <li>Column type maps are merged with parent mappings taking precedence over child mappings
+   * </ul>
+   *
+   * @param parent the parent EmbeddedType to merge with, can be null
+   * @return a new EmbeddedType with merged configuration, or this instance if parent is null
+   */
+  public EmbeddedType merge(EmbeddedType parent) {
+    if (parent == null) {
+      return this;
+    }
+    var prefix = parent.prefix + this.prefix;
+    var columnTypeMap = new HashMap<>(this.columnTypeMap);
+    columnTypeMap.putAll(parent.columnTypeMap);
+    return new EmbeddedType(prefix, Collections.unmodifiableMap(columnTypeMap));
   }
 }

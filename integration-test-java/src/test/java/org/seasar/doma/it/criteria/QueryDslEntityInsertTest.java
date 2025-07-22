@@ -534,14 +534,79 @@ public class QueryDslEntityInsertTest {
 
     CustomerAddress insertedBilling = inserted.getBillingAddress();
     assertNotNull(insertedBilling);
-    assertEquals("789 RIVER RD", insertedBilling.street());
     assertEquals("OSAKA", insertedBilling.city());
     assertEquals("530-0001", insertedBilling.zipCode());
+    assertEquals("789 RIVER RD", insertedBilling.street());
 
     CustomerAddress insertedShipping = inserted.getShippingAddress();
     assertNotNull(insertedShipping);
-    assertEquals("321 HILL ST", insertedShipping.street());
     assertEquals("KYOTO", insertedShipping.city());
     assertEquals("600-8216", insertedShipping.zipCode());
+    assertEquals("321 HILL ST", insertedShipping.street());
+  }
+
+  @Test
+  public void embeddable_nested() {
+    Client_ c = new Client_();
+
+    Client client = new Client();
+    client.setCustomerId(10);
+    CustomerAddress billingAddress = new CustomerAddress("OSAKA", "530-0001", "789 RIVER RD");
+    CustomerAddress shippingAddress = new CustomerAddress("KYOTO", "600-8216", "321 HILL ST");
+    CompositeCustomerAddress address =
+        new CompositeCustomerAddress(billingAddress, shippingAddress);
+    client.setAddress(address);
+
+    dsl.insert(c).single(client).execute();
+
+    Client inserted = dsl.from(c).where(w -> w.eq(c.customerId, client.getCustomerId())).fetchOne();
+    assertNotNull(inserted);
+    assertEquals(10, inserted.getCustomerId());
+
+    CustomerAddress insertedBilling = inserted.getAddress().billingAddress();
+    assertNotNull(insertedBilling);
+    assertEquals("OSAKA", insertedBilling.city());
+    assertEquals("530-0001", insertedBilling.zipCode());
+    assertEquals("789 RIVER RD", insertedBilling.street());
+
+    CustomerAddress insertedShipping = inserted.getAddress().shippingAddress();
+    assertNotNull(insertedShipping);
+    assertEquals("KYOTO", insertedShipping.city());
+    assertEquals("600-8216", insertedShipping.zipCode());
+    assertEquals("321 HILL ST", insertedShipping.street());
+  }
+
+  @Test
+  public void embeddable_nested_multiple() {
+    Buyer_ b = new Buyer_();
+
+    Buyer buyer = new Buyer();
+    buyer.setCustomerId(10);
+    BuyerCityInfo billingAddress =
+        new BuyerCityInfo(
+            "OSAKA", new BuyerZipCodeInfo("530-0001", new BuyerStreetInfo("789 RIVER RD")));
+    BuyerCityInfo shippingAddress =
+        new BuyerCityInfo(
+            "KYOTO", new BuyerZipCodeInfo("600-8216", new BuyerStreetInfo("321 HILL ST")));
+    buyer.setBillingCityInfo(billingAddress);
+    buyer.setShippingCityInfo(shippingAddress);
+
+    dsl.insert(b).single(buyer).execute();
+
+    Buyer inserted = dsl.from(b).where(w -> w.eq(b.customerId, buyer.getCustomerId())).fetchOne();
+    assertNotNull(inserted);
+    assertEquals(10, inserted.getCustomerId());
+
+    BuyerCityInfo insertedBilling = inserted.getBillingCityInfo();
+    assertNotNull(insertedBilling);
+    assertEquals("OSAKA", insertedBilling.city());
+    assertEquals("530-0001", insertedBilling.zipCodeInfo().zipCode());
+    assertEquals("789 RIVER RD", insertedBilling.zipCodeInfo().streetInfo().street());
+
+    BuyerCityInfo insertedShipping = inserted.getShippingCityInfo();
+    assertNotNull(insertedShipping);
+    assertEquals("KYOTO", insertedShipping.city());
+    assertEquals("600-8216", insertedShipping.zipCodeInfo().zipCode());
+    assertEquals("321 HILL ST", insertedShipping.zipCodeInfo().streetInfo().street());
   }
 }

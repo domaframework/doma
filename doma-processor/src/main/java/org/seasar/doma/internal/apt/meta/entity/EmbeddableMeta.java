@@ -22,10 +22,11 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import org.seasar.doma.internal.apt.AptIllegalStateException;
 import org.seasar.doma.internal.apt.annot.EmbeddableAnnot;
 import org.seasar.doma.internal.apt.meta.TypeElementMeta;
 
-public class EmbeddableMeta implements TypeElementMeta {
+public final class EmbeddableMeta implements TypeElementMeta {
 
   private final EmbeddableAnnot embeddableAnnot;
 
@@ -33,7 +34,7 @@ public class EmbeddableMeta implements TypeElementMeta {
 
   private final TypeMirror type;
 
-  private final List<EmbeddablePropertyMeta> propertyMetas = new ArrayList<>();
+  private final List<EmbeddableFieldMeta> fieldMetas = new ArrayList<>();
 
   private EmbeddableConstructorMeta constructorMeta;
 
@@ -58,15 +59,29 @@ public class EmbeddableMeta implements TypeElementMeta {
     return typeElement;
   }
 
-  public void addEmbeddablePropertyMeta(EmbeddablePropertyMeta propertyMeta) {
-    propertyMetas.add(propertyMeta);
+  public List<EmbeddablePropertyMeta> getEmbeddablePropertyMetas() {
+    List<EmbeddablePropertyMeta> results = new ArrayList<>();
+    for (EmbeddableFieldMeta fieldMeta : getEmbeddableFieldMetas()) {
+      if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
+        results.addAll(embeddedMeta.embeddableMeta().getEmbeddablePropertyMetas());
+      } else if (fieldMeta instanceof EmbeddablePropertyMeta propertyMeta) {
+        results.add(propertyMeta);
+      } else {
+        throw new AptIllegalStateException(fieldMeta.toString());
+      }
+    }
+    return results;
   }
 
-  public List<EmbeddablePropertyMeta> getEmbeddablePropertyMetas() {
+  public void addEmbeddableFieldMeta(EmbeddableFieldMeta fieldMeta) {
+    fieldMetas.add(fieldMeta);
+  }
+
+  public List<EmbeddableFieldMeta> getEmbeddableFieldMetas() {
     if (constructorMeta != null) {
-      return constructorMeta.getEmbeddablePropertyMetas();
+      return constructorMeta.getEmbeddableFieldMetas();
     }
-    return propertyMetas;
+    return fieldMetas;
   }
 
   public void setConstructorMeta(EmbeddableConstructorMeta constructorMeta) {

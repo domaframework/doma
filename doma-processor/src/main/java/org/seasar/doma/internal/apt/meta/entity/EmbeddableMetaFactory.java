@@ -177,22 +177,21 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             throw new AptException(Message.DOMA4443, fieldElement, new Object[] {});
           } else if (fieldElement.getAnnotation(GeneratedValue.class) != null) {
             throw new AptException(Message.DOMA4291, fieldElement, new Object[] {});
-          } else {
-            doEmbeddablePropertyMeta(fieldElement, embeddableMeta);
           }
         } catch (AptException e) {
           ctx.getReporter().report(e);
           embeddableMeta.setError(true);
         }
+        doEmbeddableFieldMeta(fieldElement, embeddableMeta);
       }
     }
 
-    void doEmbeddablePropertyMeta(VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
+    void doEmbeddableFieldMeta(VariableElement fieldElement, EmbeddableMeta embeddableMeta) {
       validateFieldAnnotation(fieldElement, embeddableMeta);
-      EmbeddablePropertyMetaFactory propertyMetaFactory =
-          new EmbeddablePropertyMetaFactory(ctx, fieldElement);
-      EmbeddablePropertyMeta propertyMeta = propertyMetaFactory.createEmbeddablePropertyMeta();
-      embeddableMeta.addEmbeddablePropertyMeta(propertyMeta);
+      EmbeddableFieldMetaFactory fieldMetaFactory =
+          new EmbeddableFieldMetaFactory(ctx, fieldElement);
+      EmbeddableFieldMeta fieldMeta = fieldMetaFactory.createEmbeddableFieldMeta();
+      embeddableMeta.addEmbeddableFieldMeta(fieldMeta);
     }
 
     List<VariableElement> getFieldElements(TypeElement embeddableElement) {
@@ -259,14 +258,14 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
 
     EmbeddableConstructorMeta getConstructorMeta(
         TypeElement embeddableElement, EmbeddableMeta embeddableMeta) {
-      Map<String, EmbeddablePropertyMeta> propertyMetaMap = new HashMap<>();
-      for (EmbeddablePropertyMeta propertyMeta : embeddableMeta.getEmbeddablePropertyMetas()) {
-        propertyMetaMap.put(propertyMeta.getName(), propertyMeta);
+      Map<String, EmbeddableFieldMeta> fieldMetaMap = new HashMap<>();
+      for (EmbeddableFieldMeta fieldMeta : embeddableMeta.getEmbeddableFieldMetas()) {
+        fieldMetaMap.put(fieldMeta.getName(), fieldMeta);
       }
       outer:
       for (ExecutableElement constructor :
           ElementFilter.constructorsIn(embeddableElement.getEnclosedElements())) {
-        List<EmbeddablePropertyMeta> propertyMetaList = new ArrayList<>();
+        List<EmbeddableFieldMeta> fieldMetaList = new ArrayList<>();
         for (VariableElement param : constructor.getParameters()) {
           String name = param.getSimpleName().toString();
           ParameterName parameterName = param.getAnnotation(ParameterName.class);
@@ -274,18 +273,18 @@ public class EmbeddableMetaFactory implements TypeElementMetaFactory<EmbeddableM
             name = parameterName.value();
           }
           TypeMirror paramType = param.asType();
-          EmbeddablePropertyMeta propertyMeta = propertyMetaMap.get(name);
-          if (propertyMeta == null) {
+          EmbeddableFieldMeta fieldMeta = fieldMetaMap.get(name);
+          if (fieldMeta == null) {
             continue outer;
           }
-          TypeMirror propertyType = propertyMeta.getType();
-          if (!ctx.getMoreTypes().isSameTypeWithErasure(paramType, propertyType)) {
+          TypeMirror fieldType = fieldMeta.getCtType().getType();
+          if (!ctx.getMoreTypes().isSameTypeWithErasure(paramType, fieldType)) {
             continue outer;
           }
-          propertyMetaList.add(propertyMeta);
+          fieldMetaList.add(fieldMeta);
         }
-        if (propertyMetaMap.size() == propertyMetaList.size()) {
-          return new EmbeddableConstructorMeta(constructor, propertyMetaList);
+        if (fieldMetaMap.size() == fieldMetaList.size()) {
+          return new EmbeddableConstructorMeta(constructor, fieldMetaList);
         }
       }
       return null;

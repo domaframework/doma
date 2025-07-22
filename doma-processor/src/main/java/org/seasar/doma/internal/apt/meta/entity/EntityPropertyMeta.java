@@ -22,11 +22,10 @@ import org.seasar.doma.internal.apt.annot.ColumnAnnot;
 import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.cttype.BasicCtType;
 import org.seasar.doma.internal.apt.cttype.CtType;
-import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
 import org.seasar.doma.internal.apt.cttype.SimpleCtTypeVisitor;
 import org.seasar.doma.internal.apt.meta.id.IdGeneratorMeta;
 
-public class EntityPropertyMeta {
+public final class EntityPropertyMeta implements EntityFieldMeta {
 
   private final CtType ctType;
 
@@ -98,22 +97,6 @@ public class EntityPropertyMeta {
     this.idGeneratorMeta = idGeneratorMeta;
   }
 
-  public String getColumnNamePrefix() {
-    return columnNamePrefix != null ? columnNamePrefix : "";
-  }
-
-  public void setColumnNamePrefix(String columnNamePrefix) {
-    this.columnNamePrefix = columnNamePrefix;
-  }
-
-  public EmbeddedAnnot getEmbeddedAnnot() {
-    return embeddedAnnot;
-  }
-
-  public void setEmbeddedAnnot(EmbeddedAnnot embeddedAnnot) {
-    this.embeddedAnnot = embeddedAnnot;
-  }
-
   public TypeMirror getType() {
     return ctType.getType();
   }
@@ -160,17 +143,5 @@ public class EntityPropertyMeta {
 
   public boolean isColumnQuoteRequired() {
     return columnAnnot != null && columnAnnot.getQuoteValue();
-  }
-
-  public boolean isEmbedded() {
-    return ctType.accept(
-        new SimpleCtTypeVisitor<Boolean, Void, RuntimeException>(false) {
-          @Override
-          public Boolean visitEmbeddableCtType(EmbeddableCtType ctType, Void p)
-              throws RuntimeException {
-            return true;
-          }
-        },
-        null);
   }
 }

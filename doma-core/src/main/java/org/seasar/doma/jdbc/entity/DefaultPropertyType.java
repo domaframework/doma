@@ -120,7 +120,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       columnType = null;
     } else {
       this.prefix = embeddedType.prefix();
-      columnType = embeddedType.columnTypeMap().get(simpleName);
+      columnType = embeddedType.columnTypeMap().get(name);
     }
     if (columnType == null) {
       this.columnName = columnName;
