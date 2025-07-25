@@ -118,6 +118,12 @@ public interface EmbeddableType<EMBEDDABLE> {
    * @param __args a map of property names to property values for initializing the embeddable
    * @return a new instance of the embeddable object
    */
+  @Deprecated
+  default <ENTITY> EMBEDDABLE newEmbeddable(
+      String embeddedPropertyName, Map<String, Property<ENTITY, ?>> __args) {
+    return newEmbeddable(embeddedPropertyName, __args, false);
+  }
+
   <ENTITY> EMBEDDABLE newEmbeddable(
-      String embeddedPropertyName, Map<String, Property<ENTITY, ?>> __args);
+      String embeddedPropertyName, Map<String, Property<ENTITY, ?>> __args, boolean optional);
 }

@@ -191,7 +191,7 @@ public final class _User extends org.seasar.doma.jdbc.entity.AbstractEntityType<
     public org.seasar.doma.internal.apt.processor.entity.User newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.processor.entity.User, ?>> __args) {
         org.seasar.doma.internal.apt.processor.entity.User entity = new org.seasar.doma.internal.apt.processor.entity.User();
         if (__args.get("id") != null) __args.get("id").save(entity);
-        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.User, org.seasar.doma.internal.apt.processor.entity.UserAddress>)__embeddedPropertyTypeMap.get("address")).save(entity, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().newEmbeddable("address", __args));
+        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.User, org.seasar.doma.internal.apt.processor.entity.UserAddress>)__embeddedPropertyTypeMap.get("address")).save(entity, org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().newEmbeddable("address", __args, false));
         return entity;
     }
 

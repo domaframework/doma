@@ -652,11 +652,11 @@ public class EntityTypeGenerator extends AbstractGenerator {
           if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
             if (embeddedMeta.optional()) {
               iprint(
-                  "        java.util.Optional.ofNullable(%1$s.newEmbeddable(\"%2$s\", __args))",
+                  "        java.util.Optional.ofNullable(%1$s.newEmbeddable(\"%2$s\", __args, true))",
                   embeddedMeta.embeddableCtType().getTypeCode(), fieldMeta.getName());
             } else {
               iprint(
-                  "        %1$s.newEmbeddable(\"%2$s\", __args)",
+                  "        %1$s.newEmbeddable(\"%2$s\", __args, false)",
                   embeddedMeta.embeddableCtType().getTypeCode(), fieldMeta.getName());
             }
           } else if (fieldMeta instanceof EntityPropertyMeta propertyMeta) {
@@ -676,13 +676,14 @@ public class EntityTypeGenerator extends AbstractGenerator {
         for (EntityFieldMeta fieldMeta : entityMeta.getAllFieldMetas()) {
           if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
             iprint(
-                "    ((%4$s<%5$s, %6$s>)__embeddedPropertyTypeMap.get(\"%1$s\")).save(entity, %2$s.newEmbeddable(\"%3$s\", __args));%n",
+                "    ((%4$s<%5$s, %6$s>)__embeddedPropertyTypeMap.get(\"%1$s\")).save(entity, %2$s.newEmbeddable(\"%3$s\", __args, %7$s));%n",
                 /* 1 */ fieldMeta.getName(),
                 /* 2 */ embeddedMeta.embeddableCtType().getTypeCode(),
                 /* 3 */ fieldMeta.getName(),
                 /* 4 */ EmbeddedPropertyType.class,
                 /* 5 */ entityMeta.getType(),
-                /* 6 */ embeddedMeta.embeddableCtType().getType());
+                /* 6 */ embeddedMeta.embeddableCtType().getType(),
+                /* 7 */ embeddedMeta.optional());
 
           } else if (fieldMeta instanceof EntityPropertyMeta propertyMeta) {
             iprint(

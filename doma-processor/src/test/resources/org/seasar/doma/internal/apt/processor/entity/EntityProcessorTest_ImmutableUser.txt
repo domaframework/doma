@@ -192,7 +192,7 @@ public final class _ImmutableUser extends org.seasar.doma.jdbc.entity.AbstractEn
         return new org.seasar.doma.internal.apt.processor.entity.ImmutableUser(
             (java.lang.Integer)(__args.get("id") != null ? __args.get("id").get() : null),
             (java.lang.Integer)(__args.get("age") != null ? __args.get("age").get() : null),
-            org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().newEmbeddable("address", __args));
+            org.seasar.doma.internal.apt.processor.entity._UserAddress.getSingletonInternal().newEmbeddable("address", __args, false));
     }
 
     @Override

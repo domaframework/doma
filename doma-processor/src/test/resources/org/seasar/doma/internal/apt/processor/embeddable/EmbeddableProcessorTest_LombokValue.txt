@@ -20,10 +20,16 @@ public final class _LombokValue implements org.seasar.doma.jdbc.entity.Embeddabl
     }
 
     @Override
-    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.LombokValue newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
-        return new org.seasar.doma.internal.apt.processor.embeddable.LombokValue(
-            (java.lang.String)(__args.get(embeddedPropertyName + ".street") != null ? __args.get(embeddedPropertyName + ".street").get() : null),
-            (java.lang.String)(__args.get(embeddedPropertyName + ".city") != null ? __args.get(embeddedPropertyName + ".city").get() : null));
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.LombokValue newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args, boolean optional) {
+        var __p0 = (java.lang.String)(__args.get(embeddedPropertyName + ".street") != null ? __args.get(embeddedPropertyName + ".street").get() : null);
+        var __p1 = (java.lang.String)(__args.get(embeddedPropertyName + ".city") != null ? __args.get(embeddedPropertyName + ".city").get() : null);
+        if (optional) {
+            var __stream = java.util.stream.Stream.<Object>of(__p0, __p1).map(it -> (it instanceof java.util.Optional<?> o) ?  o.orElse(null) : it).filter(java.util.Objects::nonNull);;
+            if (__stream.findAny().isEmpty()) {
+                return null;
+            }
+        }
+        return new org.seasar.doma.internal.apt.processor.embeddable.LombokValue(__p0, __p1);
     }
 
     /**
