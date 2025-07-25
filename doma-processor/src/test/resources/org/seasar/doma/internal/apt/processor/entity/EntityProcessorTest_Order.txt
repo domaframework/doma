@@ -193,8 +193,8 @@ public final class _Order extends org.seasar.doma.jdbc.entity.AbstractEntityType
     public org.seasar.doma.internal.apt.processor.entity.Order newEntity(java.util.Map<String, org.seasar.doma.jdbc.entity.Property<org.seasar.doma.internal.apt.processor.entity.Order, ?>> __args) {
         org.seasar.doma.internal.apt.processor.entity.Order entity = new org.seasar.doma.internal.apt.processor.entity.Order();
         if (__args.get("id") != null) __args.get("id").save(entity);
-        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address1")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address1", __args));
-        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address2")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address2", __args));
+        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address1")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address1", __args, false));
+        ((org.seasar.doma.jdbc.entity.EmbeddedPropertyType<org.seasar.doma.internal.apt.processor.entity.Order, org.seasar.doma.internal.apt.processor.entity.OrderAddress>)__embeddedPropertyTypeMap.get("address2")).save(entity, org.seasar.doma.internal.apt.processor.entity._OrderAddress.getSingletonInternal().newEmbeddable("address2", __args, false));
         return entity;
     }
 

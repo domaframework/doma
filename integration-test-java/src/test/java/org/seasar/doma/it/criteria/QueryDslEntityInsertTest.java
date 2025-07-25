@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -608,5 +609,41 @@ public class QueryDslEntityInsertTest {
     assertEquals("KYOTO", insertedShipping.city());
     assertEquals("600-8216", insertedShipping.zipCodeInfo().zipCode());
     assertEquals("321 HILL ST", insertedShipping.zipCodeInfo().streetInfo().street());
+  }
+
+  @Test
+  public void embeddable_optional() {
+    Consumer_ c = new Consumer_();
+
+    Consumer consumer = new Consumer();
+    consumer.setCustomerId(100);
+    consumer.setAddress(Optional.empty());
+
+    dsl.insert(c).single(consumer).execute();
+
+    var inserted = dsl.from(c).where(w -> w.eq(c.customerId, consumer.getCustomerId())).fetchOne();
+    assertEquals(Optional.empty(), inserted.getAddress());
+  }
+
+  @Test
+  public void embeddable_nested_optional() {
+    Consumer_ c = new Consumer_();
+
+    Consumer consumer = new Consumer();
+    consumer.setCustomerId(100);
+    ConsumerAddress billingAddress = new ConsumerAddress("OSAKA", "530-0001", "789 RIVER RD");
+    consumer.setAddress(
+        Optional.of(new CompositeConsumerAddress(Optional.of(billingAddress), Optional.empty())));
+
+    dsl.insert(c).single(consumer).execute();
+
+    var inserted = dsl.from(c).where(w -> w.eq(c.customerId, consumer.getCustomerId())).fetchOne();
+    assertNotNull(inserted);
+    CompositeConsumerAddress address = inserted.getAddress().orElseThrow();
+    assertEquals("OSAKA", address.billingAddress().orElseThrow().city());
+    assertEquals("530-0001", address.billingAddress().orElseThrow().zipCode());
+    assertEquals("789 RIVER RD", address.billingAddress().orElseThrow().street());
+
+    assertEquals(Optional.empty(), address.shippingAddress());
   }
 }

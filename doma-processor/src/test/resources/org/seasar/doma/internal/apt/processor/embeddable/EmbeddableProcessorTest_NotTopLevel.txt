@@ -20,10 +20,16 @@ public final class _NotTopLevel__Address implements org.seasar.doma.jdbc.entity.
     }
 
     @Override
-    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.NotTopLevel.Address newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
-        return new org.seasar.doma.internal.apt.processor.embeddable.NotTopLevel.Address(
-            (java.lang.String)(__args.get(embeddedPropertyName + ".city") != null ? __args.get(embeddedPropertyName + ".city").get() : null),
-            (java.lang.String)(__args.get(embeddedPropertyName + ".street") != null ? __args.get(embeddedPropertyName + ".street").get() : null));
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.NotTopLevel.Address newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args, boolean optional) {
+        var __p0 = (java.lang.String)(__args.get(embeddedPropertyName + ".city") != null ? __args.get(embeddedPropertyName + ".city").get() : null);
+        var __p1 = (java.lang.String)(__args.get(embeddedPropertyName + ".street") != null ? __args.get(embeddedPropertyName + ".street").get() : null);
+        if (optional) {
+            var __stream = java.util.stream.Stream.<Object>of(__p0, __p1).map(it -> (it instanceof java.util.Optional<?> o) ?  o.orElse(null) : it).filter(java.util.Objects::nonNull);;
+            if (__stream.findAny().isEmpty()) {
+                return null;
+            }
+        }
+        return new org.seasar.doma.internal.apt.processor.embeddable.NotTopLevel.Address(__p0, __p1);
     }
 
     /**

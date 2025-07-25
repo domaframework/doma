@@ -21,10 +21,16 @@ public final class _NestedEmbeddable1 implements org.seasar.doma.jdbc.entity.Emb
 
     @SuppressWarnings("unchecked")
     @Override
-    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1 newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
-        return new org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1(
-            (org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable2)org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().newEmbeddable(embeddedPropertyName + ".nestedEmbeddable2", __args),
-            java.util.Optional.ofNullable((org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable2)org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().newEmbeddable(embeddedPropertyName + ".optionalNestedEmbeddable2", __args)));
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1 newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args, boolean optional) {
+        var __p0 = (org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable2)org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().newEmbeddable(embeddedPropertyName + ".nestedEmbeddable2", __args, false);
+        var __p1 = java.util.Optional.ofNullable((org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable2)org.seasar.doma.internal.apt.processor.embeddable._NestedEmbeddable2.getSingletonInternal().newEmbeddable(embeddedPropertyName + ".optionalNestedEmbeddable2", __args, true));
+        if (optional) {
+            var __stream = java.util.stream.Stream.<Object>of(__p0, __p1).map(it -> (it instanceof java.util.Optional<?> o) ?  o.orElse(null) : it).filter(java.util.Objects::nonNull);;
+            if (__stream.findAny().isEmpty()) {
+                return null;
+            }
+        }
+        return new org.seasar.doma.internal.apt.processor.embeddable.NestedEmbeddable1(__p0, __p1);
     }
 
     /**

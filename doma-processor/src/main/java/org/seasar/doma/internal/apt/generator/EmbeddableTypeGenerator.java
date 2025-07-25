@@ -181,40 +181,53 @@ public class EmbeddableTypeGenerator extends AbstractGenerator {
     }
     iprint("@Override%n");
     iprint(
-        "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args) {%n",
+        "public <ENTITY> %1$s newEmbeddable(String embeddedPropertyName, %2$s<String, %3$s<ENTITY, ?>> __args, boolean optional) {%n",
         embeddableMeta.getType(), Map.class, Property.class);
     if (embeddableMeta.isAbstract()) {
       iprint("    return null;%n");
     } else {
-      iprint("    return new %1$s(%n", embeddableMeta.getType());
-      for (Iterator<EmbeddableFieldMeta> it = embeddableMeta.getEmbeddableFieldMetas().iterator();
-          it.hasNext(); ) {
-        EmbeddableFieldMeta fieldMeta = it.next();
+      int i = 0;
+      for (EmbeddableFieldMeta fieldMeta : embeddableMeta.getEmbeddableFieldMetas()) {
+        iprint("    var __p%s = ", i++);
         if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
           if (embeddedMeta.optional()) {
-            iprint(
-                "        java.util.Optional.ofNullable((%1$s)%2$s.newEmbeddable(embeddedPropertyName + \".%3$s\", __args))",
+            print(
+                "java.util.Optional.ofNullable((%1$s)%2$s.newEmbeddable(embeddedPropertyName + \".%3$s\", __args, true))",
                 /* 1 */ embeddedMeta.embeddableMeta().getType(),
                 /* 2 */ embeddedMeta.embeddableCtType().getTypeCode(),
                 /* 3 */ embeddedMeta.name());
           } else {
-            iprint(
-                "        (%1$s)%2$s.newEmbeddable(embeddedPropertyName + \".%3$s\", __args)",
+            print(
+                "(%1$s)%2$s.newEmbeddable(embeddedPropertyName + \".%3$s\", __args, false)",
                 /* 1 */ embeddedMeta.embeddableMeta().getType(),
                 /* 2 */ embeddedMeta.embeddableCtType().getTypeCode(),
                 /* 3 */ embeddedMeta.name());
           }
         } else if (fieldMeta instanceof EmbeddablePropertyMeta propertyMeta) {
-          iprint(
-              "        (%1$s)(__args.get(embeddedPropertyName + \".%2$s\") "
+          print(
+              "(%1$s)(__args.get(embeddedPropertyName + \".%2$s\") "
                   + "!= null ? __args.get(embeddedPropertyName + \".%2$s\").get() : null)",
               propertyMeta.getBoxedType(), propertyMeta.getName());
         } else {
           throw new AptIllegalStateException(fieldMeta.toString());
         }
-        if (it.hasNext()) {
-          print(",%n");
-        }
+        print(";%n");
+      }
+      iprint("    if (optional) {%n");
+      iprint("        var __stream = java.util.stream.Stream.<Object>of(");
+      for (int j = 0; j < i; j++) {
+        print("__p%s%s", j, j == i - 1 ? "" : ", ");
+      }
+      print(
+          ").map(it -> (it instanceof java.util.Optional<?> o) ?  o.orElse(null) : it).filter(java.util.Objects::nonNull);;%n",
+          i);
+      iprint("        if (__stream.findAny().isEmpty()) {%n");
+      iprint("            return null;%n");
+      iprint("        }%n");
+      iprint("    }%n");
+      iprint("    return new %1$s(", embeddableMeta.getType());
+      for (int j = 0; j < i; j++) {
+        print("__p%s%s", j, j == i - 1 ? "" : ", ");
       }
       print(");%n");
     }

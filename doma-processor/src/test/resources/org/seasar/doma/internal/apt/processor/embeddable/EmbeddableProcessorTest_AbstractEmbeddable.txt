@@ -19,7 +19,7 @@ public final class _AbstractEmbeddable implements org.seasar.doma.jdbc.entity.Em
     }
 
     @Override
-    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.AbstractEmbeddable newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args) {
+    public <ENTITY> org.seasar.doma.internal.apt.processor.embeddable.AbstractEmbeddable newEmbeddable(String embeddedPropertyName, java.util.Map<String, org.seasar.doma.jdbc.entity.Property<ENTITY, ?>> __args, boolean optional) {
         return null;
     }
 
