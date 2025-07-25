@@ -650,9 +650,15 @@ public class EntityTypeGenerator extends AbstractGenerator {
             it.hasNext(); ) {
           EntityFieldMeta fieldMeta = it.next();
           if (fieldMeta instanceof EmbeddedMeta embeddedMeta) {
-            iprint(
-                "        %1$s.newEmbeddable(\"%2$s\", __args)",
-                embeddedMeta.embeddableCtType().getTypeCode(), fieldMeta.getName());
+            if (embeddedMeta.optional()) {
+              iprint(
+                  "        java.util.Optional.ofNullable(%1$s.newEmbeddable(\"%2$s\", __args))",
+                  embeddedMeta.embeddableCtType().getTypeCode(), fieldMeta.getName());
+            } else {
+              iprint(
+                  "        %1$s.newEmbeddable(\"%2$s\", __args)",
+                  embeddedMeta.embeddableCtType().getTypeCode(), fieldMeta.getName());
+            }
           } else if (fieldMeta instanceof EntityPropertyMeta propertyMeta) {
             iprint(
                 "        (%1$s)(__args.get(\"%2$s\") != null ? __args.get(\"%2$s\").get() : null)",

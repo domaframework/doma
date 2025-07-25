@@ -27,6 +27,8 @@ import org.seasar.doma.internal.apt.meta.entity.EmbeddedMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityFieldMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityMeta;
 import org.seasar.doma.internal.apt.meta.entity.EntityPropertyMeta;
+import org.seasar.doma.internal.jdbc.entity.PropertyPath;
+import org.seasar.doma.internal.jdbc.entity.PropertyPathSegment;
 import org.seasar.doma.jdbc.entity.AssignedIdPropertyType;
 import org.seasar.doma.jdbc.entity.ColumnType;
 import org.seasar.doma.jdbc.entity.DefaultPropertyType;
@@ -81,15 +83,37 @@ public class EntityTypePropertyGenerator extends AbstractGenerator {
   }
 
   private void printEmbeddedPropertyTypeField(EmbeddedMeta embeddedMeta) {
+    Code path;
+    if (embeddedMeta.optional()) {
+      path =
+          new Code(
+              p ->
+                  p.print(
+                      "new %1$s(java.util.List.of(new %2$s(\"%3$s\", %4$s.class)))",
+                      /* 1 */ PropertyPath.class,
+                      /* 2 */ PropertyPathSegment.Optional.class,
+                      /* 3 */ fieldMeta.getName(),
+                      /* 4 */ embeddedMeta.embeddableCtType().getType()));
+    } else {
+      path =
+          new Code(
+              p ->
+                  p.print(
+                      "new %1$s(java.util.List.of(new %2$s(\"%3$s\")))",
+                      /* 1 */ PropertyPath.class,
+                      /* 2 */ PropertyPathSegment.Default.class,
+                      /* 3 */ fieldMeta.getName()));
+    }
     print(
-        "new %1$s<%2$s, %3$s>(\"%5$s\", %2$s.class, %6$s.getEmbeddablePropertyTypes(\"%5$s\", %2$s.class, __namingType, %7$s))",
+        "new %1$s<%2$s, %3$s>(%5$s, %2$s.class, %6$s.getEmbeddablePropertyTypes(%5$s, %2$s.class, __namingType, %7$s), %8$s)",
         /* 1 */ EmbeddedPropertyType.class,
         /* 2 */ entityMeta.getType(),
         /* 3 */ fieldMeta.getCtType().getType(),
         /* 4 */ null,
-        /* 5 */ fieldMeta.getName(),
+        /* 5 */ path,
         /* 6 */ embeddedMeta.embeddableCtType().getTypeCode(),
-        /* 7 */ toEmbeddedTypeCode(embeddedMeta.embeddedAnnot()));
+        /* 7 */ toEmbeddedTypeCode(embeddedMeta.embeddedAnnot()),
+        /* 8 */ embeddedMeta.optional());
   }
 
   private void printGeneratedIdPropertyTypeField(

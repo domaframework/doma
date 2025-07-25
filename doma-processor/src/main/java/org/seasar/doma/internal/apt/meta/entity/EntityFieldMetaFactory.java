@@ -19,7 +19,9 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 
 import javax.lang.model.element.VariableElement;
 import org.seasar.doma.internal.apt.RoundContext;
+import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 
 class EntityFieldMetaFactory {
 
@@ -39,12 +41,23 @@ class EntityFieldMetaFactory {
 
   public EntityFieldMeta createEntityFieldMeta() {
     var ctType = ctx.getCtTypes().newCtType(fieldElement.asType());
-    if (ctType instanceof EmbeddableCtType embeddableCtType) {
-      var factory = new EmbeddedMetaFactory(ctx, fieldElement, embeddableCtType);
-      return factory.createEmbeddedMeta();
-    } else {
-      var factory = new EntityPropertyMetaFactory(ctx, entityMeta, fieldElement);
-      return factory.createEntityPropertyMeta();
+    if (ctType instanceof OptionalCtType optionalCtType) {
+      if (optionalCtType.getElementCtType() instanceof EmbeddableCtType embeddableCtType) {
+        return createEmbeddedMeta(optionalCtType, embeddableCtType);
+      }
+    } else if (ctType instanceof EmbeddableCtType embeddableCtType) {
+      return createEmbeddedMeta(embeddableCtType, embeddableCtType);
     }
+    return createEntityPropertyMeta();
+  }
+
+  private EmbeddedMeta createEmbeddedMeta(CtType ctType, EmbeddableCtType embeddableCtType) {
+    var factory = new EmbeddedMetaFactory(ctx, fieldElement, ctType, embeddableCtType);
+    return factory.createEmbeddedMeta();
+  }
+
+  private EntityPropertyMeta createEntityPropertyMeta() {
+    var factory = new EntityPropertyMetaFactory(ctx, entityMeta, fieldElement);
+    return factory.createEntityPropertyMeta();
   }
 }

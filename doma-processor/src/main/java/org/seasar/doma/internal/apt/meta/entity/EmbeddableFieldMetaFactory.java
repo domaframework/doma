@@ -35,12 +35,23 @@ class EmbeddableFieldMetaFactory {
 
   public EmbeddableFieldMeta createEmbeddableFieldMeta() {
     var ctType = ctx.getCtTypes().newCtType(fieldElement.asType());
-    if (ctType instanceof EmbeddableCtType embeddableCtType) {
-      var factory = new EmbeddedMetaFactory(ctx, fieldElement, embeddableCtType);
-      return factory.createEmbeddedMeta();
-    } else {
-      var factory = new EmbeddablePropertyMetaFactory(ctx, fieldElement);
-      return factory.createEmbeddablePropertyMeta();
+    if (ctType instanceof OptionalCtType optionalCtType) {
+      if (optionalCtType.getElementCtType() instanceof EmbeddableCtType embeddableCtType) {
+        return createEmbeddedMeta(optionalCtType, embeddableCtType);
+      }
+    } else if (ctType instanceof EmbeddableCtType embeddableCtType) {
+      return createEmbeddedMeta(embeddableCtType, embeddableCtType);
     }
+    return createEmbeddablePropertyMeta();
+  }
+
+  private EmbeddedMeta createEmbeddedMeta(CtType ctType, EmbeddableCtType embeddableCtType) {
+    var factory = new EmbeddedMetaFactory(ctx, fieldElement, ctType, embeddableCtType);
+    return factory.createEmbeddedMeta();
+  }
+
+  private EmbeddablePropertyMeta createEmbeddablePropertyMeta() {
+    var factory = new EmbeddablePropertyMetaFactory(ctx, fieldElement);
+    return factory.createEmbeddablePropertyMeta();
   }
 }
