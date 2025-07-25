@@ -81,7 +81,8 @@ The field type must be one of the following:
 
 - [Basic classes](basic.md)
 - [Domain classes](domain.md)
-- java.util.Optional, whose element is either [Basic classes](basic.md) or [Domain classes](domain.md)
+- [Embeddable classes](embeddable.md) (nested embeddables)
+- java.util.Optional, whose element is either [Basic classes](basic.md), [Domain classes](domain.md), or [Embeddable classes](embeddable.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
@@ -105,7 +106,56 @@ final String zip;
 
 ### Transient
 
-If an embeddable has fields that you don’t want to persist, you can annotate them using `@Transient`:
+If an embeddable has fields that you don't want to persist, you can annotate them using `@Transient`:
+
+### Nested embeddable classes
+
+Embeddable classes can contain other embeddable classes as fields, allowing for nested composition:
+
+```java
+@Embeddable
+public class Address {
+    String street;
+    String city;
+    String zipCode;
+}
+
+@Embeddable
+public class ContactInfo {
+    String email;
+    String phone;
+    Address address; // Nested embeddable
+}
+
+@Entity
+public class Customer {
+    @Id
+    Integer id;
+    String name;
+    ContactInfo contactInfo; // Contains nested Address
+}
+```
+
+This creates a hierarchical structure where the `Customer` entity contains `ContactInfo`, which in turn contains `Address`. 
+All fields from nested embeddables are flattened into the entity's table structure.
+
+### Optional embeddable classes
+
+Embeddable classes can be wrapped in `java.util.Optional` to indicate that the entire embeddable group may be null:
+
+```java
+@Entity
+public class Employee {
+    @Id
+    Integer id;
+    String name;
+    Optional<Address> homeAddress;    // Optional embeddable
+    Optional<ContactInfo> emergencyContact; // Optional nested embeddable
+}
+```
+
+When an Optional embeddable is null, all corresponding database columns will be null. 
+Conversely, when all columns corresponding to an Optional embeddable are null in the database, the Optional field will be empty (Optional.empty()). 
 
 ## Method definition
 

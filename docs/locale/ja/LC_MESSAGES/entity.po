@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 16:05+0900\n"
+"POT-Creation-Date: 2025-07-25 22:20+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -181,9 +181,9 @@ msgstr "[埋め込み可能クラス](embeddable.md)"
 
 #: ../../entity.md:144
 msgid ""
-"java.util.Optional, whose element is either [Basic classes](basic.md) or "
-"[Domain classes](domain.md)"
-msgstr "[基本クラス](basic.md)または [ドメインクラス](domain.md) のいずれかを要素とする java.util.Optional"
+"java.util.Optional, whose element is either [Basic classes](basic.md), "
+"[Domain classes](domain.md), or [Embeddable classes](embeddable.md)"
+msgstr "要素を [基本クラス](basic.md)、[ドメインクラス](domain.md)、または [埋め込み可能クラス](embeddable.md) のいずれかとする java.util.Optional"
 
 #: ../../entity.md:145
 msgid "java.util.OptionalInt"
