@@ -141,7 +141,7 @@ The field type must be one of the following:
 - [Basic classes](basic.md)
 - [Domain classes](domain.md)
 - [Embeddable classes](embeddable.md)
-- java.util.Optional, whose element is either [Basic classes](basic.md) or [Domain classes](domain.md)
+- java.util.Optional, whose element is either [Basic classes](basic.md), [Domain classes](domain.md), or [Embeddable classes](embeddable.md)
 - java.util.OptionalInt
 - java.util.OptionalLong
 - java.util.OptionalDouble
