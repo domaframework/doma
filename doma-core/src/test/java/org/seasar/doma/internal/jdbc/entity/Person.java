@@ -15,6 +15,8 @@
  */
 package org.seasar.doma.internal.jdbc.entity;
 
+import java.util.Optional;
+
 public class Person extends Animal {
 
   public String name;
@@ -22,4 +24,6 @@ public class Person extends Animal {
   public Address address;
 
   public int age;
+
+  public Optional<String> phoneNumber;
 }

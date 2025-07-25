@@ -15,7 +15,9 @@
  */
 package org.seasar.doma.internal.apt.processor.embeddable;
 
+import java.util.Optional;
 import org.seasar.doma.Embeddable;
 
 @Embeddable
-public record NestedEmbeddable1(NestedEmbeddable2 nestedEmbeddable2) {}
+public record NestedEmbeddable1(
+    NestedEmbeddable2 nestedEmbeddable2, Optional<NestedEmbeddable2> optionalNestedEmbeddable2) {}

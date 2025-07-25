@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.entity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.seasar.doma.internal.jdbc.entity.PropertyPath;
 
 /**
  * Represents the metadata for a class annotated with {@link org.seasar.doma.Embeddable}.
@@ -75,8 +76,33 @@ public interface EmbeddableType<EMBEDDABLE> {
    * @param embeddedType the embedded type metadata containing column prefix and column overrides
    * @return a list of entity property types for the embeddable properties
    */
-  <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
+  @Deprecated
+  default <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
       String embeddedPropertyName,
+      Class<ENTITY> entityClass,
+      NamingType namingType,
+      EmbeddedType embeddedType) {
+    return getEmbeddablePropertyTypes(
+        PropertyPath.of(embeddedPropertyName), entityClass, namingType, embeddedType);
+  }
+
+  /**
+   * Returns a list of entity property types for the embeddable properties using a property path.
+   *
+   * <p>This method is used to obtain metadata about the properties within an embeddable object when
+   * it is embedded in an entity. The property types are used for mapping between the embeddable
+   * object's properties and database columns. This method supports nested property paths for
+   * complex embeddable structures.
+   *
+   * @param <ENTITY> the entity type that contains the embeddable
+   * @param embeddedPropertyPath the property path to the embeddable within the entity
+   * @param entityClass the entity class
+   * @param namingType the naming convention used for column names
+   * @param embeddedType the embedded type metadata containing column prefix and column overrides
+   * @return a list of entity property types for the embeddable properties
+   */
+  <ENTITY> List<EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(
+      PropertyPath embeddedPropertyPath,
       Class<ENTITY> entityClass,
       NamingType namingType,
       EmbeddedType embeddedType);

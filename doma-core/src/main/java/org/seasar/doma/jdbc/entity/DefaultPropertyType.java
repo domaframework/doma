@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
+import org.seasar.doma.internal.jdbc.entity.PropertyPath;
 import org.seasar.doma.internal.jdbc.scalar.Scalar;
 import org.seasar.doma.internal.jdbc.sql.ScalarInParameter;
 import org.seasar.doma.jdbc.InParameter;
@@ -97,21 +98,43 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       boolean updatable,
       boolean quoteRequired,
       EmbeddedType embeddedType) {
+    this(
+        entityClass,
+        scalarSupplier,
+        PropertyPath.of(name),
+        columnName,
+        namingType,
+        insertable,
+        updatable,
+        quoteRequired,
+        embeddedType);
+  }
+
+  public DefaultPropertyType(
+      Class<ENTITY> entityClass,
+      Supplier<Scalar<BASIC, CONTAINER>> scalarSupplier,
+      PropertyPath path,
+      String columnName,
+      NamingType namingType,
+      boolean insertable,
+      boolean updatable,
+      boolean quoteRequired,
+      EmbeddedType embeddedType) {
     if (entityClass == null) {
       throw new DomaNullPointerException("entityClass");
     }
     if (scalarSupplier == null) {
       throw new DomaNullPointerException("scalarSupplier");
     }
-    if (name == null) {
-      throw new DomaNullPointerException("name");
+    if (path == null) {
+      throw new DomaNullPointerException("path");
     }
     if (columnName == null) {
       throw new DomaNullPointerException("columnName");
     }
     this.entityClass = entityClass;
     this.scalarSupplier = scalarSupplier;
-    this.name = name;
+    this.name = path.name();
     int pos = name.lastIndexOf('.');
     this.simpleName = pos > -1 ? name.substring(pos + 1) : name;
     this.namingType = namingType;
@@ -133,7 +156,7 @@ public class DefaultPropertyType<ENTITY, BASIC, CONTAINER>
       this.updatable = columnType.updatable() != null ? columnType.updatable() : updatable;
       this.quoteRequired = columnType.quote() != null ? columnType.quote() : quoteRequired;
     }
-    this.field = new PropertyField<>(name, entityClass);
+    this.field = new PropertyField<>(path, entityClass);
   }
 
   @Override

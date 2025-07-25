@@ -13,22 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.it.criteria;
 
-import java.util.Optional;
-import org.seasar.doma.Embedded;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
+import org.seasar.doma.Embeddable;
 
-@Entity
-public class Customer {
-  @Id Integer id;
-
-  CustomerAddress address1;
-
-  @Embedded(prefix = "additional_")
-  CustomerAddress address2;
-
-  @Embedded(prefix = "optional_")
-  Optional<CustomerAddress> address3;
-}
+@Embeddable
+public record ConsumerAddress(String city, String zipCode, String street) {}

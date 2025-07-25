@@ -41,18 +41,24 @@ class EmbeddedMetaFactory {
 
   private final VariableElement fieldElement;
 
-  private final EmbeddableCtType ctType;
+  private final CtType ctType;
+
+  private final EmbeddableCtType embeddableCtType;
 
   public EmbeddedMetaFactory(
-      RoundContext ctx, VariableElement fieldElement, EmbeddableCtType ctType) {
-    assertNotNull(ctx, fieldElement, ctType);
+      RoundContext ctx,
+      VariableElement fieldElement,
+      CtType ctType,
+      EmbeddableCtType embeddableCtType) {
+    assertNotNull(ctx, fieldElement, ctType, embeddableCtType);
     this.ctx = ctx;
     this.fieldElement = fieldElement;
     this.ctType = ctType;
+    this.embeddableCtType = embeddableCtType;
   }
 
   public EmbeddedMeta createEmbeddedMeta() {
-    var typeElement = ctx.getMoreTypes().toTypeElement(ctType.getType());
+    var typeElement = ctx.getMoreTypes().toTypeElement(embeddableCtType.getType());
     if (typeElement == null) {
       throw new AptIllegalStateException(
           "failed to convert to TypeElement: " + fieldElement.getSimpleName());
@@ -72,7 +78,11 @@ class EmbeddedMetaFactory {
     var embeddableMeta = embeddableMetaFactory.createTypeElementMeta(typeElement);
 
     return new EmbeddedMeta(
-        fieldElement.getSimpleName().toString(), embeddableMeta, ctType, embeddedAnnot);
+        fieldElement.getSimpleName().toString(),
+        embeddableMeta,
+        ctType,
+        embeddableCtType,
+        embeddedAnnot);
   }
 
   private void validateClassReference(TypeElement typeElement, Set<String> visitedClassNames) {
@@ -84,10 +94,11 @@ class EmbeddedMetaFactory {
           new Object[] {fieldElement.getSimpleName(), typeElement.getQualifiedName()});
     }
     for (var enclosedElement : ElementFilter.fieldsIn(typeElement.getEnclosedElements())) {
-      CtType ctType = ctx.getCtTypes().newCtType(enclosedElement.asType());
-      if (ctType instanceof EmbeddableCtType embeddableCtType) {
+      CtType enclosedCtType = ctx.getCtTypes().newCtType(enclosedElement.asType());
+      CtType unwrappedCtType = unwrapOptionalCtType(enclosedCtType);
+      if (unwrappedCtType instanceof EmbeddableCtType enclosedEmbeddableCtType) {
         TypeElement enclosedTypeElement =
-            ctx.getMoreTypes().toTypeElement(embeddableCtType.getType());
+            ctx.getMoreTypes().toTypeElement(enclosedEmbeddableCtType.getType());
         assertNotNull(enclosedTypeElement);
         validateClassReference(enclosedTypeElement, new HashSet<>(visitedClassNames));
       }
@@ -116,10 +127,11 @@ class EmbeddedMetaFactory {
   private void collectPropertyPathNames(
       TypeElement typeElement, String prefix, Set<String> propertyPathNames) {
     for (var enclosedElement : ElementFilter.fieldsIn(typeElement.getEnclosedElements())) {
-      CtType ctType = ctx.getCtTypes().newCtType(enclosedElement.asType());
-      if (ctType instanceof EmbeddableCtType embeddableCtType) {
+      CtType enclosedCtType = ctx.getCtTypes().newCtType(enclosedElement.asType());
+      CtType unwrappedCtType = unwrapOptionalCtType(enclosedCtType);
+      if (unwrappedCtType instanceof EmbeddableCtType enclosedEmbeddableCtType) {
         TypeElement enclosedTypeElement =
-            ctx.getMoreTypes().toTypeElement(embeddableCtType.getType());
+            ctx.getMoreTypes().toTypeElement(enclosedEmbeddableCtType.getType());
         assertNotNull(enclosedTypeElement);
         String simpleName = enclosedElement.getSimpleName().toString();
         String newPrefix = prefix != null ? prefix + "." + simpleName : simpleName;
@@ -130,6 +142,13 @@ class EmbeddedMetaFactory {
         propertyPathNames.add(name);
       }
     }
+  }
+
+  private CtType unwrapOptionalCtType(CtType ctType) {
+    if (ctType instanceof OptionalCtType optionalCtType) {
+      return optionalCtType.getElementCtType();
+    }
+    return ctType;
   }
 
   private void validateName() {

@@ -180,8 +180,9 @@ public class EntityMetamodelGenerator extends AbstractGenerator {
     }
   }
 
-  private ClassName createEmbeddableTypeClassName(EmbeddedMeta p) {
-    TypeElement embeddableTypeElement = ctx.getMoreTypes().toTypeElement(p.getCtType().getType());
+  private ClassName createEmbeddableTypeClassName(EmbeddedMeta embeddedMeta) {
+    TypeElement embeddableTypeElement =
+        ctx.getMoreTypes().toTypeElement(embeddedMeta.embeddableCtType().getType());
     if (embeddableTypeElement == null) {
       throw new AptIllegalStateException("embeddableTypeElement");
     }

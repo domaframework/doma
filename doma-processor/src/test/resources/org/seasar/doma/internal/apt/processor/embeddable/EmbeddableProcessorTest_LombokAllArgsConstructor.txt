@@ -12,10 +12,10 @@ public final class _LombokAllArgsConstructor implements org.seasar.doma.jdbc.ent
     private static final _LombokAllArgsConstructor __singleton = new _LombokAllArgsConstructor();
 
     @Override
-    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(String embeddedPropertyName, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType, org.seasar.doma.jdbc.entity.EmbeddedType embeddedType) {
+    public <ENTITY> java.util.List<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY, ?>> getEmbeddablePropertyTypes(org.seasar.doma.internal.jdbc.entity.PropertyPath embeddedPropertyPath, Class<ENTITY> entityClass, org.seasar.doma.jdbc.entity.NamingType namingType, org.seasar.doma.jdbc.entity.EmbeddedType embeddedType) {
         return java.util.List.of(
-            java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".street", "", namingType, true, true, false, embeddedType)),
-            java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), embeddedPropertyName + ".city", "", namingType, true, true, false, embeddedType))
+            java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), org.seasar.doma.internal.jdbc.entity.PropertyPath.combine(embeddedPropertyPath, new org.seasar.doma.internal.jdbc.entity.PropertyPathSegment.Default("street")), "", namingType, true, true, false, embeddedType)),
+            java.util.List.<org.seasar.doma.jdbc.entity.EntityPropertyType<ENTITY,?>>of(new org.seasar.doma.jdbc.entity.DefaultPropertyType<ENTITY, java.lang.String, java.lang.String>(entityClass, org.seasar.doma.internal.jdbc.scalar.BasicScalarSuppliers.ofString(), org.seasar.doma.internal.jdbc.entity.PropertyPath.combine(embeddedPropertyPath, new org.seasar.doma.internal.jdbc.entity.PropertyPathSegment.Default("city")), "", namingType, true, true, false, embeddedType))
         ).stream().flatMap(it -> it.stream()).toList();
     }
 

@@ -68,7 +68,7 @@ public class Printer {
     if (arg instanceof CharSequence) {
       return (CharSequence) arg;
     } else if (arg instanceof Class) {
-      return ((Class) arg).getName();
+      return ((Class) arg).getName().replace('$', '.');
     } else if (arg instanceof TypeMirror) {
       return ctx.getMoreTypes().getTypeName((TypeMirror) arg);
     } else if (arg instanceof TypeElement) {

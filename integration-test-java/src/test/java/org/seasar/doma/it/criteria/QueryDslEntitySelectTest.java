@@ -1033,4 +1033,28 @@ public class QueryDslEntitySelectTest {
     assertEquals("220-0012", buyer.getShippingCityInfo().zipCodeInfo().zipCode());
     assertEquals("456 OAK AVE", buyer.getShippingCityInfo().zipCodeInfo().streetInfo().street());
   }
+
+  @Test
+  void embeddable_optional() {
+    Consumer_ c = new Consumer_();
+
+    QueryDsl queryDsl = new QueryDsl(config);
+    Consumer consumer = queryDsl.from(c).where(w -> w.eq(c.customerId, 1)).fetchOne();
+
+    assertEquals(1, consumer.getCustomerId());
+
+    ConsumerAddress billingAddress =
+        consumer.getAddress().orElseThrow().billingAddress().orElseThrow();
+    assertNotNull(billingAddress);
+    assertEquals("TOKYO", billingAddress.city());
+    assertEquals("100-0001", billingAddress.zipCode());
+    assertEquals("123 MAIN ST", billingAddress.street());
+
+    ConsumerAddress shippingAddress =
+        consumer.getAddress().orElseThrow().shippingAddress().orElseThrow();
+    assertNotNull(shippingAddress);
+    assertEquals("YOKOHAMA", shippingAddress.city());
+    assertEquals("220-0012", shippingAddress.zipCode());
+    assertEquals("456 OAK AVE", shippingAddress.street());
+  }
 }

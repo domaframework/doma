@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.seasar.doma.internal.apt.processor.entity;
+package org.seasar.doma.it.criteria;
 
 import java.util.Optional;
+import org.seasar.doma.Column;
+import org.seasar.doma.ColumnOverride;
+import org.seasar.doma.Embeddable;
 import org.seasar.doma.Embedded;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Id;
 
-@Entity
-public class Customer {
-  @Id Integer id;
-
-  CustomerAddress address1;
-
-  @Embedded(prefix = "additional_")
-  CustomerAddress address2;
-
-  @Embedded(prefix = "optional_")
-  Optional<CustomerAddress> address3;
-}
+@Embeddable
+public record CompositeConsumerAddress(
+    @Embedded(prefix = "BILLING_") Optional<ConsumerAddress> billingAddress,
+    @Embedded(
+            columnOverrides = {
+              @ColumnOverride(name = "city", column = @Column(name = "SHIPPING_CITY")),
+              @ColumnOverride(name = "zipCode", column = @Column(name = "SHIPPING_ZIP_CODE")),
+            })
+        Optional<ConsumerAddress> shippingAddress) {}

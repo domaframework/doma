@@ -20,9 +20,11 @@ import static java.util.stream.Collectors.toMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import org.seasar.doma.DomaNullPointerException;
 import org.seasar.doma.internal.jdbc.entity.PropertyField;
+import org.seasar.doma.internal.jdbc.entity.PropertyPath;
 
 /**
  * Represents a property in an entity class that is mapped to an embeddable object.
@@ -42,20 +44,31 @@ import org.seasar.doma.internal.jdbc.entity.PropertyField;
  */
 public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
 
-  protected final String name;
+  protected final PropertyPath path;
 
   protected final List<EntityPropertyType<ENTITY, ?>> embeddablePropertyTypes;
 
   protected final Map<String, EntityPropertyType<ENTITY, ?>> embeddablePropertyTypeMap;
+
+  protected final boolean optional;
 
   protected final PropertyField<ENTITY> field;
 
   public EmbeddedPropertyType(
       String name,
       Class<ENTITY> entityClass,
-      List<EntityPropertyType<ENTITY, ?>> embeddablePropertyType) {
-    if (name == null) {
-      throw new DomaNullPointerException("name");
+      List<EntityPropertyType<ENTITY, ?>> embeddablePropertyType,
+      boolean optional) {
+    this(PropertyPath.of(name), entityClass, embeddablePropertyType, optional);
+  }
+
+  public EmbeddedPropertyType(
+      PropertyPath path,
+      Class<ENTITY> entityClass,
+      List<EntityPropertyType<ENTITY, ?>> embeddablePropertyType,
+      boolean optional) {
+    if (path == null) {
+      throw new DomaNullPointerException("path");
     }
     if (entityClass == null) {
       throw new DomaNullPointerException("entityClass");
@@ -63,7 +76,7 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
     if (embeddablePropertyType == null) {
       throw new DomaNullPointerException("embeddablePropertyType");
     }
-    this.name = name;
+    this.path = path;
     this.embeddablePropertyTypes = embeddablePropertyType;
     this.embeddablePropertyTypeMap =
         this.embeddablePropertyTypes.stream()
@@ -75,7 +88,8 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
                       throw new IllegalStateException(String.format("Duplicate key %s", u));
                     },
                     LinkedHashMap::new));
-    this.field = new PropertyField<>(name, entityClass);
+    this.optional = optional;
+    this.field = new PropertyField<>(path, entityClass);
   }
 
   /**
@@ -113,6 +127,7 @@ public class EmbeddedPropertyType<ENTITY, EMBEDDABLE> {
    * @param value the embeddable value to set
    */
   public void save(ENTITY entity, EMBEDDABLE value) {
-    field.setValue(entity, value);
+    Object v = optional ? Optional.ofNullable(value) : value;
+    field.setValue(entity, v);
   }
 }

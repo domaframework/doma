@@ -18,6 +18,7 @@ package org.seasar.doma.internal.apt.meta.entity;
 import org.seasar.doma.internal.apt.annot.EmbeddedAnnot;
 import org.seasar.doma.internal.apt.cttype.CtType;
 import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
+import org.seasar.doma.internal.apt.cttype.OptionalCtType;
 
 /**
  * Represents metadata for an embedded property during annotation processing.
@@ -37,12 +38,14 @@ import org.seasar.doma.internal.apt.cttype.EmbeddableCtType;
  *
  * @param name the name of the embedded property field
  * @param embeddableMeta metadata of the embeddable type being embedded
- * @param embeddableCtType compile-time type information for the embeddable
+ * @param ctType compile-time type information for the property
+ * @param embeddableCtType compile-time type information for the embeddable type
  * @param embeddedAnnot the {@code @Embedded} annotation instance with its configuration
  */
 public record EmbeddedMeta(
     String name,
     EmbeddableMeta embeddableMeta,
+    CtType ctType,
     EmbeddableCtType embeddableCtType,
     EmbeddedAnnot embeddedAnnot)
     implements EntityFieldMeta, EmbeddableFieldMeta {
@@ -54,6 +57,10 @@ public record EmbeddedMeta(
 
   @Override
   public CtType getCtType() {
-    return embeddableCtType;
+    return ctType;
+  }
+
+  public boolean optional() {
+    return ctType instanceof OptionalCtType;
   }
 }
