@@ -13,7 +13,7 @@ The following code snippet shows how to define an entity:
 ```java
 @Entity
 public class Employee {
-    ...
+    //...
 }
 ```
 
@@ -24,7 +24,7 @@ The following code snippet shows how to inherit from another entity class:
 ```java
 @Entity
 public class SkilledEmployee extends Employee {
-    ...
+    //...
 }
 ```
 
@@ -33,7 +33,7 @@ You can annotate [records] with `@Entity`:
 
 ```java
 @Entity
-public record Employee(...) {
+public record Employee(@Id Integer id, String name) {
 }
 ```
 
@@ -49,7 +49,7 @@ The following code snippet shows how to define an entity listener:
 
 ```java
 public class EmployeeEntityListener implements EntityListener<Employee> {
-    ...
+    // ...
 }
 ```
 
@@ -58,7 +58,7 @@ To use the entity listener, specify it in the `listener` property of the `@Entit
 ```java
 @Entity(listener = EmployeeEntityListener.class)
 public class Employee {
-    ...
+    // ...
 }
 ```
 
@@ -78,7 +78,7 @@ The following code snippet shows how to apply the naming convention to an entity
 ```java
 @Entity(naming = NamingType.SNAKE_UPPER_CASE)
 public class EmployeeInfo {
-    ...
+    // ...
 }
 ```
 
@@ -109,7 +109,7 @@ public class Employee {
         this.name = name;
         this.version = version;
     }
-    ...
+    // ...
 }
 ```
 
@@ -126,7 +126,7 @@ You can specify the corresponding table name with the `@Table` annotation:
 @Entity
 @Table(name = "EMP")
 public class Employee {
-    ...
+    // ...
 }
 ```
 
@@ -151,7 +151,7 @@ The following code snippet shows how to define a field:
 ```java
 @Entity
 public class Employee {
-    ...
+    // ...
     Integer employeeId;
 }
 ```
@@ -378,10 +378,12 @@ There are no limitations in the use of methods.
 Instantiate the `Employee` entity class and use its instance:
 
 ```java
-Employee employee = new Employee();
-employee.setEmployeeId(1);
-employee.setEmployeeName("SMITH");
-employee.setSalary(new BigDecimal(1000));
+void doSomething() {
+    Employee employee = new Employee();
+    employee.setEmployeeId(1);
+    employee.setEmployeeName("SMITH");
+    employee.setSalary(new BigDecimal(1000));
+}
 ```
 
 [records]: https://openjdk.java.net/jeps/359

@@ -11,7 +11,7 @@ Annotate a Dao method with `@BatchDelete` to execute batch delete operations.
 public interface EmployeeDao {
     @BatchDelete
     int[] delete(List<Employee> employees);
-    ...
+    // ...
 }
 ```
 

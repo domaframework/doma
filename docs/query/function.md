@@ -11,7 +11,7 @@ To call stored functions, you must annotate DAO methods with the `@Function` ann
 public interface EmployeeDao {
     @Function
     Integer execute(@In Integer id, @InOut Reference<BigDecimal> salary);
-    ...
+    // ...
 }
 ```
 

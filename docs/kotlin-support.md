@@ -80,7 +80,7 @@ interface PersonDao {
 ```
 
 ```kotlin
-val dao: PersonDao = ...
+val dao: PersonDao = new PersonDaoImpl(config)
 val person = Person(name = Name("John"), address = Address(city = "Tokyo", street = "Yaesu"))
 val count = dao.insert(person)
 ```

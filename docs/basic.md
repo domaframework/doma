@@ -71,7 +71,7 @@ public class Employee {
     @Version
     Long versionNo;
 
-    ...
+    // ...
 }
 ```
 

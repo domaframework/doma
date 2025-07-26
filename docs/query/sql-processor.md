@@ -12,7 +12,7 @@ To designate a DAO method as an SQL processor, annotate it with `@SqlProcessor`:
 public interface EmployeeDao {
     @SqlProcessor
     <R> R process(Integer id, BiFunction<Config, PreparedSql, R> handler);
-    ...
+    // ...
 }
 ```
 
@@ -48,15 +48,17 @@ Parameters other than the `BiFunction` parameter are used in the SQL template.
 Suppose you want to change the SQL statement generated from an SQL template and execute it:
 
 ```java
-EmployeeDao dao = ...
-dao.process(1, (config, preparedSql) -> {
-  String sql = preparedSql.getRawSql();
-  String anotherSql = createAnotherSql(sql);
-  DataSource dataSource = config.getDataSource()
-  Connection connection = dataSource.getConnection();
-  PreparedStatement statement = connection.prepareStatement(anotherSql);
-  return statement.execute();
-});
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl(config);
+    dao.process(1, (config, preparedSql) -> {
+      String sql = preparedSql.getRawSql();
+      String anotherSql = createAnotherSql(sql);
+      DataSource dataSource = config.getDataSource();
+      Connection connection = dataSource.getConnection();
+      PreparedStatement statement = connection.prepareStatement(anotherSql);
+      return statement.execute();
+    });
+}
 ```
 
 ```sql

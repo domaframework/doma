@@ -16,7 +16,7 @@ This annotation specifies how an entity aggregate is reconstructed from a query 
 ```java
 @AggregateStrategy(root = Department.class, tableAlias = "d")
 interface DepartmentAggregateStrategy {
-    ...
+    // ...
 }
 ```
 

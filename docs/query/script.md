@@ -12,7 +12,7 @@ annotate DAO methods with `@Script`:
 public interface EmployeeDao {
     @Script
     void createTable();
-    ...
+    // ...
 }
 ```
 
@@ -67,7 +67,7 @@ public interface EmployeeDao {
     @Sql("create table employee (id integer, name varchar(200))")
     @Script
     void createTable();
-    ...
+    // ...
 }
 ```
 

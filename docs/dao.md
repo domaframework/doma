@@ -46,9 +46,11 @@ These implementation classes can be directly instantiated and used.
 However, if the configuration class is managed by a Dependency Injection (DI) container, the DI container should control the instantiation of the implementation classes.
 
 ```java
-Config config = ...;
-EmployeeDao employeeDao = new EmployeeDaoImpl(config);
-Employee employee = employeeDao.selectById(1);
+void doSomething() {
+    Config config = getConfig();
+    EmployeeDao employeeDao = new EmployeeDaoImpl(config);
+    Employee employee = employeeDao.selectById(1);
+}
 ```
 
 By default, the implementation class name is the interface name suffixed with `Impl`.

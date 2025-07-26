@@ -90,7 +90,6 @@ The field type must be one of the following:
 ```java
 @Embeddable
 public class Address {
-    ...
     String street;
 }
 ```
@@ -253,7 +252,9 @@ When both `prefix` and `columnOverrides` are used, the `@ColumnOverride` setting
 ## Example
 
 ```java
-Employee employee = new Employee(); // Entity
-Address address = new Address("Tokyo", "Yaesu", "103-0028"); // Embeddable
-employee.setAddress(address);
+void doSomething() {
+    Employee employee = new Employee(); // Entity
+    Address address = new Address("Tokyo", "Yaesu", "103-0028"); // Embeddable
+    employee.setAddress(address);
+}
 ```

@@ -28,13 +28,13 @@ dependencies {
 ### Maven
 
 ```xml
-...
+<!-- ... -->
 <properties>
     <doma.version>{{ doma_version }}</doma.version>
     <quarkus-doma.version>{{ quarkus_doma_version }}</quarkus-doma.version>
     <compiler-plugin.version>3.9.0</compiler-plugin.version>
 </properties>
-...
+<!-- ... -->
 <dependencies>
     <dependency>
         <groupId>org.seasar.doma</groupId>
@@ -47,7 +47,7 @@ dependencies {
         <version>${quarkus-doma.version}</version>
     </dependency>
 </dependencies>
-...
+<!-- ... -->
 <build>
     <plugins>
         <plugin>

@@ -217,21 +217,23 @@ The Query DSL supports the following stream-handling methods:
 - openStream
 
 ```java
-Employee_ e = new Employee_();
-
-// mapStream allows processing of a stream.
-Map<Integer, List<Employee>> map = queryDsl
-    .from(e)
-    .mapStream(stream -> stream.collect(groupingBy(Employee::getDepartmentId)));
-
-// collect is a shorthand for mapStream.
-Map<Integer, List<Employee>> map2 = queryDsl.from(e).collect(groupingBy(Employee::getDepartmentId));
-
-// openStream returns a stream. You MUST close the stream explicitly.
-try (Stream<Employee> stream = queryDsl.from(e).openStream()) {
-    stream.forEach(employee -> {
-        // do something
-    });
+void doSomething() {
+    Employee_ e = new Employee_();
+    
+    // mapStream allows processing of a stream.
+    Map<Integer, List<Employee>> map = queryDsl
+        .from(e)
+        .mapStream(stream -> stream.collect(groupingBy(Employee::getDepartmentId)));
+    
+    // collect is a shorthand for mapStream.
+    Map<Integer, List<Employee>> map2 = queryDsl.from(e).collect(groupingBy(Employee::getDepartmentId));
+    
+    // openStream returns a stream. You MUST close the stream explicitly.
+    try (Stream<Employee> stream = queryDsl.from(e).openStream()) {
+        stream.forEach(employee -> {
+            // do something
+        });
+    }
 }
 ```
 
@@ -1234,7 +1236,7 @@ int count = queryDsl.insert(d, settings -> {
 You can specify excluded columns:
 
 ```java
-Department department = ...;
+Department department = createDepartment();
 
 Result<Department> result = queryDsl.insert(d, settings ->
     settings.exclude(d.departmentName, d.location)
@@ -1248,13 +1250,15 @@ Result<Department> result = queryDsl.insert(d, settings ->
 Inserting a single entity:
 
 ```java
-Department department = new Department();
-department.setDepartmentId(99);
-department.setDepartmentNo(99);
-department.setDepartmentName("aaa");
-department.setLocation("bbb");
-
-Result<Department> result = queryDsl.insert(d).single(department).execute();
+void doSomething() {
+    Department department = new Department();
+    department.setDepartmentId(99);
+    department.setDepartmentNo(99);
+    department.setDepartmentName("aaa");
+    department.setLocation("bbb");
+    
+    Result<Department> result = queryDsl.insert(d).single(department).execute();
+}
 ```
 
 This generates:
@@ -1269,7 +1273,7 @@ Functionality equivalent to `INSERT ... ON CONFLICT` is supported.
 Use the `onDuplicateKeyUpdate` method to update the existing record when a duplicate key is found:
 
 ```java
-Result<Department> = queryDsl
+Result<Department> result = queryDsl
     .insert(d)
     .single(department)
     .onDuplicateKeyUpdate()
@@ -1279,7 +1283,7 @@ Result<Department> = queryDsl
 Use the `onDuplicateKeyIgnore` method when you want to do nothing in case of a duplicate key:
 
 ```java
-Result<Department> = queryDsl
+Result<Department> result = queryDsl
     .insert(d)
     .single(department)
     .onDuplicateKeyIgnore()
@@ -1291,11 +1295,13 @@ Result<Department> = queryDsl
 Batch Insert is also supported:
 
 ```java
-Department department = ...;
-Department department2 = ...;
-List<Department> departments = Arrays.asList(department, department2);
-
-BatchResult<Department> result = queryDsl.insert(d).batch(departments).execute();
+void doSomething() {
+    Department department = createDepartment();
+    Department department2 = createDepartment();
+    List<Department> departments = Arrays.asList(department, department2);
+    
+    BatchResult<Department> result = queryDsl.insert(d).batch(departments).execute();
+}
 ```
 
 Functionality equivalent to `INSERT ... ON CONFLICT` is supported.
@@ -1303,7 +1309,7 @@ Functionality equivalent to `INSERT ... ON CONFLICT` is supported.
 Use the `onDuplicateKeyUpdate` method to update existing records when duplicate keys are found:
 
 ```java
-BatchResult<Department> = queryDsl
+BatchResult<Department> result = queryDsl
     .insert(d)
     .batch(departments)
     .onDuplicateKeyUpdate()
@@ -1313,7 +1319,7 @@ BatchResult<Department> = queryDsl
 Use the `onDuplicateKeyIgnore` method to skip the insert operation when a duplicate key is found:
 
 ```java
-BatchResult<Department> = queryDsl
+BatchResult<Department> result = queryDsl
     .insert(d)
     .batch(departments)
     .onDuplicateKeyIgnore()
@@ -1340,7 +1346,7 @@ Functionality equivalent to `INSERT ... ON CONFLICT` is supported.
 Use the `onDuplicateKeyUpdate` method to update existing records when duplicate keys are found:
 
 ```java
-MultiResult<Department> = queryDsl
+MultiResult<Department> result = queryDsl
     .insert(d)
     .multi(departments)
     .onDuplicateKeyUpdate()
@@ -1350,7 +1356,7 @@ MultiResult<Department> = queryDsl
 Use the `onDuplicateKeyIgnore` method to skip insert operations when duplicate keys are found:
 
 ```java
-MultiResult<Department> = queryDsl
+MultiResult<Department> result = queryDsl
     .insert(d)
     .multi(departments)
     .onDuplicateKeyIgnore()
@@ -1514,7 +1520,7 @@ int count = queryDsl.update(e, settings -> {
 You can also specify excluded columns:
 
 ```java
-Employee employee = ...;
+Employee employee = createEmployee();
 
 Result<Employee> result = queryDsl.update(e, settings ->
     settings.exclude(e.hiredate, e.salary)
@@ -1530,11 +1536,13 @@ To perform an update without a WHERE clause, enable the `allowEmptyWhere` settin
 Updating a single entity:
 
 ```java
-Employee employee = queryDsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
-employee.setEmployeeName("aaa");
-employee.setSalary(new Salary("2000"));
-
-Result<Employee> result = queryDsl.update(e).single(employee).execute();
+void doSomething() {
+    Employee employee = queryDsl.from(e).where(c -> c.eq(e.employeeId, 5)).fetchOne();
+    employee.setEmployeeName("aaa");
+    employee.setSalary(new Salary("2000"));
+    
+    Result<Employee> result = queryDsl.update(e).single(employee).execute();
+}
 ```
 
 This generates:
@@ -1547,11 +1555,13 @@ where EMPLOYEE_ID = ? and VERSION = ?
 Batch Update is also supported:
 
 ```java
-Employee employee = ...;
-Employee employee2 = ...;
-List<Employee> employees = Arrays.asList(employee, employee2);
-
-BatchResult<Employee> result = queryDsl.update(e).batch(employees).execute();
+void doSomething() {
+    Employee employee = createEmployee();
+    Employee employee2 = createEmployee();
+    List<Employee> employees = Arrays.asList(employee, employee2);
+    
+    BatchResult<Employee> result = queryDsl.update(e).batch(employees).execute();
+}
 ```
 
 Exceptions from the execute method may include:
@@ -1809,7 +1819,9 @@ To enable the scope, specify the scope class in the `scopes` element of `@Metamo
 
 ```java
 @Entity(metamodel = @Metamodel(scopes = { DepartmentScope.class }))
-public class Department { ... }
+public class Department { 
+  // ...
+}
 ```
 
 Now `Department_` includes the `onlyTokyo` method, which can be used as follows:
@@ -1956,13 +1968,15 @@ order by t0_.DEPARTMENT_ID asc
 To inspect the SQL statement generated by DSLs, use the `asSql` method:
 
 ```java
-Department_ d = new Department_();
-
-Listable<Department> stmt = queryDsl.from(d).where(c -> c.eq(d.departmentName, "SALES"));
-
-Sql<?> sql = stmt.asSql();
-System.out.printf("Raw SQL      : %s\n", sql.getRawSql());
-System.out.printf("Formatted SQL: %s\n", sql.getFormattedSql());
+void doSomething() {
+    Department_ d = new Department_();
+    
+    Listable<Department> stmt = queryDsl.from(d).where(c -> c.eq(d.departmentName, "SALES"));
+    
+    Sql<?> sql = stmt.asSql();
+    System.out.printf("Raw SQL      : %s\n", sql.getRawSql());
+    System.out.printf("Formatted SQL: %s\n", sql.getFormattedSql());
+}
 ```
 
 The code above outputs the following:
