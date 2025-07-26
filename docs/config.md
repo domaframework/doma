@@ -233,8 +233,10 @@ Collection of statistical information is disabled by default.
 To enable it, do the following:
 
 ```java
-Config config = ...
-config.getStatisticManager().setEnabled(true);
+void doSomething() {
+  Config config = getConfig();
+  config.getStatisticManager().setEnabled(true);
+}
 ```
 
 To disable it, call `setEnabled(false)`.
@@ -399,7 +401,7 @@ public interface EmployeeDao {
 ```java
 @Dao
 @AnnotateWith(annotations = {
-    @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = javax.inject.Inject.class)) })
+    @Annotation(target = AnnotationTarget.CONSTRUCTOR, type = javax.inject.Inject.class) })
 public interface DepartmentDao {
 
     @Select

@@ -11,7 +11,7 @@ To perform a search operation using the SELECT statement, annotate the DAO metho
 public interface EmployeeDao {
     @Select
     List<Employee> selectByDepartmentName(String departmentName);
-    ...
+    // ...
 }
 ```
 
@@ -149,10 +149,10 @@ BigDecimal selectByNameAndSalary(String name, BigDecimal salary, Function<Stream
 The caller of the DAO method passes a lambda expression that receives a stream and returns the result.
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-BigDecimal result = dao.selectByNameAndSalary(name, salary, stream -> {
-    return ...;
-});
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    BigDecimal result = dao.selectByNameAndSalary(name, salary, stream -> doSomething(name, salary, stream));
+}
 ```
 
 The type parameter `TARGET` of `Function<Stream<TARGET>, RESULT>` must be one of the following:
@@ -190,9 +190,11 @@ Stream<Employee> selectByNameAndSalary(String name, BigDecimal salary);
 The caller of the DAO method will be as follows:
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-try (Stream<Employee> stream = dao.selectByNameAndSalary(name, salary)) {
-  ...
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    try (Stream<Employee> stream = dao.selectByNameAndSalary(name, salary)) {
+      // ...
+    }
 }
 ```
 
@@ -281,7 +283,7 @@ By using `SelectOptions`, you can convert the SELECT statement into SQL for pagi
 public interface EmployeeDao {
     @Select
     List<Employee> selectByDepartmentName(String departmentName, SelectOptions options);
-    ...
+    // ...
 }
 ```
 

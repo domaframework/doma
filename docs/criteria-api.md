@@ -1349,7 +1349,7 @@ Upsert is also supported:
 By calling on `onDuplicateKeyUpdate`, you can update when a key is duplicated.
 
 ```java
-BatchResult<Department> = entityql
+BatchResult<Department> result = entityql
     .insert(d, departments)
     .onDuplicateKeyUpdate()
     .execute();
@@ -1358,7 +1358,7 @@ BatchResult<Department> = entityql
 By calling on `onDuplicateKeyIgnore`, you can ignore errors when a key is duplicated.
 
 ```java
-BatchResult<Department> = entityql
+BatchResult<Department> result = entityql
     .insert(d, departments)
     .onDuplicateKeyIgnore()
     .execute();

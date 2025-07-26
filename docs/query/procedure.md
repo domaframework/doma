@@ -11,7 +11,7 @@ To call stored procedures, you must annotate DAO methods with the `@Procedure` a
 public interface EmployeeDao {
     @Procedure
     void execute(@In Integer id, @InOut Reference<BigDecimal> salary);
-    ...
+    // ...
 }
 ```
 
@@ -62,8 +62,10 @@ void execute(@In Integer id);
 You can invoke the method as follows:
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-dao.execute(1);
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    dao.execute(1);
+}
 ```
 
 ### INOUT parameter
@@ -90,11 +92,13 @@ void execute(@InOut Reference<BigDecimal> salary);
 You can invoke the method as follows:
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-BigDecimal in = new BigDecimal(100);
-Reference<BigDecimal> ref = new Reference<BigDecimal>(in);
-dao.execute(ref);
-BigDecimal out = ref.get();
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    BigDecimal in = new BigDecimal(100);
+    Reference<BigDecimal> ref = new Reference<BigDecimal>(in);
+    dao.execute(ref);
+    BigDecimal out = ref.get();
+}
 ```
 
 ### OUT parameter
@@ -121,10 +125,12 @@ void execute(@Out Reference<BigDecimal> salary);
 You can invoke the method as follows:
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-Reference<BigDecimal> ref = new Reference<BigDecimal>();
-dao.execute(ref);
-BigDecimal out = ref.get();
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    Reference<BigDecimal> ref = new Reference<BigDecimal>();
+    dao.execute(ref);
+    BigDecimal out = ref.get();
+}
 ```
 
 ### Cursor or result set
@@ -154,10 +160,12 @@ void execute(@ResultSet List<Employee> employees);
 You can invoke the method as follows:
 
 ```java
-EmployeeDao dao = new EmployeeDaoImpl();
-List<Employee> employees = new ArrayList<Employee>();
-dao.execute(employees);
-for (Employee e : employees) {
-    ...
+void doSomething() {
+    EmployeeDao dao = new EmployeeDaoImpl();
+    List<Employee> employees = new ArrayList<Employee>();
+    dao.execute(employees);
+    for (Employee e : employees) {
+        // ...
+    }
 }
 ```

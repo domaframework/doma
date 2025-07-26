@@ -96,15 +96,17 @@ You can start a transaction using one of the following methods of `TransactionMa
 Use a lambda expression to define the code you want to execute within a transaction.
 
 ```java
-TransactionManager tm = DbConfig.singleton().getTransactionManager();
-EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
-
-tm.required(() -> {
-    Employee employee = dao.selectById(1);
-    employee.setName("hoge");
-    employee.setJobType(JobType.PRESIDENT);
-    dao.update(employee);
-});
+void doSomething() {
+    TransactionManager tm = DbConfig.singleton().getTransactionManager();
+    EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
+    
+    tm.required(() -> {
+        Employee employee = dao.selectById(1);
+        employee.setName("hoge");
+        employee.setJobType(JobType.PRESIDENT);
+        dao.update(employee);
+    });
+}
 ```
 
 The transaction is automatically committed if the lambda expression completes successfully.
@@ -115,17 +117,19 @@ If the lambda expression throws an exception, the transaction is automatically r
 Besides throwing an exception, you can use the `setRollbackOnly` method to explicitly roll back a transaction.
 
 ```java
-TransactionManager tm = DbConfig.singleton().getTransactionManager();
-EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
-
-tm.required(() -> {
-    Employee employee = dao.selectById(1);
-    employee.setName("hoge");
-    employee.setJobType(JobType.PRESIDENT);
-    dao.update(employee);
-    // Mark as rollback
-    tm.setRollbackOnly();
-});
+void doSomething() {
+    TransactionManager tm = DbConfig.singleton().getTransactionManager();
+    EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
+    
+    tm.required(() -> {
+        Employee employee = dao.selectById(1);
+        employee.setName("hoge");
+        employee.setJobType(JobType.PRESIDENT);
+        dao.update(employee);
+        // Mark as rollback
+        tm.setRollbackOnly();
+    });
+}
 ```
 
 ### Using Savepoints
@@ -133,22 +137,24 @@ tm.required(() -> {
 Savepoints allow you to roll back specific portions of a transaction while keeping other changes.
 
 ```java
-TransactionManager tm = DbConfig.singleton().getTransactionManager();
-EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
-
-tm.required(() -> {
-    // Search and update
-    Employee employee = dao.selectById(1);
-    employee.setName("hoge");
-    dao.update(employee);
-
-    // Create a savepoint
-    tm.setSavepoint("beforeDelete");
-
-    // Delete
-    dao.delete(employee);
-
-    // Rollback to the savepoint (cancel the deletion above)
-    tm.rollback("beforeDelete");
-});
+void doSomething() {
+    TransactionManager tm = DbConfig.singleton().getTransactionManager();
+    EmployeeDao dao = new EmployeeDaoImpl(DbConfig.singleton());
+    
+    tm.required(() -> {
+        // Search and update
+        Employee employee = dao.selectById(1);
+        employee.setName("hoge");
+        dao.update(employee);
+    
+        // Create a savepoint
+        tm.setSavepoint("beforeDelete");
+    
+        // Delete
+        dao.delete(employee);
+    
+        // Rollback to the savepoint (cancel the deletion above)
+        tm.rollback("beforeDelete");
+    });
+}
 ```

@@ -70,11 +70,11 @@ See build.gradle.kts in the [getting-started] repository as an example.
 Write your pom.xml as follows:
 
 ```xml
-...
+<!-- ... -->
 <properties>
     <doma.version>{{ doma_version }}</doma.version>
 </properties>
-...
+<!-- ... -->
 <dependencies>
     <dependency>
         <groupId>org.seasar.doma</groupId>
@@ -82,7 +82,7 @@ Write your pom.xml as follows:
         <version>${doma.version}</version>
     </dependency>
 </dependencies>
-...
+<!-- ... -->
 <build>
     <plugins>
         <plugin>
