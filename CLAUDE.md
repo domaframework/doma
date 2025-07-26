@@ -81,7 +81,7 @@ SQL files use special comments for dynamic SQL that remain valid SQL when run di
 ## Development Guidelines
 
 ### Setting Up Development Environment
-- Install JDK 21 (recommended via [SDKMAN](https://sdkman.io/jdks))
+- Install JDK 17 (recommended via [SDKMAN](https://sdkman.io/jdks))
 - Clone repository: `git clone https://github.com/domaframework/doma.git`
 - Build project: `./gradlew build`
 - For IDE setup, import as a Gradle project (IntelliJ IDEA recommended)
@@ -103,10 +103,6 @@ All code must pass Spotless formatting checks. The build automatically applies f
 - Submit contributions via GitHub Pull Requests from your own fork
 - Write issues and PRs in English for broader accessibility
 - All contributions are licensed under Apache License 2.0
-- Use snapshot versions from Sonatype repository for testing unreleased features
-
-### Database Compatibility Testing
-When making changes that affect SQL generation or JDBC operations, run tests against multiple databases using `./gradlew testAll` to ensure compatibility.
 
 ### Integration Test Structure
 Integration tests use Testcontainers for database provisioning. Database URLs are configured in `gradle.properties` with the `TC_DAEMON=true` flag to improve test performance by reusing containers.
@@ -116,37 +112,73 @@ Integration tests use Testcontainers for database provisioning. Database URLs ar
 ### Documentation System
 The project uses Sphinx for documentation generation, hosted on ReadTheDocs:
 - **Source**: Documentation source files are in the `docs/` directory
-- **Format**: Written in reStructuredText (`.rst`) format
+- **Format**: Written in Markdown (`.md`) format
 - **Languages**: English and Japanese (full translation support)
-- **URL**: https://doma.readthedocs.io/
+- **URL**: https://docs.domaframework.org/
 
 ### Documentation Structure
 - **Getting Started**: Setup guide and quickstart (`getting-started.rst`)
 - **Core Concepts**: Entity, Domain, DAO, Embeddable documentation
 - **Query Operations**: Comprehensive guides for all database operations in `query/` subdirectory
-- **Query Building**: Criteria API, Query DSL, SQL templates documentation
+- **Query Building**: Query DSL, SQL templates documentation
 - **Framework Integration**: Spring Boot, Quarkus, Lombok, Kotlin support guides
 - **Development**: Build configuration, annotation processing, code generation
 
 ### Building Documentation Locally
+
+#### Using Python Virtual Environment
+
 ```bash
-# Install dependencies
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment (on macOS/Linux)
+source .venv/bin/activate
+
+# Go to docs directory
 cd docs
+
+# Install dependencies in virtual environment
 pip install -r requirements.txt
+````
 
-# Generate HTML documentation with auto-reload
-sphinx-autobuild . _build/html
+#### Generate HTML documentation with auto-reload
+```bash
+source .venv/bin/activate && \
+cd docs && \
+sphinx-autobuild . _build/html && \
+cd ..
 # Visit http://127.0.0.1:8000
+```
 
-# Generate translation files
-sphinx-build -b gettext . _build/gettext
+#### Generate HTML documentation with auto-reload (language=ja)
+```bash
+source .venv/bin/activate && \
+cd docs && \
+sphinx-autobuild . _build/html -Dlanguage=ja&& \
+cd ..
+# Visit http://127.0.0.1:8000
+```
 
-# Updates Japanese translation files
-sphinx-intl update -p _build/gettext -l ja
+#### Update Japanese translation files
+```bash
+source .venv/bin/activate && \
+cd docs && \
+sphinx-build -b gettext . _build/gettext && \
+sphinx-intl update -p _build/gettext -l ja && \
+cd ..
 ```
 
 ### Documentation Guidelines
-- Verify RST syntax and rendering before submitting PRs
+- Verify Markdown syntax and rendering before submitting PRs
 - Maintain consistency with existing documentation style
 - Update both English and Japanese translations when applicable
 - Test documentation builds locally using `sphinx-autobuild`
+
+### LLM-Friendly Documentation
+The project includes `docs/llms.txt`, a comprehensive overview designed for AI/LLM consumption. This file provides:
+- Concise project summary and key features
+- Complete architecture overview with all modules
+- Links to all major documentation sections
+- Use case examples and integration guides
+This resource helps AI assistants quickly understand Doma's capabilities and structure
