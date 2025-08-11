@@ -42,7 +42,7 @@ jobs:
           java-version: ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
