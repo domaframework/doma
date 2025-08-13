@@ -30,7 +30,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4.4.2
@@ -69,7 +69,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4.4.2
@@ -124,7 +124,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4.4.2
@@ -164,7 +164,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4.4.2
