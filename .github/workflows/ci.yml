@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
@@ -115,7 +115,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
@@ -155,7 +155,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           java-version: |
