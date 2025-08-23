@@ -93,9 +93,9 @@ The default value is `false`.
 
 ### doma.version.validation
 
-Controls whether to validate version compatibility between the runtime and compile-time doma.jar.
-When set to `true`, version validation will run.
-To disable validation, set this to `false`.
+Controls whether to validate version compatibility between the runtime and compile-time.
+When set to `true`, version validation is performed.
+To disable validation, set it to `false`.
 The default value is `true`.
 
 ### doma.config.path

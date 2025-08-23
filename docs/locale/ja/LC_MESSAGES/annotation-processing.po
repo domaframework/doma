@@ -226,12 +226,11 @@ msgstr "doma.version.validation"
 #: ../../annotation-processing.md:96
 msgid ""
 "Controls whether to validate version compatibility between the runtime "
-"and compile-time doma.jar. When set to `true`, version validation will "
-"run. To disable validation, set this to `false`. The default value is "
-"`true`."
+"and compile-time. When set to `true`, version validation is performed. "
+"To disable validation, set it to `false`. The default value is `true`."
 msgstr ""
-"ランタイムとコンパイル時の doma.jar 間のバージョン互換性を検証するかどうかを制御します。値が `true` "
-"の場合、バージョン検証が実行されます。検証を無効にするには、これを `false` に設定します。デフォルト値は `true` です。"
+"ランタイムとコンパイル時の間のバージョン互換性を検証するかどうかを制御します。`true` "
+"に設定すると、バージョン検証が実行されます。検証を無効にするには、`false` に設定します。デフォルト値は `true` です。"
 
 #: ../../annotation-processing.md:101
 msgid "doma.config.path"
@@ -358,9 +357,4 @@ msgid ""
 " options specified directly in the build tools."
 msgstr "`doma.compile.config` ファイルで指定されたオプションは、ビルドツールに固有のオプションによって上書きされます。"
 
-#~ msgid "Kotlin"
-#~ msgstr ""
-
-#~ msgid "Groovy"
-#~ msgstr ""
 
