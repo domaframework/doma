@@ -9,7 +9,7 @@ on:
 
 env:
   JDK_DISTRIBUTION: zulu
-  JDK_VERSION_LATEST_LTS: 21
+  JDK_VERSION_LATEST_LTS: 25
 
 jobs:
   release:
