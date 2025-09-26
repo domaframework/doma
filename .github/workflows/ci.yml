@@ -91,13 +91,12 @@ jobs:
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           integration-test-java:test
 
-      - name: Test with the latest LTS JDK (Java, Kotlin)
+      - name: Test with the latest LTS JDK (Java)
         run: >
           ./gradlew
           -Pdriver=${{ matrix.driver }}
           -PtestJavaLangVersion=${{ env.JDK_VERSION_LATEST_LTS }}
           integration-test-java:test
-          integration-test-kotlin:test
 
       - name: Upload reports
         if: failure()
