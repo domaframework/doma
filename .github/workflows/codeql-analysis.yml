@@ -35,7 +35,7 @@ jobs:
             ${{ env.JDK_VERSION_LATEST_LTS }}
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4.4.3
+        uses: gradle/actions/setup-gradle@v4.4.4
 
       - name: Build
         run: >
