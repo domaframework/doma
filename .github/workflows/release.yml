@@ -58,6 +58,7 @@ jobs:
         run: >
           ./gradlew
           -Prelease.releaseVersion=${{ env.RELEASE_VERSION }}
+          --no-configuration-cache
           release
 
       - name: Upload reports

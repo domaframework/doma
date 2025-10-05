@@ -4,7 +4,7 @@ plugins {
     signing
     alias(libs.plugins.spotless)
     alias(libs.plugins.publish)
-    alias(libs.plugins.release)
+    alias(libs.plugins.release) apply false
     alias(libs.plugins.doma.compile)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.kapt)
@@ -365,10 +365,40 @@ configure(integrationTestProjects) {
 }
 
 rootProject.apply {
-    release {
-        newVersionCommitMessage.set("[Gradle Release Plugin] - [skip ci] new version commit: ")
-        git {
-            requireBranch.set("")
+    val releaseVersionProperty: Any? = project.properties["release.releaseVersion"]
+
+    if (releaseVersionProperty != null) {
+        apply(plugin = catalog.plugins.release.get().pluginId)
+
+        extensions.configure<net.researchgate.release.ReleaseExtension> {
+            newVersionCommitMessage.set("[Gradle Release Plugin] - [skip ci] new version commit: ")
+            git {
+                requireBranch.set("")
+            }
+        }
+
+        tasks {
+            val replaceVersion by registering {
+                doLast {
+                    val releaseVersion = releaseVersionProperty.toString()
+                    replaceVersionInArtifact(releaseVersion)
+                    replaceVersionInDocs(releaseVersion)
+                }
+            }
+
+            // This task is invoked by the "release" task.
+            named("beforeReleaseBuild") {
+                dependsOn(replaceVersion)
+            }
+
+            // This task is invoked by the "release" task.
+            named("updateVersion") {
+                doLast {
+                    val newVersion = project.properties["version"]?.toString()
+                    checkNotNull(newVersion)
+                    replaceVersionInArtifact(newVersion)
+                }
+            }
         }
     }
 
@@ -381,28 +411,5 @@ rootProject.apply {
             }
         }
         packageGroup.set("org.seasar")
-    }
-
-    tasks {
-        val replaceVersion by registering {
-            doLast {
-                val releaseVersion = project.properties["release.releaseVersion"]?.toString()
-                checkNotNull(releaseVersion)
-                replaceVersionInArtifact(releaseVersion)
-                replaceVersionInDocs(releaseVersion)
-            }
-        }
-
-        beforeReleaseBuild {
-            dependsOn(replaceVersion)
-        }
-
-        updateVersion {
-            doLast {
-                val newVersion = project.properties["version"]?.toString()
-                checkNotNull(newVersion)
-                replaceVersionInArtifact(newVersion)
-            }
-        }
     }
 }

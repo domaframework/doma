@@ -40,10 +40,7 @@ when (compiler) {
         apply(plugin = libs.plugins.themrmilchmann.ecj.get().pluginId)
         tasks {
             compileJava {
-                @Suppress("UnstableApiUsage")
-                options.forkOptions.jvmArgumentProviders.add(
-                    CommandLineArgumentProvider { commonArgs + ecjArgs }
-                )
+                options.compilerArgs.addAll(commonArgs + ecjArgs)
             }
         }
     }
