@@ -178,6 +178,7 @@ jobs:
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
           -Porg.gradle.parallel=false
+          --no-configuration-cache
           publishToSonatype closeAndReleaseSonatypeStagingRepository
 
       - name: Upload reports
