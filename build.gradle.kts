@@ -282,6 +282,9 @@ configure(integrationTestProjects) {
     apply(plugin = "java")
     apply(plugin = catalog.plugins.doma.compile.get().pluginId)
 
+    val sourceSets = the<SourceSetContainer>()
+    val testSource = sourceSets.named("test").get()
+
     dependencies {
         testImplementation(platform(catalog.testcontainers.bom))
         testRuntimeOnly(catalog.jdbc.h2)
@@ -323,6 +326,9 @@ configure(integrationTestProjects) {
             this.systemProperty("url", url)
             maxHeapSize = "1g"
             useJUnitPlatform()
+            testClassesDirs = testSource.output.classesDirs
+            classpath = testSource.runtimeClasspath
+            group = "integration-test"
         }
 
         test {
@@ -359,7 +365,7 @@ configure(integrationTestProjects) {
         }
 
         register("testAll") {
-            dependsOn(h2, mysql, oracle, postgresql, sqlite, sqlserver)
+            dependsOn(h2, mysql, mysql8, oracle, postgresql, sqlite, sqlserver)
         }
     }
 }
