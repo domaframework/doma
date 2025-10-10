@@ -328,6 +328,7 @@ configure(integrationTestProjects) {
             useJUnitPlatform()
             testClassesDirs = testSource.output.classesDirs
             classpath = testSource.runtimeClasspath
+            group = "integration-test"
         }
 
         test {
