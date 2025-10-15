@@ -21,10 +21,10 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 apiguardian = { module = "org.apiguardian:apiguardian-api", version = "1.1.2" }
 
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "2.0.0" }
-testcontainers-mysql = { module = "org.testcontainers:mysql" }
-testcontainers-oracle = { module = "org.testcontainers:oracle-xe" }
-testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
-testcontainers-sqlserver = { module = "org.testcontainers:mssqlserver" }
+testcontainers-mysql = { module = "org.testcontainers:testcontainers-mysql" }
+testcontainers-oracle = { module = "org.testcontainers:testcontainers-oracle-xe" }
+testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql" }
+testcontainers-sqlserver = { module = "org.testcontainers:testcontainers-mssqlserver" }
 
 ecj = { module = "org.eclipse.jdt:ecj", version = "3.43.0" }
 
