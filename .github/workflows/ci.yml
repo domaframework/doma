@@ -39,6 +39,7 @@ jobs:
         run: >
           ./gradlew
           -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64
+          --no-configuration-cache
           assemble check
 
       - name: Upload reports
