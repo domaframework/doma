@@ -1,5 +1,11 @@
 {
   "extends": [
     "github>domaframework/renovate-config"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["com.google.googlejavaformat"],
+      "allowedVersions": "<1.29.0"
+    }
   ]
 }
