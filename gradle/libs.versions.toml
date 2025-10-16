@@ -20,7 +20,7 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 apiguardian = { module = "org.apiguardian:apiguardian-api", version = "1.1.2" }
 
-testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "2.0.0" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "2.0.1" }
 testcontainers-mysql = { module = "org.testcontainers:testcontainers-mysql" }
 testcontainers-oracle = { module = "org.testcontainers:testcontainers-oracle-xe" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql" }
