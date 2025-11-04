@@ -51,7 +51,7 @@ We are testing against the following databases:
 
 | Database           |  version | status |
 |--------------------|---------:|:------:|
-| H2 Database        |  2.3.232 | stable |
+| H2 Database        |  2.4.240 | stable |
 | MySQL v5           |      5.7 | stable |
 | MySQL v8           |   8.0.36 | stable |
 | Oracle Database XE |      21c | stable |
@@ -141,12 +141,12 @@ For Java projects:
 
 ```kotlin
 plugins {
-    id("org.domaframework.doma.compile") version "4.0.2"
+    id("org.domaframework.doma.compile") version "4.0.3"
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-core:3.11.0")
-    annotationProcessor("org.seasar.doma:doma-processor:3.11.0")
+    implementation("org.seasar.doma:doma-core:3.11.1")
+    annotationProcessor("org.seasar.doma:doma-processor:3.11.1")
 }
 ```
 
@@ -154,12 +154,12 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```kotlin
 plugins {
-  id("org.domaframework.doma.compile") version "4.0.2"
+  id("org.domaframework.doma.compile") version "4.0.3"
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:3.11.0")
-    kapt("org.seasar.doma:doma-processor:3.11.0")
+    implementation("org.seasar.doma:doma-kotlin:3.11.1")
+    kapt("org.seasar.doma:doma-processor:3.11.1")
 }
 ```
 
@@ -172,7 +172,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>3.11.0</doma.version>
+    <doma.version>3.11.1</doma.version>
 </properties>
 ...
 <dependencies>
