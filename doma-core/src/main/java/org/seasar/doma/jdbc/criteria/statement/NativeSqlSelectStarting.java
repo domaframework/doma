@@ -465,6 +465,7 @@ public class NativeSqlSelectStarting<ENTITY>
     propertyMetamodels.addAll(entityMetamodel6.allPropertyMetamodels());
     propertyMetamodels.addAll(entityMetamodel7.allPropertyMetamodels());
     propertyMetamodels.addAll(entityMetamodel8.allPropertyMetamodels());
+    propertyMetamodels.addAll(entityMetamodel9.allPropertyMetamodels());
     declaration.select(propertyMetamodels);
     return new NativeSqlSelectIntermediate<>(
         config,
