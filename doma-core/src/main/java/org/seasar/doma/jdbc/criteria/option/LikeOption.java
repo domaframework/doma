@@ -56,7 +56,7 @@ public interface LikeOption {
    * Indicates that the option escape the LIKE operand with the default escape character {@literal
    * $} and concatenates a wildcard at the end.
    *
-   * <p>For example, {@code a%b_} will be converted to the a {@code a$%b$_}.
+   * <p>For example, {@code a%b_} will be converted to the a {@code a$%b$_%}.
    *
    * @return the option
    */
@@ -68,7 +68,7 @@ public interface LikeOption {
    * Indicates that the option escape the LIKE operand with {@code escapeChar} and concatenates a
    * wildcard at the end.
    *
-   * <p>For example, {@code a%b_} is converted to the a {@code a$%b$_}.
+   * <p>For example, {@code a%b_} is converted to the a {@code a$%b$_%}.
    *
    * @param escapeChar the escape character
    * @return the option
