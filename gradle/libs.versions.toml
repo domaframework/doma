@@ -33,7 +33,7 @@ jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
 google-java-format = { module = "com.google.googlejavaformat:google-java-format", version = "1.28.0" }
 ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version = "1.7.1" }
 
-quarkus-doma = { module = "io.quarkiverse.doma:quarkus-doma", version = "1.0.6"}
+quarkus-doma = { module = "io.quarkiverse.doma:quarkus-doma", version = "1.0.7"}
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
