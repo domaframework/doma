@@ -27,6 +27,7 @@ jmh {
             fork.set(1) // Single fork
             timeOnIteration.set("1s") // 1 second per iteration
         }
+
         "ci" -> {
             // CI profile - balanced speed vs accuracy
             iterations.set(3) // Moderate measurement
@@ -34,6 +35,7 @@ jmh {
             fork.set(1) // Single fork for speed
             timeOnIteration.set("3s") // 3 seconds per iteration
         }
+
         "production", "prod" -> {
             // Production profile - high accuracy
             iterations.set(10) // Thorough measurement
@@ -41,6 +43,7 @@ jmh {
             fork.set(3) // Multiple forks for stability
             timeOnIteration.set("10s") // 10 seconds per iteration
         }
+
         else -> {
             // Default profile (moderate)
             iterations.set(5)

@@ -43,5 +43,7 @@ when (compiler) {
         }
     }
 
-    else -> error("Unknown compiler: $compiler")
+    else -> {
+        error("Unknown compiler: $compiler")
+    }
 }
