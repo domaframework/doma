@@ -22,7 +22,7 @@ public final class Artifact {
 
   private static final String NAME = "Doma";
 
-  private static final String VERSION = "3.9.0.2";
+  private static final String VERSION = "3.9.0.3-SNAPSHOT";
 
   public static String getName() {
     return NAME;
