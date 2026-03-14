@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.it.auto;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Arrays;
@@ -37,6 +38,7 @@ public class IdentityStrategyNotFirstColumnTest {
     entity.setUserId(100L);
     dao.insert(entity);
     assertNotNull(entity.getTokenId());
+    assertEquals(entity.getTokenId(), entity.getLog());
   }
 
   @Test
@@ -50,6 +52,8 @@ public class IdentityStrategyNotFirstColumnTest {
     entity2.setUserId(200L);
     dao.insert(Arrays.asList(entity1, entity2));
     assertNotNull(entity1.getTokenId());
+    assertEquals(entity1.getTokenId(), entity1.getLog());
     assertNotNull(entity2.getTokenId());
+    assertEquals(entity2.getTokenId(), entity2.getLog());
   }
 }

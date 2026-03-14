@@ -21,8 +21,9 @@ import org.seasar.doma.GeneratedValue;
 import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
+import org.seasar.doma.Transient;
 
-@Entity
+@Entity(listener = IdentityStrategyNotFirstColumnListener.class)
 @Table(name = "IDENTITY_STRATEGY_NOT_FIRST_COLUMN")
 public class IdentityStrategyNotFirstColumn {
 
@@ -36,6 +37,8 @@ public class IdentityStrategyNotFirstColumn {
 
   @Column(name = "USER_ID")
   Long userId;
+
+  @Transient Long log;
 
   public Long getTokenId() {
     return tokenId;
@@ -59,5 +62,13 @@ public class IdentityStrategyNotFirstColumn {
 
   public void setUserId(Long userId) {
     this.userId = userId;
+  }
+
+  public Long getLog() {
+    return log;
+  }
+
+  public void setLog(Long log) {
+    this.log = log;
   }
 }
