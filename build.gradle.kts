@@ -143,6 +143,12 @@ allprojects {
         java {
             googleJavaFormat(catalog.google.java.format.get().version)
             licenseHeaderFile(licenseHeaderFile)
+            // google-java-format fails on text block files due to Guava not being in the
+            // formatter's classloader in Spotless 8.3.0
+            suppressLintsFor {
+                setStep("google-java-format")
+                setShortCode("java.lang.NoClassDefFoundError")
+            }
         }
         // https://github.com/diffplug/spotless/issues/532
         format("javaMisc") {
