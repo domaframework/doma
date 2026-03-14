@@ -313,13 +313,6 @@ rootProject.apply {
         }
     }
 
-    nexusPublishing {
-        repositories {
-            sonatype()
-        }
-        packageGroup.set("org.seasar")
-    }
-
     tasks {
         val replaceVersion by registering {
             doLast {
@@ -341,5 +334,16 @@ rootProject.apply {
                 replaceVersionInArtifact(newVersion)
             }
         }
+    }
+
+    nexusPublishing {
+        repositories {
+            // see https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/#configuration
+            sonatype {
+                nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+                snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+            }
+        }
+        packageGroup.set("org.seasar")
     }
 }
