@@ -1,2 +1,3 @@
 alter sequence IDENTITY_STRATEGY_ID_SEQ restart with 1;
 alter sequence IDENTITY_STRATEGY2_ID_SEQ restart with 1;
+alter sequence IDENTITY_STRATEGY_NOT_FIRST_COLUMN_TOKEN_ID_SEQ restart with 1;
