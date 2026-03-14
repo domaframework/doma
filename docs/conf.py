@@ -194,12 +194,12 @@ html_context = {
     'conf_py_path': '/docs/',
 
     # versions
-    'doma_version': '3.11.1',
+    'doma_version': '3.11.2',
     'doma_compile_version': '4.0.3',
     'doma_codegen_version': '3.2.1',
     'eclipse_apt_version': '4.4.1',
-    'logback_classic_version': '1.5.20',
-    'quarkus_doma_version': '1.0.6'
+    'logback_classic_version': '1.5.32',
+    'quarkus_doma_version': '1.0.9'
 }
 
 def render_jinja(app, docname, source):

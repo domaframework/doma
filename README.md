@@ -56,7 +56,7 @@ We are testing against the following databases:
 | MySQL v8           |   8.0.36 | stable |
 | Oracle Database XE |      21c | stable |
 | PostgreSQL         |    12.20 | stable |
-| SQLite             | 3.50.3.0 | stable |
+| SQLite             | 3.51.2.0 | stable |
 | SQL Server         |     2019 | stable |
 
 Examples
@@ -145,8 +145,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-core:3.11.1")
-    annotationProcessor("org.seasar.doma:doma-processor:3.11.1")
+    implementation("org.seasar.doma:doma-core:3.11.2")
+    annotationProcessor("org.seasar.doma:doma-processor:3.11.2")
 }
 ```
 
@@ -158,8 +158,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:3.11.1")
-    kapt("org.seasar.doma:doma-processor:3.11.1")
+    implementation("org.seasar.doma:doma-kotlin:3.11.2")
+    kapt("org.seasar.doma:doma-processor:3.11.2")
 }
 ```
 
@@ -172,7 +172,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>3.11.1</doma.version>
+    <doma.version>3.11.2</doma.version>
 </properties>
 ...
 <dependencies>
