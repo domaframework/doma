@@ -390,10 +390,6 @@ public class AutoBatchInsertQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     if (idGenerationConfig == null || generatedIdPropertyType == null) {
       return null;
     }
-    Property<ENTITY, ?> property = generatedIdPropertyType.createProperty();
-    if (generatedIdPropertyType.isIncluded(idGenerationConfig, property.getWrapper().get())) {
-      return null;
-    }
     Naming naming = idGenerationConfig.getNaming();
     String columnName = generatedIdPropertyType.getColumnName(naming::apply);
     boolean quoteRequired = generatedIdPropertyType.isQuoteRequired();
