@@ -1,4 +1,6 @@
 truncate table IDENTITY_STRATEGY;
 truncate table IDENTITY_STRATEGY2;
+truncate table IDENTITY_STRATEGY_NOT_FIRST_COLUMN;
 dbcc checkident ('IDENTITY_STRATEGY', reseed, 1);
 dbcc checkident ('IDENTITY_STRATEGY2', reseed, 1);
+dbcc checkident ('IDENTITY_STRATEGY_NOT_FIRST_COLUMN', reseed, 1);

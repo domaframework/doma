@@ -19,10 +19,14 @@ import java.util.List;
 import org.seasar.doma.BatchInsert;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Insert;
+import org.seasar.doma.Select;
 import org.seasar.doma.it.entity.IdentityStrategyNotFirstColumn;
 
 @Dao
 public interface IdentityStrategyNotFirstColumnDao {
+
+  @Select
+  List<IdentityStrategyNotFirstColumn> selectAll();
 
   @Insert
   int insert(IdentityStrategyNotFirstColumn entity);
