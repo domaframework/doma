@@ -370,6 +370,24 @@ public class AutoMultiInsertQuery<ENTITY> extends AutoModifyQuery<ENTITY> implem
     }
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public String getGeneratedIdColumnName() {
+    if (idGenerationConfig == null || generatedIdPropertyType == null) {
+      return null;
+    }
+    Property<ENTITY, ?> property = generatedIdPropertyType.createProperty();
+    if (generatedIdPropertyType.isIncluded(idGenerationConfig, property.getWrapper().get())) {
+      return null;
+    }
+    Naming naming = idGenerationConfig.getNaming();
+    String columnName = generatedIdPropertyType.getColumnName(naming::apply);
+    boolean quoteRequired = generatedIdPropertyType.isQuoteRequired();
+    return idGenerationConfig
+        .getDialect()
+        .normalizeColumnNameForGeneratedKeys(columnName, quoteRequired);
+  }
+
   /**
    * Completes this query by executing post-insert processing.
    *
