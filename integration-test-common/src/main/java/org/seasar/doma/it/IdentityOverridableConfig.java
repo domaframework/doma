@@ -221,6 +221,11 @@ class IdentityOverridableDialect implements Dialect {
   }
 
   @Override
+  public String normalizeColumnNameForGeneratedKeys(String columnName, boolean quoteRequired) {
+    return delegate.normalizeColumnNameForGeneratedKeys(columnName, quoteRequired);
+  }
+
+  @Override
   public boolean supportsIdentity() {
     return delegate.supportsIdentity();
   }
