@@ -16,20 +16,10 @@ Doma is a database access framework for Java with several notable strengths:
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/domaframework/doma)
 
 ### Backers
-If you use Doma in your project or enterprise and
-would like to support ongoing development,
-please consider becoming a backer.
-[[Become a backer](https://opencollective.com/doma#category-CONTRIBUTE)]
+If you use Doma in your project or enterprise and would like to support ongoing development,
+please consider [becoming a backer](https://opencollective.com/doma#category-CONTRIBUTE).
 
-Our top backers are shown below!
-
-<a href="https://opencollective.com/doma/backer/0/website" target="_blank"><img src="https://opencollective.com/doma/backer/0/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/1/website" target="_blank"><img src="https://opencollective.com/doma/backer/1/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/2/website" target="_blank"><img src="https://opencollective.com/doma/backer/2/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/3/website" target="_blank"><img src="https://opencollective.com/doma/backer/3/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/4/website" target="_blank"><img src="https://opencollective.com/doma/backer/4/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/5/website" target="_blank"><img src="https://opencollective.com/doma/backer/5/avatar.svg"></a>
-<a href="https://opencollective.com/doma/backer/6/website" target="_blank"><img src="https://opencollective.com/doma/backer/6/avatar.svg"></a>
+<a href="https://opencollective.com/doma#backers" target="_blank"><img src="https://opencollective.com/doma/backers.svg?width=890"></a>
 
 ### Supported by
 [![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
