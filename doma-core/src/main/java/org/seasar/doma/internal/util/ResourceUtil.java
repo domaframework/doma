@@ -30,6 +30,12 @@ public final class ResourceUtil {
     if (loader == null) {
       return null;
     }
+    return getResource(loader, path);
+  }
+
+  public static URL getResource(ClassLoader loader, String path) {
+    assertNotNull(loader);
+    assertNotNull(path);
     URL url = loader.getResource(path);
     if (url == null) {
       url = ResourceUtil.class.getResource("/" + path);
@@ -47,10 +53,31 @@ public final class ResourceUtil {
     }
   }
 
+  public static InputStream getResourceAsStream(ClassLoader loader, String path) {
+    assertNotNull(path);
+    URL url = getResource(loader, path);
+    try {
+      return url != null ? url.openStream() : null;
+    } catch (IOException e) {
+      return null;
+    }
+  }
+
   public static String getResourceAsString(String path) throws WrapException {
     assertNotNull(path);
     assertTrue(path.length() > 0);
     InputStream inputStream = getResourceAsStream(path);
+    if (inputStream == null) {
+      return null;
+    }
+    return IOUtil.readAsString(inputStream);
+  }
+
+  public static String getResourceAsString(ClassLoader loader, String path) throws WrapException {
+    assertNotNull(loader);
+    assertNotNull(path);
+    assertTrue(path.length() > 0);
+    InputStream inputStream = getResourceAsStream(loader, path);
     if (inputStream == null) {
       return null;
     }
