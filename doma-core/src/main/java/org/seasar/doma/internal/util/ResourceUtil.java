@@ -25,17 +25,15 @@ import org.seasar.doma.internal.WrapException;
 public final class ResourceUtil {
 
   public static URL getResource(String path) {
-    assertNotNull(path);
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
-    if (loader == null) {
-      return null;
-    }
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
     return getResource(loader, path);
   }
 
   public static URL getResource(ClassLoader loader, String path) {
-    assertNotNull(loader);
     assertNotNull(path);
+    if (loader == null) {
+      return null;
+    }
     URL url = loader.getResource(path);
     if (url == null) {
       url = ResourceUtil.class.getResource("/" + path);
@@ -45,12 +43,8 @@ public final class ResourceUtil {
 
   public static InputStream getResourceAsStream(String path) {
     assertNotNull(path);
-    URL url = getResource(path);
-    try {
-      return url != null ? url.openStream() : null;
-    } catch (IOException e) {
-      return null;
-    }
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    return getResourceAsStream(loader, path);
   }
 
   public static InputStream getResourceAsStream(ClassLoader loader, String path) {
@@ -64,17 +58,11 @@ public final class ResourceUtil {
   }
 
   public static String getResourceAsString(String path) throws WrapException {
-    assertNotNull(path);
-    assertTrue(path.length() > 0);
-    InputStream inputStream = getResourceAsStream(path);
-    if (inputStream == null) {
-      return null;
-    }
-    return IOUtil.readAsString(inputStream);
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    return getResourceAsString(loader, path);
   }
 
   public static String getResourceAsString(ClassLoader loader, String path) throws WrapException {
-    assertNotNull(loader);
     assertNotNull(path);
     assertTrue(path.length() > 0);
     InputStream inputStream = getResourceAsStream(loader, path);
