@@ -42,7 +42,6 @@ public final class ResourceUtil {
   }
 
   public static InputStream getResourceAsStream(String path) {
-    assertNotNull(path);
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
     return getResourceAsStream(loader, path);
   }
