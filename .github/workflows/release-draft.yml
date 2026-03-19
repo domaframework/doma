@@ -4,24 +4,15 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   update_release_draft:
-    permissions:
-      contents: write
-      pull-requests: write
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
 
     steps:
       - uses: release-drafter/release-drafter@3a7fb5c85b80b1dda66e1ccb94009adbbd32fce3 # v7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          commitish: master
