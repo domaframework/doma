@@ -25,8 +25,12 @@ import org.seasar.doma.internal.WrapException;
 public final class ResourceUtil {
 
   public static URL getResource(String path) {
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    return getResource(path, loader);
+  }
+
+  public static URL getResource(String path, ClassLoader loader) {
     assertNotNull(path);
-    ClassLoader loader = Thread.currentThread().getContextClassLoader();
     if (loader == null) {
       return null;
     }
@@ -38,8 +42,13 @@ public final class ResourceUtil {
   }
 
   public static InputStream getResourceAsStream(String path) {
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    return getResourceAsStream(path, loader);
+  }
+
+  public static InputStream getResourceAsStream(String path, ClassLoader loader) {
     assertNotNull(path);
-    URL url = getResource(path);
+    URL url = getResource(path, loader);
     try {
       return url != null ? url.openStream() : null;
     } catch (IOException e) {
@@ -48,9 +57,14 @@ public final class ResourceUtil {
   }
 
   public static String getResourceAsString(String path) throws WrapException {
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    return getResourceAsString(path, loader);
+  }
+
+  public static String getResourceAsString(String path, ClassLoader loader) throws WrapException {
     assertNotNull(path);
     assertTrue(path.length() > 0);
-    InputStream inputStream = getResourceAsStream(path);
+    InputStream inputStream = getResourceAsStream(path, loader);
     if (inputStream == null) {
       return null;
     }

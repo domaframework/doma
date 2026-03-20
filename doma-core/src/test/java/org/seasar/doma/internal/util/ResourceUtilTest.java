@@ -43,4 +43,27 @@ public class ResourceUtilTest {
     String value = ResourceUtil.getResourceAsString(path);
     assertEquals("aaa", value);
   }
+
+  @Test
+  public void testGetResourceAsStream_withClassLoader() {
+    String path = getClass().getName().replace(".", "/") + ".txt";
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    InputStream inputStream = ResourceUtil.getResourceAsStream(path, loader);
+    assertNotNull(inputStream);
+  }
+
+  @Test
+  public void testGetResourceAsStream_withClassLoader_nonexistentPath() {
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    InputStream inputStream = ResourceUtil.getResourceAsStream("nonexistentPath", loader);
+    assertNull(inputStream);
+  }
+
+  @Test
+  public void testGetResourceAsString_withClassLoader() throws Exception {
+    String path = getClass().getName().replace(".", "/") + ".txt";
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    String value = ResourceUtil.getResourceAsString(path, loader);
+    assertEquals("aaa", value);
+  }
 }

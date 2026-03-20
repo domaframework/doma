@@ -94,6 +94,18 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
       SqlNode sqlNode = parse(sql);
       return new SqlFile(path, sql, sqlNode);
     }
+
+    sql = getSql(primaryPath, method.getDeclaringClass().getClassLoader());
+    if (sql != null) {
+      SqlNode sqlNode = parse(sql);
+      return new SqlFile(primaryPath, sql, sqlNode);
+    }
+    sql = getSql(path, method.getDeclaringClass().getClassLoader());
+    if (sql != null) {
+      SqlNode sqlNode = parse(sql);
+      return new SqlFile(path, sql, sqlNode);
+    }
+
     throw new SqlFileNotFoundException(path);
   }
 
@@ -128,6 +140,22 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
   protected String getSql(String path) {
     try {
       return ResourceUtil.getResourceAsString(path);
+    } catch (WrapException e) {
+      Throwable cause = e.getCause();
+      throw new JdbcException(Message.DOMA2010, cause, path, cause);
+    }
+  }
+
+  /**
+   * Retrieves the SQL string from the SQL file.
+   *
+   * @param path the SQL file path
+   * @param loader the class loader to find the SQL file
+   * @return the SQL string
+   */
+  protected String getSql(String path, ClassLoader loader) {
+    try {
+      return ResourceUtil.getResourceAsString(path, loader);
     } catch (WrapException e) {
       Throwable cause = e.getCause();
       throw new JdbcException(Message.DOMA2010, cause, path, cause);
