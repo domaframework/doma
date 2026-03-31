@@ -66,6 +66,8 @@ public final class Options {
 
   public static final String RESOURCES_DIR = "doma.resources.dir";
 
+  public static final String RESOURCES_DIR_TEST = "doma.resources.dir.test";
+
   public static final String LOMBOK_ALL_ARGS_CONSTRUCTOR = "doma.lombok.AllArgsConstructor";
 
   public static final String LOMBOK_VALUE = "doma.lombok.Value";
