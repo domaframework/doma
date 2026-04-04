@@ -74,6 +74,7 @@ import org.seasar.doma.internal.apt.processor.ScopeProcessor;
   Options.METAMODEL_PREFIX,
   Options.METAMODEL_SUFFIX,
   Options.RESOURCES_DIR,
+  Options.RESOURCES_DIR_TEST,
   Options.SQL_VALIDATION,
   Options.TEST_INTEGRATION,
   Options.TEST_UNIT,

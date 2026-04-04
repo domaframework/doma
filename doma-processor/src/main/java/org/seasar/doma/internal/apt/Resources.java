@@ -22,6 +22,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Element;
 import javax.tools.FileObject;
@@ -35,7 +37,7 @@ public class Resources {
 
   private final Reporter reporter;
 
-  private final String resourcesDir;
+  private final String[] resourcesDirs;
 
   private final boolean canAcceptDirectoryPath;
 
@@ -49,13 +51,21 @@ public class Resources {
       Filer filer,
       Reporter reporter,
       String resourcesDir,
+      String resourcesDirTest,
       boolean canAcceptDirectoryPath,
       JavaFileManager.Location location,
       boolean isDebug) {
     assertNotNull(filer, reporter);
     this.filer = filer;
     this.reporter = reporter;
-    this.resourcesDir = resourcesDir;
+    List<String> dirs = new ArrayList<>();
+    if (resourcesDir != null && !resourcesDir.isEmpty()) {
+      dirs.add(resourcesDir);
+    }
+    if (resourcesDirTest != null && !resourcesDirTest.isEmpty()) {
+      dirs.add(resourcesDirTest);
+    }
+    this.resourcesDirs = dirs.isEmpty() ? null : dirs.toArray(new String[0]);
     this.canAcceptDirectoryPath = canAcceptDirectoryPath;
     this.location = location;
     this.isDebug = isDebug;
@@ -78,6 +88,11 @@ public class Resources {
   /**
    * Attempts to retrieve a resource file based on the specified relative path.
    *
+   * <p>When {@code doma.resources.dir} is set, it is searched first. If {@code
+   * doma.resources.dir.test} is also set, it is searched as a fallback. The first existing match is
+   * returned. If no match is found in any directory, a {@code FileObject} pointing to the first
+   * directory is returned so that error messages contain a meaningful path.
+   *
    * @param relativePath the relative path to the desired resource; must not be null
    * @return a {@code FileObject} representing the resource located at the given relative path
    * @throws IOException if an I/O error occurs during resource retrieval
@@ -86,10 +101,16 @@ public class Resources {
   public FileObject getResource(String relativePath) throws IOException {
     assertNotNull(relativePath);
 
-    // Prefer the directory specified by the annotation processor option.
-    if (resourcesDir != null) {
-      Path path = Paths.get(resourcesDir, relativePath);
-      return new FileObjectImpl(path);
+    // Prefer the directories specified by the annotation processor option.
+    if (resourcesDirs != null) {
+      for (String dir : resourcesDirs) {
+        Path path = Paths.get(dir, relativePath);
+        if (Files.exists(path)) {
+          return new FileObjectImpl(path);
+        }
+      }
+      // None found — return the first directory so error reporting shows a meaningful path.
+      return new FileObjectImpl(Paths.get(resourcesDirs[0], relativePath));
     }
 
     try {

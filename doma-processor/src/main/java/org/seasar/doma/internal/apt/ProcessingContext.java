@@ -43,13 +43,20 @@ public class ProcessingContext {
     var envClassName = env.getClass().getName();
     var isRunningOnEcj = envClassName.startsWith("org.eclipse.");
     var resourceDir = env.getOptions().get(Options.RESOURCES_DIR);
+    var resourceDirTest = env.getOptions().get(Options.RESOURCES_DIR_TEST);
     var canAcceptDirectoryPath = isRunningOnEcj || resourceDir != null;
     var location = determineLocation(isRunningOnEcj);
 
     reporter = new Reporter(env.getMessager());
     resources =
         new Resources(
-            env.getFiler(), reporter, resourceDir, canAcceptDirectoryPath, location, isDebug(env));
+            env.getFiler(),
+            reporter,
+            resourceDir,
+            resourceDirTest,
+            canAcceptDirectoryPath,
+            location,
+            isDebug(env));
     options = new Options(env.getOptions(), resources);
     initialized = true;
   }
