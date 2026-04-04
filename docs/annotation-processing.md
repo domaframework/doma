@@ -78,6 +78,13 @@ The resource directory containing resource files such as doma.compile.config and
 Specify this option as an absolute path.
 If not specified, the resource directory defaults to the same directory where classes are generated.
 
+### doma.resources.dir.test
+
+The secondary resource directory for SQL files used during test compilation.
+Specify this option as an absolute path.
+When both `doma.resources.dir` and `doma.resources.dir.test` are specified,
+Doma first searches `doma.resources.dir`, and falls back to `doma.resources.dir.test` if the resource is not found.
+
 ### doma.sql.validation
 
 Controls whether to validate the existence of SQL files and the grammar of SQL directives.
