@@ -12,3 +12,4 @@ out
 .factorypath
 /.claude/settings.local.json
 /.venv/
+/.claude/worktrees/
