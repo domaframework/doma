@@ -254,5 +254,6 @@ Major versions
 | Java 23 |        |        | v      |
 | Java 24 |        |        | v      |
 | Java 25 |        |        | v      |
+| Java 26 |        |        | v      |
 
   [apt]: https://www.jcp.org/en/jsr/detail?id=269
