@@ -51,7 +51,7 @@ public class Resources {
       Filer filer,
       Reporter reporter,
       String resourcesDir,
-      String resourcesDirTest,
+      List<String> additionalResourcesDirs,
       boolean canAcceptDirectoryPath,
       JavaFileManager.Location location,
       boolean isDebug) {
@@ -62,8 +62,8 @@ public class Resources {
     if (resourcesDir != null && !resourcesDir.isEmpty()) {
       dirs.add(resourcesDir);
     }
-    if (resourcesDirTest != null && !resourcesDirTest.isEmpty()) {
-      dirs.add(resourcesDirTest);
+    if (additionalResourcesDirs != null) {
+      dirs.addAll(additionalResourcesDirs);
     }
     this.resourcesDirs = dirs.isEmpty() ? null : dirs.toArray(new String[0]);
     this.canAcceptDirectoryPath = canAcceptDirectoryPath;
@@ -88,10 +88,10 @@ public class Resources {
   /**
    * Attempts to retrieve a resource file based on the specified relative path.
    *
-   * <p>When {@code doma.resources.dir} is set, it is searched first. If {@code
-   * doma.resources.dir.test} is also set, it is searched as a fallback. The first existing match is
-   * returned. If no match is found in any directory, a {@code FileObject} pointing to the first
-   * directory is returned so that error messages contain a meaningful path.
+   * <p>When {@code doma.resources.dir} is set, it is searched first. If {@code doma.resources.dirs}
+   * is also set, each directory listed there is searched in order as a fallback. The first existing
+   * match is returned. If no match is found in any directory, a {@code FileObject} pointing to the
+   * first directory is returned so that error messages contain a meaningful path.
    *
    * @param relativePath the relative path to the desired resource; must not be null
    * @return a {@code FileObject} representing the resource located at the given relative path

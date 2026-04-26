@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import org.junit.jupiter.api.Test;
@@ -63,20 +64,18 @@ public class ResourcesTest {
   @Test
   public void testGetResource_multipleDirectories(@TempDir Path dir1, @TempDir Path dir2)
       throws IOException {
-    // Place a file only in the second directory (simulating doma.resources.dir.test)
+    // Place a file only in the second directory (simulating doma.resources.dirs fallback)
     Path subDir = dir2.resolve("META-INF").resolve("test");
     Files.createDirectories(subDir);
     Path sqlFile = subDir.resolve("query.sql");
     Files.writeString(sqlFile, "select 1");
 
-    // Configure two separate resource directories via doma.resources.dir and
-    // doma.resources.dir.test
     Resources resources =
         new Resources(
             new NoopFiler(),
             new Reporter(new NoopMessager()),
             dir1.toAbsolutePath().toString(),
-            dir2.toAbsolutePath().toString(),
+            List.of(dir2.toAbsolutePath().toString()),
             true,
             StandardLocation.CLASS_OUTPUT,
             false);
@@ -100,7 +99,7 @@ public class ResourcesTest {
             new NoopFiler(),
             new Reporter(new NoopMessager()),
             dir1.toAbsolutePath().toString(),
-            dir2.toAbsolutePath().toString(),
+            List.of(dir2.toAbsolutePath().toString()),
             true,
             StandardLocation.CLASS_OUTPUT,
             false);
@@ -110,6 +109,33 @@ public class ResourcesTest {
     assertTrue(
         result.toUri().getPath().contains(dir1.getFileName().toString()),
         "Should return file from first matching directory");
+  }
+
+  @Test
+  public void testGetResource_multipleAdditionalDirs(
+      @TempDir Path dir1, @TempDir Path dir2, @TempDir Path dir3) throws IOException {
+    // Place a file only in the third directory to verify all additional dirs are searched
+    Path subDir = dir3.resolve("META-INF");
+    Files.createDirectories(subDir);
+    Files.writeString(subDir.resolve("query.sql"), "select 1");
+
+    Resources resources =
+        new Resources(
+            new NoopFiler(),
+            new Reporter(new NoopMessager()),
+            dir1.toAbsolutePath().toString(),
+            List.of(dir2.toAbsolutePath().toString(), dir3.toAbsolutePath().toString()),
+            true,
+            StandardLocation.CLASS_OUTPUT,
+            false);
+
+    FileObject result = resources.getResource("META-INF/query.sql");
+    assertTrue(
+        Files.exists(Path.of(result.toUri())),
+        "Should find file in the last of multiple additional directories");
+    assertTrue(
+        result.toUri().getPath().contains(dir3.getFileName().toString()),
+        "Resolved path should belong to dir3");
   }
 
   /** Minimal Messager implementation for unit tests. */

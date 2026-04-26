@@ -15,6 +15,7 @@
  */
 package org.seasar.doma.internal.apt;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -43,8 +44,17 @@ public class ProcessingContext {
     var envClassName = env.getClass().getName();
     var isRunningOnEcj = envClassName.startsWith("org.eclipse.");
     var resourceDir = env.getOptions().get(Options.RESOURCES_DIR);
-    var resourceDirTest = env.getOptions().get(Options.RESOURCES_DIR_TEST);
-    var canAcceptDirectoryPath = isRunningOnEcj || resourceDir != null;
+    var resourcesDirsValue = env.getOptions().get(Options.RESOURCES_DIRS);
+    var additionalDirs = new ArrayList<String>();
+    if (resourcesDirsValue != null && !resourcesDirsValue.isBlank()) {
+      for (var dir : resourcesDirsValue.split(",")) {
+        var trimmed = dir.trim();
+        if (!trimmed.isEmpty()) {
+          additionalDirs.add(trimmed);
+        }
+      }
+    }
+    var canAcceptDirectoryPath = isRunningOnEcj || resourceDir != null || !additionalDirs.isEmpty();
     var location = determineLocation(isRunningOnEcj);
 
     reporter = new Reporter(env.getMessager());
@@ -53,7 +63,7 @@ public class ProcessingContext {
             env.getFiler(),
             reporter,
             resourceDir,
-            resourceDirTest,
+            additionalDirs,
             canAcceptDirectoryPath,
             location,
             isDebug(env));
