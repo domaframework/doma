@@ -16,7 +16,9 @@
 package org.seasar.doma.jdbc.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -25,6 +27,7 @@ import example.entity._Salesman;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +35,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -66,6 +70,25 @@ public class AutoBatchDeleteQueryTest {
     query.prepare();
 
     assertEquals(2, query.getSqls().size());
+    assertSame(query.getSqls().get(0), query.getSql());
+    assertEquals(runtimeConfig.getBatchSize(), query.getBatchSize());
+    assertEquals(SqlLogType.FORMATTED, query.getSqlLogType());
+  }
+
+  @Test
+  public void testIsExecutable() {
+    AutoBatchDeleteQuery<Emp> query = new AutoBatchDeleteQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(method);
+    query.setConfig(runtimeConfig);
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setEntities(Collections.emptyList());
+    query.setSqlLogType(SqlLogType.RAW);
+    query.prepare();
+
+    assertFalse(query.isExecutable());
+    assertEquals(SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT, query.getSqlExecutionSkipCause());
+    assertEquals(SqlLogType.RAW, query.getSqlLogType());
   }
 
   @Test
