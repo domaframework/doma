@@ -55,15 +55,18 @@ public class ChunkedAutoBatchInsertTest extends AutoBatchInsertTest {
   }
 
   /**
-   * A single {@code @BatchInsert} call with many entities must succeed end-to-end. With the chunked
-   * implementation this exercises multiple chunks within one DAO invocation; the assertions verify
-   * row counts, version initialization, and read-back of every inserted row.
+   * Inserts more entities than {@code batchSize} so the call provably spans multiple chunks. The
+   * DAO method is annotated {@code @BatchInsert(batchSize = 7)} and we insert {@code 7 * 3 + 2 =
+   * 23} rows, which forces chunk boundaries at 7, 14, 21 with a final partial chunk of 2. The
+   * assertions verify row counts, version initialization, and read-back of every inserted row, so
+   * any failure to advance across chunks (off-by-one, lost entity, double-built first SQL, etc.)
+   * shows up as either a count mismatch or a missing row.
    */
   @Test
-  public void testManyEntities_singleInvocation(Config config) {
+  public void testManyEntities_crossesMultipleChunkBoundaries(Config config) {
     config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
-    int count = 50;
+    int count = 7 * 3 + 2;
     List<Department> departments = new ArrayList<>(count);
     for (int i = 0; i < count; i++) {
       Department d = new Department();
@@ -74,7 +77,7 @@ public class ChunkedAutoBatchInsertTest extends AutoBatchInsertTest {
       departments.add(d);
     }
 
-    int[] result = dao.insert(departments);
+    int[] result = dao.insertWithSmallBatchSize(departments);
 
     assertEquals(count, result.length);
     for (int i = 0; i < count; i++) {

@@ -19,24 +19,40 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import example.entity.Emp;
 import example.entity._Emp;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.mock.MockConnection;
+import org.seasar.doma.internal.jdbc.mock.MockDataSource;
+import org.seasar.doma.internal.jdbc.mock.MockPreparedStatement;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.query.ChunkedAutoBatchInsertQuery;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ChunkedBatchInsertCommandTest {
 
-  private final MockConfig runtimeConfig = new MockConfig();
+  /** Records the size of every executeBatch() call so the test can verify chunk boundaries. */
+  private static class RecordingPreparedStatement extends MockPreparedStatement {
+    final List<Integer> batchSizes = new ArrayList<>();
+
+    @Override
+    public int[] executeBatch() throws SQLException {
+      batchSizes.add(addBatchCount);
+      return super.executeBatch();
+    }
+  }
 
   @Test
-  public void testExecute_chunksBatchExecutions(TestInfo testInfo) {
-    // MockConfig.getBatchSize() returns 10, so 25 entities should produce
-    // 3 batches: 10, 10, 5. addBatch() is called 25 times total and executeBatch()
-    // is called 3 times (the mock resets addBatchCount each executeBatch).
+  public void testExecute_chunksAlignWithBatchSize(TestInfo testInfo) {
+    // MockConfig.getBatchSize() returns 10, so 25 entities must produce executeBatch
+    // invocations of [10, 10, 5] — that is the actual chunk boundary the test must observe.
+    RecordingPreparedStatement preparedStatement = new RecordingPreparedStatement();
+    MockConfig runtimeConfig = new MockConfig();
+    runtimeConfig.dataSource = new MockDataSource(new MockConnection(preparedStatement));
+
     int total = 25;
     List<Emp> emps = new ArrayList<>(total);
     for (int i = 0; i < total; i++) {
@@ -61,9 +77,44 @@ public class ChunkedBatchInsertCommandTest {
     query.complete();
 
     assertEquals(total, rows.length);
-    String sql = runtimeConfig.dataSource.connection.preparedStatement.sql;
-    assertEquals("insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", sql);
-    // After the last executeBatch the mock resets addBatchCount to 0.
-    assertEquals(0, runtimeConfig.dataSource.connection.preparedStatement.addBatchCount);
+    assertEquals(
+        "insert into EMP (ID, NAME, SALARY, VERSION) values (?, ?, ?, ?)", preparedStatement.sql);
+    assertEquals(List.of(10, 10, 5), preparedStatement.batchSizes);
+    // After the last executeBatch, the mock's pending counter resets.
+    assertEquals(0, preparedStatement.addBatchCount);
+  }
+
+  @Test
+  public void testExecute_singleChunkWhenEntitiesFitInOneBatch(TestInfo testInfo) {
+    // 7 entities + batchSize=10 must collapse to a single executeBatch of size 7.
+    RecordingPreparedStatement preparedStatement = new RecordingPreparedStatement();
+    MockConfig runtimeConfig = new MockConfig();
+    runtimeConfig.dataSource = new MockDataSource(new MockConnection(preparedStatement));
+
+    int total = 7;
+    List<Emp> emps = new ArrayList<>(total);
+    for (int i = 0; i < total; i++) {
+      Emp emp = new Emp();
+      emp.setId(i + 1);
+      emp.setName("name-" + i);
+      emp.setVersion(1);
+      emps.add(emp);
+    }
+
+    ChunkedAutoBatchInsertQuery<Emp> query =
+        new ChunkedAutoBatchInsertQuery<>(_Emp.getSingletonInternal());
+    query.setMethod(testInfo.getTestMethod().get());
+    query.setConfig(runtimeConfig);
+    query.setEntities(emps);
+    query.setCallerClassName("aaa");
+    query.setCallerMethodName("bbb");
+    query.setSqlLogType(SqlLogType.FORMATTED);
+    query.prepare();
+
+    int[] rows = new BatchInsertCommand(query).execute();
+    query.complete();
+
+    assertEquals(total, rows.length);
+    assertEquals(List.of(7), preparedStatement.batchSizes);
   }
 }
