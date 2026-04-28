@@ -15,18 +15,17 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 
 /**
- * A {@link BatchInsertQuery} whose prepared SQL statements are built lazily, one chunk at a time,
+ * A {@link BatchInsertQuery} whose prepared SQL statements are built lazily, one entity at a time,
  * to keep memory usage bounded for very large entity lists.
  *
  * <p>An implementation of this interface signals to {@link
  * org.seasar.doma.jdbc.command.BatchInsertCommand} that the prepared SQLs for the batch must not be
- * materialized all at once. Instead, the command requests SQLs for each chunk through {@link
- * #buildSqls(int, int)}, executes that chunk, and lets it become eligible for garbage collection
- * before moving on to the next.
+ * materialized all at once. Instead, the command requests one SQL at a time through {@link
+ * #buildSql(int)}, binds and adds it to the JDBC batch, and lets the {@link PreparedSql} become
+ * eligible for garbage collection before requesting the next.
  */
 public interface ChunkedBatchInsertQuery extends BatchInsertQuery {
 
@@ -38,14 +37,14 @@ public interface ChunkedBatchInsertQuery extends BatchInsertQuery {
   int getEntityCount();
 
   /**
-   * Builds prepared SQL statements for the entities in the half-open range {@code [from, to)}.
+   * Builds the prepared SQL statement for the entity at the given index.
    *
-   * <p>Implementations may discard previously built SQLs to bound memory usage. The returned list
-   * is owned by the caller; subsequent invocations are not required to retain it.
+   * <p>Implementations are expected to retain at most one {@link PreparedSql} at a time so that
+   * peak memory does not grow with the entity count. The returned object is owned by the caller;
+   * subsequent invocations are not required to retain it.
    *
-   * @param from the inclusive start index
-   * @param to the exclusive end index
-   * @return prepared SQL statements for the requested range
+   * @param index the zero-based entity index
+   * @return the prepared SQL statement for the entity at {@code index}
    */
-  List<PreparedSql> buildSqls(int from, int to);
+  PreparedSql buildSql(int index);
 }

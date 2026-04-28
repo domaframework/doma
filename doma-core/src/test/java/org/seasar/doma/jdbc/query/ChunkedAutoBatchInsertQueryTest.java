@@ -23,7 +23,6 @@ import example.entity.Emp;
 import example.entity._Emp;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -76,7 +75,7 @@ public class ChunkedAutoBatchInsertQueryTest {
   }
 
   @Test
-  public void testBuildSqls_reusesFirstChunkAndCoversAllEntities() {
+  public void testBuildSql_reusesFirstEntityAndDropsBuffer() {
     Emp emp1 = new Emp();
     emp1.setId(10);
     emp1.setName("aaa");
@@ -89,43 +88,31 @@ public class ChunkedAutoBatchInsertQueryTest {
     emp3.setId(30);
     emp3.setName("ccc");
 
-    Emp emp4 = new Emp();
-    emp4.setId(40);
-    emp4.setName("ddd");
-
-    Emp emp5 = new Emp();
-    emp5.setId(50);
-    emp5.setName("eee");
-
     ChunkedAutoBatchInsertQuery<Emp> query =
         new ChunkedAutoBatchInsertQuery<>(_Emp.getSingletonInternal());
     query.setMethod(method);
     query.setConfig(runtimeConfig);
     query.setCallerClassName("aaa");
     query.setCallerMethodName("bbb");
-    query.setEntities(Arrays.asList(emp1, emp2, emp3, emp4, emp5));
+    query.setEntities(Arrays.asList(emp1, emp2, emp3));
     query.setSqlLogType(SqlLogType.FORMATTED);
     query.prepare();
 
     PreparedSql firstEntitySql = query.getSql();
 
-    List<PreparedSql> chunk1 = query.buildSqls(0, 2);
-    assertEquals(2, chunk1.size());
+    PreparedSql sql0 = query.buildSql(0);
     // Entity 0's SQL was reused from prepare().
-    assertSame(firstEntitySql, chunk1.get(0));
-    assertEquals(10, chunk1.get(0).getParameters().get(0).getWrapper().get());
-    assertEquals(20, chunk1.get(1).getParameters().get(0).getWrapper().get());
+    assertSame(firstEntitySql, sql0);
+    assertEquals(10, sql0.getParameters().get(0).getWrapper().get());
+    // The internal buffer is cleared so the just-built SQL can be GC'd once the caller is done.
+    assertEquals(0, query.getSqls().size());
 
-    List<PreparedSql> chunk2 = query.buildSqls(2, 4);
-    assertEquals(2, chunk2.size());
-    assertEquals(30, chunk2.get(0).getParameters().get(0).getWrapper().get());
-    assertEquals(40, chunk2.get(1).getParameters().get(0).getWrapper().get());
+    PreparedSql sql1 = query.buildSql(1);
+    assertEquals(20, sql1.getParameters().get(0).getWrapper().get());
+    assertEquals(0, query.getSqls().size());
 
-    List<PreparedSql> chunk3 = query.buildSqls(4, 5);
-    assertEquals(1, chunk3.size());
-    assertEquals(50, chunk3.get(0).getParameters().get(0).getWrapper().get());
-
-    // The internal sqls buffer no longer retains earlier chunks.
+    PreparedSql sql2 = query.buildSql(2);
+    assertEquals(30, sql2.getParameters().get(0).getWrapper().get());
     assertEquals(0, query.getSqls().size());
   }
 }

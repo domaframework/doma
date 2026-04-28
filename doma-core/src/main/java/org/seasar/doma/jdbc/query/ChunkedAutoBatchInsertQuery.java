@@ -15,22 +15,19 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.entity.EntityType;
 
 /**
- * An {@link AutoBatchInsertQuery} that defers SQL generation until each chunk is executed.
+ * An {@link AutoBatchInsertQuery} that defers SQL generation until each entity is executed.
  *
  * <p>The standard {@link AutoBatchInsertQuery} builds {@link PreparedSql} for every entity in the
  * batch up front. For very large entity lists this can exhaust the heap. This subclass instead
  * prepares only the first entity during {@link #prepare()} (so the {@link
  * org.seasar.doma.jdbc.command.BatchInsertCommand} can obtain a representative SQL for {@code
- * PreparedStatement} creation) and produces the SQLs for the remaining entities in chunks via
- * {@link #buildSqls(int, int)}, which is invoked from {@code BatchInsertCommand} when it detects
- * the {@link ChunkedBatchInsertQuery} interface.
+ * PreparedStatement} creation) and produces the SQL for each remaining entity on demand via {@link
+ * #buildSql(int)}. The internal buffer never holds more than one {@link PreparedSql} at a time.
  *
  * <p>Users who need this behavior should instantiate this class from a custom {@link
  * org.seasar.doma.jdbc.QueryImplementors} implementation.
@@ -41,8 +38,8 @@ public class ChunkedAutoBatchInsertQuery<ENTITY> extends AutoBatchInsertQuery<EN
     implements ChunkedBatchInsertQuery {
 
   /**
-   * Whether the SQL for the first entity has already been built and is still cached in {@code
-   * sqls}.
+   * Whether the SQL for the first entity has already been built by {@link #prepare()} and is still
+   * cached in {@code sqls}.
    */
   private boolean firstEntitySqlPending;
 
@@ -56,7 +53,7 @@ public class ChunkedAutoBatchInsertQuery<ENTITY> extends AutoBatchInsertQuery<EN
   }
 
   /**
-   * Defers SQL generation for entities beyond the first to {@link #buildSqls(int, int)}.
+   * Defers SQL generation for entities beyond the first to {@link #buildSql(int)}.
    *
    * <p>After this method returns, {@code sqls} contains exactly one entry — the SQL for entity 0,
    * built by {@link #prepare()} — which is needed so that {@link #getSql()} returns a
@@ -77,37 +74,35 @@ public class ChunkedAutoBatchInsertQuery<ENTITY> extends AutoBatchInsertQuery<EN
   /**
    * {@inheritDoc}
    *
-   * <p>This implementation reuses the SQL built in {@link #prepare()} for entity 0 the first time
-   * it is requested, then runs pre-insert hooks and SQL assembly for each remaining entity in the
-   * range. The internal {@code sqls} buffer is cleared after every chunk so previously built SQLs
-   * become eligible for garbage collection.
+   * <p>This implementation returns the SQL built in {@link #prepare()} for entity 0 on the first
+   * call, then runs pre-insert hooks and SQL assembly for each subsequent entity. The internal
+   * {@code sqls} buffer is cleared after every call so the previously built {@link PreparedSql}
+   * becomes eligible for garbage collection as soon as the command finishes binding it.
    */
   @Override
-  public List<PreparedSql> buildSqls(int from, int to) {
+  public PreparedSql buildSql(int index) {
     int size = entities.size();
-    if (from < 0 || to > size || from > to) {
+    if (index < 0 || index >= size) {
       throw new DomaIllegalArgumentException(
-          "from/to", "from = " + from + ", to = " + to + ", entities.size() = " + size);
+          "index", "index = " + index + ", entities.size() = " + size);
     }
-    List<PreparedSql> chunkSqls = new ArrayList<>(to - from);
-    int start = from;
-    if (from == 0 && firstEntitySqlPending && !sqls.isEmpty()) {
-      chunkSqls.add(sqls.get(0));
-      start = 1;
+    if (index == 0 && firstEntitySqlPending && !sqls.isEmpty()) {
+      PreparedSql sql = sqls.get(0);
+      sqls.clear();
+      firstEntitySqlPending = false;
+      return sql;
     }
     sqls.clear();
-    for (int i = start; i < to; i++) {
-      currentEntity = entities.get(i);
-      preInsert();
-      prepareIdValue();
-      prepareVersionValue();
-      prepareSql();
-      entities.set(i, currentEntity);
-    }
+    currentEntity = entities.get(index);
+    preInsert();
+    prepareIdValue();
+    prepareVersionValue();
+    prepareSql();
+    entities.set(index, currentEntity);
     currentEntity = null;
-    chunkSqls.addAll(sqls);
+    PreparedSql sql = sqls.get(0);
     sqls.clear();
     firstEntitySqlPending = false;
-    return chunkSqls;
+    return sql;
   }
 }

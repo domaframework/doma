@@ -85,8 +85,8 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
 
   /**
    * Executes the insert in chunks of {@code batchSize} entities, asking the query to build the
-   * prepared SQLs for each chunk on demand and discarding them between chunks to keep memory usage
-   * bounded.
+   * prepared SQL for one entity at a time so that at most one {@link PreparedSql} is alive between
+   * the time the command binds it and the time the next one is built.
    *
    * @param preparedStatement the prepared statement
    * @param chunked the chunked batch insert query
@@ -102,28 +102,30 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
     boolean batchSupported = query.isBatchSupported();
     for (int from = 0; from < totalSize; from += batchSize) {
       int to = Math.min(from + batchSize, totalSize);
-      List<PreparedSql> chunkSqls = chunked.buildSqls(from, to);
       if (batchSupported) {
-        for (PreparedSql sql : chunkSqls) {
+        PreparedSql lastSql = null;
+        for (int i = from; i < to; i++) {
+          PreparedSql sql = chunked.buildSql(i);
           log(sql);
           bindParameters(preparedStatement, sql);
           preparedStatement.addBatch();
+          lastSql = sql;
         }
         int chunkPosition = from;
-        PreparedSql lastSql = chunkSqls.get(chunkSqls.size() - 1);
+        PreparedSql sqlForExecute = lastSql;
         int[] rows =
             statisticManager.executeSql(
-                lastSql,
+                sqlForExecute,
                 () -> {
-                  int[] r = executeBatch(preparedStatement, lastSql);
+                  int[] r = executeBatch(preparedStatement, sqlForExecute);
                   postExecuteBatch(preparedStatement, chunkPosition, r.length);
                   return r;
                 });
-        validateRows(preparedStatement, lastSql, rows);
+        validateRows(preparedStatement, sqlForExecute, rows);
         System.arraycopy(rows, 0, updatedRows, from, rows.length);
       } else {
-        int i = from;
-        for (PreparedSql sql : chunkSqls) {
+        for (int i = from; i < to; i++) {
+          PreparedSql sql = chunked.buildSql(i);
           log(sql);
           bindParameters(preparedStatement, sql);
           int index = i;
@@ -135,7 +137,6 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
                     query.generateId(preparedStatement, index);
                     return rows;
                   });
-          i++;
         }
       }
     }
