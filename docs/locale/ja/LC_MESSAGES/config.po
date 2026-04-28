@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 16:05+0900\n"
+"POT-Creation-Date: 2026-04-29 07:45+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -12,7 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../config.md:1
 msgid "Configuration"
@@ -457,10 +457,23 @@ msgstr ""
 "を返します。たとえば、`QueryImplementors` は、SQL ステートメントを書き直すためのフックを提供します。"
 
 #: ../../config.md:172
+msgid ""
+"It also lets you swap in alternative query implementations. For instance,"
+" returning `ChunkedAutoBatchInsertQuery` from "
+"`createAutoBatchInsertQuery` bounds peak memory when batch-inserting very"
+" large entity lists. See [Reducing memory for very large batches](query"
+"/batch-insert.md#reducing-memory-for-very-large-batches)."
+msgstr ""
+"代替のクエリ実装を差し込むためにも利用できます。"
+"たとえば `createAutoBatchInsertQuery` から `ChunkedAutoBatchInsertQuery` を返すと、"
+"非常に大きなエンティティリストを batch insert する際のピークメモリを抑えられます。"
+"[非常に大きなバッチでメモリ使用量を抑える](query/batch-insert.md#reducing-memory-for-very-large-batches) を参照してください。"
+
+#: ../../config.md:176
 msgid "Query timeout"
 msgstr "クエリタイムアウト"
 
-#: ../../config.md:174
+#: ../../config.md:178
 msgid ""
 "Return the query timeout (in seconds) from the `getQueryTimeout` method. "
 "This value is used as the default in [Queries](query/index.md)."
@@ -468,11 +481,11 @@ msgstr ""
 "`getQueryTimeout` メソッドからクエリタイムアウト (秒) を返します。この値は、[クエリ](query/index.md) "
 "でデフォルトの値として使用されます。"
 
-#: ../../config.md:177
+#: ../../config.md:181
 msgid "Max rows"
 msgstr "最大行数"
 
-#: ../../config.md:179
+#: ../../config.md:183
 msgid ""
 "Return the max rows from the `getMaxRows` method. This value is used as "
 "the default in [Select](query/select.md)."
@@ -480,11 +493,11 @@ msgstr ""
 "`getMaxRows` メソッドから最大行数を返します。この値は [選択クエリ](query/select.md) "
 "でデフォルトの値として使用されます。"
 
-#: ../../config.md:182
+#: ../../config.md:186
 msgid "Fetch size"
 msgstr "フェッチサイズ"
 
-#: ../../config.md:184
+#: ../../config.md:188
 msgid ""
 "Return the fetch size from the `getFetchSize` method. This value is used "
 "as the default in [Select](query/select.md)."
@@ -492,11 +505,11 @@ msgstr ""
 "`getFetchSize` メソッドからフェッチ サイズを返します。この値は [選択クエリ](query/select.md) "
 "でデフォルトの値として使用されます。"
 
-#: ../../config.md:187
+#: ../../config.md:191
 msgid "Batch size"
 msgstr "バッチサイズ"
 
-#: ../../config.md:189
+#: ../../config.md:193
 msgid ""
 "Return the batch size from the `getBatchSize` method. This value is used "
 "as the default in [Batch insert](query/batch-insert.md), [Batch "
@@ -506,11 +519,11 @@ msgstr ""
 "insert.md)、[バッチ更新](query/batch-update.md)、および [バッチ削除](query/batch-"
 "delete.md) でデフォルトの値として使用されます。"
 
-#: ../../config.md:193
+#: ../../config.md:197
 msgid "Providing entity listeners"
 msgstr "エンティティリスナーの提供"
 
-#: ../../config.md:195
+#: ../../config.md:199
 msgid ""
 "Return an `EntityListenerProvider` from the `getEntityListenerProvider` "
 "method. When you want to get entity listeners from a dependency injection"
@@ -520,41 +533,41 @@ msgstr ""
 "を返します。依存性注入コンテナからエンティティリスナーを取得する場合は、独自の `EntityListenerProvider` "
 "を作成してください。"
 
-#: ../../config.md:199
+#: ../../config.md:203
 msgid ""
 "The default EntityListenerProvider gets the entity listener from the "
 "supplied provider."
 msgstr "デフォルトの `EntityListenerProvider` は、供給されたプロバイダーからエンティティリスナーを取得します。"
 
-#: ../../config.md:201
+#: ../../config.md:205
 msgid "SQL Builder Settings"
 msgstr "SQL ビルダーの設定"
 
-#: ../../config.md:203
+#: ../../config.md:207
 msgid "Return a `SqlBuilderSettings` from the `getSqlBuilderSettings` method."
 msgstr "`getSqlBuilderSettings` メソッドから `SqlBuilderSettings` を返します。"
 
-#: ../../config.md:205
+#: ../../config.md:209
 msgid "`SqlBuilderSettings` controls the following aspects of SQL building:"
 msgstr "`SqlBuilderSettings` は次のSQLの構築に関する設定を制御します:"
 
-#: ../../config.md:207
+#: ../../config.md:211
 msgid "Whether to remove block comments from SQL"
 msgstr "SQLからブロックコメントを削除するかどうか"
 
-#: ../../config.md:208
+#: ../../config.md:212
 msgid "Whether to remove line comments from SQL"
 msgstr "SQLから行コメントを削除するかどうか"
 
-#: ../../config.md:209
+#: ../../config.md:213
 msgid "Whether to remove blank lines from SQL"
 msgstr "SQLから空行を削除するかどうか"
 
-#: ../../config.md:210
+#: ../../config.md:214
 msgid "Whether to enable IN list padding"
 msgstr "INリストのパディングを有効にするかどうか"
 
-#: ../../config.md:212
+#: ../../config.md:216
 msgid ""
 "IN list padding is a feature that pads the parameters in an SQL IN clause"
 " with the last parameter when the number of parameters is less than a "
@@ -566,55 +579,55 @@ msgstr ""
 "IN リストパディングは、SQL IN "
 "句のパラメータが2のべき乗より少ない場合に、最後のパラメータでパラメータを埋める機能です。この機能は、パラメータ数にかかわらず同じSQL文が生成されやすくなることを保証し、SQLキャッシュや関連するパフォーマンスの最適化に良い効果をもたらす可能性があります。"
 
-#: ../../config.md:217
+#: ../../config.md:221
 msgid "By default, no special controls are applied."
 msgstr "デフォルトでは、特別なコントロールは適用されません。"
 
-#: ../../config.md:219
+#: ../../config.md:223
 msgid "Statistic Manager"
 msgstr "統計マネージャー"
 
-#: ../../config.md:221
+#: ../../config.md:225
 msgid "Return a `StatisticManager` from the `getStatisticManager` method."
 msgstr "`getStatisticManager` メソッドから `StatisticManager` を返します。"
 
-#: ../../config.md:223
+#: ../../config.md:227
 msgid ""
 "`StatisticManager` manages statistical information related to SQL "
 "execution. It retains the following information for each SQL statement:"
 msgstr "`StatisticManager` は SQL 実行に関連する統計情報を管理します。各 SQL 文に対して次の情報を保持します:"
 
-#: ../../config.md:226
+#: ../../config.md:230
 msgid "execution count"
 msgstr "実行回数"
 
-#: ../../config.md:227
+#: ../../config.md:231
 msgid "execution maximum time in milliseconds"
 msgstr "実行最大時間（ミリ秒）"
 
-#: ../../config.md:228
+#: ../../config.md:232
 msgid "execution minimum time in milliseconds"
 msgstr "実行の最小時間（ミリ秒）"
 
-#: ../../config.md:229
+#: ../../config.md:233
 msgid "total execution time in milliseconds"
 msgstr "ミリ秒単位の総実行時間"
 
-#: ../../config.md:230
+#: ../../config.md:234
 msgid "average execution time in milliseconds"
 msgstr "ミリ秒単位の平均実行時間"
 
-#: ../../config.md:232
+#: ../../config.md:236
 msgid ""
 "Collection of statistical information is disabled by default. To enable "
 "it, do the following:"
 msgstr "統計情報の収集はデフォルトで無効です。有効にするには、次の操作を行います:"
 
-#: ../../config.md:240
+#: ../../config.md:246
 msgid "To disable it, call `setEnabled(false)`."
 msgstr "無効にするには、`setEnabled(false)` を呼び出します。"
 
-#: ../../config.md:242
+#: ../../config.md:248
 msgid ""
 "The default implementation collects statistical information indefinitely "
 "while enabled. To prevent memory exhaustion, either call the `clear` "
@@ -624,17 +637,17 @@ msgstr ""
 "デフォルトの実装では、有効にすると統計情報を無期限に収集します。メモリの枯渇を防ぐためには、定期的に `StatisticManager` の "
 "`clear` メソッドを呼び出すか、 `StatisticManager` の適切な実装クラスを作成してください。"
 
-#: ../../config.md:246
+#: ../../config.md:252
 msgid "Loading JDBC drivers"
 msgstr "JDBCドライバのロード"
 
-#: ../../config.md:248
+#: ../../config.md:254
 msgid ""
 "All JDBC drivers are loaded automatically by the [service provider] "
 "mechanism."
 msgstr "すべての JDBC ドライバは、[サービスプロバイダ][service provider] メカニズムによって自動的にロードされます。"
 
-#: ../../config.md:251
+#: ../../config.md:257
 msgid ""
 "But in the specific environment, the mechanism doesn't work "
 "appropriately. For example, when you use Apache Tomcat, you will find the"
@@ -644,93 +657,93 @@ msgstr ""
 "ただし、特定の環境では、このメカニズムが適切に動作しません。たとえば、Apache Tomcat を使用すると、このケースが見つかります。参照: "
 "[DriverManager、サービス プロバイダのメカニズムとメモリリーク][tomcat driver]"
 
-#: ../../config.md:258
+#: ../../config.md:264
 msgid "Configuration definition"
 msgstr "設定クラスの定義"
 
-#: ../../config.md:260
+#: ../../config.md:266
 msgid "Simple definition"
 msgstr "単純な定義"
 
-#: ../../config.md:262
+#: ../../config.md:268
 msgid "The simple definition is appropriate in following cases:"
 msgstr "単純な定義は、次の場合に適しています。"
 
-#: ../../config.md:264
+#: ../../config.md:270
 msgid ""
 "The configuration instance isn't managed in the dependency injection "
 "container"
 msgstr "設定インスタンスが依存関係注入コンテナで管理されない"
 
-#: ../../config.md:265
+#: ../../config.md:271
 msgid "Local transactions is used"
 msgstr "ローカルトランザクションが使用される"
 
-#: ../../config.md:307
+#: ../../config.md:313
 msgid "You can use the above `DbConfig` class as follows:"
 msgstr "上記の `DbConfig` クラスは次のように使用できます。"
 
-#: ../../config.md:313
+#: ../../config.md:319
 msgid ""
 "The above `EmployeeDao` interface must be annotated with the `@Dao` "
 "annotation as follows:"
 msgstr "上記の `EmployeeDao` インタフェースには、次のように `@Dao` アノテーションを付ける必要があります。"
 
-#: ../../config.md:324
+#: ../../config.md:330
 msgid "More Simple definition"
 msgstr "さらに単純な定義"
 
-#: ../../config.md:326
+#: ../../config.md:332
 msgid ""
 "You can build the configuration more easily by using "
 "`org.seasar.doma.jdbc.SimpleConfig`."
 msgstr "`org.seasar.doma.jdbc.SimpleConfig` を使用すると、より簡単に構成を構築できます。"
 
-#: ../../config.md:328
+#: ../../config.md:334
 msgid ""
 "`SimpleConfig` determines the `Dialect` based on the connection string "
 "and manages transactions using local transactions."
 msgstr "`SimpleConfig` は接続文字列に基づいて `Dialect` を決定し、ローカルトランザクションを使用してトランザクションを管理します。"
 
-#: ../../config.md:330
+#: ../../config.md:336
 msgid "Here is an example of building a `Config` using `SimpleConfig`."
 msgstr "ここでは、`SimpleConfig` を使用して `Config` を構築する例を示します。"
 
-#: ../../config.md:339
+#: ../../config.md:345
 msgid "You can use the above `config` instance as follows:"
 msgstr "上記の `config` インスタンスは以下のように使用できます。"
 
-#: ../../config.md:346
+#: ../../config.md:352
 msgid "`SimpleConfig` is primarily intended for use in sample or test code."
 msgstr "`SimpleConfig` は、主にサンプルコードまたはテストコードで使用するために使用されます。"
 
-#: ../../config.md:349
+#: ../../config.md:355
 msgid "Advanced definition"
 msgstr "高度な定義"
 
-#: ../../config.md:351
+#: ../../config.md:357
 msgid "The advanced definition is appropriate in following cases:"
 msgstr "高度な定義は、次の場合に適しています。"
 
-#: ../../config.md:353
+#: ../../config.md:359
 msgid ""
 "The configuration instance is managed as a singleton object in the "
 "dependency injection container"
 msgstr "設定インスタンスが依存性注入コンテナ内のシングルトンオブジェクトとして管理される"
 
-#: ../../config.md:354
+#: ../../config.md:360
 msgid ""
 "The transaction manager is provided from the application server or "
 "framework you use"
 msgstr "トランザクションマネージャが使用するアプリケーションサーバーまたはフレームワークから提供される"
 
-#: ../../config.md:356
+#: ../../config.md:362
 msgid ""
 "Suppose the `dialect` and the `dataSource` are injected by the dependency"
 " injection container:"
 msgstr "`dialect` と `dataSource` が依存性注入コンテナによって注入されると仮定します。"
 
-#: ../../config.md:385
+#: ../../config.md:391
 msgid ""
 "To inject the instance of the above class to your DAO implementation "
 "instance, you have to annotate your DAO interfaces with `@AnnotateWith`:"
@@ -738,7 +751,7 @@ msgstr ""
 "上記のクラスのインスタンスを DAO のインスタンスに注入するには、DAO インタフェースに `@AnnotateWith` "
 "アノテーションを付ける必要があります。"
 
-#: ../../config.md:410
+#: ../../config.md:416
 msgid ""
 "To avoid annotating your DAO interfaces with `@AnnotateWith` repeatedly, "
 "annotate the arbitrary annotation with it only once:"
@@ -746,7 +759,7 @@ msgstr ""
 "DAO インタフェースに `@AnnotateWith` で繰り返しアノテーションを付けることを避けるには、任意のアノテーションに 1 "
 "回だけアノテーションを付けます。"
 
-#: ../../config.md:420
+#: ../../config.md:426
 msgid ""
 "Then, you can annotate your DAO interfaces with the above `@InjectConfig`"
 " annotation:"

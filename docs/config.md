@@ -169,6 +169,10 @@ For example, the CommandImplementors provides a hook to execute JDBC API.
 Return a `QueryImplementors` from the `getQueryImplementors` method.
 For example, the QueryImplementors provides a hook to rewrite SQL statements.
 
+It also lets you swap in alternative query implementations.
+For instance, returning `ChunkedAutoBatchInsertQuery` from `createAutoBatchInsertQuery` bounds peak memory when batch-inserting very large entity lists.
+See [Reducing memory for very large batches](query/batch-insert.md#reducing-memory-for-very-large-batches).
+
 ### Query timeout
 
 Return the query timeout (in seconds) from the `getQueryTimeout` method.

@@ -49,7 +49,7 @@ Doma follows a code-first approach where:
 - [Insert Operations](https://doma.readthedocs.io/en/stable/query/insert): Describes how to add new records to the database with `@Insert`.
 - [Update Operations](https://doma.readthedocs.io/en/stable/query/update): Shows how to update existing records using `@Update`.
 - [Delete Operations](https://doma.readthedocs.io/en/stable/query/delete): Demonstrates how to delete records from the database with `@Delete`.
-- [Batch Insert](https://doma.readthedocs.io/en/stable/query/batch-insert): Details how to insert multiple records at once with `@BatchInsert`.
+- [Batch Insert](https://doma.readthedocs.io/en/stable/query/batch-insert): Details how to insert multiple records at once with `@BatchInsert`. Includes `ChunkedAutoBatchInsertQuery`, an opt-in `QueryImplementors` hook that bounds peak memory for very large entity lists.
 - [Batch Update](https://doma.readthedocs.io/en/stable/query/batch-update): Describes how to update multiple records in a single batch using `@BatchUpdate`.
 - [Batch Delete](https://doma.readthedocs.io/en/stable/query/batch-delete): Explains how to delete multiple records in batch via `@BatchDelete`.
 - [Multi-row Insert](https://doma.readthedocs.io/en/stable/query/multi-row-insert): Shows how to insert multiple rows using a single SQL statement.
