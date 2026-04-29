@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Git ref to check out'
+        required: false
+        type: string
+      publish:
+        description: 'Publish packages after verification'
+        required: false
+        type: boolean
+        default: false
 
 env:
   JDK_DISTRIBUTION: zulu
@@ -31,6 +42,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
@@ -71,6 +84,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
@@ -125,6 +140,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
@@ -147,7 +164,7 @@ jobs:
             /home/runner/work/doma/doma/.gradle
 
   publish:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || inputs.publish
     name: Publish
     runs-on: ubuntu-latest
     needs: [ build, integration-test, ecj ]
@@ -165,6 +182,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
@@ -190,4 +209,3 @@ jobs:
           path: |
             ./**/build/reports
             /home/runner/work/doma/doma/.gradle
-
