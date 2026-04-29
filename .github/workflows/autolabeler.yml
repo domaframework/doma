@@ -19,4 +19,4 @@ jobs:
       issues: write
 
     steps:
-      - uses: release-drafter/release-drafter/autolabeler@5de93583980a40bd78603b6dfdcda5b4df377b32 # v7
+      - uses: release-drafter/release-drafter/autolabeler@563bf132657a13ded0b01fcb723c5a58cdd824e2 # v7
