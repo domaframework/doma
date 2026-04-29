@@ -16,14 +16,18 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     timeout-minutes: 30
- 
+    permissions:
+      contents: write
+    outputs:
+      release_ref: ${{ steps.release-ref.outputs.release_ref }}
+
     steps:
       - name: Assign input version
-        if: github.event.inputs.version != null
-        run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+        if: inputs.version != ''
+        run: echo "RELEASE_VERSION=${{ inputs.version }}" >> $GITHUB_ENV
 
       - name: Get latest draft release title
-        if: github.event.inputs.version == null
+        if: inputs.version == ''
         run: |
           TITLE=$(gh api repos/${{ github.repository }}/releases \
             --jq '.[] | select(.draft==true) | .name' | head -n 1)
@@ -44,7 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          fetch-depth: 0
 
       - name: Prepare git config
         run: |
@@ -61,9 +65,22 @@ jobs:
           --no-configuration-cache
           release
 
+      - name: Assign release ref
+        id: release-ref
+        run: echo "release_ref=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
       - name: Upload reports
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: build
           path: ./**/build/reports
+
+  verify-and-publish:
+    name: Verify and Publish
+    needs: release
+    uses: ./.github/workflows/ci.yml
+    with:
+      ref: ${{ needs.release.outputs.release_ref }}
+      publish: true
+    secrets: inherit
