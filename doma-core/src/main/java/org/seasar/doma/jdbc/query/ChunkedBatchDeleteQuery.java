@@ -15,16 +15,8 @@
  */
 package org.seasar.doma.jdbc.query;
 
-import org.seasar.doma.jdbc.PreparedSql;
-
 /**
- * A {@link BatchInsertQuery} whose prepared SQL statements are built lazily, one entity at a time,
+ * A {@link BatchDeleteQuery} whose prepared SQL statements are built lazily, one entity at a time,
  * to keep memory usage bounded for very large entity lists.
- *
- * <p>An implementation of this interface signals to {@link
- * org.seasar.doma.jdbc.command.BatchInsertCommand} that the prepared SQLs for the batch must not be
- * materialized all at once. Instead, the command requests one SQL at a time through {@link
- * #buildSql(int)}, binds and adds it to the JDBC batch, and lets the {@link PreparedSql} become
- * eligible for garbage collection before requesting the next.
  */
-public interface ChunkedBatchInsertQuery extends BatchInsertQuery, ChunkedBatchModifyQuery {}
+public interface ChunkedBatchDeleteQuery extends BatchDeleteQuery, ChunkedBatchModifyQuery {}

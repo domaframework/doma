@@ -213,8 +213,8 @@ JDBC batch flush boundaries still follow `batchSize`, but the in-memory represen
 This is purely opt-in; no behavior changes unless you swap the `QueryImplementors`.
 
 :::{note}
-This hook is only available for batch insert.
-Batch update and batch delete still build all `PreparedSql` up front.
+Chunked variants are also available for auto-generated batch update and batch delete.
+See [Batch update](batch-update.md#reducing-memory-for-very-large-batches) and [Batch delete](batch-delete.md#reducing-memory-for-very-large-batches).
 :::
 
 ## SQL log output format

@@ -170,7 +170,7 @@ Return a `QueryImplementors` from the `getQueryImplementors` method.
 For example, the QueryImplementors provides a hook to rewrite SQL statements.
 
 It also lets you swap in alternative query implementations.
-For instance, returning `ChunkedAutoBatchInsertQuery` from `createAutoBatchInsertQuery` bounds peak memory when batch-inserting very large entity lists.
+For instance, returning `ChunkedAutoBatchInsertQuery`, `ChunkedAutoBatchUpdateQuery`, or `ChunkedAutoBatchDeleteQuery` from the corresponding auto-batch factory method bounds peak memory when processing very large entity lists.
 See [Reducing memory for very large batches](query/batch-insert.md#reducing-memory-for-very-large-batches).
 
 ### Query timeout

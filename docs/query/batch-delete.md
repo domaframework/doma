@@ -149,6 +149,36 @@ int[] delete(List<Employee> employees);
 This setting applies regardless of whether you use a SQL file or not.
 If you do not specify a value for the `batchSize` property, the batch size configured in the [Configuration](../config.md) class is used.
 
+## Reducing memory for very large batches
+
+By default, all `PreparedSql` objects for the batch are built up front before any SQL is sent to the database.
+For very large entity lists (hundreds of thousands of rows) this can exhaust the heap even when `batchSize` is set, because `batchSize` controls only how many rows are flushed to the JDBC driver per `executeBatch()` call — not how many `PreparedSql` objects coexist in memory.
+
+To bound peak memory, you can opt in to `ChunkedAutoBatchDeleteQuery` by overriding [Query implementors](../config.md#query-implementors) in your `Config`:
+
+```java
+public class MyConfig implements Config {
+    private final QueryImplementors queryImplementors = new QueryImplementors() {
+        @Override
+        public <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
+                Method method, EntityType<ENTITY> entityType) {
+            return new ChunkedAutoBatchDeleteQuery<>(entityType);
+        }
+    };
+
+    @Override
+    public QueryImplementors getQueryImplementors() {
+        return queryImplementors;
+    }
+    // ... other Config methods ...
+}
+```
+
+With this override every `@BatchDelete` Dao method that uses auto-generated SQL builds the prepared SQL for one entity at a time, binds it, adds it to the JDBC batch, and lets it become eligible for garbage collection before the next one is built.
+JDBC batch flush boundaries still follow `batchSize`, but the in-memory representation of the SQL list itself stays at `O(1)`.
+
+This is purely opt-in; no behavior changes unless you swap the `QueryImplementors`.
+
 ## SQL log output format
 
 You can specify SQL log output format to `sqlLog` property within `@BatchDelete` annotation.

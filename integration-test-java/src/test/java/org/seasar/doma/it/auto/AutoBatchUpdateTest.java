@@ -64,8 +64,13 @@ import org.seasar.doma.message.Message;
 @ExtendWith(IntegrationTestEnvironment.class)
 public class AutoBatchUpdateTest {
 
+  protected Config customize(Config config) {
+    return config;
+  }
+
   @Test
   public void test(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentId(new Identity<>(1));
@@ -100,6 +105,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testImmutable(Config config) {
+    config = customize(config);
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(1), 1, "hoge", null, 1);
     Dept dept2 = new Dept(new Identity<>(2), 2, "foo", null, 1);
@@ -131,6 +137,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testIncludeVersion(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentId(new Identity<>(1));
@@ -165,6 +172,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testCompositeKey(Config config) {
+    config = customize(config);
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = new CompKeyDepartment();
     department.setDepartmentId1(1);
@@ -202,6 +210,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testOptimisticLockException(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -219,6 +228,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testSuppressOptimisticLockException(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department1 = dao.selectById(1);
     department1.setDepartmentName("hoge");
@@ -232,6 +242,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testNoId(Config config) {
+    config = customize(config);
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -249,6 +260,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testSqlExecutionSkip(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     int[] result = dao.update(new ArrayList<>());
     assertEquals(0, result.length);
@@ -256,6 +268,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testOptional(Config config) {
+    config = customize(config);
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeId = Optional.of(1);
@@ -284,6 +297,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testOptionalInt(Config config) {
+    config = customize(config);
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeId = OptionalInt.of(1);
@@ -312,6 +326,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testEmbeddable(Config config) {
+    config = customize(config);
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 1;
@@ -343,6 +358,7 @@ public class AutoBatchUpdateTest {
 
   @Test
   public void testTenantId(Config config) {
+    config = customize(config);
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;

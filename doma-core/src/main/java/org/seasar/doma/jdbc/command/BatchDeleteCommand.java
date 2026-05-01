@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchDeleteQuery;
+import org.seasar.doma.jdbc.query.ChunkedBatchDeleteQuery;
 
 /**
  * A command to execute a batch delete.
@@ -48,6 +49,8 @@ public class BatchDeleteCommand extends BatchModifyCommand<BatchDeleteQuery> {
   @Override
   protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {
-    return executeBatch(preparedStatement, sqls);
+    return query instanceof ChunkedBatchDeleteQuery chunked
+        ? executeChunked(preparedStatement, chunked)
+        : executeBatch(preparedStatement, sqls);
   }
 }

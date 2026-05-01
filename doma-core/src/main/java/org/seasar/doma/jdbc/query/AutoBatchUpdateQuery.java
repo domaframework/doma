@@ -81,6 +81,16 @@ public class AutoBatchUpdateQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     prepareTargetPropertyTypes();
     prepareSql();
     entities.set(0, currentEntity);
+    prepareSqlsForRemainingEntities();
+  }
+
+  /**
+   * Prepares the SQL statements for entities other than the first one.
+   *
+   * <p>Subclasses may override this method to defer SQL generation, for example to build SQL lazily
+   * one entity at a time and bound memory usage for very large entity lists.
+   */
+  protected void prepareSqlsForRemainingEntities() {
     for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preUpdate();

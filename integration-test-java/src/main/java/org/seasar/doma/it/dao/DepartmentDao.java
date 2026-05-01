@@ -92,6 +92,9 @@ public interface DepartmentDao {
   @BatchUpdate
   int[] update(List<Department> entity);
 
+  @BatchUpdate(batchSize = 7)
+  int[] updateWithSmallBatchSize(List<Department> entity);
+
   @BatchUpdate(sqlFile = true)
   int[] updateBySqlFile(List<Department> entity);
 

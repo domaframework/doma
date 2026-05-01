@@ -59,8 +59,13 @@ import org.seasar.doma.message.Message;
 @ExtendWith(IntegrationTestEnvironment.class)
 public class AutoBatchDeleteTest {
 
+  protected Config customize(Config config) {
+    return config;
+  }
+
   @Test
   public void test(Config config) {
+    config = customize(config);
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -81,6 +86,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testImmutable(Config config) {
+    config = customize(config);
     PersonDao dao = new PersonDaoImpl(config);
     Person person = new Person(1, null, null, null, null, null, null, null, 1);
     Person person2 = new Person(2, null, null, null, null, null, null, null, 1);
@@ -102,6 +108,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testIgnoreVersion(Config config) {
+    config = customize(config);
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee = new Employee();
     employee.setEmployeeId(1);
@@ -122,6 +129,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testCompositeKey(Config config) {
+    config = customize(config);
     CompKeyEmployeeDao dao = new CompKeyEmployeeDaoImpl(config);
     CompKeyEmployee employee = new CompKeyEmployee();
     employee.setEmployeeId1(1);
@@ -145,6 +153,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testOptimisticLockException(Config config) {
+    config = customize(config);
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
@@ -162,6 +171,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testSuppressOptimisticLockException(Config config) {
+    config = customize(config);
     EmployeeDao dao = new EmployeeDaoImpl(config);
     Employee employee1 = dao.selectById(1);
     employee1.setEmployeeName("hoge");
@@ -175,6 +185,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testNoId(Config config) {
+    config = customize(config);
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -192,6 +203,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testOptional(Config config) {
+    config = customize(config);
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker employee = new Worker();
     employee.employeeId = Optional.of(1);
@@ -212,6 +224,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testOptionalInt(Config config) {
+    config = customize(config);
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman employee = new Businessman();
     employee.employeeId = OptionalInt.of(1);
@@ -232,6 +245,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testEmbeddable(Config config) {
+    config = customize(config);
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 1;
@@ -252,6 +266,7 @@ public class AutoBatchDeleteTest {
 
   @Test
   public void testTenantId(Config config) {
+    config = customize(config);
     SalesmanDao dao = new SalesmanDaoImpl(config);
     Salesman salesman = dao.selectById(1);
     Integer tenantId = salesman.departmentId;
