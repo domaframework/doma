@@ -18,6 +18,7 @@ package org.seasar.doma.jdbc.query;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import example.entity.Emp;
 import example.entity.Salesman;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
 import org.seasar.doma.jdbc.InParameter;
 import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlExecutionSkipCause;
 import org.seasar.doma.jdbc.SqlLogType;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -70,6 +72,9 @@ public class AutoBatchUpdateQueryTest {
     query.prepare();
 
     assertEquals(2, query.getSqls().size());
+    assertSame(query.getSqls().get(0), query.getSql());
+    assertEquals(runtimeConfig.getBatchSize(), query.getBatchSize());
+    assertEquals(SqlLogType.FORMATTED, query.getSqlLogType());
   }
 
   @Test
@@ -255,6 +260,7 @@ public class AutoBatchUpdateQueryTest {
     query.setEntities(Collections.emptyList());
     query.prepare();
     assertFalse(query.isExecutable());
+    assertEquals(SqlExecutionSkipCause.BATCH_TARGET_NONEXISTENT, query.getSqlExecutionSkipCause());
   }
 
   @Test

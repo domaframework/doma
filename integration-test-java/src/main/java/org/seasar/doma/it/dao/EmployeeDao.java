@@ -180,6 +180,9 @@ public interface EmployeeDao {
   @BatchDelete
   int[] delete(List<Employee> entity);
 
+  @BatchDelete(batchSize = 7)
+  int[] deleteWithSmallBatchSize(List<Employee> entity);
+
   @BatchDelete(ignoreVersion = true)
   int[] delete_ignoreVersion(List<Employee> entity);
 

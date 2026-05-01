@@ -83,6 +83,18 @@ public class AutoBatchDeleteQuery<ENTITY> extends AutoBatchModifyQuery<ENTITY>
     prepareOptimisticLock();
     prepareSql();
     entities.set(0, currentEntity);
+    prepareSqlsForRemainingEntities(size);
+  }
+
+  /**
+   * Prepares the SQL statements for entities other than the first one.
+   *
+   * <p>Subclasses may override this method to defer SQL generation, for example to build SQL lazily
+   * one entity at a time and bound memory usage for very large entity lists.
+   *
+   * @param size the total number of entities
+   */
+  protected void prepareSqlsForRemainingEntities(int size) {
     for (ListIterator<ENTITY> it = entities.listIterator(1); it.hasNext(); ) {
       currentEntity = it.next();
       preDelete();

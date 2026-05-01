@@ -32,6 +32,7 @@ import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchModifyQuery;
+import org.seasar.doma.jdbc.query.ChunkedBatchModifyQuery;
 import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 /**
@@ -185,6 +186,46 @@ public abstract class BatchModifyCommand<QUERY extends BatchModifyQuery> impleme
         pos = i + 1;
       }
       i++;
+    }
+    return updatedRows;
+  }
+
+  /**
+   * Executes the batch operation by asking the query to build one SQL statement at a time.
+   *
+   * @param preparedStatement the prepared statement
+   * @param chunked the chunked batch query
+   * @return the array of affected rows count
+   * @throws SQLException if a database access error occurs
+   */
+  protected int[] executeChunked(
+      PreparedStatement preparedStatement, ChunkedBatchModifyQuery chunked) throws SQLException {
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
+    int batchSize = query.getBatchSize() > 0 ? query.getBatchSize() : 1;
+    int totalSize = chunked.getEntityCount();
+    int[] updatedRows = new int[totalSize];
+    for (int from = 0; from < totalSize; from += batchSize) {
+      int to = Math.min(from + batchSize, totalSize);
+      PreparedSql lastSql = null;
+      for (int i = from; i < to; i++) {
+        PreparedSql sql = chunked.buildSql(i);
+        log(sql);
+        bindParameters(preparedStatement, sql);
+        preparedStatement.addBatch();
+        lastSql = sql;
+      }
+      int position = from;
+      PreparedSql sqlForExecute = lastSql;
+      int[] rows =
+          statisticManager.executeSql(
+              sqlForExecute,
+              () -> {
+                int[] r = executeBatch(preparedStatement, sqlForExecute);
+                postExecuteBatch(preparedStatement, position, r.length);
+                return r;
+              });
+      validateRows(preparedStatement, sqlForExecute, rows);
+      System.arraycopy(rows, 0, updatedRows, from, rows.length);
     }
     return updatedRows;
   }

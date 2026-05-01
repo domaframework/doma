@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 16:05+0900\n"
+"POT-Creation-Date: 2026-05-01 22:41+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -12,7 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../query/batch-update.md:1
 msgid "Batch update"
@@ -414,18 +414,65 @@ msgstr ""
 "プロパティに値を指定しない場合は、[設定](../config.md) クラスで指定されたバッチサイズが適用されます。"
 
 #: ../../query/batch-update.md:240
+msgid "Reducing memory for very large batches"
+msgstr "非常に大きなバッチでメモリ使用量を抑える"
+
+#: ../../query/batch-update.md:242
+msgid ""
+"By default, all `PreparedSql` objects for the batch are built up front "
+"before any SQL is sent to the database. For very large entity lists "
+"(hundreds of thousands of rows) this can exhaust the heap even when "
+"`batchSize` is set, because `batchSize` controls only how many rows are "
+"flushed to the JDBC driver per `executeBatch()` call — not how many "
+"`PreparedSql` objects coexist in memory."
+msgstr ""
+"デフォルトでは、バッチに含まれるすべての `PreparedSql` がデータベースへの送信前にあらかじめ構築されます。"
+"数十万件規模の非常に大きなエンティティリストでは、`batchSize` を設定していてもヒープを使い切る可能性があります。"
+"`batchSize` は `executeBatch()` 1 回あたりに JDBC ドライバへ送る件数を決めるだけで、"
+"メモリ上に同時に存在する `PreparedSql` の数を制御するものではないからです。"
+
+#: ../../query/batch-update.md:245
+msgid ""
+"To bound peak memory, you can opt in to `ChunkedAutoBatchUpdateQuery` by "
+"overriding [Query implementors](../config.md#query-implementors) in your "
+"`Config`:"
+msgstr ""
+"ピーク時のメモリ使用量を抑えるには、`Config` で [Query implementors](../config.md#query-implementors) "
+"をオーバーライドして `ChunkedAutoBatchUpdateQuery` をオプトインで利用できます:"
+
+#: ../../query/batch-update.md:265
+msgid ""
+"With this override every `@BatchUpdate` Dao method that uses auto-"
+"generated SQL builds the prepared SQL for one entity at a time, binds it,"
+" adds it to the JDBC batch, and lets it become eligible for garbage "
+"collection before the next one is built. JDBC batch flush boundaries "
+"still follow `batchSize`, but the in-memory representation of the SQL "
+"list itself stays at `O(1)`."
+msgstr ""
+"このオーバーライドを適用すると、自動生成 SQL を使うすべての `@BatchUpdate` Dao メソッドは、"
+"エンティティ 1 件分の準備済み SQL を順次構築し、バインド・JDBC バッチへの追加を行ったのち、"
+"次の SQL を構築する前に GC 対象になります。"
+"JDBC バッチのフラッシュ境界は引き続き `batchSize` に従いますが、"
+"メモリ上の SQL リスト自体は `O(1)` に保たれます。"
+
+#: ../../query/batch-update.md:268
+msgid ""
+"This is purely opt-in; no behavior changes unless you swap the "
+"`QueryImplementors`."
+msgstr "これは完全なオプトインです。`QueryImplementors` を差し替えない限り、挙動は変わりません。"
+
+#: ../../query/batch-update.md:270
 msgid "SQL log output format"
 msgstr "SQLログの出力形式"
 
-#: ../../query/batch-update.md:242
+#: ../../query/batch-update.md:272
 msgid ""
 "You can specify SQL log output format to `sqlLog` property within "
 "`@BatchUpdate` annotation."
 msgstr "`@BatchUpdate` アノテーション内の `sqlLog` プロパティに SQL ログの出力形式を指定できます。"
 
-#: ../../query/batch-update.md:249
+#: ../../query/batch-update.md:279
 msgid ""
 "`SqlLogType.RAW` represent outputting log that is sql with a binding "
 "parameter."
 msgstr "`SqlLogType.RAW` はバインドパラメータ（?）付きの SQL をログ出力することを表します。"
-

@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.query.BatchUpdateQuery;
+import org.seasar.doma.jdbc.query.ChunkedBatchUpdateQuery;
 
 /**
  * A command to execute a batch update.
@@ -49,7 +50,10 @@ public class BatchUpdateCommand extends BatchModifyCommand<BatchUpdateQuery> {
   @Override
   protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {
-    int[] rows = executeBatch(preparedStatement, sqls);
+    int[] rows =
+        query instanceof ChunkedBatchUpdateQuery chunked
+            ? executeChunked(preparedStatement, chunked)
+            : executeBatch(preparedStatement, sqls);
     query.incrementVersions();
     return rows;
   }

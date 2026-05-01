@@ -83,11 +83,17 @@ public interface DepartmentDao {
   @BatchInsert
   int[] insert(List<Department> entity);
 
+  @BatchInsert(batchSize = 7)
+  int[] insertWithSmallBatchSize(List<Department> entity);
+
   @BatchInsert(sqlFile = true)
   int[] insertBySqlFile(List<Department> entity);
 
   @BatchUpdate
   int[] update(List<Department> entity);
+
+  @BatchUpdate(batchSize = 7)
+  int[] updateWithSmallBatchSize(List<Department> entity);
 
   @BatchUpdate(sqlFile = true)
   int[] updateBySqlFile(List<Department> entity);

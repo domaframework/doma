@@ -22,6 +22,7 @@ import org.seasar.doma.jdbc.BatchUniqueConstraintException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.query.BatchInsertQuery;
+import org.seasar.doma.jdbc.query.ChunkedBatchInsertQuery;
 import org.seasar.doma.jdbc.statistic.StatisticManager;
 
 /**
@@ -55,6 +56,9 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
   @Override
   protected int[] executeInternal(PreparedStatement preparedStatement, List<PreparedSql> sqls)
       throws SQLException {
+    if (query instanceof ChunkedBatchInsertQuery chunked) {
+      return executeChunked(preparedStatement, chunked);
+    }
     if (query.isBatchSupported()) {
       return executeBatch(preparedStatement, sqls);
     }
@@ -75,6 +79,66 @@ public class BatchInsertCommand extends BatchModifyCommand<BatchInsertQuery> {
                 return rows;
               });
       i++;
+    }
+    return updatedRows;
+  }
+
+  /**
+   * Executes the insert in chunks of {@code batchSize} entities, asking the query to build the
+   * prepared SQL for one entity at a time so that at most one {@link PreparedSql} is alive between
+   * the time the command binds it and the time the next one is built.
+   *
+   * @param preparedStatement the prepared statement
+   * @param chunked the chunked batch insert query
+   * @return the array of inserted rows count
+   * @throws SQLException if a database access error occurs
+   */
+  protected int[] executeChunked(
+      PreparedStatement preparedStatement, ChunkedBatchInsertQuery chunked) throws SQLException {
+    StatisticManager statisticManager = query.getConfig().getStatisticManager();
+    int batchSize = query.getBatchSize() > 0 ? query.getBatchSize() : 1;
+    int totalSize = chunked.getEntityCount();
+    int[] updatedRows = new int[totalSize];
+    boolean batchSupported = query.isBatchSupported();
+    for (int from = 0; from < totalSize; from += batchSize) {
+      int to = Math.min(from + batchSize, totalSize);
+      if (batchSupported) {
+        PreparedSql lastSql = null;
+        for (int i = from; i < to; i++) {
+          PreparedSql sql = chunked.buildSql(i);
+          log(sql);
+          bindParameters(preparedStatement, sql);
+          preparedStatement.addBatch();
+          lastSql = sql;
+        }
+        int chunkPosition = from;
+        PreparedSql sqlForExecute = lastSql;
+        int[] rows =
+            statisticManager.executeSql(
+                sqlForExecute,
+                () -> {
+                  int[] r = executeBatch(preparedStatement, sqlForExecute);
+                  postExecuteBatch(preparedStatement, chunkPosition, r.length);
+                  return r;
+                });
+        validateRows(preparedStatement, sqlForExecute, rows);
+        System.arraycopy(rows, 0, updatedRows, from, rows.length);
+      } else {
+        for (int i = from; i < to; i++) {
+          PreparedSql sql = chunked.buildSql(i);
+          log(sql);
+          bindParameters(preparedStatement, sql);
+          int index = i;
+          updatedRows[i] =
+              statisticManager.executeSql(
+                  sql,
+                  () -> {
+                    int rows = executeUpdate(preparedStatement, sql);
+                    query.generateId(preparedStatement, index);
+                    return rows;
+                  });
+        }
+      }
     }
     return updatedRows;
   }

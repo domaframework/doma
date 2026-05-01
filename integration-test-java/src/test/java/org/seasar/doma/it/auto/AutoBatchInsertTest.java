@@ -84,8 +84,19 @@ import org.seasar.doma.message.Message;
 @ExtendWith(IntegrationTestEnvironment.class)
 public class AutoBatchInsertTest {
 
+  /**
+   * Hook for subclasses to swap in an alternative {@link Config}. The default identity
+   * implementation runs each test against the framework defaults; a subclass can return a wrapped
+   * {@code Config} to exercise the same scenarios with a different batch insert query
+   * implementation.
+   */
+  protected Config customize(Config config) {
+    return config;
+  }
+
   @Test
   public void test(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentId(new Identity<>(99));
@@ -118,6 +129,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testImmutable(Config config) {
+    config = customize(config);
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept = new Dept(new Identity<>(99), 99, "hoge", null, null);
     Dept dept2 = new Dept(new Identity<>(98), 98, "foo", null, null);
@@ -150,6 +162,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testCompositeKey(Config config) {
+    config = customize(config);
     CompKeyDepartmentDao dao = new CompKeyDepartmentDaoImpl(config);
     CompKeyDepartment department = new CompKeyDepartment();
     department.setDepartmentId1(99);
@@ -186,6 +199,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testIdNotAssigned(Config config) {
+    config = customize(config);
     DepartmentDao dao = new DepartmentDaoImpl(config);
     Department department = new Department();
     department.setDepartmentNo(99);
@@ -204,6 +218,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.ORACLE})
   public void testId_Identity(Config config) {
+    config = customize(config);
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       IdentityStrategy entity = new IdentityStrategy();
@@ -221,6 +236,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void testId_Identity_override(Config config) {
+    config = customize(config);
     IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
     for (int i = 0; i < 110; i++) {
@@ -246,6 +262,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.ORACLE})
   public void testId_Identity_dontOverride(Config config) {
+    config = customize(config);
     IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(newConfig);
     for (int i = 0; i < 110; i++) {
@@ -265,6 +282,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testId_Identity_ignoreGeneratedKeys(Config config) {
+    config = customize(config);
     IdentityStrategyDao dao = new IdentityStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       IdentityStrategy entity = new IdentityStrategy();
@@ -279,6 +297,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.ORACLE, Dbms.SQLSERVER})
   public void testId_OptionalIdentity_override(Config config) {
+    config = customize(config);
     IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
     OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
     for (int i = 0; i < 110; i++) {
@@ -310,6 +329,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.ORACLE})
   public void testId_OptionalIdentity_dontOverride(Config config) {
+    config = customize(config);
     IdentityOverridableConfig newConfig = new IdentityOverridableConfig(config);
     OptionalIdentityStrategyDao dao = new OptionalIdentityStrategyDaoImpl(newConfig);
     for (int i = 0; i < 110; i++) {
@@ -336,6 +356,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.SQLSERVER, Dbms.SQLITE})
   public void testId_sequence(Config config) {
+    config = customize(config);
     SequenceStrategyDao dao = new SequenceStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       SequenceStrategy entity = new SequenceStrategy();
@@ -355,6 +376,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(unless = {Dbms.SQLITE})
   public void testId_table(Config config) {
+    config = customize(config);
     TableStrategyDao dao = new TableStrategyDaoImpl(config);
     for (int i = 0; i < 110; i++) {
       TableStrategy entity = new TableStrategy();
@@ -371,6 +393,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testNoId(Config config) {
+    config = customize(config);
     NoIdDao dao = new NoIdDaoImpl(config);
     NoId entity = new NoId();
     entity.setValue1(1);
@@ -386,6 +409,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testOptional(Config config) {
+    config = customize(config);
     WorkerDao dao = new WorkerDaoImpl(config);
     Worker worker = new Worker();
     worker.employeeId = Optional.of(9998);
@@ -412,6 +436,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testOptionalInt(Config config) {
+    config = customize(config);
     BusinessmanDao dao = new BusinessmanDaoImpl(config);
     Businessman worker = new Businessman();
     worker.employeeId = OptionalInt.of(9998);
@@ -438,6 +463,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void testEmbeddable(Config config) {
+    config = customize(config);
     StaffDao dao = new StaffDaoImpl(config);
     Staff staff = new Staff();
     staff.employeeId = 9998;
@@ -463,6 +489,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_UPDATE(Config config) {
+    config = customize(config);
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -508,6 +535,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_IGNORE(Config config) {
+    config = customize(config);
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(1), 60, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -547,6 +575,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_UPDATE_compositeKey(Config config) {
+    config = customize(config);
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
         new CompKeyDept(
@@ -599,6 +628,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_IGNORE_compositeKey(Config config) {
+    config = customize(config);
     CompKeyDeptDao dao = new CompKeyDeptDaoImpl(config);
     CompKeyDept dept1 =
         new CompKeyDept(
@@ -650,6 +680,7 @@ public class AutoBatchInsertTest {
         Dbms.MYSQL8,
       })
   public void insert_DuplicateKeyType_UPDATE_with_specified_keys(Config config) {
+    config = customize(config);
     DeptDao dao = new DeptDaoImpl(config);
     Dept dept1 = new Dept(new Identity<>(5), 50, "PLANNING", new Location<>("TOKYO"), null);
     Dept dept2 = new Dept(new Identity<>(2), 10, "DEVELOPMENT", new Location<>("KYOTO"), null);
@@ -674,6 +705,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_IGNORE_identityTable_nonDuplicated(Config config) {
+    config = customize(config);
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -699,6 +731,7 @@ public class AutoBatchInsertTest {
   @Test
   @Run(onlyIf = {Dbms.MYSQL, Dbms.MYSQL8, Dbms.POSTGRESQL})
   public void insert_DuplicateKeyType_IGNORE_identityTable_duplicated(Config config) {
+    config = customize(config);
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -720,6 +753,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_UPDATE_identityTable_nonDuplicated(Config config) {
+    config = customize(config);
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
@@ -746,6 +780,7 @@ public class AutoBatchInsertTest {
 
   @Test
   public void insert_DuplicateKeyType_UPDATE_identityTable_duplicated(Config config) {
+    config = customize(config);
     IdentityStrategy2Dao dao = new IdentityStrategy2DaoImpl(config);
     var entity1 = new IdentityStrategy2();
     entity1.setUniqueValue("1");
