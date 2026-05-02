@@ -1,6 +1,10 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents when working with code in this repository.
+
+## Instruction Scope
+
+These repository-level instructions apply to the entire project. Some modules may contain their own `AGENTS.md` files with additional scoped guidance. When working under a module directory, follow both this file and the module-specific instructions.
 
 ## Project Overview
 
@@ -36,6 +40,12 @@ To run integration tests:
 ```bash
 ./gradlew :integration-test-java:test --tests "TestClassName"
 ```
+
+### Choosing Verification Commands
+- Documentation-only changes: run `./gradlew spotlessApply`.
+- Changes under `doma-core`: run `./gradlew :doma-core:test`.
+- Changes under `doma-processor`: run `./gradlew :doma-processor:test`; for compiler-sensitive changes, also run `./gradlew :doma-processor:test -Pcompiler=ecj`.
+- Integration behavior changes: run the relevant integration test module or database task; reserve `./gradlew testAll` for broad cross-database impact.
 
 ## Module Architecture
 
@@ -101,6 +111,7 @@ All code must pass Spotless formatting checks. The build automatically applies f
 
 ### Contributing Guidelines
 - Submit contributions via GitHub Pull Requests from your own fork
+- Write Git commit messages, GitHub Pull Request titles, and GitHub Pull Request descriptions in English
 - Write issues and PRs in English for broader accessibility
 - All contributions are licensed under Apache License 2.0
 
@@ -140,7 +151,7 @@ cd docs
 
 # Install dependencies in virtual environment
 pip install -r requirements.txt
-````
+```
 
 #### Generate HTML documentation with auto-reload
 ```bash
