@@ -1900,6 +1900,50 @@ public interface EmployeeDao {
 }
 ```
 
+### Reducing Memory for Very Large Batches
+
+Query DSL entity batch operations use the auto-batch query implementations provided by `Config.getQueryImplementors()`.
+By default, those implementations build all `PreparedSql` objects for a batch up front before any SQL is sent to the database.
+For very large entity lists (hundreds of thousands of rows) this can exhaust the heap even when `batchSize` is set, because `batchSize` controls only how many rows are flushed to the JDBC driver per `executeBatch()` call -- not how many `PreparedSql` objects coexist in memory.
+
+To bound peak memory for Query DSL batch operations, you can opt in to chunked query implementations by overriding [Query implementors](config.md#query-implementors) in your `Config`:
+
+```java
+public class MyConfig implements Config {
+    private final QueryImplementors queryImplementors = new QueryImplementors() {
+        @Override
+        public <ENTITY> AutoBatchInsertQuery<ENTITY> createAutoBatchInsertQuery(
+                Method method, EntityType<ENTITY> entityType) {
+            return new ChunkedAutoBatchInsertQuery<>(entityType);
+        }
+
+        @Override
+        public <ENTITY> AutoBatchUpdateQuery<ENTITY> createAutoBatchUpdateQuery(
+                Method method, EntityType<ENTITY> entityType) {
+            return new ChunkedAutoBatchUpdateQuery<>(entityType);
+        }
+
+        @Override
+        public <ENTITY> AutoBatchDeleteQuery<ENTITY> createAutoBatchDeleteQuery(
+                Method method, EntityType<ENTITY> entityType) {
+            return new ChunkedAutoBatchDeleteQuery<>(entityType);
+        }
+    };
+
+    @Override
+    public QueryImplementors getQueryImplementors() {
+        return queryImplementors;
+    }
+    // ... other Config methods ...
+}
+```
+
+With this override, Query DSL entity batch operations such as `queryDsl.insert(e).batch(entities)`, `queryDsl.update(e).batch(entities)`, and `queryDsl.delete(e).batch(entities)` prepare only the first SQL statement up front so the command can create a representative `PreparedStatement`.
+The remaining SQL statements are built one entity at a time during execution, bound, added to the JDBC batch, and then allowed to become eligible for garbage collection.
+JDBC batch flush boundaries still follow `batchSize`, but the in-memory representation of the SQL list itself stays at `O(1)`.
+
+This is purely opt-in; no behavior changes unless you swap the `QueryImplementors`.
+
 ### Overwriting the Table Name
 
 A metamodel constructor can accept a qualified table name, which allows the metamodel to overwrite its default table name.
