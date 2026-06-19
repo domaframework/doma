@@ -397,6 +397,9 @@ public enum Message implements MessageResource {
   DOMA3033(
       "Failed to evaluate the expression \"{0}\" at column {1}. "
           + "The static field \"{3}\" is not found in the class \"{2}\". Check that the field name is correct."),
+  DOMA3034(
+      "Failed to evaluate the expression \"{0}\" at column {1}. "
+          + "Cannot access the field \"{3}\" because the expression \"{2}\" is evaluated as null."),
 
   // annotation processing
   DOMA4001("The return type must be int that indicates the affected rows count."),
