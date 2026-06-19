@@ -220,6 +220,9 @@ public class ClassicExpressionTokenizer {
       return;
     } else if (c == ',') {
       type = COMMA_OPERATOR;
+      // A comma starts a new operand, so a following '+'/'-' must be treated as the sign of a
+      // numeric literal rather than a binary operator.
+      binaryOpAvailable = false;
       //noinspection UnnecessaryReturnStatement
       return;
     } else if (c == '(') {

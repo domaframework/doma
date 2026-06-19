@@ -298,6 +298,9 @@ public class ExpressionTokenizer {
         return;
       case ',':
         type = COMMA_OPERATOR;
+        // A comma starts a new operand, so a following '+'/'-' must be treated as the sign of a
+        // numeric literal rather than a binary operator.
+        binaryOpAvailable = false;
         return;
       case '(':
         type = OPENED_PARENS;

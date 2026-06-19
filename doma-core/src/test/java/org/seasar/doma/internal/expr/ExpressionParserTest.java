@@ -236,6 +236,15 @@ public class ExpressionParserTest {
   }
 
   @Test
+  public void testStaticMethodWithNegativeSecondArgument() {
+    ExpressionParser parser = new ExpressionParser("@java.lang.Math@max(1, -2)");
+    ExpressionNode expression = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    EvaluationResult evaluationResult = evaluator.evaluate(expression);
+    assertEquals(1, evaluationResult.getValue());
+  }
+
+  @Test
   public void testStaticMethod() {
     ExpressionParser parser = new ExpressionParser("@java.lang.String@valueOf(1)");
     ExpressionNode expression = parser.parse();
