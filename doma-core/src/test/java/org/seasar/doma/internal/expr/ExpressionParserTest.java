@@ -1011,6 +1011,20 @@ public class ExpressionParserTest {
   }
 
   @Test
+  public void testFieldAccess_targetObjectIsNull() {
+    ExpressionParser parser = new ExpressionParser("null.publicField");
+    ExpressionNode node = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    try {
+      evaluator.evaluate(node);
+      fail();
+    } catch (ExpressionException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA3034, expected.getMessageResource());
+    }
+  }
+
+  @Test
   public void testMethodChaining() {
     ExpressionParser parser = new ExpressionParser("str.toUpperCase().length()");
     ExpressionNode node = parser.parse();

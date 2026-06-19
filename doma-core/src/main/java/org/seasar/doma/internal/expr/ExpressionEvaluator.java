@@ -690,9 +690,18 @@ public class ExpressionEvaluator implements ExpressionNodeVisitor<EvaluationResu
 
   @Override
   public EvaluationResult visitFieldOperatorNode(FieldOperatorNode node, Void p) {
-    EvaluationResult targetResult = node.getTargetObjectNode().accept(this, p);
+    ExpressionNode targetObjectNode = node.getTargetObjectNode();
+    EvaluationResult targetResult = targetObjectNode.accept(this, p);
     Object target = targetResult.getValue();
     ExpressionLocation location = node.getLocation();
+    if (target == null) {
+      throw new ExpressionException(
+          Message.DOMA3034,
+          location.getExpression(),
+          location.getPosition(),
+          targetObjectNode.getExpression(),
+          node.getFieldName());
+    }
     Field field = findField(node.getFieldName(), target.getClass());
     if (field == null) {
       throw new ExpressionException(
