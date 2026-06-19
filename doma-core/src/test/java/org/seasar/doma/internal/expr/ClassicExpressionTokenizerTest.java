@@ -245,6 +245,27 @@ public class ClassicExpressionTokenizerTest {
   }
 
   @Test
+  public void testParensWithNegativeArgument() {
+    ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("aaa.bbb(2, -3)");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("aaa", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".bbb", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("2", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("-3", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+  }
+
+  @Test
   public void testFunctionOperator() {
     ClassicExpressionTokenizer tokenizer = new ClassicExpressionTokenizer("@startWith(aaa)");
     assertEquals(FUNCTION_OPERATOR, tokenizer.next());

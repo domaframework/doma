@@ -244,6 +244,43 @@ public class ExpressionTokenizerTest {
   }
 
   @Test
+  public void testParensWithNegativeArgument() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("aaa.bbb(2, -3)");
+    assertEquals(VARIABLE, tokenizer.next());
+    assertEquals("aaa", tokenizer.getToken());
+    assertEquals(METHOD_OPERATOR, tokenizer.next());
+    assertEquals(".bbb", tokenizer.getToken());
+    assertEquals(OPENED_PARENS, tokenizer.next());
+    assertEquals("(", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("2", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(",", tokenizer.getToken());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(" ", tokenizer.getToken());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("-3", tokenizer.getToken());
+    assertEquals(CLOSED_PARENS, tokenizer.next());
+    assertEquals(")", tokenizer.getToken());
+  }
+
+  @Test
+  public void testSignedNumberAfterComma() {
+    ExpressionTokenizer tokenizer = new ExpressionTokenizer("1, -2, +3");
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("1", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("-2", tokenizer.getToken());
+    assertEquals(COMMA_OPERATOR, tokenizer.next());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(INT_LITERAL, tokenizer.next());
+    assertEquals("+3", tokenizer.getToken());
+    assertEquals(EOE, tokenizer.next());
+  }
+
+  @Test
   public void testFunctionOperator() {
     ExpressionTokenizer tokenizer = new ExpressionTokenizer("@startWith(aaa)");
     assertEquals(FUNCTION_OPERATOR, tokenizer.next());
