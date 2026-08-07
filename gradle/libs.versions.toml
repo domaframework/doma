@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.10"
-junit = "6.1.2"
+junit = "6.1.3"
 jmh = "1.37"
 
 [libraries]
