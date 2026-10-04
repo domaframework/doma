@@ -43,10 +43,11 @@ verifies the tagged commit, and publishes artifacts to [Maven Central](https://r
 (Optional)
 
 It can take a while for the published artifacts to be synchronized to Maven Central.
-The following command waits until the new version of `doma-core` is available:
+The following command waits until the new version of `doma-core` is available
+(replace `X.Y.Z` with the released version):
 
 ```
-$ V=$(gh release list --limit 1 --json tagName --jq '.[0].tagName'); echo "Waiting for $V"; until curl -sfI "https://repo1.maven.org/maven2/org/seasar/doma/doma-core/$V/doma-core-$V.pom" > /dev/null; do sleep 60; done; echo "$V is available"
+$ V=X.Y.Z; until curl -sfI "https://repo1.maven.org/maven2/org/seasar/doma/doma-core/$V/doma-core-$V.pom" > /dev/null; do sleep 60; done; echo "$V is available"
 ```
 
 The following directories will then contain the new artifacts:
