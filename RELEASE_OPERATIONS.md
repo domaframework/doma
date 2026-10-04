@@ -35,7 +35,11 @@ To release a different version, pass it explicitly:
 $ gh api repos/domaframework/doma/actions/workflows/release.yml/dispatches -F ref='master' -F 'inputs[version]=X.Y.Z'
 ```
 
-The workflow runs the Gradle `release` task, which:
+The workflow runs the Gradle `release` task, which also runs `build`.
+The Gradle daemon runs on JDK 17 as pinned by `gradle/gradle-daemon-jvm.properties`,
+because Spotless rejects the pinned google-java-format on JVM 25+.
+
+The `release` task:
 
 - updates the version in `gradle.properties`, `Artifact.java` of `doma-core`, `README.md`, and `docs/conf.py`,
 - commits and pushes the release commit and the version tag (e.g. `3.14.1`), and

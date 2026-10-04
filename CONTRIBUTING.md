@@ -18,8 +18,10 @@ To contribute, use GitHub Pull Requests, from your own fork.
 ## Setup
 
 - Install Git and configure your GitHub access
-- Install JDK 21
+- Install JDK 17
   - We recommend that you use [SDKMAN](https://sdkman.io/jdks) to get JDKs
+  - The Gradle daemon always runs on JDK 17, even when `JAVA_HOME` points to a newer JDK.
+    See `gradle/gradle-daemon-jvm.properties`.
 
 ### Build
 

@@ -29,9 +29,10 @@ jobs:
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
-          # actions/setup-java points JAVA_HOME at the last version listed here, and
-          # that is the JVM Gradle itself runs on. Keep the oldest JDK last so the
-          # build runs on the same JVM as the documented development environment.
+          # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
+          # found through org.gradle.java.installations.fromEnv. actions/setup-java points
+          # JAVA_HOME at the last version listed here, which only runs the gradlew launcher.
+          # Keep the oldest JDK last so the launcher also runs on a JDK Gradle supports.
           java-version: |
             ${{ env.JDK_VERSION_LATEST }}
             ${{ env.JDK_VERSION_LATEST_LTS }}
