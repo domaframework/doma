@@ -113,6 +113,9 @@ All code must pass Spotless formatting checks. The build automatically applies f
 - Submit contributions via GitHub Pull Requests from your own fork
 - Write Git commit messages, GitHub Pull Request titles, and GitHub Pull Request descriptions in English
 - Write issues and PRs in English for broader accessibility
+- Make sure every PR has a label, because Release Drafter uses labels to categorize release notes and resolve the next version
+  - Name the branch with a prefix that the autolabeler recognizes (`feat/`, `fix/`, `docs/`, `chore/`, `ci/`, `perf/`, `refactor/`, `security/`, `test/`, `dependencies/`; see `.github/release-drafter.yml`)
+  - Otherwise, add a label when creating the PR (e.g. `gh pr create --label fix`)
 - All contributions are licensed under Apache License 2.0
 
 ### Integration Test Structure
