@@ -9,7 +9,7 @@ on:
 
 env:
   JDK_DISTRIBUTION: zulu
-  JDK_VERSION_LATEST_LTS: 25
+  JDK_VERSION_OLDEST: 17
 
 jobs:
   release:
@@ -39,11 +39,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up the latest LTS JDK
+      # Gradle itself runs on this JDK. Use the oldest JDK, the documented development
+      # environment, because Spotless on JVM 25+ rejects the pinned google-java-format.
+      - name: Set up the oldest JDK
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
-          java-version: ${{ env.JDK_VERSION_LATEST_LTS }}
+          java-version: ${{ env.JDK_VERSION_OLDEST }}
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
