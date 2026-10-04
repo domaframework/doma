@@ -9,6 +9,16 @@
   draft release created by [Release Drafter](.github/release-drafter.yml) is the version you want to release.
   The version is resolved from the labels of the merged pull requests
   (`major`, `minor`/`feat`/`feature`, otherwise patch).
+- Make sure every pull request in the draft release appears under a category.
+  The [autolabeler](.github/workflows/autolabeler.yml) labels pull requests only by branch name
+  (`fix/...`, `feat/...`, `docs/...`, etc.; see [release-drafter.yml](.github/release-drafter.yml)),
+  so pull requests from other branches, such as `claude/...`, have no label.
+  Add the missing labels, then run the [Release Drafter workflow](.github/workflows/release-draft.yml)
+  to regenerate the draft, because changing labels alone does not update it:
+
+  ```
+  $ gh workflow run release-draft.yml --repo domaframework/doma --ref master
+  ```
 
 ## Dispatch the release workflow
 
