@@ -194,11 +194,11 @@ html_context = {
     'conf_py_path': '/docs/',
 
     # versions
-    'doma_version': '3.14.0',
+    'doma_version': '3.14.1',
     'doma_compile_version': '4.0.3',
     'doma_codegen_version': '3.2.2',
     'eclipse_apt_version': '4.4.1',
-    'logback_classic_version': '1.5.32',
+    'logback_classic_version': '1.6.5',
     'quarkus_doma_version': '1.0.9'
 }
 

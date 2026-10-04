@@ -41,12 +41,12 @@ We are testing against the following databases:
 
 | Database           |  version | status |
 |--------------------|---------:|:------:|
-| H2 Database        |  2.4.240 | stable |
+| H2 Database        |  2.5.252 | stable |
 | MySQL v5           |      5.7 | stable |
 | MySQL v8           |   8.0.36 | stable |
 | Oracle Database XE |      21c | stable |
 | PostgreSQL         |    12.20 | stable |
-| SQLite             | 3.53.1.0 | stable |
+| SQLite             | 3.53.4.0 | stable |
 | SQL Server         |     2019 | stable |
 
 Examples
@@ -135,8 +135,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-core:3.14.0")
-    annotationProcessor("org.seasar.doma:doma-processor:3.14.0")
+    implementation("org.seasar.doma:doma-core:3.14.1")
+    annotationProcessor("org.seasar.doma:doma-processor:3.14.1")
 }
 ```
 
@@ -148,8 +148,8 @@ plugins {
 }
 
 dependencies {
-    implementation("org.seasar.doma:doma-kotlin:3.14.0")
-    kapt("org.seasar.doma:doma-processor:3.14.0")
+    implementation("org.seasar.doma:doma-kotlin:3.14.1")
+    kapt("org.seasar.doma:doma-processor:3.14.1")
 }
 ```
 
@@ -162,7 +162,7 @@ For Java projects:
 ```xml
 ...
 <properties>
-    <doma.version>3.14.0</doma.version>
+    <doma.version>3.14.1</doma.version>
 </properties>
 ...
 <dependencies>
