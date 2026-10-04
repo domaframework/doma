@@ -414,6 +414,15 @@ rootProject.apply {
         }
     }
 
+    // Pin the JVM that runs the Gradle daemon, whatever JAVA_HOME points to.
+    // Spotless rejects the pinned google-java-format on JVM 25+, so the daemon must run on Java 17.
+    // No toolchain download repositories are configured, so the generated
+    // gradle/gradle-daemon-jvm.properties has no download URLs and JDK 17 must be installed locally.
+    tasks.updateDaemonJvm {
+        languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
+        toolchainPlatforms.set(emptySet())
+    }
+
     nexusPublishing {
         repositories {
             // see https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/#configuration

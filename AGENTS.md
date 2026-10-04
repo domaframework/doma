@@ -92,6 +92,8 @@ SQL files use special comments for dynamic SQL that remain valid SQL when run di
 
 ### Setting Up Development Environment
 - Install JDK 17 (recommended via [SDKMAN](https://sdkman.io/jdks))
+  - `gradle/gradle-daemon-jvm.properties` pins the JVM that runs the Gradle daemon to Java 17, whatever `JAVA_HOME` points to; Gradle finds the locally installed JDK 17 and does not download one
+  - Regenerate the file with `./gradlew updateDaemonJvm`, not by hand
 - Clone repository: `git clone https://github.com/domaframework/doma.git`
 - Build project: `./gradlew build`
 - For IDE setup, import as a Gradle project (IntelliJ IDEA recommended)
