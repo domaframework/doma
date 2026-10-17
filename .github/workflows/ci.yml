@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
@@ -78,7 +78,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
@@ -185,7 +185,7 @@ jobs:
 
     steps:
       - name: Set up JDKs
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: ${{ env.JDK_DISTRIBUTION }}
           # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
