@@ -1,0 +1,47 @@
+name: Dependency Submission
+
+# GitHub's dependency graph cannot read Gradle build scripts on its own.
+# Submitting the resolved dependency graph lets Dependabot raise alerts for Gradle dependencies.
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  JDK_DISTRIBUTION: zulu
+  JDK_VERSION_OLDEST: 17
+  JDK_VERSION_LATEST: 27
+  JDK_VERSION_LATEST_LTS: 25
+
+jobs:
+  dependency-submission:
+    name: Dependency Submission
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Set up JDKs
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+        with:
+          distribution: ${{ env.JDK_DISTRIBUTION }}
+          # gradle/gradle-daemon-jvm.properties pins the Gradle daemon to the oldest JDK,
+          # found through org.gradle.java.installations.fromEnv. actions/setup-java points
+          # JAVA_HOME at the last version listed here, which only runs the gradlew launcher.
+          # Keep the oldest JDK last so the launcher also runs on a JDK Gradle supports.
+          java-version: |
+            ${{ env.JDK_VERSION_LATEST }}
+            ${{ env.JDK_VERSION_LATEST_LTS }}
+            ${{ env.JDK_VERSION_OLDEST }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          additional-arguments: >
+            -Porg.gradle.java.installations.fromEnv=JAVA_HOME_${{ env.JDK_VERSION_OLDEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST }}_X64,JAVA_HOME_${{ env.JDK_VERSION_LATEST_LTS }}_X64
