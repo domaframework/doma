@@ -133,6 +133,24 @@ public class SqlParserTest {
   }
 
   @Test
+  public void testBindVariable_in_primitiveArray() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("ids", new Value(int[].class, new int[] {10, 20}));
+    String testSql = "select * from aaa where id in /*ids*/(1, 2)";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where id in (?, ?)", sql.getRawSql());
+    assertEquals("select * from aaa where id in (10, 20)", sql.getFormattedSql());
+    assertEquals(2, sql.getParameters().size());
+    assertEquals(10, sql.getParameters().get(0).getWrapper().get());
+    assertEquals(20, sql.getParameters().get(1).getWrapper().get());
+  }
+
+  @Test
   public void testBindVariable_in_empty_iterable() {
     ExpressionEvaluator evaluator = new ExpressionEvaluator();
     evaluator.add("name", new Value(List.class, Collections.emptyList()));
@@ -829,6 +847,25 @@ public class SqlParserTest {
     assertEquals("aaa", sql.getParameters().get(0).getWrapper().get());
     assertEquals("bbb", sql.getParameters().get(1).getWrapper().get());
     assertEquals("ccc", sql.getParameters().get(2).getWrapper().get());
+  }
+
+  @Test
+  public void testFor_primitiveArray() {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("ids", new Value(int[].class, new int[] {10, 20}));
+    String testSql =
+        "select * from aaa where /*%for id : ids*/id = /*id*/1 /*%if id_has_next */or /*%end*//*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    SqlNode sqlNode = parser.parse();
+    PreparedSql sql =
+        new NodePreparedSqlBuilder(
+                config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED)
+            .build(sqlNode, Function.identity());
+    assertEquals("select * from aaa where id = ? or id = ?", sql.getRawSql());
+    assertEquals("select * from aaa where id = 10 or id = 20", sql.getFormattedSql());
+    assertEquals(2, sql.getParameters().size());
+    assertEquals(10, sql.getParameters().get(0).getWrapper().get());
+    assertEquals(20, sql.getParameters().get(1).getWrapper().get());
   }
 
   @Test

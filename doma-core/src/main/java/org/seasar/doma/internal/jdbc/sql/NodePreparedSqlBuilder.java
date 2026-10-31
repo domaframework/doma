@@ -18,8 +18,8 @@ package org.seasar.doma.internal.jdbc.sql;
 import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import static org.seasar.doma.internal.util.AssertionUtil.assertUnreachable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -313,7 +313,7 @@ public class NodePreparedSqlBuilder
       if (Iterable.class.isAssignableFrom(valueClass)) {
         handleIterableValueNode(node, p, (Iterable<?>) value, valueClass, valueHandler);
       } else if (valueClass.isArray()) {
-        handleIterableValueNode(node, p, Arrays.asList((Object[]) value), valueClass, valueHandler);
+        handleIterableValueNode(node, p, arrayToList(value), valueClass, valueHandler);
       } else {
         throw new JdbcException(
             Message.DOMA2112,
@@ -381,6 +381,16 @@ public class NodePreparedSqlBuilder
       child.accept(this, p);
     }
     return null;
+  }
+
+  /** Converts an array, including a primitive array such as {@code int[]}, to a list. */
+  protected List<Object> arrayToList(Object array) {
+    int length = Array.getLength(array);
+    List<Object> list = new ArrayList<>(length);
+    for (int i = 0; i < length; i++) {
+      list.add(Array.get(array, i));
+    }
+    return list;
   }
 
   protected boolean startsWithClauseKeyword(String fragment) {
@@ -545,7 +555,7 @@ public class NodePreparedSqlBuilder
     if (Iterable.class.isAssignableFrom(expressionValueClass)) {
       iterable = (Iterable<?>) expressionValue;
     } else if (expressionValueClass.isArray()) {
-      iterable = Arrays.asList((Object[]) expressionValue);
+      iterable = arrayToList(expressionValue);
     } else {
       throw new JdbcException(
           Message.DOMA2129,
