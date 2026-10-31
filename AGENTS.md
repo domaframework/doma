@@ -194,7 +194,34 @@ cd ..
 ### LLM-Friendly Documentation
 The project includes `docs/llms.txt`, a comprehensive overview designed for AI/LLM consumption. This file provides:
 - Concise project summary and key features
+- Essentials for writing Doma code: setup, entities, DAOs, the SQL template grammar, and common pitfalls
 - Complete architecture overview with all modules
 - Links to all major documentation sections
-- Use case examples and integration guides
 This resource helps AI assistants quickly understand Doma's capabilities and structure
+
+## Agent Benchmark
+
+[doma-agent-bench](https://github.com/domaframework/doma-agent-bench) measures how well AI coding agents build features with Doma, and records where they fail. Its results have led to changes in `llms.txt`, error messages, and compile-time SQL validation.
+
+### When to Use It
+Measure with the benchmark when a change affects how agents write or fix Doma code:
+- `docs/llms.txt` or other AI-facing documentation
+- Messages in `org.seasar.doma.message.Message` that users act on, especially annotation processor errors
+- SQL template parsing, or compile-time validation in `doma-processor`
+
+When a bug in Doma is found, consider adding a benchmark task that would have hit it.
+
+### How to Run It
+Clone the benchmark next to this repository, publish a snapshot of your change, and compare it with the latest release:
+
+```bash
+./gradlew :doma-core:publishToMavenLocal :doma-processor:publishToMavenLocal --no-configuration-cache
+cd ../doma-agent-bench
+./gradlew -q run --args="validate --doma-version <version>-SNAPSHOT"
+./gradlew -q run --args="run --agent claude --model <model> --conditions C0,C1 --repeat 5 --doma-version <version>-SNAPSHOT --label after"
+./gradlew -q run --args="run --agent claude --model <model> --conditions C0,C1 --repeat 5 --label before"
+```
+
+- `validate` needs no API key and takes a few minutes: it checks that every task still passes with its reference solution and fails with no changes.
+- `run --agent claude` calls a model and costs API usage, so run it only for changes like the ones listed above.
+- Read the failed runs' transcripts, not only the pass rates: a failure can come from the benchmark itself rather than from Doma.

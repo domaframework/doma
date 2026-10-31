@@ -19,6 +19,17 @@
   ```
   $ gh workflow run release-draft.yml --repo domaframework/doma --ref master
   ```
+- Run the task validation of [doma-agent-bench](https://github.com/domaframework/doma-agent-bench)
+  against a snapshot of `master`. It needs no API key and takes a few minutes. Its reference
+  solutions compile and run against the previous release, so a failure points to a change that
+  breaks existing code, which the release notes should mention.
+  With the benchmark cloned next to this repository:
+
+  ```
+  $ ./gradlew :doma-core:publishToMavenLocal :doma-processor:publishToMavenLocal --no-configuration-cache
+  $ cd ../doma-agent-bench
+  $ ./gradlew -q run --args="validate --doma-version <version>-SNAPSHOT"
+  ```
 
 ## Dispatch the release workflow
 
