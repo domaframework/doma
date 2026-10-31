@@ -27,6 +27,120 @@ Doma follows a code-first approach where:
 - Systems where performance and minimal dependencies are critical
 - Teams preferring SQL-centric development over ORM abstractions
 
+**Essentials for Writing Doma Code**
+
+This section applies to Doma 3. Doma 2 code found on the web differs in places (for example, `@Dao(config = ...)` no longer exists).
+
+Gradle setup. The compile plugin lets the annotation processor read SQL files under `src/main/resources`:
+
+```kotlin
+plugins {
+    java
+    id("org.domaframework.doma.compile") version "<latest>"
+}
+
+dependencies {
+    implementation("org.seasar.doma:doma-core:<latest>")
+    annotationProcessor("org.seasar.doma:doma-processor:<latest>")
+}
+```
+
+Entity. Doma is not JPA: never use `jakarta.persistence` or `javax.persistence` annotations. The default naming convention is `NamingType.NONE`, which maps the property `departmentId` to a column literally named `departmentId`. For snake_case columns, set `naming` (or annotate each property with `@Column(name = "...")`). A mutable class with getters and setters works, and so does a record annotated with `@Entity`, which is treated as immutable.
+
+```java
+@Entity(naming = NamingType.SNAKE_LOWER_CASE)
+public class Employee {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // database-generated identity column
+  private Integer id;
+  private String name;
+  private BigDecimal salary;
+  private Integer departmentId;
+  @Version private Integer version; // optimistic locking: a stale update throws OptimisticLockException
+  // getters and setters
+}
+```
+
+DAO. The annotation processor generates the implementation class `<DaoName>Impl`, which takes a `Config` in its constructor: `EmployeeDao dao = new EmployeeDaoImpl(config);`. `SimpleConfig.builder(url, user, password).build()` creates a `Config` with the dialect inferred from the JDBC URL.
+
+```java
+@Dao
+public interface EmployeeDao {
+  @Select // SQL in META-INF/com/example/dao/EmployeeDao/selectById.sql
+  Employee selectById(Integer id); // returns null when no row matches
+
+  @Sql("select /*%expand*/* from employee order by id") // or write the SQL inline
+  @Select
+  List<Employee> selectAll();
+
+  @Insert
+  int insert(Employee employee); // sets the generated id on the entity
+
+  @Update
+  int update(Employee employee); // increments version; throws OptimisticLockException on a stale version
+
+  @Delete
+  int delete(Employee employee);
+}
+```
+
+SQL file location. For the DAO `com.example.dao.EmployeeDao` and the method `selectById`, the SQL file must be `src/main/resources/META-INF/com/example/dao/EmployeeDao/selectById.sql`. A missing or invalid SQL file is a compile error.
+
+SQL template grammar. SQL templates are plain SQL with directives in comments, followed by test data so that the file also runs as-is:
+
+- Bind variable: `/* name */'test'`. A parameter of type `Iterable` or array expands an IN list: `in /* ids */(1, 2)`.
+- Condition: `/*%if expr*/ ... /*%elseif expr*/ ... /*%else*/ ... /*%end*/`.
+- Loop: `/*%for item : items*/ ... /*%end*/`. Inside the loop, `item_has_next` is available.
+- Column expansion: `select /*%expand*/* from ...`.
+- Embedded SQL fragment (not escaped): `/*# orderBy */`. Literal value (not bound): `/*^ value */'test'`.
+- Comment removed from the generated SQL: `/*%! comment */`.
+
+These are all the directives. `/*%` must be followed by `if`, `elseif`, `else`, `end`, `for`, `expand`, `populate` or `!`. There is no `/*%where*/`, `/*%and*/` or `/*%set*/`. You do not need them, because Doma automatically removes a `WHERE` (and `HAVING`, `ORDER BY`, `GROUP BY`) clause left empty by condition directives, and a leading `AND` or `OR` right after it:
+
+```sql
+select /*%expand*/* from employee
+where
+/*%if name != null */
+  name = /* name */'smith'
+/*%end*/
+/*%if minSalary != null */
+  and salary >= /* minSalary */0
+/*%end*/
+order by id
+```
+
+Expressions use Java syntax (`!=`, `&&`, `||`, method calls such as `list.isEmpty()`). Built-in functions are called with `@`, for example `@prefix(name)`, `@suffix(name)`, `@infix(name)` and `@escape(name)`.
+
+LIKE searches. `@prefix`, `@suffix`, `@infix` and `@escape` escape `%` and `_` with the escape character `$`, so the SQL must declare `escape '$'`. Declaring another character, such as `escape '\'`, makes `%` and `_` match as wildcards without any error:
+
+```sql
+where name like /* @prefix(name) */'smi%' escape '$'
+```
+
+Null parameters. Only DAO method parameters of basic types (such as `String`, `Integer` and `BigDecimal`) and domain types may be `null`. Any other parameter, such as a `List` or an entity, must not be `null`; the generated code throws `DomaNullPointerException`. Pass an empty list instead, and test it with `/*%if !ids.isEmpty() */`. An empty list in an IN clause without such a condition becomes `in (null)` and matches no rows.
+
+Criteria API. Use `QueryDsl` with the generated metamodel classes (`Employee_` for `Employee`; generated by default). `Entityql` and `NativeSql` are deprecated and will be removed: do not use them.
+
+```java
+QueryDsl queryDsl = new QueryDsl(config);
+Employee_ e = new Employee_();
+Department_ d = new Department_();
+
+List<Employee> list = queryDsl.from(e)
+    .innerJoin(d, on -> on.eq(e.departmentId, d.id))
+    .where(c -> c.eq(d.name, "Sales"))
+    .orderBy(c -> { c.desc(e.salary); c.asc(e.id); })
+    .fetch();
+
+List<Tuple2<String, Long>> counts = queryDsl.from(d)
+    .leftJoin(e, on -> on.eq(d.id, e.departmentId))
+    .groupBy(d.name)
+    .select(d.name, Expressions.count(e.id))
+    .fetch();
+```
+
+Generated classes. `EmployeeDaoImpl` and `Employee_` do not exist until the project is compiled. Run the build before concluding that a referenced class is missing.
+
 ## Resources
 
 - [Main Repository](https://github.com/domaframework/doma): Doma's Git Repository
