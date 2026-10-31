@@ -85,7 +85,14 @@ public class AutoBatchModifyQueryMetaFactory
     List<? extends VariableElement> parameters = methodElement.getParameters();
     int size = parameters.size();
     if (size != 1) {
-      throw new AptException(Message.DOMA4002, methodElement, new Object[] {});
+      String annotationName =
+          batchModifyAnnot
+              .getAnnotationMirror()
+              .getAnnotationType()
+              .asElement()
+              .getSimpleName()
+              .toString();
+      throw new AptException(Message.DOMA4501, methodElement, new Object[] {annotationName});
     }
     final QueryParameterMeta parameterMeta = createParameterMeta(parameters.get(0));
     IterableCtType iterableCtType =

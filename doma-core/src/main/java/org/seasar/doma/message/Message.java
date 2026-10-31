@@ -1024,6 +1024,10 @@ public enum Message implements MessageResource {
       "You cannot annotate the field with @Embedded if the field type is not an embeddable class."),
   DOMA4499("The property \"{0}\" is not found in the embeddable class \"{1}\"."),
   DOMA4500("The property \"{0}\" refers to the class \"{1}\", which creates a circular reference."),
+  DOMA4501(
+      "The number of parameters must be one, because @{0} generates the SQL statement from it. "
+          + "To use other parameters, write the SQL statement yourself: "
+          + "set \"sqlFile = true\" in @{0} and put the SQL in a file, or annotate the method with @Sql."),
 
   // other
   DOMA5001(

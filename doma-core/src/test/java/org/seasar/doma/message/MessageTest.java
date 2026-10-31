@@ -16,6 +16,7 @@
 package org.seasar.doma.message;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,13 @@ public class MessageTest {
     String message = Message.DOMA4019.getMessage("aaa", "bbb");
     assertNotNull(message);
     System.out.println(message);
+  }
+
+  @Test
+  public void testDOMA4501() {
+    String message = Message.DOMA4501.getMessage("Update");
+    assertTrue(message.contains("because @Update generates"), message);
+    assertTrue(message.contains("set \"sqlFile = true\" in @Update"), message);
   }
 
   @Test

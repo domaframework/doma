@@ -260,6 +260,8 @@ class DaoProcessorTest extends AbstractCompilerTest {
           invocationContext(MultiDaoExtendsDao.class, Message.DOMA4188),
           invocationContext(MultiInsertIllegalParameterTypeDao.class, Message.DOMA4042),
           invocationContext(MultiInsertIllegalParameterSizeDao.class, Message.DOMA4002),
+          invocationContext(UpdateIllegalParameterSizeDao.class, Message.DOMA4501),
+          invocationContext(BatchUpdateIllegalParameterSizeDao.class, Message.DOMA4501),
           invocationContext(MultiInsertIllegalTypeArgumentDao.class, Message.DOMA4043),
           invocationContext(MultiInsertIllegalReturnTypeDao.class, Message.DOMA4001),
           invocationContext(
