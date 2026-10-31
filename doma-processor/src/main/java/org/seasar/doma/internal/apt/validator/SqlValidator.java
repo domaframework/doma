@@ -289,6 +289,8 @@ public class SqlValidator extends SimpleSqlNodeVisitor<Void, Void> {
           methodElement,
           new Object[] {path, sql, location.getLineNumber(), location.getPosition()});
     }
+    // The alias is evaluated as an expression at runtime, so an unquoted alias is a variable
+    validateExpressionVariable(node.getLocation(), node.getAlias());
     return visitNode(node, p);
   }
 
