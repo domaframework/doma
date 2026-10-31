@@ -436,6 +436,88 @@ class SqlValidatorTest extends AbstractCompilerTest {
   }
 
   @Test
+  void testExpand_alias() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run(RoundContext ctx) {
+            ExecutableElement methodElement =
+                createMethodElement(ctx, target, "testExpand", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", true, false);
+            SqlParser parser =
+                new SqlParser(
+                    "select /*%expand \"e\"*/* from emp e where e.name = /* name */'aaa'");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  @Test
+  void testExpand_aliasVariable() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run(RoundContext ctx) {
+            ExecutableElement methodElement =
+                createMethodElement(ctx, target, "testExpand", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", true, false);
+            SqlParser parser = new SqlParser("select /*%expand name*/* from emp");
+            SqlNode sqlNode = parser.parse();
+            sqlNode.accept(validator, null);
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  @Test
+  void testExpand_aliasVariableNotFound() throws Exception {
+    Class<?> target = SqlValidationDao.class;
+    addCompilationUnit(target);
+    addProcessor(
+        new TestProcessor() {
+          @Override
+          protected void run(RoundContext ctx) {
+            ExecutableElement methodElement =
+                createMethodElement(ctx, target, "testExpand", String.class);
+            LinkedHashMap<String, TypeMirror> parameterTypeMap =
+                createParameterTypeMap(methodElement);
+            SqlValidator validator =
+                new SqlValidator(
+                    ctx, methodElement, parameterTypeMap, "aaa/bbbDao/ccc.sql", true, false);
+            // An unquoted alias is an expression, so "e" refers to a variable that does not exist
+            SqlParser parser =
+                new SqlParser("select /*%expand e*/* from emp e where e.name = /* name */'aaa'");
+            SqlNode sqlNode = parser.parse();
+            try {
+              sqlNode.accept(validator, null);
+              fail();
+            } catch (AptException expected) {
+              System.out.println(expected.getMessage());
+              assertEquals(Message.DOMA4092, expected.getMessageResource());
+            }
+          }
+        });
+    compile();
+    assertTrue(getCompiledResult());
+  }
+
+  @Test
   void testPopulate() throws Exception {
     Class<?> target = SqlValidationDao.class;
     addCompilationUnit(target);
