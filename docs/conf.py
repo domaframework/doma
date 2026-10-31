@@ -195,7 +195,7 @@ html_context = {
 
     # versions
     'doma_version': '3.14.1',
-    'doma_compile_version': '4.0.3',
+    'doma_compile_version': '4.0.4',
     'doma_codegen_version': '3.2.2',
     'eclipse_apt_version': '4.4.1',
     'logback_classic_version': '1.6.5',

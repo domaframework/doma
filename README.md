@@ -131,7 +131,7 @@ For Java projects:
 
 ```kotlin
 plugins {
-    id("org.domaframework.doma.compile") version "4.0.3"
+    id("org.domaframework.doma.compile") version "4.0.4"
 }
 
 dependencies {
@@ -144,7 +144,7 @@ For Kotlin projects, use doma-kotlin instead of doma-core and use kapt in place 
 
 ```kotlin
 plugins {
-  id("org.domaframework.doma.compile") version "4.0.3"
+  id("org.domaframework.doma.compile") version "4.0.4"
 }
 
 dependencies {

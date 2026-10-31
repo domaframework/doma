@@ -47,7 +47,7 @@ dependencies {
 :::{tab-item} Groovy
 ```groovy
 plugins {
-    id 'org.domaframework.doma.compile' version '3.0.1'
+    id 'org.domaframework.doma.compile' version '{{ doma_compile_version }}'
 }
 
 dependencies {
