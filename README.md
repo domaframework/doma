@@ -122,6 +122,20 @@ for more information.
 
 Try [Getting started](https://doma.readthedocs.io/en/latest/getting-started/) and [simple-examples](https://github.com/domaframework/simple-examples).
 
+Using Doma with AI coding agents
+---------------------
+
+Doma checks SQL templates, bind variables and DAO signatures at compile time,
+so many mistakes in code written by AI coding agents fail the build with a `DOMA` error
+that the agent can read and fix, instead of failing later at runtime.
+
+- [llms.txt](https://docs.domaframework.org/llms.txt) summarizes how to write Doma code,
+  including the SQL template grammar and common pitfalls.
+  Give it to your coding agent as context.
+- [doma-agent-bench](https://github.com/domaframework/doma-agent-bench) measures how well
+  coding agents build features with Doma and records where they fail.
+  Its results guide improvements to Doma's documentation, error messages and compile-time checks.
+
 Installing
 ----------
 
