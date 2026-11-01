@@ -133,8 +133,8 @@ msgid "Identifier"
 msgstr "識別子"
 
 #: ../../query/multi-row-insert.md:66
-msgid "See [Id generation](../entity.md#id-generation)."
-msgstr "[IDの生成](../entity.md#id-generation) を参照してください。"
+msgid "See [Id generation](#identity-auto-generation)."
+msgstr "[IDの生成](#identity-auto-generation) を参照してください。"
 
 #: ../../query/multi-row-insert.md:68
 msgid "Version number"
@@ -154,8 +154,8 @@ msgid ""
 msgstr "アプリケーションが `0` より大きい値を明示的にバージョンプロパティに設定した場合、自動生成は行われません。"
 
 #: ../../query/multi-row-insert.md:74
-msgid "See also [Version](../entity.md#version)."
-msgstr "[バージョン](../entity.md#version)) も参照してください。"
+msgid "See also [Version](#entity-version)."
+msgstr "[バージョン](#entity-version) も参照してください。"
 
 #: ../../query/multi-row-insert.md:76
 msgid "Properties of @MultiInsert"

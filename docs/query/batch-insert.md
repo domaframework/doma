@@ -41,7 +41,7 @@ Each element in the array represents the insert count for the corresponding oper
 
 If the identifier in [Entity classes](../entity.md) is annotated with `@GeneratedValue`, the identifier is automatically generated and set.
 
-Reference [Id generation](../entity.md#id-generation) for cautionary points.
+Reference [Id generation](#identity-auto-generation) for cautionary points.
 
 If you don't use auto-generated keys in your application, you can enable the `ignoreGeneratedKeys` flag.
 This flag may improve performance.
