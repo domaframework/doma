@@ -2,10 +2,32 @@
   "extends": [
     "github>domaframework/renovate-config"
   ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/__tests__/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/__fixtures__/**"
+  ],
+  "pep621": {
+    "lockFileMaintenance": {
+      "enabled": true
+    }
+  },
+  "pyenv": {
+    "enabled": false
+  },
   "packageRules": [
     {
       "matchPackageNames": ["com.google.googlejavaformat"],
       "allowedVersions": "<1.29.0"
+    },
+    {
+      "matchFileNames": ["docs/**"],
+      "groupName": "documentation dependencies"
     }
   ]
 }

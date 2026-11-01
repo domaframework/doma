@@ -144,9 +144,9 @@ The project uses Sphinx for documentation generation, hosted on ReadTheDocs:
 
 The documentation's Python environment is managed with [uv](https://docs.astral.sh/uv/):
 - `docs/pyproject.toml` declares the dependencies, and `docs/uv.lock` pins every package, including transitive ones such as Sphinx itself
-- `docs/.python-version` sets the Python version; uv installs it when it is missing
+- `docs/.python-version` sets the Python version; uv installs it when it is missing. Renovate does not update it, because `.readthedocs.yaml` must name the same version: change both together
 - `uv run` creates `docs/.venv` and syncs it with the lock file before each command, so there is no virtual environment to activate
-- To add or update a dependency, run `uv add <package>` or `uv lock --upgrade-package <package>` in `docs/`, and commit `uv.lock`
+- To add or update a dependency, run `uv add <package>` or `uv lock --upgrade-package <package>` in `docs/`, and commit `uv.lock`. Renovate updates the dependencies in one grouped PR and refreshes `uv.lock` weekly
 
 Run the following commands in the `docs` directory.
 
