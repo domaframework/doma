@@ -1,9 +1,7 @@
 plugins {
     `java-library`
-    `maven-publish`
-    signing
     alias(libs.plugins.spotless)
-    alias(libs.plugins.publish)
+    alias(libs.plugins.publish) apply false
     alias(libs.plugins.release) apply false
     alias(libs.plugins.doma.compile)
     alias(libs.plugins.kotlin.jvm)
@@ -191,8 +189,7 @@ subprojects {
 
 configure(modularProjects) {
     apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
-    apply(plugin = "signing")
+    apply(plugin = catalog.plugins.publish.get().pluginId)
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
@@ -200,46 +197,46 @@ configure(modularProjects) {
         withSourcesJar()
     }
 
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["java"])
-                pom {
-                    val projectUrl: String by project
-                    name.set(project.name)
-                    description.set("DAO Oriented Database Mapping Framework for Java")
-                    url.set(projectUrl)
-                    licenses {
-                        license {
-                            name.set("The Apache Software License, Version 2.0")
-                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("nakamura-to")
-                            name.set("Toshihiro Nakamura")
-                            email.set("toshihiro.nakamura@gmail.com")
-                        }
-                    }
-                    scm {
-                        val githubUrl: String by project
-                        connection.set("scm:git:$githubUrl")
-                        developerConnection.set("scm:git:$githubUrl")
-                        url.set(projectUrl)
-                    }
+    // The plugin reads the credentials and the signing key from the mavenCentralUsername,
+    // mavenCentralPassword, signingInMemoryKey, and signingInMemoryKeyPassword properties.
+    // publishToMavenCentral uploads a release to the Central Portal without publishing it,
+    // and publishAndReleaseToMavenCentral also publishes it. SNAPSHOT versions go to the snapshot repository.
+    extensions.configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+        // Keep the sources and Javadoc JARs added by the java block above,
+        // so that the Gradle module metadata lists them as variants.
+        configure(
+            com.vanniktech.maven.publish.JavaLibrary(
+                javadocJar = com.vanniktech.maven.publish.JavadocJar.None(),
+                sourcesJar = com.vanniktech.maven.publish.SourcesJar.None(),
+            )
+        )
+        publishToMavenCentral()
+        signAllPublications()
+        pom {
+            val projectUrl: String by project
+            name.set(project.name)
+            description.set("DAO Oriented Database Mapping Framework for Java")
+            url.set(projectUrl)
+            licenses {
+                license {
+                    name.set("The Apache Software License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                 }
             }
+            developers {
+                developer {
+                    id.set("nakamura-to")
+                    name.set("Toshihiro Nakamura")
+                    email.set("toshihiro.nakamura@gmail.com")
+                }
+            }
+            scm {
+                val githubUrl: String by project
+                connection.set("scm:git:$githubUrl")
+                developerConnection.set("scm:git:$githubUrl")
+                url.set(projectUrl)
+            }
         }
-    }
-
-    signing {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        val publishing = extensions.getByType(PublishingExtension::class)
-        sign(publishing.publications)
-        isRequired = isReleaseVersion
     }
 
     tasks {
@@ -421,16 +418,5 @@ rootProject.apply {
     tasks.updateDaemonJvm {
         languageVersion.set(JavaLanguageVersion.of(javaLangVersion))
         toolchainPlatforms.set(emptySet())
-    }
-
-    nexusPublishing {
-        repositories {
-            // see https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/#configuration
-            sonatype {
-                nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
-                snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
-            }
-        }
-        packageGroup.set("org.seasar")
     }
 }
