@@ -207,6 +207,22 @@ If the value of `employee.employeeName` contains `%` such as `AB%C`,
 the `%` is escaped with a default escape sequence `$`,
 therefore the value is converted to `AB$%C%`.
 
+:::{warning}
+The `ESCAPE` clause must specify the same escape character that the function uses,
+as `escape '$'` does in the example above.
+If it specifies another character, such as `escape '\'`,
+the escaped `%` and `_` in the value still work as wildcards.
+No error occurs, but the query returns wrong rows.
+
+To use another escape character, pass it to the function
+and specify the same character in the `ESCAPE` clause:
+
+```sql
+select * from employee where
+    employee_name like /* @prefix(employee.employeeName, '#') */'smith' escape '#'
+```
+:::
+
 You can use following function signatures:
 
 String @escape(CharSequence text, char escapeChar = '\$')

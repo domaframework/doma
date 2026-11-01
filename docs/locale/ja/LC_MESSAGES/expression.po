@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 10:26+0900\n"
+"POT-Creation-Date: 2026-11-01 11:38+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -12,7 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../expression.md:1
 msgid "Expression language"
@@ -23,7 +23,6 @@ msgid "Contents"
 msgstr "コンテンツ"
 
 #: ../../expression.md:7
-#
 msgid ""
 "You can write simple expressions in [SQL directives](sql.md#directives). "
 "The grammar is very similar to Java, although not all Java features are "
@@ -47,6 +46,7 @@ msgstr ""
 "パラメータを取るメソッドを呼び出すこともできません。"
 
 #: ../../expression.md:19
+#, python-format
 msgid ""
 "To check if an optional value exists, use `/*%if optional != null */` "
 "instead of `/*%if optional.isPresent() */`."
@@ -419,22 +419,41 @@ msgid ""
 "contains `%` such as `AB%C`, the `%` is escaped with a default escape "
 "sequence `$`, therefore the value is converted to `AB$%C%`."
 msgstr ""
-"`@prefix(employee.employeeName)` は、 `employee.employeeName` の値を "
-"`@prefix` "
+"`@prefix(employee.employeeName)` は、 `employee.employeeName` の値を `@prefix`"
+" "
 "関数に渡します。この関数は受け取った文字列を前方一致検索に適した文字列に変換し、特殊文字をエスケープします。例えば、`employee.employeeName`"
-" の値が `ABC` の場合、これは `ABC%` に変換されます。`employee.employeeName` の値に `%`"
-" が含まれている場合、例え `AB%C` のように、`%` はデフォルトのエスケープシーケンス `$` "
-"によってエスケープされ、そのため値は `AB$%C%` に変換されます。"
+" の値が `ABC` の場合、これは `ABC%` に変換されます。`employee.employeeName` の値に `%` "
+"が含まれている場合、例え `AB%C` のように、`%` はデフォルトのエスケープシーケンス `$` によってエスケープされ、そのため値は "
+"`AB$%C%` に変換されます。"
 
-#: ../../expression.md:210
+#: ../../expression.md:211
+msgid ""
+"The `ESCAPE` clause must specify the same escape character that the "
+"function uses, as `escape '$'` does in the example above. If it specifies"
+" another character, such as `escape '\\'`, the escaped `%` and `_` in the"
+" value still work as wildcards. No error occurs, but the query returns "
+"wrong rows."
+msgstr ""
+"`ESCAPE` 句には、上の例の `escape '$'` のように、関数が使うものと同じエスケープ文字を指定する必要があります。"
+"`escape '\\'` のように別の文字を指定すると、値の中でエスケープされた `%` や `_` "
+"がワイルドカードとして働いてしまいます。エラーは発生しませんが、クエリは誤った行を返します。"
+
+#: ../../expression.md:217
+msgid ""
+"To use another escape character, pass it to the function and specify the "
+"same character in the `ESCAPE` clause:"
+msgstr ""
+"別のエスケープ文字を使うには、その文字を関数に渡し、`ESCAPE` 句にも同じ文字を指定します。"
+
+#: ../../expression.md:226
 msgid "You can use following function signatures:"
 msgstr "次の関数シグネチャを使用できます。"
 
-#: ../../expression.md:212
+#: ../../expression.md:228
 msgid "String @escape(CharSequence text, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.md:214
+#: ../../expression.md:230
 msgid ""
 "Escapes the character sequence for LIKE operation. The return value is a "
 "string which is a result of escaping the character sequence. If "
@@ -442,14 +461,14 @@ msgid ""
 "It returns `null` if you pass `null` as a parameter."
 msgstr ""
 "LIKE 操作の文字シーケンスをエスケープします。戻り値は文字列をエスケープした結果の文字列です。 `escapeChar` "
-"が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` を渡すと "
-"`null` を返します。"
+"が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` を渡すと `null` "
+"を返します。"
 
-#: ../../expression.md:219
+#: ../../expression.md:235
 msgid "String @prefix(CharSequence prefix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.md:221
+#: ../../expression.md:237
 msgid ""
 "Converts the character sequence for prefix search. The return value is a "
 "string which is a result of escaping the character sequence and adding a "
@@ -458,14 +477,14 @@ msgid ""
 "as a parameter."
 msgstr ""
 "前方一致検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、末尾にワイルドカード文字を追加した結果の文字列です。 "
-"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
-"`null` を渡すと `null` を返します。"
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` "
+"を渡すと `null` を返します。"
 
-#: ../../expression.md:227
+#: ../../expression.md:243
 msgid "String @infix(CharSequence infix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.md:229
+#: ../../expression.md:245
 msgid ""
 "Converts the character sequence for infix search. The return value is a "
 "string which is a result of escaping the character sequence and adding "
@@ -474,14 +493,14 @@ msgid ""
 " you pass `null` as a parameter."
 msgstr ""
 "中置検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭と末尾にワイルドカード文字を追加した結果の文字列です。 "
-"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
-"`null` を渡すと `null` を返します。"
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` "
+"を渡すと `null` を返します。"
 
-#: ../../expression.md:235
+#: ../../expression.md:251
 msgid "String @suffix(CharSequence suffix, char escapeChar = '\\$')"
 msgstr ""
 
-#: ../../expression.md:237
+#: ../../expression.md:253
 msgid ""
 "Converts the character sequence for suffix search. The return value is a "
 "string which is a result of escaping the character sequence and adding a "
@@ -490,44 +509,42 @@ msgid ""
 "`null` as a parameter."
 msgstr ""
 "接尾辞検索用の文字列へ変換します。戻り値は、文字シーケンスをエスケープし、先頭にワイルドカード文字を追加した結果の文字列です。 "
-"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして "
-"`null` を渡すと `null` を返します。"
+"`escapeChar` が指定されていない場合、デフォルトのエスケープシーケンスとして `$` が使用されます。パラメータとして `null` "
+"を渡すと `null` を返します。"
 
-#: ../../expression.md:243
+#: ../../expression.md:259
 msgid "java.util.Date @roundDownTimePart(java.util.Date date)"
 msgstr ""
 
-#: ../../expression.md:245 ../../expression.md:251
+#: ../../expression.md:261 ../../expression.md:267
 msgid ""
 "Rounds down the time part. The return value is a new Date which is "
 "rounded down the time part. It returns `null` if you pass `null` as a "
 "parameter."
 msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい日付です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.md:249
+#: ../../expression.md:265
 msgid "java.sql.Date @roundDownTimePart(java.sql.Date date)"
 msgstr ""
 
-#: ../../expression.md:255
+#: ../../expression.md:271
 msgid "java.sql.Timestamp @roundDownTimePart(java.sql.Timestamp timestamp)"
 msgstr ""
 
-#: ../../expression.md:257
+#: ../../expression.md:273
 msgid ""
 "Rounds down the time part. The return value is a new Timestamp which is "
 "rounded down the time part. It returns `null` if you pass `null` as a "
 "parameter."
-msgstr ""
-"時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` "
-"を返します。"
+msgstr "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.md:261
+#: ../../expression.md:277
 msgid ""
 "java.time.LocalDateTime @roundDownTimePart(java.time.LocalDateTime "
 "localDateTime)"
 msgstr ""
 
-#: ../../expression.md:263
+#: ../../expression.md:279
 msgid ""
 "Rounds down the time part. The return value is a new LocalDateTime which "
 "is rounded down the time part. It returns `null` if you pass `null` as a "
@@ -536,40 +553,38 @@ msgstr ""
 "時刻部分を切り捨てます。戻り値は、時刻部分を切り捨てた新しい LocalDateTime です。パラメータとして `null` を渡すと "
 "`null` を返します。"
 
-#: ../../expression.md:267
+#: ../../expression.md:283
 msgid "java.util.Date @roundUpTimePart(java.util.Date date)"
 msgstr ""
 
-#: ../../expression.md:269 ../../expression.md:275
+#: ../../expression.md:285 ../../expression.md:291
 msgid ""
 "Rounds up the time part. The return value is a new Date which is rounded "
 "up the time part. It returns `null` if you pass `null` as a parameter."
 msgstr "時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しい日付です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.md:273
+#: ../../expression.md:289
 msgid "java.sql.Date @roundUpTimePart(java.sql.Date date)"
 msgstr ""
 
-#: ../../expression.md:279
+#: ../../expression.md:295
 msgid "java.sql.Timestamp @roundUpTimePart(java.sql.Timestamp timestamp)"
 msgstr ""
 
-#: ../../expression.md:281
+#: ../../expression.md:297
 msgid ""
 "Rounds up the time part. The return value is a new Timestamp which is "
 "rounded up the time part. It returns `null` if you pass `null` as a "
 "parameter."
-msgstr ""
-"時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` "
-"を返します。"
+msgstr "時刻部分を切り上げます。戻り値は、時刻部分を切り上げた新しいタイムスタンプです。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.md:285
+#: ../../expression.md:301
 msgid ""
 "java.time.LocalDateTime @roundUpTimePart(java.time.LocalDateTime "
 "localDateTime)"
 msgstr ""
 
-#: ../../expression.md:287
+#: ../../expression.md:303
 msgid ""
 "Rounds up the time part. The return value is a new LocalDateTime which is"
 " rounded up the time part. It returns `null` if you pass `null` as a "
@@ -578,92 +593,92 @@ msgstr ""
 "時間部分を切り上げます。戻り値は、時刻部分を切り上げた新しい LocalDateTime です。パラメータとして `null` を渡すと "
 "`null` を返します。"
 
-#: ../../expression.md:291
+#: ../../expression.md:307
 msgid "java.time.LocalDate @roundUpTimePart(java.time.LocalDate localDate)"
 msgstr ""
 
-#: ../../expression.md:293
+#: ../../expression.md:309
 msgid ""
 "Returns the next day. The return value is a new LocalDate which is the "
 "next one after the argument. It returns `null` if you pass `null` as a "
 "parameter."
 msgstr "翌日返却。戻り値は、引数の次の新しい LocalDate です。パラメータとして `null` を渡すと `null` を返します。"
 
-#: ../../expression.md:297
+#: ../../expression.md:313
 msgid "boolean @isEmpty(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.md:299
+#: ../../expression.md:315
 msgid "Returns `true` if the character sequence is `null` or the length is `0`."
 msgstr "文字シーケンスが `null` または長さが `0` の場合は `true` を返します。"
 
-#: ../../expression.md:301
+#: ../../expression.md:317
 msgid "boolean @isNotEmpty(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.md:303
+#: ../../expression.md:319
 msgid ""
 "Returns `true` if the character sequence isn't `null` and the length "
 "isn't `0`."
 msgstr "文字シーケンスが `null` でなく、長さが `0` でない場合は `true` を返します。"
 
-#: ../../expression.md:305
+#: ../../expression.md:321
 msgid "boolean @isBlank(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.md:307
+#: ../../expression.md:323
 msgid ""
 "Returns `true` only if the character sequence is `null`, the length is "
 "`0`, or the sequence is formed with whitespaces only."
 msgstr ""
-"文字シーケンスが `null` であるか、長さが `0` であるか、または文字シーケンスが空白のみで形成されている場合にのみ "
-"`true` を返します。"
+"文字シーケンスが `null` であるか、長さが `0` であるか、または文字シーケンスが空白のみで形成されている場合にのみ `true` "
+"を返します。"
 
-#: ../../expression.md:310
+#: ../../expression.md:326
 msgid "boolean @isNotBlank(CharSequence charSequence)"
 msgstr ""
 
-#: ../../expression.md:312
+#: ../../expression.md:328
 msgid ""
 "Returns `true` if the character sequence isn't `null`, the length isn't "
 "`0`, and the sequence isn't formed with whitespaces only."
 msgstr "文字列が `null` でなく、長さが `0` でなく、文字列が空白だけで形成されていない場合は `true` を返します。"
 
-#: ../../expression.md:315
+#: ../../expression.md:331
 msgid ""
 "These functions are correspond to the methods of "
 "`org.seasar.doma.expr.ExpressionFunctions`."
 msgstr "これらの関数は `org.seasar.doma.expr.ExpressionFunctions` のメソッドに対応します。"
 
-#: ../../expression.md:317
+#: ../../expression.md:333
 msgid "Using custom functions"
 msgstr "カスタム関数の使用"
 
-#: ../../expression.md:319
+#: ../../expression.md:335
 msgid "You can define and use your own custom functions."
 msgstr "独自の関数を定義して使用できます。"
 
-#: ../../expression.md:321
+#: ../../expression.md:337
 msgid "To use custom functions that you define, follow these steps:"
 msgstr "定義したカスタム関数を利用するには、次の手順に従います。"
 
-#: ../../expression.md:323
+#: ../../expression.md:339
 msgid ""
 "Define the function as a method in a class that implements "
 "`org.seasar.doma.expr.ExpressionFunctions`."
 msgstr "関数は`org.seasar.doma.expr.ExpressionFunctions`を実装するクラスのメソッドとして定義します。"
 
-#: ../../expression.md:325
+#: ../../expression.md:341
 msgid "The method must be a public instance method."
 msgstr "このメソッドはパブリック インスタンス メソッドである必要があります。"
 
-#: ../../expression.md:326
+#: ../../expression.md:342
 msgid ""
 "Register the class as an option in the annotation processing "
 "configuration. Use `doma.expr.functions` as the option key."
 msgstr "アノテーション処理設定でクラスをオプションとして登録します。オプションキーには `doma.expr.functions` を使用してください。"
 
-#: ../../expression.md:328
+#: ../../expression.md:344
 msgid ""
 "Use an instance of your class in the RDBMS dialect within your "
 "configuration class (Doma's RDBMS dialect implementations accept an "
@@ -672,7 +687,7 @@ msgstr ""
 "構成クラス内でRDBMS方言のクラスのインスタンスを使用します（Doma の RDBMS 方言の実装は、コンストラクタに "
 "`ExpressionFunctions` パラメータを受け入れます）。"
 
-#: ../../expression.md:332
+#: ../../expression.md:348
 msgid ""
 "To call a custom function, add `@` at the beginning of the function name "
 "like built-in functions. For example, you can call `myfunc` function like"
