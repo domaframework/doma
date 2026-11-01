@@ -23,7 +23,7 @@ The project supports extensive database testing. Tests can be run against specif
 - `./gradlew h2` - Run tests against H2 (in-memory)
 - `./gradlew mysql` - Run tests against MySQL 5.7 (via Testcontainers)
 - `./gradlew mysql8` - Run tests against MySQL 8.0 (via Testcontainers)
-- `./gradlew oracle` - Run tests against Oracle 21c (via Testcontainers)
+- `./gradlew oracle` - Run tests against Oracle Database Free 23.4 (via Testcontainers)
 - `./gradlew postgresql` - Run tests against PostgreSQL 12 (via Testcontainers)
 - `./gradlew sqlite` - Run tests against SQLite
 - `./gradlew sqlserver` - Run tests against SQL Server 2019 (via Testcontainers)

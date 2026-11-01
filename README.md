@@ -39,15 +39,15 @@ Supported databases
 
 We are testing against the following databases:
 
-| Database           |  version | status |
-|--------------------|---------:|:------:|
-| H2 Database        |  2.5.252 | stable |
-| MySQL v5           |      5.7 | stable |
-| MySQL v8           |   8.0.36 | stable |
-| Oracle Database XE |      21c | stable |
-| PostgreSQL         |    12.20 | stable |
-| SQLite             | 3.53.4.0 | stable |
-| SQL Server         |     2019 | stable |
+| Database             |  version | status |
+|----------------------|---------:|:------:|
+| H2 Database          |  2.5.252 | stable |
+| MySQL v5             |      5.7 | stable |
+| MySQL v8             |   8.0.36 | stable |
+| Oracle Database Free |     23.4 | stable |
+| PostgreSQL           |    12.20 | stable |
+| SQLite               | 3.54.1.0 | stable |
+| SQL Server           |     2019 | stable |
 
 Examples
 ---------------------
@@ -121,6 +121,20 @@ for more information.
 ### More Examples
 
 Try [Getting started](https://doma.readthedocs.io/en/latest/getting-started/) and [simple-examples](https://github.com/domaframework/simple-examples).
+
+Using Doma with AI coding agents
+---------------------
+
+Doma checks SQL templates, bind variables and DAO signatures at compile time,
+so many mistakes in code written by AI coding agents fail the build with a `DOMA` error
+that the agent can read and fix, instead of failing later at runtime.
+
+- [llms.txt](https://docs.domaframework.org/llms.txt) summarizes how to write Doma code,
+  including the SQL template grammar and common pitfalls.
+  Give it to your coding agent as context.
+- [doma-agent-bench](https://github.com/domaframework/doma-agent-bench) measures how well
+  coding agents build features with Doma and records where they fail.
+  Its results guide improvements to Doma's documentation, error messages and compile-time checks.
 
 Installing
 ----------
