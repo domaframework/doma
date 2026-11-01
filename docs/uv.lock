@@ -232,9 +232,9 @@ dependencies = [
 requires-dist = [
     { name = "myst-parser", specifier = "==4.0.1" },
     { name = "sphinx-autobuild", specifier = "==2024.10.3" },
-    { name = "sphinx-design", specifier = "==0.6.1" },
-    { name = "sphinx-intl", specifier = "==2.3.1" },
-    { name = "sphinx-rtd-theme", specifier = "==3.0.2" },
+    { name = "sphinx-design", specifier = "==0.7.0" },
+    { name = "sphinx-intl", specifier = "==2.4.0" },
+    { name = "sphinx-rtd-theme", specifier = "==3.1.0" },
 ]
 
 [[package]]
@@ -564,15 +564,6 @@ wheels = [
 ]
 
 [[package]]
-name = "setuptools"
-version = "84.2.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/70/b3/c19426f783614d625699a4b247faf628ea9ab1db228674491767b417f9e1/setuptools-84.2.1.tar.gz", hash = "sha256:3ff8b3b5492a0aa66960f4419365a86b84e013070d4313e4d4a6894f5d64d6bc", size = 1230289, upload-time = "2026-10-20T19:01:37.742Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/55/6dc6d6bb953bdfc52519a0059592c52b6e3b8ad51cf8256dffceb55b0610/setuptools-84.2.1-py3-none-any.whl", hash = "sha256:ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2", size = 876263, upload-time = "2026-10-20T19:01:35.678Z" },
-]
-
-[[package]]
 name = "snowballstemmer"
 version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -628,43 +619,42 @@ wheels = [
 
 [[package]]
 name = "sphinx-design"
-version = "0.6.1"
+version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "sphinx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/69/b34e0cb5336f09c6866d53b4a19d76c227cdec1bbc7ac4de63ca7d58c9c7/sphinx_design-0.6.1.tar.gz", hash = "sha256:b44eea3719386d04d765c1a8257caca2b3e6f8421d7b3a5e742c0fd45f84e632", size = 2193689, upload-time = "2024-08-02T13:48:44.277Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/13/7b/804f311da4663a4aecc6cf7abd83443f3d4ded970826d0c958edc77d4527/sphinx_design-0.7.0.tar.gz", hash = "sha256:d2a3f5b19c24b916adb52f97c5f00efab4009ca337812001109084a740ec9b7a", size = 2203582, upload-time = "2026-01-19T13:12:53.297Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c6/43/65c0acbd8cc6f50195a3a1fc195c404988b15c67090e73c7a41a9f57d6bd/sphinx_design-0.6.1-py3-none-any.whl", hash = "sha256:b11f37db1a802a183d61b159d9a202314d4d2fe29c163437001324fe2f19549c", size = 2215338, upload-time = "2024-08-02T13:48:42.106Z" },
+    { url = "https://files.pythonhosted.org/packages/30/cf/45dd359f6ca0c3762ce0490f681da242f0530c49c81050c035c016bfdd3a/sphinx_design-0.7.0-py3-none-any.whl", hash = "sha256:f82bf179951d58f55dca78ab3706aeafa496b741a91b1911d371441127d64282", size = 2220350, upload-time = "2026-01-19T13:12:51.077Z" },
 ]
 
 [[package]]
 name = "sphinx-intl"
-version = "2.3.1"
+version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "babel" },
     { name = "click" },
-    { name = "setuptools" },
     { name = "sphinx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/01/4f64b7d28e3e0cbf25a70a79f26c4683c987ca7c6c265492115cfb302ca4/sphinx_intl-2.3.1.tar.gz", hash = "sha256:e2d04b907f57a029d46b4da344fd791e660d935eab6ced8a274fc65446389af1", size = 28006, upload-time = "2024-12-01T12:20:16.934Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/ba/f4d6a9573c81a9248cf2f354c09158cbca7b3f40eae296b6f69850c26f8e/sphinx_intl-2.4.0.tar.gz", hash = "sha256:f13173bfc4a131f74ea082a5820386e2bcdc020b3003378b029d438f404edbde", size = 28825, upload-time = "2026-08-30T03:38:50.489Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/5d/6a9d1460ef6e079d00350eb6203efd6a6a899692e927b9b18d652490b5e5/sphinx_intl-2.3.1-py3-none-any.whl", hash = "sha256:e3f4be80743e0e4c778fbc07e72b062c13c88c50645a69b62557a3f57a24b7fc", size = 13801, upload-time = "2024-12-01T12:20:10.359Z" },
+    { url = "https://files.pythonhosted.org/packages/77/2a/d8f012d47588ec63409d172ccf2c3afc035d14e2b2a52a88339f86bbc058/sphinx_intl-2.4.0-py3-none-any.whl", hash = "sha256:704567d1b22f7e8ed1cfc8aa2306e6617a1d17782c9a5891898b20267b15b041", size = 13000, upload-time = "2026-08-30T03:38:49.206Z" },
 ]
 
 [[package]]
 name = "sphinx-rtd-theme"
-version = "3.0.2"
+version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docutils" },
     { name = "sphinx" },
     { name = "sphinxcontrib-jquery" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/91/44/c97faec644d29a5ceddd3020ae2edffa69e7d00054a8c7a6021e82f20335/sphinx_rtd_theme-3.0.2.tar.gz", hash = "sha256:b7457bc25dda723b20b086a670b9953c859eab60a2a03ee8eb2bb23e176e5f85", size = 7620463, upload-time = "2024-11-13T11:06:04.545Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/68/a1bfbf38c0f7bccc9b10bbf76b94606f64acb1552ae394f0b8285bfaea25/sphinx_rtd_theme-3.1.0.tar.gz", hash = "sha256:b44276f2c276e909239a4f6c955aa667aaafeb78597923b1c60babc76db78e4c", size = 7620915, upload-time = "2026-01-12T16:03:31.17Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/77/46e3bac77b82b4df5bb5b61f2de98637724f246b4966cfc34bc5895d852a/sphinx_rtd_theme-3.0.2-py2.py3-none-any.whl", hash = "sha256:422ccc750c3a3a311de4ae327e82affdaf59eb695ba4936538552f3b00f4ee13", size = 7655561, upload-time = "2024-11-13T11:06:02.094Z" },
+    { url = "https://files.pythonhosted.org/packages/87/c7/b5c8015d823bfda1a346adb2c634a2101d50bb75d421eb6dcb31acd25ebc/sphinx_rtd_theme-3.1.0-py2.py3-none-any.whl", hash = "sha256:1785824ae8e6632060490f67cf3a72d404a85d2d9fc26bce3619944de5682b89", size = 7655617, upload-time = "2026-01-12T16:03:28.101Z" },
 ]
 
 [[package]]
