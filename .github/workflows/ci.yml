@@ -90,9 +90,8 @@ jobs:
       - name: Build English documentation
         run: uv run --frozen sphinx-build -W --keep-going -b dirhtml . _build/dirhtml
 
-      # Not run with -W yet: the Japanese translation still has broken cross-references
       - name: Build Japanese documentation
-        run: uv run --frozen sphinx-build --keep-going -b dirhtml -D language=ja . _build/dirhtml-ja
+        run: uv run --frozen sphinx-build -W --keep-going -b dirhtml -D language=ja . _build/dirhtml-ja
 
   integration-test:
     name: Integration Test (${{ matrix.driver }})

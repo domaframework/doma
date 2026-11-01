@@ -99,9 +99,9 @@ msgstr ""
 
 #: ../../query/insert.md:56
 msgid ""
-"Reference [Id generation](../entity.md#id-generation) for cautionary "
+"Reference [Id generation](#identity-auto-generation) for cautionary "
 "points."
-msgstr "注意点については [ID自動生成](../entity.md#id-generation) を参照してください。"
+msgstr "注意点については [ID自動生成](#identity-auto-generation) を参照してください。"
 
 #: ../../query/insert.md:58
 msgid "Version numbers"

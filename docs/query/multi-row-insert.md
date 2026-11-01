@@ -63,7 +63,7 @@ During the execution of a multi-insert, automatically generated values will be s
 
 ### Identifier
 
-See [Id generation](../entity.md#id-generation).
+See [Id generation](#identity-auto-generation).
 
 ### Version number
 
@@ -71,7 +71,7 @@ If the application does not set a value to the version property or sets a value 
 
 If the application explicitly sets a value greater than `0` to the version property, automatic generation will not occur.
 
-See also [Version](../entity.md#version).
+See also [Version](#entity-version).
 
 ## Properties of @MultiInsert
 

@@ -53,7 +53,7 @@ Result<ImmutableEmployee> insert(ImmutableEmployee employee);
 
 The identifier is automatically generated and set if the [Entity classes](../entity.md) identifier is annotated with `@GeneratedValue`.
 
-Reference [Id generation](../entity.md#id-generation) for cautionary points.
+Reference [Id generation](#identity-auto-generation) for cautionary points.
 
 ### Version numbers
 
