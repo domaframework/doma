@@ -121,7 +121,9 @@ The generated documents are hosted on ReadTheDocs.
 - **Production**: https://doma.readthedocs.io/
 - **Latest (master branch)**: https://doma.readthedocs.io/en/latest/
 
-To contribute to documentation, you need Python 3.x.
+To contribute to documentation, you need [uv](https://docs.astral.sh/uv/getting-started/installation/).
+uv installs the Python version in `docs/.python-version` and the dependencies locked in `docs/uv.lock`.
+You do not need to install Python or create a virtual environment yourself.
 
 #### Install Sphinx
 
@@ -129,8 +131,10 @@ Navigate to the docs directory and install dependencies:
 
 ```bash
 $ cd docs
-$ pip install -r requirements.txt
+$ uv sync
 ```
+
+`uv run` also syncs the environment before each command, so you can skip this step.
 
 #### Generate HTML files
 
@@ -138,10 +142,10 @@ Use `sphinx-autobuild` for live-reloading development server:
 
 ```bash
 $ cd docs
-$ sphinx-autobuild . _build/html
+$ uv run sphinx-autobuild . _build/html
 ```
 
-Visit http://127.0.0.1:8000 to preview your changes. The page automatically reloads when you modify RST files.
+Visit http://127.0.0.1:8000 to preview your changes. The page automatically reloads when you modify Markdown files.
 
 #### Build documentation
 
@@ -149,7 +153,7 @@ To build HTML documentation without auto-reload:
 
 ```bash
 $ cd docs
-$ make html
+$ uv run make html
 ```
 
 The generated HTML files will be in `docs/_build/html/`.
@@ -162,14 +166,14 @@ Generate POT files (translation templates):
 
 ```bash
 $ cd docs
-$ sphinx-build -b gettext . _build/gettext
+$ uv run sphinx-build -b gettext . _build/gettext
 ```
 
 Update PO files (translation files):
 
 ```bash
 $ cd docs
-$ sphinx-intl update -p _build/gettext -l ja
+$ uv run sphinx-intl update -p _build/gettext -l ja
 ```
 
 The Japanese translation files are located in `docs/locale/ja/LC_MESSAGES/`.

@@ -142,47 +142,35 @@ The project uses Sphinx for documentation generation, hosted on ReadTheDocs:
 
 ### Building Documentation Locally
 
-#### Using Python Virtual Environment
+The documentation's Python environment is managed with [uv](https://docs.astral.sh/uv/):
+- `docs/pyproject.toml` declares the dependencies, and `docs/uv.lock` pins every package, including transitive ones such as Sphinx itself
+- `docs/.python-version` sets the Python version; uv installs it when it is missing
+- `uv run` creates `docs/.venv` and syncs it with the lock file before each command, so there is no virtual environment to activate
+- To add or update a dependency, run `uv add <package>` or `uv lock --upgrade-package <package>` in `docs/`, and commit `uv.lock`
 
-```bash
-# Create virtual environment
-python -m venv .venv
-
-# Activate virtual environment (on macOS/Linux)
-source .venv/bin/activate
-
-# Go to docs directory
-cd docs
-
-# Install dependencies in virtual environment
-pip install -r requirements.txt
-```
+Run the following commands in the `docs` directory.
 
 #### Generate HTML documentation with auto-reload
 ```bash
-source .venv/bin/activate && \
-cd docs && \
-sphinx-autobuild . _build/html && \
-cd ..
+uv run sphinx-autobuild . _build/html
 # Visit http://127.0.0.1:8000
 ```
 
 #### Generate HTML documentation with auto-reload (language=ja)
 ```bash
-source .venv/bin/activate && \
-cd docs && \
-sphinx-autobuild . _build/html -Dlanguage=ja&& \
-cd ..
+uv run sphinx-autobuild . _build/html -D language=ja
 # Visit http://127.0.0.1:8000
+```
+
+#### Check the build as CI does
+```bash
+uv run sphinx-build -W --keep-going -b dirhtml . _build/dirhtml
 ```
 
 #### Update Japanese translation files
 ```bash
-source .venv/bin/activate && \
-cd docs && \
-sphinx-build -b gettext . _build/gettext && \
-sphinx-intl update -p _build/gettext -l ja && \
-cd ..
+uv run sphinx-build -b gettext . _build/gettext && \
+uv run sphinx-intl update -p _build/gettext -l ja
 ```
 
 ### Documentation Guidelines
