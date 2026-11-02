@@ -192,12 +192,12 @@ public enum Message implements MessageResource {
           + "The type of the expression \"{3}\" must be a subtype of either java.lang.Iterable or an array type, but it is [{4}]. SQL=[{0}]"),
   DOMA2133(
       "Failed to parse the SQL on line {1} at column {2}. "
-          + "\"/%if ...*/\" is not closed with \"/*%end*/\". "
-          + "The pair of \"/%if ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
+          + "\"/*%if ...*/\" is not closed with \"/*%end*/\". "
+          + "The pair of \"/*%if ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
   DOMA2134(
       "Failed to parse the SQL on line {1} at column {2}. "
-          + "\"/%for ...*/\" is not closed with \"/*%end*/\". "
-          + "The pair of \"/%for ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
+          + "\"/*%for ...*/\" is not closed with \"/*%end*/\". "
+          + "The pair of \"/*%for ...*/\" and \"/*%end*/\" must exist in the same clause such as SELECT, FROM, WHERE and so on. SQL=[{0}]"),
   DOMA2135(
       "Failed to parse the SQL on line {1} at column {2}. "
           + "The parenthesis is not closed. "
