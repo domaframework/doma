@@ -60,7 +60,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.nio.CharBuffer;
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
 import org.seasar.doma.internal.util.SqlTokenUtil;
-import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlParseException;
 import org.seasar.doma.message.Message;
 
 /**
@@ -898,7 +898,7 @@ public class SqlTokenizer {
 
   private void throwInvalidPercentageDirectiveException() {
     int pos = buf.position() - lineStartPosition;
-    throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
+    throw new SqlParseException(Message.DOMA2119, sql, lineNumber, pos);
   }
 
   private boolean isPopulateWord() {
@@ -973,7 +973,7 @@ public class SqlTokenizer {
         lineStartPosition = buf.position();
       }
     }
-    throw new JdbcException(Message.DOMA2102, sql, startLineNumber, startColumn);
+    throw new SqlParseException(Message.DOMA2102, sql, startLineNumber, startColumn);
   }
 
   private void handleLineComment() {
@@ -1037,7 +1037,7 @@ public class SqlTokenizer {
 
   private void throwUnterminatedQuoteException() {
     int pos = buf.position() - lineStartPosition;
-    throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
+    throw new SqlParseException(Message.DOMA2101, sql, lineNumber, pos);
   }
 
   private boolean isWordStart(char c) {

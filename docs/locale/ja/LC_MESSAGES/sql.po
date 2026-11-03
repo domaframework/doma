@@ -1041,6 +1041,35 @@ msgstr ""
 msgid "Usage"
 msgstr "使用法"
 
+#: ../../sql.md:828
+msgid "Checking only the syntax"
+msgstr "構文だけをチェックする"
+
+#: ../../sql.md:830
+msgid ""
+"To check only the syntax of a template, call `validate`. It parses the "
+"template without evaluating expressions, so you don't need to add values."
+" When the template has a syntax error, it throws `SqlParseException`, "
+"which tells where the error is."
+msgstr ""
+"テンプレートの構文だけをチェックするには `validate` を呼び出します。"
+"式を評価せずにテンプレートを解析するため、値を追加する必要はありません。"
+"テンプレートに構文エラーがある場合は、エラーの位置がわかる "
+"`SqlParseException` をスローします。"
+
+#: ../../sql.md:844
+msgid ""
+"`execute` throws `SqlParseException` in the same way. When the template "
+"is parsed but the SQL cannot be built from it, for example because an "
+"expression cannot be evaluated, `execute` throws `SqlBuildException`. "
+"Both extend `SqlLocationException`, which has `getLineNumber` and "
+"`getColumnNumber`."
+msgstr ""
+"`execute` も同じように `SqlParseException` をスローします。"
+"テンプレートは解析できても、式を評価できないなどの理由で SQL を組み立てられない場合、"
+"`execute` は `SqlBuildException` をスローします。"
+"どちらも `getLineNumber` と `getColumnNumber` を持つ `SqlLocationException` を継承しています。"
+
 #~ msgid "`Bind variable directive`_"
 #~ msgstr "`バインド変数ディレクティブ`_"
 
