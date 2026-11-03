@@ -803,7 +803,6 @@ The module only contains the following classes:
 - SqlArgument
 - SqlStatement
 - SqlTemplate
-- SqlTemplateSyntaxException
 
 ### Gradle
 
@@ -830,14 +829,18 @@ List<SqlArgument> arguments = statement.getArguments();
 
 To check only the syntax of a template, call `validate`.
 It parses the template without evaluating expressions, so you don't need to add values.
-When the template has a syntax error, it throws `SqlTemplateSyntaxException`, which tells where the error is.
+When the template has a syntax error, it throws `SqlParseException`, which tells where the error is.
 
 ```java
 try {
     new SqlTemplate(sql).validate();
-} catch (SqlTemplateSyntaxException e) {
+} catch (SqlParseException e) {
     int lineNumber = e.getLineNumber();
     int columnNumber = e.getColumnNumber();
     String message = e.getMessage();
 }
 ```
+
+`execute` throws `SqlParseException` in the same way.
+When the template is parsed but the SQL cannot be built from it, for example because an expression cannot be evaluated, `execute` throws `SqlBuildException`.
+Both extend `SqlTemplateException`, which has `getLineNumber` and `getColumnNumber`.

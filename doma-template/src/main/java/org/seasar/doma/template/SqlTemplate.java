@@ -27,11 +27,11 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.Config;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
+import org.seasar.doma.jdbc.SqlParseException;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
 import org.seasar.doma.wrapper.Wrapper;
@@ -118,23 +118,12 @@ public class SqlTemplate {
    * checked.
    *
    * <p>When the template has a syntax error, the thrown exception tells where the error is with
-   * {@link SqlTemplateSyntaxException#getLineNumber()} and {@link
-   * SqlTemplateSyntaxException#getColumnNumber()}.
+   * {@link SqlParseException#getLineNumber()} and {@link SqlParseException#getColumnNumber()}.
    *
-   * @throws SqlTemplateSyntaxException if the template has a syntax error
+   * @throws SqlParseException if the template has a syntax error
    */
   public void validate() {
-    try {
-      new SqlParser(sql).parse();
-    } catch (JdbcException e) {
-      // Every error raised while parsing has the line and the column as its second and third
-      // arguments, so callers don't need to know the layout of the arguments
-      Object[] args = (Object[]) e.getArgs();
-      if (args.length > 2 && args[1] instanceof Integer && args[2] instanceof Integer) {
-        throw new SqlTemplateSyntaxException(e, sql, (Integer) args[1], (Integer) args[2]);
-      }
-      throw e;
-    }
+    new SqlParser(sql).parse();
   }
 
   private NodePreparedSqlBuilder createNodePreparedSqlBuilder() {

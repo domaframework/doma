@@ -88,8 +88,8 @@ import org.seasar.doma.internal.util.SqlTokenUtil;
 import org.seasar.doma.internal.util.StringUtil;
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.InParameter;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
+import org.seasar.doma.jdbc.SqlBuildException;
 import org.seasar.doma.jdbc.SqlBuilderSettings;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogFormattingFunction;
@@ -285,7 +285,7 @@ public class NodePreparedSqlBuilder
           String text = value.toString();
           if (text.indexOf('\'') > -1) {
             SqlLocation location = node.getLocation();
-            throw new JdbcException(
+            throw new SqlBuildException(
                 Message.DOMA2224,
                 location.getSql(),
                 location.getLineNumber(),
@@ -315,7 +315,7 @@ public class NodePreparedSqlBuilder
       } else if (valueClass.isArray()) {
         handleIterableValueNode(node, p, arrayToList(value), valueClass, valueHandler);
       } else {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2112,
             location.getSql(),
             location.getLineNumber(),
@@ -340,7 +340,7 @@ public class NodePreparedSqlBuilder
     if (value != null) {
       String fragment = value.toString();
       if (fragment.indexOf('\'') > -1) {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2116,
             location.getSql(),
             location.getLineNumber(),
@@ -348,7 +348,7 @@ public class NodePreparedSqlBuilder
             node.getVariableName());
       }
       if (fragment.indexOf(';') > -1) {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2117,
             location.getSql(),
             location.getLineNumber(),
@@ -356,7 +356,7 @@ public class NodePreparedSqlBuilder
             node.getVariableName());
       }
       if (fragment.contains("--")) {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2122,
             location.getSql(),
             location.getLineNumber(),
@@ -364,7 +364,7 @@ public class NodePreparedSqlBuilder
             node.getVariableName());
       }
       if (fragment.contains("/*")) {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2123,
             location.getSql(),
             location.getLineNumber(),
@@ -421,7 +421,7 @@ public class NodePreparedSqlBuilder
     for (Object v : applyInListPadding(node, values)) {
       if (v == null) {
         SqlLocation location = node.getLocation();
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2115,
             location.getSql(),
             location.getLineNumber(),
@@ -557,7 +557,7 @@ public class NodePreparedSqlBuilder
     } else if (expressionValueClass.isArray()) {
       iterable = arrayToList(expressionValue);
     } else {
-      throw new JdbcException(
+      throw new SqlBuildException(
           Message.DOMA2129,
           location.getSql(),
           location.getLineNumber(),
@@ -852,7 +852,7 @@ public class NodePreparedSqlBuilder
     try {
       return Scalars.wrap(value, valueClass, false, config.getClassHelper());
     } catch (ScalarException e) {
-      throw new JdbcException(
+      throw new SqlBuildException(
           Message.DOMA2118,
           e,
           location.getSql(),
@@ -1090,7 +1090,7 @@ public class NodePreparedSqlBuilder
         ExpressionNode expressionNode = parser.parse();
         return evaluator.evaluate(expressionNode);
       } catch (ExpressionException e) {
-        throw new JdbcException(
+        throw new SqlBuildException(
             Message.DOMA2111,
             e,
             location.getSql(),
