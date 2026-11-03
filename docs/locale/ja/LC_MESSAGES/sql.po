@@ -1033,30 +1033,33 @@ msgstr ""
 msgid "SqlTemplate"
 msgstr ""
 
-#: ../../sql.md:807
+#: ../../sql.md:806
+msgid "SqlTemplateSyntaxException"
+msgstr ""
+
+#: ../../sql.md:808
 msgid "Gradle"
 msgstr ""
 
-#: ../../sql.md:815
+#: ../../sql.md:816
 msgid "Usage"
 msgstr "使用法"
 
-#: ../../sql.md:828
+#: ../../sql.md:829
 msgid "Checking only the syntax"
 msgstr "構文だけをチェックする"
 
-#: ../../sql.md:830
+#: ../../sql.md:831
 msgid ""
 "To check only the syntax of a template, call `validate`. It parses the "
 "template without evaluating expressions, so you don't need to add values."
-" When the template has a syntax error, it throws `JdbcException`. The "
-"second and third elements of `getArgs()` are the line number and the "
-"column number of the error."
+" When the template has a syntax error, it throws "
+"`SqlTemplateSyntaxException`, which tells where the error is."
 msgstr ""
 "テンプレートの構文だけをチェックするには `validate` を呼び出します。"
 "式を評価せずにテンプレートを解析するため、値を追加する必要はありません。"
-"テンプレートに構文エラーがある場合は `JdbcException` をスローします。"
-"`getArgs()` の 2 番目と 3 番目の要素は、エラーの行番号と列番号です。"
+"テンプレートに構文エラーがある場合は、エラーの位置がわかる "
+"`SqlTemplateSyntaxException` をスローします。"
 
 #~ msgid "`Bind variable directive`_"
 #~ msgstr "`バインド変数ディレクティブ`_"

@@ -117,13 +117,24 @@ public class SqlTemplate {
    * The syntax of the expressions in directives, such as {@code /*%if ...*}{@code /}, isn't
    * checked.
    *
-   * <p>When the template has a syntax error, the thrown exception has the line number and the
-   * column number of the error as the second and third elements of {@link JdbcException#getArgs()}.
+   * <p>When the template has a syntax error, the thrown exception tells where the error is with
+   * {@link SqlTemplateSyntaxException#getLineNumber()} and {@link
+   * SqlTemplateSyntaxException#getColumnNumber()}.
    *
-   * @throws JdbcException if the template has a syntax error
+   * @throws SqlTemplateSyntaxException if the template has a syntax error
    */
   public void validate() {
-    new SqlParser(sql).parse();
+    try {
+      new SqlParser(sql).parse();
+    } catch (JdbcException e) {
+      // Every error raised while parsing has the line and the column as its second and third
+      // arguments, so callers don't need to know the layout of the arguments
+      Object[] args = (Object[]) e.getArgs();
+      if (args.length > 2 && args[1] instanceof Integer && args[2] instanceof Integer) {
+        throw new SqlTemplateSyntaxException(e, sql, (Integer) args[1], (Integer) args[2]);
+      }
+      throw e;
+    }
   }
 
   private NodePreparedSqlBuilder createNodePreparedSqlBuilder() {

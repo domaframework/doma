@@ -15,8 +15,10 @@
  */
 package org.seasar.doma.template;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
@@ -123,19 +125,50 @@ class SqlTemplateTest {
   @Test
   void validate_syntaxError() {
     String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'";
-    JdbcException e = assertThrows(JdbcException.class, () -> new SqlTemplate(sql).validate());
+    SqlTemplateSyntaxException e =
+        assertThrows(SqlTemplateSyntaxException.class, () -> new SqlTemplate(sql).validate());
     assertEquals(Message.DOMA2133, e.getMessageResource());
-    Object[] args = (Object[]) e.getArgs();
-    assertEquals(2, args[1]);
-    assertEquals(21, args[2]);
+    assertEquals(sql, e.getSql());
+    assertEquals(2, e.getLineNumber());
+    assertEquals(21, e.getColumnNumber());
+  }
+
+  @Test
+  void validate_syntaxError_keepsMessageAndCause() {
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'";
+    SqlTemplateSyntaxException e =
+        assertThrows(SqlTemplateSyntaxException.class, () -> new SqlTemplate(sql).validate());
+    JdbcException cause = assertInstanceOf(JdbcException.class, e.getCause());
+    assertEquals(cause.getMessage(), e.getMessage());
+    assertArrayEquals((Object[]) cause.getArgs(), (Object[]) e.getArgs());
   }
 
   @Test
   void validate_unclosedComment() {
     String sql = "select 1\nfrom T\n/*%end\ngroup by\n  A";
-    JdbcException e = assertThrows(JdbcException.class, () -> new SqlTemplate(sql).validate());
+    SqlTemplateSyntaxException e =
+        assertThrows(SqlTemplateSyntaxException.class, () -> new SqlTemplate(sql).validate());
     assertEquals(Message.DOMA2102, e.getMessageResource());
-    Object[] args = (Object[]) e.getArgs();
-    assertEquals(3, args[1]);
+    assertEquals(3, e.getLineNumber());
+  }
+
+  @Test
+  void validate_everySyntaxErrorIsConverted() {
+    // Errors from both the tokenizer and the parser
+    String[] sqls = {
+      "select 'abc", // DOMA2101
+      "select /*%xxx*/", // DOMA2119
+      "select * from emp /*%end*/", // DOMA2104
+      "select * from emp)", // DOMA2109
+      "select * from emp where id = /* id */", // DOMA2110
+      "select * from emp /*%for e : list */", // DOMA2134
+      "select * from emp /*%else*/", // DOMA2140
+    };
+    for (String sql : sqls) {
+      SqlTemplateSyntaxException e =
+          assertThrows(
+              SqlTemplateSyntaxException.class, () -> new SqlTemplate(sql).validate(), sql);
+      assertEquals(1, e.getLineNumber(), sql);
+    }
   }
 }
