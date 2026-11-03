@@ -824,3 +824,20 @@ SqlStatement statement =
 String rawSql = statement.getRawSql(); // select * from emp where name = ? and salary = ?
 List<SqlArgument> arguments = statement.getArguments();
 ```
+
+### Checking only the syntax
+
+To check only the syntax of a template, call `validate`.
+It parses the template without evaluating expressions, so you don't need to add values.
+When the template has a syntax error, it throws `JdbcException`.
+The second and third elements of `getArgs()` are the line number and the column number of the error.
+
+```java
+try {
+    new SqlTemplate(sql).validate();
+} catch (JdbcException e) {
+    Object[] args = (Object[]) e.getArgs();
+    int lineNumber = (int) args[1];
+    int columnNumber = (int) args[2];
+}
+```

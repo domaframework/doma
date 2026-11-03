@@ -15,12 +15,16 @@
  */
 package org.seasar.doma.template;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.dialect.MssqlDialect;
+import org.seasar.doma.message.Message;
 
 class SqlTemplateTest {
 
@@ -107,5 +111,31 @@ class SqlTemplateTest {
     } catch (UnsupportedOperationException e) {
       assertEquals("The '%populate' directive is not supported.", e.getMessage());
     }
+  }
+
+  @Test
+  void validate() {
+    // The values are not needed, because the expressions are not evaluated
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'\n/*%end*/";
+    assertDoesNotThrow(() -> new SqlTemplate(sql).validate());
+  }
+
+  @Test
+  void validate_syntaxError() {
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'";
+    JdbcException e = assertThrows(JdbcException.class, () -> new SqlTemplate(sql).validate());
+    assertEquals(Message.DOMA2133, e.getMessageResource());
+    Object[] args = (Object[]) e.getArgs();
+    assertEquals(2, args[1]);
+    assertEquals(21, args[2]);
+  }
+
+  @Test
+  void validate_unclosedComment() {
+    String sql = "select 1\nfrom T\n/*%end\ngroup by\n  A";
+    JdbcException e = assertThrows(JdbcException.class, () -> new SqlTemplate(sql).validate());
+    assertEquals(Message.DOMA2102, e.getMessageResource());
+    Object[] args = (Object[]) e.getArgs();
+    assertEquals(3, args[1]);
   }
 }

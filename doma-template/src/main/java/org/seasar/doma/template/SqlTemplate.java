@@ -27,6 +27,7 @@ import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.Config;
+import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SqlKind;
 import org.seasar.doma.jdbc.SqlLogType;
@@ -106,6 +107,23 @@ public class SqlTemplate {
     NodePreparedSqlBuilder builder = createNodePreparedSqlBuilder();
     PreparedSql preparedSql = builder.build(node, Function.identity());
     return toSqlStatement(preparedSql);
+  }
+
+  /**
+   * Checks only the syntax of this template.
+   *
+   * <p>This method parses the template without evaluating expressions, so it doesn't need the
+   * values of the template. The values added with {@link #add(String, Class, Object)} are ignored.
+   * The syntax of the expressions in directives, such as {@code /*%if ...*}{@code /}, isn't
+   * checked.
+   *
+   * <p>When the template has a syntax error, the thrown exception has the line number and the
+   * column number of the error as the second and third elements of {@link JdbcException#getArgs()}.
+   *
+   * @throws JdbcException if the template has a syntax error
+   */
+  public void validate() {
+    new SqlParser(sql).parse();
   }
 
   private NodePreparedSqlBuilder createNodePreparedSqlBuilder() {
