@@ -990,12 +990,13 @@ public class SqlTokenizer {
 
   private void handleQuotedString() {
     type = QUOTE;
-    if (!consumeQuotedContent()) {
-      throwUnterminatedQuoteException();
-    }
+    consumeQuotedContent();
   }
 
-  private boolean consumeQuotedContent() {
+  private void consumeQuotedContent() {
+    // An unterminated quote is reported at its opening "'", which has just been read
+    int startLineNumber = currentLineNumber;
+    int startColumn = buf.position() - lineStartPosition;
     while (buf.hasRemaining()) {
       char c1 = buf.get();
       if (c1 == '\'') {
@@ -1004,15 +1005,23 @@ public class SqlTokenizer {
           char c2 = buf.get();
           if (c2 != '\'') {
             buf.reset();
-            return true; // Found closing quote
+            return; // Found closing quote
           }
           // Double quote encountered, continue
         } else {
-          return true; // End of input with closing quote
+          return; // End of input with closing quote
         }
+      } else if (c1 == '\r' || c1 == '\n') {
+        // Count "\r\n" as one line break, as peekNonWord() does
+        if (c1 == '\r' && buf.hasRemaining() && buf.get(buf.position()) == '\n') {
+          buf.get();
+        }
+        currentLineNumber++;
+        // Keep columns of the following tokens relative to their own line
+        lineStartPosition = buf.position();
       }
     }
-    return false; // Unterminated quote
+    throwUnterminatedQuoteException(startLineNumber, startColumn);
   }
 
   private void handleWord() {
@@ -1022,9 +1031,7 @@ public class SqlTokenizer {
       char c2 = buf.get();
 
       if (c2 == '\'') {
-        if (!consumeQuotedContent()) {
-          throwUnterminatedQuoteException();
-        }
+        consumeQuotedContent();
         return;
       }
 
@@ -1035,9 +1042,8 @@ public class SqlTokenizer {
     }
   }
 
-  private void throwUnterminatedQuoteException() {
-    int pos = buf.position() - lineStartPosition;
-    throw new SqlParseException(Message.DOMA2101, sql, lineNumber, pos);
+  private void throwUnterminatedQuoteException(int lineNumber, int column) {
+    throw new SqlParseException(Message.DOMA2101, sql, lineNumber, column);
   }
 
   private boolean isWordStart(char c) {
