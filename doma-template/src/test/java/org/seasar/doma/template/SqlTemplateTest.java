@@ -15,12 +15,18 @@
  */
 package org.seasar.doma.template;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.seasar.doma.jdbc.SqlBuildException;
+import org.seasar.doma.jdbc.SqlParseException;
 import org.seasar.doma.jdbc.dialect.MssqlDialect;
+import org.seasar.doma.message.Message;
 
 class SqlTemplateTest {
 
@@ -107,5 +113,70 @@ class SqlTemplateTest {
     } catch (UnsupportedOperationException e) {
       assertEquals("The '%populate' directive is not supported.", e.getMessage());
     }
+  }
+
+  @Test
+  void validate() {
+    // The values are not needed, because the expressions are not evaluated
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'\n/*%end*/";
+    assertDoesNotThrow(() -> new SqlTemplate(sql).validate());
+  }
+
+  @Test
+  void validate_syntaxError() {
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'";
+    SqlParseException e =
+        assertThrows(SqlParseException.class, () -> new SqlTemplate(sql).validate());
+    assertEquals(Message.DOMA2133, e.getMessageResource());
+    assertEquals(sql, e.getSql());
+    assertEquals(2, e.getLineNumber());
+    assertEquals(21, e.getColumnNumber());
+  }
+
+  @Test
+  void validate_syntaxError_keepsMessageArguments() {
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'";
+    SqlParseException e =
+        assertThrows(SqlParseException.class, () -> new SqlTemplate(sql).validate());
+    assertArrayEquals(new Object[] {sql, 2, 21}, (Object[]) e.getArgs());
+  }
+
+  @Test
+  void validate_unclosedComment() {
+    String sql = "select 1\nfrom T\n/*%end\ngroup by\n  A";
+    SqlParseException e =
+        assertThrows(SqlParseException.class, () -> new SqlTemplate(sql).validate());
+    assertEquals(Message.DOMA2102, e.getMessageResource());
+    assertEquals(3, e.getLineNumber());
+  }
+
+  @Test
+  void validate_everySyntaxErrorIsConverted() {
+    // Errors from both the tokenizer and the parser
+    String[] sqls = {
+      "select 'abc", // DOMA2101
+      "select /*%xxx*/", // DOMA2119
+      "select * from emp /*%end*/", // DOMA2104
+      "select * from emp)", // DOMA2109
+      "select * from emp where id = /* id */", // DOMA2110
+      "select * from emp /*%for e : list */", // DOMA2134
+      "select * from emp /*%else*/", // DOMA2140
+    };
+    for (String sql : sqls) {
+      SqlParseException e =
+          assertThrows(SqlParseException.class, () -> new SqlTemplate(sql).validate(), sql);
+      assertEquals(1, e.getLineNumber(), sql);
+    }
+  }
+
+  @Test
+  void execute_buildError() {
+    // "name" is not added, so the expression cannot be evaluated
+    String sql = "select * from emp where\n/*%if name != null */\n  name = /* name */'a'\n/*%end*/";
+    SqlBuildException e =
+        assertThrows(SqlBuildException.class, () -> new SqlTemplate(sql).execute());
+    assertEquals(Message.DOMA2111, e.getMessageResource());
+    assertEquals(2, e.getLineNumber());
+    assertEquals(21, e.getColumnNumber());
   }
 }

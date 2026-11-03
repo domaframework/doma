@@ -37,11 +37,11 @@ import org.seasar.doma.internal.jdbc.sql.node.ExpandNode;
 import org.seasar.doma.internal.jdbc.sql.node.PopulateNode;
 import org.seasar.doma.internal.jdbc.sql.node.SqlLocation;
 import org.seasar.doma.internal.util.Pair;
-import org.seasar.doma.jdbc.JdbcException;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.PreparedSql;
 import org.seasar.doma.jdbc.SelectOptions;
 import org.seasar.doma.jdbc.SelectOptionsAccessor;
+import org.seasar.doma.jdbc.SqlBuildException;
 import org.seasar.doma.jdbc.SqlLogType;
 import org.seasar.doma.jdbc.SqlNode;
 import org.seasar.doma.jdbc.aggregate.AggregateStrategyType;
@@ -163,12 +163,12 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
    *
    * @param node the expand node
    * @return the list of expanded column names
-   * @throws JdbcException if the entity type is null
+   * @throws SqlBuildException if the entity type is null
    */
   protected List<String> expandColumns(ExpandNode node) {
     if (entityType == null) {
       SqlLocation location = node.getLocation();
-      throw new JdbcException(
+      throw new SqlBuildException(
           Message.DOMA2144, location.getSql(), location.getLineNumber(), location.getPosition());
     }
     if (aggregateStrategyType != null) {
@@ -188,13 +188,13 @@ public abstract class AbstractSelectQuery extends AbstractQuery implements Selec
    * @param node the expand node
    * @param aliasCsv the comma-separated list of aliases
    * @return the list of expanded column names with aliases
-   * @throws JdbcException if the entity type is null
+   * @throws SqlBuildException if the entity type is null
    * @throws DomaException if an alias is not defined in the aggregate strategy type
    */
   protected List<String> expandAggregateColumns(ExpandNode node, String aliasCsv) {
     if (entityType == null) {
       SqlLocation location = node.getLocation();
-      throw new JdbcException(
+      throw new SqlBuildException(
           Message.DOMA2144, location.getSql(), location.getLineNumber(), location.getPosition());
     }
     if (aggregateStrategyType == null) {

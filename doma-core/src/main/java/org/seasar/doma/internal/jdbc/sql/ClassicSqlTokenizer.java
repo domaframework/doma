@@ -60,7 +60,7 @@ import static org.seasar.doma.internal.util.AssertionUtil.assertNotNull;
 import java.nio.CharBuffer;
 import org.seasar.doma.internal.expr.util.ExpressionUtil;
 import org.seasar.doma.internal.util.ClassicSqlTokenUtil;
-import org.seasar.doma.jdbc.JdbcException;
+import org.seasar.doma.jdbc.SqlParseException;
 import org.seasar.doma.message.Message;
 
 /**
@@ -521,7 +521,7 @@ public class ClassicSqlTokenizer {
               && type != EXPAND_BLOCK_COMMENT
               && type != POPULATE_BLOCK_COMMENT) {
             int pos = buf.position() - lineStartPosition;
-            throw new JdbcException(Message.DOMA2119, sql, lineNumber, pos);
+            throw new SqlParseException(Message.DOMA2119, sql, lineNumber, pos);
           }
         }
         buf.position(buf.position() - 1);
@@ -541,7 +541,7 @@ public class ClassicSqlTokenizer {
         }
       }
       int pos = buf.position() - lineStartPosition;
-      throw new JdbcException(Message.DOMA2102, sql, lineNumber, pos);
+      throw new SqlParseException(Message.DOMA2102, sql, lineNumber, pos);
     } else if (c == '-' && c2 == '-') {
       type = LINE_COMMENT;
       while (buf.hasRemaining()) {
@@ -594,7 +594,7 @@ public class ClassicSqlTokenizer {
         return;
       }
       int pos = buf.position() - lineStartPosition;
-      throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
+      throw new SqlParseException(Message.DOMA2101, sql, lineNumber, pos);
     } else if (isWordStart(c)) {
       type = WORD;
       while (buf.hasRemaining()) {
@@ -622,7 +622,7 @@ public class ClassicSqlTokenizer {
             return;
           }
           int pos = buf.position() - lineStartPosition;
-          throw new JdbcException(Message.DOMA2101, sql, lineNumber, pos);
+          throw new SqlParseException(Message.DOMA2101, sql, lineNumber, pos);
         }
         if (!isWordPart(c2)) {
           buf.reset();
