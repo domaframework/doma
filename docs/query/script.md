@@ -45,7 +45,7 @@ and the DAO method name is `createTable`, the script file path is as follows:
 #### Dependency on a specific RDBMS
 
 You can specify a dependency on a specific RDBMS by file name.
-To do this, put the hyphen "-" and RDBMS name before the extension ".sql".
+To do this, put the hyphen "-" and RDBMS name before the extension ".script".
 For example, the file path specific to PostgreSQL is as follows:
 
 > META-INF/aaa/bbb/EmployeeDao/createTable-*postgres*.script

@@ -91,10 +91,11 @@ msgstr "特定の RDBMS への依存関係"
 #: ../../query/script.md:47
 msgid ""
 "You can specify a dependency on a specific RDBMS by file name. To do "
-"this, put the hyphen \"-\" and RDBMS name before the extension \".sql\". "
-"For example, the file path specific to PostgreSQL is as follows:"
+"this, put the hyphen \"-\" and RDBMS name before the extension "
+"\".script\". For example, the file path specific to PostgreSQL is as "
+"follows:"
 msgstr ""
-"特定の RDBMS への依存関係をファイル名で指定できます。これを行うには、拡張子「.sql」の前にハイフン「-」と RDBMS "
+"特定の RDBMS への依存関係をファイル名で指定できます。これを行うには、拡張子「.script」の前にハイフン「-」と RDBMS "
 "名を置きます。たとえば、PostgreSQL に固有のファイル パスは次のとおりです。"
 
 #: ../../query/script.md:51
