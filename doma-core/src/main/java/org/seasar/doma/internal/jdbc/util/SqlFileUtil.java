@@ -16,6 +16,7 @@
 package org.seasar.doma.internal.jdbc.util;
 
 import java.io.File;
+import java.util.List;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
@@ -39,5 +40,9 @@ public final class SqlFileUtil {
 
   public static String convertToDbmsSpecificPath(String path, Dialect dialect) {
     return FileUtil.convertToDbmsSpecificPath(PREFIX, SUFFIX, path, dialect);
+  }
+
+  public static List<String> buildCandidatePaths(String path, Dialect dialect) {
+    return FileUtil.buildCandidatePaths(PREFIX, SUFFIX, path, dialect);
   }
 }

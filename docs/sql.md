@@ -112,6 +112,30 @@ The RDBMS names are stem from dialects:
 | PostgreSQL           | PostgresDialect | postgres   |
 | SQLite               | SqliteDialect   | sqlite     |
 
+### Getting file paths in code
+
+Tools that work with Doma projects, such as editor plugins and linters,
+can get the SQL file paths of DAO methods with `org.seasar.doma.jdbc.SqlFilePaths`
+instead of reimplementing the rules above:
+
+```java
+// META-INF/aaa/bbb/EmployeeDao/selectById.sql
+String path = SqlFilePaths.of("aaa.bbb.EmployeeDao", "selectById");
+
+// [META-INF/aaa/bbb/EmployeeDao/selectById-postgres.sql,
+//  META-INF/aaa/bbb/EmployeeDao/selectById.sql]
+List<String> candidates =
+    SqlFilePaths.candidates("aaa.bbb.EmployeeDao", "selectById", new PostgresDialect());
+```
+
+`candidates` returns the paths in the order Doma looks them up,
+so a tool can choose the first one that exists in its own file system, such as a source tree.
+
+Pass the canonical name of the DAO interface, as returned by `Class#getCanonicalName()`.
+For a nested interface, it differs from the name returned by `Class#getName()`.
+
+For script files, use `org.seasar.doma.jdbc.ScriptFilePaths` in the same way.
+
 (sql-templates-in-annotations)=
 
 ## SQL templates in annotations

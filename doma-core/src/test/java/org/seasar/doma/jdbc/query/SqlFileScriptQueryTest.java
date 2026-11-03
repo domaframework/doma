@@ -103,6 +103,7 @@ public class SqlFileScriptQueryTest {
       fail();
     } catch (ScriptFileNotFoundException expected) {
       System.out.println(expected.getMessage());
+      assertEquals("META-INF/ccc.script", expected.getPath());
     }
   }
 

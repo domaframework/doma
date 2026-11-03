@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.List;
 import java.util.function.Supplier;
 import org.seasar.doma.internal.Constants;
 import org.seasar.doma.internal.jdbc.util.ScriptFileUtil;
@@ -107,16 +108,17 @@ public class SqlFileScriptQuery extends AbstractQuery implements ScriptQuery {
       assertTrue(scriptFilePath.endsWith(Constants.SCRIPT_PATH_SUFFIX));
       ScriptFileLoader loader = config.getScriptFileLoader();
 
-      String dbmsSpecificPath =
-          ScriptFileUtil.convertToDbmsSpecificPath(scriptFilePath, config.getDialect());
-      scriptFileUrl = loader.loadAsURL(dbmsSpecificPath);
-      if (scriptFileUrl != null) {
-        scriptFilePath = dbmsSpecificPath;
-      } else {
-        scriptFileUrl = loader.loadAsURL(scriptFilePath);
-        if (scriptFileUrl == null) {
-          throw new ScriptFileNotFoundException(scriptFilePath);
+      List<String> candidatePaths =
+          ScriptFileUtil.buildCandidatePaths(scriptFilePath, config.getDialect());
+      for (String candidatePath : candidatePaths) {
+        scriptFileUrl = loader.loadAsURL(candidatePath);
+        if (scriptFileUrl != null) {
+          scriptFilePath = candidatePath;
+          break;
         }
+      }
+      if (scriptFileUrl == null) {
+        throw new ScriptFileNotFoundException(scriptFilePath);
       }
     }
     if (blockDelimiter.isEmpty()) {
