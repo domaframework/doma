@@ -859,8 +859,22 @@ public class NodePreparedSqlBuilder
           location.getLineNumber(),
           location.getPosition(),
           bindVariableText,
-          e);
+          causeMessage(e));
     }
+  }
+
+  /**
+   * Returns the message of an internal exception to embed in another message.
+   *
+   * <p>The class name is omitted, and so is the trailing period, because the enclosing message
+   * template supplies its own.
+   */
+  private static String causeMessage(Throwable cause) {
+    String message = cause.getMessage();
+    if (message != null && message.endsWith(".")) {
+      return message.substring(0, message.length() - 1);
+    }
+    return message;
   }
 
   private Context createContext(Context context) {
@@ -1096,7 +1110,7 @@ public class NodePreparedSqlBuilder
             location.getSql(),
             location.getLineNumber(),
             location.getPosition(),
-            e);
+            causeMessage(e));
       }
     }
 
