@@ -744,6 +744,66 @@ public class SqlTokenizerTest {
   }
 
   @Test
+  public void testColumnNumber_afterMultiLineQuote() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select 'a\nb' x");
+    assertEquals(SELECT_WORD, tokenizer.next());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(QUOTE, tokenizer.next());
+    assertEquals("'a\nb'", tokenizer.getToken());
+    assertEquals(2, tokenizer.getLineNumber());
+    assertEquals(2, tokenizer.getPosition());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("x", tokenizer.getToken());
+    assertEquals(2, tokenizer.getLineNumber());
+    assertEquals(4, tokenizer.getPosition());
+    assertEquals(EOF, tokenizer.next());
+  }
+
+  @Test
+  public void testLineNumber_crlfInQuote() {
+    SqlTokenizer tokenizer = new SqlTokenizer("'a\r\nb\r\n'\r\naaa");
+    assertEquals(QUOTE, tokenizer.next());
+    assertEquals(3, tokenizer.getLineNumber());
+    assertEquals(1, tokenizer.getPosition());
+    assertEquals(EOL, tokenizer.next());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("aaa", tokenizer.getToken());
+    assertEquals(4, tokenizer.getLineNumber());
+    assertEquals(3, tokenizer.getPosition());
+    assertEquals(EOF, tokenizer.next());
+  }
+
+  @Test
+  public void testQuote_notClosed_position() {
+    // The error points to the opening "'", not to the end of the SQL
+    SqlTokenizer tokenizer = new SqlTokenizer("select 1\nwhere A = 'a\nb = 1");
+    try {
+      while (tokenizer.next() != EOF) {}
+      fail();
+    } catch (JdbcException expected) {
+      assertEquals(Message.DOMA2101, expected.getMessageResource());
+      Object[] args = (Object[]) expected.getArgs();
+      assertEquals(2, args[1]);
+      assertEquals(11, args[2]);
+    }
+  }
+
+  @Test
+  public void testQuote_notClosed_positionInWord() {
+    SqlTokenizer tokenizer = new SqlTokenizer("select 'a\nb',\n  N'abc\nfrom T");
+    try {
+      while (tokenizer.next() != EOF) {}
+      fail();
+    } catch (JdbcException expected) {
+      assertEquals(Message.DOMA2101, expected.getMessageResource());
+      Object[] args = (Object[]) expected.getArgs();
+      assertEquals(3, args[1]);
+      assertEquals(4, args[2]);
+    }
+  }
+
+  @Test
   public void testIllegalDirective() {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*%*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());

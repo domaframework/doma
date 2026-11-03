@@ -1457,6 +1457,22 @@ public class SqlParserTest {
   }
 
   @Test
+  public void testPosition_afterMultiLineQuote() {
+    String testSql = "select 'a\nb' /*%end*/";
+    SqlParser parser = new SqlParser(testSql);
+    try {
+      parser.parse();
+      fail();
+    } catch (JdbcException expected) {
+      System.out.println(expected.getMessage());
+      assertEquals(Message.DOMA2104, expected.getMessageResource());
+      Object[] args = (Object[]) expected.getArgs();
+      assertEquals(2, args[1]);
+      assertEquals(11, args[2]);
+    }
+  }
+
+  @Test
   public void testInvalidEmbeddedVariable_unclosedComment() {
     String testSql = "select * from aaa where /*# condition";
     SqlParser parser = new SqlParser(testSql);
