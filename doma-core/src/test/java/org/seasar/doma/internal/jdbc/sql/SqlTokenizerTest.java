@@ -684,6 +684,66 @@ public class SqlTokenizerTest {
   }
 
   @Test
+  public void testColumnNumber_afterMultiLineBlockComment() {
+    SqlTokenizer tokenizer = new SqlTokenizer("aaa /** x\nyy */ bbb");
+    assertEquals(WORD, tokenizer.next());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(BLOCK_COMMENT, tokenizer.next());
+    assertEquals("/** x\nyy */", tokenizer.getToken());
+    assertEquals(2, tokenizer.getLineNumber());
+    assertEquals(5, tokenizer.getPosition());
+    assertEquals(WHITESPACE, tokenizer.next());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("bbb", tokenizer.getToken());
+    assertEquals(2, tokenizer.getLineNumber());
+    assertEquals(9, tokenizer.getPosition());
+    assertEquals(EOF, tokenizer.next());
+  }
+
+  @Test
+  public void testLineNumber_crlfInBlockComment() {
+    SqlTokenizer tokenizer = new SqlTokenizer("/** x\r\ny\r\n */\r\naaa");
+    assertEquals(BLOCK_COMMENT, tokenizer.next());
+    assertEquals(3, tokenizer.getLineNumber());
+    assertEquals(3, tokenizer.getPosition());
+    assertEquals(EOL, tokenizer.next());
+    assertEquals(WORD, tokenizer.next());
+    assertEquals("aaa", tokenizer.getToken());
+    assertEquals(4, tokenizer.getLineNumber());
+    assertEquals(3, tokenizer.getPosition());
+    assertEquals(EOF, tokenizer.next());
+  }
+
+  @Test
+  public void testBlockComment_notClosed_position() {
+    // The error points to the opening "/*", not to the end of the SQL
+    SqlTokenizer tokenizer = new SqlTokenizer("select 1\nfrom T /* abc\nwhere A = 1");
+    try {
+      while (tokenizer.next() != EOF) {}
+      fail();
+    } catch (JdbcException expected) {
+      assertEquals(Message.DOMA2102, expected.getMessageResource());
+      Object[] args = (Object[]) expected.getArgs();
+      assertEquals(2, args[1]);
+      assertEquals(8, args[2]);
+    }
+  }
+
+  @Test
+  public void testBlockComment_notClosed_afterMultiLineBlockComment() {
+    SqlTokenizer tokenizer = new SqlTokenizer("/** a\n b */ x\n  /*%end\ngroup by\n  A");
+    try {
+      while (tokenizer.next() != EOF) {}
+      fail();
+    } catch (JdbcException expected) {
+      assertEquals(Message.DOMA2102, expected.getMessageResource());
+      Object[] args = (Object[]) expected.getArgs();
+      assertEquals(3, args[1]);
+      assertEquals(3, args[2]);
+    }
+  }
+
+  @Test
   public void testIllegalDirective() {
     SqlTokenizer tokenizer = new SqlTokenizer("where /*%*/bbb");
     assertEquals(WHERE_WORD, tokenizer.next());
