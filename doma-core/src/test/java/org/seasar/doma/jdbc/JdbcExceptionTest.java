@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
@@ -26,8 +27,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.seasar.doma.internal.expr.ExpressionEvaluator;
+import org.seasar.doma.internal.expr.ExpressionException;
 import org.seasar.doma.internal.expr.Value;
 import org.seasar.doma.internal.jdbc.mock.MockConfig;
+import org.seasar.doma.internal.jdbc.scalar.ScalarException;
 import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.jdbc.dialect.StandardDialect;
@@ -141,6 +144,38 @@ public class JdbcExceptionTest {
     } catch (JdbcException e) {
       System.out.println(e.getMessage());
       assertEquals(Message.DOMA2111, e.getMessageResource());
+      assertEquals(
+          "[DOMA2111] Failed to build the SQL on line 2 at column 7. The cause is as follows: "
+              + "[DOMA3003] Failed to evaluate the expression \"bbb\" at column 3. "
+              + "The variable \"bbb\" is not resolved. Check that the variable name is correct. "
+              + "SQL=[select * from aaa where bbb = \n/*bbb*/'ccc']",
+          e.getMessage());
+      assertInstanceOf(ExpressionException.class, e.getCause());
+    }
+  }
+
+  @Test
+  public void testBindValueNotWrapped() {
+    SqlParser parser = new SqlParser("select * from aaa where bbb = /*bbb*/'ccc'");
+    SqlNode sqlNode = parser.parse();
+    ExpressionEvaluator evaluator = new ExpressionEvaluator();
+    evaluator.add("bbb", new Value(Thread.class, Thread.currentThread()));
+    NodePreparedSqlBuilder builder =
+        new NodePreparedSqlBuilder(
+            config, SqlKind.SELECT, "dummyPath", evaluator, SqlLogType.FORMATTED);
+    try {
+      builder.build(sqlNode, Function.identity());
+      fail();
+    } catch (JdbcException e) {
+      System.out.println(e.getMessage());
+      assertEquals(Message.DOMA2118, e.getMessageResource());
+      assertEquals(
+          "[DOMA2118] Failed to build the SQL on line 1 at column 37. "
+              + "The expression \"bbb\" isn't processed. The cause is as follows: "
+              + "[DOMA1007] The wrapper class for the type \"java.lang.Thread\" is not found. "
+              + "SQL=[select * from aaa where bbb = /*bbb*/'ccc']",
+          e.getMessage());
+      assertInstanceOf(ScalarException.class, e.getCause());
     }
   }
 
