@@ -49,6 +49,7 @@ public class SqlLocationExceptionTest {
     SqlParseException e = assertThrows(SqlParseException.class, () -> new SqlParser(sql).parse());
     assertEquals(Message.DOMA2102, e.getMessageResource());
     assertEquals(2, e.getLineNumber());
+    assertEquals(8, e.getColumnNumber());
   }
 
   @Test

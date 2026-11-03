@@ -954,22 +954,26 @@ public class SqlTokenizer {
   }
 
   private void consumeBlockCommentContent() {
+    // An unclosed comment is reported at its opening "/*"
+    int startLineNumber = currentLineNumber;
+    int startColumn = tokenStartIndex - lineStartPosition + 1;
     while (buf.hasRemaining()) {
       char c1 = buf.get();
-      if (buf.hasRemaining()) {
-        buf.mark();
-        char c2 = buf.get();
-        if (c1 == '*' && c2 == '/') {
-          return;
+      if (c1 == '*' && buf.hasRemaining() && buf.get(buf.position()) == '/') {
+        buf.get();
+        return;
+      }
+      if (c1 == '\r' || c1 == '\n') {
+        // Count "\r\n" as one line break, as peekNonWord() does
+        if (c1 == '\r' && buf.hasRemaining() && buf.get(buf.position()) == '\n') {
+          buf.get();
         }
-        if ((c1 == '\r' || c1 == '\n')) {
-          currentLineNumber++;
-        }
-        buf.reset();
+        currentLineNumber++;
+        // Keep columns of the following tokens relative to their own line
+        lineStartPosition = buf.position();
       }
     }
-    int pos = buf.position() - lineStartPosition;
-    throw new SqlParseException(Message.DOMA2102, sql, lineNumber, pos);
+    throw new SqlParseException(Message.DOMA2102, sql, startLineNumber, startColumn);
   }
 
   private void handleLineComment() {

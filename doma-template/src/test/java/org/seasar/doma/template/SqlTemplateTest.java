@@ -148,6 +148,7 @@ class SqlTemplateTest {
         assertThrows(SqlParseException.class, () -> new SqlTemplate(sql).validate());
     assertEquals(Message.DOMA2102, e.getMessageResource());
     assertEquals(3, e.getLineNumber());
+    assertEquals(1, e.getColumnNumber());
   }
 
   @Test
