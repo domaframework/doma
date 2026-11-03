@@ -57,6 +57,9 @@ is chosen instead of "META-INF/aaa/bbb/EmployeeDao/createTable.script".
 
 See also [Dependency on a specific RDBMS](../sql.md#dependency-on-a-specific-rdbms).
 
+To get the script file paths of DAO methods in code, use `org.seasar.doma.jdbc.ScriptFilePaths`.
+It works in the same way as `SqlFilePaths`; see [Getting file paths in code](../sql.md#getting-file-paths-in-code).
+
 ### Scripts in annotation
 
 You can specify scripts to DAO methods with the `@Sql` annotation:

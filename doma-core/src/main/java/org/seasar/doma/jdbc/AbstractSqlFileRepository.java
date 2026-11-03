@@ -16,6 +16,7 @@
 package org.seasar.doma.jdbc;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
 import org.seasar.doma.DomaIllegalArgumentException;
 import org.seasar.doma.DomaNullPointerException;
@@ -83,27 +84,22 @@ public abstract class AbstractSqlFileRepository implements SqlFileRepository {
       SqlNode sqlNode = parse(sqlAnnotation.value());
       return new SqlFile(path, sql, sqlNode);
     }
-    String primaryPath = getPrimaryPath(path, dialect);
-    String sql = getSql(primaryPath);
-    if (sql != null) {
-      SqlNode sqlNode = parse(sql);
-      return new SqlFile(primaryPath, sql, sqlNode);
-    }
-    sql = getSql(path);
-    if (sql != null) {
-      SqlNode sqlNode = parse(sql);
-      return new SqlFile(path, sql, sqlNode);
+    List<String> candidatePaths = SqlFileUtil.buildCandidatePaths(path, dialect);
+    for (String candidatePath : candidatePaths) {
+      String sql = getSql(candidatePath);
+      if (sql != null) {
+        SqlNode sqlNode = parse(sql);
+        return new SqlFile(candidatePath, sql, sqlNode);
+      }
     }
 
-    sql = getSql(primaryPath, method.getDeclaringClass().getClassLoader());
-    if (sql != null) {
-      SqlNode sqlNode = parse(sql);
-      return new SqlFile(primaryPath, sql, sqlNode);
-    }
-    sql = getSql(path, method.getDeclaringClass().getClassLoader());
-    if (sql != null) {
-      SqlNode sqlNode = parse(sql);
-      return new SqlFile(path, sql, sqlNode);
+    ClassLoader classLoader = method.getDeclaringClass().getClassLoader();
+    for (String candidatePath : candidatePaths) {
+      String sql = getSql(candidatePath, classLoader);
+      if (sql != null) {
+        SqlNode sqlNode = parse(sql);
+        return new SqlFile(candidatePath, sql, sqlNode);
+      }
     }
 
     throw new SqlFileNotFoundException(path);

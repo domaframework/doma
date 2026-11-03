@@ -18,6 +18,7 @@ package org.seasar.doma.internal.jdbc.util;
 import static org.seasar.doma.internal.util.AssertionUtil.*;
 
 import java.io.File;
+import java.util.List;
 import org.seasar.doma.jdbc.dialect.Dialect;
 
 final class FileUtil {
@@ -57,5 +58,11 @@ final class FileUtil {
     assertNotNull(prefix, suffix, path, dialect);
     String name = dialect.getName();
     return path.substring(0, path.length() - suffix.length()) + "-" + name + suffix;
+  }
+
+  static List<String> buildCandidatePaths(
+      String prefix, String suffix, String path, Dialect dialect) {
+    assertNotNull(prefix, suffix, path, dialect);
+    return List.of(convertToDbmsSpecificPath(prefix, suffix, path, dialect), path);
   }
 }

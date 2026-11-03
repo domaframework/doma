@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  doma-docs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-12 16:05+0900\n"
+"POT-Creation-Date: 2026-11-03 14:43+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language: ja_JP\n"
@@ -12,7 +12,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../query/script.md:1
 msgid "Script"
@@ -119,36 +119,44 @@ msgid ""
 msgstr "[特定RDBMSへの依存][](../sql.md#dependency-on-a-specific-rdbms) も参照してください。"
 
 #: ../../query/script.md:60
+msgid ""
+"To get the script file paths of DAO methods in code, use "
+"`org.seasar.doma.jdbc.ScriptFilePaths`. It works in the same way as "
+"`SqlFilePaths`; see [Getting file paths in code](../sql.md#getting-file-"
+"paths-in-code)."
+msgstr "DAO メソッドのスクリプトファイルのパスをコードで取得するには、`org.seasar.doma.jdbc.ScriptFilePaths` を使います。使い方は `SqlFilePaths` と同じです。[コードでファイルパスを取得する](../sql.md#getting-file-paths-in-code) を参照してください。"
+
+#: ../../query/script.md:63
 msgid "Scripts in annotation"
 msgstr "アノテーション内のスクリプト"
 
-#: ../../query/script.md:62
+#: ../../query/script.md:65
 msgid "You can specify scripts to DAO methods with the `@Sql` annotation:"
 msgstr "`@Sql` アノテーションを使用して DAO メソッドにスクリプトを指定できます。"
 
-#: ../../query/script.md:74
+#: ../../query/script.md:77
 msgid ""
 "See also [SQL templates in annotations](../sql.md#sql-templates-in-"
 "annotations)."
 msgstr "[アノテーション内SQLテンプレート](../sql.md#sql-templates-in-annotations) も参照してください。"
 
-#: ../../query/script.md:76
+#: ../../query/script.md:79
 msgid "Delimiter"
 msgstr "区切り文字"
 
-#: ../../query/script.md:78
+#: ../../query/script.md:81
 msgid "There are two kinds of delimiters in scripts:"
 msgstr "スクリプトには 2 種類の区切り文字があります。"
 
-#: ../../query/script.md:80
+#: ../../query/script.md:83
 msgid "statement delimiter"
 msgstr "ステートメント区切り文字"
 
-#: ../../query/script.md:3 ../../query/script.md:81
+#: ../../query/script.md:3 ../../query/script.md:84
 msgid "block delimiter"
 msgstr "ブロック区切り文字"
 
-#: ../../query/script.md:83
+#: ../../query/script.md:86
 msgid ""
 "The statement delimiter is always a semicolon `;`. The block delimiter is"
 " determined by a `Dialect` instance. The RDBMS block delimiters are as "
@@ -261,21 +269,21 @@ msgstr ""
 msgid "SqliteDialect"
 msgstr ""
 
-#: ../../query/script.md:100
+#: ../../query/script.md:103
 msgid ""
 "You can also specify the block delimiter to `@Script`'s `blockDelimiter` "
 "element:"
 msgstr "`@Script` の `blockDelimiter` 要素にブロック区切り文字を指定することもできます。"
 
-#: ../../query/script.md:107
+#: ../../query/script.md:110
 msgid "The corresponding script file is as follows:"
 msgstr "対応するスクリプトファイルは以下のとおりです。"
 
-#: ../../query/script.md:123
+#: ../../query/script.md:126
 msgid "Stopping on error"
 msgstr "エラーによる停止"
 
-#: ../../query/script.md:125
+#: ../../query/script.md:128
 msgid ""
 "Script running will stop when any statement execution fails. To continue "
 "the script running, specify `false` to the `haltOnError` element:"
@@ -283,15 +291,15 @@ msgstr ""
 "ステートメントの実行が失敗すると、スクリプトの実行は停止します。スクリプトの実行を続行するには、 `haltOnError` 要素に "
 "`false` を指定します。"
 
-#: ../../query/script.md:133
+#: ../../query/script.md:136
 msgid "Example"
 msgstr "例"
 
-#: ../../query/script.md:135
+#: ../../query/script.md:138
 msgid "Following script is valid for Oracle Database:"
 msgstr "次のスクリプトは Oracle データベースに対して有効です。"
 
-#: ../../query/script.md:176
+#: ../../query/script.md:179
 msgid ""
 "You can use both a single line comment `--` and a multi-line comment `/* "
 "... */`. Each statement must end with a semicolon `;`. Be careful that a "
@@ -300,7 +308,7 @@ msgstr ""
 "単一行コメント `--` と複数行コメント `/* ... */` の両方を使用できます。各ステートメントはセミコロン `;` "
 "で終わる必要があります。新しい行はステートメントの終わりを意味しないことに注意してください。"
 
-#: ../../query/script.md:180
+#: ../../query/script.md:183
 msgid ""
 "In this example, the slash `/` is a block delimiter. The block delimiter "
 "must appear at the beginning of a line and be followed by a new line."
