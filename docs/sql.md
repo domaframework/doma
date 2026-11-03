@@ -843,4 +843,4 @@ try {
 
 `execute` throws `SqlParseException` in the same way.
 When the template is parsed but the SQL cannot be built from it, for example because an expression cannot be evaluated, `execute` throws `SqlBuildException`.
-Both extend `SqlTemplateException`, which has `getLineNumber` and `getColumnNumber`.
+Both extend `SqlLocationException`, which has `getLineNumber` and `getColumnNumber`.

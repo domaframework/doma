@@ -18,19 +18,22 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.MessageResource;
 
 /**
- * Thrown to indicate an error at a location in a SQL template.
+ * Thrown to indicate an error at a location in SQL written in the two-way SQL syntax.
  *
- * <p>The message arguments start with the SQL template, the line number, and the column number,
- * followed by the arguments specific to the error.
+ * <p>Such SQL comes from SQL files, {@code @Sql} annotations, and the query builders, which turn
+ * their parameters into bind variable directives.
+ *
+ * <p>The message arguments start with the SQL, the line number, and the column number, followed by
+ * the arguments specific to the error.
  *
  * @see SqlParseException
  * @see SqlBuildException
  */
-public abstract class SqlTemplateException extends JdbcException {
+public abstract class SqlLocationException extends JdbcException {
 
   private static final long serialVersionUID = 1L;
 
-  /** the SQL template */
+  /** the SQL that has the error */
   protected final String sql;
 
   /** the line number of the error */
@@ -44,12 +47,12 @@ public abstract class SqlTemplateException extends JdbcException {
    *
    * @param messageCode the message code
    * @param cause the cause, or {@code null}
-   * @param sql the SQL template
+   * @param sql the SQL that has the error
    * @param lineNumber the line number of the error
    * @param columnNumber the column number of the error
    * @param args the message arguments that follow the column number
    */
-  protected SqlTemplateException(
+  protected SqlLocationException(
       MessageResource messageCode,
       Throwable cause,
       String sql,
@@ -73,9 +76,9 @@ public abstract class SqlTemplateException extends JdbcException {
   }
 
   /**
-   * Returns the SQL template.
+   * Returns the SQL that has the error.
    *
-   * @return the SQL template
+   * @return the SQL
    */
   public String getSql() {
     return sql;

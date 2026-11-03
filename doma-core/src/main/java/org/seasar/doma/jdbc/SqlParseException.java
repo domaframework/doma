@@ -17,8 +17,8 @@ package org.seasar.doma.jdbc;
 
 import org.seasar.doma.message.MessageResource;
 
-/** Thrown to indicate a syntax error found while parsing a SQL template. */
-public class SqlParseException extends SqlTemplateException {
+/** Thrown to indicate a syntax error found while parsing SQL. */
+public class SqlParseException extends SqlLocationException {
 
   private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class SqlParseException extends SqlTemplateException {
    * Creates an instance.
    *
    * @param messageCode the message code
-   * @param sql the SQL template
+   * @param sql the SQL that has the error
    * @param lineNumber the line number of the error
    * @param columnNumber the column number of the error
    * @param args the message arguments that follow the column number

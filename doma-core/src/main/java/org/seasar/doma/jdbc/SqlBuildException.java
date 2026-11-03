@@ -18,10 +18,10 @@ package org.seasar.doma.jdbc;
 import org.seasar.doma.message.MessageResource;
 
 /**
- * Thrown to indicate an error found while building SQL from a parsed SQL template, such as an
+ * Thrown to indicate an error found while building the SQL to execute from parsed SQL, such as an
  * expression that cannot be evaluated.
  */
-public class SqlBuildException extends SqlTemplateException {
+public class SqlBuildException extends SqlLocationException {
 
   private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class SqlBuildException extends SqlTemplateException {
    * Creates an instance.
    *
    * @param messageCode the message code
-   * @param sql the SQL template
+   * @param sql the SQL that has the error
    * @param lineNumber the line number of the error
    * @param columnNumber the column number of the error
    * @param args the message arguments that follow the column number
@@ -44,7 +44,7 @@ public class SqlBuildException extends SqlTemplateException {
    *
    * @param messageCode the message code
    * @param cause the cause
-   * @param sql the SQL template
+   * @param sql the SQL that has the error
    * @param lineNumber the line number of the error
    * @param columnNumber the column number of the error
    * @param args the message arguments that follow the column number

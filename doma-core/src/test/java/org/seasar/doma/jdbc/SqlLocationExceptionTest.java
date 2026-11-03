@@ -27,7 +27,7 @@ import org.seasar.doma.internal.jdbc.sql.NodePreparedSqlBuilder;
 import org.seasar.doma.internal.jdbc.sql.SqlParser;
 import org.seasar.doma.message.Message;
 
-public class SqlTemplateExceptionTest {
+public class SqlLocationExceptionTest {
 
   private final MockConfig config = new MockConfig();
 
